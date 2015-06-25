@@ -1,0 +1,15 @@
+[submodule "dependencies/glm"]
+	path = dependencies/glm
+	url = https://github.com/g-truc/glm
+[submodule "dependencies/Simple-OpenGL-Image-Library"]
+	path = dependencies/Simple-OpenGL-Image-Library
+	url = https://github.com/kbranigan/Simple-OpenGL-Image-Library
+[submodule "dependencies/glew-cmake"]
+	path = dependencies/glew-cmake
+	url = https://github.com/Perlmint/glew-cmake
+[submodule "dependencies/glfw"]
+	path = dependencies/glfw
+	url = https://github.com/glfw/glfw
+[submodule "dependencies/tinyobjloader"]
+	path = dependencies/tinyobjloader
+	url = https://github.com/syoyo/tinyobjloader
