@@ -71,65 +71,64 @@ void CubeDemo::runDemo()
 	glViewport(0, 0, WIDTH, HEIGHT);
 	glClearColor(0.2f, 0.22f, 0.2f, 1.0f);
 
-    glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LESS);
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LESS);
 
 	const char *vertex =
-		"#version 330 core \n"
+			"#version 330 core \n"
 
-		"in vec3 positionIn; \n"
-		"in vec3 normalIn; \n"
-		"in vec2 texCoordIn; \n"
+			"in vec3 positionIn; \n"
+			"in vec3 normalIn; \n"
+			"in vec2 texCoordIn; \n"
 
-		// Matrices
-		"uniform mat3 Normal; \n"
-		"uniform mat4 ModelViewProjection; \n"
+			"uniform mat4 ModelViewProjection; \n"
 
-		"out vec3 faceNormal; \n"
-		"out vec2 texCoord; \n"
+			"out vec3 faceNormal; \n"
+			"out vec2 texCoord; \n"
 
-		"void main(){ \n"
-		"  faceNormal = normalize( Normal * normalIn); \n"
-		"  texCoord = vec2(texCoordIn.x, 1 - texCoordIn.y); \n"
-		//"  texCoord = texCoordIn; \n"
-		"  gl_Position =  ModelViewProjection * vec4(positionIn, 1); \n"
-		"} \n";
+			"void main(){ \n"
+			"  texCoord = vec2(texCoordIn.x, 1 - texCoordIn.y); \n"
+			"  gl_Position =  ModelViewProjection * vec4(positionIn, 1); \n"
+			"} \n";
 
 	const char *fragment =
-		"#version 330 core \n"
+			"#version 330 core \n"
 
-		"in vec3 faceNormal; \n"
-		"in vec2 texCoord; \n"
+			"in vec2 texCoord; \n"
 
-		"uniform sampler2D texture1; \n"
+			"uniform sampler2D texture1; \n"
 
-		"out vec4 color; \n"
+			"out vec4 color; \n"
 
-		"void main(){ \n"
-		"  color = texture(texture1, texCoord); \n"
-		"} \n";
+			"void main(){ \n"
+			"  color = texture(texture1, texCoord); \n"
+			"} \n";
 
 
 	// Use Smart Pointer
 	std::map<std::string, int> *map =
 			new std::map<std::string, int> {std::pair<std::string, int>("positionIn", 0),
-					std::pair<std::string, int>("normalIn", 1), std::pair<std::string, int>("texCoordIn", 2)};
+		std::pair<std::string, int>("normalIn", 1), std::pair<std::string, int>("texCoordIn", 2)};
 
 	ShaderProgram program(vertex, fragment, map);
 
-	TexturedCube texturedCube{0, 0};
+	TexturedCube texturedCube{0, 0, 0, 256 - 16};
+	TexturedCube texturedCube2{0, 0, 0, 256 - 15};
+	TexturedCube texturedCube3{0, 0, 0, 256 - 14};
 	Texture texture("../resources/terrain.png");
 
 	float aspectRatio = 800 / 600;
 	glm::mat4 Projection = glm::perspective(80.0f, aspectRatio, 0.1f, 100.0f);
 
-    glm::mat4 camera = glm::lookAt(
-		glm::vec3(0, 0.1, 2), // Camera location
-		glm::vec3(0, 0, 0),   // Look at
-		glm::vec3(0, 0, 1)    // Head is up
+	glm::mat4 camera = glm::lookAt(
+			glm::vec3(0, 0.1, 2), // Camera location
+			glm::vec3(0, 0, 0),   // Look at
+			glm::vec3(0, 0, 1)    // Head is up
 	);
 
-    Transform transform(0.0f, 0.0f, 0.0f);
+	Transform transform(0.0f, 0.0f, -1.0f);
+	Transform transform2(2.0f, 0.0f, -1.0f);
+	Transform transform3(-2.0f, 0.0f, -1.0f);
 
 	while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0)	{
 
@@ -145,21 +144,23 @@ void CubeDemo::runDemo()
 		program.setUniformli("texture1", 0);
 
 		transform.rotateX(0.05);
+		transform2.rotateY(0.05);
+		transform3.rotateZ(0.05);
 
 		glm::mat4 ModelView = camera * transform.getMatrix();
-
-		program.setUniformMatrix4f("ModelView", ModelView);
-
-		glm::mat3 Normal = glm::mat3(glm::vec3(ModelView[0]), glm::vec3(ModelView[1]), glm::vec3(ModelView[2]));
-		program.setUniformMatrix3f("Normal", Normal);
-
-    	glm::mat4 ModelViewProjection = Projection * ModelView;
-        program.setUniformMatrix4f("ModelViewProjection", ModelViewProjection);
-
+		glm::mat4 ModelViewProjection = Projection * ModelView;
+		program.setUniformMatrix4f("ModelViewProjection", ModelViewProjection);
 		texturedCube.draw();
 
-		texturedCube.getModelMatrix();
-		texturedCube.draw();
+		glm::mat4 ModelView2 = camera * transform2.getMatrix();
+		glm::mat4 ModelViewProjection2 = Projection * ModelView2;
+		program.setUniformMatrix4f("ModelViewProjection", ModelViewProjection2);
+		texturedCube2.draw();
+
+		glm::mat4 ModelView3 = camera * transform3.getMatrix();
+		glm::mat4 ModelViewProjection3 = Projection * ModelView3;
+		program.setUniformMatrix4f("ModelViewProjection", ModelViewProjection3);
+		texturedCube3.draw();
 
 		fpsManager.sync();
 		glfwSwapBuffers(window);

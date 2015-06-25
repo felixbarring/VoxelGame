@@ -13,15 +13,16 @@
 // Constructor/Destructor #################################
 // ########################################################
 
-TexturedCube::TexturedCube(float xOffset, float yOffset):
+TexturedCube::TexturedCube(float xOffset, float yOffset, float zOffset, int id):
 	xLocation{xOffset},
 	yLocation{yOffset},
+	zLocation{zOffset},
 	width{1},
 	height{1}
 {
 
 	glm::mat4 m = glm::mat4(1.0);
-	modelMatrix = glm::translate(m, glm::vec3(xOffset, yOffset, 0.0f));
+	modelMatrix = glm::translate(m, glm::vec3(xOffset, yOffset, 5));
 
 	std::vector<GLfloat> vetexData {
 		// Front
@@ -93,8 +94,6 @@ TexturedCube::TexturedCube(float xOffset, float yOffset):
 		0.0f, -1.0f, 0.0f,
 		0.0f, -1.0f, 0.0f,
 	};
-
-	int id = 240-16+1;
 
 	int row = id % 16;
 	int col = int(id / 16.0f);
@@ -177,41 +176,3 @@ void TexturedCube::draw()
 	mesh->render();
 }
 
-
-/*
-
-	std::vector<GLfloat> UV {
-
-			0.0f, 1.0f,
-			1.0f, 1.0f,
-			1.0f, 0.0f,
-			0.0f, 0.0f,
-
-			0.0f, 1.0f,
-			1.0f, 1.0f,
-			1.0f, 0.0f,
-			0.0f, 0.0f,
-
-			0.0f, 1.0f,
-			1.0f, 1.0f,
-			1.0f, 0.0f,
-			0.0f, 0.0f,
-
-			0.0f, 1.0f,
-			1.0f, 1.0f,
-			1.0f, 0.0f,
-			0.0f, 0.0f,
-
-			0.0f, 1.0f,
-			1.0f, 1.0f,
-			1.0f, 0.0f,
-			0.0f, 0.0f,
-
-			0.0f, 1.0f,
-			1.0f, 1.0f,
-			1.0f, 0.0f,
-			0.0f, 0.0f,
-
-		};
-
-*/

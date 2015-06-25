@@ -15,6 +15,8 @@ set (INCLUDE_DIRS include
 
   dependencies/Simple-OpenGL-Image-Library/src
   dependencies/tinyobjloader
+
+#	dependencies/assimp/include/assimp
 )
 
 include_directories(${INCLUDE_DIRS})
@@ -27,10 +29,13 @@ aux_source_directory(src/graphics/mesh SRC_LIST4)
 aux_source_directory(src/demo SRC_LIST5)
 aux_source_directory(src/util SRC_LIST6)
 # Add executable to project
-add_executable(${PROJECT_NAME} ${SRC_LIST} ${SRC_LIST2} ${SRC_LIST3} ${SRC_LIST4} ${SRC_LIST5} ${SRC_LIST6})
+add_executable(${PROJECT_NAME} ${SRC_LIST} ${SRC_LIST2} ${SRC_LIST3} ${SRC_LIST4} ${SRC_LIST5} ${SRC_LIST6} )
 
 # Link GLFW and GLEW to main executable
-target_link_libraries(${PROJECT_NAME} libglew_static glfw ${GLFW_LIBRARIES} SOIL tinyobjloader)
+
+# assimp
+
+target_link_libraries(${PROJECT_NAME} libglew_static glfw ${GLFW_LIBRARIES} SOIL tinyobjloader )
 
 # Define GLEW_STATIC for Windows
 #if(MSVC)

@@ -15,7 +15,7 @@ public:
 // Constructor/Destructor #################################
 // ########################################################
 
-	TexturedCube(float xOffset, float yOffset);
+	TexturedCube(float xOffset, float yOffset, float zOffset, int id);
 	virtual ~TexturedCube();
 
 // ########################################################
@@ -38,6 +38,7 @@ private:
 	glm::mat4 modelMatrix;
 	float xLocation;
 	float yLocation;
+	float zLocation;
 	float width;
 	float height;
 

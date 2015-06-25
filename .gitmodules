@@ -13,3 +13,6 @@
 [submodule "dependencies/tinyobjloader"]
 	path = dependencies/tinyobjloader
 	url = https://github.com/syoyo/tinyobjloader
+[submodule "dependencies/assimp"]
+	path = dependencies/assimp
+	url = https://github.com/assimp/assimp
