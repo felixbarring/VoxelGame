@@ -1,12 +1,9 @@
 #define GLM_FORCE_RADIANS
 
-#include <GL/glew.h>
-#include <glm/glm.hpp>
 #include <vector>
+
 #include "texturedCube.h"
 #include "transform.h"
-
-#include "mesh/meshVNT.h"
 
 
 // ########################################################
@@ -17,14 +14,10 @@ TexturedCube::TexturedCube(float xOffset, float yOffset, float zOffset, int id):
 	xLocation{xOffset},
 	yLocation{yOffset},
 	zLocation{zOffset},
-	width{1},
-	height{1}
+	transform{xOffset, yOffset, zOffset}
 {
 
-	glm::mat4 m = glm::mat4(1.0);
-	modelMatrix = glm::translate(m, glm::vec3(xOffset, yOffset, 5));
-
-	std::vector<GLfloat> vetexData {
+	std::vector<GLfloat> vertexData {
 		// Front
 		-0.5f, -0.5f, -0.5f, // 0
 		0.5f, -0.5f, -0.5f, // 1
@@ -154,7 +147,7 @@ TexturedCube::TexturedCube(float xOffset, float yOffset, float zOffset, int id):
 		0+20, 1+20, 2+20, 0+20, 2+20, 3+20,
 	};
 
-	mesh = new MeshVNT(vetexData, normals, UV, elementData);
+	mesh = new MeshVNT(vertexData, normals, UV, elementData);
 
 }
 
@@ -165,11 +158,6 @@ TexturedCube::~TexturedCube()
 // ########################################################
 // Member Functions########################################
 // ########################################################
-
-glm::mat4& TexturedCube::getModelMatrix()
-{
-	return modelMatrix;
-}
 
 void TexturedCube::draw()
 {

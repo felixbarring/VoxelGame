@@ -1,29 +1,28 @@
 
-#ifndef SRC_DEMO_CUBEDEMO_H_
-#define SRC_DEMO_CUBEDEMO_H_
+#ifndef SRC_VOXELS_CHUNK_H_
+#define SRC_VOXELS_CHUNK_H_
 
-#include "iDemo.h"
-
-class CubeDemo : public virtual IDemo {
+class chunk {
 public:
 
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
 
-	CubeDemo();
-	virtual ~CubeDemo();
+	chunk();
+	virtual ~chunk();
 
 // ########################################################
 // Member Functions########################################
 // ########################################################
 
-	void runDemo() override;
-
 // ########################################################
 // Instance Variables #####################################
 // ########################################################
 
+// TODO Remove the hardcode...
+char voxels[16][16][16];
+
 };
 
-#endif /* SRC_DEMO_CUBEDEMO_H_ */
+#endif /* SRC_VOXELS_CHUNK_H_ */

@@ -1,29 +1,36 @@
 
-#ifndef SRC_DEMO_CUBEDEMO_H_
-#define SRC_DEMO_CUBEDEMO_H_
+#ifndef SRC_VOXELS_CUBES_GRASS_H_
+#define SRC_VOXELS_CUBES_GRASS_H_
 
-#include "iDemo.h"
-
-class CubeDemo : public virtual IDemo {
+class Grass : public virtual Cube{
 public:
 
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
 
-	CubeDemo();
-	virtual ~CubeDemo();
+	Grass();
+	virtual ~Grass();
 
 // ########################################################
 // Member Functions########################################
 // ########################################################
 
-	void runDemo() override;
+	virtual int getFrontTextureID() override {return 240;};
+
+	virtual int getBackTextureID() override {return 240;};
+
+	virtual int getLeftTextureID() override {return 240;};
+
+	virtual int getRightTextureID() override {return 240;};
+
+	virtual int getTopTextureID() override {return 240;};
+
+	virtual int getBottomTextureID() override {return 240;};
 
 // ########################################################
 // Instance Variables #####################################
 // ########################################################
-
 };
 
-#endif /* SRC_DEMO_CUBEDEMO_H_ */
+#endif /* SRC_VOXELS_CUBES_GRASS_H_ */

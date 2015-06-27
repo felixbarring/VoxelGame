@@ -1,5 +1,5 @@
 
-#include "cubeDemo.h"
+#include "chunkDemo.h"
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -12,7 +12,7 @@
 #include "../graphics/shaderProgram.h"
 #include "../graphics/texture.h"
 #include "../graphics/transform.h"
-#include "../graphics/texturedCube.h"
+#include "../graphics/graphicalChunk.h"
 
 #include "../util/fpsManager.h"
 
@@ -20,11 +20,11 @@
 // Constructor/Destructor #################################
 // ########################################################
 
-CubeDemo::CubeDemo()
+ChunkDemo::ChunkDemo()
 {
 }
 
-CubeDemo::~CubeDemo()
+ChunkDemo::~ChunkDemo()
 {
 }
 
@@ -32,9 +32,8 @@ CubeDemo::~CubeDemo()
 // Member Functions########################################
 // ########################################################
 
-void CubeDemo::runDemo()
+void ChunkDemo::runDemo()
 {
-
 	FPSManager fpsManager(100);
 	const GLuint WIDTH = 800, HEIGHT = 600;
 
@@ -47,7 +46,7 @@ void CubeDemo::runDemo()
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-	GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "Textured Cubes Demo", nullptr, nullptr);
+	GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "Chunk Demo", nullptr, nullptr);
 	if (window == NULL) {
 		fprintf(stderr, "Failed to open GLFW window.\n");
 		glfwTerminate();
@@ -104,9 +103,16 @@ void CubeDemo::runDemo()
 
 	ShaderProgram program(vertex, fragment, map);
 
-	TexturedCube texturedCube{2, 0, -1.0f, 256 - 16};
-	TexturedCube texturedCube2{0, 0, -1.0f, 256 - 15};
-	TexturedCube texturedCube3{-2, 0, -1.0f, 256 - 14};
+	char data[16][16][16];
+	for (int i = 0; i < 16; i++) {
+		for (int j = 0; j < 16; j++) {
+			for (int k = 0; k < 16; k++) {
+				data[i][j][k] = 240;
+			}
+		}
+	}
+
+	GraphicalChunk chunk{2, 0, -20.0f, data};
 	Texture texture("../resources/terrain.png");
 
 	float aspectRatio = 800 / 600;
@@ -131,24 +137,12 @@ void CubeDemo::runDemo()
 		texture.bind();
 		program.setUniformli("texture1", 0);
 
-		texturedCube.getTransform().rotateX(0.05);
-		texturedCube2.getTransform().rotateY(0.05);
-		texturedCube3.getTransform().rotateZ(0.05);
+		chunk.getTransform().rotateY(0.01);
 
-		glm::mat4 ModelView = camera * texturedCube.getTransform().getMatrix();
+		glm::mat4 ModelView = camera * chunk.getTransform().getMatrix();
 		glm::mat4 ModelViewProjection = Projection * ModelView;
 		program.setUniformMatrix4f("ModelViewProjection", ModelViewProjection);
-		texturedCube.draw();
-
-		glm::mat4 ModelView2 = camera * texturedCube2.getTransform().getMatrix();
-		glm::mat4 ModelViewProjection2 = Projection * ModelView2;
-		program.setUniformMatrix4f("ModelViewProjection", ModelViewProjection2);
-		texturedCube2.draw();
-
-		glm::mat4 ModelView3 = camera * texturedCube3.getTransform().getMatrix();
-		glm::mat4 ModelViewProjection3 = Projection * ModelView3;
-		program.setUniformMatrix4f("ModelViewProjection", ModelViewProjection3);
-		texturedCube3.draw();
+		chunk.draw();
 
 		fpsManager.sync();
 		glfwSwapBuffers(window);

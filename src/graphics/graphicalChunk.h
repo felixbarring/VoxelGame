@@ -1,33 +1,43 @@
 
-#ifndef SRC_UTIL_FPSMANAGER_H_
-#define SRC_UTIL_FPSMANAGER_H_
+#ifndef SRC_GRAPHICS_GRAPHICALCHUNK_H_
+#define SRC_GRAPHICS_GRAPHICALCHUNK_H_
 
-#include <chrono>
-#include <thread>
+#include "mesh/meshVNT.h"
+#include "transform.h"
 
-class FPSManager {
+class GraphicalChunk {
 public:
+
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
-	FPSManager(int maxFPS);
-	virtual ~FPSManager();
+
+	GraphicalChunk(float xOffset, float yOffset, float zOffset, char data[16][16][16]);
+	virtual ~GraphicalChunk();
 
 // ########################################################
 // Member Functions########################################
 // ########################################################
-	void frameStart();
 
-	void sync();
+	void draw();
+
+	Transform& getTransform() { return transform; }
+
+	float getxLocation() { return xLocation; }
+
+	float getyLocation() { return yLocation; }
 
 // ########################################################
 // Instance Variables #####################################
 // ########################################################
+
 private:
-	int maxFPS;
-	double frameStartTime = 0;
-	double timePerFrame;
-	const double mili = 0.001;
+	MeshVNT *mesh;
+	float xLocation;
+	float yLocation;
+	float zLocation;
+
+	Transform transform;
 };
 
-#endif /* SRC_UTIL_FPSMANAGER_H_ */
+#endif /* SRC_GRAPHICS_GRAPHICALCHUNK_H_ */

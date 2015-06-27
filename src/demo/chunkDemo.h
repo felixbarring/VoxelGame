@@ -1,18 +1,18 @@
 
-#ifndef SRC_DEMO_CUBEDEMO_H_
-#define SRC_DEMO_CUBEDEMO_H_
+#ifndef SRC_DEMO_CHUNKDEMO_H_
+#define SRC_DEMO_CHUNKDEMO_H_
 
 #include "iDemo.h"
 
-class CubeDemo : public virtual IDemo {
+class ChunkDemo : public virtual IDemo {
 public:
 
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
 
-	CubeDemo();
-	virtual ~CubeDemo();
+	ChunkDemo();
+	virtual ~ChunkDemo();
 
 // ########################################################
 // Member Functions########################################
@@ -26,4 +26,4 @@ public:
 
 };
 
-#endif /* SRC_DEMO_CUBEDEMO_H_ */
+#endif /* SRC_DEMO_CHUNKDEMO_H_ */

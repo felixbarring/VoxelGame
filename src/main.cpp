@@ -14,6 +14,7 @@
 #include "game.h"
 #include "demo/textureDemo.h"
 #include "demo/cubeDemo.h"
+#include "demo/chunkDemo.h"
 
 #include <string>
 
@@ -34,6 +35,11 @@ int main(int argc, char *argv[])
 	} else if (str == "cubeDemo") {
 		CubeDemo cubeDemo;
 		cubeDemo.runDemo();
+	} else if (str == "chunkDemo") {
+		ChunkDemo chunkDemo;
+		chunkDemo.runDemo();
+		//CubeDemo cubeDemo;
+		//cubeDemo.runDemo();
 	}
 
 }
