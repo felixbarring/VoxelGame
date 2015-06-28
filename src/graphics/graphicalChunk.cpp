@@ -1,7 +1,7 @@
 
 #include "graphicalChunk.h"
 
-#define GLM_FORCE_RADIANS
+//#define GLM_FORCE_RADIANS
 
 #include <vector>
 #include <iostream>
@@ -96,17 +96,19 @@ transform{xOffset, yOffset, zOffset}
 
 				float offset = 1.0f / 16.0f;
 
-				float bottomLeftX = row * offset;
-				float bottomLeftY = col * offset;
+				float hack = 0.001;
 
-				float bottomRightX = row * offset + offset;
-				float bottomRightY = col * offset;
+				float bottomLeftX = row * offset + hack;
+				float bottomLeftY = col * offset + hack;
 
-				float topRightX = row * offset + offset;
-				float topRightY = col * offset + offset;
+				float bottomRightX = row * offset + offset - hack;
+				float bottomRightY = col * offset + hack;
 
-				float topLeftX = row * offset;
-				float topLeftY = col * offset + offset;
+				float topRightX = row * offset + offset - hack;
+				float topRightY = col * offset + offset - hack;
+
+				float topLeftX = row * offset + hack;
+				float topLeftY = col * offset + offset - hack;
 
 				if (fd.front) {
 
@@ -336,8 +338,7 @@ transform{xOffset, yOffset, zOffset}
 	}
 
 	mesh = new MeshVNT(vertexData, normals, UV, elementData);
-
-	std::cout<<totalNumberOfFaces<<"\n";
+	std::cout<<"Total number of faces: "<<totalNumberOfFaces<<"\n";
 
 }
 

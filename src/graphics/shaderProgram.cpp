@@ -56,7 +56,6 @@ ShaderProgram::ShaderProgram(const char *vertexSource, const char *fragmentSourc
     }
 
     glLinkProgram(programID);
-
     glUseProgram(programID);
 
     // For all uniforms, get a location and add the name and the location to the map.
@@ -74,7 +73,7 @@ ShaderProgram::ShaderProgram(const char *vertexSource, const char *fragmentSourc
 
         int uniformLocation = glGetUniformLocation(programID, name.c_str());
         uniforms.insert(std::make_pair(name, uniformLocation));
-        std::cout << "Inserted new Uniform with name :" << name << ", and location: " << uniformLocation << "\n ";
+        //std::cout << "Inserted new Uniform with name :" << name << ", and location: " << uniformLocation << "\n ";
 
         GLenum errorCheck = glGetError();
         switch (errorCheck) {
@@ -111,7 +110,6 @@ ShaderProgram::ShaderProgram(const char *vertexSource, const char *fragmentSourc
 
 ShaderProgram::~ShaderProgram()
 {
-
 }
 
 // ########################################################
