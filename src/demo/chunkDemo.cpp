@@ -112,7 +112,7 @@ void ChunkDemo::runDemo()
 		}
 	}
 
-	GraphicalChunk chunk{2, 0, -20.0f, data};
+	GraphicalChunk chunk{2, 0, -5.0f, data};
 	Texture texture("../resources/terrain.png");
 
 	float aspectRatio = 800 / 600;
