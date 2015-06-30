@@ -147,7 +147,7 @@ TexturedCube::TexturedCube(float xOffset, float yOffset, float zOffset, int id):
 		0+20, 1+20, 2+20, 0+20, 2+20, 3+20,
 	};
 
-	mesh = new MeshVNT(vertexData, normals, UV, elementData);
+	mesh = new MeshVNT(vertexData, 3, normals, 3, UV, 2, elementData);
 
 }
 

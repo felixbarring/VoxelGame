@@ -11,6 +11,7 @@
 
 #include "../graphics/shaderProgram.h"
 #include "../graphics/texture.h"
+#include "../graphics/arrayTexture.h"
 #include "../graphics/transform.h"
 #include "../graphics/graphicalChunk.h"
 
@@ -70,24 +71,24 @@ void ChunkDemo::runDemo()
 
 			"in vec3 positionIn; \n"
 			"in vec3 normalIn; \n"
-			"in vec2 texCoordIn; \n"
+			"in vec3 texCoordIn; \n"
 
 			"uniform mat4 ModelViewProjection; \n"
 
 			"out vec3 faceNormal; \n"
-			"out vec2 texCoord; \n"
+			"out vec3 texCoord; \n"
 
 			"void main(){ \n"
-			"  texCoord = vec2(texCoordIn.x, 1 - texCoordIn.y); \n"
+			"  texCoord = vec3(texCoordIn.x, 1 - texCoordIn.y, texCoordIn.z); \n"
 			"  gl_Position =  ModelViewProjection * vec4(positionIn, 1); \n"
 			"} \n";
 
 	const char *fragment =
 			"#version 330 core \n"
 
-			"in vec2 texCoord; \n"
+			"in vec3 texCoord; \n"
 
-			"uniform sampler2D texture1; \n"
+			"uniform sampler2DArray texture1; \n"
 
 			"out vec4 color; \n"
 
@@ -101,6 +102,9 @@ void ChunkDemo::runDemo()
 			new std::map<std::string, int> {std::pair<std::string, int>("positionIn", 0),
 		std::pair<std::string, int>("normalIn", 1), std::pair<std::string, int>("texCoordIn", 2)};
 
+
+
+
 	ShaderProgram program(vertex, fragment, map);
 
 	char data[16][16][16];
@@ -113,15 +117,20 @@ void ChunkDemo::runDemo()
 	}
 
 	GraphicalChunk chunk{2, 0, -5.0f, data};
-	Texture texture("../resources/terrain.png");
+
+	std::vector<std::string> paths{"../resources/grass_side.png", "../resources/grass_top.png"};
+	int textureWidth = 16;
+	int textureHeight = 16;
+	ArrayTexture arrayTexture{paths, textureWidth, textureHeight};
+
 
 	float aspectRatio = 800 / 600;
 	glm::mat4 Projection = glm::perspective(80.0f, aspectRatio, 0.1f, 100.0f);
 
 	glm::mat4 camera = glm::lookAt(
-			glm::vec3(0, 0.1, 2), // Camera location
-			glm::vec3(0, 0, 0),   // Look at
-			glm::vec3(0, 0, 1)    // Head is up
+		glm::vec3(0, 0.1, 2), // Camera location
+		glm::vec3(0, 0, 0),   // Look at
+		glm::vec3(0, 0, 1)    // Head is up
 	);
 
 	while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0)	{
@@ -134,7 +143,7 @@ void ChunkDemo::runDemo()
 		program.bind();
 
 		glActiveTexture(GL_TEXTURE0);
-		texture.bind();
+		arrayTexture.bind();
 		program.setUniformli("texture1", 0);
 
 		chunk.getTransform().rotateY(0.01);

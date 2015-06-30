@@ -1,13 +1,19 @@
 
+#include "meshVNT.h"
+
 #include <GL/glew.h>
 #include <vector>
-#include "meshVNT.h"
+
 
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
 
-MeshVNT::MeshVNT(std::vector<float> &vertices, std::vector<float> &normals, std::vector<float> textUV, std::vector<short> &elementData)
+MeshVNT::MeshVNT(std::vector<float> &vertices, int vFormat, std::vector<float> &normals,
+			int nFormat, std::vector<float> textUV, int tFormat, std::vector<short> &elementData) :
+			verticesFormat{vFormat},
+			normalsFormat{nFormat},
+			textureFormat{tFormat}
 {
 
 	numberOfElements = elementData.size();
@@ -17,30 +23,30 @@ MeshVNT::MeshVNT(std::vector<float> &vertices, std::vector<float> &normals, std:
 
 	const int FLOAT_SIZE = (sizeof(float));
 
-	glGenBuffers(1, &VBO_V);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO_V);
+	glGenBuffers(1, &VBO_Vertices);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO_Vertices);
 	glBufferData(GL_ARRAY_BUFFER, vertices.size()*FLOAT_SIZE, &vertices[0], GL_STATIC_DRAW);
 
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+	glVertexAttribPointer(0, verticesFormat, GL_FLOAT, GL_FALSE, 0, (void*)0);
 	glDisableVertexAttribArray(0);
 
 
-	glGenBuffers(1, &VBO_N);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO_N);
+	glGenBuffers(1, &VBO_Normals);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO_Normals);
 	glBufferData(GL_ARRAY_BUFFER, normals.size()*FLOAT_SIZE, &normals[0], GL_STATIC_DRAW);
 
 	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+	glVertexAttribPointer(1, normalsFormat, GL_FLOAT, GL_FALSE, 0, (void*)0);
 	glDisableVertexAttribArray(1);
 
 
-	glGenBuffers(1, &VBO_UV);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO_UV);
+	glGenBuffers(1, &VBO_Texture);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO_Texture);
 	glBufferData(GL_ARRAY_BUFFER, textUV.size()*FLOAT_SIZE, &textUV[0], GL_STATIC_DRAW);
 
 	glEnableVertexAttribArray(2);
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
+	glVertexAttribPointer(2, textureFormat, GL_FLOAT, GL_FALSE, 0, (void*)0);
 	glDisableVertexAttribArray(2);
 
 
@@ -54,9 +60,9 @@ MeshVNT::MeshVNT(std::vector<float> &vertices, std::vector<float> &normals, std:
 MeshVNT::~MeshVNT()
 {
 	glDeleteVertexArrays(1, &VAO);
-	glDeleteBuffers(1, &VBO_V);
-	glDeleteBuffers(1, &VBO_N);
-	glDeleteBuffers(1, &VBO_UV);
+	glDeleteBuffers(1, &VBO_Vertices);
+	glDeleteBuffers(1, &VBO_Normals);
+	glDeleteBuffers(1, &VBO_Texture);
 	glDeleteBuffers(1, &EBO);
 }
 

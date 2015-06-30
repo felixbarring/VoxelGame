@@ -13,7 +13,7 @@ public:
 // Constructor/Destructor #################################
 // ########################################################
 
-	MeshVT(std::vector<float> &vertices, std::vector<float> textUV, std::vector<short> &elementData);
+	MeshVT(std::vector<float> &vertices,  int vFormat, std::vector<float> textUV, int tFormat, std::vector<short> &elementData);
 	virtual ~MeshVT();
 
 // ########################################################
@@ -28,8 +28,10 @@ public:
 
 private:
 	GLuint VAO;
-	GLuint VBO_V;
-	GLuint VBO_UV;
+	GLuint VBO_Vertices;
+	int verticesFormat;
+	GLuint VBO_Texture;
+	int textureFormat;
 	GLuint EBO;
 	int numberOfElements;
 };

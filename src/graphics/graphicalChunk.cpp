@@ -1,8 +1,6 @@
 
 #include "graphicalChunk.h"
 
-//#define GLM_FORCE_RADIANS
-
 #include <vector>
 #include <iostream>
 
@@ -23,6 +21,8 @@ transform{xOffset, yOffset, zOffset}
 	int width = 16;
 	int height = 16;
 	int depth = 16;
+
+	CubeFaceData faceData[16][16][16];
 
 	for (int i = 0; i < width; i++) {
 		for (int j = 0; j < height; j++) {
@@ -78,7 +78,7 @@ transform{xOffset, yOffset, zOffset}
 	std::vector<GLfloat> UV;
 	std::vector<short> elementData;
 
-	int elementOffset = 0;
+	short elementOffset = 0;
 	int totalNumberOfFaces = 0;
 
 	for (int i = 0; i < 16; i++) {
@@ -91,6 +91,7 @@ transform{xOffset, yOffset, zOffset}
 					continue;
 				}
 
+				int id = fd.id;
 				int row = fd.id % 16;
 				int col = int(fd.id / 16.0f);
 
@@ -127,16 +128,24 @@ transform{xOffset, yOffset, zOffset}
 					};
 
 					std::vector<GLfloat> uv {
+
+						0.0f, 0.0f, id,
+						1.0f, 0.0f, id,
+						1.0f, 1.0f, id,
+						0.0f, 1.0f, id,
+						/*
 						topLeftX, topLeftY,
 						topRightX, topRightY,
 						bottomRightX, bottomRightY,
 						bottomLeftX, bottomLeftY
+						*/
 					};
 
 					std::vector<short> el{
 						0 + elementOffset, 1 + elementOffset,
 						2 + elementOffset, 0 + elementOffset,
-						2 + elementOffset, 3 + elementOffset};
+						2 + elementOffset, 3 + elementOffset
+					};
 
 					for (auto v : vertex) { vertexData.push_back(v);}
 					for (auto n : nor) { normals.push_back(n);}
@@ -165,10 +174,16 @@ transform{xOffset, yOffset, zOffset}
 					};
 
 					std::vector<GLfloat> uv {
+						0.0f, 0.0f, id,
+						1.0f, 0.0f, id,
+						1.0f, 1.0f, id,
+						0.0f, 1.0f, id,
+						/*
 						topLeftX, topLeftY,
 						topRightX, topRightY,
 						bottomRightX, bottomRightY,
-						bottomLeftX, bottomLeftY,
+						bottomLeftX, bottomLeftY
+						*/
 					};
 
 					std::vector<short> el{
@@ -202,10 +217,16 @@ transform{xOffset, yOffset, zOffset}
 					};
 
 					std::vector<GLfloat> uv {
+						0.0f, 0.0f, id,
+						1.0f, 0.0f, id,
+						1.0f, 1.0f, id,
+						0.0f, 1.0f, id,
+						/*
 						topLeftX, topLeftY,
 						topRightX, topRightY,
 						bottomRightX, bottomRightY,
-						bottomLeftX, bottomLeftY,
+						bottomLeftX, bottomLeftY
+						*/
 					};
 
 					std::vector<short> el{
@@ -239,10 +260,16 @@ transform{xOffset, yOffset, zOffset}
 					};
 
 					std::vector<GLfloat> uv {
+						0.0f, 0.0f, id,
+						1.0f, 0.0f, id,
+						1.0f, 1.0f, id,
+						0.0f, 1.0f, id,
+						/*
 						topLeftX, topLeftY,
 						topRightX, topRightY,
 						bottomRightX, bottomRightY,
-						bottomLeftX, bottomLeftY,
+						bottomLeftX, bottomLeftY
+						*/
 					};
 
 					std::vector<short> el{
@@ -277,10 +304,16 @@ transform{xOffset, yOffset, zOffset}
 					};
 
 					std::vector<GLfloat> uv {
+						0.0f, 0.0f, id,
+						1.0f, 0.0f, id,
+						1.0f, 1.0f, id,
+						0.0f, 1.0f, id,
+						/*
 						topLeftX, topLeftY,
 						topRightX, topRightY,
 						bottomRightX, bottomRightY,
-						bottomLeftX, bottomLeftY,
+						bottomLeftX, bottomLeftY
+						*/
 					};
 
 					std::vector<short> el{
@@ -314,10 +347,16 @@ transform{xOffset, yOffset, zOffset}
 					};
 
 					std::vector<GLfloat> uv {
+						0.0f, 0.0f, id,
+						1.0f, 0.0f, id,
+						1.0f, 1.0f, id,
+						0.0f, 1.0f, id,
+						/*
 						topLeftX, topLeftY,
 						topRightX, topRightY,
 						bottomRightX, bottomRightY,
 						bottomLeftX, bottomLeftY
+						*/
 					};
 
 					std::vector<short> el{
@@ -337,9 +376,8 @@ transform{xOffset, yOffset, zOffset}
 		}
 	}
 
-	mesh = new MeshVNT(vertexData, normals, UV, elementData);
+	mesh = new MeshVNT(vertexData, 3, normals, 3, UV, 3, elementData);
 	std::cout<<"Total number of faces: "<<totalNumberOfFaces<<"\n";
-
 }
 
 GraphicalChunk::~GraphicalChunk()

@@ -43,8 +43,6 @@ private:
 	float zLocation;
 
 	Transform transform;
-
-	CubeFaceData faceData[16][16][16];
 };
 
 #endif /* SRC_GRAPHICS_GRAPHICALCHUNK_H_ */

@@ -189,7 +189,3 @@ void ShaderProgram::unbind()
     glUseProgram(0);
 }
 
-
-
-
-

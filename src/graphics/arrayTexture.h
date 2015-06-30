@@ -1,27 +1,33 @@
+/*
+ * arrayTexture.h
+ *
+ *  Created on: Jun 29, 2015
+ *      Author: felix
+ */
 
-#ifndef SRC_GRAPHICS_TEXTURE_H_
-#define SRC_GRAPHICS_TEXTURE_H_
+#ifndef SRC_GRAPHICS_ARRAYTEXTURE_H_
+#define SRC_GRAPHICS_ARRAYTEXTURE_H_
 
 #include <GL/glew.h>
 
-class Texture {
+#include <vector>
+#include <string>
+
+class ArrayTexture {
 public:
 
 	// ########################################################
 	// Constructor/Destructor #################################
 	// ########################################################
 
-	Texture(const char *path);
-	virtual ~Texture();
+	ArrayTexture(std::vector<std::string> paths, int width, int height);
+	virtual ~ArrayTexture();
 
 	// ########################################################
 	// Member Functions########################################
 	// ########################################################
 
 	void bind();
-
-	// TODO
-	// Add functions for texture options
 
 	// ########################################################
 	// Instance Variables #####################################
@@ -31,4 +37,4 @@ private:
 
 };
 
-#endif /* SRC_GRAPHICS_TEXTURE_H_ */
+#endif /* SRC_GRAPHICS_ARRAYTEXTURE_H_ */

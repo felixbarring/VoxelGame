@@ -13,7 +13,8 @@ public:
 // Constructor/Destructor #################################
 // ########################################################
 
-	MeshVNT(std::vector<float> &vertices, std::vector<float> &normals, std::vector<float> textUV, std::vector<short> &elementData);
+	MeshVNT(std::vector<float> &vertices, int vFormat, std::vector<float> &normals,
+			int nFormat, std::vector<float> textUV, int tFormat, std::vector<short> &elementData);
 	virtual ~MeshVNT();
 
 // ########################################################
@@ -25,11 +26,15 @@ public:
 // ########################################################
 // Instance Variables #####################################
 // ########################################################
+
 private:
 	GLuint VAO;
-	GLuint VBO_V;
-	GLuint VBO_N;
-	GLuint VBO_UV;
+	GLuint VBO_Vertices;
+	int verticesFormat;
+	GLuint VBO_Normals;
+	int normalsFormat;
+	GLuint VBO_Texture;
+	int textureFormat;
 	GLuint EBO;
 	int numberOfElements;
 };

@@ -1,5 +1,5 @@
 
-#include "textureDemo.h"
+#include "arrayTextureDemo.h"
 
 #include <iostream>
 #include <GL/glew.h>
@@ -13,30 +13,29 @@
 #include <thread>
 #include <chrono>
 #include <mutex>
+#include <vector>
+#include <string>
 
 #include "../graphics/shaderProgram.h"
 #include "../graphics/texture.h"
+#include "../graphics/arrayTexture.h"
 #include "../graphics/mesh/meshVT.h"
 
 #include "../util/fpsManager.h"
+
+ArrayTextureDemo::ArrayTextureDemo()
+{
+}
+
+ArrayTextureDemo::~ArrayTextureDemo()
+{
+}
 
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
 
-TextureDemo::TextureDemo()
-{
-}
-
-TextureDemo::~TextureDemo()
-{
-}
-
-// ########################################################
-// Member Functions########################################
-// ########################################################
-
-void TextureDemo::runDemo()
+void ArrayTextureDemo::runDemo()
 {
 
 	FPSManager fpsManager(60);
@@ -86,11 +85,10 @@ void TextureDemo::runDemo()
 
 			"out vec4 color; \n"
 
-			"uniform sampler2D texture1; \n"
+			"uniform sampler2DArray texture1; \n"
 			"void main() \n"
 			"{ \n"
-			"  color = vec4(texCoord, 0, 1); \n"
-			//"  color = texture(texture1, texCoord); \n"
+			"  color = texture(texture1, vec3(texCoord, 1)); \n"
 			"} \n";
 
 
@@ -119,7 +117,10 @@ void TextureDemo::runDemo()
 
 	MeshVT mesh{vertices, 3, texCoords, 2, indices};
 
-	Texture texture("../resources/grass_side.png");
+	std::vector<std::string> paths{"../resources/grass_side.png", "../resources/grass_top.png"};
+	int textureWidth = 16;
+	int textureHeight = 16;
+	ArrayTexture arrayTexture{paths, textureWidth, textureHeight};
 
 	while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0)	{
 
@@ -131,8 +132,8 @@ void TextureDemo::runDemo()
 		program.bind();
 
 		glActiveTexture(GL_TEXTURE0);
-		texture.bind();
-		//program.setUniformli("texture1", 0);
+		arrayTexture.bind();
+		program.setUniformli("texture1", 0);
 
 		mesh.render();
 
