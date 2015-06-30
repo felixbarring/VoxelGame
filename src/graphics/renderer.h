@@ -6,10 +6,7 @@
 #include <glm/glm.hpp>
 #include <GL/glew.h>
 
-#include "texturedCube.h"
 #include "shaderProgram.h"
-#include "texture.h"
-
 #include "iRenderTask.h"
 
 class Renderer {

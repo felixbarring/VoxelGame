@@ -28,7 +28,6 @@ transform{xOffset, yOffset, zOffset}
 		for (int j = 0; j < height; j++) {
 			for (int k = 0; k < depth; k++) {
 				CubeFaceData cube;
-				faceData[i][j][k] = cube;
 				cube.vissible = data[i][j][k] != 0; // = for air
 				cube.id = data[i][j][k];
 				cube.front = true;
@@ -37,6 +36,7 @@ transform{xOffset, yOffset, zOffset}
 				cube.right = true;
 				cube.top = true;
 				cube.bottom = true;
+				faceData[i][j][k] = cube;
 			}
 		}
 	}
@@ -91,9 +91,9 @@ transform{xOffset, yOffset, zOffset}
 					continue;
 				}
 
-				int id = fd.id;
-				int row = fd.id % 16;
-				int col = int(fd.id / 16.0f);
+				int id = 0;
+				int row = id % 16;
+				int col = int(id / 16.0f);
 
 				float offset = 1.0f / 16.0f;
 
@@ -133,12 +133,6 @@ transform{xOffset, yOffset, zOffset}
 						1.0f, 0.0f, id,
 						1.0f, 1.0f, id,
 						0.0f, 1.0f, id,
-						/*
-						topLeftX, topLeftY,
-						topRightX, topRightY,
-						bottomRightX, bottomRightY,
-						bottomLeftX, bottomLeftY
-						*/
 					};
 
 					std::vector<short> el{
@@ -178,18 +172,13 @@ transform{xOffset, yOffset, zOffset}
 						1.0f, 0.0f, id,
 						1.0f, 1.0f, id,
 						0.0f, 1.0f, id,
-						/*
-						topLeftX, topLeftY,
-						topRightX, topRightY,
-						bottomRightX, bottomRightY,
-						bottomLeftX, bottomLeftY
-						*/
 					};
 
 					std::vector<short> el{
 						0 + elementOffset, 1 + elementOffset,
 						2 + elementOffset, 0 + elementOffset,
-						2 + elementOffset, 3 + elementOffset};
+						2 + elementOffset, 3 + elementOffset
+					};
 
 					for (auto v : vertex) { vertexData.push_back(v);}
 					for (auto n : nor) { normals.push_back(n);}
@@ -221,18 +210,13 @@ transform{xOffset, yOffset, zOffset}
 						1.0f, 0.0f, id,
 						1.0f, 1.0f, id,
 						0.0f, 1.0f, id,
-						/*
-						topLeftX, topLeftY,
-						topRightX, topRightY,
-						bottomRightX, bottomRightY,
-						bottomLeftX, bottomLeftY
-						*/
 					};
 
 					std::vector<short> el{
 						0 + elementOffset, 1 + elementOffset,
 						2 + elementOffset, 0 + elementOffset,
-						2 + elementOffset, 3 + elementOffset};
+						2 + elementOffset, 3 + elementOffset
+					};
 
 					for (auto v : vertex) { vertexData.push_back(v);}
 					for (auto n : nor) { normals.push_back(n);}
@@ -264,18 +248,13 @@ transform{xOffset, yOffset, zOffset}
 						1.0f, 0.0f, id,
 						1.0f, 1.0f, id,
 						0.0f, 1.0f, id,
-						/*
-						topLeftX, topLeftY,
-						topRightX, topRightY,
-						bottomRightX, bottomRightY,
-						bottomLeftX, bottomLeftY
-						*/
 					};
 
 					std::vector<short> el{
 						0 + elementOffset, 1 + elementOffset,
 						2 + elementOffset, 0 + elementOffset,
-						2 + elementOffset, 3 + elementOffset};
+						2 + elementOffset, 3 + elementOffset
+					};
 
 					for (auto v : vertex) { vertexData.push_back(v);}
 					for (auto n : nor) { normals.push_back(n);}
@@ -308,18 +287,13 @@ transform{xOffset, yOffset, zOffset}
 						1.0f, 0.0f, id,
 						1.0f, 1.0f, id,
 						0.0f, 1.0f, id,
-						/*
-						topLeftX, topLeftY,
-						topRightX, topRightY,
-						bottomRightX, bottomRightY,
-						bottomLeftX, bottomLeftY
-						*/
 					};
 
 					std::vector<short> el{
 						0 + elementOffset, 1 + elementOffset,
 						2 + elementOffset, 0 + elementOffset,
-						2 + elementOffset, 3 + elementOffset};
+						2 + elementOffset, 3 + elementOffset
+					};
 
 					for (auto v : vertex) { vertexData.push_back(v);}
 					for (auto n : nor) { normals.push_back(n);}
@@ -351,18 +325,13 @@ transform{xOffset, yOffset, zOffset}
 						1.0f, 0.0f, id,
 						1.0f, 1.0f, id,
 						0.0f, 1.0f, id,
-						/*
-						topLeftX, topLeftY,
-						topRightX, topRightY,
-						bottomRightX, bottomRightY,
-						bottomLeftX, bottomLeftY
-						*/
 					};
 
 					std::vector<short> el{
 						0 + elementOffset, 1 + elementOffset,
 						2 + elementOffset, 0 + elementOffset,
-						2 + elementOffset, 3 + elementOffset};
+						2 + elementOffset, 3 + elementOffset
+					};
 
 					for (auto v : vertex) { vertexData.push_back(v);}
 					for (auto n : nor) { normals.push_back(n);}
@@ -392,6 +361,4 @@ void GraphicalChunk::draw()
 {
 	mesh->render();
 }
-
-
 

@@ -10,7 +10,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "../graphics/shaderProgram.h"
-#include "../graphics/texture.h"
+#include "../graphics/texture/texture.h"
 #include "../graphics/transform.h"
 #include "../graphics/texturedCube.h"
 

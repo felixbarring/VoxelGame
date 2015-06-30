@@ -2,7 +2,6 @@
 #define GLM_FORCE_RADIANS
 
 #include "renderer.h"
-#include "texture.h"
 
 #include <GL/glew.h>
 #include <glm/gtx/transform.hpp>

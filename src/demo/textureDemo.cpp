@@ -15,7 +15,7 @@
 #include <mutex>
 
 #include "../graphics/shaderProgram.h"
-#include "../graphics/texture.h"
+#include "../graphics/texture/texture.h"
 #include "../graphics/mesh/meshVT.h"
 
 #include "../util/fpsManager.h"

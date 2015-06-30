@@ -17,8 +17,8 @@
 #include <string>
 
 #include "../graphics/shaderProgram.h"
-#include "../graphics/texture.h"
-#include "../graphics/arrayTexture.h"
+#include "../graphics/texture/texture.h"
+#include "../graphics/texture/arrayTexture.h"
 #include "../graphics/mesh/meshVT.h"
 
 #include "../util/fpsManager.h"

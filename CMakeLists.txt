@@ -26,10 +26,11 @@ aux_source_directory(src SRC_LIST)
 aux_source_directory(src/entities SRC_LIST2)
 aux_source_directory(src/graphics SRC_LIST3)
 aux_source_directory(src/graphics/mesh SRC_LIST4)
-aux_source_directory(src/demo SRC_LIST5)
-aux_source_directory(src/util SRC_LIST6)
+aux_source_directory(src/graphics/texture SRC_LIST5)
+aux_source_directory(src/demo SRC_LIST6)
+aux_source_directory(src/util SRC_LIST7)
 # Add executable to project
-add_executable(${PROJECT_NAME} ${SRC_LIST} ${SRC_LIST2} ${SRC_LIST3} ${SRC_LIST4} ${SRC_LIST5} ${SRC_LIST6} )
+add_executable(${PROJECT_NAME} ${SRC_LIST} ${SRC_LIST2} ${SRC_LIST3} ${SRC_LIST4} ${SRC_LIST5} ${SRC_LIST6} ${SRC_LIST7} )
 
 # Link GLFW and GLEW to main executable
 

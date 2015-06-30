@@ -10,10 +10,12 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "../graphics/shaderProgram.h"
-#include "../graphics/texture.h"
-#include "../graphics/arrayTexture.h"
+#include "../graphics/texture/texture.h"
+#include "../graphics/texture/arrayTexture.h"
 #include "../graphics/transform.h"
 #include "../graphics/graphicalChunk.h"
+
+#include "../graphics/camera.h"
 
 #include "../util/fpsManager.h"
 
@@ -102,23 +104,20 @@ void ChunkDemo::runDemo()
 			new std::map<std::string, int> {std::pair<std::string, int>("positionIn", 0),
 		std::pair<std::string, int>("normalIn", 1), std::pair<std::string, int>("texCoordIn", 2)};
 
-
-
-
 	ShaderProgram program(vertex, fragment, map);
 
 	char data[16][16][16];
 	for (int i = 0; i < 16; i++) {
 		for (int j = 0; j < 16; j++) {
 			for (int k = 0; k < 16; k++) {
-				data[i][j][k] = 240;
+				data[i][j][k] = 3;
 			}
 		}
 	}
 
 	GraphicalChunk chunk{2, 0, -5.0f, data};
 
-	std::vector<std::string> paths{"../resources/grass_side.png", "../resources/grass_top.png"};
+	std::vector<std::string> paths{"../resources/0001_grassSide.png", "../resources/0002_grassTop.png"};
 	int textureWidth = 16;
 	int textureHeight = 16;
 	ArrayTexture arrayTexture{paths, textureWidth, textureHeight};
@@ -127,11 +126,10 @@ void ChunkDemo::runDemo()
 	float aspectRatio = 800 / 600;
 	glm::mat4 Projection = glm::perspective(80.0f, aspectRatio, 0.1f, 100.0f);
 
-	glm::mat4 camera = glm::lookAt(
-		glm::vec3(0, 0.1, 2), // Camera location
-		glm::vec3(0, 0, 0),   // Look at
-		glm::vec3(0, 0, 1)    // Head is up
-	);
+	Camera camera{0,0,0};
+
+	float screenCenterX = WIDTH/2;
+	float screenCenterY = HEIGHT/2;
 
 	while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0)	{
 
@@ -146,9 +144,19 @@ void ChunkDemo::runDemo()
 		arrayTexture.bind();
 		program.setUniformli("texture1", 0);
 
-		chunk.getTransform().rotateY(0.01);
+		if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
+			camera.moveForward(0.1f);
+		}
 
-		glm::mat4 ModelView = camera * chunk.getTransform().getMatrix();
+		double xpos, ypos;
+		glfwGetCursorPos(window, &xpos, &ypos);
+
+		// Reset mouse position for next frame
+		glfwSetCursorPos(window, screenCenterX, screenCenterY);
+
+		camera.changeViewDirection(screenCenterX - xpos, screenCenterY - ypos);
+
+		glm::mat4 ModelView = camera.getViewMatrix() * chunk.getTransform().getMatrix();
 		glm::mat4 ModelViewProjection = Projection * ModelView;
 		program.setUniformMatrix4f("ModelViewProjection", ModelViewProjection);
 		chunk.draw();
