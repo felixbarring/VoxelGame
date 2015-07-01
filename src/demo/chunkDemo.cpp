@@ -115,7 +115,7 @@ void ChunkDemo::runDemo()
 		}
 	}
 
-	GraphicalChunk chunk{2, 0, -5.0f, data};
+	GraphicalChunk chunk{0, 0, -5.0f, data};
 
 	std::vector<std::string> paths{"../resources/0001_grassSide.png", "../resources/0002_grassTop.png"};
 	int textureWidth = 16;

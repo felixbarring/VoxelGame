@@ -39,6 +39,9 @@ private:
     // Camera options
     GLfloat inputSensX = 0.01;
     GLfloat inputSensY = 0.01;
+
+    float maxVerticalAngle = 3.14/2;
+    float minVerticalAngle = -3.14/2;
 };
 
 #endif /* SRC_GRAPHICS_CAMERA_H_ */

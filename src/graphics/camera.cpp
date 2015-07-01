@@ -27,14 +27,6 @@ glm::mat4 Camera::getViewMatrix()
 		cos(verticalAngle) * cos(horizontalAngle)
 	);
 
-	/*
-	glm::vec3 right = glm::vec3(
-		sin(horizontalAngle - 3.14f/2.0f),
-		0,
-		cos(horizontalAngle - 3.14f/2.0f)
-	);
-	*/
-
 	// Up vector
 	glm::vec3 right = glm::normalize(glm::cross(worldUp, direction));
 	glm::vec3 up = glm::normalize(glm::cross(right, direction));
@@ -50,21 +42,19 @@ void Camera::moveForward(float amount)
 void Camera::changeViewDirection(float x, float y)
 {
 	horizontalAngle += inputSensX * x;
-	verticalAngle   += inputSensY * y;
+	verticalAngle += inputSensY * y;
+
+	if (verticalAngle > maxVerticalAngle) {
+		verticalAngle = maxVerticalAngle;
+	} else if (verticalAngle < minVerticalAngle) {
+		verticalAngle = minVerticalAngle;
+	}
 
 	direction = glm::vec3{
 		cos(verticalAngle) * sin(horizontalAngle),
 		sin(verticalAngle),
 		cos(verticalAngle) * cos(horizontalAngle)
 	};
-
-	/*
-	glm::vec3 right = glm::vec3(
-		sin(horizontalAngle - 3.14f/2.0f),
-		0,
-		cos(horizontalAngle - 3.14f/2.0f)
-	);
-	*/
 
 	// Up vector
 	glm::vec3 right = glm::normalize(glm::cross(worldUp, direction));
