@@ -17,11 +17,15 @@
 #include <string>
 
 #include "../graphics/shaderProgram.h"
-#include "../graphics/texture/texture.h"
-#include "../graphics/texture/arrayTexture.h"
 #include "../graphics/mesh/meshVT.h"
+#include "../config/cubeData.h"
+#include "../graphics/texture/textureArray.h"
 
 #include "../util/fpsManager.h"
+
+// ########################################################
+// Constructor/Destructor #################################
+// ########################################################
 
 ArrayTextureDemo::ArrayTextureDemo()
 {
@@ -51,7 +55,7 @@ void ArrayTextureDemo::runDemo()
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
 
-	GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "Texture Demo", nullptr, nullptr);
+	GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "Texture Array Demo", nullptr, nullptr);
 	if (window == NULL) {
 		fprintf(stderr, "Failed to open GLFW window.\n");
 		glfwTerminate();
@@ -67,60 +71,89 @@ void ArrayTextureDemo::runDemo()
 	glClearColor(0.2f, 0.22f, 0.2f, 1.0f);
 
 	const char *vertex =
-			"#version 330 core \n"
-			"in vec3 positionIn; \n"
-			"in vec2 texCoordIn; \n"
+		"#version 330 core \n"
+		"in vec3 positionIn; \n"
+		"in vec3 texCoordIn; \n"
 
-			"out vec2 texCoord; \n"
+		"out vec3 texCoord; \n"
 
-			"void main() \n"
-			"{ \n"
-			"  gl_Position = vec4(positionIn, 1.0f); \n"
-			"  texCoord = vec2(texCoordIn.x, 1.0 - texCoordIn.y); \n"
+		"void main() \n"
+		"{ \n"
+		"  gl_Position = vec4(positionIn, 1.0f); \n"
+		"  texCoord = vec3(texCoordIn.x, 1.0 - texCoordIn.y, texCoordIn.z); \n"
 			"} \n";
 
 	const char *frag =
-			"#version 330 core \n"
-			"in vec2 texCoord; \n"
+		"#version 330 core \n"
+		"in vec3 texCoord; \n"
 
-			"out vec4 color; \n"
+		"out vec4 color; \n"
 
-			"uniform sampler2DArray texture1; \n"
-			"void main() \n"
-			"{ \n"
-			"  color = texture(texture1, vec3(texCoord, 1)); \n"
-			"} \n";
+		"uniform sampler2DArray texture1; \n"
+		"void main() \n"
+		"{ \n"
+		"  color = texture(texture1, texCoord); \n"
+		"} \n";
 
 
-	std::map<std::string, int> *map = new std::map<std::string, int> {std::pair<std::string, int>("positionIn", 0), std::pair<std::string, int>("texCoordIn", 1)};
+	std::map<std::string, int> *map = new std::map<std::string, int> {
+		std::pair<std::string, int>("positionIn", 0),
+		std::pair<std::string, int>("texCoordIn", 1)
+	};
 
 	ShaderProgram program(vertex, frag, map);
 
 	std::vector<GLfloat> vertices = {
-			0.4f, 0.4f, 0.0f,
-			0.4f, -0.4f, 0.0f,
-			-0.4f, -0.4f, 0.0f,
-			-0.4f, 0.4f, 0.0f
+
+		-0.3f, 0.0f, 0.0f,
+		-0.1f, 0.0f, 0.0f,
+		-0.1f, 0.2f, 0.0f,
+		-0.3f, 0.2f, 0.0f,
+
+		0.0f, 0.0f, 0.0f,
+		0.2f, 0.0f, 0.0f,
+		0.2f, 0.2f, 0.0f,
+		0.0f, 0.2f, 0.0f,
+
+		0.3f, 0.0f, 0.0f,
+		0.5f, 0.0f, 0.0f,
+		0.5f, 0.2f, 0.0f,
+		0.3f, 0.2f, 0.0f
+
 	};
 
 	std::vector<GLfloat> texCoords = {
-			1.0f, 1.0f,
-			1.0f, 0.0f,
-			0.0f, 0.0f,
-			0.0f, 1.0f
+		0.0f, 0.0f, 0.0f,
+		1.0f, 0.0f, 0.0f,
+		1.0f, 1.0f, 0.0f,
+		0.0f, 1.0f, 0.0f,
+
+		0.0f, 0.0f, 1.0f,
+		1.0f, 0.0f, 1.0f,
+		1.0f, 1.0f, 1.0f,
+		0.0f, 1.0f, 1.0f,
+
+		0.0f, 0.0f, 2.0f,
+		1.0f, 0.0f, 2.0f,
+		1.0f, 1.0f, 2.0f,
+		0.0f, 1.0f, 2.0f,
+
 	};
 
 	std::vector<GLshort> indices = {
-			0, 1, 3,
-			1, 2, 3
+		0, 1, 2,
+		0, 2, 3,
+
+		0+4, 1+4, 2+4,
+		0+4, 2+4, 3+4,
+
+		0+8, 1+8, 2+8,
+		0+8, 2+8, 3+8
 	};
 
-	MeshVT mesh{vertices, 3, texCoords, 2, indices};
+	MeshVT mesh{vertices, 3, texCoords, 3, indices};
 
-	std::vector<std::string> paths{"../resources/grass_side.png", "../resources/grass_top.png"};
-	int textureWidth = 16;
-	int textureHeight = 16;
-	ArrayTexture arrayTexture{paths, textureWidth, textureHeight};
+	TextureArray texture{cube_data::textures, cube_data::TEXTURE_WIDTH, cube_data::TEXTURE_HEIGHT};
 
 	while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0)	{
 
@@ -132,7 +165,7 @@ void ArrayTextureDemo::runDemo()
 		program.bind();
 
 		glActiveTexture(GL_TEXTURE0);
-		arrayTexture.bind();
+		texture.bind();
 		program.setUniformli("texture1", 0);
 
 		mesh.render();

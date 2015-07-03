@@ -10,11 +10,11 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "../graphics/shaderProgram.h"
-#include "../graphics/texture/texture.h"
+#include "../graphics/texture/textureArray.h"
 #include "../graphics/transform.h"
 #include "../graphics/texturedCube.h"
-
 #include "../util/fpsManager.h"
+#include "../config/cubeData.h"
 
 // ########################################################
 // Constructor/Destructor #################################
@@ -67,55 +67,58 @@ void CubeDemo::runDemo()
 	glDepthFunc(GL_LESS);
 
 	const char *vertex =
-			"#version 330 core \n"
+		"#version 330 core \n"
 
-			"in vec3 positionIn; \n"
-			"in vec3 normalIn; \n"
-			"in vec2 texCoordIn; \n"
+		"in vec3 positionIn; \n"
+		"in vec3 normalIn; \n"
+		"in vec3 texCoordIn; \n"
 
-			"uniform mat4 ModelViewProjection; \n"
+		"uniform mat4 ModelViewProjection; \n"
 
-			"out vec3 faceNormal; \n"
-			"out vec2 texCoord; \n"
+		"out vec3 faceNormal; \n"
+		"out vec3 texCoord; \n"
 
-			"void main(){ \n"
-			"  texCoord = vec2(texCoordIn.x, 1 - texCoordIn.y); \n"
-			"  gl_Position =  ModelViewProjection * vec4(positionIn, 1); \n"
-			"} \n";
+		"void main(){ \n"
+		"  texCoord = vec3(texCoordIn.x, 1 - texCoordIn.y, texCoordIn.z); \n"
+		"  gl_Position =  ModelViewProjection * vec4(positionIn, 1); \n"
+		"} \n";
 
 	const char *fragment =
-			"#version 330 core \n"
+		"#version 330 core \n"
 
-			"in vec2 texCoord; \n"
+		"in vec3 texCoord; \n"
 
-			"uniform sampler2D texture1; \n"
+		"uniform sampler2DArray texture1; \n"
 
-			"out vec4 color; \n"
+		"out vec4 color; \n"
 
-			"void main(){ \n"
-			"  color = texture(texture1, texCoord); \n"
-			"} \n";
+		"void main(){ \n"
+		"  color = texture(texture1, texCoord); \n"
+		"} \n";
 
 
 	// Use Smart Pointer
-	std::map<std::string, int> *map =
-			new std::map<std::string, int> {std::pair<std::string, int>("positionIn", 0),
-		std::pair<std::string, int>("normalIn", 1), std::pair<std::string, int>("texCoordIn", 2)};
+	std::map<std::string, int> *map = new std::map<std::string, int> {
+		std::pair<std::string, int>("positionIn", 0),
+		std::pair<std::string, int>("normalIn", 1),
+		std::pair<std::string, int>("texCoordIn", 2)
+	};
 
 	ShaderProgram program(vertex, fragment, map);
 
-	TexturedCube texturedCube{2, 0, -1.0f, 256 - 16};
-	TexturedCube texturedCube2{0, 0, -1.0f, 256 - 15};
-	TexturedCube texturedCube3{-2, 0, -1.0f, 256 - 14};
-	Texture texture("../resources/terrain.png");
+	TexturedCube texturedCube{2, 0, -1.0f, 0};
+	TexturedCube texturedCube2{0, 0, -1.0f, 1};
+	TexturedCube texturedCube3{-2, 0, -1.0f, 2};
+
+	TextureArray texture(cube_data::textures, cube_data::TEXTURE_WIDTH, cube_data::TEXTURE_HEIGHT);
 
 	float aspectRatio = 800 / 600;
 	glm::mat4 Projection = glm::perspective(80.0f, aspectRatio, 0.1f, 100.0f);
 
 	glm::mat4 camera = glm::lookAt(
-			glm::vec3(0, 0.1, 2), // Camera location
-			glm::vec3(0, 0, 0),   // Look at
-			glm::vec3(0, 0, 1)    // Head is up
+		glm::vec3(0, 0.1, 2), // Camera location
+		glm::vec3(0, 0, 0),   // Look at
+		glm::vec3(0, 0, 1)    // Head is up
 	);
 
 	while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0)	{

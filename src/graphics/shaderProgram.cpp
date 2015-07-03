@@ -105,7 +105,6 @@ ShaderProgram::ShaderProgram(const char *vertexSource, const char *fragmentSourc
     glDeleteShader(vertexID);
     glDeleteShader(fragmentID);
 
-    std::cout << programID;
 }
 
 ShaderProgram::~ShaderProgram()

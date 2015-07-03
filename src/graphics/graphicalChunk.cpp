@@ -6,29 +6,26 @@
 
 #include "texturedCube.h"
 #include "transform.h"
+#include "../config/cubeData.h"
 
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
 
-GraphicalChunk::GraphicalChunk(float xOffset, float yOffset, float zOffset, char data[16][16][16]):
+GraphicalChunk::GraphicalChunk(float xOffset, float yOffset, float zOffset,
+		char data[chunk_data::GRAPHICAL_CHUNK_WIDTH][chunk_data::GRAPHICAL_CHUNK_HEIGHT][chunk_data::GRAPHICAL_CHUNK_DEPTH]):
 xLocation{xOffset},
 yLocation{yOffset},
 zLocation{zOffset},
 transform{xOffset, yOffset, zOffset}
 {
 
-	int width = 16;
-	int height = 16;
-	int depth = 16;
-
-	CubeFaceData faceData[16][16][16];
+	CubeFaceData faceData[width][height][depth];
 
 	for (int i = 0; i < width; i++) {
 		for (int j = 0; j < height; j++) {
 			for (int k = 0; k < depth; k++) {
 				CubeFaceData cube;
-				cube.vissible = data[i][j][k] != 0; // = for air
 				cube.id = data[i][j][k];
 				cube.front = true;
 				cube.back = true;
@@ -48,7 +45,7 @@ transform{xOffset, yOffset, zOffset}
 
 				if (i != width - 1) {
 					const char right = faceData[i + 1][j][k].id;
-					if (right != 0) {
+					if (right != cube_data::AIR) {
 						faceData[i][j][k].right = false;
 						faceData[i + 1][j][k].left = false;
 					}
@@ -56,7 +53,7 @@ transform{xOffset, yOffset, zOffset}
 
 				if (j != height - 1) { // Okay to check up
 					const char up = faceData[i][j + 1][k].id;
-					if (up != 0) {
+					if (up != cube_data::AIR) {
 						faceData[i][j][k].top = false;
 						faceData[i][j + 1][k].bottom = false;
 					}
@@ -64,11 +61,12 @@ transform{xOffset, yOffset, zOffset}
 
 				if (k != depth - 1) {
 					const char back = faceData[i][j][k + 1].id;
-					if (back != 0) {
+					if (back != cube_data::AIR) {
 						faceData[i][j][k].back = false;
 						faceData[i][j][k + 1].front = false;
 					}
 				}
+
 			}
 		}
 	}
@@ -81,35 +79,17 @@ transform{xOffset, yOffset, zOffset}
 	short elementOffset = 0;
 	int totalNumberOfFaces = 0;
 
-	for (int i = 0; i < 16; i++) {
-		for (int j = 0; j < 16; j++) {
-			for (int k = 0; k < 16; k++) {
+	for (int i = 0; i < width; i++) {
+		for (int j = 0; j < height; j++) {
+			for (int k = 0; k < depth; k++) {
 
 				CubeFaceData fd = faceData[i][j][k];
 
-				if (!fd.vissible) {
-					continue;
-				}
+				int id = fd.id;
 
-				int id = 0;
-				int row = id % 16;
-				int col = int(id / 16.0f);
-
-				float offset = 1.0f / 16.0f;
-
-				float hack = 0.001;
-
-				float bottomLeftX = row * offset + hack;
-				float bottomLeftY = col * offset + hack;
-
-				float bottomRightX = row * offset + offset - hack;
-				float bottomRightY = col * offset + hack;
-
-				float topRightX = row * offset + offset - hack;
-				float topRightY = col * offset + offset - hack;
-
-				float topLeftX = row * offset + hack;
-				float topLeftY = col * offset + offset - hack;
+				int sideTexture = cube_data::BLOCK_TEXTURES[id][cube_data::SIDE_TEXTURE];
+				int topTexture = cube_data::BLOCK_TEXTURES[id][cube_data::TOP_TEXTURE];
+				int bottomTexture = cube_data::BLOCK_TEXTURES[id][cube_data::BOTTOM_TEXTURE];
 
 				if (fd.front) {
 
@@ -129,10 +109,10 @@ transform{xOffset, yOffset, zOffset}
 
 					std::vector<GLfloat> uv {
 
-						0.0f, 0.0f, id,
-						1.0f, 0.0f, id,
-						1.0f, 1.0f, id,
-						0.0f, 1.0f, id,
+						0.0f, 0.0f, sideTexture,
+						1.0f, 0.0f, sideTexture,
+						1.0f, 1.0f, sideTexture,
+						0.0f, 1.0f, sideTexture,
 					};
 
 					std::vector<short> el{
@@ -168,10 +148,10 @@ transform{xOffset, yOffset, zOffset}
 					};
 
 					std::vector<GLfloat> uv {
-						0.0f, 0.0f, id,
-						1.0f, 0.0f, id,
-						1.0f, 1.0f, id,
-						0.0f, 1.0f, id,
+						0.0f, 0.0f, sideTexture,
+						1.0f, 0.0f, sideTexture,
+						1.0f, 1.0f, sideTexture,
+						0.0f, 1.0f, sideTexture,
 					};
 
 					std::vector<short> el{
@@ -206,10 +186,10 @@ transform{xOffset, yOffset, zOffset}
 					};
 
 					std::vector<GLfloat> uv {
-						0.0f, 0.0f, id,
-						1.0f, 0.0f, id,
-						1.0f, 1.0f, id,
-						0.0f, 1.0f, id,
+						0.0f, 0.0f, sideTexture,
+						1.0f, 0.0f, sideTexture,
+						1.0f, 1.0f, sideTexture,
+						0.0f, 1.0f, sideTexture,
 					};
 
 					std::vector<short> el{
@@ -244,10 +224,10 @@ transform{xOffset, yOffset, zOffset}
 					};
 
 					std::vector<GLfloat> uv {
-						0.0f, 0.0f, id,
-						1.0f, 0.0f, id,
-						1.0f, 1.0f, id,
-						0.0f, 1.0f, id,
+						0.0f, 0.0f, sideTexture,
+						1.0f, 0.0f, sideTexture,
+						1.0f, 1.0f, sideTexture,
+						0.0f, 1.0f, sideTexture,
 					};
 
 					std::vector<short> el{
@@ -272,21 +252,21 @@ transform{xOffset, yOffset, zOffset}
 						-0.5f + i, 0.5f + j, -0.5f + k, // 0
 						0.5f + i, 0.5f + j, -0.5f + k, // 1
 						0.5f + i, 0.5f + j, 0.5f + k, // 2
-						-0.5f + i, 0.5f + j, 0.5f + k, // 3
+						-0.5f + i, 0.5f + j, 0.5f + k // 3
 					};
 
 					std::vector<GLfloat> nor {
 						0.0f, 1.0f, 0.0f,
 						0.0f, 1.0f, 0.0f,
 						0.0f, 1.0f, 0.0f,
-						0.0f, 1.0f, 0.0f,
+						0.0f, 1.0f, 0.0f
 					};
 
 					std::vector<GLfloat> uv {
-						0.0f, 0.0f, id,
-						1.0f, 0.0f, id,
-						1.0f, 1.0f, id,
-						0.0f, 1.0f, id,
+						0.0f, 0.0f, topTexture,
+						1.0f, 0.0f, topTexture,
+						1.0f, 1.0f, topTexture,
+						0.0f, 1.0f, topTexture
 					};
 
 					std::vector<short> el{
@@ -317,14 +297,14 @@ transform{xOffset, yOffset, zOffset}
 						0.0f, -1.0f, 0.0f,
 						0.0f, -1.0f, 0.0f,
 						0.0f, -1.0f, 0.0f,
-						0.0f, -1.0f, 0.0f,
+						0.0f, -1.0f, 0.0f
 					};
 
 					std::vector<GLfloat> uv {
-						0.0f, 0.0f, id,
-						1.0f, 0.0f, id,
-						1.0f, 1.0f, id,
-						0.0f, 1.0f, id,
+						0.0f, 0.0f, bottomTexture,
+						1.0f, 0.0f, bottomTexture,
+						1.0f, 1.0f, bottomTexture,
+						0.0f, 1.0f, bottomTexture
 					};
 
 					std::vector<short> el{

@@ -11,13 +11,12 @@
 #include "graphics/renderer.h"
 #include "util/fpsManager.h"
 
-Game::Game() {
-	// TODO Auto-generated constructor stub
-
+Game::Game()
+{
 }
 
-Game::~Game() {
-	// TODO Auto-generated destructor stub
+Game::~Game()
+{
 }
 
 GLFWwindow *window;

@@ -5,6 +5,8 @@
 #include "mesh/meshVNT.h"
 #include "transform.h"
 
+#include "../config/chunkData.h"
+
 struct CubeFaceData {
 	int id;
 	bool vissible, front, back, left, right, top, bottom;
@@ -17,7 +19,8 @@ public:
 // Constructor/Destructor #################################
 // ########################################################
 
-	GraphicalChunk(float xOffset, float yOffset, float zOffset, char data[16][16][16]);
+	GraphicalChunk(float xOffset, float yOffset, float zOffset,
+			char data[chunk_data::GRAPHICAL_CHUNK_WIDTH][chunk_data::GRAPHICAL_CHUNK_HEIGHT][chunk_data::GRAPHICAL_CHUNK_DEPTH]);
 	virtual ~GraphicalChunk();
 
 // ########################################################
@@ -41,6 +44,10 @@ private:
 	float xLocation;
 	float yLocation;
 	float zLocation;
+
+	int width = chunk_data::GRAPHICAL_CHUNK_WIDTH;
+	int height = chunk_data::GRAPHICAL_CHUNK_HEIGHT;
+	int depth = chunk_data::GRAPHICAL_CHUNK_DEPTH;
 
 	Transform transform;
 };

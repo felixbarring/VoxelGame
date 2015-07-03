@@ -10,14 +10,11 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "../graphics/shaderProgram.h"
-#include "../graphics/texture/texture.h"
-#include "../graphics/texture/arrayTexture.h"
-#include "../graphics/transform.h"
 #include "../graphics/graphicalChunk.h"
-
 #include "../graphics/camera.h"
-
+#include "../graphics/texture/textureArray.h"
 #include "../util/fpsManager.h"
+#include "../config/cubeData.h"
 
 // ########################################################
 // Constructor/Destructor #################################
@@ -100,36 +97,42 @@ void ChunkDemo::runDemo()
 
 
 	// Use Smart Pointer
-	std::map<std::string, int> *map =
-			new std::map<std::string, int> {std::pair<std::string, int>("positionIn", 0),
-		std::pair<std::string, int>("normalIn", 1), std::pair<std::string, int>("texCoordIn", 2)};
+	std::map<std::string, int> *map = new std::map<std::string, int> {
+		std::pair<std::string, int>("positionIn", 0),
+		std::pair<std::string, int>("normalIn", 1),
+		std::pair<std::string, int>("texCoordIn", 2)
+	};
 
 	ShaderProgram program(vertex, fragment, map);
+
+	int counter = 1;
+	const int maxCount = 4;
 
 	char data[16][16][16];
 	for (int i = 0; i < 16; i++) {
 		for (int j = 0; j < 16; j++) {
 			for (int k = 0; k < 16; k++) {
-				data[i][j][k] = 3;
+				data[i][j][k] = counter++;
+				if (counter == maxCount) {
+					counter = 1;
+				}
 			}
 		}
 	}
 
 	GraphicalChunk chunk{0, 0, -5.0f, data};
 
-	std::vector<std::string> paths{"../resources/0001_grassSide.png", "../resources/0002_grassTop.png"};
 	int textureWidth = 16;
 	int textureHeight = 16;
-	ArrayTexture arrayTexture{paths, textureWidth, textureHeight};
-
+	TextureArray texture{cube_data::textures, cube_data::TEXTURE_WIDTH, cube_data::TEXTURE_HEIGHT};
 
 	float aspectRatio = 800 / 600;
 	glm::mat4 Projection = glm::perspective(80.0f, aspectRatio, 0.1f, 100.0f);
 
 	Camera camera{0,0,0};
 
-	float screenCenterX = WIDTH/2;
-	float screenCenterY = HEIGHT/2;
+	float screenCenterX = WIDTH / 2;
+	float screenCenterY = HEIGHT / 2;
 
 	while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0)	{
 
@@ -141,7 +144,7 @@ void ChunkDemo::runDemo()
 		program.bind();
 
 		glActiveTexture(GL_TEXTURE0);
-		arrayTexture.bind();
+		texture.bind();
 		program.setUniformli("texture1", 0);
 
 		if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
@@ -150,8 +153,6 @@ void ChunkDemo::runDemo()
 
 		double xpos, ypos;
 		glfwGetCursorPos(window, &xpos, &ypos);
-
-		// Reset mouse position for next frame
 		glfwSetCursorPos(window, screenCenterX, screenCenterY);
 
 		camera.changeViewDirection(screenCenterX - xpos, screenCenterY - ypos);

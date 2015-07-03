@@ -5,6 +5,8 @@
 #include "texturedCube.h"
 #include "transform.h"
 
+#include "../config/cubeData.h"
+
 
 // ########################################################
 // Constructor/Destructor #################################
@@ -88,54 +90,49 @@ TexturedCube::TexturedCube(float xOffset, float yOffset, float zOffset, int id):
 		0.0f, -1.0f, 0.0f,
 	};
 
-	int row = id % 16;
-	int col = int(id / 16.0f);
 
-	float k = 1.0f / 16.0f;
+	int sideTexture = cube_data::BLOCK_TEXTURES[id][cube_data::SIDE_TEXTURE];
+	int topTexture = cube_data::BLOCK_TEXTURES[id][cube_data::TOP_TEXTURE];
+	int bottomTexture = cube_data::BLOCK_TEXTURES[id][cube_data::BOTTOM_TEXTURE];
 
-	float bottomLeftX = row * k;
-	float bottomLeftY = col * k;
-
-	float bottomRightX = row * k + k;
-	float bottomRightY = col * k;
-
-	float topRightX = row * k + k;
-	float topRightY = col * k + k;
-
-	float topLeftX = row * k;
-	float topLeftY = col * k + k;
 
 	std::vector<GLfloat> UV {
 
-		topLeftX, topLeftY,
-		topRightX, topRightY,
-		bottomRightX, bottomRightY,
-		bottomLeftX, bottomLeftY,
+		// Front
+		0.0f, 0.0f, sideTexture,
+		1.0f, 0.0f, sideTexture,
+		1.0f, 1.0f, sideTexture,
+		0.0f, 1.0f, sideTexture,
 
-		topLeftX, topLeftY,
-		topRightX, topRightY,
-		bottomRightX, bottomRightY,
-		bottomLeftX, bottomLeftY,
+		// Back
+		0.0f, 0.0f, sideTexture,
+		1.0f, 0.0f, sideTexture,
+		1.0f, 1.0f, sideTexture,
+		0.0f, 1.0f, sideTexture,
 
-		topLeftX, topLeftY,
-		topRightX, topRightY,
-		bottomRightX, bottomRightY,
-		bottomLeftX, bottomLeftY,
+		// Left
+		0.0f, 0.0f, sideTexture,
+		1.0f, 0.0f, sideTexture,
+		1.0f, 1.0f, sideTexture,
+		0.0f, 1.0f, sideTexture,
 
-		topLeftX, topLeftY,
-		topRightX, topRightY,
-		bottomRightX, bottomRightY,
-		bottomLeftX, bottomLeftY,
+		// Right
+		0.0f, 0.0f, sideTexture,
+		1.0f, 0.0f, sideTexture,
+		1.0f, 1.0f, sideTexture,
+		0.0f, 1.0f, sideTexture,
 
-		topLeftX, topLeftY,
-		topRightX, topRightY,
-		bottomRightX, bottomRightY,
-		bottomLeftX, bottomLeftY,
+		// Top
+		0.0f, 0.0f, topTexture,
+		1.0f, 0.0f, topTexture,
+		1.0f, 1.0f, topTexture,
+		0.0f, 1.0f, topTexture,
 
-		topLeftX, topLeftY,
-		topRightX, topRightY,
-		bottomRightX, bottomRightY,
-		bottomLeftX, bottomLeftY
+		// Bottom
+		0.0f, 0.0f, bottomTexture,
+		1.0f, 0.0f, bottomTexture,
+		1.0f, 1.0f, bottomTexture,
+		0.0f, 1.0f, bottomTexture,
 	};
 
 	std::vector<short> elementData{
@@ -147,7 +144,7 @@ TexturedCube::TexturedCube(float xOffset, float yOffset, float zOffset, int id):
 		0+20, 1+20, 2+20, 0+20, 2+20, 3+20,
 	};
 
-	mesh = new MeshVNT(vertexData, 3, normals, 3, UV, 2, elementData);
+	mesh = new MeshVNT(vertexData, 3, normals, 3, UV, 3, elementData);
 
 }
 
