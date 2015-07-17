@@ -98,13 +98,13 @@ void CubeDemo::runDemo()
 
 
 	// Use Smart Pointer
-	std::map<std::string, int> *map = new std::map<std::string, int> {
+	std::map<std::string, int> attributesMap{
 		std::pair<std::string, int>("positionIn", 0),
 		std::pair<std::string, int>("normalIn", 1),
 		std::pair<std::string, int>("texCoordIn", 2)
 	};
 
-	ShaderProgram program(vertex, fragment, map);
+	ShaderProgram program(vertex, fragment, attributesMap);
 
 	TexturedCube texturedCube{2, 0, -1.0f, 0};
 	TexturedCube texturedCube2{0, 0, -1.0f, 1};

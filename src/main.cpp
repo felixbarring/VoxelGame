@@ -16,6 +16,7 @@
 #include "demo/cubeDemo.h"
 #include "demo/chunkDemo.h"
 #include "demo/arrayTextureDemo.h"
+#include "demo/cubeMapDemo.h"
 
 #include <string>
 
@@ -42,6 +43,9 @@ int main(int argc, char *argv[])
 	} else if (str == "textureArrayDemo") {
 		ArrayTextureDemo arrayTextureDemo;
 		arrayTextureDemo.runDemo();
+	} else if (str == "cubeMapDemo") {
+		CubeMapDemo cubeMapDemo;
+		cubeMapDemo.runDemo();
 	}
 
 }

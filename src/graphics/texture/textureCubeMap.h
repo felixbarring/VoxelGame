@@ -1,20 +1,22 @@
 
-#ifndef SRC_GRAPHICS_TEXTUREARRAY_H_
-#define SRC_GRAPHICS_TEXTUREARRAY_H_
+#ifndef SRC_GRAPHICS_TEXTURE_TEXTURECUBEMAP_H_
+#define SRC_GRAPHICS_TEXTURE_TEXTURECUBEMAP_H_
 
 #include <GL/glew.h>
 #include <vector>
 #include <string>
 
-class TextureArray {
+class TextureCubeMap {
 public:
 
 	// ########################################################
 	// Constructor/Destructor #################################
 	// ########################################################
 
-	TextureArray(std::vector<std::string> paths, int width, int height);
-	virtual ~TextureArray();
+	// TODO Take all six paths as arguments!
+
+	TextureCubeMap(const std::vector<std::string> &paths, int width, int height);
+	virtual ~TextureCubeMap();
 
 	// ########################################################
 	// Member Functions########################################
@@ -31,4 +33,4 @@ private:
 
 };
 
-#endif /* SRC_GRAPHICS_ARRAYTEXTURE_H_ */
+#endif /* SRC_GRAPHICS_TEXTURE_TEXTURECUBEMAP_H_ */

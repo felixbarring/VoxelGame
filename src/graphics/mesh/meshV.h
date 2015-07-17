@@ -1,21 +1,21 @@
 
-#ifndef GAME_MODEL_MESH_H_
-#define GAME_MODEL_MESH_H_
+#ifndef SRC_GRAPHICS_MESH_MESHV_H_
+#define SRC_GRAPHICS_MESH_MESHV_H_
 
 #include <GL/glew.h>
 #include <vector>
 
 #include "iMesh.h"
 
-class MeshVT: public virtual IMesh {
+class MeshV : public virtual IMesh{
 public:
 
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
 
-	MeshVT(std::vector<float> &vertices,  int vFormat, std::vector<float> textUV, int tFormat, std::vector<short> &elementData);
-	virtual ~MeshVT();
+	MeshV(const std::vector<float> &vertices,  int vFormat, const std::vector<short> &elementData);
+	virtual ~MeshV();
 
 // ########################################################
 // Member Functions########################################
@@ -31,10 +31,8 @@ private:
 	GLuint VAO;
 	GLuint VBO_Vertices;
 	int verticesFormat;
-	GLuint VBO_Texture;
-	int textureFormat;
 	GLuint EBO;
 	int numberOfElements;
 };
 
-#endif /* GAME_MODEL_MESH_H_ */
+#endif /* SRC_GRAPHICS_MESH_MESHV_H_ */

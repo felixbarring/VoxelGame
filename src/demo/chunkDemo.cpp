@@ -95,15 +95,13 @@ void ChunkDemo::runDemo()
 			"  color = texture(texture1, texCoord); \n"
 			"} \n";
 
-
-	// Use Smart Pointer
-	std::map<std::string, int> *map = new std::map<std::string, int> {
+	std::map<std::string, int> attributesMap{
 		std::pair<std::string, int>("positionIn", 0),
 		std::pair<std::string, int>("normalIn", 1),
 		std::pair<std::string, int>("texCoordIn", 2)
 	};
 
-	ShaderProgram program(vertex, fragment, map);
+	ShaderProgram program(vertex, fragment, attributesMap);
 
 	int counter = 1;
 	const int maxCount = 4;
@@ -126,7 +124,7 @@ void ChunkDemo::runDemo()
 	int textureHeight = 16;
 	TextureArray texture{cube_data::textures, cube_data::TEXTURE_WIDTH, cube_data::TEXTURE_HEIGHT};
 
-	float aspectRatio = 800 / 600;
+	float aspectRatio = WIDTH / HEIGHT;
 	glm::mat4 Projection = glm::perspective(80.0f, aspectRatio, 0.1f, 100.0f);
 
 	Camera camera{0,0,0};

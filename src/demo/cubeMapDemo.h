@@ -1,40 +1,29 @@
 
-#ifndef GAME_MODEL_MESH_H_
-#define GAME_MODEL_MESH_H_
+#ifndef SRC_DEMO_CUBEMAPDEMO_H_
+#define SRC_DEMO_CUBEMAPDEMO_H_
 
-#include <GL/glew.h>
-#include <vector>
+#include "iDemo.h"
 
-#include "iMesh.h"
-
-class MeshVT: public virtual IMesh {
+class CubeMapDemo : public virtual IDemo{
 public:
 
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
 
-	MeshVT(std::vector<float> &vertices,  int vFormat, std::vector<float> textUV, int tFormat, std::vector<short> &elementData);
-	virtual ~MeshVT();
+	CubeMapDemo();
+	virtual ~CubeMapDemo();
 
 // ########################################################
 // Member Functions########################################
 // ########################################################
 
-	void render() override;
+	void runDemo() override;
 
 // ########################################################
 // Instance Variables #####################################
 // ########################################################
 
-private:
-	GLuint VAO;
-	GLuint VBO_Vertices;
-	int verticesFormat;
-	GLuint VBO_Texture;
-	int textureFormat;
-	GLuint EBO;
-	int numberOfElements;
 };
 
-#endif /* GAME_MODEL_MESH_H_ */
+#endif /* SRC_DEMO_CUBEMAPDEMO_H_ */

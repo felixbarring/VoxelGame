@@ -1,8 +1,6 @@
 
 #include "textureArray.h"
 
-#include <vector>
-#include <string>
 #include <SOIL.h>
 
 // ########################################################
@@ -17,7 +15,6 @@ TextureArray::TextureArray(std::vector<std::string> paths, int width, int height
 	glBindTexture(GL_TEXTURE_2D_ARRAY, textureID);
 
 	// Add more different Texture filtering options, the user should be able to configure this
-
 	// GL_LINEAR_MIPMAP_LINEAR
 	glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -34,7 +31,6 @@ TextureArray::TextureArray(std::vector<std::string> paths, int width, int height
 		if (w != width || h != height) {
 			// ERROR HERE :(
 		}
-
 		glTexSubImage3D(GL_TEXTURE_2D_ARRAY, 0, 0, 0, i++, w, h, 1, GL_RGB, GL_UNSIGNED_BYTE, image);
 		SOIL_free_image_data(image);
 	}
@@ -44,7 +40,6 @@ TextureArray::TextureArray(std::vector<std::string> paths, int width, int height
 
 TextureArray::~TextureArray()
 {
-	// TODO Delete texture from opengl
 }
 
 // ########################################################

@@ -13,13 +13,12 @@
 // Constructor/Destructor #################################
 // ########################################################
 
-ShaderProgram::ShaderProgram(const char *vertexSource, const char *fragmentSource, std::map<std::string, int> *attributes)
+ShaderProgram::ShaderProgram(const char *vertexSource, const char *fragmentSource, const std::map<std::string, int> &attributes)
 {
     // Create the shaders
     GLuint vertexID = createVertexShader(vertexSource);
     GLuint fragmentID = createFragmentShader(fragmentSource);
 
-    // Creat the program and compile it with the shaders
     programID = glCreateProgram();
 
     if (programID == 0) {
@@ -30,9 +29,9 @@ ShaderProgram::ShaderProgram(const char *vertexSource, const char *fragmentSourc
     glAttachShader(programID, fragmentID);
 
     // Create locations for all the attributes
-    if (attributes != nullptr) {
-        for (auto i : *attributes) {
-            glBindAttribLocation(programID, i.second, i.first.c_str());
+    if (attributes.size() == 0) {
+        for (auto attribute : attributes) {
+            glBindAttribLocation(programID, attribute.second, attribute.first.c_str());
             int errorCheck = glGetError();
             switch (errorCheck) {
             case GL_NO_ERROR:
@@ -45,14 +44,6 @@ ShaderProgram::ShaderProgram(const char *vertexSource, const char *fragmentSourc
                 return;
             }
         }
-    } else {
-
-    	// TODO Remove this later
-
-        // If no attributes have been specified, these will be the default attributes
-        glBindAttribLocation(programID, 0, "positionIn");
-        glBindAttribLocation(programID, 1, "normalIn");
-        glBindAttribLocation(programID, 2, "texCoordIn");
     }
 
     glLinkProgram(programID);

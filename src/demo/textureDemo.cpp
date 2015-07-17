@@ -1,7 +1,6 @@
 
 #include "textureDemo.h"
 
-#include <iostream>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <SOIL.h>
@@ -93,12 +92,12 @@ void TextureDemo::runDemo()
 		"} \n";
 
 
-	std::map<std::string, int> *map = new std::map<std::string, int> {
+	std::map<std::string, int> attributesMap{
 		std::pair<std::string, int>("positionIn", 0),
 		std::pair<std::string, int>("texCoordIn", 1)
 	};
 
-	ShaderProgram program(vertex, frag, map);
+	ShaderProgram program(vertex, frag, attributesMap);
 
 	std::vector<GLfloat> vertices = {
 		0.4f, 0.4f, 0.0f,

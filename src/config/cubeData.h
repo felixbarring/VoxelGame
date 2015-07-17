@@ -7,7 +7,7 @@
 
 namespace cube_data
 {
-	static constexpr char AIR = 256;
+	static constexpr char AIR = 255;
 
 	static constexpr char GRASS = 0;
 	static constexpr char DIRT = 1;

@@ -5,7 +5,6 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-//#include "../graphics/texturedCube.h"
 #include <glm/gtc/matrix_transform.hpp>
 
 // ########################################################
@@ -14,13 +13,11 @@
 
 Transform::Transform(float x, float y, float z)
 {
-
 	translation = glm::translate(glm::mat4(1.f), glm::vec3(x, y, z));
 
 	setRotationX(0);
 	setRotationY(0);
 	setRotationZ(0);
-
 }
 
 Transform::~Transform()
