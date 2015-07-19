@@ -12,11 +12,11 @@ set (INCLUDE_DIRS include
 	dependencies/glm
 	dependencies/glm/gtc
 	dependencies/glm/gtx
+	
+	dependencies/Simple-OpenGL-Image-Library/src
+ 	dependencies/tinyobjloader
 
-  dependencies/Simple-OpenGL-Image-Library/src
-  dependencies/tinyobjloader
-
-#	dependencies/assimp/include/assimp
+	#	dependencies/assimp/include/assimp
 )
 
 include_directories(${INCLUDE_DIRS})
