@@ -109,10 +109,10 @@ transform{xOffset, yOffset, zOffset}
 
 					std::vector<GLfloat> uv {
 
-						0.0f, 0.0f, sideTexture,
-						1.0f, 0.0f, sideTexture,
-						1.0f, 1.0f, sideTexture,
-						0.0f, 1.0f, sideTexture,
+						0.0f, 0.0f, static_cast<GLfloat>(sideTexture),
+						1.0f, 0.0f, static_cast<GLfloat>(sideTexture),
+						1.0f, 1.0f, static_cast<GLfloat>(sideTexture),
+						0.0f, 1.0f, static_cast<GLfloat>(sideTexture),
 					};
 
 					std::vector<short> el{
@@ -148,10 +148,10 @@ transform{xOffset, yOffset, zOffset}
 					};
 
 					std::vector<GLfloat> uv {
-						0.0f, 0.0f, sideTexture,
-						1.0f, 0.0f, sideTexture,
-						1.0f, 1.0f, sideTexture,
-						0.0f, 1.0f, sideTexture,
+						0.0f, 0.0f, static_cast<GLfloat>(sideTexture),
+						1.0f, 0.0f, static_cast<GLfloat>(sideTexture),
+						1.0f, 1.0f, static_cast<GLfloat>(sideTexture),
+						0.0f, 1.0f, static_cast<GLfloat>(sideTexture),
 					};
 
 					std::vector<short> el{
@@ -186,10 +186,10 @@ transform{xOffset, yOffset, zOffset}
 					};
 
 					std::vector<GLfloat> uv {
-						0.0f, 0.0f, sideTexture,
-						1.0f, 0.0f, sideTexture,
-						1.0f, 1.0f, sideTexture,
-						0.0f, 1.0f, sideTexture,
+						0.0f, 0.0f, static_cast<GLfloat>(sideTexture),
+						1.0f, 0.0f, static_cast<GLfloat>(sideTexture),
+						1.0f, 1.0f, static_cast<GLfloat>(sideTexture),
+						0.0f, 1.0f, static_cast<GLfloat>(sideTexture),
 					};
 
 					std::vector<short> el{
@@ -224,10 +224,10 @@ transform{xOffset, yOffset, zOffset}
 					};
 
 					std::vector<GLfloat> uv {
-						0.0f, 0.0f, sideTexture,
-						1.0f, 0.0f, sideTexture,
-						1.0f, 1.0f, sideTexture,
-						0.0f, 1.0f, sideTexture,
+						0.0f, 0.0f, static_cast<GLfloat>(sideTexture),
+						1.0f, 0.0f, static_cast<GLfloat>(sideTexture),
+						1.0f, 1.0f, static_cast<GLfloat>(sideTexture),
+						0.0f, 1.0f, static_cast<GLfloat>(sideTexture),
 					};
 
 					std::vector<short> el{
@@ -263,10 +263,10 @@ transform{xOffset, yOffset, zOffset}
 					};
 
 					std::vector<GLfloat> uv {
-						0.0f, 0.0f, topTexture,
-						1.0f, 0.0f, topTexture,
-						1.0f, 1.0f, topTexture,
-						0.0f, 1.0f, topTexture
+						0.0f, 0.0f, static_cast<GLfloat>(topTexture),
+						1.0f, 0.0f, static_cast<GLfloat>(topTexture),
+						1.0f, 1.0f, static_cast<GLfloat>(topTexture),
+						0.0f, 1.0f, static_cast<GLfloat>(topTexture)
 					};
 
 					std::vector<short> el{
@@ -301,10 +301,10 @@ transform{xOffset, yOffset, zOffset}
 					};
 
 					std::vector<GLfloat> uv {
-						0.0f, 0.0f, bottomTexture,
-						1.0f, 0.0f, bottomTexture,
-						1.0f, 1.0f, bottomTexture,
-						0.0f, 1.0f, bottomTexture
+						0.0f, 0.0f, static_cast<GLfloat>(bottomTexture),
+						1.0f, 0.0f, static_cast<GLfloat>(bottomTexture),
+						1.0f, 1.0f, static_cast<GLfloat>(bottomTexture),
+						0.0f, 1.0f, static_cast<GLfloat>(bottomTexture)
 					};
 
 					std::vector<short> el{

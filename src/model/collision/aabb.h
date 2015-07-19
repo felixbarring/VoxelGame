@@ -1,36 +1,31 @@
 
-#ifndef SRC_GRAPHICS_TEXTURE_TEXTURECUBEMAP_H_
-#define SRC_GRAPHICS_TEXTURE_TEXTURECUBEMAP_H_
+#ifndef SRC_MODEL_COLLISION_AABB_H_
+#define SRC_MODEL_COLLISION_AABB_H_
 
-#include <GL/glew.h>
-#include <vector>
-#include <string>
-
-class TextureCubeMap {
+class AABB {
 public:
 
 	// ########################################################
 	// Constructor/Destructor #################################
 	// ########################################################
 
-	// TODO Take all six paths as arguments!
-
-	TextureCubeMap(const char* right, const char* left, const char* top, const char* bottom, const char* back, const char* front,  int width, int height);
-	virtual ~TextureCubeMap();
+	AABB();
+	virtual ~AABB();
 
 	// ########################################################
 	// Member Functions########################################
 	// ########################################################
 
-	void bind();
+	glm::mat4 getViewMatrix();
+
+	void moveForward(float amount);
+
+	void changeViewDirection(float xOffset, float yOffset);
 
 	// ########################################################
 	// Instance Variables #####################################
 	// ########################################################
 
-private:
-	GLuint textureID;
-
 };
 
-#endif /* SRC_GRAPHICS_TEXTURE_TEXTURECUBEMAP_H_ */
+#endif /* SRC_MODEL_COLLISION_AABB_H_ */

@@ -16,7 +16,7 @@ static GLuint targets[] = {
 // Constructor/Destructor #################################
 // ########################################################
 
-TextureCubeMap::TextureCubeMap(const std::vector<std::string> &paths, int width, int height)
+TextureCubeMap::TextureCubeMap(const char* right, const char* left, const char* top, const char* bottom, const char* back, const char* front,  int width, int height)
 {
 	glGenTextures(1, &textureID);
 	glActiveTexture(GL_TEXTURE0);
@@ -29,9 +29,11 @@ TextureCubeMap::TextureCubeMap(const std::vector<std::string> &paths, int width,
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
+	std::vector<const char*> paths{right, left, top, bottom, back, front};
+
 	int i = 0;
 	for (auto path : paths) {
-		unsigned char*  image = SOIL_load_image(path.c_str(), &width, &height, 0, SOIL_LOAD_RGB);
+		unsigned char*  image = SOIL_load_image(path, &width, &height, 0, SOIL_LOAD_RGB);
 		glTexImage2D(targets[i++], 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
 	}
 	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);

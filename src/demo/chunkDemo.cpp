@@ -66,34 +66,35 @@ void ChunkDemo::runDemo()
 	glDepthFunc(GL_LESS);
 
 	const char *vertex =
-			"#version 330 core \n"
+		"#version 330 core \n"
 
-			"in vec3 positionIn; \n"
-			"in vec3 normalIn; \n"
-			"in vec3 texCoordIn; \n"
+		"in vec3 positionIn; \n"
+		"in vec3 normalIn; \n"
+		"in vec3 texCoordIn; \n"
 
-			"uniform mat4 ModelViewProjection; \n"
+		"uniform mat4 ModelViewProjection; \n"
 
-			"out vec3 faceNormal; \n"
-			"out vec3 texCoord; \n"
+		"out vec3 faceNormal; \n"
+		"out vec3 texCoord; \n"
 
-			"void main(){ \n"
-			"  texCoord = vec3(texCoordIn.x, 1 - texCoordIn.y, texCoordIn.z); \n"
-			"  gl_Position =  ModelViewProjection * vec4(positionIn, 1); \n"
-			"} \n";
+		"void main(){ \n"
+		"  texCoord = vec3(texCoordIn.x, 1 - texCoordIn.y, texCoordIn.z); \n"
+		"  gl_Position =  ModelViewProjection * vec4(positionIn, 1); \n"
+		"} \n";
 
 	const char *fragment =
-			"#version 330 core \n"
+		"#version 330 core \n"
 
-			"in vec3 texCoord; \n"
+		"in vec3 texCoord; \n"
 
-			"uniform sampler2DArray texture1; \n"
+		"uniform sampler2DArray texture1; \n"
 
-			"out vec4 color; \n"
+		"out vec4 color; \n"
 
-			"void main(){ \n"
-			"  color = texture(texture1, texCoord); \n"
-			"} \n";
+		"void main(){ \n"
+		"  color = texture(texture1, texCoord); \n"
+		//"  color = vec4(texCoordxy, 0.0f, 1.0f); \n"
+		"} \n";
 
 	std::map<std::string, int> attributesMap{
 		std::pair<std::string, int>("positionIn", 0),

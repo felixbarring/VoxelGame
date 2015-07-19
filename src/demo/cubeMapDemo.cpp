@@ -68,79 +68,37 @@ void CubeMapDemo::runDemo()
 
     const char* skyBoxVertex =
 		"#version 330 core \n"
-		"layout (location = 0) in vec3 position; \n"
-		"out vec3 TexCoords; \n"
 
-		"uniform mat4 projection; \n"
+    	"in vec3 positionIn; \n"
+
+    	"uniform mat4 projection; \n"
 		"uniform mat4 view; \n"
+
+    	"out vec3 texCoord; \n"
 
 		"void main() \n"
 		"{ \n"
-		"    vec4 pos = projection * view * vec4(position, 1.0); \n"
+		"    vec4 pos = projection * view * vec4(positionIn, 1.0); \n"
 		"    gl_Position = pos.xyww; \n"
-		"    TexCoords = position; \n"
+		"    texCoord = positionIn; \n"
 		"} \n";
 
 	const char* skyBoxFrag =
 		"#version 330 core \n"
-		"in vec3 TexCoords; \n"
-		"out vec4 color; \n"
+
+		"in vec3 texCoord; \n"
 
 		"uniform samplerCube skybox; \n"
 
+		"out vec4 color; \n"
+
 		"void main() \n"
 		"{ \n"
-		"    color = texture(skybox, TexCoords); \n"
+		"    color = texture(skybox, texCoord); \n"
 		"} \n";
 
-
-	std::map<std::string, int> attributesMap{};
+	std::map<std::string, int> attributesMap{std::pair<std::string, int>("positionIn", 0)};
 	ShaderProgram skyboxShader(skyBoxVertex, skyBoxFrag, attributesMap);
-
-    GLfloat skyboxVertices[] = {
-        // Positions
-        -1.0f, 1.0f, -1.0f,
-        -1.0f, -1.0f, -1.0f,
-        1.0f, -1.0f, -1.0f,
-        1.0f, -1.0f, -1.0f,
-        1.0f, 1.0f, -1.0f,
-        -1.0f, 1.0f, -1.0f,
-
-        -1.0f, -1.0f, 1.0f,
-        -1.0f, -1.0f, -1.0f,
-        -1.0f, 1.0f, -1.0f,
-        -1.0f, 1.0f, -1.0f,
-        -1.0f, 1.0f, 1.0f,
-        -1.0f, -1.0f, 1.0f,
-
-        1.0f, -1.0f, -1.0f,
-        1.0f, -1.0f, 1.0f,
-        1.0f, 1.0f, 1.0f,
-        1.0f, 1.0f, 1.0f,
-        1.0f, 1.0f, -1.0f,
-        1.0f, -1.0f, -1.0f,
-
-        -1.0f, -1.0f, 1.0f,
-        -1.0f, 1.0f, 1.0f,
-        1.0f, 1.0f, 1.0f,
-        1.0f, 1.0f, 1.0f,
-        1.0f, -1.0f, 1.0f,
-        -1.0f, -1.0f, 1.0f,
-
-        -1.0f, 1.0f, -1.0f,
-        1.0f, 1.0f, -1.0f,
-        1.0f, 1.0f, 1.0f,
-        1.0f, 1.0f, 1.0f,
-        -1.0f, 1.0f, 1.0f,
-        -1.0f, 1.0f, -1.0f,
-
-        -1.0f, -1.0f, -1.0f,
-        -1.0f, -1.0f, 1.0f,
-        1.0f, -1.0f, -1.0f,
-        1.0f, -1.0f, -1.0f,
-        -1.0f, -1.0f, 1.0f,
-        1.0f, -1.0f, 1.0f
-    };
 
     std::vector<GLfloat> vert{
     	-1.0f, 1.0f, -1.0f,
@@ -196,20 +154,18 @@ void CubeMapDemo::runDemo()
 		0+30, 1+30, 2+30, 3+30, 4+30, 5+30,
     };
 
-
     MeshV mesh{vert, 3, element};
 
-    std::vector<std::string> paths{
-		"../resources/skybox/right.jpg",
+    Camera camera(0.0f, 0.0f, 3.0f);
+    TextureCubeMap texture{
+    	"../resources/skybox/right.jpg",
 		"../resources/skybox/left.jpg",
 		"../resources/skybox/top.jpg",
 		"../resources/skybox/bottom.jpg",
 		"../resources/skybox/back.jpg",
-		"../resources/skybox/front.jpg"
+		"../resources/skybox/front.jpg",
+		2048, 2048
     };
-
-    Camera camera(0.0f, 0.0f, 3.0f);
-    TextureCubeMap texture{paths, 2048, 2048};
 
     float aspectRatio = WIDTH / HEIGHT;
     glm::mat4 projection = glm::perspective(80.0f, aspectRatio, 0.1f, 100.0f);
@@ -254,8 +210,6 @@ void CubeMapDemo::runDemo()
 
 
 /*
-
-
 #include "cubeMapDemo.h"
 
 #include <string>
@@ -453,6 +407,4 @@ void CubeMapDemo::runDemo()
 
     glfwTerminate();
 }
-
-
 */

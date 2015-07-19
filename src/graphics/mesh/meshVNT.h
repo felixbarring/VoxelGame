@@ -13,8 +13,8 @@ public:
 // Constructor/Destructor #################################
 // ########################################################
 
-	MeshVNT(std::vector<float> &vertices, int vFormat, std::vector<float> &normals,
-			int nFormat, std::vector<float> textUV, int tFormat, std::vector<short> &elementData);
+	MeshVNT(const std::vector<float>& vertices, int vFormat, const std::vector<float>& normals,
+			int nFormat, const std::vector<float>& textUV, int tFormat, std::vector<short> &elementData);
 	virtual ~MeshVNT();
 
 // ########################################################

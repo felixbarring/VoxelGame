@@ -29,7 +29,6 @@ ShaderProgram::ShaderProgram(const char *vertexSource, const char *fragmentSourc
     glAttachShader(programID, fragmentID);
 
     // Create locations for all the attributes
-    if (attributes.size() == 0) {
         for (auto attribute : attributes) {
             glBindAttribLocation(programID, attribute.second, attribute.first.c_str());
             int errorCheck = glGetError();
@@ -44,7 +43,6 @@ ShaderProgram::ShaderProgram(const char *vertexSource, const char *fragmentSourc
                 return;
             }
         }
-    }
 
     glLinkProgram(programID);
     glUseProgram(programID);
