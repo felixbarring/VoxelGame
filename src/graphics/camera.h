@@ -26,6 +26,8 @@ public:
 
 	void changeViewDirection(float xOffset, float yOffset);
 
+	void setLocation(float x, float y, float z);
+
 // ########################################################
 // Instance Variables #####################################
 // ########################################################

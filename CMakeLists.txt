@@ -30,11 +30,16 @@ aux_source_directory(src/graphics/texture SRC_LIST5)
 aux_source_directory(src/demo SRC_LIST6)
 aux_source_directory(src/util SRC_LIST7)
 aux_source_directory(src/config SRC_LIST8)
+aux_source_directory(src/model SRC_LIST9)
+aux_source_directory(src/model/world SRC_LIST10)
+aux_source_directory(src/model/collision SRC_LIS11)
+
 
 # Add executable to project
 add_executable(${PROJECT_NAME} 
 	${SRC_LIST} ${SRC_LIST2} ${SRC_LIST3} ${SRC_LIST4} 
 	${SRC_LIST5} ${SRC_LIST6} ${SRC_LIST7} ${SRC_LIST8} 
+	${SRC_LIST9} ${SRC_LIST10} ${SRC_LIST11}  
 )
 
 # Link GLFW and GLEW to main executable

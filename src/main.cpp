@@ -1,16 +1,6 @@
 
 #define GLM_FORCE_RADIANS
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <iostream>
-#include <chrono>
-#include <thread>
-#include <GL/glew.h>
-#include <glfw3.h>
-#include <glm/glm.hpp>
-#include "graphics/renderer.h"
-
 #include "game.h"
 #include "demo/textureDemo.h"
 #include "demo/cubeDemo.h"
@@ -19,8 +9,6 @@
 #include "demo/cubeMapDemo.h"
 
 #include <string>
-
-using namespace glm;
 
 int main(int argc, char *argv[])
 {

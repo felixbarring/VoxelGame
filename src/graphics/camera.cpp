@@ -61,4 +61,8 @@ void Camera::changeViewDirection(float x, float y)
 	glm::vec3 up = glm::normalize(glm::cross(right, direction));
 }
 
+void Camera::setLocation(float x, float y, float z)
+{
+	position = glm::vec3(x, y, z);
+}
 

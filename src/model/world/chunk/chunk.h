@@ -1,29 +1,34 @@
 
-#ifndef SRC_MODEL_COLLISION_AABB_H_
-#define SRC_MODEL_COLLISION_AABB_H_
+#ifndef SRC_MODEL_WORLD_CHUNK_CHUNK_H_
+#define SRC_MODEL_WORLD_CHUNK_CHUNK_H_
 
-class AABB {
+#include "../../../config/chunkData.h"
+
+struct Voxel {
+	char id;
+};
+
+
+class Chunk {
 public:
 
 	// ########################################################
 	// Constructor/Destructor #################################
 	// ########################################################
 
-	AABB(double xMinimum, double xMaximum, double yMinimum, double yMaximum, double zMinimum, double zMaximum);
-	virtual ~AABB();
+	Chunk();
+	virtual ~Chunk();
 
 	// ########################################################
 	// Member Functions########################################
 	// ########################################################
 
-	bool intersects(const AABB &that);
-
 	// ########################################################
 	// Instance Variables #####################################
 	// ########################################################
 
-	double xMin, xMax, yMin, yMax, zMin, zMax;
+	Voxel voxels[chunk_data::CHUNK_WIDHT][chunk_data::CHUNK_HEIGHT][chunk_data::CHUNK_DEPTH];
 
 };
 
-#endif /* SRC_MODEL_COLLISION_AABB_H_ */
+#endif /* SRC_MODEL_WORLD_CHUNK_CHUNK_H_ */
