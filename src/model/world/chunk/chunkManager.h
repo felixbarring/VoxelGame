@@ -2,7 +2,9 @@
 #ifndef SRC_MODEL_WORLD_CHUNK_CHUNKMANAGER_H_
 #define SRC_MODEL_WORLD_CHUNK_CHUNKMANAGER_H_
 
+#include "chunk.h"
 #include "../../../config/data.h"
+
 
 class ChunkManager {
 public:
@@ -25,7 +27,7 @@ public:
 	// Instance Variables #####################################
 	// ########################################################
 
-	Chunk chunks[chunk_data::NUMBER_OF_CHUNKS_X][chunk_data::NUMBER_OF_CHUNKS_Y];
+	//Chunk chunks[chunk_data::NUMBER_OF_CHUNKS_X][chunk_data::NUMBER_OF_CHUNKS_Y];
 
 };
 

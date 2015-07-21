@@ -12,7 +12,7 @@
 // Constructor/Destructor #################################
 // ########################################################
 
-GraphicalChunk::GraphicalChunk(float x, float y, float z,
+GraphicalChunk::GraphicalChunk(int x, int y, int z,
 		Voxel data[chunk_data::GRAPHICAL_CHUNK_WIDTH][chunk_data::GRAPHICAL_CHUNK_HEIGHT][chunk_data::GRAPHICAL_CHUNK_DEPTH]):
 xLocation{x},
 yLocation{y},
@@ -87,9 +87,9 @@ transform{x, y, z}
 
 				int id = fd.id;
 
-				int sideTexture = cube_data::BLOCK_TEXTURES[id][cube_data::SIDE_TEXTURE];
-				int topTexture = cube_data::BLOCK_TEXTURES[id][cube_data::TOP_TEXTURE];
-				int bottomTexture = cube_data::BLOCK_TEXTURES[id][cube_data::BOTTOM_TEXTURE];
+				GLfloat sideTexture = cube_data::BLOCK_TEXTURES[id][cube_data::SIDE_TEXTURE];
+				GLfloat topTexture = cube_data::BLOCK_TEXTURES[id][cube_data::TOP_TEXTURE];
+				GLfloat bottomTexture = cube_data::BLOCK_TEXTURES[id][cube_data::BOTTOM_TEXTURE];
 
 				if (fd.front) {
 
@@ -116,9 +116,8 @@ transform{x, y, z}
 					};
 
 					std::vector<short> el{
-						0 + elementOffset, 1 + elementOffset,
-						2 + elementOffset, 0 + elementOffset,
-						2 + elementOffset, 3 + elementOffset
+						0 + elementOffset, 1 + elementOffset, 2 + elementOffset,
+						0 + elementOffset, 2 + elementOffset, 3 + elementOffset
 					};
 
 					for (auto v : vertex) { vertexData.push_back(v);}
@@ -155,9 +154,8 @@ transform{x, y, z}
 					};
 
 					std::vector<short> el{
-						0 + elementOffset, 1 + elementOffset,
-						2 + elementOffset, 0 + elementOffset,
-						2 + elementOffset, 3 + elementOffset
+						0 + elementOffset, 1 + elementOffset, 2 + elementOffset,
+						0 + elementOffset, 2 + elementOffset, 3 + elementOffset
 					};
 
 					for (auto v : vertex) { vertexData.push_back(v);}
@@ -193,9 +191,8 @@ transform{x, y, z}
 					};
 
 					std::vector<short> el{
-						0 + elementOffset, 1 + elementOffset,
-						2 + elementOffset, 0 + elementOffset,
-						2 + elementOffset, 3 + elementOffset
+						0 + elementOffset, 1 + elementOffset, 2 + elementOffset,
+						0 + elementOffset, 2 + elementOffset, 3 + elementOffset
 					};
 
 					for (auto v : vertex) { vertexData.push_back(v);}
@@ -231,9 +228,8 @@ transform{x, y, z}
 					};
 
 					std::vector<short> el{
-						0 + elementOffset, 1 + elementOffset,
-						2 + elementOffset, 0 + elementOffset,
-						2 + elementOffset, 3 + elementOffset
+						0 + elementOffset, 1 + elementOffset, 2 + elementOffset,
+						0 + elementOffset, 2 + elementOffset, 3 + elementOffset
 					};
 
 					for (auto v : vertex) { vertexData.push_back(v);}
@@ -270,9 +266,8 @@ transform{x, y, z}
 					};
 
 					std::vector<short> el{
-						0 + elementOffset, 1 + elementOffset,
-						2 + elementOffset, 0 + elementOffset,
-						2 + elementOffset, 3 + elementOffset
+						0 + elementOffset, 1 + elementOffset, 2 + elementOffset,
+						0 + elementOffset, 2 + elementOffset, 3 + elementOffset
 					};
 
 					for (auto v : vertex) { vertexData.push_back(v);}
@@ -307,10 +302,11 @@ transform{x, y, z}
 						0.0f, 1.0f, static_cast<GLfloat>(bottomTexture)
 					};
 
+
+
 					std::vector<short> el{
-						0 + elementOffset, 1 + elementOffset,
-						2 + elementOffset, 0 + elementOffset,
-						2 + elementOffset, 3 + elementOffset
+						0 + elementOffset, 1 + elementOffset, 2 + elementOffset,
+						0 + elementOffset, 2 + elementOffset, 3 + elementOffset
 					};
 
 					for (auto v : vertex) { vertexData.push_back(v);}

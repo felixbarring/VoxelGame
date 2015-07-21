@@ -21,7 +21,7 @@ public:
 // Constructor/Destructor #################################
 // ########################################################
 
-	GraphicalChunk(float x, float y, float z,
+	GraphicalChunk(int x, int y, int z,
 			Voxel data[chunk_data::GRAPHICAL_CHUNK_WIDTH][chunk_data::GRAPHICAL_CHUNK_HEIGHT][chunk_data::GRAPHICAL_CHUNK_DEPTH]);
 	virtual ~GraphicalChunk();
 

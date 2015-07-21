@@ -1,34 +1,32 @@
 
-#ifndef SRC_MODEL_WORLD_CHUNK_CHUNK_H_
-#define SRC_MODEL_WORLD_CHUNK_CHUNK_H_
+#ifndef SRC_GRAPHICS_CUBEMAP_H_
+#define SRC_GRAPHICS_CUBEMAP_H_
 
-#include "../../../config/data.h"
-#include "../../../voxel.h"
-#include "../../../graphics/graphicalChunk.h"
+#include "texture/textureCubeMap.h"
+#include "camera.h"
 
-class Chunk {
+class CubeMap {
 public:
 
 	// ########################################################
 	// Constructor/Destructor #################################
 	// ########################################################
 
-	Chunk(int x, int y, int z);
-	virtual ~Chunk();
+	CubeMap(const char* right, const char* left, const char* top, const char* bottom, const char* back, const char* front, int widht, int height);
+	virtual ~CubeMap();
 
 	// ########################################################
 	// Member Functions########################################
 	// ########################################################
 
-	void render();
+	void render(Camera &camera);
 
 	// ########################################################
 	// Instance Variables #####################################
 	// ########################################################
 
-	int xLocation, yLocation, zLocation;
-	Voxel voxels[chunk_data::CHUNK_WIDHT][chunk_data::CHUNK_HEIGHT][chunk_data::CHUNK_DEPTH];
-	//GraphicalChunk graphicalChunk;
+	TextureCubeMap texture;
+
 };
 
-#endif /* SRC_MODEL_WORLD_CHUNK_CHUNK_H_ */
+#endif /* SRC_GRAPHICS_CUBEMAP_H_ */

@@ -8,7 +8,6 @@
 Camera::Camera(float xPosition, float yPosition, float zPosition):
 	position{xPosition, yPosition, zPosition}
 {
-
 }
 
 Camera::~Camera()

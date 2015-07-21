@@ -9,6 +9,7 @@
 
 ChunkManager::ChunkManager()
 {
+	/*
 	int counter = 1;
 	const int maxCount = 4;
 
@@ -31,6 +32,7 @@ ChunkManager::ChunkManager()
 			chunks[i][j] = Chunk{i, j, 0,data};
 		}
 	}
+	*/
 }
 
 ChunkManager::~ChunkManager()

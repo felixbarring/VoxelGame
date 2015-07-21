@@ -22,6 +22,8 @@ public:
 
 	glm::mat4 getViewMatrix();
 
+	glm::mat4& getProjectionMatrix() { return projection; }
+
 	void moveForward(float amount);
 
 	void changeViewDirection(float xOffset, float yOffset);
@@ -38,6 +40,11 @@ private:
 	glm::vec3 worldUp{0.0f, 1.0f, 0.0f};
 	float horizontalAngle = 3.0;
 	float verticalAngle = 0.0f;
+
+	// TODO Currently ugly hack
+	// Make it possible to change stuff, like fov
+	float aspectRatio = 800 / 600;
+	glm::mat4 projection = glm::perspective(80.0f, aspectRatio, 0.1f, 100.0f);
 
     // Camera options
     GLfloat inputSensX = 0.01;
