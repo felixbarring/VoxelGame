@@ -1,12 +1,29 @@
 
-#ifndef SRC_CONFIG_CUBEDATA_H_
-#define SRC_CONFIG_CUBEDATA_H_
+#ifndef SRC_CONFIG_DATA_H_
+#define SRC_CONFIG_DATA_H_
 
 #include <vector>
 #include <string>
 
+namespace chunk_data
+{
+
+	static constexpr int GRAPHICAL_CHUNK_WIDTH = 16;
+	static constexpr int GRAPHICAL_CHUNK_HEIGHT = 16;
+	static constexpr int GRAPHICAL_CHUNK_DEPTH = 16;
+
+	static constexpr int CHUNK_WIDHT = 16;
+	static constexpr int CHUNK_HEIGHT = 16;
+	static constexpr int CHUNK_DEPTH = 16;
+
+	static constexpr int NUMBER_OF_CHUNKS_X = 4;
+	static constexpr int NUMBER_OF_CHUNKS_Y = 4;
+
+}
+
 namespace cube_data
 {
+
 	static constexpr char AIR = 255;
 
 	static constexpr char GRASS = 0;
@@ -38,4 +55,11 @@ namespace cube_data
 
 }
 
-#endif /* SRC_CONFIG_CUBEDATA_H_ */
+namespace graphics_data
+{
+	static int fps = 60;
+	static int windowWidth = 800;
+	static int windowHeight = 600;
+}
+
+#endif /* SRC_CONFIG_DATA_H_ */

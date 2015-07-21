@@ -14,7 +14,7 @@
 #include "../graphics/transform.h"
 #include "../graphics/texturedCube.h"
 #include "../util/fpsManager.h"
-#include "../config/cubeData.h"
+#include "../config/data.h"
 
 // ########################################################
 // Constructor/Destructor #################################

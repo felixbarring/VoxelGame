@@ -17,7 +17,7 @@
 
 #include "../graphics/shaderProgram.h"
 #include "../graphics/mesh/meshVT.h"
-#include "../config/cubeData.h"
+#include "../config/data.h"
 #include "../graphics/texture/textureArray.h"
 
 #include "../util/fpsManager.h"

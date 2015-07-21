@@ -5,7 +5,7 @@
 #include "texturedCube.h"
 #include "transform.h"
 
-#include "../config/cubeData.h"
+#include "../config/data.h"
 
 
 // ########################################################

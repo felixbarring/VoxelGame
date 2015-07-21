@@ -9,6 +9,7 @@
 #include <GL/glew.h>
 #include <glfw3.h>
 #include "util/fpsManager.h"
+#include "config/data.h"
 
 Game::Game()
 {
@@ -23,9 +24,9 @@ GLFWwindow *window;
 void Game::run()
 {
 
-	FPSManager fpsManager(60);
-	const int WIDTH = 800;
-	const int HEIGHT = 600;
+	FPSManager fpsManager(graphics_data::fps);
+	const int WIDTH = graphics_data::windowWidth;
+	const int HEIGHT = graphics_data::windowHeight;
 
 	if (!glfwInit()) {
 		fprintf(stderr, "Failed to initialize GLFW\n");
@@ -45,7 +46,7 @@ void Game::run()
 
 	glfwMakeContextCurrent(window);
 
-	glewExperimental = true; // Needed for core profile
+	glewExperimental = true;
 	if (glewInit() != GLEW_OK) {
 		fprintf(stderr, "Failed to initialize GLEW\n");
 	}

@@ -14,7 +14,8 @@
 #include "../graphics/camera.h"
 #include "../graphics/texture/textureArray.h"
 #include "../util/fpsManager.h"
-#include "../config/cubeData.h"
+#include "../config/data.h"
+#include "../voxel.h"
 
 // ########################################################
 // Constructor/Destructor #################################
@@ -93,7 +94,6 @@ void ChunkDemo::runDemo()
 
 		"void main(){ \n"
 		"  color = texture(texture1, texCoord); \n"
-		//"  color = vec4(texCoordxy, 0.0f, 1.0f); \n"
 		"} \n";
 
 	std::map<std::string, int> attributesMap{
@@ -107,11 +107,13 @@ void ChunkDemo::runDemo()
 	int counter = 1;
 	const int maxCount = 4;
 
-	char data[16][16][16];
+	Voxel data[16][16][16];
 	for (int i = 0; i < 16; i++) {
 		for (int j = 0; j < 16; j++) {
 			for (int k = 0; k < 16; k++) {
-				data[i][j][k] = counter++;
+				Voxel v;
+				v.id = counter++;
+				data[i][j][k] = v;
 				if (counter == maxCount) {
 					counter = 1;
 				}

@@ -5,7 +5,9 @@
 #include "mesh/meshVNT.h"
 #include "transform.h"
 
-#include "../config/chunkData.h"
+#include "../config/data.h"
+#include "../voxel.h"
+
 
 struct CubeFaceData {
 	int id;
@@ -19,8 +21,8 @@ public:
 // Constructor/Destructor #################################
 // ########################################################
 
-	GraphicalChunk(float xOffset, float yOffset, float zOffset,
-			char data[chunk_data::GRAPHICAL_CHUNK_WIDTH][chunk_data::GRAPHICAL_CHUNK_HEIGHT][chunk_data::GRAPHICAL_CHUNK_DEPTH]);
+	GraphicalChunk(float x, float y, float z,
+			Voxel data[chunk_data::GRAPHICAL_CHUNK_WIDTH][chunk_data::GRAPHICAL_CHUNK_HEIGHT][chunk_data::GRAPHICAL_CHUNK_DEPTH]);
 	virtual ~GraphicalChunk();
 
 // ########################################################

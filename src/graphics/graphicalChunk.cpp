@@ -6,18 +6,18 @@
 
 #include "texturedCube.h"
 #include "transform.h"
-#include "../config/cubeData.h"
+//#include "../config/data.h"
 
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
 
-GraphicalChunk::GraphicalChunk(float xOffset, float yOffset, float zOffset,
-		char data[chunk_data::GRAPHICAL_CHUNK_WIDTH][chunk_data::GRAPHICAL_CHUNK_HEIGHT][chunk_data::GRAPHICAL_CHUNK_DEPTH]):
-xLocation{xOffset},
-yLocation{yOffset},
-zLocation{zOffset},
-transform{xOffset, yOffset, zOffset}
+GraphicalChunk::GraphicalChunk(float x, float y, float z,
+		Voxel data[chunk_data::GRAPHICAL_CHUNK_WIDTH][chunk_data::GRAPHICAL_CHUNK_HEIGHT][chunk_data::GRAPHICAL_CHUNK_DEPTH]):
+xLocation{x},
+yLocation{y},
+zLocation{z},
+transform{x, y, z}
 {
 
 	CubeFaceData faceData[width][height][depth];
@@ -26,7 +26,7 @@ transform{xOffset, yOffset, zOffset}
 		for (int j = 0; j < height; j++) {
 			for (int k = 0; k < depth; k++) {
 				CubeFaceData cube;
-				cube.id = data[i][j][k];
+				cube.id = data[i][j][k].id;
 				cube.front = true;
 				cube.back = true;
 				cube.left = true;
