@@ -79,8 +79,7 @@ void CubeMapDemo::runDemo()
 		2048, 2048
     };
 
-    float aspectRatio = WIDTH / HEIGHT;
-    //glm::mat4 projection = glm::perspective(80.0f, aspectRatio, 0.1f, 100.0f);
+    //float aspectRatio = WIDTH / HEIGHT;
 
 	float screenCenterX = WIDTH / 2;
 	float screenCenterY = HEIGHT / 2;

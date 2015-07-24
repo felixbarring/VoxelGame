@@ -54,5 +54,5 @@ target_link_libraries(${PROJECT_NAME} libglew_static glfw ${GLFW_LIBRARIES} SOIL
 #	add_definitions(-DGLEW_STATIC)
 #endif()
 
-add_definitions( -std=c++0x -Wextra)
+add_definitions(-std=c++0x -Wextra)
 
