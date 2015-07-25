@@ -2,12 +2,15 @@
 #ifndef SRC_MODEL_WORLD_CHUNK_CHUNKMANAGER_H_
 #define SRC_MODEL_WORLD_CHUNK_CHUNKMANAGER_H_
 
+#include <memory>
+#include <vector>
+
 #include "chunk.h"
 #include "../../../config/data.h"
 
 
 class ChunkManager {
-public:
+private:
 
 	// ########################################################
 	// Constructor/Destructor #################################
@@ -20,14 +23,27 @@ public:
 	// Member Functions########################################
 	// ########################################################
 
-	// Should probably not be here
-	void render();
+public:
+
+	static ChunkManager& getInstance()
+	{
+		static ChunkManager INSTANCE;
+		return INSTANCE;
+	}
+
+	char getCubeId(int x, int y, int z);
+
+	void removeCube(int x, int y, int z);
+
+	void addCube(int x, int y, int z, char id);
 
 	// ########################################################
 	// Instance Variables #####################################
 	// ########################################################
 
-	//Chunk chunks[chunk_data::NUMBER_OF_CHUNKS_X][chunk_data::NUMBER_OF_CHUNKS_Y];
+private:
+
+	std::unique_ptr<Chunk> chunks[chunk_data::NUMBER_OF_CHUNKS_X][chunk_data::NUMBER_OF_CHUNKS_Y][chunk_data::NUMBER_OF_CHUNKS_Z];
 
 };
 

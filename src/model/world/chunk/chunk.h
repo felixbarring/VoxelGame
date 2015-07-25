@@ -23,7 +23,11 @@ public:
 	// Member Functions########################################
 	// ########################################################
 
+
 	// Some kind of update method here
+
+	void removeCube(int x, int y, int z);
+
 
 	// ########################################################
 	// Instance Variables #####################################
@@ -31,7 +35,6 @@ public:
 
 	int xLocation, yLocation, zLocation;
 	Voxel voxels[chunk_data::CHUNK_WIDHT][chunk_data::CHUNK_HEIGHT][chunk_data::CHUNK_DEPTH];
-
 	std::shared_ptr<GraphicalChunk> graphicalChunk;
 
 };

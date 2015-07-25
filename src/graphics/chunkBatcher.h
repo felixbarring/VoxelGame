@@ -9,7 +9,7 @@
 #include "camera.h"
 
 class ChunkBatcher {
-public:
+private:
 
 	// Should be singleton
 

@@ -43,27 +43,42 @@ transform{x, y, z}
 		for (int j = 0; j < height; j++) {
 			for (int k = 0; k < depth; k++) {
 
+				CubeFaceData& current = faceData[i][j][k];
+
+				if (current.id == cube_data::AIR) {
+					current.front = false;
+					current.back = false;
+					current.left = false;
+					current.right = false;
+					current.top = false;
+					current.bottom = false;
+					continue;
+				}
+
+				// Will not work for the last voxel
+				// TODO Fix this shit
+
 				if (i != width - 1) {
-					const char right = faceData[i + 1][j][k].id;
-					if (right != cube_data::AIR) {
-						faceData[i][j][k].right = false;
-						faceData[i + 1][j][k].left = false;
+					CubeFaceData& right = faceData[i + 1][j][k];
+					if (right.id != cube_data::AIR) {
+						current.right = false;
+						right.left = false;
 					}
 				}
 
-				if (j != height - 1) { // Okay to check up
-					const char up = faceData[i][j + 1][k].id;
-					if (up != cube_data::AIR) {
-						faceData[i][j][k].top = false;
-						faceData[i][j + 1][k].bottom = false;
+				if (j != height - 1) {
+					CubeFaceData& up = faceData[i][j + 1][k];
+					if (up.id != cube_data::AIR) {
+						current.top = false;
+						up.bottom = false;
 					}
 				}
 
 				if (k != depth - 1) {
-					const char back = faceData[i][j][k + 1].id;
-					if (back != cube_data::AIR) {
-						faceData[i][j][k].back = false;
-						faceData[i][j][k + 1].front = false;
+					CubeFaceData& back = faceData[i][j][k + 1];
+					if (back.id != cube_data::AIR) {
+						current.back = false;
+						back.front = false;
 					}
 				}
 

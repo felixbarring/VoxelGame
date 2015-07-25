@@ -29,9 +29,7 @@ Chunk::Chunk(int x, int y, int z):
 	}
 
 	graphicalChunk.reset(new GraphicalChunk(x,y,z, voxels));
-
 	ChunkBatcher::getInstance().addBatch(graphicalChunk);
-
 }
 
 Chunk::~Chunk()
@@ -42,3 +40,11 @@ Chunk::~Chunk()
 // Member Functions########################################
 // ########################################################
 
+void Chunk::removeCube(int x, int y, int z)
+{
+	ChunkBatcher::getInstance().removeBatch(graphicalChunk);
+
+	voxels[x][y][z].id = cube_data::AIR;
+	graphicalChunk.reset(new GraphicalChunk(xLocation, yLocation, zLocation, voxels));
+	ChunkBatcher::getInstance().addBatch(graphicalChunk);
+}

@@ -9,30 +9,16 @@
 
 ChunkManager::ChunkManager()
 {
-	/*
-	int counter = 1;
-	const int maxCount = 4;
-
-	Voxel data[16][16][16];
-	for (int i = 0; i < 16; i++) {
-		for (int j = 0; j < 16; j++) {
-			for (int k = 0; k < 16; k++) {
-				Voxel v;
-				v.id = counter++;
-				data[i][j][k] = v;
-				if (counter == maxCount) {
-					counter = 1;
-				}
+	int xMax = 1;
+	int yMax = 1;
+	int zMax = 1;
+	for (int x = 0; x < xMax; x++ ) {
+		for (int y = 0; y < yMax; y++) {
+			for (int z = 0; z < zMax; z++) {
+				chunks[x][y][z] = std::unique_ptr<Chunk> ( new Chunk{x * chunk_data::CHUNK_WIDHT, y * chunk_data::CHUNK_HEIGHT, z * chunk_data::CHUNK_DEPTH});
 			}
 		}
 	}
-
-	for (int i = 0; i < chunk_data::NUMBER_OF_CHUNKS_X; i++) {
-		for (int j = 0; j < chunk_data::NUMBER_OF_CHUNKS_Y; j++) {
-			chunks[i][j] = Chunk{i, j, 0,data};
-		}
-	}
-	*/
 }
 
 ChunkManager::~ChunkManager()
@@ -42,3 +28,27 @@ ChunkManager::~ChunkManager()
 // ########################################################
 // Member Functions########################################
 // ########################################################
+
+char ChunkManager::getCubeId(int x, int y, int z)
+{
+	return 'l';
+}
+
+void ChunkManager::removeCube(int x, int y, int z)
+{
+	int chunkX = x / chunk_data::CHUNK_WIDHT;
+	int chunkY = y / chunk_data::CHUNK_HEIGHT;
+	int chunkZ = z / chunk_data::CHUNK_DEPTH;
+
+	int localX = x % chunk_data::CHUNK_WIDHT;
+	int localY = y % chunk_data::CHUNK_HEIGHT;
+	int localZ = z % chunk_data::CHUNK_DEPTH;
+
+	chunks[chunkX][chunkY][chunkZ]->removeCube(localX, localY, localZ);
+
+}
+
+void ChunkManager::addCube(int x, int y, int z, char id)
+{
+
+}

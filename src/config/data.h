@@ -18,6 +18,7 @@ namespace chunk_data
 
 	static constexpr int NUMBER_OF_CHUNKS_X = 4;
 	static constexpr int NUMBER_OF_CHUNKS_Y = 4;
+	static constexpr int NUMBER_OF_CHUNKS_Z = 4;
 
 }
 

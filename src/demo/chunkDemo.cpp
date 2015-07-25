@@ -18,7 +18,7 @@
 #include "../config/data.h"
 #include "../voxel.h"
 
-#include "../model/world/chunk/chunk.h"
+#include "../model/world/chunk/chunkManager.h"
 
 // ########################################################
 // Constructor/Destructor #################################
@@ -74,10 +74,8 @@ void ChunkDemo::runDemo()
 	float screenCenterX = WIDTH / 2;
 	float screenCenterY = HEIGHT / 2;
 
-	Chunk chunkMega{0, 0, 0};
-	Chunk chunkMega2{16, 0, 0};
-	Chunk chunkMega3{32, 0, 0};
-	Chunk chunkMega4{48, 0, 0};
+	ChunkManager::getInstance().removeCube(0,0,0);
+	ChunkManager::getInstance().removeCube(8,8,8);
 
 	while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0)	{
 

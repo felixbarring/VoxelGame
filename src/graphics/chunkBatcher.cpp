@@ -1,6 +1,7 @@
 
 #include "chunkBatcher.h"
 
+#include <iostream>
 #include <map>
 
 #include "shaderProgram.h"
@@ -29,7 +30,12 @@ void ChunkBatcher::addBatch(std::shared_ptr<GraphicalChunk> batch)
 
 void ChunkBatcher::removeBatch(std::shared_ptr<GraphicalChunk> batch)
 {
-	// TODO
+	for (int i = 0; i < batches.size(); i++) {
+		if (batches.at(i) == batch) {
+			batches.erase(batches.begin() + i);
+			return;
+		}
+	}
 }
 
 void ChunkBatcher::draw(Camera &camera)
