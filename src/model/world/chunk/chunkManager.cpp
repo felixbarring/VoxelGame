@@ -31,10 +31,23 @@ ChunkManager::~ChunkManager()
 
 char ChunkManager::getCubeId(int x, int y, int z)
 {
+	int chunkX = x / chunk_data::CHUNK_WIDHT;
+	int chunkY = y / chunk_data::CHUNK_HEIGHT;
+	int chunkZ = z / chunk_data::CHUNK_DEPTH;
+
+	int localX = x % chunk_data::CHUNK_WIDHT;
+	int localY = y % chunk_data::CHUNK_HEIGHT;
+	int localZ = z % chunk_data::CHUNK_DEPTH;
+
 	return 'l';
 }
 
 void ChunkManager::removeCube(int x, int y, int z)
+{
+	setCube(x, y, z, cube_data::AIR);
+}
+
+void ChunkManager::setCube(int x, int y, int z, char id)
 {
 	int chunkX = x / chunk_data::CHUNK_WIDHT;
 	int chunkY = y / chunk_data::CHUNK_HEIGHT;
@@ -44,11 +57,6 @@ void ChunkManager::removeCube(int x, int y, int z)
 	int localY = y % chunk_data::CHUNK_HEIGHT;
 	int localZ = z % chunk_data::CHUNK_DEPTH;
 
-	chunks[chunkX][chunkY][chunkZ]->removeCube(localX, localY, localZ);
-
+	chunks[chunkX][chunkY][chunkZ]->setCube(localX, localY, localZ, id);
 }
 
-void ChunkManager::addCube(int x, int y, int z, char id)
-{
-
-}

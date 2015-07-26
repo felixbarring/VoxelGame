@@ -8,7 +8,6 @@
 #include "chunk.h"
 #include "../../../config/data.h"
 
-
 class ChunkManager {
 private:
 
@@ -35,7 +34,7 @@ public:
 
 	void removeCube(int x, int y, int z);
 
-	void addCube(int x, int y, int z, char id);
+	void setCube(int x, int y, int z, char id);
 
 	// ########################################################
 	// Instance Variables #####################################

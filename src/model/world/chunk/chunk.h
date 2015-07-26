@@ -23,11 +23,13 @@ public:
 	// Member Functions########################################
 	// ########################################################
 
-
 	// Some kind of update method here
 
-	void removeCube(int x, int y, int z);
+	char getCubeId(int x, int y, int z);
 
+	bool isSolid(int x, int y, int z);
+
+	void setCube(int x, int y, int z, char id);
 
 	// ########################################################
 	// Instance Variables #####################################

@@ -1,26 +1,31 @@
 
-#ifndef SRC_MODEL_PLAYER_H_
-#define SRC_MODEL_PLAYER_H_
+#ifndef SRC_MODEL_COLLISION_AABB_H_
+#define SRC_MODEL_COLLISION_AABB_H_
 
-class Player {
+class AABB {
 public:
 
 	// ########################################################
 	// Constructor/Destructor #################################
 	// ########################################################
 
-	Player();
-	virtual ~Player();
+	AABB(double xMinimum, double xMaximum, double yMinimum, double yMaximum, double zMinimum, double zMaximum);
+	virtual ~AABB();
 
 	// ########################################################
 	// Member Functions########################################
 	// ########################################################
 
+	bool intersects(const AABB &that);
 
 	// ########################################################
 	// Instance Variables #####################################
 	// ########################################################
 
+private:
+
+	double xMin, xMax, yMin, yMax, zMin, zMax;
+
 };
 
-#endif /* SRC_MODEL_PLAYER_H_ */
+#endif /* SRC_MODEL_COLLISION_AABB_H_ */

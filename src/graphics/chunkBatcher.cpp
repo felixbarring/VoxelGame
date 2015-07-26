@@ -40,6 +40,7 @@ void ChunkBatcher::removeBatch(std::shared_ptr<GraphicalChunk> batch)
 
 void ChunkBatcher::draw(Camera &camera)
 {
+	// Should be some where else!
 
 	static const char *vertex =
 		"#version 330 core \n"

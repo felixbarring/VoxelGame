@@ -67,7 +67,7 @@ void CubeMapDemo::runDemo()
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
 
-    Camera camera(0.0f, 0.0f, 3.0f);
+    Camera& camera = Camera::getInstance();
 
     CubeMap skyBox{
     	"../resources/skybox/right.jpg",

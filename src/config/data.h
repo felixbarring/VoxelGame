@@ -61,6 +61,8 @@ namespace graphics_data
 	static int fps = 60;
 	static int windowWidth = 800;
 	static int windowHeight = 600;
+	static float fov = 80;
+
 }
 
 #endif /* SRC_CONFIG_DATA_H_ */

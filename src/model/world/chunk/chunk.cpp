@@ -40,11 +40,25 @@ Chunk::~Chunk()
 // Member Functions########################################
 // ########################################################
 
-void Chunk::removeCube(int x, int y, int z)
+char Chunk::getCubeId(int x, int y, int z)
 {
-	ChunkBatcher::getInstance().removeBatch(graphicalChunk);
+	return voxels[x][y][z].id;
+}
 
-	voxels[x][y][z].id = cube_data::AIR;
-	graphicalChunk.reset(new GraphicalChunk(xLocation, yLocation, zLocation, voxels));
-	ChunkBatcher::getInstance().addBatch(graphicalChunk);
+
+bool Chunk::isSolid(int x, int y, int z)
+{
+	// TODO Implement correctly
+	return true;
+}
+
+void Chunk::setCube(int x, int y, int z, char id)
+{
+	Voxel &voxel = voxels[x][y][z];
+	if (voxel.id != id) {
+		ChunkBatcher::getInstance().removeBatch(graphicalChunk);
+		voxel.id = id;
+		graphicalChunk.reset(new GraphicalChunk(xLocation, yLocation, zLocation, voxels));
+		ChunkBatcher::getInstance().addBatch(graphicalChunk);
+	}
 }

@@ -69,7 +69,7 @@ void ChunkDemo::runDemo()
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
 
-	Camera camera{0,0,0};
+	Camera& camera = Camera::getInstance();
 
 	float screenCenterX = WIDTH / 2;
 	float screenCenterY = HEIGHT / 2;
