@@ -38,7 +38,7 @@ void ChunkBatcher::removeBatch(std::shared_ptr<GraphicalChunk> batch)
 	}
 }
 
-void ChunkBatcher::draw(Camera &camera)
+void ChunkBatcher::draw()
 {
 	// Should be some where else!
 
@@ -86,6 +86,8 @@ void ChunkBatcher::draw(Camera &camera)
 	glActiveTexture(GL_TEXTURE0);
 	program.setUniformli("texture1", 0);
 	texture.bind();
+
+	Camera & camera = Camera::getInstance();
 
 	for (auto b : batches) {
 		glm::mat4 modelView = camera.getViewMatrix() * b->getTransform().getMatrix();

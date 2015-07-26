@@ -39,7 +39,7 @@ public:
 
 	void removeBatch(std::shared_ptr<GraphicalChunk> batch);
 
-	void draw(Camera &camera);
+	void draw();
 
 	// ########################################################
 	// Instance Variables #####################################

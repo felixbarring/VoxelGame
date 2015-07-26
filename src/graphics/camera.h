@@ -52,8 +52,7 @@ private:
 	float horizontalAngle = 3.0;
 	float verticalAngle = 0.0f;
 
-	// TODO Currently ugly hack
-	// Make it possible to change stuff, like fov
+	// TODO Make it possible to change stuff, like fov
 	float aspectRatio = graphics_data::windowWidth / graphics_data::windowHeight;
 	glm::mat4 projection = glm::perspective(graphics_data::fov, aspectRatio, 0.1f, 100.0f);
 
