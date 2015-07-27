@@ -1,6 +1,6 @@
 
-#ifndef SRC_MODEL_COLLISION_AABB_H_
-#define SRC_MODEL_COLLISION_AABB_H_
+#ifndef SRC_MODEL_WORLD_COLLISION_AABB_H_
+#define SRC_MODEL_WORLD_COLLISION_AABB_H_
 
 class AABB {
 public:
@@ -28,4 +28,4 @@ private:
 
 };
 
-#endif /* SRC_MODEL_COLLISION_AABB_H_ */
+#endif /* SRC_MODEL_WORLD_COLLISION_AABB_H_ */

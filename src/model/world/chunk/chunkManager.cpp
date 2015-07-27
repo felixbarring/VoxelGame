@@ -12,7 +12,7 @@ ChunkManager::ChunkManager()
 	int xMax = 1;
 	int yMax = 1;
 	int zMax = 1;
-	for (int x = 0; x < xMax; x++ ) {
+	for (int x = 0; x < xMax; x++) {
 		for (int y = 0; y < yMax; y++) {
 			for (int z = 0; z < zMax; z++) {
 				chunks[x][y][z] = std::unique_ptr<Chunk> ( new Chunk{x * chunk_data::CHUNK_WIDHT, y * chunk_data::CHUNK_HEIGHT, z * chunk_data::CHUNK_DEPTH});

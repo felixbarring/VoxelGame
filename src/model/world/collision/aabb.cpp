@@ -31,3 +31,4 @@ bool AABB::intersects(const AABB &that)
 		((this->yMin < that.yMin && this->yMax > that.yMin) || (this->yMin < that.yMax && this->yMax > that.yMax )) &&
 		((this->zMin < that.zMin && this->zMax > that.zMin) || (this->zMin < that.zMax && this->zMax > that.zMax ));
 }
+

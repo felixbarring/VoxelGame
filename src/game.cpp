@@ -11,6 +11,11 @@
 #include "util/fpsManager.h"
 #include "config/data.h"
 
+
+// ########################################################
+// Constructor/Destructor #################################
+// ########################################################
+
 Game::Game()
 {
 }
@@ -19,7 +24,9 @@ Game::~Game()
 {
 }
 
-GLFWwindow *window;
+// ########################################################
+// Member Functions########################################
+// ########################################################
 
 void Game::run()
 {
@@ -38,7 +45,7 @@ void Game::run()
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-	window = glfwCreateWindow(WIDTH, HEIGHT, "Game", nullptr, nullptr);
+	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Game", nullptr, nullptr);
 	if (window == NULL) {
 		fprintf(stderr, "Failed to open GLFW window.\n");
 		glfwTerminate();
@@ -52,10 +59,20 @@ void Game::run()
 	}
 
 	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+
+	float screenCenterX = WIDTH / 2.0;
+	float screenCenterY = HEIGHT / 2.0;
 
 	while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0) {
 
 		fpsManager.frameStart();
+
+		double xpos, ypos;
+		glfwGetCursorPos(window, &xpos, &ypos);
+		glfwSetCursorPos(window, screenCenterX, screenCenterY);
+
+		int state = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT);
 
 		// Do shit here
 

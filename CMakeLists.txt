@@ -33,7 +33,7 @@ aux_source_directory(src/config SRC_LIST8)
 aux_source_directory(src/model SRC_LIST9)
 aux_source_directory(src/model/world/chunk SRC_LIST10)
 aux_source_directory(src/model/world/terrainGeneration SRC_LIST11)
-aux_source_directory(src/model/physics/collision SRC_LIS12)
+aux_source_directory(src/model/world/collision SRC_LIS12)
 
 
 # Add executable to project

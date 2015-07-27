@@ -2,6 +2,8 @@
 #ifndef SRC_CONFIG_DATA_H_
 #define SRC_CONFIG_DATA_H_
 
+#include <GL/glew.h>
+
 #include <vector>
 #include <string>
 
@@ -62,6 +64,26 @@ namespace graphics_data
 	static int windowWidth = 800;
 	static int windowHeight = 600;
 	static float fov = 80;
+
+}
+
+
+namespace input_data
+{
+
+	// Keyboard #####################################################
+
+	static int moveForwardButton = GLFW_KEY_W;
+	static int moveLeftButton = GLFW_KEY_A;
+	static int moveRightButton = GLFW_KEY_D;
+	static int moveBackwardButton = GLFW_KEY_S;
+
+	static int jumpButton = GLFW_KEY_SPACE;
+
+	// Mouse ########################################################
+
+	static int action1 = GLFW_MOUSE_BUTTON_1;
+	static int action2 = GLFW_MOUSE_BUTTON_2;
 
 }
 

@@ -5,7 +5,10 @@
 // Constructor/Destructor #################################
 // ########################################################
 
-Player::Player()
+Player::Player():
+	xLocation{0},
+	yLocation{0},
+	zLocation{0}
 {
 }
 

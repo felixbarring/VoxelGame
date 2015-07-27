@@ -24,6 +24,8 @@ public:
 // Instance Variables #####################################
 // ########################################################
 
+	float xLocation, yLocation, zLocation;
+
 };
 
 #endif /* SRC_MODEL_ENTITY_PLAYER_H_ */

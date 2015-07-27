@@ -63,6 +63,8 @@ void ChunkDemo::runDemo()
 		fprintf(stderr, "Failed to initialize GLEW\n");
 	}
 
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+
 	glViewport(0, 0, WIDTH, HEIGHT);
 	glClearColor(0.2f, 0.22f, 0.2f, 1.0f);
 
@@ -71,8 +73,8 @@ void ChunkDemo::runDemo()
 
 	Camera& camera = Camera::getInstance();
 
-	float screenCenterX = WIDTH / 2;
-	float screenCenterY = HEIGHT / 2;
+	float screenCenterX = WIDTH / 2.0;
+	float screenCenterY = HEIGHT / 2.0;
 
 	Chunk chunk{0,0,0};
 
