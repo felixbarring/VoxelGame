@@ -3,6 +3,7 @@
 #define SRC_CONFIG_DATA_H_
 
 #include <GL/glew.h>
+#include <GLFW/glfw3.h>
 
 #include <vector>
 #include <string>
@@ -60,6 +61,7 @@ namespace cube_data
 
 namespace graphics_data
 {
+
 	static int fps = 60;
 	static int windowWidth = 800;
 	static int windowHeight = 600;
@@ -82,8 +84,8 @@ namespace input_data
 
 	// Mouse ########################################################
 
-	static int action1 = GLFW_MOUSE_BUTTON_1;
-	static int action2 = GLFW_MOUSE_BUTTON_2;
+	static int action1Button = GLFW_MOUSE_BUTTON_LEFT;
+	static int action2Button = GLFW_MOUSE_BUTTON_RIGHT;
 
 }
 

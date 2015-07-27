@@ -6,10 +6,14 @@
 #include <iostream>
 #include <chrono>
 #include <thread>
+
 #include <GL/glew.h>
-#include <glfw3.h>
+#include <GLFW/glfw3.h>
+
 #include "util/fpsManager.h"
 #include "config/data.h"
+
+#include "util/input.h"
 
 
 // ########################################################
@@ -72,9 +76,25 @@ void Game::run()
 		glfwGetCursorPos(window, &xpos, &ypos);
 		glfwSetCursorPos(window, screenCenterX, screenCenterY);
 
-		int state = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT);
+		glfwPollEvents();
 
-		// Do shit here
+		input::setAllTo(false);
+
+		// Keyboard
+		input::moveForward = glfwGetKey(window, input_data::moveForwardButton) == GLFW_PRESS;
+		input::moveLeft = glfwGetKey(window, input_data::moveLeftButton) == GLFW_PRESS;
+		input::moveRight = glfwGetKey(window, input_data::moveRightButton) == GLFW_PRESS;
+		input::moveBackward = glfwGetKey(window, input_data::moveBackwardButton) == GLFW_PRESS;
+		input::jump = glfwGetKey(window, input_data::jumpButton) == GLFW_PRESS;
+
+		// Mouse
+		input::action1 = glfwGetMouseButton(window, input_data::action1Button) == GLFW_PRESS;
+		input::action2 = glfwGetMouseButton(window, input_data::action1Button) == GLFW_PRESS;
+
+
+
+		// Do shit here!
+
 
 		fpsManager.sync();
 
