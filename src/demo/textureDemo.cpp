@@ -38,7 +38,7 @@ TextureDemo::~TextureDemo()
 void TextureDemo::runDemo()
 {
 
-	FPSManager fpsManager(60);
+	util::FPSManager fpsManager(60);
 	const GLuint WIDTH = 800, HEIGHT = 600;
 
 	if (!glfwInit()) {

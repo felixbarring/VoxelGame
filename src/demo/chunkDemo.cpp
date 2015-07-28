@@ -38,7 +38,7 @@ ChunkDemo::~ChunkDemo()
 
 void ChunkDemo::runDemo()
 {
-	FPSManager fpsManager(100);
+	util::FPSManager fpsManager(100);
 	const GLuint WIDTH = 800, HEIGHT = 600;
 
 	if (!glfwInit()) {
@@ -78,8 +78,8 @@ void ChunkDemo::runDemo()
 
 	Chunk chunk{0,0,0};
 
-	chunk.setCube(0,0,0, cube_data::AIR);
-	chunk.setCube(8,8,8, cube_data::AIR);
+	chunk.setCube(0,0,0, config::cube_data::AIR);
+	chunk.setCube(8,8,8, config::cube_data::AIR);
 
 	while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0)	{
 

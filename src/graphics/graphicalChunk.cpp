@@ -13,7 +13,7 @@
 // ########################################################
 
 GraphicalChunk::GraphicalChunk(int x, int y, int z,
-		Voxel data[chunk_data::GRAPHICAL_CHUNK_WIDTH][chunk_data::GRAPHICAL_CHUNK_HEIGHT][chunk_data::GRAPHICAL_CHUNK_DEPTH]):
+		Voxel data[config::chunk_data::GRAPHICAL_CHUNK_WIDTH][config::chunk_data::GRAPHICAL_CHUNK_HEIGHT][config::chunk_data::GRAPHICAL_CHUNK_DEPTH]):
 xLocation{x},
 yLocation{y},
 zLocation{z},
@@ -45,7 +45,7 @@ transform{x, y, z}
 
 				CubeFaceData& current = faceData[i][j][k];
 
-				if (current.id == cube_data::AIR) {
+				if (current.id == config::cube_data::AIR) {
 					current.front = false;
 					current.back = false;
 					current.left = false;
@@ -60,7 +60,7 @@ transform{x, y, z}
 
 				if (i != width - 1) {
 					CubeFaceData& right = faceData[i + 1][j][k];
-					if (right.id != cube_data::AIR) {
+					if (right.id != config::cube_data::AIR) {
 						current.right = false;
 						right.left = false;
 					}
@@ -68,7 +68,7 @@ transform{x, y, z}
 
 				if (j != height - 1) {
 					CubeFaceData& up = faceData[i][j + 1][k];
-					if (up.id != cube_data::AIR) {
+					if (up.id != config::cube_data::AIR) {
 						current.top = false;
 						up.bottom = false;
 					}
@@ -76,7 +76,7 @@ transform{x, y, z}
 
 				if (k != depth - 1) {
 					CubeFaceData& back = faceData[i][j][k + 1];
-					if (back.id != cube_data::AIR) {
+					if (back.id != config::cube_data::AIR) {
 						current.back = false;
 						back.front = false;
 					}
@@ -102,9 +102,9 @@ transform{x, y, z}
 
 				int id = fd.id;
 
-				GLfloat sideTexture = cube_data::BLOCK_TEXTURES[id][cube_data::SIDE_TEXTURE];
-				GLfloat topTexture = cube_data::BLOCK_TEXTURES[id][cube_data::TOP_TEXTURE];
-				GLfloat bottomTexture = cube_data::BLOCK_TEXTURES[id][cube_data::BOTTOM_TEXTURE];
+				GLfloat sideTexture = config::cube_data::BLOCK_TEXTURES[id][config::cube_data::SIDE_TEXTURE];
+				GLfloat topTexture =config::cube_data::BLOCK_TEXTURES[id][config::cube_data::TOP_TEXTURE];
+				GLfloat bottomTexture = config::cube_data::BLOCK_TEXTURES[id][config::cube_data::BOTTOM_TEXTURE];
 
 				if (fd.front) {
 

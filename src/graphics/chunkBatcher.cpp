@@ -30,6 +30,7 @@ void ChunkBatcher::addBatch(std::shared_ptr<GraphicalChunk> batch)
 
 void ChunkBatcher::removeBatch(std::shared_ptr<GraphicalChunk> batch)
 {
+	// TODO Bla bla bla
 	for (int i = 0; i < batches.size(); i++) {
 		if (batches.at(i) == batch) {
 			batches.erase(batches.begin() + i);
@@ -79,7 +80,7 @@ void ChunkBatcher::draw()
 	};
 
 	static ShaderProgram program(vertex, fragment, attributesMap);
-	static TextureArray texture{cube_data::textures, cube_data::TEXTURE_WIDTH, cube_data::TEXTURE_HEIGHT};
+	static TextureArray texture{config::cube_data::textures, config::cube_data::TEXTURE_WIDTH, config::cube_data::TEXTURE_HEIGHT};
 
 	program.bind();
 

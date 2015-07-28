@@ -15,9 +15,9 @@ Chunk::Chunk(int x, int y, int z):
 	int counter = 1;
 	const int maxCount = 4;
 
-	for (int i = 0; i < chunk_data::CHUNK_WIDHT; i++) {
-		for (int j = 0; j < chunk_data::CHUNK_HEIGHT; j++) {
-			for (int k = 0; k < chunk_data::CHUNK_DEPTH; k++) {
+	for (int i = 0; i < config::chunk_data::CHUNK_WIDHT; i++) {
+		for (int j = 0; j < config::chunk_data::CHUNK_HEIGHT; j++) {
+			for (int k = 0; k < config::chunk_data::CHUNK_DEPTH; k++) {
 				Voxel v;
 				v.id = counter++;
 				voxels[i][j][k] = v;

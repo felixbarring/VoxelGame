@@ -53,8 +53,9 @@ private:
 	float verticalAngle = 0.0f;
 
 	// TODO Make it possible to change stuff, like fov
-	float aspectRatio = graphics_data::windowWidth / graphics_data::windowHeight;
-	glm::mat4 projection = glm::perspective(graphics_data::fov, aspectRatio, 0.1f, 100.0f);
+	// TODO Should not really use config ...
+	float aspectRatio = config::graphics_data::windowWidth / config::graphics_data::windowHeight;
+	glm::mat4 projection = glm::perspective(config::graphics_data::fov, aspectRatio, 0.1f, 100.0f);
 
     // Camera options
     GLfloat inputSensX = 0.01;

@@ -90,9 +90,9 @@ TexturedCube::TexturedCube(float xOffset, float yOffset, float zOffset, int id):
 	};
 
 
-	GLfloat sideTexture = cube_data::BLOCK_TEXTURES[id][cube_data::SIDE_TEXTURE];
-	GLfloat topTexture = cube_data::BLOCK_TEXTURES[id][cube_data::TOP_TEXTURE];
-	GLfloat bottomTexture = cube_data::BLOCK_TEXTURES[id][cube_data::BOTTOM_TEXTURE];
+	GLfloat sideTexture = config::cube_data::BLOCK_TEXTURES[id][config::cube_data::SIDE_TEXTURE];
+	GLfloat topTexture = config::cube_data::BLOCK_TEXTURES[id][config::cube_data::TOP_TEXTURE];
+	GLfloat bottomTexture = config::cube_data::BLOCK_TEXTURES[id][config::cube_data::BOTTOM_TEXTURE];
 
 
 	std::vector<GLfloat> UV {

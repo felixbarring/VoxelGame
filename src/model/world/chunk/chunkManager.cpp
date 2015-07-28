@@ -15,7 +15,7 @@ ChunkManager::ChunkManager()
 	for (int x = 0; x < xMax; x++) {
 		for (int y = 0; y < yMax; y++) {
 			for (int z = 0; z < zMax; z++) {
-				chunks[x][y][z] = std::unique_ptr<Chunk> ( new Chunk{x * chunk_data::CHUNK_WIDHT, y * chunk_data::CHUNK_HEIGHT, z * chunk_data::CHUNK_DEPTH});
+				chunks[x][y][z] = std::unique_ptr<Chunk> ( new Chunk{x * config::chunk_data::CHUNK_WIDHT, y * config::chunk_data::CHUNK_HEIGHT, z * config::chunk_data::CHUNK_DEPTH});
 			}
 		}
 	}
@@ -31,31 +31,31 @@ ChunkManager::~ChunkManager()
 
 char ChunkManager::getCubeId(int x, int y, int z)
 {
-	int chunkX = x / chunk_data::CHUNK_WIDHT;
-	int chunkY = y / chunk_data::CHUNK_HEIGHT;
-	int chunkZ = z / chunk_data::CHUNK_DEPTH;
+	int chunkX = x / config::chunk_data::CHUNK_WIDHT;
+	int chunkY = y / config::chunk_data::CHUNK_HEIGHT;
+	int chunkZ = z / config::chunk_data::CHUNK_DEPTH;
 
-	int localX = x % chunk_data::CHUNK_WIDHT;
-	int localY = y % chunk_data::CHUNK_HEIGHT;
-	int localZ = z % chunk_data::CHUNK_DEPTH;
+	int localX = x % config::chunk_data::CHUNK_WIDHT;
+	int localY = y % config::chunk_data::CHUNK_HEIGHT;
+	int localZ = z % config::chunk_data::CHUNK_DEPTH;
 
 	return 'l';
 }
 
 void ChunkManager::removeCube(int x, int y, int z)
 {
-	setCube(x, y, z, cube_data::AIR);
+	setCube(x, y, z, config::cube_data::AIR);
 }
 
 void ChunkManager::setCube(int x, int y, int z, char id)
 {
-	int chunkX = x / chunk_data::CHUNK_WIDHT;
-	int chunkY = y / chunk_data::CHUNK_HEIGHT;
-	int chunkZ = z / chunk_data::CHUNK_DEPTH;
+	int chunkX = x / config::chunk_data::CHUNK_WIDHT;
+	int chunkY = y / config::chunk_data::CHUNK_HEIGHT;
+	int chunkZ = z / config::chunk_data::CHUNK_DEPTH;
 
-	int localX = x % chunk_data::CHUNK_WIDHT;
-	int localY = y % chunk_data::CHUNK_HEIGHT;
-	int localZ = z % chunk_data::CHUNK_DEPTH;
+	int localX = x % config::chunk_data::CHUNK_WIDHT;
+	int localY = y % config::chunk_data::CHUNK_HEIGHT;
+	int localZ = z % config::chunk_data::CHUNK_DEPTH;
 
 	chunks[chunkX][chunkY][chunkZ]->setCube(localX, localY, localZ, id);
 }

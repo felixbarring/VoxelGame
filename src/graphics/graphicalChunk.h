@@ -22,7 +22,7 @@ public:
 // ########################################################
 
 	GraphicalChunk(int x, int y, int z,
-			Voxel data[chunk_data::GRAPHICAL_CHUNK_WIDTH][chunk_data::GRAPHICAL_CHUNK_HEIGHT][chunk_data::GRAPHICAL_CHUNK_DEPTH]);
+			Voxel data[config::chunk_data::GRAPHICAL_CHUNK_WIDTH][config::chunk_data::GRAPHICAL_CHUNK_HEIGHT][config::chunk_data::GRAPHICAL_CHUNK_DEPTH]);
 	virtual ~GraphicalChunk();
 
 // ########################################################
@@ -47,9 +47,9 @@ private:
 	float yLocation;
 	float zLocation;
 
-	int width = chunk_data::GRAPHICAL_CHUNK_WIDTH;
-	int height = chunk_data::GRAPHICAL_CHUNK_HEIGHT;
-	int depth = chunk_data::GRAPHICAL_CHUNK_DEPTH;
+	int width = config::chunk_data::GRAPHICAL_CHUNK_WIDTH;
+	int height = config::chunk_data::GRAPHICAL_CHUNK_HEIGHT;
+	int depth = config::chunk_data::GRAPHICAL_CHUNK_DEPTH;
 
 	Transform transform;
 };

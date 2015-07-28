@@ -36,7 +36,7 @@ CubeMapDemo::~CubeMapDemo()
 void CubeMapDemo::runDemo()
 {
 
-	FPSManager fpsManager(100);
+	util::FPSManager fpsManager(100);
 	const GLuint WIDTH = 800, HEIGHT = 600;
 
 	if (!glfwInit()) {

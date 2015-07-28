@@ -35,7 +35,7 @@ CubeDemo::~CubeDemo()
 void CubeDemo::runDemo()
 {
 
-	FPSManager fpsManager(100);
+	util::FPSManager fpsManager(100);
 	const GLuint WIDTH = 800, HEIGHT = 600;
 
 	if (!glfwInit()) {
@@ -110,7 +110,7 @@ void CubeDemo::runDemo()
 	TexturedCube texturedCube2{0, 0, -1.0f, 1};
 	TexturedCube texturedCube3{-2, 0, -1.0f, 2};
 
-	TextureArray texture(cube_data::textures, cube_data::TEXTURE_WIDTH, cube_data::TEXTURE_HEIGHT);
+	TextureArray texture(config::cube_data::textures, config::cube_data::TEXTURE_WIDTH, config::cube_data::TEXTURE_HEIGHT);
 
 	float aspectRatio = 800 / 600;
 	glm::mat4 Projection = glm::perspective(80.0f, aspectRatio, 0.1f, 100.0f);

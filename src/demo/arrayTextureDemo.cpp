@@ -41,7 +41,7 @@ ArrayTextureDemo::~ArrayTextureDemo()
 void ArrayTextureDemo::runDemo()
 {
 
-	FPSManager fpsManager(60);
+	util::FPSManager fpsManager(60);
 	const GLuint WIDTH = 800, HEIGHT = 600;
 
 	if (!glfwInit()) {
@@ -152,7 +152,7 @@ void ArrayTextureDemo::runDemo()
 
 	MeshVT mesh{vertices, 3, texCoords, 3, indices};
 
-	TextureArray texture{cube_data::textures, cube_data::TEXTURE_WIDTH, cube_data::TEXTURE_HEIGHT};
+	TextureArray texture{config::cube_data::textures, config::cube_data::TEXTURE_WIDTH, config::cube_data::TEXTURE_HEIGHT};
 
 	while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0)	{
 

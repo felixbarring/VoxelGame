@@ -1,6 +1,8 @@
 
 #include "player.h"
 
+#include "../../../util/input.h"
+
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
@@ -22,5 +24,4 @@ Player::~Player()
 
 void Player::update(float timePassed)
 {
-
 }

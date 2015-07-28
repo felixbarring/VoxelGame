@@ -42,7 +42,7 @@ public:
 
 private:
 
-	std::unique_ptr<Chunk> chunks[chunk_data::NUMBER_OF_CHUNKS_X][chunk_data::NUMBER_OF_CHUNKS_Y][chunk_data::NUMBER_OF_CHUNKS_Z];
+	std::unique_ptr<Chunk> chunks[config::chunk_data::NUMBER_OF_CHUNKS_X][config::chunk_data::NUMBER_OF_CHUNKS_Y][config::chunk_data::NUMBER_OF_CHUNKS_Z];
 
 };
 

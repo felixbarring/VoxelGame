@@ -35,9 +35,9 @@ Game::~Game()
 void Game::run()
 {
 
-	FPSManager fpsManager(graphics_data::fps);
-	const int WIDTH = graphics_data::windowWidth;
-	const int HEIGHT = graphics_data::windowHeight;
+	util::FPSManager fpsManager(config::graphics_data::fps);
+	const int WIDTH = config::graphics_data::windowWidth;
+	const int HEIGHT = config::graphics_data::windowHeight;
 
 	if (!glfwInit()) {
 		fprintf(stderr, "Failed to initialize GLFW\n");
@@ -65,36 +65,15 @@ void Game::run()
 	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 
-	float screenCenterX = WIDTH / 2.0;
-	float screenCenterY = HEIGHT / 2.0;
+	// Input::createInstance(window, WIDTH / 2.0, WIDTH / 2.0);
 
 	while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0) {
 
 		fpsManager.frameStart();
 
-		double xpos, ypos;
-		glfwGetCursorPos(window, &xpos, &ypos);
-		glfwSetCursorPos(window, screenCenterX, screenCenterY);
-
 		glfwPollEvents();
 
-		input::setAllTo(false);
-
-		// Keyboard
-		input::moveForward = glfwGetKey(window, input_data::moveForwardButton) == GLFW_PRESS;
-		input::moveLeft = glfwGetKey(window, input_data::moveLeftButton) == GLFW_PRESS;
-		input::moveRight = glfwGetKey(window, input_data::moveRightButton) == GLFW_PRESS;
-		input::moveBackward = glfwGetKey(window, input_data::moveBackwardButton) == GLFW_PRESS;
-		input::jump = glfwGetKey(window, input_data::jumpButton) == GLFW_PRESS;
-
-		// Mouse
-		input::action1 = glfwGetMouseButton(window, input_data::action1Button) == GLFW_PRESS;
-		input::action2 = glfwGetMouseButton(window, input_data::action1Button) == GLFW_PRESS;
-
-
-
 		// Do shit here!
-
 
 		fpsManager.sync();
 
@@ -103,7 +82,4 @@ void Game::run()
 	}
 	glfwTerminate();
 }
-
-
-
 

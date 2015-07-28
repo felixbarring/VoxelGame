@@ -2,8 +2,29 @@
 #ifndef SRC_UTIL_INPUT_H_
 #define SRC_UTIL_INPUT_H_
 
-namespace input
+namespace util
 {
+
+class Input {
+
+	// ########################################################
+	// Constructor/Destructor #################################
+	// ########################################################
+
+	Input(GLFWwindow* w, float centerX, float centerY);
+	virtual ~Input();
+
+	// ########################################################
+	// Member Functions########################################
+	// ########################################################
+
+	void updateValues();
+
+	// ########################################################
+	// Instance Variables #####################################
+	// ########################################################
+
+	// Keyboard
 
 	static bool moveForward;
 	static bool moveLeft;
@@ -12,21 +33,22 @@ namespace input
 
 	static bool jump;
 
-	// Mouse ########################################################
+	// Mouse
 
 	static bool action1;
 	static bool action2;
 
-	static void setAllTo(bool value)
-	{
-		bool moveForward = value;
-		bool moveLeft = value;
-		bool moveRight = value;
-		bool moveBackward = value;
-		bool jump = value;
-		bool action1 = value;
-		bool action2 = value;
-	}
+	static float mouseXMovement;
+	static float mouseYMovement;
+
+private:
+
+	static GLFWwindow* window;
+
+	float screenCenterX;
+	float screenCenterY;
+
+};
 
 }
 

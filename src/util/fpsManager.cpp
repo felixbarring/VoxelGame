@@ -5,6 +5,10 @@
 #include <chrono>
 #include <thread>
 
+namespace util
+{
+
+
 std::chrono::milliseconds oneMilliSecond(1);
 
 // ########################################################
@@ -54,4 +58,5 @@ void FPSManager::sync()
 
 	//std::cout << fps << "\n";
 
+}
 }

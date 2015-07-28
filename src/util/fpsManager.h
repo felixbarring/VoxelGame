@@ -5,6 +5,9 @@
 #include <chrono>
 #include <thread>
 
+namespace util
+{
+
 class FPSManager {
 public:
 // ########################################################
@@ -30,4 +33,5 @@ private:
 	const double mili = 0.001;
 };
 
+}
 #endif /* SRC_UTIL_FPSMANAGER_H_ */
