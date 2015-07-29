@@ -4,6 +4,9 @@
 
 #include <GL/glew.h>
 
+namespace texture
+{
+
 class Texture {
 public:
 
@@ -30,5 +33,7 @@ private:
 	GLuint textureID;
 
 };
+
+}
 
 #endif /* SRC_GRAPHICS_TEXTURE_H_ */

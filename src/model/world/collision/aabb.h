@@ -2,6 +2,9 @@
 #ifndef SRC_MODEL_WORLD_COLLISION_AABB_H_
 #define SRC_MODEL_WORLD_COLLISION_AABB_H_
 
+namespace collision
+{
+
 class AABB {
 public:
 
@@ -27,5 +30,7 @@ private:
 	double xMin, xMax, yMin, yMax, zMin, zMax;
 
 };
+
+}
 
 #endif /* SRC_MODEL_WORLD_COLLISION_AABB_H_ */

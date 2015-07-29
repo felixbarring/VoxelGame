@@ -104,13 +104,13 @@ void CubeDemo::runDemo()
 		std::pair<std::string, int>("texCoordIn", 2)
 	};
 
-	ShaderProgram program(vertex, fragment, attributesMap);
+	graphics::ShaderProgram program(vertex, fragment, attributesMap);
 
-	TexturedCube texturedCube{2, 0, -1.0f, 0};
-	TexturedCube texturedCube2{0, 0, -1.0f, 1};
-	TexturedCube texturedCube3{-2, 0, -1.0f, 2};
+	graphics::TexturedCube texturedCube{2, 0, -1.0f, 0};
+	graphics::TexturedCube texturedCube2{0, 0, -1.0f, 1};
+	graphics::TexturedCube texturedCube3{-2, 0, -1.0f, 2};
 
-	TextureArray texture(config::cube_data::textures, config::cube_data::TEXTURE_WIDTH, config::cube_data::TEXTURE_HEIGHT);
+	texture::TextureArray texture(config::cube_data::textures, config::cube_data::TEXTURE_WIDTH, config::cube_data::TEXTURE_HEIGHT);
 
 	float aspectRatio = 800 / 600;
 	glm::mat4 Projection = glm::perspective(80.0f, aspectRatio, 0.1f, 100.0f);

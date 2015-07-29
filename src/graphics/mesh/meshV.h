@@ -7,6 +7,9 @@
 
 #include "iMesh.h"
 
+namespace mesh
+{
+
 class MeshV : public virtual IMesh{
 public:
 
@@ -34,5 +37,7 @@ private:
 	GLuint EBO;
 	int numberOfElements;
 };
+
+}
 
 #endif /* SRC_GRAPHICS_MESH_MESHV_H_ */

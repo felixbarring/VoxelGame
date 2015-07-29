@@ -6,6 +6,9 @@
 #include <vector>
 #include "iMesh.h"
 
+namespace mesh
+{
+
 class MeshVNT: public virtual IMesh {
 public:
 
@@ -38,5 +41,7 @@ private:
 	GLuint EBO;
 	int numberOfElements;
 };
+
+}
 
 #endif /* SRC_GRAPHICS_TEXTUREDMESH_H_ */

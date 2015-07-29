@@ -3,6 +3,9 @@
 
 #include <SOIL.h>
 
+namespace texture
+{
+
 static GLuint targets[] = {
 	GL_TEXTURE_CUBE_MAP_POSITIVE_X,
 	GL_TEXTURE_CUBE_MAP_NEGATIVE_X,
@@ -50,4 +53,6 @@ TextureCubeMap::~TextureCubeMap()
 void TextureCubeMap::bind()
 {
 	glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
+}
+
 }

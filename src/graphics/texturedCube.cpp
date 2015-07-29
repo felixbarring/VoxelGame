@@ -7,6 +7,9 @@
 
 #include "../config/data.h"
 
+namespace graphics
+{
+
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
@@ -143,7 +146,7 @@ TexturedCube::TexturedCube(float xOffset, float yOffset, float zOffset, int id):
 		0+20, 1+20, 2+20, 0+20, 2+20, 3+20,
 	};
 
-	mesh = new MeshVNT(vertexData, 3, normals, 3, UV, 3, elementData);
+	mesh = new mesh::MeshVNT(vertexData, 3, normals, 3, UV, 3, elementData);
 
 }
 
@@ -158,5 +161,7 @@ TexturedCube::~TexturedCube()
 void TexturedCube::draw()
 {
 	mesh->render();
+}
+
 }
 

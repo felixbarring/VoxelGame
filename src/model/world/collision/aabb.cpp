@@ -1,6 +1,9 @@
 
 #include "aabb.h"
 
+namespace collision
+{
+
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
@@ -32,3 +35,4 @@ bool AABB::intersects(const AABB &that)
 		((this->zMin < that.zMin && this->zMax > that.zMin) || (this->zMin < that.zMax && this->zMax > that.zMax ));
 }
 
+}

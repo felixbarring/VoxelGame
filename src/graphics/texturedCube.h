@@ -5,6 +5,9 @@
 #include "mesh/meshVNT.h"
 #include "transform.h"
 
+namespace graphics
+{
+
 class TexturedCube {
 public:
 
@@ -32,12 +35,14 @@ public:
 // ########################################################
 
 private:
-	MeshVNT *mesh;
+	mesh::MeshVNT *mesh;
 	float xLocation;
 	float yLocation;
 	float zLocation;
 
 	Transform transform;
 };
+
+}
 
 #endif /* GAME_MODEL_ENTITIES_CUBE_H_ */

@@ -7,6 +7,10 @@
 #include "shaderProgram.h"
 #include "texture/textureArray.h"
 
+namespace graphics
+{
+
+
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
@@ -80,7 +84,7 @@ void ChunkBatcher::draw()
 	};
 
 	static ShaderProgram program(vertex, fragment, attributesMap);
-	static TextureArray texture{config::cube_data::textures, config::cube_data::TEXTURE_WIDTH, config::cube_data::TEXTURE_HEIGHT};
+	static texture::TextureArray texture{config::cube_data::textures, config::cube_data::TEXTURE_WIDTH, config::cube_data::TEXTURE_HEIGHT};
 
 	program.bind();
 
@@ -98,3 +102,7 @@ void ChunkBatcher::draw()
 	}
 
 }
+
+
+}
+

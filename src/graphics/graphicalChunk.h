@@ -8,6 +8,8 @@
 #include "../config/data.h"
 #include "../voxel.h"
 
+namespace graphics
+{
 
 struct CubeFaceData {
 	int id;
@@ -42,7 +44,7 @@ public:
 // ########################################################
 
 private:
-	MeshVNT *mesh;
+	mesh::MeshVNT *mesh;
 	float xLocation;
 	float yLocation;
 	float zLocation;
@@ -53,5 +55,7 @@ private:
 
 	Transform transform;
 };
+
+}
 
 #endif /* SRC_GRAPHICS_GRAPHICALCHUNK_H_ */

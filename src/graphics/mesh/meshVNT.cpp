@@ -4,6 +4,8 @@
 #include <GL/glew.h>
 #include <vector>
 
+namespace mesh
+{
 
 // ########################################################
 // Constructor/Destructor #################################
@@ -84,5 +86,7 @@ void MeshVNT::render()
 	glDisableVertexAttribArray(2);
 
 	glBindVertexArray(0);
+}
+
 }
 

@@ -8,6 +8,8 @@
 #include <glm/glm.hpp>
 #include "shaderProgram.h"
 
+namespace graphics
+{
 
 // ########################################################
 // Constructor/Destructor #################################
@@ -175,5 +177,7 @@ void ShaderProgram::bind()
 void ShaderProgram::unbind()
 {
     glUseProgram(0);
+}
+
 }
 

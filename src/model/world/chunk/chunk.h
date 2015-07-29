@@ -9,6 +9,9 @@
 #include "../../../voxel.h"
 #include "../../../graphics/graphicalChunk.h"
 
+namespace chunk
+{
+
 class Chunk {
 public:
 
@@ -37,8 +40,10 @@ public:
 
 	int xLocation, yLocation, zLocation;
 	Voxel voxels[config::chunk_data::CHUNK_WIDHT][config::chunk_data::CHUNK_HEIGHT][config::chunk_data::CHUNK_DEPTH];
-	std::shared_ptr<GraphicalChunk> graphicalChunk;
+	std::shared_ptr<graphics::GraphicalChunk> graphicalChunk;
 
 };
+
+}
 
 #endif /* SRC_MODEL_WORLD_CHUNK_CHUNK_H_ */

@@ -8,7 +8,7 @@ class IWorldObject {
 	virtual ~IWorldObject();
 
 	virtual void update(float timePassed);
-
+	
 };
 
 

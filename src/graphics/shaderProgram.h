@@ -6,6 +6,9 @@
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 
+namespace graphics
+{
+
 class ShaderProgram {
 public :
 
@@ -57,5 +60,7 @@ private :
 	std::map<std::string, int> uniforms;
 
 };
+
+}
 
 #endif

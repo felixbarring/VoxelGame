@@ -5,6 +5,9 @@
 #include "texture/textureCubeMap.h"
 #include "camera.h"
 
+namespace graphics
+{
+
 class CubeMap {
 public:
 
@@ -25,8 +28,10 @@ public:
 	// Instance Variables #####################################
 	// ########################################################
 
-	TextureCubeMap texture;
+	texture::TextureCubeMap texture;
 
 };
+
+}
 
 #endif /* SRC_GRAPHICS_CUBEMAP_H_ */

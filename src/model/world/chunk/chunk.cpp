@@ -3,6 +3,9 @@
 
 #include "../../../graphics/chunkBatcher.h"
 
+namespace chunk
+{
+
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
@@ -28,8 +31,8 @@ Chunk::Chunk(int x, int y, int z):
 		}
 	}
 
-	graphicalChunk.reset(new GraphicalChunk(x,y,z, voxels));
-	ChunkBatcher::getInstance().addBatch(graphicalChunk);
+	graphicalChunk.reset(new graphics::GraphicalChunk(x,y,z, voxels));
+	graphics::ChunkBatcher::getInstance().addBatch(graphicalChunk);
 }
 
 Chunk::~Chunk()
@@ -56,9 +59,11 @@ void Chunk::setCube(int x, int y, int z, char id)
 {
 	Voxel &voxel = voxels[x][y][z];
 	if (voxel.id != id) {
-		ChunkBatcher::getInstance().removeBatch(graphicalChunk);
+		graphics::ChunkBatcher::getInstance().removeBatch(graphicalChunk);
 		voxel.id = id;
-		graphicalChunk.reset(new GraphicalChunk(xLocation, yLocation, zLocation, voxels));
-		ChunkBatcher::getInstance().addBatch(graphicalChunk);
+		graphicalChunk.reset(new graphics::GraphicalChunk(xLocation, yLocation, zLocation, voxels));
+		graphics::ChunkBatcher::getInstance().addBatch(graphicalChunk);
 	}
+}
+
 }

@@ -3,6 +3,9 @@
 #include <vector>
 #include <GL/glew.h>
 
+namespace mesh
+{
+
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
@@ -64,6 +67,8 @@ void MeshVT::render()
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
 	glBindVertexArray(0);
+}
+
 }
 
 

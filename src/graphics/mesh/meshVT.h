@@ -7,6 +7,9 @@
 
 #include "iMesh.h"
 
+namespace mesh
+{
+
 class MeshVT: public virtual IMesh {
 public:
 
@@ -36,5 +39,7 @@ private:
 	GLuint EBO;
 	int numberOfElements;
 };
+
+}
 
 #endif /* GAME_MODEL_MESH_H_ */

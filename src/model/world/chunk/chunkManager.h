@@ -8,6 +8,9 @@
 #include "chunk.h"
 #include "../../../config/data.h"
 
+namespace chunk
+{
+
 class ChunkManager {
 private:
 
@@ -45,5 +48,7 @@ private:
 	std::unique_ptr<Chunk> chunks[config::chunk_data::NUMBER_OF_CHUNKS_X][config::chunk_data::NUMBER_OF_CHUNKS_Y][config::chunk_data::NUMBER_OF_CHUNKS_Z];
 
 };
+
+}
 
 #endif /* SRC_MODEL_WORLD_CHUNK_CHUNKMANAGER_H_ */

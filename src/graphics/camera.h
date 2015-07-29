@@ -8,6 +8,9 @@
 
 #include "../config/data.h"
 
+namespace graphics
+{
+
 class Camera {
 private:
 
@@ -64,5 +67,7 @@ private:
     float maxVerticalAngle = 3.14/2;
     float minVerticalAngle = -3.14/2;
 };
+
+}
 
 #endif /* SRC_GRAPHICS_CAMERA_H_ */

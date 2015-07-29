@@ -2,6 +2,9 @@
 #ifndef SRC_GRAPHICS_MESH_IMESH_H_
 #define SRC_GRAPHICS_MESH_IMESH_H_
 
+namespace mesh
+{
+
 class IMesh {
 public:
 	virtual ~IMesh() {}
@@ -9,5 +12,7 @@ public:
 	virtual void render() = 0;
 
 };
+
+}
 
 #endif /* SRC_GRAPHICS_MESH_IMESH_H_ */

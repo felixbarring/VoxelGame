@@ -97,7 +97,7 @@ void TextureDemo::runDemo()
 		std::pair<std::string, int>("texCoordIn", 1)
 	};
 
-	ShaderProgram program(vertex, frag, attributesMap);
+	graphics::ShaderProgram program(vertex, frag, attributesMap);
 
 	std::vector<GLfloat> vertices = {
 		0.4f, 0.4f, 0.0f,
@@ -118,8 +118,8 @@ void TextureDemo::runDemo()
 		1, 2, 3
 	};
 
-	MeshVT mesh{vertices, 3, texCoords, 2, indices};
-	Texture texture("../resources/0001_grass_side.png");
+	mesh::MeshVT mesh{vertices, 3, texCoords, 2, indices};
+	texture::Texture texture("../resources/0001_grass_side.png");
 
 	while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0)	{
 

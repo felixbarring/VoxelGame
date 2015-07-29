@@ -3,6 +3,9 @@
 
 #include <SOIL.h>
 
+namespace texture
+{
+
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
@@ -53,5 +56,7 @@ TextureArray::~TextureArray()
 void TextureArray::bind()
 {
 	glBindTexture(GL_TEXTURE_2D_ARRAY, textureID);
+}
+
 }
 

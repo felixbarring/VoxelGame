@@ -4,6 +4,9 @@
 
 #include <glm/glm.hpp>
 
+namespace graphics
+{
+
 class Transform {
 public:
 
@@ -42,5 +45,7 @@ private:
 	glm::mat4 yRotation;
 	glm::mat4 zRotation;
 };
+
+}
 
 #endif /* SRC_GRAPHICS_TRANSFORM_H_ */

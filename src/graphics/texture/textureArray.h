@@ -6,6 +6,9 @@
 #include <vector>
 #include <string>
 
+namespace texture
+{
+
 class TextureArray {
 public:
 
@@ -30,5 +33,7 @@ private:
 	GLuint textureID;
 
 };
+
+}
 
 #endif /* SRC_GRAPHICS_ARRAYTEXTURE_H_ */

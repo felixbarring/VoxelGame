@@ -1,6 +1,9 @@
 
 #include "camera.h"
 
+namespace graphics
+{
+
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
@@ -63,5 +66,7 @@ void Camera::changeViewDirection(float x, float y)
 void Camera::setLocation(float x, float y, float z)
 {
 	position = glm::vec3(x, y, z);
+}
+
 }
 

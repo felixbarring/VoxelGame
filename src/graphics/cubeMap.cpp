@@ -11,6 +11,9 @@
 #include "../graphics/texture/textureCubeMap.h"
 #include "../graphics/mesh/meshV.h"
 
+namespace graphics
+{
+
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
@@ -119,7 +122,7 @@ void CubeMap::render(Camera &camera)
 		0+30, 1+30, 2+30, 3+30, 4+30, 5+30,
 	};
 
-	static MeshV mesh{vert, 3, element};
+	static mesh::MeshV mesh{vert, 3, element};
 
     skyboxShader.bind();
 
@@ -128,4 +131,6 @@ void CubeMap::render(Camera &camera)
     skyboxShader.setUniformMatrix4f("projection", camera.getProjectionMatrix());
     texture.bind();
     mesh.render();
+}
+
 }

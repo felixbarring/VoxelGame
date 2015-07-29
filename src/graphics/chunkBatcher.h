@@ -8,6 +8,10 @@
 #include "graphicalChunk.h"
 #include "camera.h"
 
+namespace graphics
+{
+
+
 class ChunkBatcher {
 private:
 
@@ -48,5 +52,7 @@ public:
 	std::vector<std::shared_ptr<GraphicalChunk>> batches;
 
 };
+
+}
 
 #endif /* SRC_GRAPHICS_CHUNKBATCHER_H_ */

@@ -71,12 +71,12 @@ void ChunkDemo::runDemo()
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
 
-	Camera& camera = Camera::getInstance();
+	graphics::Camera& camera = graphics::Camera::getInstance();
 
 	float screenCenterX = WIDTH / 2.0;
 	float screenCenterY = HEIGHT / 2.0;
 
-	Chunk chunk{0,0,0};
+	chunk::Chunk chunk{0,0,0};
 
 	chunk.setCube(0,0,0, config::cube_data::AIR);
 	chunk.setCube(8,8,8, config::cube_data::AIR);
@@ -98,7 +98,7 @@ void ChunkDemo::runDemo()
 
 		camera.changeViewDirection(screenCenterX - xpos, screenCenterY - ypos);
 
-		ChunkBatcher::getInstance().draw();
+		graphics::ChunkBatcher::getInstance().draw();
 
 		fpsManager.sync();
 		glfwSwapBuffers(window);

@@ -3,6 +3,9 @@
 
 #include "../../../util/input.h"
 
+namespace entity
+{
+
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
@@ -24,4 +27,6 @@ Player::~Player()
 
 void Player::update(float timePassed)
 {
+}
+
 }

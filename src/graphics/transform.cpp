@@ -7,6 +7,9 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
+namespace graphics
+{
+
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
@@ -66,5 +69,7 @@ void Transform::rotateZ(float value)
 glm::mat4 Transform::getMatrix()
 {
 	return translation * xRotation * yRotation * zRotation;
+}
+
 }
 

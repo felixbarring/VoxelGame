@@ -6,6 +6,9 @@
 #include <vector>
 #include <string>
 
+namespace texture
+{
+
 class TextureCubeMap {
 public:
 
@@ -32,5 +35,7 @@ private:
 	GLuint textureID;
 
 };
+
+}
 
 #endif /* SRC_GRAPHICS_TEXTURE_TEXTURECUBEMAP_H_ */

@@ -100,7 +100,7 @@ void ArrayTextureDemo::runDemo()
 		std::pair<std::string, int>("texCoordIn", 1)
 	};
 
-	ShaderProgram program(vertex, frag, attributesMap);
+	graphics::ShaderProgram program(vertex, frag, attributesMap);
 
 	std::vector<GLfloat> vertices = {
 
@@ -150,9 +150,9 @@ void ArrayTextureDemo::runDemo()
 		0+8, 2+8, 3+8
 	};
 
-	MeshVT mesh{vertices, 3, texCoords, 3, indices};
+	mesh::MeshVT mesh{vertices, 3, texCoords, 3, indices};
 
-	TextureArray texture{config::cube_data::textures, config::cube_data::TEXTURE_WIDTH, config::cube_data::TEXTURE_HEIGHT};
+	texture::TextureArray texture{config::cube_data::textures, config::cube_data::TEXTURE_WIDTH, config::cube_data::TEXTURE_HEIGHT};
 
 	while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0)	{
 
