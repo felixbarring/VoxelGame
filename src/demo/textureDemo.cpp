@@ -19,6 +19,9 @@
 
 #include "../util/fpsManager.h"
 
+namespace demo
+{
+
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
@@ -140,6 +143,8 @@ void TextureDemo::runDemo()
 		glfwSwapBuffers(window);
 	}
 	glfwTerminate();
+
+}
 
 }
 

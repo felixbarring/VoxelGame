@@ -20,25 +20,25 @@ int main(int argc, char *argv[])
 
 		if (argc == 1) {
 			// Run game here
-			ChunkDemo chunkDemo;
+			demo::ChunkDemo chunkDemo;
 			chunkDemo.runDemo();
 		} else {
 			std::string str = argv[1];
 
 			if (str == "textureDemo") {
-				TextureDemo textureDemo;
+				demo::TextureDemo textureDemo;
 				textureDemo.runDemo();
 			} else if (str == "cubeDemo") {
-				CubeDemo cubeDemo;
+				demo::CubeDemo cubeDemo;
 				cubeDemo.runDemo();
 			} else if (str == "chunkDemo") {
-				ChunkDemo chunkDemo;
+				demo::ChunkDemo chunkDemo;
 				chunkDemo.runDemo();
 			} else if (str == "textureArrayDemo") {
-				ArrayTextureDemo arrayTextureDemo;
+				demo::ArrayTextureDemo arrayTextureDemo;
 				arrayTextureDemo.runDemo();
 			} else if (str == "cubeMapDemo") {
-				CubeMapDemo cubeMapDemo;
+				demo::CubeMapDemo cubeMapDemo;
 				cubeMapDemo.runDemo();
 			}
 		}

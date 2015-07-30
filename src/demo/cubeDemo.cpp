@@ -16,6 +16,9 @@
 #include "../util/fpsManager.h"
 #include "../config/data.h"
 
+namespace demo
+{
+
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
@@ -157,6 +160,8 @@ void CubeDemo::runDemo()
 		glfwSwapBuffers(window);
 	}
 	glfwTerminate();
+
+}
 
 }
 

@@ -4,6 +4,9 @@
 
 #include "iDemo.h"
 
+namespace demo
+{
+
 class ArrayTextureDemo : public virtual IDemo {
 public:
 
@@ -23,8 +26,8 @@ public:
 // Instance Variables #####################################
 // ########################################################
 
-
-
 };
+
+}
 
 #endif /* SRC_DEMO_ARRAYTEXTUREDEMO_H_ */

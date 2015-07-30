@@ -4,6 +4,9 @@
 
 #include "iDemo.h"
 
+namespace demo
+{
+
 class TextureDemo : public virtual IDemo {
 public:
 // ########################################################
@@ -22,5 +25,7 @@ public:
 // ########################################################
 
 };
+
+}
 
 #endif /* SRC_DEMO_TEXTUREDEMO_H_ */

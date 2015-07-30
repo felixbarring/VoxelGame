@@ -15,6 +15,8 @@
 #include "../util/fpsManager.h"
 #include "../graphics/cubeMap.h"
 
+namespace demo
+{
 
 // ########################################################
 // Constructor/Destructor #################################
@@ -106,5 +108,7 @@ void CubeMapDemo::runDemo()
     }
 
     glfwTerminate();
+}
+
 }
 

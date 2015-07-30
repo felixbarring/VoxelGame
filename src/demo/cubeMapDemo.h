@@ -4,6 +4,9 @@
 
 #include "iDemo.h"
 
+namespace demo
+{
+
 class CubeMapDemo : public virtual IDemo{
 public:
 
@@ -25,5 +28,7 @@ public:
 // ########################################################
 
 };
+
+}
 
 #endif /* SRC_DEMO_CUBEMAPDEMO_H_ */

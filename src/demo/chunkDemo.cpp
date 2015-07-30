@@ -20,6 +20,9 @@
 
 #include "../model/world/chunk/chunk.h"
 
+namespace demo
+{
+
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
@@ -104,6 +107,8 @@ void ChunkDemo::runDemo()
 		glfwSwapBuffers(window);
 	}
 	glfwTerminate();
+
+}
 
 }
 
