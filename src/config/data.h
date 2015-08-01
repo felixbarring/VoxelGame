@@ -72,7 +72,6 @@ namespace config
 
 	}
 
-
 	namespace input_data
 	{
 

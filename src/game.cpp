@@ -13,7 +13,7 @@
 #include "util/fpsManager.h"
 #include "config/data.h"
 
-// #include "util/input.h"
+#include "util/input.h"
 
 
 // ########################################################
@@ -65,13 +65,12 @@ void Game::run()
 	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 
-	// Input::createInstance(window, WIDTH / 2.0, WIDTH / 2.0);
+	util::Input input(window, WIDTH / 2.0, WIDTH / 2.0);
 
 	while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0) {
 
 		fpsManager.frameStart();
-
-		glfwPollEvents();
+		input.updateValues();
 
 		// Do shit here!
 
