@@ -34,8 +34,8 @@ void ChunkBatcher::addBatch(std::shared_ptr<GraphicalChunk> batch)
 
 void ChunkBatcher::removeBatch(std::shared_ptr<GraphicalChunk> batch)
 {
-	// TODO Bla bla bla
-	for (int i = 0; i < batches.size(); i++) {
+
+	for (unsigned i = 0; i < batches.size(); i++) {
 		if (batches.at(i) == batch) {
 			batches.erase(batches.begin() + i);
 			return;

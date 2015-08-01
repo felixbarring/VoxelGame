@@ -15,7 +15,7 @@ namespace graphics
 // Constructor/Destructor #################################
 // ########################################################
 
-GraphicalChunk::GraphicalChunk(int x, int y, int z,
+GraphicalChunk::GraphicalChunk(float x, float y, float z,
 		Voxel data[config::chunk_data::GRAPHICAL_CHUNK_WIDTH][config::chunk_data::GRAPHICAL_CHUNK_HEIGHT][config::chunk_data::GRAPHICAL_CHUNK_DEPTH]):
 xLocation{x},
 yLocation{y},
@@ -134,8 +134,8 @@ transform{x, y, z}
 					};
 
 					std::vector<short> el{
-						0 + elementOffset, 1 + elementOffset, 2 + elementOffset,
-						0 + elementOffset, 2 + elementOffset, 3 + elementOffset
+						static_cast<short>(0 + elementOffset), static_cast<short>(1 + elementOffset), static_cast<short>(2 + elementOffset),
+						static_cast<short>(0 + elementOffset), static_cast<short>(2 + elementOffset), static_cast<short>(3 + elementOffset)
 					};
 
 					for (auto v : vertex) { vertexData.push_back(v);}
@@ -172,8 +172,8 @@ transform{x, y, z}
 					};
 
 					std::vector<short> el{
-						0 + elementOffset, 1 + elementOffset, 2 + elementOffset,
-						0 + elementOffset, 2 + elementOffset, 3 + elementOffset
+						static_cast<short>(0 + elementOffset), static_cast<short>(1 + elementOffset), static_cast<short>(2 + elementOffset),
+						static_cast<short>(0 + elementOffset), static_cast<short>(2 + elementOffset), static_cast<short>(3 + elementOffset)
 					};
 
 					for (auto v : vertex) { vertexData.push_back(v);}
@@ -209,8 +209,8 @@ transform{x, y, z}
 					};
 
 					std::vector<short> el{
-						0 + elementOffset, 1 + elementOffset, 2 + elementOffset,
-						0 + elementOffset, 2 + elementOffset, 3 + elementOffset
+						static_cast<short>(0 + elementOffset), static_cast<short>(1 + elementOffset), static_cast<short>(2 + elementOffset),
+						static_cast<short>(0 + elementOffset), static_cast<short>(2 + elementOffset), static_cast<short>(3 + elementOffset)
 					};
 
 					for (auto v : vertex) { vertexData.push_back(v);}
@@ -246,8 +246,8 @@ transform{x, y, z}
 					};
 
 					std::vector<short> el{
-						0 + elementOffset, 1 + elementOffset, 2 + elementOffset,
-						0 + elementOffset, 2 + elementOffset, 3 + elementOffset
+						static_cast<short>(0 + elementOffset), static_cast<short>(1 + elementOffset), static_cast<short>(2 + elementOffset),
+						static_cast<short>(0 + elementOffset), static_cast<short>(2 + elementOffset), static_cast<short>(3 + elementOffset)
 					};
 
 					for (auto v : vertex) { vertexData.push_back(v);}
@@ -284,8 +284,8 @@ transform{x, y, z}
 					};
 
 					std::vector<short> el{
-						0 + elementOffset, 1 + elementOffset, 2 + elementOffset,
-						0 + elementOffset, 2 + elementOffset, 3 + elementOffset
+						static_cast<short>(0 + elementOffset), static_cast<short>(1 + elementOffset), static_cast<short>(2 + elementOffset),
+						static_cast<short>(0 + elementOffset), static_cast<short>(2 + elementOffset), static_cast<short>(3 + elementOffset)
 					};
 
 					for (auto v : vertex) { vertexData.push_back(v);}
@@ -323,8 +323,8 @@ transform{x, y, z}
 
 
 					std::vector<short> el{
-						0 + elementOffset, 1 + elementOffset, 2 + elementOffset,
-						0 + elementOffset, 2 + elementOffset, 3 + elementOffset
+						static_cast<short>(0 + elementOffset), static_cast<short>(1 + elementOffset), static_cast<short>(2 + elementOffset),
+						static_cast<short>(0 + elementOffset), static_cast<short>(2 + elementOffset), static_cast<short>(3 + elementOffset)
 					};
 
 					for (auto v : vertex) { vertexData.push_back(v);}
