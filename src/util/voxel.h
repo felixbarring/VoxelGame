@@ -1,6 +1,6 @@
 
-#ifndef SRC_VOXEL_H_
-#define SRC_VOXEL_H_
+#ifndef SRC_UTIL_VOXEL_H_
+#define SRC_UTIL_VOXEL_H_
 
 // TODO Move this to some other folder. Util maybe
 
@@ -11,4 +11,5 @@ struct Voxel {
 };
 
 
-#endif /* SRC_VOXEL_H_ */
+
+#endif /* SRC_UTIL_VOXEL_H_ */

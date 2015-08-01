@@ -4,10 +4,10 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#include <map>
-
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+
+#include <map>
 
 #include "../graphics/chunkBatcher.h"
 #include "../graphics/shaderProgram.h"
@@ -16,7 +16,7 @@
 #include "../graphics/texture/textureArray.h"
 #include "../util/fpsManager.h"
 #include "../config/data.h"
-#include "../voxel.h"
+#include "../util/voxel.h"
 
 #include "../model/world/chunk/chunk.h"
 

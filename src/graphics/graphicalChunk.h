@@ -6,7 +6,7 @@
 #include "transform.h"
 
 #include "../config/data.h"
-#include "../voxel.h"
+#include "../util/voxel.h"
 
 namespace graphics
 {

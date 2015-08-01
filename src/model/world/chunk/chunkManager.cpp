@@ -1,7 +1,7 @@
 
 #include "chunkManager.h"
 
-#include "../../../voxel.h"
+#include "../../../util/voxel.h"
 
 namespace chunk
 {
