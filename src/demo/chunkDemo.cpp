@@ -8,6 +8,7 @@
 #include "../graphics/shaderProgram.h"
 #include "../graphics/graphicalChunk.h"
 #include "../graphics/camera.h"
+#include "../graphics/viewDirection.h"
 #include "../graphics/texture/textureArray.h"
 #include "../util/fpsManager.h"
 #include "../util/voxel.h"
@@ -79,6 +80,8 @@ void ChunkDemo::runDemo()
 	chunk.setCube(0,0,0, config::cube_data::AIR);
 	chunk.setCube(8,8,8, config::cube_data::AIR);
 
+	graphics::ViewDirection viewDirection;
+
 	while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0)	{
 
 		fpsManager.frameStart();
@@ -94,7 +97,9 @@ void ChunkDemo::runDemo()
 		glfwGetCursorPos(window, &xpos, &ypos);
 		glfwSetCursorPos(window, screenCenterX, screenCenterY);
 
-		camera.changeViewDirection(screenCenterX - xpos, screenCenterY - ypos);
+		viewDirection.changeViewDirection(screenCenterX - xpos, screenCenterY - ypos);
+		camera.setViewDirection(viewDirection.getViewDirection());
+		camera.setUpDirection(viewDirection.getUpDirection());
 
 		graphics::ChunkBatcher::getInstance().draw();
 

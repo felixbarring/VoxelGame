@@ -39,7 +39,9 @@ public:
 
 	void moveForward(float amount);
 
-	void changeViewDirection(float xOffset, float yOffset);
+	void setViewDirection(glm::vec3 direction);
+
+	void setUpDirection(glm::vec3 up);
 
 	void setLocation(float x, float y, float z);
 
@@ -51,21 +53,13 @@ private:
 
 	glm::vec3 position;
 	glm::vec3 direction;
-	glm::vec3 worldUp{0.0f, 1.0f, 0.0f};
-	float horizontalAngle = 3.0;
-	float verticalAngle = 0.0f;
+	glm::vec3 up{0.0f, 1.0f, 0.0f};
 
 	// TODO Make it possible to change stuff, like fov
 	// TODO Should not really use config ...
 	float aspectRatio = config::graphics_data::windowWidth / config::graphics_data::windowHeight;
 	glm::mat4 projection = glm::perspective(config::graphics_data::fov, aspectRatio, 0.1f, 100.0f);
 
-    // Camera options
-    GLfloat inputSensX = 0.01;
-    GLfloat inputSensY = 0.01;
-
-    float maxVerticalAngle = 3.14/2;
-    float minVerticalAngle = -3.14/2;
 };
 
 }

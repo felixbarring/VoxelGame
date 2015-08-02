@@ -5,6 +5,7 @@
 
 #include "../../../graphics/camera.h"
 
+
 namespace entity {
 
 // ########################################################
@@ -30,8 +31,9 @@ Player::~Player()
 void Player::update(float timePassed)
 {
 
-	graphics::Camera::getInstance().changeViewDirection(input.mouseXMovement, input.mouseYMovement);
+	viewDirection.changeViewDirection(input.mouseXMovement, input.mouseYMovement);
 	graphics::Camera::getInstance().setLocation(xLocation, yLocation, zLocation);
+	graphics::Camera::getInstance().setViewDirection(viewDirection.getViewDirection());
 
 	if (input.action2) {
 		std::cout<<"Player is jumping :-)";

@@ -23,16 +23,7 @@ Camera::~Camera()
 
 glm::mat4 Camera::getViewMatrix()
 {
-	glm::vec3 direction(
-		cos(verticalAngle) * sin(horizontalAngle),
-		sin(verticalAngle),
-		cos(verticalAngle) * cos(horizontalAngle)
-	);
-
-	// Up vector
-	glm::vec3 right = glm::normalize(glm::cross(worldUp, direction));
-	glm::vec3 up = glm::normalize(glm::cross(right, direction));
-
+	// TODO Consider cache the matrix if it is called many times in one frame!
 	return glm::lookAt(position, position+direction, up);
 }
 
@@ -41,25 +32,14 @@ void Camera::moveForward(float amount)
 	position += direction * amount;
 }
 
-void Camera::changeViewDirection(float x, float y)
+void Camera::setViewDirection(glm::vec3 direction)
 {
-	horizontalAngle += inputSensX * x;
-	verticalAngle += inputSensY * y;
+	this->direction = direction;
+}
 
-	if (verticalAngle > maxVerticalAngle) {
-		verticalAngle = maxVerticalAngle;
-	} else if (verticalAngle < minVerticalAngle) {
-		verticalAngle = minVerticalAngle;
-	}
-
-	direction = glm::vec3{
-		cos(verticalAngle) * sin(horizontalAngle),
-		sin(verticalAngle),
-		cos(verticalAngle) * cos(horizontalAngle)
-	};
-
-	glm::vec3 right = glm::normalize(glm::cross(worldUp, direction));
-	glm::vec3 up = glm::normalize(glm::cross(right, direction));
+void Camera::setUpDirection(glm::vec3 up)
+{
+	this->up = up;
 }
 
 void Camera::setLocation(float x, float y, float z)

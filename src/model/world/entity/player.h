@@ -4,6 +4,7 @@
 
 #include "ientity.h"
 #include "../../../util/input.h"
+#include "../../../graphics/viewDirection.h"
 
 namespace entity {
 
@@ -32,7 +33,7 @@ public:
 private:
 
 	float xLocation, yLocation, zLocation;
-
+	graphics::ViewDirection viewDirection;
 	util::Input& input;
 
 };

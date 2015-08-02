@@ -10,6 +10,7 @@
 
 #include "../graphics/shaderProgram.h"
 #include "../graphics/camera.h"
+#include "../graphics/viewDirection.h"
 #include "../graphics/texture/textureCubeMap.h"
 #include "../graphics/mesh/meshV.h"
 #include "../util/fpsManager.h"
@@ -86,6 +87,8 @@ void CubeMapDemo::runDemo()
 	float screenCenterX = WIDTH / 2;
 	float screenCenterY = HEIGHT / 2;
 
+	graphics::ViewDirection viewDirection;
+
 	while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0) {
 
 		fpsManager.frameStart();
@@ -99,7 +102,10 @@ void CubeMapDemo::runDemo()
         double xpos, ypos;
 		glfwGetCursorPos(window, &xpos, &ypos);
 		glfwSetCursorPos(window, screenCenterX, screenCenterY);
-		camera.changeViewDirection(screenCenterX - xpos, screenCenterY - ypos);
+
+		viewDirection.changeViewDirection(screenCenterX - xpos, screenCenterY - ypos);
+		camera.setViewDirection(viewDirection.getViewDirection());
+		camera.setUpDirection(viewDirection.getUpDirection());
 
 		skyBox.render(camera);
 
