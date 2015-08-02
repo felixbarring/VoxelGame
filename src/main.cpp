@@ -7,6 +7,7 @@
 #include "demo/chunkDemo.h"
 #include "demo/arrayTextureDemo.h"
 #include "demo/cubeMapDemo.h"
+#include "demo/playerCollisionDemo.h"
 
 #include <string>
 #include <exception>
@@ -40,6 +41,9 @@ int main(int argc, char *argv[])
 			} else if (str == "cubeMapDemo") {
 				demo::CubeMapDemo cubeMapDemo;
 				cubeMapDemo.runDemo();
+			} else if (str == "playerCollisionDemo") {
+				demo::PlayerCollisionDemo playerCollisionDemo;
+				playerCollisionDemo.runDemo();
 			}
 		}
 	} catch(std::exception& e){

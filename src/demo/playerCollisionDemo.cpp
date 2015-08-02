@@ -1,5 +1,5 @@
 
-#include "chunkDemo.h"
+#include "playerCollisionDemo.h"
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -14,19 +14,20 @@
 #include "../config/data.h"
 
 #include "../model/world/chunk/chunk.h"
+#include "../model/world/entity/player.h"
+#include "../util/input.h"
 
-namespace demo
-{
+namespace demo {
 
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
 
-ChunkDemo::ChunkDemo()
+PlayerCollisionDemo::PlayerCollisionDemo()
 {
 }
 
-ChunkDemo::~ChunkDemo()
+PlayerCollisionDemo::~PlayerCollisionDemo()
 {
 }
 
@@ -34,7 +35,7 @@ ChunkDemo::~ChunkDemo()
 // Member Functions########################################
 // ########################################################
 
-void ChunkDemo::runDemo()
+void PlayerCollisionDemo::runDemo()
 {
 	util::FPSManager fpsManager(100);
 	const GLuint WIDTH = 800, HEIGHT = 600;
@@ -48,7 +49,7 @@ void ChunkDemo::runDemo()
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-	GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "Chunk Demo", nullptr, nullptr);
+	GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "Player Collision Demo", nullptr, nullptr);
 	if (window == nullptr) {
 		fprintf(stderr, "Failed to open GLFW window.\n");
 		glfwTerminate();
@@ -69,32 +70,25 @@ void ChunkDemo::runDemo()
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
 
-	graphics::Camera& camera = graphics::Camera::getInstance();
-
 	float screenCenterX = WIDTH / 2.0;
 	float screenCenterY = HEIGHT / 2.0;
 
 	chunk::Chunk chunk{0,0,0};
 
-	chunk.setCube(0,0,0, config::cube_data::AIR);
-	chunk.setCube(8,8,8, config::cube_data::AIR);
+	util::Input input{window, screenCenterX, screenCenterY};
+
+	entity::Player player{input};
+	player.setLocation(0, 20, 0);
 
 	while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0)	{
 
 		fpsManager.frameStart();
-
-		glfwPollEvents();
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-			camera.moveForward(0.1f);
-		}
+		glfwPollEvents();
 
-		double xpos, ypos;
-		glfwGetCursorPos(window, &xpos, &ypos);
-		glfwSetCursorPos(window, screenCenterX, screenCenterY);
-
-		camera.changeViewDirection(screenCenterX - xpos, screenCenterY - ypos);
+		input.updateValues();
+		player.update(0.0f);
 
 		graphics::ChunkBatcher::getInstance().draw();
 
@@ -102,8 +96,6 @@ void ChunkDemo::runDemo()
 		glfwSwapBuffers(window);
 	}
 	glfwTerminate();
-
 }
 
-}
-
+} /* namespace demo */

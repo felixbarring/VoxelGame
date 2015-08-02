@@ -39,8 +39,6 @@ void Input::updateValues()
 	mouseXMovement = 0.0;
 	mouseYMovement = 0.0;
 
-	glfwPollEvents();
-
 	// Keyboard
 	moveForward = glfwGetKey(window, config::input_data::moveForwardButton) == GLFW_PRESS;
 	moveLeft = glfwGetKey(window, config::input_data::moveLeftButton) == GLFW_PRESS;
@@ -56,8 +54,8 @@ void Input::updateValues()
 	glfwGetCursorPos(window, &xOffset, &yOffset);
 	glfwSetCursorPos(window, screenCenterX, screenCenterY);
 
-	mouseXMovement = xOffset;
-	mouseYMovement = yOffset;
+	mouseXMovement = screenCenterX - xOffset;
+	mouseYMovement = screenCenterY - yOffset;
 }
 
 } /* namespace util */

@@ -20,8 +20,10 @@
 // Constructor/Destructor #################################
 // ########################################################
 
-Game::Game()
+Game::Game():
+	gameState{GameState::InGame}
 {
+
 }
 
 Game::~Game()
@@ -50,7 +52,7 @@ void Game::run()
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
 	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Game", nullptr, nullptr);
-	if (window == NULL) {
+	if (window == nullptr) {
 		fprintf(stderr, "Failed to open GLFW window.\n");
 		glfwTerminate();
 	}
@@ -77,7 +79,7 @@ void Game::run()
 		fpsManager.sync();
 
 		glfwSwapBuffers(window);
-		glfwPollEvents();
+		//glfwPollEvents();
 	}
 	glfwTerminate();
 }

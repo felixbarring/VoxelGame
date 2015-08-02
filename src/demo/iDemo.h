@@ -7,8 +7,11 @@ namespace demo
 
 class IDemo {
 public:
+
 	virtual ~IDemo() {}
+
 	virtual void runDemo() = 0;
+
 };
 
 }

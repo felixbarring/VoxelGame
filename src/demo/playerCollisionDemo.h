@@ -1,36 +1,33 @@
 
-#ifndef SRC_GAME_H_
-#define SRC_GAME_H_
+#ifndef SRC_DEMO_PLAYERCOLLISIONDEMO_H_
+#define SRC_DEMO_PLAYERCOLLISIONDEMO_H_
 
-enum class GameState {
-	MainMenu,
-	InGame
-};
+#include "iDemo.h"
 
-class Game {
+namespace demo {
+
+class PlayerCollisionDemo : IDemo {
 public:
 
 	// ########################################################
 	// Constructor/Destructor #################################
 	// ########################################################
 
-	Game();
-	virtual ~Game();
+	PlayerCollisionDemo();
+	virtual ~PlayerCollisionDemo();
 
 	// ########################################################
 	// Member Functions########################################
 	// ########################################################
 
-	void run();
+	void runDemo() override;
 
 	// ########################################################
 	// Instance Variables #####################################
 	// ########################################################
 
-private:
-
-	GameState gameState;
-
 };
 
-#endif /* SRC_GAME_H_ */
+} /* namespace demo */
+
+#endif /* SRC_DEMO_PLAYERCOLLISIONDEMO_H_ */

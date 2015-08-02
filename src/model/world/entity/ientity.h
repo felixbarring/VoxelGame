@@ -6,10 +6,11 @@ namespace entity
 {
 
 class IEntity {
+public:
 
-	virtual ~IEntity();
+	virtual ~IEntity() {};
 
-	virtual void update(float timePassed);
+	virtual void update(float timePassed) = 0;
 
 };
 

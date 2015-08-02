@@ -58,6 +58,9 @@ bool Chunk::isSolid(int x, int y, int z)
 void Chunk::setCube(int x, int y, int z, char id)
 {
 	Voxel &voxel = voxels[x][y][z];
+
+	// TODO Rebuild lazy!
+
 	if (voxel.id != id) {
 		graphics::ChunkBatcher::getInstance().removeBatch(graphicalChunk);
 		voxel.id = id;

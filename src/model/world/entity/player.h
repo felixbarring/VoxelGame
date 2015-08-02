@@ -1,11 +1,11 @@
 
-#ifndef SRC_MODEL_ENTITY_PLAYER_H_
-#define SRC_MODEL_ENTITY_PLAYER_H_
+#ifndef SRC_MODEL_WORLD_ENTITY_PLAYER_H_
+#define SRC_MODEL_WORLD_ENTITY_PLAYER_H_
 
 #include "ientity.h"
+#include "../../../util/input.h"
 
-namespace entity
-{
+namespace entity {
 
 class Player : public IEntity {
 public:
@@ -14,7 +14,7 @@ public:
 // Constructor/Destructor #################################
 // ########################################################
 
-	Player();
+	Player(util::Input& in);
 	virtual ~Player();
 
 // ########################################################
@@ -23,14 +23,20 @@ public:
 
 	void update(float timePassed) override;
 
+	void setLocation(float x, float y, float z);
+
 // ########################################################
 // Instance Variables #####################################
 // ########################################################
 
+private:
+
 	float xLocation, yLocation, zLocation;
+
+	util::Input& input;
 
 };
 
-}
+} /* namespace entity */
 
-#endif /* SRC_MODEL_ENTITY_PLAYER_H_ */
+#endif /* SRC_MODEL_WORLD_ENTITY_PLAYER_H_ */

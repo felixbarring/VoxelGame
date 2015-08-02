@@ -1,19 +1,21 @@
 
 #include "player.h"
 
-#include "../../../util/input.h"
+#include <iostream>
 
-namespace entity
-{
+#include "../../../graphics/camera.h"
+
+namespace entity {
 
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
 
-Player::Player():
+Player::Player(util::Input& in):
 	xLocation{0},
 	yLocation{0},
-	zLocation{0}
+	zLocation{0},
+	input(in)
 {
 }
 
@@ -27,6 +29,25 @@ Player::~Player()
 
 void Player::update(float timePassed)
 {
-}
+
+	graphics::Camera::getInstance().changeViewDirection(input.mouseXMovement, input.mouseYMovement);
+	graphics::Camera::getInstance().setLocation(xLocation, yLocation, zLocation);
+
+	if (input.action2) {
+		std::cout<<"Player is jumping :-)";
+	}
+
+	if (input.moveForward) {
+		xLocation++;
+	}
 
 }
+
+void Player::setLocation(float x, float y, float z)
+{
+	xLocation = x;
+	yLocation = y;
+	zLocation = z;
+}
+
+} /* namespace entity */

@@ -58,7 +58,6 @@ void Camera::changeViewDirection(float x, float y)
 		cos(verticalAngle) * cos(horizontalAngle)
 	};
 
-	// Up vector
 	glm::vec3 right = glm::normalize(glm::cross(worldUp, direction));
 	glm::vec3 up = glm::normalize(glm::cross(right, direction));
 }
