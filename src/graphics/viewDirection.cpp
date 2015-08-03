@@ -41,8 +41,8 @@ void ViewDirection::setViewDirection(float horizontal, float vertical)
 		cos(verticalAngle) * cos(horizontalAngle)
 	};
 
-	glm::vec3 right = glm::normalize(glm::cross(worldUp, direction));
-	up = glm::normalize(glm::cross(right, direction));
+	right = glm::normalize(glm::cross(direction, worldUp));
+	up = glm::normalize(glm::cross(direction, right));
 }
 
 glm::vec3 ViewDirection::getViewDirection()
@@ -53,6 +53,11 @@ glm::vec3 ViewDirection::getViewDirection()
 glm::vec3 ViewDirection::getUpDirection()
 {
 	return up;
+}
+
+glm::vec3 ViewDirection::getRightDirection()
+{
+	return right;
 }
 
 } /* namespace graphics */

@@ -2,6 +2,8 @@
 #ifndef SRC_MODEL_WORLD_ENTITY_PLAYER_H_
 #define SRC_MODEL_WORLD_ENTITY_PLAYER_H_
 
+#include <glm/glm.hpp>
+
 #include "ientity.h"
 #include "../../../util/input.h"
 #include "../../../graphics/viewDirection.h"
@@ -31,10 +33,10 @@ public:
 // ########################################################
 
 private:
-
-	float xLocation, yLocation, zLocation;
+	glm::vec3 location;
 	graphics::ViewDirection viewDirection;
 	util::Input& input;
+	float movementSpeed = 0.1;
 
 };
 
