@@ -78,7 +78,7 @@ void PlayerCollisionDemo::runDemo()
 	util::Input input{window, screenCenterX, screenCenterY};
 
 	entity::Player player{input};
-	player.setLocation(0, 7, 0);
+	player.setLocation(7, 7, 7);
 
 	while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0)	{
 
