@@ -30,7 +30,11 @@ public:
 
 	char getCubeId(int x, int y, int z);
 
+	// Probably not needed
 	bool isSolid(int x, int y, int z);
+
+	// Probably not needed
+	bool isAir(int x, int y, int z);
 
 	void setCube(int x, int y, int z, char id);
 

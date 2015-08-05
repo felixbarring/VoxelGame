@@ -1,13 +1,12 @@
 
 #include "aabb.h"
 
-namespace collision
+namespace entity
 {
 
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
-
 AABB::AABB(double xMinimum, double xMaximum, double yMinimum, double yMaximum, double zMinimum, double zMaximum) :
 	xMin{xMinimum},
 	xMax{xMaximum},

@@ -1,9 +1,8 @@
 
-#ifndef SRC_MODEL_WORLD_COLLISION_AABB_H_
-#define SRC_MODEL_WORLD_COLLISION_AABB_H_
+#ifndef SRC_MODEL_WORLD_ENTITY_AABB_H_
+#define SRC_MODEL_WORLD_ENTITY_AABB_H_
 
-namespace collision
-{
+namespace entity {
 
 class AABB {
 public:
@@ -13,6 +12,7 @@ public:
 	// ########################################################
 
 	AABB(double xMinimum, double xMaximum, double yMinimum, double yMaximum, double zMinimum, double zMaximum);
+	//AABB();
 	virtual ~AABB();
 
 	// ########################################################
@@ -33,6 +33,6 @@ private:
 
 };
 
-}
+} /* namespace entity */
 
-#endif /* SRC_MODEL_WORLD_COLLISION_AABB_H_ */
+#endif /* SRC_MODEL_WORLD_ENTITY_AABB_H_ */

@@ -21,11 +21,17 @@ Chunk::Chunk(int x, int y, int z):
 	for (int i = 0; i < config::chunk_data::CHUNK_WIDHT; i++) {
 		for (int j = 0; j < config::chunk_data::CHUNK_HEIGHT; j++) {
 			for (int k = 0; k < config::chunk_data::CHUNK_DEPTH; k++) {
-				Voxel v;
-				v.id = counter++;
-				voxels[i][j][k] = v;
-				if (counter == maxCount) {
-					counter = 1;
+				if (j < 5) {
+					Voxel v;
+					v.id = counter++;
+					voxels[i][j][k] = v;
+					if (counter == maxCount) {
+						counter = 1;
+					}
+				} else {
+					Voxel v;
+					v.id = config::cube_data::AIR;
+					voxels[i][j][k] = v;
 				}
 			}
 		}
@@ -53,6 +59,11 @@ bool Chunk::isSolid(int x, int y, int z)
 {
 	// TODO Implement correctly
 	return true;
+}
+
+bool Chunk::isAir(int x, int y, int z)
+{
+	return voxels[x][y][z].id == config::cube_data::AIR;
 }
 
 void Chunk::setCube(int x, int y, int z, char id)

@@ -35,9 +35,15 @@ public:
 
 	char getCubeId(int x, int y, int z);
 
+	bool isSolid(int x, int y, int z);
+
+	bool isAir(int x, int y, int z);
+
 	void removeCube(int x, int y, int z);
 
 	void setCube(int x, int y, int z, char id);
+
+	glm::vec3 getLocationOfFirstNoneAirCube(glm::vec3 origin, glm::vec3 direction, int searchLength);
 
 	// ########################################################
 	// Instance Variables #####################################

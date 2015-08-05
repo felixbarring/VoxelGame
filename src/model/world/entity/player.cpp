@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include "../../../graphics/camera.h"
+#include "../chunk/chunkManager.h"
 
 
 namespace entity {
@@ -16,7 +17,7 @@ Player::Player(util::Input& in):
 	location{0,0,0},
 	speed{0,0,0},
 	input(in),
-	boundingBox{}
+	boundingBox{location.x - 0.5f, location.x + 0.5f, location.y - 1.0f, location.y + 1.0f, location.z - 0.5f, location.z + 0.5f}
 {
 }
 
@@ -69,6 +70,8 @@ void Player::update(float timePassed)
 	graphics::Camera::getInstance().setLocation(location.x, location.y, location.z);
 	graphics::Camera::getInstance().setViewDirection(viewDirection.getViewDirection());
 	graphics::Camera::getInstance().setUpDirection(viewDirection.getUpDirection());
+
+	chunk::ChunkManager::getInstance().getLocationOfFirstNoneAirCube(location, viewDirection.getViewDirection(), 20);
 
 }
 
