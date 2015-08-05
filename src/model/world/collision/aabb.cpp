@@ -16,7 +16,6 @@ AABB::AABB(double xMinimum, double xMaximum, double yMinimum, double yMaximum, d
 	zMin{zMinimum},
 	zMax{zMaximum}
 {
-
 }
 
 AABB::~AABB()
@@ -26,6 +25,16 @@ AABB::~AABB()
 // ########################################################
 // Member Functions########################################
 // ########################################################
+
+void AABB::setBounds(double xMinimum, double xMaximum, double yMinimum, double yMaximum, double zMinimum, double zMaximum)
+{
+	xMin = xMinimum;
+	xMax = xMaximum;
+	yMin = yMinimum;
+	yMax = yMaximum;
+	zMin = zMinimum;
+	zMax = zMaximum;
+}
 
 bool AABB::intersects(const AABB &that)
 {

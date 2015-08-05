@@ -14,10 +14,10 @@ std::chrono::milliseconds oneMilliSecond(1);
 // Constructor/Destructor #################################
 // ########################################################
 
-FPSManager::FPSManager(int maxFPS)
+FPSManager::FPSManager(int maxFPS):
+	maxFPS{maxFPS},
+	timePerFrame{1.0 / maxFPS}
 {
-	this->maxFPS = maxFPS;
-	timePerFrame = 1.0 / maxFPS;
 }
 
 FPSManager::~FPSManager()

@@ -14,7 +14,9 @@ namespace entity {
 
 Player::Player(util::Input& in):
 	location{0,0,0},
-	input(in)
+	speed{0,0,0},
+	input(in),
+	boundingBox{}
 {
 }
 
@@ -30,27 +32,43 @@ void Player::update(float timePassed)
 {
 
 	viewDirection.changeViewDirection(input.mouseXMovement, input.mouseYMovement);
+
+	speed.x = 0;
+	speed.z = 0;
+
+	if (input.moveForward || input.moveBackward) {
+
+		int direction = 1;
+		if (input.moveBackward)
+			direction = -1;
+
+		glm::vec3 dummy = viewDirection.getViewDirection();
+		dummy.y = 0;
+		dummy = direction * movementSpeed * glm::normalize(dummy);
+
+		speed.x = dummy.x;
+		speed.z = dummy.z;
+	}
+
+	if (input.moveRight || input.moveLeft) {
+
+		int direction = 1;
+		if (input.moveLeft)
+			direction = -1;
+
+		glm::vec3 dummy = viewDirection.getRightDirection();
+		dummy.y = 0;
+		dummy = direction * movementSpeed * glm::normalize(dummy);
+
+		speed.x += dummy.x;
+		speed.z += dummy.z;
+	}
+
+	location += speed;
+
 	graphics::Camera::getInstance().setLocation(location.x, location.y, location.z);
 	graphics::Camera::getInstance().setViewDirection(viewDirection.getViewDirection());
 	graphics::Camera::getInstance().setUpDirection(viewDirection.getUpDirection());
-
-	if (input.action2) {
-		std::cout<<"Player is jumping :-)";
-	}
-
-	if (input.moveForward) {
-		location += movementSpeed * viewDirection.getViewDirection();
-	}
-	if (input.moveBackward) {
-		location -= movementSpeed * viewDirection.getViewDirection();
-	}
-	if (input.moveRight) {
-		location += movementSpeed * viewDirection.getRightDirection();
-	}
-	if (input.moveLeft) {
-		location -= movementSpeed * viewDirection.getRightDirection();
-	}
-
 
 }
 

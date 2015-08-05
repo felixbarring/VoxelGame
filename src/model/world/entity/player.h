@@ -5,6 +5,7 @@
 #include <glm/glm.hpp>
 
 #include "ientity.h"
+#include "../collision/aabb.h"
 #include "../../../util/input.h"
 #include "../../../graphics/viewDirection.h"
 
@@ -34,8 +35,10 @@ public:
 
 private:
 	glm::vec3 location;
+	glm::vec3 speed;
 	graphics::ViewDirection viewDirection;
 	util::Input& input;
+	collision::AABB boundingBox;
 	float movementSpeed = 0.1;
 
 };

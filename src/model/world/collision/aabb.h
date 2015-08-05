@@ -19,6 +19,8 @@ public:
 	// Member Functions########################################
 	// ########################################################
 
+	void setBounds(double xMinimum, double xMaximum, double yMinimum, double yMaximum, double zMinimum, double zMaximum);
+
 	bool intersects(const AABB &that);
 
 	// ########################################################
