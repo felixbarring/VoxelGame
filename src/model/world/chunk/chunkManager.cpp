@@ -2,6 +2,7 @@
 #include "chunkManager.h"
 
 #include <math.h>
+#include <limits>
 #include <iostream>
 
 #include "../../../util/voxel.h"
@@ -86,19 +87,36 @@ void ChunkManager::setCube(int x, int y, int z, char id)
 	chunks[chunkX][chunkY][chunkZ]->setCube(localX, localY, localZ, id);
 }
 
-// Does not Require that direction is normalized!
+// Requires that direction is normalized!
 
-glm::vec3 ChunkManager::getLocationOfFirstNoneAirCube(glm::vec3 origin, glm::vec3 direction, float searchLength)
+bool ChunkManager::intersectWithSolidCube(glm::vec3 origin, glm::vec3 direction, float searchLength)
 {
 
 	int signXDirection = (direction.x > 0) - (direction.x < 0);
 	int signYDirection = (direction.y > 0) - (direction.y < 0);
 	int signZDirection = (direction.z > 0) - (direction.z < 0);
 
-	// To avoid division in the loop!
-	float xL = 1.0 / direction.x;
-	float yL = 1.0 / direction.y;
-	float zL = 1.0 / direction.z;
+	// Check if any one is zero, set to infinity to avoid zero division!
+	float xL;
+	float yL;
+	float zL;
+	if (direction.x == 0) {
+		xL = signXDirection * std::numeric_limits<float>::infinity();
+	} else {
+		xL = 1.0 / direction.x;
+	}
+
+	if (direction.y == 0) {
+		yL = signYDirection * std::numeric_limits<float>::infinity();
+	} else {
+		yL = 1.0 / direction.y;
+	}
+
+	if (direction.z == 0) {
+		zL = signZDirection * std::numeric_limits<float>::infinity();
+	} else {
+		zL = 1.0 / direction.z;
+	}
 
 	int currentCubeX = std::floor(origin.x);
 	int currentCubeY = std::floor(origin.y);
@@ -112,9 +130,12 @@ glm::vec3 ChunkManager::getLocationOfFirstNoneAirCube(glm::vec3 origin, glm::vec
 
 	while ( distanceSearched < searchLength) {
 
+		//std::cout << "Search lenght = " << distanceSearched << "\n";
+
 		if (!isAir(currentCubeX, currentCubeY, currentCubeZ)) {
-			std::cout << "--- Found None Air CUbe" << currentCubeX << " : " << currentCubeY << " : " << currentCubeZ << "\n";
-			break;
+			//std::cout << "--- Found None Air CUbe" << currentCubeX << " : " << currentCubeY << " : " << currentCubeZ << "\n";
+			intersectedCube = glm::vec3(currentCubeX, currentCubeY, currentCubeZ);
+			return true;
 		}
 
 		float multiX = (xAxis - origin.x) * xL;
@@ -122,18 +143,32 @@ glm::vec3 ChunkManager::getLocationOfFirstNoneAirCube(glm::vec3 origin, glm::vec
 		float multiZ = (zAxis - origin.z) * zL;
 
 		if (multiX < multiY && multiX < multiZ){
+
 			currentCubeX += signXDirection;
 			xAxis += signXDirection;
+			distanceSearched = glm::length(multiX * direction);
+
 		} else if (multiY < multiZ) {
+
 			currentCubeY += signYDirection;
 			yAxis += signYDirection;
+			distanceSearched = glm::length(multiY * direction);
+
 		} else {
+
 			currentCubeZ += signZDirection;
 			zAxis += signZDirection;
+			distanceSearched = glm::length(multiZ * direction);
+
 		}
 	}
 
-	return glm::vec3{currentCubeX, currentCubeY, currentCubeZ};
+	return false;
+}
+
+glm::vec3 ChunkManager::getLocationOfInteresectedCube()
+{
+	return intersectedCube;
 }
 
 }

@@ -43,7 +43,9 @@ public:
 
 	void setCube(int x, int y, int z, char id);
 
-	glm::vec3 getLocationOfFirstNoneAirCube(glm::vec3 origin, glm::vec3 direction, float searchLength);
+	bool intersectWithSolidCube(glm::vec3 origin, glm::vec3 direction, float searchLength);
+
+	glm::vec3 getLocationOfInteresectedCube();
 
 	// ########################################################
 	// Instance Variables #####################################
@@ -52,6 +54,7 @@ public:
 private:
 
 	std::unique_ptr<Chunk> chunks[config::chunk_data::NUMBER_OF_CHUNKS_X][config::chunk_data::NUMBER_OF_CHUNKS_Y][config::chunk_data::NUMBER_OF_CHUNKS_Z];
+	glm::vec3 intersectedCube;
 
 };
 

@@ -60,12 +60,14 @@ void Chunk::setCube(int x, int y, int z, char id)
 
 	// TODO Rebuild lazy!
 
-	if (voxel.id != id) {
+	// Something is fucking wrong :,(
+
+	//if (voxel.id != id) {
 		graphics::ChunkBatcher::getInstance().removeBatch(graphicalChunk);
 		voxel.id = id;
 		graphicalChunk.reset(new graphics::GraphicalChunk(xLocation, yLocation, zLocation, voxels));
 		graphics::ChunkBatcher::getInstance().addBatch(graphicalChunk);
-	}
+	//}
 }
 
 }

@@ -35,6 +35,8 @@ void ChunkBatcher::addBatch(std::shared_ptr<GraphicalChunk> batch)
 void ChunkBatcher::removeBatch(std::shared_ptr<GraphicalChunk> batch)
 {
 
+	// TODO Does not work :,(
+
 	for (unsigned i = 0; i < batches.size(); i++) {
 		if (batches.at(i) == batch) {
 			batches.erase(batches.begin() + i);
@@ -95,6 +97,8 @@ void ChunkBatcher::draw()
 	Camera & camera = Camera::getInstance();
 
 	for (auto b : batches) {
+
+		b = batches.at(batches.size()-1);
 		glm::mat4 modelView = camera.getViewMatrix() * b->getTransform().getMatrix();
 		glm::mat4 modelViewProjection = camera.getProjectionMatrix() * modelView;
 		program.setUniformMatrix4f("modelViewProjection", modelViewProjection);
