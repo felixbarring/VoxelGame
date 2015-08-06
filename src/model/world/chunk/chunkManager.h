@@ -43,7 +43,7 @@ public:
 
 	void setCube(int x, int y, int z, char id);
 
-	glm::vec3 getLocationOfFirstNoneAirCube(glm::vec3 origin, glm::vec3 direction, int searchLength);
+	glm::vec3 getLocationOfFirstNoneAirCube(glm::vec3 origin, glm::vec3 direction, float searchLength);
 
 	// ########################################################
 	// Instance Variables #####################################

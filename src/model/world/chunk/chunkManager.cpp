@@ -15,6 +15,9 @@ namespace chunk
 
 ChunkManager::ChunkManager()
 {
+
+	// Currently creates only one chunk.
+
 	int xMax = 1;
 	int yMax = 1;
 	int zMax = 1;
@@ -38,39 +41,26 @@ ChunkManager::~ChunkManager()
 
 char ChunkManager::getCubeId(int x, int y, int z)
 {
-	int chunkX = x / config::chunk_data::CHUNK_WIDHT;
-	int chunkY = y / config::chunk_data::CHUNK_HEIGHT;
-	int chunkZ = z / config::chunk_data::CHUNK_DEPTH;
+	// Used to avoid Division every time the function is called.
+	static float xD = 1.0 / config::chunk_data::CHUNK_WIDHT;
+	static float yD = 1.0 / config::chunk_data::CHUNK_HEIGHT;
+	static float zD = 1.0 / config::chunk_data::CHUNK_DEPTH;
+
+	int chunkX = x * xD;
+	int chunkY = y * yD;
+	int chunkZ = z * zD;
 
 	int localX = x % config::chunk_data::CHUNK_WIDHT;
 	int localY = y % config::chunk_data::CHUNK_HEIGHT;
 	int localZ = z % config::chunk_data::CHUNK_DEPTH;
-
-	//std::cout<<" : " << x << " : " << y << " : "<< z << "\n";
-
-	std::cout << x << " ";
-	std::cout << y << " ";
-	std::cout << z << " ";
-
-	std::cout << chunkX << " ";
-	std::cout << chunkY << " ";
-	std::cout << chunkZ << " ";
-	std::cout << "\n";
 
 	return chunks[chunkX][chunkY][chunkZ]->getCubeId(localX, localY, localZ);
 }
 
 bool ChunkManager::isSolid(int x, int y, int z)
 {
-	int chunkX = x / config::chunk_data::CHUNK_WIDHT;
-	int chunkY = y / config::chunk_data::CHUNK_HEIGHT;
-	int chunkZ = z / config::chunk_data::CHUNK_DEPTH;
-
-	int localX = x % config::chunk_data::CHUNK_WIDHT;
-	int localY = y % config::chunk_data::CHUNK_HEIGHT;
-	int localZ = z % config::chunk_data::CHUNK_DEPTH;
-
-	return chunks[chunkX][chunkY][chunkZ]->isSolid(localX, localY, localZ);
+	// TODO Implement
+	return false;
 }
 
 bool ChunkManager::isAir(int x, int y, int z)
@@ -96,14 +86,19 @@ void ChunkManager::setCube(int x, int y, int z, char id)
 	chunks[chunkX][chunkY][chunkZ]->setCube(localX, localY, localZ, id);
 }
 
-// Require that direction is normalized!
+// Does not Require that direction is normalized!
 
-glm::vec3 ChunkManager::getLocationOfFirstNoneAirCube(glm::vec3 origin, glm::vec3 direction, int searchLength)
+glm::vec3 ChunkManager::getLocationOfFirstNoneAirCube(glm::vec3 origin, glm::vec3 direction, float searchLength)
 {
 
 	int signXDirection = (direction.x > 0) - (direction.x < 0);
 	int signYDirection = (direction.y > 0) - (direction.y < 0);
 	int signZDirection = (direction.z > 0) - (direction.z < 0);
+
+	// To avoid division in the loop!
+	float xL = 1.0 / direction.x;
+	float yL = 1.0 / direction.y;
+	float zL = 1.0 / direction.z;
 
 	int currentCubeX = std::floor(origin.x);
 	int currentCubeY = std::floor(origin.y);
@@ -113,20 +108,18 @@ glm::vec3 ChunkManager::getLocationOfFirstNoneAirCube(glm::vec3 origin, glm::vec
 	int yAxis = signYDirection >= 0 ? std::ceil(origin.y) : std::floor(origin.y);
 	int zAxis = signZDirection >= 0 ? std::ceil(origin.z) : std::floor(origin.z);
 
-	for (int i = 0; i < searchLength; i++) {
+	float distanceSearched = 0;
+
+	while ( distanceSearched < searchLength) {
 
 		if (!isAir(currentCubeX, currentCubeY, currentCubeZ)) {
-			std::cout << "--- Found Solid Block " << currentCubeX << " : " << currentCubeY << " : " << currentCubeZ << "\n";
+			std::cout << "--- Found None Air CUbe" << currentCubeX << " : " << currentCubeY << " : " << currentCubeZ << "\n";
 			break;
 		}
 
-		float distanceToXAxis = xAxis - origin.x;
-		float distanceToYAxis = yAxis - origin.y;
-		float distanceToZAxis = zAxis - origin.z;
-
-		float multiX = distanceToXAxis / direction.x;
-		float multiY = distanceToYAxis / direction.y;
-		float multiZ = distanceToZAxis / direction.z;
+		float multiX = (xAxis - origin.x) * xL;
+		float multiY = (yAxis - origin.y) * yL;
+		float multiZ = (zAxis - origin.z) * zL;
 
 		if (multiX < multiY && multiX < multiZ){
 			currentCubeX += signXDirection;
@@ -140,71 +133,8 @@ glm::vec3 ChunkManager::getLocationOfFirstNoneAirCube(glm::vec3 origin, glm::vec
 		}
 	}
 
-	return glm::vec3{1,0,1};
+	return glm::vec3{currentCubeX, currentCubeY, currentCubeZ};
 }
 
 }
 
-
-/*
-
-int signXDirection = (direction.x > 0) - (direction.x < 0);
-	int signYDirection = (direction.y > 0) - (direction.y < 0);
-	int signZDirection = (direction.z > 0) - (direction.z < 0);
-
-	int currentCubeX = std::floor(origin.x);
-	int currentCubeY = std::floor(origin.y);
-	int currentCubeZ = std::floor(origin.z);
-
-	int xAxis = signXDirection >= 0 ? std::ceil(origin.x) : std::floor(origin.x);
-	int yAxis = signYDirection >= 0 ? std::ceil(origin.y) : std::floor(origin.y);
-	int zAxis = signZDirection >= 0 ? std::ceil(origin.z) : std::floor(origin.z);
-
-	for (int i = 0; i < searchLength; i++) {
-
-		if (!isAir(currentCubeX, currentCubeY, currentCubeZ)) {
-			std::cout << "--- Found Solid Block " << currentCubeX << " : " << currentCubeY << " : " << currentCubeZ << "\n";
-			break;
-		}
-
-		std::cout << currentCubeX << " : " << currentCubeY << " : " << currentCubeZ << "\n";
-		std::cout << signXDirection << " : " << signYDirection << " : " << signZDirection << "\n";
-		std::cout << origin.x << " : " << origin.y << " : " << origin.z << "\n";
-		std::cout << " X AXIS " << xAxis << "\n";
-		std::cout << " Y AXIS " << yAxis << "\n";
-		std::cout << " Z AXIS " << zAxis << "\n \n";
-
-		float distanceToXAxis = xAxis - origin.x;
-		float distanceToYAxis = yAxis - origin.y;
-		float distanceToZAxis = zAxis - origin.z;
-
-		std::cout << " TO PASS X AXIS " << distanceToXAxis << "\n";
-		std::cout << " TO PASS Y AXIS " << distanceToYAxis << "\n";
-		std::cout << " TO PASS Z AXIS " << distanceToZAxis << "\n\n";
-
-		float multiplyerToReachXAxis = distanceToXAxis / direction.x;
-		float multiplyerToReachYAxis = distanceToYAxis / direction.y;
-		float multiplyerToReachZAxis = distanceToZAxis / direction.z;
-
-		std::cout << " Multi X AXIS " << multiplyerToReachXAxis << "\n";
-		std::cout << " Multi Y AXIS " << multiplyerToReachYAxis << "\n";
-		std::cout << " Multi Z AXIS " << multiplyerToReachZAxis << "\n";
-
-		if (multiplyerToReachXAxis < multiplyerToReachYAxis || multiplyerToReachXAxis < multiplyerToReachZAxis) {
-			// Go the the right
-			currentCubeX += signXDirection;
-			xAxis += signXDirection;
-
-		} else if (multiplyerToReachYAxis > multiplyerToReachZAxis) {
-			// Go up
-			currentCubeY += signYDirection;
-			yAxis += signYDirection;
-		} else {
-			// Go in depth
-			currentCubeZ += signZDirection;
-			zAxis += signZDirection;
-		}
-
-	}
-
-*/

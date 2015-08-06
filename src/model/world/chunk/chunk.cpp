@@ -54,18 +54,6 @@ char Chunk::getCubeId(int x, int y, int z)
 	return voxels[x][y][z].id;
 }
 
-
-bool Chunk::isSolid(int x, int y, int z)
-{
-	// TODO Implement correctly
-	return true;
-}
-
-bool Chunk::isAir(int x, int y, int z)
-{
-	return voxels[x][y][z].id == config::cube_data::AIR;
-}
-
 void Chunk::setCube(int x, int y, int z, char id)
 {
 	Voxel &voxel = voxels[x][y][z];
