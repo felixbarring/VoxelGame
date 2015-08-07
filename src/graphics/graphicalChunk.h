@@ -44,6 +44,9 @@ public:
 // ########################################################
 
 private:
+
+	// TODO Use smart pointer here?
+	// Why pointer?
 	mesh::MeshVNT *mesh;
 	float xLocation;
 	float yLocation;

@@ -57,17 +57,11 @@ char Chunk::getCubeId(int x, int y, int z)
 void Chunk::setCube(int x, int y, int z, char id)
 {
 	Voxel &voxel = voxels[x][y][z];
+	voxel.id = id;
 
-	// TODO Rebuild lazy!
-
-	// Something is fucking wrong :,(
-
-	//if (voxel.id != id) {
-		graphics::ChunkBatcher::getInstance().removeBatch(graphicalChunk);
-		voxel.id = id;
-		graphicalChunk.reset(new graphics::GraphicalChunk(xLocation, yLocation, zLocation, voxels));
-		graphics::ChunkBatcher::getInstance().addBatch(graphicalChunk);
-	//}
+	graphics::ChunkBatcher::getInstance().removeBatch(graphicalChunk);
+	graphicalChunk.reset(new graphics::GraphicalChunk(xLocation, yLocation, zLocation, voxels));
+	graphics::ChunkBatcher::getInstance().addBatch(graphicalChunk);
 }
 
 }

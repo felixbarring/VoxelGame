@@ -340,7 +340,7 @@ transform{x, y, z}
 	}
 
 	mesh = new mesh::MeshVNT(vertexData, 3, normals, 3, UV, 3, elementData);
-	std::cout<<"Total number of faces: "<<totalNumberOfFaces<<"\n";
+	//std::cout<<"Total number of faces: "<<totalNumberOfFaces<<"\n";
 }
 
 GraphicalChunk::~GraphicalChunk()
