@@ -19,9 +19,9 @@ ChunkManager::ChunkManager()
 
 	// Currently creates only one chunk.
 
-	int xMax = 1;
-	int yMax = 1;
-	int zMax = 1;
+	int xMax = 5;
+	int yMax = 2;
+	int zMax = 5;
 	for (int x = 0; x < xMax; x++) {
 		for (int y = 0; y < yMax; y++) {
 			for (int z = 0; z < zMax; z++) {

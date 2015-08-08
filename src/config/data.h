@@ -22,9 +22,9 @@ namespace config
 		static constexpr int CHUNK_HEIGHT = 16;
 		static constexpr int CHUNK_DEPTH = 16;
 
-		static constexpr int NUMBER_OF_CHUNKS_X = 4;
-		static constexpr int NUMBER_OF_CHUNKS_Y = 4;
-		static constexpr int NUMBER_OF_CHUNKS_Z = 4;
+		static constexpr int NUMBER_OF_CHUNKS_X = 100;
+		static constexpr int NUMBER_OF_CHUNKS_Y = 2;
+		static constexpr int NUMBER_OF_CHUNKS_Z = 100;
 
 	}
 

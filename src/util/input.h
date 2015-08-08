@@ -28,18 +28,27 @@ public:
 	// ########################################################
 
 	// Keyboard
+	bool moveForwardPressed{false};
+	bool moveForwardActive{false};
 
-	bool moveForward{false};
-	bool moveLeft{false};
-	bool moveRight{false};
-	bool moveBackward{false};
+	bool moveLeftPressed{false};
+	bool moveLeftActive{false};
 
-	bool jump{false};
+	bool moveRightPressed{false};
+	bool moveRightActive{false};
+
+	bool moveBackwardPressed{false};
+	bool moveBackwardActive{false};
+
+	bool jumpPressed{false};
+	bool jumpActive{false};
 
 	// Mouse
+	bool action1Pressed{false};
+	bool action1Active{false};
 
-	bool action1{false};
-	bool action2{false};
+	bool action2Pressed{false};
+	bool action2Active{false};
 
 	float mouseXMovement{0.0f};
 	float mouseYMovement{0.0f};

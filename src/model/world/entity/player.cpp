@@ -37,10 +37,10 @@ void Player::update(float timePassed)
 	speed.x = 0;
 	speed.z = 0;
 
-	if (input.moveForward || input.moveBackward) {
+	if (input.moveForwardActive || input.moveBackwardActive) {
 
 		int direction = 1;
-		if (input.moveBackward)
+		if (input.moveBackwardActive)
 			direction = -1;
 
 		glm::vec3 dummy = viewDirection.getViewDirection();
@@ -51,10 +51,10 @@ void Player::update(float timePassed)
 		speed.z = dummy.z;
 	}
 
-	if (input.moveRight || input.moveLeft) {
+	if (input.moveRightActive || input.moveLeftActive) {
 
 		int direction = 1;
-		if (input.moveLeft)
+		if (input.moveLeftActive)
 			direction = -1;
 
 		glm::vec3 dummy = viewDirection.getRightDirection();
@@ -71,7 +71,7 @@ void Player::update(float timePassed)
 	graphics::Camera::getInstance().setViewDirection(viewDirection.getViewDirection());
 	graphics::Camera::getInstance().setUpDirection(viewDirection.getUpDirection());
 
-	if (input.action1) {
+	if (input.action1Pressed) {
 		chunk::ChunkManager::getInstance();
 		if (chunk::ChunkManager::getInstance().intersectWithSolidCube(location, viewDirection.getViewDirection(), 5)) {
 			glm::vec3 selectedCube = chunk::ChunkManager::getInstance().getLocationOfInteresectedCube();
