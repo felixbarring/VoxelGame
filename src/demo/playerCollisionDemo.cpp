@@ -16,6 +16,7 @@
 #include "../model/world/chunk/chunk.h"
 #include "../model/world/entity/player.h"
 #include "../util/input.h"
+#include "../util/checkSystem.h"
 
 namespace demo {
 
@@ -37,6 +38,14 @@ PlayerCollisionDemo::~PlayerCollisionDemo()
 
 void PlayerCollisionDemo::runDemo()
 {
+
+
+	// TODO Remove from here!?!
+
+	util::check_system::checkStuff();
+
+
+
 	util::FPSManager fpsManager(100);
 	const GLuint WIDTH = 800, HEIGHT = 600;
 
