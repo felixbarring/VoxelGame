@@ -25,6 +25,7 @@ private:
 private:
 
 	ChunkBatcher(ChunkBatcher const&) = delete;
+
 	void operator=(ChunkBatcher const&) = delete;
 
 	// ########################################################

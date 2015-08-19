@@ -13,6 +13,8 @@
 #include "../graphics/texture/textureArray.h"
 #include "../graphics/transform.h"
 #include "../graphics/texturedCube.h"
+#include "../graphics/cubeBatcher.h"
+#include "../graphics/camera.h"
 #include "../util/fpsManager.h"
 #include "../config/data.h"
 
@@ -69,60 +71,17 @@ void CubeDemo::runDemo()
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
 
-	const char *vertex =
-		"#version 330 core \n"
+	std::shared_ptr<graphics::TexturedCube> batch1(new graphics::TexturedCube{2, 0, -1.0f, 0});
+	std::shared_ptr<graphics::TexturedCube> batch2{new graphics::TexturedCube{-2, 0, -1.0f, 1}};
+	std::shared_ptr<graphics::TexturedCube> batch3{new graphics::TexturedCube{0, 0, -1.0f, 2}};
 
-		"in vec3 positionIn; \n"
-		"in vec3 normalIn; \n"
-		"in vec3 texCoordIn; \n"
+	graphics::CubeBatcher::getInstance().addBatch(batch1);
+	graphics::CubeBatcher::getInstance().addBatch(batch2);
+	graphics::CubeBatcher::getInstance().addBatch(batch3);
 
-		"uniform mat4 ModelViewProjection; \n"
-
-		"out vec3 faceNormal; \n"
-		"out vec3 texCoord; \n"
-
-		"void main(){ \n"
-		"  texCoord = vec3(texCoordIn.x, 1 - texCoordIn.y, texCoordIn.z); \n"
-		"  gl_Position =  ModelViewProjection * vec4(positionIn, 1); \n"
-		"} \n";
-
-	const char *fragment =
-		"#version 330 core \n"
-
-		"in vec3 texCoord; \n"
-
-		"uniform sampler2DArray texture1; \n"
-
-		"out vec4 color; \n"
-
-		"void main(){ \n"
-		"  color = texture(texture1, texCoord); \n"
-		"} \n";
-
-
-	// Use Smart Pointer
-	std::map<std::string, int> attributesMap{
-		std::pair<std::string, int>("positionIn", 0),
-		std::pair<std::string, int>("normalIn", 1),
-		std::pair<std::string, int>("texCoordIn", 2)
-	};
-
-	graphics::ShaderProgram program(vertex, fragment, attributesMap);
-
-	graphics::TexturedCube texturedCube{2, 0, -1.0f, 0};
-	graphics::TexturedCube texturedCube2{0, 0, -1.0f, 1};
-	graphics::TexturedCube texturedCube3{-2, 0, -1.0f, 2};
-
-	texture::TextureArray texture(config::cube_data::textures, config::cube_data::TEXTURE_WIDTH, config::cube_data::TEXTURE_HEIGHT);
-
-	float aspectRatio = 800 / 600;
-	glm::mat4 Projection = glm::perspective(80.0f, aspectRatio, 0.1f, 100.0f);
-
-	glm::mat4 camera = glm::lookAt(
-		glm::vec3(0, 0.1, 2), // Camera location
-		glm::vec3(0, 0, 0),   // Look at
-		glm::vec3(0, 0, 1)    // Head is up
-	);
+	graphics::Camera::getInstance().setLocation(0, 0.2, 2);
+	graphics::Camera::getInstance().setViewDirection(0, -1, 0);
+	graphics::Camera::getInstance().setUpDirection(0, 0, 1.0);
 
 	while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0)	{
 
@@ -131,30 +90,11 @@ void CubeDemo::runDemo()
 		glfwPollEvents();
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		program.bind();
+		batch1.get()->getTransform().rotateX(0.05);
+		batch2.get()->getTransform().rotateY(0.05);
+		batch3.get()->getTransform().rotateZ(0.05);
 
-		glActiveTexture(GL_TEXTURE0);
-		texture.bind();
-		program.setUniformli("texture1", 0);
-
-		texturedCube.getTransform().rotateX(0.05);
-		texturedCube2.getTransform().rotateY(0.05);
-		texturedCube3.getTransform().rotateZ(0.05);
-
-		glm::mat4 ModelView = camera * texturedCube.getTransform().getMatrix();
-		glm::mat4 ModelViewProjection = Projection * ModelView;
-		program.setUniformMatrix4f("ModelViewProjection", ModelViewProjection);
-		texturedCube.draw();
-
-		glm::mat4 ModelView2 = camera * texturedCube2.getTransform().getMatrix();
-		glm::mat4 ModelViewProjection2 = Projection * ModelView2;
-		program.setUniformMatrix4f("ModelViewProjection", ModelViewProjection2);
-		texturedCube2.draw();
-
-		glm::mat4 ModelView3 = camera * texturedCube3.getTransform().getMatrix();
-		glm::mat4 ModelViewProjection3 = Projection * ModelView3;
-		program.setUniformMatrix4f("ModelViewProjection", ModelViewProjection3);
-		texturedCube3.draw();
+		graphics::CubeBatcher::getInstance().draw();
 
 		fpsManager.sync();
 		glfwSwapBuffers(window);

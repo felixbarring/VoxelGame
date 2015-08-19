@@ -1,54 +1,42 @@
 
-#include "chunkBatcher.h"
+#include "cubeBatcher.h"
 
-#include <iostream>
+#include <string>
 #include <map>
 
 #include "shaderProgram.h"
 #include "texture/textureArray.h"
 
-namespace graphics
+namespace graphics {
+
+CubeBatcher::CubeBatcher()
 {
 
-
-// ########################################################
-// Constructor/Destructor #################################
-// ########################################################
-
-ChunkBatcher::ChunkBatcher()
-{
 }
 
-ChunkBatcher::~ChunkBatcher()
+CubeBatcher::~CubeBatcher()
 {
+
 }
 
-// ########################################################
-// Member Functions########################################
-// ########################################################
 
-void ChunkBatcher::addBatch(std::shared_ptr<GraphicalChunk> batch)
+void CubeBatcher::addBatch(std::shared_ptr<TexturedCube> batch)
 {
 	batches.push_back(batch);
 }
 
-void ChunkBatcher::removeBatch(std::shared_ptr<GraphicalChunk> batch)
+void CubeBatcher::removeBatch(std::shared_ptr<TexturedCube> batch)
 {
-
 	for (unsigned i = 0; i < batches.size(); ++i) {
 		if (batches.at(i).get() == batch.get()) {
 			batches.erase(batches.begin() + i);
 			return;
 		}
 	}
-
-	std::cout << "\n Failed to remove a batch ??? \n\n";
-
 }
 
-void ChunkBatcher::draw()
+void CubeBatcher::draw()
 {
-	// Should be some where else!
 
 	static const char *vertex =
 		"#version 330 core \n"
@@ -80,14 +68,26 @@ void ChunkBatcher::draw()
 		"  color = texture(texture1, texCoord); \n"
 		"} \n";
 
+
+	// Use Smart Pointer
 	static std::map<std::string, int> attributesMap{
 		std::pair<std::string, int>("positionIn", 0),
 		std::pair<std::string, int>("normalIn", 1),
 		std::pair<std::string, int>("texCoordIn", 2)
 	};
 
-	static ShaderProgram program(vertex, fragment, attributesMap);
-	static texture::TextureArray texture{config::cube_data::textures, config::cube_data::TEXTURE_WIDTH, config::cube_data::TEXTURE_HEIGHT};
+	static graphics::ShaderProgram program(vertex, fragment, attributesMap);
+	static texture::TextureArray texture(config::cube_data::textures, config::cube_data::TEXTURE_WIDTH, config::cube_data::TEXTURE_HEIGHT);
+
+	static float aspectRatio = 800 / 600;
+	static glm::mat4 projection = glm::perspective(80.0f, aspectRatio, 0.1f, 100.0f);
+
+	static glm::mat4 camera = glm::lookAt(
+		glm::vec3(0, 0.1, 2), // Camera location
+		glm::vec3(0, 0, 0),   // Look at
+		glm::vec3(0, 0, 1)    // Head is up
+	);
+
 
 	program.bind();
 
@@ -95,11 +95,11 @@ void ChunkBatcher::draw()
 	program.setUniformli("texture1", 0);
 	texture.bind();
 
-	Camera & camera = Camera::getInstance();
+	// Camera & camera = Camera::getInstance();
 
 	for (auto b : batches) {
-		glm::mat4 modelView = camera.getViewMatrix() * b->getTransform().getMatrix();
-		glm::mat4 modelViewProjection = camera.getProjectionMatrix() * modelView;
+		glm::mat4 modelView = camera * b->getTransform().getMatrix();
+		glm::mat4 modelViewProjection = projection * modelView;
 		program.setUniformMatrix4f("modelViewProjection", modelViewProjection);
 		b->draw();
 	}
@@ -107,5 +107,4 @@ void ChunkBatcher::draw()
 }
 
 
-}
-
+} /* namespace graphics */

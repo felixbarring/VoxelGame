@@ -41,7 +41,11 @@ public:
 
 	void setViewDirection(glm::vec3 direction);
 
+	void setViewDirection(float x, float y, float z);
+
 	void setUpDirection(glm::vec3 up);
+
+	void setUpDirection(float x, float y, float z);
 
 	void setLocation(float x, float y, float z);
 

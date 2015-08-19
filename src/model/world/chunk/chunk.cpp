@@ -36,7 +36,6 @@ Chunk::Chunk(int x, int y, int z):
 			}
 		}
 	}
-
 	graphicalChunk.reset(new graphics::GraphicalChunk(x,y,z, voxels));
 	graphics::ChunkBatcher::getInstance().addBatch(graphicalChunk);
 }

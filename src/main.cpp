@@ -48,6 +48,8 @@ int main(int argc, char *argv[])
 		}
 	} catch(std::exception& e){
 		std::cout << "An error occured \n" << e.what();
+		
+		std::cout << "This editor is pretty dank i must say";
 	} catch(...) {
 		std::cout << "An error that is not derived from std::exception occured \n";
 	}

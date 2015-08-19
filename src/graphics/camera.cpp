@@ -37,9 +37,20 @@ void Camera::setViewDirection(glm::vec3 direction)
 	this->direction = direction;
 }
 
+void Camera::setViewDirection(float x, float y, float z)
+{
+	this->direction = glm::vec3(x, y, z);
+}
+
+
 void Camera::setUpDirection(glm::vec3 up)
 {
 	this->up = up;
+}
+
+void Camera::setUpDirection(float x, float y, float z)
+{
+	this->up = glm::vec3(x, y, z);
 }
 
 void Camera::setLocation(float x, float y, float z)

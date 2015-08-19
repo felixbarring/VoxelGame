@@ -101,19 +101,19 @@ bool ChunkManager::intersectWithSolidCube(glm::vec3 origin, glm::vec3 direction,
 	float yL;
 	float zL;
 	if (direction.x == 0) {
-		xL = signXDirection * std::numeric_limits<float>::infinity();
+		xL =  0.00000001; //signXDirection * std::numeric_limits<float>::infinity();
 	} else {
 		xL = 1.0 / direction.x;
 	}
 
 	if (direction.y == 0) {
-		yL = signYDirection * std::numeric_limits<float>::infinity();
+		yL = 0.0000000001; //signYDirection * std::numeric_limits<float>::infinity();
 	} else {
 		yL = 1.0 / direction.y;
 	}
 
 	if (direction.z == 0) {
-		zL = signZDirection * std::numeric_limits<float>::infinity();
+		zL = 0.00000000001; //signZDirection * std::numeric_limits<float>::infinity();
 	} else {
 		zL = 1.0 / direction.z;
 	}

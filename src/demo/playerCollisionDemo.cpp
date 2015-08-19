@@ -39,12 +39,9 @@ PlayerCollisionDemo::~PlayerCollisionDemo()
 void PlayerCollisionDemo::runDemo()
 {
 
-
 	// TODO Remove from here!?!
 
 	util::check_system::checkStuff();
-
-
 
 	util::FPSManager fpsManager(100);
 	const GLuint WIDTH = 800, HEIGHT = 600;
@@ -81,8 +78,6 @@ void PlayerCollisionDemo::runDemo()
 
 	float screenCenterX = WIDTH / 2.0;
 	float screenCenterY = HEIGHT / 2.0;
-
-	//chunk::Chunk chunk{0,0,0};
 
 	util::Input input{window, screenCenterX, screenCenterY};
 
