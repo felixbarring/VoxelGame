@@ -11,11 +11,6 @@
 namespace graphics
 {
 
-struct CubeFaceData {
-	int id;
-	bool vissible, front, back, left, right, top, bottom;
-};
-
 class GraphicalChunk {
 public:
 
@@ -44,6 +39,12 @@ public:
 // ########################################################
 
 private:
+
+	// Used for stuff :o
+	struct CubeFaceData {
+		int id;
+		bool vissible, front, back, left, right, top, bottom;
+	};
 
 	// TODO Use smart pointer here?
 	// Why pointer?

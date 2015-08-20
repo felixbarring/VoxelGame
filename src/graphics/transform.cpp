@@ -36,6 +36,11 @@ void Transform::translate(glm::vec3 value)
 	translation = glm::translate(translation, value);
 }
 
+void Transform::setLocation(float x, float y, float z)
+{
+	translation = glm::translate(glm::mat4(1.f), glm::vec3(x, y, z));;
+}
+
 void Transform::setRotationX(float value)
 {
 	xRotation = glm::rotate(glm::mat4(1.0f), value, glm::vec3(1, 0, 0));

@@ -5,7 +5,7 @@
 
 #include "../../../graphics/camera.h"
 #include "../chunk/chunkManager.h"
-
+#include "../../../graphics/cubeBatcher.h"
 
 namespace entity {
 
@@ -17,7 +17,8 @@ Player::Player(util::Input& in):
 	location{0,0,0},
 	speed{0,0,0},
 	input(in),
-	boundingBox{location.x - 0.5f, location.x + 0.5f, location.y - 1.0f, location.y + 1.0f, location.z - 0.5f, location.z + 0.5f}
+	boundingBox{location.x - 0.5f, location.x + 0.5f, location.y - 1.0f, location.y + 1.0f, location.z - 0.5f, location.z + 0.5f},
+	transform{0,0,0}
 {
 }
 
@@ -71,14 +72,18 @@ void Player::update(float timePassed)
 	graphics::Camera::getInstance().setViewDirection(viewDirection.getViewDirection());
 	graphics::Camera::getInstance().setUpDirection(viewDirection.getUpDirection());
 
-	if (input.action1Pressed) {
-		chunk::ChunkManager::getInstance();
-		if (chunk::ChunkManager::getInstance().intersectWithSolidCube(location, viewDirection.getViewDirection(), 5)) {
-			glm::vec3 selectedCube = chunk::ChunkManager::getInstance().getLocationOfInteresectedCube();
-			chunk::ChunkManager::getInstance().removeCube(selectedCube.x, selectedCube.y, selectedCube.z);
-		}
-	}
+	if (chunk::ChunkManager::getInstance().intersectWithSolidCube(location, viewDirection.getViewDirection(), 5)) {
 
+		glm::vec3 selectedCube = chunk::ChunkManager::getInstance().getLocationOfInteresectedCube();
+
+		if (input.action1Pressed) {
+			chunk::ChunkManager::getInstance().removeCube(selectedCube.x, selectedCube.y, selectedCube.z);
+			return;
+		}
+
+		transform.setLocation(selectedCube.x, selectedCube.y, selectedCube.z);
+		graphics::CubeBatcher::getInstance().addBatch(1, transform);
+	}
 
 }
 

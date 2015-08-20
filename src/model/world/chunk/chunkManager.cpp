@@ -19,9 +19,9 @@ ChunkManager::ChunkManager()
 
 	// Currently creates only one chunk.
 
-	int xMax = 5;
-	int yMax = 2;
-	int zMax = 5;
+	int xMax = config::chunk_data::NUMBER_OF_CHUNKS_X;
+	int yMax = config::chunk_data::NUMBER_OF_CHUNKS_Y;
+	int zMax = config::chunk_data::NUMBER_OF_CHUNKS_Z;
 	for (int x = 0; x < xMax; x++) {
 		for (int y = 0; y < yMax; y++) {
 			for (int z = 0; z < zMax; z++) {

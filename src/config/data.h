@@ -22,9 +22,9 @@ namespace config
 		static constexpr int CHUNK_HEIGHT = 16;
 		static constexpr int CHUNK_DEPTH = 16;
 
-		static constexpr int NUMBER_OF_CHUNKS_X = 100;
-		static constexpr int NUMBER_OF_CHUNKS_Y = 2;
-		static constexpr int NUMBER_OF_CHUNKS_Z = 100;
+		static constexpr int NUMBER_OF_CHUNKS_X = 5;
+		static constexpr int NUMBER_OF_CHUNKS_Y = 1;
+		static constexpr int NUMBER_OF_CHUNKS_Z = 5;
 
 	}
 
@@ -37,6 +37,9 @@ namespace config
 		static constexpr char DIRT = 1;
 		static constexpr char ROCK = 2;
 		static constexpr char BRICK_WALL = 2;
+
+		// Used for looping over all types
+		static constexpr char LAST_BLOCK = BRICK_WALL;
 
 		static constexpr int SIDE_TEXTURE = 0;
 		static constexpr int TOP_TEXTURE =1;

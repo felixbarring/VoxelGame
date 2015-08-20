@@ -5,6 +5,7 @@
 #include <GLFW/glfw3.h>
 
 #include "../graphics/chunkBatcher.h"
+#include "../graphics/cubeBatcher.h"
 #include "../graphics/shaderProgram.h"
 #include "../graphics/graphicalChunk.h"
 #include "../graphics/camera.h"
@@ -95,6 +96,7 @@ void PlayerCollisionDemo::runDemo()
 		player.update(0.0f);
 
 		graphics::ChunkBatcher::getInstance().draw();
+		graphics::CubeBatcher::getInstance().draw();
 
 		fpsManager.sync();
 		glfwSwapBuffers(window);

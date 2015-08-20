@@ -27,6 +27,12 @@ glm::mat4 Camera::getViewMatrix()
 	return glm::lookAt(position, position+direction, up);
 }
 
+
+glm::mat4& Camera::getProjectionMatrix()
+{
+	return projection;
+}
+
 void Camera::moveForward(float amount)
 {
 	position += direction * amount;

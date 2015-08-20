@@ -71,17 +71,14 @@ void CubeDemo::runDemo()
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
 
-	std::shared_ptr<graphics::TexturedCube> batch1(new graphics::TexturedCube{2, 0, -1.0f, 0});
-	std::shared_ptr<graphics::TexturedCube> batch2{new graphics::TexturedCube{-2, 0, -1.0f, 1}};
-	std::shared_ptr<graphics::TexturedCube> batch3{new graphics::TexturedCube{0, 0, -1.0f, 2}};
+	graphics::Transform transform1{2, 0, -1.0f};
+	graphics::Transform transform2{-2, 0, -1.0f};
+	graphics::Transform transform3{0, 0, -1.0f};
 
-	graphics::CubeBatcher::getInstance().addBatch(batch1);
-	graphics::CubeBatcher::getInstance().addBatch(batch2);
-	graphics::CubeBatcher::getInstance().addBatch(batch3);
+	graphics::Camera::getInstance().setLocation(0, 3, 2);
+	graphics::Camera::getInstance().setViewDirection(0, 1, 0);
 
-	graphics::Camera::getInstance().setLocation(0, 0.2, 2);
-	graphics::Camera::getInstance().setViewDirection(0, -1, 0);
-	graphics::Camera::getInstance().setUpDirection(0, 0, 1.0);
+	float xAmount = 0;
 
 	while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0)	{
 
@@ -90,9 +87,18 @@ void CubeDemo::runDemo()
 		glfwPollEvents();
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+		/*
 		batch1.get()->getTransform().rotateX(0.05);
 		batch2.get()->getTransform().rotateY(0.05);
 		batch3.get()->getTransform().rotateZ(0.05);
+		*/
+
+		//graphics::Camera::getInstance().setViewDirection(xAmount, -1, 0);
+		//xAmount += 0.1;
+
+		graphics::CubeBatcher::getInstance().addBatch(1, transform1);
+		graphics::CubeBatcher::getInstance().addBatch(1, transform2);
+		graphics::CubeBatcher::getInstance().addBatch(1, transform3);
 
 		graphics::CubeBatcher::getInstance().draw();
 

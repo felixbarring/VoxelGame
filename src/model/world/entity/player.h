@@ -8,6 +8,7 @@
 #include "aabb.h"
 #include "../../../util/input.h"
 #include "../../../graphics/viewDirection.h"
+#include "../../../graphics/transform.h"
 
 namespace entity {
 
@@ -40,7 +41,7 @@ private:
 	util::Input& input;
 	AABB boundingBox; //{0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
 	float movementSpeed = 0.1;
-
+	graphics::Transform transform;
 };
 
 } /* namespace entity */

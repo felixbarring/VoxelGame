@@ -7,11 +7,20 @@
 #include "shaderProgram.h"
 #include "texture/textureArray.h"
 
+#include "../config/data.h"
+
 namespace graphics {
+
+// ########################################################
+// Constructor/Destructor #################################
+// ########################################################
 
 CubeBatcher::CubeBatcher()
 {
-
+	for (int i = 0; i < config::cube_data::LAST_BLOCK; i++) {
+		//std::shared_ptr<graphics::TexturedCube> batch1(new graphics::TexturedCube{2, 0, -1.0f, 0});
+		cubes.push_back(TexturedCube{2, 0, -1.0f, 0});
+	}
 }
 
 CubeBatcher::~CubeBatcher()
@@ -19,20 +28,14 @@ CubeBatcher::~CubeBatcher()
 
 }
 
+// ########################################################
+// Member Functions########################################
+// ########################################################
 
-void CubeBatcher::addBatch(std::shared_ptr<TexturedCube> batch)
+void CubeBatcher::addBatch(char type, Transform &transform)
 {
-	batches.push_back(batch);
-}
-
-void CubeBatcher::removeBatch(std::shared_ptr<TexturedCube> batch)
-{
-	for (unsigned i = 0; i < batches.size(); ++i) {
-		if (batches.at(i).get() == batch.get()) {
-			batches.erase(batches.begin() + i);
-			return;
-		}
-	}
+	//TexturedCube &cube = cubes.at(type);
+	batches.push_back(Batch(cubes.at(type), transform));
 }
 
 void CubeBatcher::draw()
@@ -79,31 +82,22 @@ void CubeBatcher::draw()
 	static graphics::ShaderProgram program(vertex, fragment, attributesMap);
 	static texture::TextureArray texture(config::cube_data::textures, config::cube_data::TEXTURE_WIDTH, config::cube_data::TEXTURE_HEIGHT);
 
-	static float aspectRatio = 800 / 600;
-	static glm::mat4 projection = glm::perspective(80.0f, aspectRatio, 0.1f, 100.0f);
-
-	static glm::mat4 camera = glm::lookAt(
-		glm::vec3(0, 0.1, 2), // Camera location
-		glm::vec3(0, 0, 0),   // Look at
-		glm::vec3(0, 0, 1)    // Head is up
-	);
-
-
 	program.bind();
 
 	glActiveTexture(GL_TEXTURE0);
 	program.setUniformli("texture1", 0);
 	texture.bind();
 
-	// Camera & camera = Camera::getInstance();
+	Camera& camera = Camera::getInstance();
 
 	for (auto b : batches) {
-		glm::mat4 modelView = camera * b->getTransform().getMatrix();
-		glm::mat4 modelViewProjection = projection * modelView;
+		glm::mat4 modelView = camera.getViewMatrix() * b.transform.getMatrix();
+		glm::mat4 modelViewProjection = camera.getProjectionMatrix() * modelView;
 		program.setUniformMatrix4f("modelViewProjection", modelViewProjection);
-		b->draw();
+		b.cube.draw();
 	}
 
+	batches.clear();
 }
 
 

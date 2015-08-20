@@ -22,6 +22,10 @@ public:
 
 	void translate(glm::vec3 translation);
 
+
+	// Make one that takes glm::vec3 ?!?
+	void setLocation(float x, float y, float z);
+
 	void setRotationX(float value);
 
 	void setRotationY(float value);

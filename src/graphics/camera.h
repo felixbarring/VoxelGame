@@ -33,9 +33,13 @@ public:
 		return INSTANCE;
 	}
 
+	void setViewMatrix();
+
 	glm::mat4 getViewMatrix();
 
-	glm::mat4& getProjectionMatrix() { return projection; }
+	void setProjectionMatrix();
+
+	glm::mat4& getProjectionMatrix();
 
 	void moveForward(float amount);
 

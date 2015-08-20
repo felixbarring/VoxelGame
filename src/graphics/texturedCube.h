@@ -24,7 +24,7 @@ public:
 
 	void draw();
 
-	Transform& getTransform() { return transform; }
+	//Transform& getTransform() { return transform; }
 
 	float getxLocation() { return xLocation; }
 
@@ -40,7 +40,7 @@ private:
 	float yLocation;
 	float zLocation;
 
-	Transform transform;
+	//Transform transform;
 };
 
 }

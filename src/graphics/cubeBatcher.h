@@ -7,6 +7,8 @@
 
 #include "texturedCube.h"
 #include "camera.h"
+#include "transform.h"
+
 
 namespace graphics {
 
@@ -37,9 +39,7 @@ public:
 	// Member Functions########################################
 	// ########################################################
 
-	void addBatch(std::shared_ptr<TexturedCube> batch);
-
-	void removeBatch(std::shared_ptr<TexturedCube> batch);
+	void addBatch(char type, Transform &transform);
 
 	void draw();
 
@@ -47,7 +47,23 @@ public:
 	// Instance Variables #####################################
 	// ########################################################
 
-	std::vector<std::shared_ptr<TexturedCube>> batches;
+private:
+
+	class Batch {
+	public:
+
+		Batch(TexturedCube &cube, Transform &transform):
+			cube(cube),
+			transform(transform)
+		{
+		}
+
+		TexturedCube &cube;
+		Transform &transform;
+	};
+
+	std::vector<Batch> batches;
+	std::vector<TexturedCube> cubes;
 
 };
 

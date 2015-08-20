@@ -17,46 +17,48 @@ namespace graphics
 TexturedCube::TexturedCube(float xOffset, float yOffset, float zOffset, int id):
 	xLocation{xOffset},
 	yLocation{yOffset},
-	zLocation{zOffset},
-	transform{xOffset, yOffset, zOffset}
+	zLocation{zOffset}
+	//transform{xOffset, yOffset, zOffset}
 {
+
+	float size = 0.51f;
 
 	std::vector<GLfloat> vertexData {
 		// Front
-		-0.5f, -0.5f, -0.5f, // 0
-		0.5f, -0.5f, -0.5f, // 1
-		0.5f, 0.5f, -0.5f, // 2
-		-0.5f, 0.5f, -0.5f, // 3
+		-size, -size, -size, // 0
+		size, -size, -size, // 1
+		size, size, -size, // 2
+		-size, size, -size, // 3
 
 		// Back
-		0.5f, -0.5f, 0.5f, // 0
-		-0.5f, -0.5f, 0.5f, // 1
-		-0.5f, 0.5f, 0.5f, // 2
-		0.5f, 0.5f, 0.5f, // 3
+		size, -size, size, // 0
+		-size, -size, size, // 1
+		-size, size, size, // 2
+		size, size, size, // 3
 
 		// Left
-		-0.5f, -0.5f, 0.5f, // 0
-		-0.5f, -0.5f, -0.5f, // 1
-		-0.5f, 0.5f, -0.5f, // 2
-		-0.5f, 0.5f, 0.5f, // 3
+		-size, -size, size, // 0
+		-size, -size, -size, // 1
+		-size, size, -size, // 2
+		-size, size, size, // 3
 
 		// Right
-		0.5f, -0.5f, -0.5f, // 0
-		0.5f, -0.5f, 0.5f, // 1
-		0.5f, 0.5f, 0.5f, // 2
-		0.5f, 0.5f, -0.5f, // 3
+		size, -size, -size, // 0
+		size, -size, size, // 1
+		size, size, size, // 2
+		size, size, -size, // 3
 
 		// Top
-		-0.5f, 0.5f, -0.5f, // 0
-		0.5f, 0.5f, -0.5f, // 1
-		0.5f, 0.5f, 0.5f, // 2
-		-0.5f, 0.5f, 0.5f, // 3
+		-size, size, -size, // 0
+		size, size, -size, // 1
+		size, size, size, // 2
+		-size, size, size, // 3
 
 		// Bottom
-		-0.5f, -0.5f, 0.5f, // 0
-		0.5f, -0.5f, 0.5f, // 1
-		0.5f, -0.5f, -0.5f, // 2
-		-0.5f, -0.5f, -0.5f, // 3
+		-size, -size, size, // 0
+		size, -size, size, // 1
+		size, -size, -size, // 2
+		-size, -size, -size, // 3
 	};
 
 	std::vector<GLfloat> normals {
