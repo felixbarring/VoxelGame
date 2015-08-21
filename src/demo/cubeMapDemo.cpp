@@ -104,8 +104,14 @@ void CubeMapDemo::runDemo()
 		glfwSetCursorPos(window, screenCenterX, screenCenterY);
 
 		viewDirection.changeViewDirection(screenCenterX - xpos, screenCenterY - ypos);
-		camera.setViewDirection(viewDirection.getViewDirection());
-		camera.setUpDirection(viewDirection.getUpDirection());
+
+
+		camera.updateView(glm::vec3(0,0,0), viewDirection.getViewDirection(), viewDirection.getUpDirection());
+
+
+
+		//camera.setViewDirection(viewDirection.getViewDirection());
+		//camera.setUpDirection(viewDirection.getUpDirection());
 
 		skyBox.render(camera);
 

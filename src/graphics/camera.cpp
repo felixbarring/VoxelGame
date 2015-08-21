@@ -21,48 +21,26 @@ Camera::~Camera()
 // Member Functions########################################
 // ########################################################
 
-glm::mat4 Camera::getViewMatrix()
+void Camera::setViewMatrix(glm::mat4 view)
 {
-	// TODO Consider cache the matrix if it is called many times in one frame!
-	return glm::lookAt(position, position+direction, up);
+	this->view = view;
 }
 
+glm::mat4 Camera::getViewMatrix()
+{
+	return view;
+}
 
 glm::mat4& Camera::getProjectionMatrix()
 {
 	return projection;
 }
 
-void Camera::moveForward(float amount)
+void Camera::updateView(glm::vec3 position, glm::vec3 direction, glm::vec3 up)
 {
-	position += direction * amount;
+	view = glm::lookAt(position, position+direction, up);
 }
 
-void Camera::setViewDirection(glm::vec3 direction)
-{
-	this->direction = direction;
-}
-
-void Camera::setViewDirection(float x, float y, float z)
-{
-	this->direction = glm::vec3(x, y, z);
-}
-
-
-void Camera::setUpDirection(glm::vec3 up)
-{
-	this->up = up;
-}
-
-void Camera::setUpDirection(float x, float y, float z)
-{
-	this->up = glm::vec3(x, y, z);
-}
-
-void Camera::setLocation(float x, float y, float z)
-{
-	position = glm::vec3(x, y, z);
-}
 
 }
 

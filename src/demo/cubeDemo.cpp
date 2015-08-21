@@ -15,6 +15,7 @@
 #include "../graphics/texturedCube.h"
 #include "../graphics/cubeBatcher.h"
 #include "../graphics/camera.h"
+#include "../graphics/viewDirection.h"
 #include "../util/fpsManager.h"
 #include "../config/data.h"
 
@@ -71,12 +72,22 @@ void CubeDemo::runDemo()
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
 
-	graphics::Transform transform1{2, 0, -1.0f};
-	graphics::Transform transform2{-2, 0, -1.0f};
-	graphics::Transform transform3{0, 0, -1.0f};
+	graphics::Transform transform1{0, 0, -5.0f};
+	graphics::Transform transform2{2, 0, -5.0f};
+	graphics::Transform transform3{4, 0, -5.0f};
+	graphics::Transform transform4{6, 0, -5.0f};
 
-	graphics::Camera::getInstance().setLocation(0, 3, 2);
-	graphics::Camera::getInstance().setViewDirection(0, 1, 0);
+	float aspectRatio = 800 / 600;
+	glm::mat4 Projection = glm::perspective(80.0f, aspectRatio, 0.1f, 100.0f);
+
+	glm::mat4 camera = glm::lookAt(
+		glm::vec3(0, 0.1, 2), // Camera location
+		glm::vec3(0, 0, 0),   // Look at
+		glm::vec3(0, 0, 1)    // Head is up
+	);
+
+	graphics::Camera::getInstance().setViewMatrix(camera);
+
 
 	float xAmount = 0;
 
@@ -87,18 +98,17 @@ void CubeDemo::runDemo()
 		glfwPollEvents();
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		/*
-		batch1.get()->getTransform().rotateX(0.05);
-		batch2.get()->getTransform().rotateY(0.05);
-		batch3.get()->getTransform().rotateZ(0.05);
-		*/
-
-		//graphics::Camera::getInstance().setViewDirection(xAmount, -1, 0);
-		//xAmount += 0.1;
+		transform1.rotateX(0.1);
+		transform2.rotateY(0.1);
+		transform3.rotateZ(0.1);
+		transform4.rotateX(0.1);
+		transform4.rotateY(0.1);
+		transform4.rotateZ(0.1);
 
 		graphics::CubeBatcher::getInstance().addBatch(1, transform1);
-		graphics::CubeBatcher::getInstance().addBatch(1, transform2);
-		graphics::CubeBatcher::getInstance().addBatch(1, transform3);
+		graphics::CubeBatcher::getInstance().addBatch(2, transform2);
+		graphics::CubeBatcher::getInstance().addBatch(3, transform3);
+		graphics::CubeBatcher::getInstance().addBatch(4, transform4);
 
 		graphics::CubeBatcher::getInstance().draw();
 

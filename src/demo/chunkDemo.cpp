@@ -90,7 +90,7 @@ void ChunkDemo::runDemo()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-			camera.moveForward(0.1f);
+			//camera.moveForward(0.1f);
 		}
 
 		double xpos, ypos;
@@ -98,8 +98,12 @@ void ChunkDemo::runDemo()
 		glfwSetCursorPos(window, screenCenterX, screenCenterY);
 
 		viewDirection.changeViewDirection(screenCenterX - xpos, screenCenterY - ypos);
-		camera.setViewDirection(viewDirection.getViewDirection());
-		camera.setUpDirection(viewDirection.getUpDirection());
+
+
+		// TODO FIX ALL THIS STUFF
+
+		//camera.setViewDirection(viewDirection.getViewDirection());
+		//camera.setUpDirection(viewDirection.getUpDirection());
 
 		graphics::ChunkBatcher::getInstance().draw();
 

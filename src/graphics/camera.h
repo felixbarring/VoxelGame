@@ -33,7 +33,7 @@ public:
 		return INSTANCE;
 	}
 
-	void setViewMatrix();
+	void setViewMatrix(glm::mat4 view);
 
 	glm::mat4 getViewMatrix();
 
@@ -41,17 +41,8 @@ public:
 
 	glm::mat4& getProjectionMatrix();
 
-	void moveForward(float amount);
+	void updateView(glm::vec3 position, glm::vec3 direction, glm::vec3 up);
 
-	void setViewDirection(glm::vec3 direction);
-
-	void setViewDirection(float x, float y, float z);
-
-	void setUpDirection(glm::vec3 up);
-
-	void setUpDirection(float x, float y, float z);
-
-	void setLocation(float x, float y, float z);
 
 // ########################################################
 // Instance Variables #####################################
@@ -67,6 +58,7 @@ private:
 	// TODO Should not really use config ...
 	float aspectRatio = config::graphics_data::windowWidth / config::graphics_data::windowHeight;
 	glm::mat4 projection = glm::perspective(config::graphics_data::fov, aspectRatio, 0.1f, 100.0f);
+	glm::mat4 view;
 
 };
 

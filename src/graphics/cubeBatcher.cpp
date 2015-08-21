@@ -3,6 +3,7 @@
 
 #include <string>
 #include <map>
+#include <iostream>
 
 #include "shaderProgram.h"
 #include "texture/textureArray.h"
@@ -17,9 +18,9 @@ namespace graphics {
 
 CubeBatcher::CubeBatcher()
 {
-	for (int i = 0; i < config::cube_data::LAST_BLOCK; i++) {
-		//std::shared_ptr<graphics::TexturedCube> batch1(new graphics::TexturedCube{2, 0, -1.0f, 0});
-		cubes.push_back(TexturedCube{2, 0, -1.0f, 0});
+	for (int i = 0; i <= config::cube_data::LAST_BLOCK + 1; i++) {
+		cubes.push_back(TexturedCube{2, 0, -1.0f, i});
+		std::cout << "Size = " << cubes.size() << "\n";
 	}
 }
 
@@ -34,8 +35,7 @@ CubeBatcher::~CubeBatcher()
 
 void CubeBatcher::addBatch(char type, Transform &transform)
 {
-	//TexturedCube &cube = cubes.at(type);
-	batches.push_back(Batch(cubes.at(type), transform));
+	batches.push_back(Batch(cubes.at(type-1), transform));
 }
 
 void CubeBatcher::draw()

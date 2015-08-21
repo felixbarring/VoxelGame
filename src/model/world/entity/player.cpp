@@ -68,9 +68,13 @@ void Player::update(float timePassed)
 
 	location += speed;
 
+	/*
 	graphics::Camera::getInstance().setLocation(location.x, location.y, location.z);
 	graphics::Camera::getInstance().setViewDirection(viewDirection.getViewDirection());
 	graphics::Camera::getInstance().setUpDirection(viewDirection.getUpDirection());
+	*/
+
+	graphics::Camera::getInstance().updateView(glm::vec3(location.x, location.y, location.z), viewDirection.getViewDirection(), viewDirection.getUpDirection());
 
 	if (chunk::ChunkManager::getInstance().intersectWithSolidCube(location, viewDirection.getViewDirection(), 5)) {
 
