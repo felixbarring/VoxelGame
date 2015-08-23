@@ -6,14 +6,16 @@
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "../graphics/shaderProgram.h"
 #include "../graphics/camera.h"
 #include "../graphics/viewDirection.h"
-#include "../graphics/texture/textureCubeMap.h"
+#include "../graphics/texture/textureArray.h"
 #include "../graphics/mesh/meshV.h"
+#include "../graphics/mesh/meshVT.h"
 #include "../util/fpsManager.h"
 #include "../graphics/cubeMap.h"
 
@@ -38,7 +40,7 @@ SpriteDemo::~SpriteDemo()
 void SpriteDemo::runDemo()
 {
 
-	util::FPSManager fpsManager(100);
+	util::FPSManager fpsManager(60);
 	const GLuint WIDTH = 800, HEIGHT = 600;
 
 	if (!glfwInit()) {
@@ -66,24 +68,89 @@ void SpriteDemo::runDemo()
 	glViewport(0, 0, WIDTH, HEIGHT);
 	glClearColor(0.2f, 0.22f, 0.2f, 1.0f);
 
-	glEnable(GL_DEPTH_TEST);
-	glDepthFunc(GL_LESS);
+	const char *vertex =
+		"#version 330 core \n"
+		"in vec3 positionIn; \n"
+		"in vec3 texCoordIn; \n"
 
-	while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0) {
+		"uniform mat4 projection; \n"
+
+		"out vec3 texCoord; \n"
+
+		"void main() \n"
+		"{ \n"
+		"  gl_Position = projection * vec4(positionIn, 1.0f); \n"
+		"  texCoord = vec3(texCoordIn.x, 1.0 - texCoordIn.y, texCoordIn.z); \n"
+		"} \n";
+
+	const char *frag =
+		"#version 330 core \n"
+		"in vec3 texCoord; \n"
+
+		"out vec4 color; \n"
+
+		"uniform sampler2DArray texture1; \n"
+		"void main() \n"
+		"{ \n"
+		"  color = texture(texture1, texCoord); \n"
+		"} \n";
+
+
+	std::map<std::string, int> attributesMap{
+		std::pair<std::string, int>("positionIn", 0),
+		std::pair<std::string, int>("texCoordIn", 1)
+	};
+
+	graphics::ShaderProgram program(vertex, frag, attributesMap);
+
+	std::vector<GLfloat> vertices = {
+
+		0.0f, 0.0f, 0.0f,
+		200.0f, 0.0f, 0.0f,
+		200.0f, 200.0f, 0.0f,
+		0.0f, 200.0f, 0.0f,
+
+	};
+
+	std::vector<GLfloat> texCoords = {
+		0.0f, 0.0f, 0.0f,
+		1.0f, 0.0f, 0.0f,
+		1.0f, 1.0f, 0.0f,
+		0.0f, 1.0f, 0.0f,
+	};
+
+	std::vector<GLshort> indices = {
+		0, 1, 2,
+		0, 2, 3,
+	};
+
+	mesh::MeshVT mesh{vertices, 3, texCoords, 3, indices};
+
+	texture::TextureArray texture{config::cube_data::textures, config::cube_data::TEXTURE_WIDTH, config::cube_data::TEXTURE_HEIGHT};
+
+	glm::mat4 projection = glm::ortho(0.0f, 800.0f, 0.0f, 600.0f, -1.0f, 1.0f);
+
+	while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0)	{
 
 		fpsManager.frameStart();
 
 		glfwPollEvents();
+		glClear(GL_COLOR_BUFFER_BIT);
 
-        glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glDepthFunc(GL_LEQUAL);
+		program.bind();
 
-        fpsManager.sync();
-        glfwSwapBuffers(window);
-    }
+		glActiveTexture(GL_TEXTURE0);
+		texture.bind();
+		program.setUniformli("texture1", 0);
+		program.setUniformMatrix4f("projection", projection);
 
-    glfwTerminate();
+		mesh.render();
+
+		fpsManager.sync();
+		glfwSwapBuffers(window);
+	}
+	glfwTerminate();
+
 }
 
 } /* namespace graphics */

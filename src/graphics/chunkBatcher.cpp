@@ -1,7 +1,6 @@
 
 #include "chunkBatcher.h"
 
-#include <iostream>
 #include <map>
 
 #include "shaderProgram.h"
@@ -41,9 +40,6 @@ void ChunkBatcher::removeBatch(std::shared_ptr<GraphicalChunk> batch)
 			return;
 		}
 	}
-
-	std::cout << "\n Failed to remove a batch ??? \n\n";
-
 }
 
 void ChunkBatcher::draw()
