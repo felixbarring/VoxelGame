@@ -1,6 +1,7 @@
 
 #include "chunkDemo.h"
 
+#include <iostream>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
@@ -41,9 +42,9 @@ void ChunkDemo::runDemo()
 	const GLuint WIDTH = 800, HEIGHT = 600;
 
 	if (!glfwInit()) {
-		fprintf(stderr, "Failed to initialize GLFW\n");
+		std::cout << "Failed to initialize GLFW\n";
 	}
-	glfwWindowHint(GLFW_SAMPLES, 4);
+	glfwWindowHint(GLFW_SAMPLES, 8);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -51,7 +52,7 @@ void ChunkDemo::runDemo()
 
 	GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "Chunk Demo", nullptr, nullptr);
 	if (window == nullptr) {
-		fprintf(stderr, "Failed to open GLFW window.\n");
+		std::cout << "Failed to open GLFW window.\n";
 		glfwTerminate();
 	}
 	glfwMakeContextCurrent(window);
@@ -59,7 +60,7 @@ void ChunkDemo::runDemo()
 
 	glewExperimental = true;
 	if (glewInit() != GLEW_OK) {
-		fprintf(stderr, "Failed to initialize GLEW\n");
+		std::cout << "Failed to initialize GLEW\n";
 	}
 
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
@@ -99,11 +100,7 @@ void ChunkDemo::runDemo()
 
 		viewDirection.changeViewDirection(screenCenterX - xpos, screenCenterY - ypos);
 
-
-		// TODO FIX ALL THIS STUFF
-
-		//camera.setViewDirection(viewDirection.getViewDirection());
-		//camera.setUpDirection(viewDirection.getUpDirection());
+		camera.updateView(glm::vec3(8,17,-5), viewDirection.getViewDirection(), viewDirection.getUpDirection());
 
 		graphics::ChunkBatcher::getInstance().draw();
 

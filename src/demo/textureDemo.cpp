@@ -45,7 +45,7 @@ void TextureDemo::runDemo()
 	const GLuint WIDTH = 800, HEIGHT = 600;
 
 	if (!glfwInit()) {
-		fprintf(stderr, "Failed to initialize GLFW\n");
+		std::cout << "Failed to initialize GLFW\n";
 	}
 	glfwWindowHint(GLFW_SAMPLES, 8);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -53,17 +53,17 @@ void TextureDemo::runDemo()
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-
 	GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "Texture Demo", nullptr, nullptr);
-	if (window == NULL) {
-		fprintf(stderr, "Failed to open GLFW window.\n");
+	if (window == nullptr) {
+		std::cout << "Failed to open GLFW window.\n";
 		glfwTerminate();
 	}
 	glfwMakeContextCurrent(window);
+	glfwSwapInterval(-1);
 
 	glewExperimental = true;
 	if (glewInit() != GLEW_OK) {
-		fprintf(stderr, "Failed to initialize GLEW\n");
+		std::cout << "Failed to initialize GLEW\n";
 	}
 
 	glViewport(0, 0, WIDTH, HEIGHT);

@@ -53,8 +53,8 @@ void CubeDemo::runDemo()
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-	GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "Textured Cubes Demo", nullptr, nullptr);
-	if (window == NULL) {
+	GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "Cube Demo", nullptr, nullptr);
+	if (window == nullptr) {
 		fprintf(stderr, "Failed to open GLFW window.\n");
 		glfwTerminate();
 	}
@@ -77,7 +77,7 @@ void CubeDemo::runDemo()
 	graphics::Transform transform3{4, 0, -5.0f};
 	graphics::Transform transform4{6, 0, -5.0f};
 
-	float aspectRatio = 800 / 600;
+	float aspectRatio = WIDTH / HEIGHT;
 	glm::mat4 Projection = glm::perspective(80.0f, aspectRatio, 0.1f, 100.0f);
 
 	glm::mat4 camera = glm::lookAt(

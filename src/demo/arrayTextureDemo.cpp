@@ -6,12 +6,8 @@
 #include <SOIL.h>
 
 #include <map>
-
 #include <iostream>
 #include <memory>
-#include <thread>
-#include <chrono>
-#include <mutex>
 #include <vector>
 #include <string>
 
@@ -48,7 +44,7 @@ void ArrayTextureDemo::runDemo()
 	const GLuint WIDTH = 800, HEIGHT = 600;
 
 	if (!glfwInit()) {
-		fprintf(stderr, "Failed to initialize GLFW\n");
+		std::cout << "Failed to initialize GLFW\n";
 	}
 	glfwWindowHint(GLFW_SAMPLES, 8);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -56,17 +52,17 @@ void ArrayTextureDemo::runDemo()
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-
-	GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "Texture Array Demo", nullptr, nullptr);
-	if (window == NULL) {
-		fprintf(stderr, "Failed to open GLFW window.\n");
+	GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "Array Texture Demo", nullptr, nullptr);
+	if (window == nullptr) {
+		std::cout << "Failed to open GLFW window.\n";
 		glfwTerminate();
 	}
 	glfwMakeContextCurrent(window);
+	glfwSwapInterval(-1);
 
 	glewExperimental = true;
 	if (glewInit() != GLEW_OK) {
-		fprintf(stderr, "Failed to initialize GLEW\n");
+		std::cout << "Failed to initialize GLEW\n";
 	}
 
 	glViewport(0, 0, WIDTH, HEIGHT);
@@ -83,7 +79,7 @@ void ArrayTextureDemo::runDemo()
 		"{ \n"
 		"  gl_Position = vec4(positionIn, 1.0f); \n"
 		"  texCoord = vec3(texCoordIn.x, 1.0 - texCoordIn.y, texCoordIn.z); \n"
-			"} \n";
+		"} \n";
 
 	const char *frag =
 		"#version 330 core \n"

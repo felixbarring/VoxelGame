@@ -2,6 +2,7 @@
 #include "cubeMapDemo.h"
 
 #include <string>
+#include <iostream>
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -43,7 +44,7 @@ void CubeMapDemo::runDemo()
 	const GLuint WIDTH = 800, HEIGHT = 600;
 
 	if (!glfwInit()) {
-		fprintf(stderr, "Failed to initialize GLFW\n");
+		std::cout << "Failed to initialize GLFW\n";
 	}
 	glfwWindowHint(GLFW_SAMPLES, 8);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -53,7 +54,7 @@ void CubeMapDemo::runDemo()
 
 	GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "Cube Map Demo", nullptr, nullptr);
 	if (window == nullptr) {
-		fprintf(stderr, "Failed to open GLFW window.\n");
+		std::cout << "Failed to open GLFW window.\n";
 		glfwTerminate();
 	}
 	glfwMakeContextCurrent(window);
@@ -61,7 +62,7 @@ void CubeMapDemo::runDemo()
 
 	glewExperimental = true;
 	if (glewInit() != GLEW_OK) {
-		fprintf(stderr, "Failed to initialize GLEW\n");
+		std::cout << "Failed to initialize GLEW\n";
 	}
 
 	glViewport(0, 0, WIDTH, HEIGHT);
@@ -81,8 +82,6 @@ void CubeMapDemo::runDemo()
 		"../resources/skybox/front.jpg",
 		2048, 2048
     };
-
-    //float aspectRatio = WIDTH / HEIGHT;
 
 	float screenCenterX = WIDTH / 2;
 	float screenCenterY = HEIGHT / 2;
@@ -104,14 +103,7 @@ void CubeMapDemo::runDemo()
 		glfwSetCursorPos(window, screenCenterX, screenCenterY);
 
 		viewDirection.changeViewDirection(screenCenterX - xpos, screenCenterY - ypos);
-
-
 		camera.updateView(glm::vec3(0,0,0), viewDirection.getViewDirection(), viewDirection.getUpDirection());
-
-
-
-		//camera.setViewDirection(viewDirection.getViewDirection());
-		//camera.setUpDirection(viewDirection.getUpDirection());
 
 		skyBox.render(camera);
 
