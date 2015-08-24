@@ -13,7 +13,6 @@
 #include "../graphics/camera.h"
 #include "../graphics/viewDirection.h"
 #include "../graphics/texture/textureCubeMap.h"
-#include "../graphics/mesh/meshV.h"
 #include "../util/fpsManager.h"
 #include "../graphics/cubeMap.h"
 

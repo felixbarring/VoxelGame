@@ -12,7 +12,6 @@
 #include <string>
 
 #include "../graphics/shaderProgram.h"
-#include "../graphics/mesh/meshVT.h"
 #include "../graphics/mesh/meshElement.h"
 #include "../config/data.h"
 #include "../graphics/texture/textureArray.h"
