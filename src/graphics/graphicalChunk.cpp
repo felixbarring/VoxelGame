@@ -352,7 +352,7 @@ GraphicalChunk::~GraphicalChunk()
 
 void GraphicalChunk::draw()
 {
-	mesh->render();
+	mesh->draw();
 }
 
 }

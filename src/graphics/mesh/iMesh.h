@@ -9,7 +9,7 @@ class IMesh {
 public:
 	virtual ~IMesh() {}
 
-	virtual void render() = 0;
+	virtual void draw() = 0;
 
 };
 

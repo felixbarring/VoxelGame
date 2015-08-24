@@ -133,7 +133,7 @@ void CubeMap::render(Camera &camera)
     skyboxShader.setUniformMatrix4f("view", view);
     skyboxShader.setUniformMatrix4f("projection", camera.getProjectionMatrix());
     texture.bind();
-    mesh.render();
+    mesh.draw();
 }
 
 }

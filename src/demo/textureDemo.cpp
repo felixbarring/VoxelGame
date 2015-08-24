@@ -137,7 +137,7 @@ void TextureDemo::runDemo()
 		texture.bind();
 		program.setUniformli("texture1", 0);
 
-		mesh.render();
+		mesh.draw();
 
 		fpsManager.sync();
 		glfwSwapBuffers(window);

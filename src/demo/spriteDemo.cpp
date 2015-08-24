@@ -143,7 +143,7 @@ void SpriteDemo::runDemo()
 		program.setUniformli("texture1", 0);
 		program.setUniformMatrix4f("projection", projection);
 
-		mesh.render();
+		mesh.draw();
 
 		fpsManager.sync();
 		glfwSwapBuffers(window);

@@ -193,7 +193,7 @@ MeshElement::~MeshElement()
 // Member Functions########################################
 // ########################################################
 
-void MeshElement::render()
+void MeshElement::draw()
 {
 	glBindVertexArray(VAO);
 

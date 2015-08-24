@@ -160,7 +160,7 @@ TexturedCube::~TexturedCube()
 
 void TexturedCube::draw()
 {
-	mesh->render();
+	mesh->draw();
 }
 
 }
