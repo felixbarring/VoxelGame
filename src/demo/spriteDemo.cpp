@@ -14,8 +14,7 @@
 #include "../graphics/camera.h"
 #include "../graphics/viewDirection.h"
 #include "../graphics/texture/textureArray.h"
-#include "../graphics/mesh/meshV.h"
-#include "../graphics/mesh/meshVT.h"
+#include "../graphics/mesh/meshElement.h"
 #include "../util/fpsManager.h"
 #include "../graphics/cubeMap.h"
 
@@ -124,7 +123,7 @@ void SpriteDemo::runDemo()
 		0, 2, 3,
 	};
 
-	mesh::MeshVT mesh{vertices, 3, texCoords, 3, indices};
+	mesh::MeshElement mesh{vertices, 3, texCoords, 3, indices};
 
 	texture::TextureArray texture{config::cube_data::textures, config::cube_data::TEXTURE_WIDTH, config::cube_data::TEXTURE_HEIGHT};
 

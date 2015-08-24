@@ -2,7 +2,9 @@
 #ifndef GAME_MODEL_ENTITIES_CUBE_H_
 #define GAME_MODEL_ENTITIES_CUBE_H_
 
-#include "mesh/meshVNT.h"
+#include <memory>
+
+#include "mesh/meshElement.h"
 #include "transform.h"
 
 namespace graphics
@@ -24,8 +26,6 @@ public:
 
 	void draw();
 
-	//Transform& getTransform() { return transform; }
-
 	float getxLocation() { return xLocation; }
 
 	float getyLocation() { return yLocation; }
@@ -35,7 +35,10 @@ public:
 // ########################################################
 
 private:
-	mesh::MeshVNT *mesh;
+
+	// unique pointer gives error?!?
+	std::shared_ptr<mesh::MeshElement> mesh;
+
 	float xLocation;
 	float yLocation;
 	float zLocation;

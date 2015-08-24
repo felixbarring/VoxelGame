@@ -15,7 +15,7 @@
 
 #include "../graphics/shaderProgram.h"
 #include "../graphics/texture/texture.h"
-#include "../graphics/mesh/meshVT.h"
+#include "../graphics/mesh/meshElement.h"
 
 #include "../util/fpsManager.h"
 
@@ -121,7 +121,7 @@ void TextureDemo::runDemo()
 		1, 2, 3
 	};
 
-	mesh::MeshVT mesh{vertices, 3, texCoords, 2, indices};
+	mesh::MeshElement mesh{vertices, 3, texCoords, 2, indices};
 	texture::Texture texture("../resources/0001_grass_side.png");
 
 	while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0)	{

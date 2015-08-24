@@ -9,7 +9,7 @@
 #include "../graphics/shaderProgram.h"
 #include "../graphics/camera.h"
 #include "../graphics/texture/textureCubeMap.h"
-#include "../graphics/mesh/meshV.h"
+#include "../graphics/mesh/meshElement.h"
 
 namespace graphics
 {
@@ -35,8 +35,11 @@ CubeMap::~CubeMap()
 void CubeMap::render(Camera &camera)
 {
 
-	// TODO This static data should be smoe where else
 	static std::map<std::string, int> attributesMap{std::pair<std::string, int>("positionIn", 0)};
+
+
+	// TODO Remove the projcetion * view multiplication from the shader
+
 	static ShaderProgram skyboxShader(
 			"#version 330 core \n"
 
@@ -122,7 +125,7 @@ void CubeMap::render(Camera &camera)
 		0+30, 1+30, 2+30, 3+30, 4+30, 5+30,
 	};
 
-	static mesh::MeshV mesh{vert, 3, element};
+	static mesh::MeshElement mesh{vert, 3, element};
 
     skyboxShader.bind();
 

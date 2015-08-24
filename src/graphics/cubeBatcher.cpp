@@ -20,13 +20,11 @@ CubeBatcher::CubeBatcher()
 {
 	for (int i = 0; i <= config::cube_data::LAST_BLOCK + 1; i++) {
 		cubes.push_back(TexturedCube{2, 0, -1.0f, i});
-		std::cout << "Size = " << cubes.size() << "\n";
 	}
 }
 
 CubeBatcher::~CubeBatcher()
 {
-
 }
 
 // ########################################################

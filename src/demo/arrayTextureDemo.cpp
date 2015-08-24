@@ -150,9 +150,7 @@ void ArrayTextureDemo::runDemo()
 		0+8, 2+8, 3+8
 	};
 
-	mesh::MeshVT mesh{vertices, 3, texCoords, 3, indices};
-
-	//mesh::MeshElement mesh{vertices, 3, texCoords, 3, indices};
+	mesh::MeshElement mesh{vertices, 3, texCoords, 3, indices};
 
 	texture::TextureArray texture{config::cube_data::textures, config::cube_data::TEXTURE_WIDTH, config::cube_data::TEXTURE_HEIGHT};
 

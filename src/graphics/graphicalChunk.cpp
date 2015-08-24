@@ -6,7 +6,6 @@
 
 #include "texturedCube.h"
 #include "transform.h"
-//#include "../config/data.h"
 
 namespace graphics
 {
@@ -339,7 +338,7 @@ transform{x, y, z}
 		}
 	}
 
-	mesh = new mesh::MeshVNT(vertexData, 3, normals, 3, UV, 3, elementData);
+	mesh.reset(new mesh::MeshElement(vertexData, 3, normals, 3, UV, 3, elementData));
 	//std::cout<<"Total number of faces: "<<totalNumberOfFaces<<"\n";
 }
 

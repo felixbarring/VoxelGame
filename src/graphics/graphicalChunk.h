@@ -2,7 +2,9 @@
 #ifndef SRC_GRAPHICS_GRAPHICALCHUNK_H_
 #define SRC_GRAPHICS_GRAPHICALCHUNK_H_
 
-#include "mesh/meshVNT.h"
+#include <memory>
+
+#include "mesh/meshElement.h"
 #include "transform.h"
 
 #include "../config/data.h"
@@ -40,15 +42,12 @@ public:
 
 private:
 
-	// Used for stuff :o
 	struct CubeFaceData {
 		int id;
 		bool vissible, front, back, left, right, top, bottom;
 	};
 
-	// TODO Use smart pointer here?
-	// Why pointer?
-	mesh::MeshVNT *mesh;
+	std::unique_ptr<mesh::MeshElement> mesh;
 	float xLocation;
 	float yLocation;
 	float zLocation;

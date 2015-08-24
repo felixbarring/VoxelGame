@@ -17,7 +17,7 @@ void checkStuff(){
 	int maxLayers;
 	glGetIntegerv(GL_MAX_ARRAY_TEXTURE_LAYERS, &maxLayers);
 
-	std::cout << "Number of Array Texture Layers that are supported " << maxLayers;
+	// std::cout << "Number of Array Texture Layers that are supported " << maxLayers << "\n";
 
 }
 
