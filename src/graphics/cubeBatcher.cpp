@@ -7,6 +7,7 @@
 
 #include "shaderProgram.h"
 #include "texture/textureArray.h"
+#include "textureResources.h"
 
 #include "../config/data.h"
 
@@ -78,7 +79,7 @@ void CubeBatcher::draw()
 	};
 
 	static graphics::ShaderProgram program(vertex, fragment, attributesMap);
-	static texture::TextureArray texture(config::cube_data::textures, config::cube_data::TEXTURE_WIDTH, config::cube_data::TEXTURE_HEIGHT);
+	static texture::TextureArray &texture = graphics::TextureResources::getInstance().getTextureArray(0);
 
 	program.bind();
 

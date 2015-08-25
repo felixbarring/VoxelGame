@@ -5,6 +5,7 @@
 
 #include "shaderProgram.h"
 #include "texture/textureArray.h"
+#include "textureResources.h"
 
 namespace graphics
 {
@@ -29,6 +30,7 @@ ChunkBatcher::~ChunkBatcher()
 void ChunkBatcher::addBatch(std::shared_ptr<GraphicalChunk> batch)
 {
 	batches.push_back(batch);
+	//texture_resources::loadStuff();
 }
 
 void ChunkBatcher::removeBatch(std::shared_ptr<GraphicalChunk> batch)
@@ -83,7 +85,7 @@ void ChunkBatcher::draw()
 	};
 
 	static ShaderProgram program(vertex, fragment, attributesMap);
-	static texture::TextureArray texture{config::cube_data::textures, config::cube_data::TEXTURE_WIDTH, config::cube_data::TEXTURE_HEIGHT};
+	static texture::TextureArray &texture = TextureResources::getInstance().getTextureArray(0);
 
 	program.bind();
 

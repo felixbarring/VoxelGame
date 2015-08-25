@@ -38,13 +38,14 @@ namespace config
 		static constexpr char ROCK = 2;
 		static constexpr char BRICK_WALL = 2;
 
-		// Used for looping over all types
+		// Used for looping over all types, except for air.
 		static constexpr char LAST_BLOCK = BRICK_WALL;
 
 		static constexpr int SIDE_TEXTURE = 0;
 		static constexpr int TOP_TEXTURE =1;
 		static constexpr int BOTTOM_TEXTURE = 2;
 
+		// 0 = Side, 1 = Top, 2 = Bottom
 		static char BLOCK_TEXTURES[4][3]{
 			{0, 1, 2},
 			{2, 2, 2},
