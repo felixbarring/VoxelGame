@@ -31,20 +31,20 @@ ShaderProgram::ShaderProgram(const char *vertexSource, const char *fragmentSourc
     glAttachShader(programID, fragmentID);
 
     // Create locations for all the attributes
-        for (auto attribute : attributes) {
-            glBindAttribLocation(programID, attribute.second, attribute.first.c_str());
-            int errorCheck = glGetError();
-            switch (errorCheck) {
-            case GL_NO_ERROR:
-                break; // All is well
-            case GL_INVALID_VALUE:
-                std::cout << "Error, glBindAttribLocation gave a GL_INVALID_VALUE error \n";
-                return;
-            case GL_INVALID_OPERATION:
-                std::cout << "Error, glGetUniformLocation gave a GL_INVALID_OPERATION error. \n";
-                return;
-            }
-        }
+	for (auto attribute : attributes) {
+		glBindAttribLocation(programID, attribute.second, attribute.first.c_str());
+		int errorCheck = glGetError();
+		switch (errorCheck) {
+		case GL_NO_ERROR:
+			break; // All is well
+		case GL_INVALID_VALUE:
+			std::cout << "Error, glBindAttribLocation gave a GL_INVALID_VALUE error \n";
+			return;
+		case GL_INVALID_OPERATION:
+			std::cout << "Error, glGetUniformLocation gave a GL_INVALID_OPERATION error. \n";
+			return;
+		}
+	}
 
     glLinkProgram(programID);
     glUseProgram(programID);

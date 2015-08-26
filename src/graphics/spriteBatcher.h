@@ -1,48 +1,59 @@
+/*
+ * spriteBatcher.h
+ *
+ *  Created on: Aug 26, 2015
+ *      Author: felix
+ */
 
-#ifndef SRC_GRAPHICS_SPRITE_H_
-#define SRC_GRAPHICS_SPRITE_H_
+#ifndef SRC_GRAPHICS_SPRITEBATCHER_H_
+#define SRC_GRAPHICS_SPRITEBATCHER_H_
 
+#include <vector>
 #include <memory>
 
-#include "transform.h"
-#include "texture/texture.h"
-#include "mesh/meshElement.h"
+#include "sprite.h"
 
 namespace graphics {
 
-class Sprite {
+class SpriteBatcher {
 public:
 
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
 
-	Sprite(float x, float y, float z, float width, float height, texture::Texture &texture);
+	SpriteBatcher();
 
-	virtual ~Sprite();
+	virtual ~SpriteBatcher();
+
+	SpriteBatcher(SpriteBatcher const&) = delete;
+
+	void operator=(SpriteBatcher const&) = delete;
+
+public:
+
+	static SpriteBatcher& getInstance()
+	{
+		static SpriteBatcher INSTANCE;
+		return INSTANCE;
+	}
 
 // ########################################################
 // Member Functions########################################
 // ########################################################
 
+	void addBatch(std::shared_ptr<Sprite> batch);
+
 	void draw();
-
-	Transform& getTransform();
-
-	texture::Texture& getTexture();
 
 // ########################################################
 // Instance Variables #####################################
 // ########################################################
 
-private:
-
-	std::unique_ptr<mesh::MeshElement> mesh;
-	texture::Texture &texture;
-	Transform transform;
+	std::vector<std::shared_ptr<Sprite>> batches;
 
 };
 
 } /* namespace graphics */
 
-#endif /* SRC_GRAPHICS_SPRITE_H_ */
+#endif /* SRC_GRAPHICS_SPRITEBATCHER_H_ */

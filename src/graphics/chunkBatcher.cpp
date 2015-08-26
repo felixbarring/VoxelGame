@@ -30,7 +30,6 @@ ChunkBatcher::~ChunkBatcher()
 void ChunkBatcher::addBatch(std::shared_ptr<GraphicalChunk> batch)
 {
 	batches.push_back(batch);
-	//texture_resources::loadStuff();
 }
 
 void ChunkBatcher::removeBatch(std::shared_ptr<GraphicalChunk> batch)

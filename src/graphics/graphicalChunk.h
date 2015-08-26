@@ -30,11 +30,11 @@ public:
 
 	void draw();
 
-	Transform& getTransform() { return transform; }
+	Transform& getTransform();
 
-	float getxLocation() { return xLocation; }
+	float getxLocation();
 
-	float getyLocation() { return yLocation; }
+	float getyLocation();
 
 // ########################################################
 // Instance Variables #####################################
@@ -57,6 +57,7 @@ private:
 	int depth = config::chunk_data::GRAPHICAL_CHUNK_DEPTH;
 
 	Transform transform;
+
 };
 
 }

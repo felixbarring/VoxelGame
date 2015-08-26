@@ -17,6 +17,8 @@
 #include "../graphics/texture/texture.h"
 #include "../graphics/mesh/meshElement.h"
 
+#include "../config/data.h"
+
 #include "../util/fpsManager.h"
 
 namespace demo
@@ -122,7 +124,7 @@ void TextureDemo::runDemo()
 	};
 
 	mesh::MeshElement mesh{vertices, 3, texCoords, 2, indices};
-	texture::Texture texture("../resources/0001_grass_side.png");
+	texture::Texture texture(config::texture_paths::scout.c_str());
 
 	while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0)	{
 

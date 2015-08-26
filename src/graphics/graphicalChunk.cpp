@@ -57,9 +57,6 @@ transform{x, y, z}
 					continue;
 				}
 
-				// Will not work for the last voxel
-				// TODO Fix this shit
-
 				if (i != width - 1) {
 					CubeFaceData& right = faceData[i + 1][j][k];
 					if (right.id != config::cube_data::AIR) {
@@ -178,7 +175,7 @@ transform{x, y, z}
 					for (auto v : vertex) { vertexData.push_back(v);}
 					for (auto n : nor) { normals.push_back(n);}
 					for (auto u : uv) { UV.push_back(u);}
-					for (auto e : el) {elementData.push_back(e);}
+					for (auto e : el) { elementData.push_back(e);}
 
 					elementOffset += 4;
 					totalNumberOfFaces++;
@@ -215,7 +212,7 @@ transform{x, y, z}
 					for (auto v : vertex) { vertexData.push_back(v);}
 					for (auto n : nor) { normals.push_back(n);}
 					for (auto u : uv) { UV.push_back(u);}
-					for (auto e : el) {elementData.push_back(e);}
+					for (auto e : el) { elementData.push_back(e);}
 
 					elementOffset += 4;
 					totalNumberOfFaces++;
@@ -252,7 +249,7 @@ transform{x, y, z}
 					for (auto v : vertex) { vertexData.push_back(v);}
 					for (auto n : nor) { normals.push_back(n);}
 					for (auto u : uv) { UV.push_back(u);}
-					for (auto e : el) {elementData.push_back(e);}
+					for (auto e : el) { elementData.push_back(e);}
 
 					elementOffset += 4;
 					totalNumberOfFaces++;
@@ -290,7 +287,7 @@ transform{x, y, z}
 					for (auto v : vertex) { vertexData.push_back(v);}
 					for (auto n : nor) { normals.push_back(n);}
 					for (auto u : uv) { UV.push_back(u);}
-					for (auto e : el) {elementData.push_back(e);}
+					for (auto e : el) { elementData.push_back(e);}
 
 					elementOffset += 4;
 					totalNumberOfFaces++;
@@ -329,7 +326,7 @@ transform{x, y, z}
 					for (auto v : vertex) { vertexData.push_back(v);}
 					for (auto n : nor) { normals.push_back(n);}
 					for (auto u : uv) { UV.push_back(u);}
-					for (auto e : el) {elementData.push_back(e);}
+					for (auto e : el) { elementData.push_back(e);}
 
 					elementOffset += 4;
 					totalNumberOfFaces++;
@@ -353,6 +350,21 @@ GraphicalChunk::~GraphicalChunk()
 void GraphicalChunk::draw()
 {
 	mesh->draw();
+}
+
+Transform& GraphicalChunk::getTransform()
+{
+	return transform;
+}
+
+float GraphicalChunk::getxLocation()
+{
+	return xLocation;
+}
+
+float GraphicalChunk::getyLocation()
+{
+	return yLocation;
 }
 
 }

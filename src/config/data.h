@@ -95,6 +95,11 @@ namespace config
 
 	}
 
+	namespace texture_paths
+	{
+		static std::string scout = "../resources/ScoutSmall.png";
+	}
+
 }
 
 #endif /* SRC_CONFIG_DATA_H_ */
