@@ -10,14 +10,15 @@
 #ifndef SRC_GUI_WIDGET_IWIDGET_H_
 #define SRC_GUI_WIDGET_IWIDGET_H_
 
-
-
 namespace widget
 {
 
 /**
  *  \class IWidget
  *
+ *  Detailed description here
+ *
+ *  \author Felix Bärring
  */
 class IWidget {
 public:
@@ -56,11 +57,10 @@ public:
 	 */
 	virtual void keyPressed(int key, char c) = 0;
 
-
 	/**
 	 * Set the position of the widget, relative to the container it's inside.
 	 *
-	 * \param[in]x The new horizontal location
+	 * \param[in] x The new horizontal location
 	 * \param[in] y The new vertical location
 	 */
 	virtual void setLocation(int x, int y) = 0;
@@ -83,7 +83,6 @@ public:
 	 * \return Whether the Widget is active or not
 	 */
 	virtual bool isActive() = 0;
-
 
 };
 
