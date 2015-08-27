@@ -77,8 +77,12 @@ void SpriteDemo::runDemo()
 	texture::Texture texture{config::texture_paths::scout.c_str()};
 
 	std::shared_ptr<graphics::Sprite> sprite(new graphics::Sprite{200, 200, 0, 200, 200, texture});
+	std::shared_ptr<graphics::Sprite> sprite2(new graphics::Sprite{300, 300, 0, 200, 200, texture});
+	std::shared_ptr<graphics::Sprite> sprite3(new graphics::Sprite{600, 200, 0, 200, 200, texture});
 
 	graphics::SpriteBatcher::getInstance().addBatch(sprite);
+	graphics::SpriteBatcher::getInstance().addBatch(sprite2);
+	graphics::SpriteBatcher::getInstance().addBatch(sprite3);
 
 	while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0)	{
 

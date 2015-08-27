@@ -1,16 +1,7 @@
-/*
- * spriteBatcher.cpp
- *
- *  Created on: Aug 26, 2015
- *      Author: felix
- */
 
 #include "spriteBatcher.h"
 
 #include <map>
-
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
 
 #include "shaderProgram.h"
 
@@ -22,13 +13,13 @@ namespace graphics {
 
 SpriteBatcher::SpriteBatcher()
 {
+	// hard coded default value
+	projection = glm::ortho(0.0f, 800.0f, 0.0f, 600.0f, -1.0f, 1.0f);
 }
 
 SpriteBatcher::~SpriteBatcher()
 {
 }
-
-
 
 // ########################################################
 // Member Functions########################################
@@ -75,7 +66,6 @@ void SpriteBatcher::draw()
 	};
 
 	static graphics::ShaderProgram program(vertex, frag, attributesMap);
-	static glm::mat4 projection = glm::ortho(0.0f, 800.0f, 0.0f, 600.0f, -1.0f, 1.0f);
 
 	program.bind();
 
@@ -85,10 +75,6 @@ void SpriteBatcher::draw()
 		batch->getTexture().bind();
 		program.setUniformli("texture1", 0);
 
-		//sprite.getTransform().rotateZ(0.1);
-
-		//batch->getTransform().rotateZ(0.1);
-
 		glm::mat4 modelViewProjection = projection * batch->getTransform().getMatrix();
 
 		program.setUniformMatrix4f("projection", modelViewProjection);
@@ -96,6 +82,13 @@ void SpriteBatcher::draw()
 		batch->draw();
 	}
 }
+
+
+void SpriteBatcher::setProjection(glm::mat4 projection)
+{
+	this->projection = projection;
+}
+
 
 
 } /* namespace graphics */

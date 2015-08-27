@@ -7,6 +7,17 @@ enum class GameState {
 	InGame
 };
 
+/**
+ *  \file    game.h
+ *
+ *  \brief   Pootis Pow HAHA
+ *
+ *  \author  Felix Bärring
+ *  \date    1337
+ *
+ * Copyright (c) 2010, Felix Bärring. All rights reserved.
+ */
+
 class Game {
 public:
 

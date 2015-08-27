@@ -1,15 +1,12 @@
-/*
- * spriteBatcher.h
- *
- *  Created on: Aug 26, 2015
- *      Author: felix
- */
 
 #ifndef SRC_GRAPHICS_SPRITEBATCHER_H_
 #define SRC_GRAPHICS_SPRITEBATCHER_H_
 
 #include <vector>
 #include <memory>
+
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 #include "sprite.h"
 
@@ -46,11 +43,14 @@ public:
 
 	void draw();
 
+	void setProjection(glm::mat4 projection);
+
 // ########################################################
 // Instance Variables #####################################
 // ########################################################
 
 	std::vector<std::shared_ptr<Sprite>> batches;
+	glm::mat4 projection;
 
 };
 
