@@ -83,12 +83,10 @@ void SpriteBatcher::draw()
 	}
 }
 
-
 void SpriteBatcher::setProjection(glm::mat4 projection)
 {
 	this->projection = projection;
 }
-
 
 
 } /* namespace graphics */

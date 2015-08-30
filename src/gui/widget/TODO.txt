@@ -1,0 +1,12 @@
+
+Widgets that should be implemented
+More to add...
+
+Button
+  Radiobutton
+  Togglebutton
+Slider
+TextInput
+TextArea
+Panel
+Tabs

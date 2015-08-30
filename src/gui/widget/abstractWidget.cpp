@@ -7,7 +7,12 @@ namespace widget {
 // Constructor/Destructor #################################
 // ########################################################
 
-AbstractWidget::AbstractWidget()
+AbstractWidget::AbstractWidget(int id, int x, int y, int width, int height) :
+	id{id},
+	x{x},
+	y{y},
+	width{width},
+	height{height}
 {
 }
 
@@ -21,12 +26,12 @@ AbstractWidget::~AbstractWidget()
 
 bool AbstractWidget::isActive()
 {
-	return true;
+	return active;
 }
 
 bool AbstractWidget::isInsideBorders(float x, float y)
 {
-	return true;
+	return (x > this->x && x < this->x + width && y > this->y && y < this->y + width);
 }
 
 void AbstractWidget::setActive()
@@ -41,7 +46,8 @@ void AbstractWidget::setInactive()
 
 void AbstractWidget::setLocation(float x, float y, float z)
 {
-	//
+	this->x = x;
+	this->y = y;
 }
 
 } /* namespace widget */

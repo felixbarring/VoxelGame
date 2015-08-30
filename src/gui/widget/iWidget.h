@@ -16,7 +16,12 @@ namespace widget
 /**
  *  \class IWidget
  *
- *  Detailed description here
+ * A widget is a visual component of a Graphical user interface (abbreviated GUI).
+ * Its purpose is to be interactable and provide means to perform some task.
+ * This interface defines all the basic functionality that all widgets must implement.
+ *
+ * All Widgets should have a mode where they ignore methods calls if they are set into an inactive state.
+ * This state can be controlled with setActive and deactivate.
  *
  *  \author Felix Bärring
  */
@@ -50,6 +55,9 @@ public:
 	 */
 	virtual void mouseMoved(float x, float y) = 0;
 
+
+	// char c ?!?
+
 	/**
 	 * Communicate that a certain key on the keyboard was pressed.
 	 *
@@ -72,7 +80,7 @@ public:
 	virtual void setActive() = 0;
 
 	/**
-	 * Sets the widget to inactive state.
+	 * Sets the widget to an inactive state.
 	 * All other methods will be ignored except for setActive.
 	 */
 	virtual void deactivate() = 0;
