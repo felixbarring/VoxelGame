@@ -10,8 +10,9 @@
 #ifndef SRC_GUI_WIDGET_BUTTON_H_
 #define SRC_GUI_WIDGET_BUTTON_H_
 
-namespace widget {
+#include "abstractWidget.h"
 
+namespace widget {
 
 /**
  * \class Button
@@ -25,14 +26,14 @@ namespace widget {
  *
  * \author Felix Bärring
  */
-class Button {
+class Button : public AbstractWidget  {
 public:
 
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
 
-	Button();
+	Button(int id, int x, int y, int width, int height);
 
 	virtual ~Button();
 
@@ -40,9 +41,23 @@ public:
 // Member Functions########################################
 // ########################################################
 
+	void draw() override;
+
+	void mouseClicked(int button, float x, float y) override;
+
+	void mouseMoved(float x, float y) override;
+
+	void keyPressed(int key, char c) override;
+
+	//void keyPressed() override;
+
 // ########################################################
 // Instance Variables #####################################
 // ########################################################
+
+private:
+
+	bool pointerInsideBorders = false;
 
 };
 

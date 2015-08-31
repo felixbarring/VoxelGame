@@ -49,6 +49,8 @@ public:
 // Instance Variables #####################################
 // ########################################################
 
+private:
+
 	std::vector<std::shared_ptr<Sprite>> batches;
 	glm::mat4 projection;
 

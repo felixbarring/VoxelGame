@@ -28,7 +28,7 @@ namespace widget
 class IWidget {
 public:
 
-	virtual ~IWidget();
+	virtual ~IWidget() {};
 
 	/**
 	 *  \brief Makes the Widget draw itself
@@ -70,8 +70,9 @@ public:
 	 *
 	 * \param[in] x The new horizontal location
 	 * \param[in] y The new vertical location
+	 * \param[in] z The 'layer', place holder for now
 	 */
-	virtual void setLocation(int x, int y) = 0;
+	virtual void setLocation(float x, float y, float z) = 0;
 
 	/**
 	 * Sets the Widget to an active state.
@@ -83,7 +84,7 @@ public:
 	 * Sets the widget to an inactive state.
 	 * All other methods will be ignored except for setActive.
 	 */
-	virtual void deactivate() = 0;
+	virtual void setInactive() = 0;
 
 	/**
 	 * Checks if the widget is active or not

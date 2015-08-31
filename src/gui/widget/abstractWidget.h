@@ -59,7 +59,7 @@ public:
 	 */
 	AbstractWidget(int id, int x, int y, int width, int height);
 
-	virtual ~AbstractWidget();
+	virtual ~AbstractWidget() {};
 
 // ########################################################
 // Member Functions########################################
@@ -76,51 +76,23 @@ public:
 	 */
 	bool isInsideBorders(float x, float y);
 
-	/**
-	 *  \brief Sets the location of this widget
-	 *
-	 *  Detailed description here
-	 *
-	 *  \param[in] x The new x coordinate of this widget
-	 *  \param[in] y The new y coordinate of this widget
-	 *  \param[in] z The new z coordinate of this widget
-	 */
-	void setLocation(float x, float y, float z);
+	void setLocation(float x, float y, float z) override;
 
-	/**
-	 *  \brief Sets the Widgets state to active
-	 *
-	 *  If the widget is not active, no functions, except for setActive, setInactive and isActive, will work.
-	 *
-	 */
-	void setActive();
+	void setActive() override;
 
-	/**
-	 *  \brief Sets the Widgets stat to inactive
-	 *
-	 *  If the widget is not active, no functions, except for setActive, setInactive and isActive, will work.
-	 *
-	 */
-	void setInactive();
+	void setInactive() override;
 
-	/**
-	 *  \brief Check if the Widget is active or not
-	 *
-	 *  \return True if the Widget is in an active state, else false
-	 */
-	bool isActive();
+	bool isActive() override;
 
 // ########################################################
 // Instance Variables #####################################
 // ########################################################
 
-private:
+protected:
 
 	bool active = true;
-	//graphics::Sprite sprite;
-
 	const int id;
-	const int x, y;
+	int x, y;
 	const int width, height;
 
 };
