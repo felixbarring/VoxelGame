@@ -7,7 +7,7 @@
 namespace demo
 {
 
-class ChunkDemo : public virtual IDemo {
+class ChunkDemo : public IDemo {
 public:
 
 // ########################################################

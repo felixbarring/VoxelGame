@@ -7,7 +7,7 @@
 namespace demo
 {
 
-class ArrayTextureDemo : public virtual IDemo {
+class ArrayTextureDemo : public IDemo {
 public:
 
 // ########################################################

@@ -6,7 +6,7 @@
 
 namespace demo {
 
-class SpriteDemo : public virtual IDemo  {
+class SpriteDemo : public IDemo  {
 public:
 
 // ########################################################

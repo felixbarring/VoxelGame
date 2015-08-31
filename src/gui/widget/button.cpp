@@ -1,7 +1,8 @@
 
 #include "button.h"
 
-#include "../../../graphics/spriteBatcher.h"
+#include "../../graphics/spriteBatcher.h"
+#include "../../config/data.h"
 
 namespace widget {
 
@@ -12,6 +13,8 @@ namespace widget {
 Button::Button(int id, int x, int y, int width, int height) :
 	AbstractWidget(id, x, y, width, height)
 {
+	texture::Texture texture{config::texture_paths::scout.c_str()};
+	sprite.reset(new graphics::Sprite{x, y, 0, width, height, texture});
 }
 
 Button::~Button()
@@ -31,8 +34,7 @@ void Button::draw()
 void Button::mouseClicked(int button, float x, float y)
 {
 	if(isInsideBorders(x,y)){
-
-		// Do shit
+		// Communicate to listener
 		//BUTTON_LISTENER.onButtonPressed(ID);
 	}
 }

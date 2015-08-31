@@ -10,7 +10,11 @@
 #ifndef SRC_GUI_WIDGET_BUTTON_H_
 #define SRC_GUI_WIDGET_BUTTON_H_
 
+#include <memory>
+
 #include "abstractWidget.h"
+
+#include "../../graphics/sprite.h"
 
 namespace widget {
 
@@ -49,8 +53,6 @@ public:
 
 	void keyPressed(int key, char c) override;
 
-	//void keyPressed() override;
-
 // ########################################################
 // Instance Variables #####################################
 // ########################################################
@@ -58,6 +60,8 @@ public:
 private:
 
 	bool pointerInsideBorders = false;
+
+	std::shared_ptr<graphics::Sprite> sprite;
 
 };
 

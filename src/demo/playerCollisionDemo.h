@@ -6,7 +6,7 @@
 
 namespace demo {
 
-class PlayerCollisionDemo : IDemo {
+class PlayerCollisionDemo : public IDemo {
 public:
 
 	// ########################################################

@@ -1,22 +1,21 @@
 
-#ifndef SRC_DEMO_TEXTUREDEMO_H_
-#define SRC_DEMO_TEXTUREDEMO_H_
+#ifndef SRC_DEMO_GUIDEMO_H_
+#define SRC_DEMO_GUIDEMO_H_
 
 #include "iDemo.h"
 
-namespace demo
-{
+namespace demo {
 
-class TextureDemo : public IDemo {
+class GuiDemo : public IDemo{
 public:
 
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
 
-	TextureDemo();
+	GuiDemo();
 
-	virtual ~TextureDemo();
+	virtual ~GuiDemo();
 
 // ########################################################
 // Member Functions########################################
@@ -28,8 +27,9 @@ public:
 // Instance Variables #####################################
 // ########################################################
 
+
 };
 
-}
+} /* namespace demo */
 
-#endif /* SRC_DEMO_TEXTUREDEMO_H_ */
+#endif /* SRC_DEMO_GUIDEMO_H_ */

@@ -7,7 +7,7 @@
 namespace demo
 {
 
-class CubeDemo : public virtual IDemo {
+class CubeDemo : public IDemo {
 public:
 
 // ########################################################

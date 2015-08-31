@@ -7,7 +7,7 @@
 namespace demo
 {
 
-class CubeMapDemo : public virtual IDemo{
+class CubeMapDemo : public IDemo{
 public:
 
 // ########################################################
