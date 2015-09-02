@@ -13,7 +13,9 @@ public:
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
+
 	Transform(float x, float y, float z);
+
 	virtual ~Transform();
 
 // ########################################################
@@ -21,7 +23,6 @@ public:
 // ########################################################
 
 	void translate(glm::vec3 translation);
-
 
 	// Make one that takes glm::vec3 ?!?
 	void setLocation(float x, float y, float z);

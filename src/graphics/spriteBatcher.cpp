@@ -81,6 +81,8 @@ void SpriteBatcher::draw()
 
 		batch->draw();
 	}
+
+	batches.clear();
 }
 
 void SpriteBatcher::setProjection(glm::mat4 projection)

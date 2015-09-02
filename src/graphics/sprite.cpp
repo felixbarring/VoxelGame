@@ -8,7 +8,7 @@ namespace graphics {
 // ########################################################
 
 Sprite::Sprite(float x, float y, float z, float width, float height, texture::Texture &texture) :
-	transform{x, y, z},
+	transform{x + width / 2, y + height / 2, z},
 	texture(texture)
 {
 

@@ -19,7 +19,10 @@ GraphicalChunk::GraphicalChunk(float x, float y, float z,
 xLocation{x},
 yLocation{y},
 zLocation{z},
-transform{x, y, z}
+transform{
+	x + width / 2 + 0.5f,
+	y + height / 2 + 0.5f,
+	z + depth / 2 + 0.5f}
 {
 
 	CubeFaceData faceData[width][height][depth];
@@ -80,7 +83,6 @@ transform{x, y, z}
 						back.front = false;
 					}
 				}
-
 			}
 		}
 	}
@@ -92,6 +94,10 @@ transform{x, y, z}
 
 	short elementOffset = 0;
 	int totalNumberOfFaces = 0;
+
+	float dx = -width / 2;
+	float dy = -height / 2;
+	float dz = -depth / 2;
 
 	for (int i = 0; i < width; i++) {
 		for (int j = 0; j < height; j++) {
@@ -108,10 +114,10 @@ transform{x, y, z}
 				if (fd.front) {
 
 					std::vector<GLfloat> vertex {
-						-0.5f + i, -0.5f + j, -0.5f + k,
-						0.5f + i, -0.5f + j, -0.5f + k,
-						0.5f + i, 0.5f + j, -0.5f + k,
-						-0.5f + i, 0.5f + j, -0.5f + k
+						-0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz,
+						0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz,
+						0.5f + i + dx, 0.5f + j+ dy, -0.5f + k + dz,
+						-0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz
 					};
 
 					std::vector<GLfloat> nor {
@@ -143,14 +149,13 @@ transform{x, y, z}
 					totalNumberOfFaces++;
 				}
 
-
 				if (fd.back) {
 
 					std::vector<GLfloat> vertex {
-						0.5f + i, -0.5f + j, 0.5f + k, // 0
-						-0.5f + i, -0.5f + j, 0.5f + k, // 1
-						-0.5f + i, 0.5f + j, 0.5f + k, // 2
-						0.5f + i, 0.5f + j, 0.5f + k, // 3
+						0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz, // 0
+						-0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz, // 1
+						-0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz, // 2
+						0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz, // 3
 					};
 
 					std::vector<GLfloat> nor {
@@ -184,10 +189,10 @@ transform{x, y, z}
 				if (fd.left) {
 
 					std::vector<GLfloat> vertex {
-						-0.5f + i, -0.5f + j, 0.5f + k, // 0
-						-0.5f + i, -0.5f + j, -0.5f + k, // 1
-						-0.5f + i, 0.5f + j, -0.5f + k, // 2
-						-0.5f + i, 0.5f + j, 0.5f + k, // 3
+						-0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz, // 0
+						-0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz, // 1
+						-0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz, // 2
+						-0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz, // 3
 					};
 
 					std::vector<GLfloat> nor {
@@ -221,10 +226,10 @@ transform{x, y, z}
 				if (fd.right) {
 
 					std::vector<GLfloat> vertex {
-						0.5f + i, -0.5f + j, -0.5f + k, // 0
-						0.5f + i, -0.5f + j, 0.5f + k, // 1
-						0.5f + i, 0.5f + j, 0.5f + k, // 2
-						0.5f + i, 0.5f + j, -0.5f + k, // 3
+						0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz, // 0
+						0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz, // 1
+						0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz, // 2
+						0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz, // 3
 					};
 
 					std::vector<GLfloat> nor {
@@ -259,10 +264,10 @@ transform{x, y, z}
 				if (fd.top) {
 
 					std::vector<GLfloat> vertex {
-						-0.5f + i, 0.5f + j, -0.5f + k, // 0
-						0.5f + i, 0.5f + j, -0.5f + k, // 1
-						0.5f + i, 0.5f + j, 0.5f + k, // 2
-						-0.5f + i, 0.5f + j, 0.5f + k // 3
+						-0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz, // 0
+						0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz, // 1
+						0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz, // 2
+						-0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz // 3
 					};
 
 					std::vector<GLfloat> nor {
@@ -296,10 +301,10 @@ transform{x, y, z}
 				if (fd.bottom) {
 
 					std::vector<GLfloat> vertex {
-						-0.5f + i, -0.5f + j, 0.5f + k, // 0
-						0.5f + i, -0.5f + j, 0.5f + k, // 1
-						0.5f + i, -0.5f + j, -0.5f + k, // 2
-						-0.5f + i, -0.5f + j, -0.5f + k // 3
+						-0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz, // 0
+						0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz, // 1
+						0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz, // 2
+						-0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz // 3
 					};
 
 					std::vector<GLfloat> nor {

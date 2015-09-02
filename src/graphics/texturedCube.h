@@ -18,6 +18,7 @@ public:
 // ########################################################
 
 	TexturedCube(float xOffset, float yOffset, float zOffset, int id);
+
 	virtual ~TexturedCube();
 
 // ########################################################
@@ -43,7 +44,6 @@ private:
 	float yLocation;
 	float zLocation;
 
-	//Transform transform;
 };
 
 }

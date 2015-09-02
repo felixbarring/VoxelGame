@@ -18,7 +18,6 @@ TexturedCube::TexturedCube(float xOffset, float yOffset, float zOffset, int id):
 	xLocation{xOffset},
 	yLocation{yOffset},
 	zLocation{zOffset}
-	//transform{xOffset, yOffset, zOffset}
 {
 
 	float size = 0.51f;

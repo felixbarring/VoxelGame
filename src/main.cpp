@@ -9,6 +9,7 @@
 #include "demo/cubeMapDemo.h"
 #include "demo/playerCollisionDemo.h"
 #include "demo/spriteDemo.h"
+#include "demo/guiDemo.h"
 
 #include <string>
 #include <exception>
@@ -48,12 +49,13 @@ int main(int argc, char *argv[])
 			} else if (str == "spriteDemo") {
 				demo::SpriteDemo spriteDemo;
 				spriteDemo.runDemo();
+			} else if (str == "guiDemo") {
+				demo::GuiDemo guiDemo;
+				guiDemo.runDemo();
 			}
 		}
 	} catch(std::exception& e){
 		std::cout << "An error occured \n" << e.what();
-		
-		std::cout << "This editor is pretty dank i must say";
 	} catch(...) {
 		std::cout << "An error that is not derived from std::exception occured \n";
 	}

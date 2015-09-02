@@ -21,6 +21,7 @@
 
 #include "../graphics/mesh/meshElement.h"
 #include "../graphics/cubeMap.h"
+#include "../graphics/textureResources.h"
 #include "../util/fpsManager.h"
 
 #include "../config/data.h"
@@ -74,15 +75,9 @@ void SpriteDemo::runDemo()
 	glViewport(0, 0, WIDTH, HEIGHT);
 	glClearColor(0.2f, 0.22f, 0.2f, 1.0f);
 
-	texture::Texture texture{config::texture_paths::scout.c_str()};
-
-	std::shared_ptr<graphics::Sprite> sprite(new graphics::Sprite{200, 200, 0, 200, 200, texture});
-	std::shared_ptr<graphics::Sprite> sprite2(new graphics::Sprite{300, 300, 0, 200, 200, texture});
-	std::shared_ptr<graphics::Sprite> sprite3(new graphics::Sprite{600, 200, 0, 200, 200, texture});
-
-	graphics::SpriteBatcher::getInstance().addBatch(sprite);
-	graphics::SpriteBatcher::getInstance().addBatch(sprite2);
-	graphics::SpriteBatcher::getInstance().addBatch(sprite3);
+	std::shared_ptr<graphics::Sprite> sprite(new graphics::Sprite{200, 200, 0, 200, 200, graphics::TextureResources::getInstance().getTexture(0)});
+	std::shared_ptr<graphics::Sprite> sprite2(new graphics::Sprite{300, 300, 0, 200, 200, graphics::TextureResources::getInstance().getTexture(0)});
+	std::shared_ptr<graphics::Sprite> sprite3(new graphics::Sprite{600, 200, 0, 200, 200, graphics::TextureResources::getInstance().getTexture(1)});
 
 	while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0)	{
 
@@ -90,6 +85,10 @@ void SpriteDemo::runDemo()
 
 		glfwPollEvents();
 		glClear(GL_COLOR_BUFFER_BIT);
+
+		graphics::SpriteBatcher::getInstance().addBatch(sprite);
+		graphics::SpriteBatcher::getInstance().addBatch(sprite2);
+		graphics::SpriteBatcher::getInstance().addBatch(sprite3);
 
 		graphics::SpriteBatcher::getInstance().draw();
 

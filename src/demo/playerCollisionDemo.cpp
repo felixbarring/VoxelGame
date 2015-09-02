@@ -68,7 +68,7 @@ void PlayerCollisionDemo::runDemo()
 		std::cout << "Failed to initialize GLEW\n";
 	}
 
-	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+	//glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 
 	glViewport(0, 0, WIDTH, HEIGHT);
 	glClearColor(0.2f, 0.22f, 0.2f, 1.0f);

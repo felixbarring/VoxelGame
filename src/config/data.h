@@ -97,7 +97,8 @@ namespace config
 
 	namespace texture_paths
 	{
-		static std::string scout = "../resources/ScoutSmall.png";
+		static std::string scout =  "../resources/ScoutSmal.png";
+		static std::string scout2 = "../resources/ScoutSmal2.png";
 	}
 
 }

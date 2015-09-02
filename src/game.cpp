@@ -68,6 +68,7 @@ void Game::run()
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 
 	util::Input input(window, WIDTH / 2.0, WIDTH / 2.0);
+	input.unlockMouse();
 
 	while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0) {
 

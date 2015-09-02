@@ -42,7 +42,6 @@ void Input::updateValues()
 	action1Pressed = glfwGetMouseButton(window, config::input_data::action1Button) == GLFW_PRESS && !action1Active;
 	action2Pressed = glfwGetMouseButton(window, config::input_data::action1Button) == GLFW_PRESS && !action2Active;
 
-
 	// Keyboard
 	moveForwardActive = glfwGetKey(window, config::input_data::moveForwardButton) == GLFW_PRESS;
 	moveLeftActive = glfwGetKey(window, config::input_data::moveLeftButton) == GLFW_PRESS;
@@ -54,12 +53,27 @@ void Input::updateValues()
 	action1Active = glfwGetMouseButton(window, config::input_data::action1Button) == GLFW_PRESS;
 	action2Active = glfwGetMouseButton(window, config::input_data::action1Button) == GLFW_PRESS;
 
-	double xOffset, yOffset;
-	glfwGetCursorPos(window, &xOffset, &yOffset);
-	glfwSetCursorPos(window, screenCenterX, screenCenterY);
+	if (mouseLocked) {
+		double xOffset, yOffset;
+		glfwGetCursorPos(window, &xOffset, &yOffset);
+		glfwSetCursorPos(window, screenCenterX, screenCenterY);
 
-	mouseXMovement = screenCenterX - xOffset;
-	mouseYMovement = screenCenterY - yOffset;
+		mouseXMovement = screenCenterX - xOffset;
+		mouseYMovement = screenCenterY - yOffset;
+	} else {
+		glfwGetCursorPos(window, &mouseXPosition, &mouseYPosition);
+	}
+
+}
+
+void Input::lockMouse()
+{
+	mouseLocked = true;
+}
+
+void Input::unlockMouse()
+{
+	mouseLocked = false;
 }
 
 } /* namespace util */

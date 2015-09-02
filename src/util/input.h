@@ -15,6 +15,7 @@ public:
 	// ########################################################
 
 	Input(GLFWwindow* w, float centerX, float centerY);
+
 	virtual ~Input();
 
 	// ########################################################
@@ -22,6 +23,10 @@ public:
 	// ########################################################
 
 	void updateValues();
+
+	void lockMouse();
+
+	void unlockMouse();
 
 	// ########################################################
 	// Instance Variables #####################################
@@ -53,12 +58,17 @@ public:
 	float mouseXMovement{0.0f};
 	float mouseYMovement{0.0f};
 
+	double mouseXPosition = 0.0;
+	double mouseYPosition = 0.0;
+
 private:
 
 	GLFWwindow* window;
 
 	float screenCenterX;
 	float screenCenterY;
+
+	bool mouseLocked = true;
 
 };
 

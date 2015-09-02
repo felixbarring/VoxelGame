@@ -76,7 +76,8 @@ void Player::update(float timePassed)
 			chunk::ChunkManager::getInstance().removeCube(selectedCube.x, selectedCube.y, selectedCube.z);
 			return;
 		}
-		transform.setLocation(selectedCube.x, selectedCube.y, selectedCube.z);
+		// TODO Dirty hack :o
+		transform.setLocation(selectedCube.x + 0.5, selectedCube.y + 0.5, selectedCube.z + 0.5);
 		graphics::CubeBatcher::getInstance().addBatch(1, transform);
 	}
 

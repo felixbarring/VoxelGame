@@ -11,6 +11,9 @@ namespace graphics {
 
 TextureResources::TextureResources()
 {
+	textures.push_back({config::texture_paths::scout.c_str()});
+	textures.push_back({config::texture_paths::scout2.c_str()});
+
 	textureArrays.push_back({config::cube_data::textures, config::cube_data::TEXTURE_WIDTH, config::cube_data::TEXTURE_HEIGHT});
 
 	// More to come here

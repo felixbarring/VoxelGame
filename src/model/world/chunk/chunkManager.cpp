@@ -92,11 +92,15 @@ void ChunkManager::setCube(int x, int y, int z, char id)
 bool ChunkManager::intersectWithSolidCube(glm::vec3 origin, glm::vec3 direction, float searchLength)
 {
 
+	// A hack to fix the problem
+	// Should be fixed in the model matrix
+	//origin = origin + glm::vec3(0.5, 0.5, 0.5);
+
 	int signXDirection = (direction.x > 0) - (direction.x < 0);
 	int signYDirection = (direction.y > 0) - (direction.y < 0);
 	int signZDirection = (direction.z > 0) - (direction.z < 0);
 
-	// Check if any one is zero, set to infinity to avoid zero division!
+	// Check if any one is zero
 	float xL;
 	float yL;
 	float zL;
