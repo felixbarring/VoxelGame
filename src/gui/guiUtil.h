@@ -87,11 +87,35 @@ glm::mat4 crateVirtualToScreen(int virtualWidth, int virtualHeight, int realWidt
 	matrix[15] = 1;
 	*/
 
-	// glm::mat4 bbb = glm::make_mat4(matrix);
 	return glm::make_mat4(matrix);
 }
 
+glm::vec2 adjustMouse(int virtualWidth, int virtualHeight, int realWidth, int realHeight, int mouseX, int mouseY)
+{
+	float mouseOffX = 0;
+	float mouseOffY = 0;
+	float mouseScale = 1;
 
+	float vW = virtualWidth;
+	float vH = virtualHeight;
+
+	float requiredXScale = realWidth / vW;
+	float requiredYScale = realHeight / vH;
+
+	if(requiredXScale < requiredYScale){
+		mouseScale = requiredXScale;
+		mouseOffY = (realHeight - virtualHeight * mouseScale) / 2.0f;
+		mouseOffX = 0;
+	} else {
+		mouseScale = requiredYScale;
+		mouseOffX = (realWidth - virtualWidth * mouseScale) / 2.0f;
+		mouseOffY = 0;
+	}
+	float mouseXAdjusted = (mouseX - mouseOffX) / mouseScale;
+	float mouseYAdjusted = (mouseY - mouseOffY) / mouseScale;
+
+	return glm::vec2(mouseXAdjusted, mouseYAdjusted);
+}
 
 
 }

@@ -72,9 +72,9 @@ void GuiDemo::runDemo()
 
 	glm::mat4 matrix = gui::crateVirtualToScreen(800, 600, 1200, 600);
 
-	matrix = glm::ortho(0.0f, 1200.0f, 0.0f, 600.0f, -1.0f, 1.0f) * matrix;
+	glm:: mat4 matrix2 = glm::ortho(0.0f, 1200.0f, 0.0f, 600.0f, -1.0f, 1.0f) * matrix;
 
-	graphics::SpriteBatcher::getInstance().setProjection(matrix);
+	graphics::SpriteBatcher::getInstance().setProjection(matrix2);
 
 	while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0)	{
 
@@ -91,11 +91,13 @@ void GuiDemo::runDemo()
 			y = -1;
 		}
 
-		//std::cout << "Mouse : " << input.mouseXPosition << ", " << y << "\n";
+		glm::vec2 mouse = gui::adjustMouse(800, 600, 1200, 600, input.mouseXPosition, y);
 
-		button.mouseMoved(input.mouseXPosition, y);
-		button2.mouseMoved(input.mouseXPosition, y);
-		button3.mouseMoved(input.mouseXPosition, y);
+		std::cout << "Mouse : " << mouse.x << ", " << mouse.y << "\n";
+
+		button.mouseMoved(mouse.x, mouse.y);
+		button2.mouseMoved(mouse.x, mouse.y);
+		button3.mouseMoved(mouse.x, mouse.y);
 
 		button.draw();
 		button2.draw();
