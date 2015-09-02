@@ -6,11 +6,14 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
+#include <glm/glm.hpp>
+
 #include "../graphics/spriteBatcher.h"
 #include "../util/fpsManager.h"
 #include "../util/input.h"
 
 #include "../gui/widget/button.h"
+#include "../gui/guiUtil.h"
 
 namespace demo {
 
@@ -44,7 +47,7 @@ void GuiDemo::runDemo()
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-	GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "Sprite Demo", nullptr, nullptr);
+	GLFWwindow *window = glfwCreateWindow(WIDTH+400, HEIGHT, "Sprite Demo", nullptr, nullptr);
 	if (window == nullptr) {
 		std::cout << "Failed to open GLFW window.\n";
 		glfwTerminate();
@@ -57,7 +60,7 @@ void GuiDemo::runDemo()
 		std::cout << "Failed to initialize GLEW\n";
 	}
 
-	glViewport(0, 0, WIDTH, HEIGHT);
+	glViewport(0, 0, WIDTH+400, HEIGHT);
 	glClearColor(0.2f, 0.22f, 0.2f, 1.0f);
 
 	widget::Button button(0, 300, 50, 200, 200);
@@ -66,6 +69,12 @@ void GuiDemo::runDemo()
 
 	util::Input input(window, WIDTH / 2.0, HEIGHT / 2.0);
 	input.unlockMouse();
+
+	glm::mat4 matrix = gui::crateVirtualToScreen(800, 600, 1200, 600);
+
+	matrix = glm::ortho(0.0f, 1200.0f, 0.0f, 600.0f, -1.0f, 1.0f) * matrix;
+
+	graphics::SpriteBatcher::getInstance().setProjection(matrix);
 
 	while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0)	{
 
@@ -81,7 +90,9 @@ void GuiDemo::runDemo()
 		} else {
 			y = -1;
 		}
-		std::cout << "Mouse : " << input.mouseXPosition << ", " << y << "\n";
+
+		//std::cout << "Mouse : " << input.mouseXPosition << ", " << y << "\n";
+
 		button.mouseMoved(input.mouseXPosition, y);
 		button2.mouseMoved(input.mouseXPosition, y);
 		button3.mouseMoved(input.mouseXPosition, y);
