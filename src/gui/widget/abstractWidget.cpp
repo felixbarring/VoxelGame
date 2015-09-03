@@ -14,6 +14,7 @@ AbstractWidget::AbstractWidget(int id, int x, int y, int width, int height) :
 	width{width},
 	height{height}
 {
+	std::cout << "Abstract widget: " << id << "\n";
 }
 
 // ########################################################
@@ -27,7 +28,8 @@ bool AbstractWidget::isActive()
 
 bool AbstractWidget::isInsideBorders(float x, float y)
 {
-	return (x > this->x && x < this->x + width && y > this->y && y < this->y + width);
+	return (x > this->x && x < this->x + width &&
+			y > this->y && y < this->y + height);
 }
 
 void AbstractWidget::setActive()

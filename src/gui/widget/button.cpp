@@ -11,7 +11,7 @@ namespace widget {
 // Constructor/Destructor #################################
 // ########################################################
 
-Button::Button(int id, int x, int y, int width, int height, std::function<void()> observer) :
+Button::Button(int id, int x, int y, int width, int height, std::function<void(int)> observer) :
 	AbstractWidget(id, x, y, width, height)
 {
 
@@ -41,12 +41,7 @@ void Button::draw()
 void Button::mouseClicked(int button, float x, float y)
 {
 	if(isInsideBorders(x,y)){
-
-
-		observer.operator ()();
-		// Communicate to listener
-		//BUTTON_LISTENER.onButtonPressed(ID);
-
+		observer.operator ()(id);
 	}
 }
 

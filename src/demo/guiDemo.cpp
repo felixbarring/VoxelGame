@@ -63,11 +63,11 @@ void GuiDemo::runDemo()
 	glViewport(0, 0, WIDTH+400, HEIGHT);
 	glClearColor(0.2f, 0.22f, 0.2f, 1.0f);
 
-	std::function<void()> observer = [](){ std::cout << "A button was pressed\n"; };
+	std::function<void(int)> observer = [](int id){ std::cout << "A button with id: " << id << " was pressed\n"; };
 
-	widget::Button button(0, 300, 50, 200, 200, observer);
-	widget::Button button2(0, 300, 300, 200, 200, observer);
-	widget::Button button3(0, 300, 550, 200, 200, observer);
+	widget::Button button(0, 350, 50, 100, 100, observer);
+	widget::Button button2(1, 350, 200, 100, 100, observer);
+	widget::Button button3(2, 350, 350, 100, 100, observer);
 
 	util::Input input(window, WIDTH / 2.0, HEIGHT / 2.0);
 	input.unlockMouse();
@@ -100,9 +100,9 @@ void GuiDemo::runDemo()
 		button3.mouseMoved(mouse.x, mouse.y);
 
 		if (input.action1Pressed) {
-			button.mouseClicked(1, mouse.x, mouse.y);
-			button2.mouseClicked(1, mouse.x, mouse.y);
-			button3.mouseClicked(1, mouse.x, mouse.y);
+			button.mouseClicked(0, mouse.x, mouse.y);
+			button2.mouseClicked(0, mouse.x, mouse.y);
+			button3.mouseClicked(0, mouse.x, mouse.y);
 		}
 
 		button.draw();

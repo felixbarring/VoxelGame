@@ -1,8 +1,21 @@
 #include "input.h"
 
+#include <iostream>
+
 #include "../config/data.h"
 
 namespace util {
+
+
+static double mouseXOffset;
+static double mouseYOffset;
+
+static void cursor_position_callback(GLFWwindow* window, double xpos, double ypos)
+{
+	mouseXOffset = xpos;
+	mouseYOffset = ypos;
+}
+
 
 // ########################################################
 // Constructor/Destructor #################################
@@ -13,7 +26,7 @@ Input::Input(GLFWwindow* w, float centerX, float centerY):
 	screenCenterX{centerX},
 	screenCenterY{centerY}
 {
-
+	glfwSetCursorPosCallback(window, cursor_position_callback);
 }
 
 Input::~Input()
@@ -54,12 +67,14 @@ void Input::updateValues()
 	action2Active = glfwGetMouseButton(window, config::input_data::action1Button) == GLFW_PRESS;
 
 	if (mouseLocked) {
-		double xOffset, yOffset;
-		glfwGetCursorPos(window, &xOffset, &yOffset);
+
+		mouseXMovement = screenCenterX - mouseXOffset;
+		mouseYMovement = screenCenterY - mouseYOffset;
+
 		glfwSetCursorPos(window, screenCenterX, screenCenterY);
 
-		mouseXMovement = screenCenterX - xOffset;
-		mouseYMovement = screenCenterY - yOffset;
+		mouseXOffset = screenCenterX;
+		mouseYOffset = screenCenterY;
 	} else {
 		glfwGetCursorPos(window, &mouseXPosition, &mouseYPosition);
 	}

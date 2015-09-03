@@ -12,6 +12,7 @@
 #include "iWidget.h"
 
 #include <memory>
+#include <iostream>
 
 #include "../../graphics/sprite.h"
 #include "../../graphics/spriteBatcher.h"

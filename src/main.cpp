@@ -23,8 +23,8 @@ int main(int argc, char *argv[])
 
 		if (argc == 1) {
 			// Run game here
-			demo::ChunkDemo chunkDemo;
-			chunkDemo.runDemo();
+			demo::PlayerCollisionDemo playerCollisionDemo;
+			playerCollisionDemo.runDemo();
 		} else {
 			std::string str = argv[1];
 
