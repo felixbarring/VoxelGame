@@ -17,14 +17,8 @@ glm::mat4 crateVirtualToScreen(int virtualWidth, int virtualHeight, int realWidt
 	float vW = virtualWidth;
 	float vH = virtualHeight;
 
-	std::cout << "Virtual w = " << virtualWidth << "\n";
-	std::cout << "Virtual h = " << virtualHeight << "\n";
-
 	float requiredXScale = realWidth / vW;
 	float requiredYScale = realHeight / vH;
-
-	std::cout << "Scale w = " << requiredXScale << "\n";
-	std::cout << "Scale h = " << requiredYScale << "\n";
 
 	float scale;
 	float xOffset;
@@ -39,11 +33,6 @@ glm::mat4 crateVirtualToScreen(int virtualWidth, int virtualHeight, int realWidt
 		xOffset = (realWidth - vW * scale) / 2;
 		yOffset = 0;
 	}
-
-	std::cout << "Scale = " << scale << "\n";
-
-	std::cout << "X off = " << xOffset << "\n";
-	std::cout << "Y off = " << yOffset << "\n";
 
 	matrix[0] = scale;
 	matrix[4] = 0;
@@ -64,28 +53,6 @@ glm::mat4 crateVirtualToScreen(int virtualWidth, int virtualHeight, int realWidt
 	matrix[7] = 0;
 	matrix[11] = 0;
 	matrix[15] = 1;
-
-	/*
-	matrix[0] = scale;
-	matrix[1] = 0;
-	matrix[2] = 0;
-	matrix[3] = xOffSet;
-
-	matrix[4] = 0;
-	matrix[5] = scale;
-	matrix[6] = 0;
-	matrix[7] = yOffSet;
-
-	matrix[8] = 0;
-	matrix[9] = 0;
-	matrix[10] = 1;
-	matrix[11] = 0;
-
-	matrix[12] = 0;
-	matrix[13] = 0;
-	matrix[14] = 0;
-	matrix[15] = 1;
-	*/
 
 	return glm::make_mat4(matrix);
 }

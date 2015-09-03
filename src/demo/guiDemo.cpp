@@ -63,9 +63,11 @@ void GuiDemo::runDemo()
 	glViewport(0, 0, WIDTH+400, HEIGHT);
 	glClearColor(0.2f, 0.22f, 0.2f, 1.0f);
 
-	widget::Button button(0, 300, 50, 200, 200);
-	widget::Button button2(0, 300, 300, 200, 200);
-	widget::Button button3(0, 300, 550, 200, 200);
+	std::function<void()> observer = [](){ std::cout << "A button was pressed\n"; };
+
+	widget::Button button(0, 300, 50, 200, 200, observer);
+	widget::Button button2(0, 300, 300, 200, 200, observer);
+	widget::Button button3(0, 300, 550, 200, 200, observer);
 
 	util::Input input(window, WIDTH / 2.0, HEIGHT / 2.0);
 	input.unlockMouse();
@@ -93,11 +95,15 @@ void GuiDemo::runDemo()
 
 		glm::vec2 mouse = gui::adjustMouse(800, 600, 1200, 600, input.mouseXPosition, y);
 
-		std::cout << "Mouse : " << mouse.x << ", " << mouse.y << "\n";
-
 		button.mouseMoved(mouse.x, mouse.y);
 		button2.mouseMoved(mouse.x, mouse.y);
 		button3.mouseMoved(mouse.x, mouse.y);
+
+		if (input.action1Pressed) {
+			button.mouseClicked(1, mouse.x, mouse.y);
+			button2.mouseClicked(1, mouse.x, mouse.y);
+			button3.mouseClicked(1, mouse.x, mouse.y);
+		}
 
 		button.draw();
 		button2.draw();

@@ -37,7 +37,7 @@ public:
 // Constructor/Destructor #################################
 // ########################################################
 
-	Button(int id, int x, int y, int width, int height);
+	Button(int id, int x, int y, int width, int height, std::function<void()> observer);
 
 	virtual ~Button();
 
@@ -58,6 +58,8 @@ public:
 // ########################################################
 
 private:
+
+	std::function<void()> observer;
 
 	bool pointerInsideBorders = false;
 

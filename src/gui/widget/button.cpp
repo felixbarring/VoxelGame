@@ -11,9 +11,12 @@ namespace widget {
 // Constructor/Destructor #################################
 // ########################################################
 
-Button::Button(int id, int x, int y, int width, int height) :
+Button::Button(int id, int x, int y, int width, int height, std::function<void()> observer) :
 	AbstractWidget(id, x, y, width, height)
 {
+
+	this->observer = observer;
+
 	sprite.reset(new graphics::Sprite{x, y, 0, width, height, graphics::TextureResources::getInstance().getTexture(0)});
 	spriteHover.reset(new graphics::Sprite{x, y, 0, width, height, graphics::TextureResources::getInstance().getTexture(1)});
 }
@@ -39,6 +42,8 @@ void Button::mouseClicked(int button, float x, float y)
 {
 	if(isInsideBorders(x,y)){
 
+
+		observer.operator ()();
 		// Communicate to listener
 		//BUTTON_LISTENER.onButtonPressed(ID);
 
