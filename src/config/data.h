@@ -97,8 +97,20 @@ namespace config
 
 	namespace texture_paths
 	{
+
 		static std::string scout =  "../resources/ScoutSmal.png";
 		static std::string scout2 = "../resources/ScoutSmal2.png";
+
+	}
+
+	namespace font_data
+	{
+
+		static int charsInFont = 256;
+
+		static std::string font = "../resources/font/font.png";
+		static std::string fontLayout = "../resources/font/font.txt";
+
 	}
 
 }
