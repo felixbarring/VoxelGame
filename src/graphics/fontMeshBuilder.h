@@ -17,7 +17,7 @@ public:
 // Constructor/Destructor #################################
 // ########################################################
 
-	FontMeshBuilder(std::string &pathToLayout);
+	FontMeshBuilder(std::string &pathToLayout, int atlasWidth, int atlasHeight);
 
 	virtual ~FontMeshBuilder();
 
@@ -30,6 +30,10 @@ public:
 	float lenghtOfString(const std::string &str, int height);
 
 	int splitStringAt(const  std::string &str, int height, float maxLength);
+
+private:
+
+	void printCharData();
 
 // ########################################################
 // Instance Variables #####################################
@@ -44,6 +48,8 @@ public:
 	};
 
 	CharData charData[config::font_data::charsInFont];
+	const int ATLAS_WIDTH;
+	const int ATLAS_HEIGHT;
 
 };
 

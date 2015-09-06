@@ -106,10 +106,10 @@ namespace config
 	namespace font_data
 	{
 
-		static int charsInFont = 256;
+		static constexpr int charsInFont = 256;
 
-		static std::string font = "../resources/font/font.png";
-		static std::string fontLayout = "../resources/font/font.txt";
+		static std::string font = "../resources/font/font1.png";
+		static std::string fontLayout = "../resources/font/font1.txt";
 
 	}
 

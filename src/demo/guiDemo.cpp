@@ -9,11 +9,15 @@
 #include <glm/glm.hpp>
 
 #include "../graphics/spriteBatcher.h"
+#include "../graphics/fontMeshBuilder.h"
+
 #include "../util/fpsManager.h"
 #include "../util/input.h"
 
 #include "../gui/widget/button.h"
 #include "../gui/guiUtil.h"
+
+#include "../config/data.h"
 
 namespace demo {
 
@@ -73,10 +77,10 @@ void GuiDemo::runDemo()
 	input.unlockMouse();
 
 	glm::mat4 matrix = gui::crateVirtualToScreen(800, 600, 1200, 600);
-
 	glm:: mat4 matrix2 = glm::ortho(0.0f, 1200.0f, 0.0f, 600.0f, -1.0f, 1.0f) * matrix;
 
 	graphics::SpriteBatcher::getInstance().setProjection(matrix2);
+	graphics::FontMeshBuilder fontBuilder{config::font_data::fontLayout, 1024, 1024};
 
 	while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0)	{
 
