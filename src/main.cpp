@@ -10,6 +10,7 @@
 #include "demo/playerCollisionDemo.h"
 #include "demo/spriteDemo.h"
 #include "demo/guiDemo.h"
+#include "demo/fontDemo.h"
 
 #include <string>
 #include <exception>
@@ -52,6 +53,9 @@ int main(int argc, char *argv[])
 			} else if (str == "guiDemo") {
 				demo::GuiDemo guiDemo;
 				guiDemo.runDemo();
+			} else if (str == "fontDemo") {
+				demo::FontDemo fontDemo;
+				fontDemo.runDemo();
 			}
 		}
 	} catch(std::exception& e){

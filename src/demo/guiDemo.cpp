@@ -51,7 +51,7 @@ void GuiDemo::runDemo()
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-	GLFWwindow *window = glfwCreateWindow(WIDTH+400, HEIGHT, "Sprite Demo", nullptr, nullptr);
+	GLFWwindow *window = glfwCreateWindow(WIDTH+400, HEIGHT, "GUI Demo", nullptr, nullptr);
 	if (window == nullptr) {
 		std::cout << "Failed to open GLFW window.\n";
 		glfwTerminate();

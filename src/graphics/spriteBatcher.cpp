@@ -78,9 +78,10 @@ void SpriteBatcher::draw()
 		glm::mat4 modelViewProjection = projection * batch->getTransform().getMatrix();
 
 		program.setUniformMatrix4f("projection", modelViewProjection);
-
 		batch->draw();
 	}
+
+	program.unbind();
 
 	batches.clear();
 }
