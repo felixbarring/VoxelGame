@@ -114,7 +114,7 @@ void FontDemo::runDemo()
 
 	texture::Texture fontAtlas{config::font_data::font.c_str()};
 	graphics::FontMeshBuilder fontBuilder{config::font_data::fontLayout, 1024, 1034}; // TODO remove hard coded values
-	mesh::MeshElement mesh = fontBuilder.buldMeshForString("ABCDEFGHJKLMNOPQRSTV", 50);
+	mesh::MeshElement mesh = fontBuilder.buldMeshForString("Hello World", 50);
 
 	program.bind();
 	glActiveTexture(GL_TEXTURE0);

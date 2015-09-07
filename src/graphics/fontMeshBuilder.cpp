@@ -72,21 +72,13 @@ FontMeshBuilder::~FontMeshBuilder()
 mesh::MeshElement FontMeshBuilder::buldMeshForString(const std::string &str, float height)
 {
 
-
 	const int NUMBER_OF_CHARS = str.length();
-	const int VS = 12;
-	const int TS = 8;
-	const int ES = 6;
 
 	std::vector<float> vertices;
 	std::vector<float> uvCoordinates;
 	std::vector<short> elements;
 
 	float width = height;
-
-	int vertexCounter = 0;
-	int uvCounter = 0;
-	int elementsCounter = 0;
 
 	float xOrigin = 0;
 	float yOrigin = 0;
@@ -115,7 +107,7 @@ mesh::MeshElement FontMeshBuilder::buldMeshForString(const std::string &str, flo
 		vertices.push_back(yOrigin + height);
 		vertices.push_back(0);
 
-		std::cout << " " << cd.width << ", " << cd.height << ", " << cd.xPosition << ", " << cd.yPosition << " \n";
+		//std::cout << " " << cd.width << ", " << cd.height << ", " << cd.xPosition << ", " << cd.yPosition << " \n";
 
 		/*
 		uvCoordinates.push_back(0);
@@ -167,16 +159,8 @@ mesh::MeshElement FontMeshBuilder::buldMeshForString(const std::string &str, flo
 		elements.push_back((short) (2 + loopCounter * 4));
 		elements.push_back((short) (3 + loopCounter * 4));
 
-		vertexCounter = vertexCounter + VS;
-		uvCounter = uvCounter + TS;
-		elementsCounter = elementsCounter + ES;
-
 		loopCounter++;
 		xOffset += width;
-	}
-
-	for (float ch : uvCoordinates) {
-		std::cout << ch << " \n";
 	}
 
 	mesh::MeshElement mesh{vertices, 3, uvCoordinates, 2, elements};
