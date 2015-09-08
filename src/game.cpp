@@ -83,5 +83,6 @@ void Game::run()
 		//glfwPollEvents();
 	}
 	glfwTerminate();
+
 }
 

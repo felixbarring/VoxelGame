@@ -14,12 +14,10 @@
 #include "../config/data.h"
 
 #include "../graphics/texture/texture.h"
-//#include "../graphics/spriteBatcher.h"
 #include "../graphics/fontMeshBuilder.h"
 #include "../graphics/mesh/meshElement.h"
 #include "../graphics/sprite.h"
 #include "../graphics/shaderProgram.h"
-//#include "../gui/guiUtil.h"
 
 
 namespace demo {
@@ -73,7 +71,6 @@ void FontDemo::runDemo()
 	glClearColor(0.2f, 0.22f, 0.2f, 1.0f);
 
 	glEnable(GL_BLEND);
-	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	const char *vertex =
 		"#version 330 core \n"
@@ -110,16 +107,20 @@ void FontDemo::runDemo()
 
 	graphics::ShaderProgram program(vertex, frag, attributesMap);
 
-	glm:: mat4 matrix2 = glm::ortho(0.0f, 1200.0f, 0.0f, 600.0f, -1.0f, 1.0f);
+	glm:: mat4 matrix2 = glm::ortho(0.0f, 800.0f, 0.0f, 600.0f, -1.0f, 1.0f);
 
 	texture::Texture fontAtlas{config::font_data::font.c_str()};
-	graphics::FontMeshBuilder fontBuilder{config::font_data::fontLayout, 1024, 1034}; // TODO remove hard coded values
+	graphics::FontMeshBuilder fontBuilder{config::font_data::fontLayout,
+		config::font_data::fontAtlasWidth, config::font_data::fontArlasHeight};
+
 	mesh::MeshElement mesh = fontBuilder.buldMeshForString("Hello World", 50);
 
 	program.bind();
+
 	glActiveTexture(GL_TEXTURE0);
 	fontAtlas.bind();
 	program.setUniformli("texture1", 0);
+
 	program.setUniformMatrix4f("projection", matrix2);
 	program.unbind();
 
@@ -134,9 +135,6 @@ void FontDemo::runDemo()
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		program.bind();
-
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		mesh.draw();
 		program.unbind();
