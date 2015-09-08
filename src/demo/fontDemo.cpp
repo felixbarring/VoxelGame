@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <map>
+#include <memory>
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -54,7 +55,7 @@ void FontDemo::runDemo()
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-	GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "Sprite Demo", nullptr, nullptr);
+	GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "Font Demo", nullptr, nullptr);
 	if (window == nullptr) {
 		std::cout << "Failed to open GLFW window.\n";
 		glfwTerminate();
@@ -69,8 +70,6 @@ void FontDemo::runDemo()
 
 	glViewport(0, 0, WIDTH, HEIGHT);
 	glClearColor(0.2f, 0.22f, 0.2f, 1.0f);
-
-	glEnable(GL_BLEND);
 
 	const char *vertex =
 		"#version 330 core \n"

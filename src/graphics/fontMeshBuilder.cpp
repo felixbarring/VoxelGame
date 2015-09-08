@@ -9,7 +9,6 @@ namespace graphics {
 
 // TODO Remove all the 256 magic numbers!
 
-
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
@@ -163,7 +162,7 @@ mesh::MeshElement FontMeshBuilder::buldMeshForString(const std::string &str, flo
 		xOffset += width;
 	}
 
-	mesh::MeshElement mesh{vertices, 3, uvCoordinates, 2, elements};
+	// mesh::MeshElement mesh{vertices, 3, uvCoordinates, 2, elements};
 
 	return {vertices, 3, uvCoordinates, 2, elements};
 }

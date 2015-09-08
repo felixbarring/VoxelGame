@@ -70,8 +70,8 @@ void SpriteBatcher::draw()
 	program.bind();
 
 	for (std::shared_ptr<Sprite> batch : batches) {
-		glActiveTexture(GL_TEXTURE0);
 
+		glActiveTexture(GL_TEXTURE0);
 		batch->getTexture().bind();
 		program.setUniformli("texture1", 0);
 

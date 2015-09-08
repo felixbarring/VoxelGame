@@ -35,6 +35,15 @@ Sprite::Sprite(float x, float y, float z, float width, float height, texture::Te
 
 }
 
+/*
+Sprite::Sprite(float x, float y, float z, std::shared_ptr<mesh::MeshElement> mesh, texture::Texture &texture) :
+	transform{x, y, z},
+	texture{texture}
+{
+	this->mesh = mesh;
+}
+*/
+
 Sprite::~Sprite()
 {
 }

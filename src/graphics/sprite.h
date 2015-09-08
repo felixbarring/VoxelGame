@@ -6,7 +6,10 @@
 
 #include "transform.h"
 #include "texture/texture.h"
+#include "texture/texture.h"
 #include "mesh/meshElement.h"
+
+
 
 namespace graphics {
 
@@ -18,6 +21,10 @@ public:
 // ########################################################
 
 	Sprite(float x, float y, float z, float width, float height, texture::Texture &texture);
+
+	// For fonts
+	//Sprite(float x, float y, float z, std::shared_ptr<mesh::MeshElement> mesh, texture::Texture &texture);
+	//Sprite(float x, float y, float z, std::shared_ptr<mesh::MeshElement> mesh, texture::Texture &texture);
 
 	virtual ~Sprite();
 
@@ -37,7 +44,7 @@ public:
 
 private:
 
-	std::unique_ptr<mesh::MeshElement> mesh;
+	std::shared_ptr<mesh::MeshElement> mesh;
 	texture::Texture &texture;
 	Transform transform;
 
