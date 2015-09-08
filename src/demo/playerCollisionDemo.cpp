@@ -18,7 +18,10 @@
 #include "../model/world/chunk/chunk.h"
 #include "../model/world/entity/player.h"
 #include "../util/input.h"
+
 #include "../util/checkSystem.h"
+
+//#include "../util/checkSystem.h"
 
 namespace demo {
 
@@ -75,6 +78,8 @@ void PlayerCollisionDemo::runDemo()
 
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
+
+	util::check_system::checkStuff();
 
 	float screenCenterX = WIDTH / 2.0;
 	float screenCenterY = HEIGHT / 2.0;

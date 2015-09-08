@@ -96,6 +96,8 @@ void CubeBatcher::draw()
 		b.cube.draw();
 	}
 
+	program.unbind();
+
 	batches.clear();
 }
 

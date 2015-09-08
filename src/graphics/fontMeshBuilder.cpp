@@ -68,7 +68,7 @@ FontMeshBuilder::~FontMeshBuilder()
 // Member Functions########################################
 // ########################################################
 
-mesh::MeshElement FontMeshBuilder::buldMeshForString(const std::string &str, float height)
+std::shared_ptr<mesh::MeshElement> FontMeshBuilder::buldMeshForString(const std::string &str, float height)
 {
 
 	const int NUMBER_OF_CHARS = str.length();
@@ -164,7 +164,9 @@ mesh::MeshElement FontMeshBuilder::buldMeshForString(const std::string &str, flo
 
 	// mesh::MeshElement mesh{vertices, 3, uvCoordinates, 2, elements};
 
-	return {vertices, 3, uvCoordinates, 2, elements};
+	std::shared_ptr<mesh::MeshElement> mesh(new mesh::MeshElement(vertices, 3, uvCoordinates, 2, elements));
+
+	return mesh;
 }
 
 float FontMeshBuilder::lenghtOfString(const std::string &str, int height)

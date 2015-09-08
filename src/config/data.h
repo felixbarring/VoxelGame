@@ -108,7 +108,7 @@ namespace config
 
 		static constexpr int charsInFont = 256;
 		static constexpr int fontAtlasWidth = 1024;
-		static constexpr int fontArlasHeight = 1024;
+		static constexpr int fontAtlasHeight = 1024;
 
 		static std::string font = "../resources/font/font1.png";
 		static std::string fontLayout = "../resources/font/font1.txt";

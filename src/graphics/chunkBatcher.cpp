@@ -92,7 +92,7 @@ void ChunkBatcher::draw()
 	program.setUniformli("texture1", 0);
 	texture.bind();
 
-	Camera & camera = Camera::getInstance();
+	Camera &camera = Camera::getInstance();
 
 	for (auto b : batches) {
 		glm::mat4 modelView = camera.getViewMatrix() * b->getTransform().getMatrix();
@@ -100,6 +100,8 @@ void ChunkBatcher::draw()
 		program.setUniformMatrix4f("modelViewProjection", modelViewProjection);
 		b->draw();
 	}
+
+	program.unbind();
 
 }
 

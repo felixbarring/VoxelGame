@@ -44,7 +44,7 @@ void SpriteBatcher::draw()
 		"void main() \n"
 		"{ \n"
 		"  gl_Position = projection * vec4(positionIn, 1.0f); \n"
-		"  texCoord = vec2(texCoordIn.x, 1.0 - texCoordIn.y); \n"
+		"  texCoord = texCoordIn; \n"
 		"} \n";
 
 	static const char *frag =

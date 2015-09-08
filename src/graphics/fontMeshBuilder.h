@@ -3,6 +3,7 @@
 #define SRC_GRAPHICS_FONTMESHBUILDER_H_
 
 #include <string>
+#include <memory>
 
 #include "mesh/meshElement.h"
 
@@ -25,7 +26,7 @@ public:
 // Member Functions########################################
 // ########################################################
 
-	mesh::MeshElement buldMeshForString(const std::string &str, float height);
+	std::shared_ptr<mesh::MeshElement> buldMeshForString(const std::string &str, float height);
 
 	float lenghtOfString(const std::string &str, int height);
 

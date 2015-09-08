@@ -58,6 +58,7 @@ int main(int argc, char *argv[])
 				fontDemo.runDemo();
 			}
 		}
+
 	} catch(std::exception& e){
 		std::cout << "An error occured \n" << e.what();
 	} catch(...) {
