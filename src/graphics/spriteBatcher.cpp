@@ -2,6 +2,7 @@
 #include "spriteBatcher.h"
 
 #include <map>
+#include <algorithm>
 
 #include "shaderProgram.h"
 
@@ -68,6 +69,16 @@ void SpriteBatcher::draw()
 	static graphics::ShaderProgram program(vertex, frag, attributesMap);
 
 	program.bind();
+
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_BLEND);
+
+	std::sort(batches.begin(), batches.end(),
+		[](std::shared_ptr<Sprite> a, std::shared_ptr<Sprite> b) -> bool
+	    {
+	      return a->layer < b->layer;
+	    }
+	);
 
 	for (std::shared_ptr<Sprite> batch : batches) {
 

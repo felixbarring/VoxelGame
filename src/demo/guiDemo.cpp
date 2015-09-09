@@ -15,6 +15,7 @@
 #include "../util/input.h"
 
 #include "../gui/widget/button.h"
+#include "../gui/widget/widgetGroup.h"
 #include "../gui/guiUtil.h"
 
 #include "../config/data.h"
@@ -36,6 +37,12 @@ GuiDemo::~GuiDemo()
 // ########################################################
 // Member Functions########################################
 // ########################################################
+
+enum class MenuState {
+	MainMenu,
+	Play,
+	Settings
+};
 
 void GuiDemo::runDemo()
 {
@@ -67,11 +74,81 @@ void GuiDemo::runDemo()
 	glViewport(0, 0, WIDTH+400, HEIGHT);
 	glClearColor(0.2f, 0.22f, 0.2f, 1.0f);
 
-	std::function<void(int)> observer = [](int id){ std::cout << "A button with id: " << id << " was pressed\n"; };
+	MenuState state = MenuState::MainMenu;
 
-	widget::Button button(0, 350, 50, 100, 100, observer);
-	widget::Button button2(1, 350, 200, 100, 100, observer);
-	widget::Button button3(2, 350, 350, 100, 100, observer);
+	/*
+	if (id == 2) {
+		quit = true;
+	} else if (id == 1) {
+		state = MenuState::Settings;
+	} else if (id == 10 || id == 6) {
+		state = MenuState::MainMenu;
+	} else if (id == 0) {
+
+	}
+	*/
+
+	bool quit = false;
+	std::function<void(int)> observer = [&](int id){
+		switch(id) {
+			case 0: {
+				state = MenuState::Play;
+				break;
+			}
+			case 1: {
+				state = MenuState::Settings;
+				break;
+			}
+			case 2: {
+				quit = true;
+				break;
+			}
+			case 5: {
+				state = MenuState::MainMenu;
+				break;
+			}
+			case 10: {
+				state = MenuState::MainMenu;
+				break;
+			}
+		}
+		std::cout << "A button with id: " << id << " was pressed\n";
+	};
+
+	std::shared_ptr<widget::IWidget> button1(new widget::Button{0, 325, 350, 150, 30, observer, "Play"});
+	std::shared_ptr<widget::IWidget> button2(new widget::Button{1, 325, 310, 150, 30, observer, "Settings"});
+	std::shared_ptr<widget::IWidget> button3(new widget::Button{2, 325, 270, 150, 30, observer, "Quit"});
+
+	widget::WidgetGroup widgetGroup1{0, 0, 0, 800, 600, observer};
+
+	widgetGroup1.addWidget(button1);
+	widgetGroup1.addWidget(button2);
+	widgetGroup1.addWidget(button3);
+
+	std::shared_ptr<widget::IWidget> button4(new widget::Button{3, 325, 350, 150, 30, observer, "New World"});
+	std::shared_ptr<widget::IWidget> button5(new widget::Button{4, 325, 310, 150, 30, observer, "Load World"});
+	std::shared_ptr<widget::IWidget> button6(new widget::Button{5, 325, 270, 150, 30, observer, "Back"});
+
+
+	widget::WidgetGroup widgetGroup2{0, 0, 0, 800, 600, observer};
+
+	widgetGroup2.addWidget(button4);
+	widgetGroup2.addWidget(button5);
+	widgetGroup2.addWidget(button6);
+
+	std::shared_ptr<widget::IWidget> button7(new widget::Button{6, 325, 350, 150, 30, observer, "Input"});
+	std::shared_ptr<widget::IWidget> button8(new widget::Button{7, 325, 310, 150, 30, observer, "Graphics"});
+	std::shared_ptr<widget::IWidget> button9(new widget::Button{8, 325, 270, 150, 30, observer, "Audio"});
+	std::shared_ptr<widget::IWidget> button10(new widget::Button{9, 325, 230, 150, 30, observer, "Game"});
+	std::shared_ptr<widget::IWidget> button11(new widget::Button{10, 325, 190, 150, 30, observer, "Back"});
+
+	widget::WidgetGroup widgetGroup3{0, 0, 0, 800, 600, observer};
+
+	widgetGroup3.addWidget(button7);
+	widgetGroup3.addWidget(button8);
+	widgetGroup3.addWidget(button9);
+	widgetGroup3.addWidget(button10);
+	widgetGroup3.addWidget(button11);
 
 	util::Input input(window, WIDTH / 2.0, HEIGHT / 2.0);
 	input.unlockMouse();
@@ -82,7 +159,7 @@ void GuiDemo::runDemo()
 	graphics::SpriteBatcher::getInstance().setProjection(matrix2);
 	graphics::FontMeshBuilder fontBuilder{config::font_data::fontLayout, 1024, 1024};
 
-	while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0)	{
+	while (!quit && glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0) {
 
 		fpsManager.frameStart();
 		glfwPollEvents();
@@ -99,19 +176,33 @@ void GuiDemo::runDemo()
 
 		glm::vec2 mouse = gui::adjustMouse(800, 600, 1200, 600, input.mouseXPosition, y);
 
-		button.mouseMoved(mouse.x, mouse.y);
-		button2.mouseMoved(mouse.x, mouse.y);
-		button3.mouseMoved(mouse.x, mouse.y);
-
-		if (input.action1Pressed) {
-			button.mouseClicked(0, mouse.x, mouse.y);
-			button2.mouseClicked(0, mouse.x, mouse.y);
-			button3.mouseClicked(0, mouse.x, mouse.y);
+		switch(state) {
+			case MenuState::MainMenu: {
+				widgetGroup1.mouseMoved(mouse.x, mouse.y);
+				if (input.action1Pressed) {
+					widgetGroup1.mouseClicked(0, mouse.x, mouse.y);
+				}
+				widgetGroup1.draw();
+				break;
+			}
+			case MenuState::Play: {
+				widgetGroup2.mouseMoved(mouse.x, mouse.y);
+				if (input.action1Pressed) {
+					widgetGroup2.mouseClicked(0, mouse.x, mouse.y);
+				}
+				widgetGroup2.draw();
+				break;
+			}
+			case MenuState::Settings: {
+				widgetGroup3.mouseMoved(mouse.x, mouse.y);
+				if (input.action1Pressed) {
+					widgetGroup3.mouseClicked(0, mouse.x, mouse.y);
+				}
+				widgetGroup3.draw();
+				break;
+			}
 		}
 
-		button.draw();
-		button2.draw();
-		button3.draw();
 		graphics::SpriteBatcher::getInstance().draw();
 
 		fpsManager.sync();

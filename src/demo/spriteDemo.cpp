@@ -75,9 +75,9 @@ void SpriteDemo::runDemo()
 	glViewport(0, 0, WIDTH, HEIGHT);
 	glClearColor(0.2f, 0.22f, 0.2f, 1.0f);
 
-	std::shared_ptr<graphics::Sprite> sprite(new graphics::Sprite{200, 200, 0, 200, 200, graphics::TextureResources::getInstance().getTexture(0)});
-	std::shared_ptr<graphics::Sprite> sprite2(new graphics::Sprite{300, 300, 0, 200, 200, graphics::TextureResources::getInstance().getTexture(0)});
-	std::shared_ptr<graphics::Sprite> sprite3(new graphics::Sprite{600, 200, 0, 200, 200, graphics::TextureResources::getInstance().getTexture(1)});
+	std::shared_ptr<graphics::Sprite> sprite(new graphics::Sprite{200, 200, 0, 200, 200, graphics::TextureResources::getInstance().getTexture(config::texture_paths::scout)});
+	std::shared_ptr<graphics::Sprite> sprite2(new graphics::Sprite{300, 300, 0, 200, 200, graphics::TextureResources::getInstance().getTexture(config::texture_paths::scout)});
+	std::shared_ptr<graphics::Sprite> sprite3(new graphics::Sprite{600, 200, 0, 200, 200, graphics::TextureResources::getInstance().getTexture(config::texture_paths::scout)});
 
 	while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0)	{
 

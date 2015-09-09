@@ -103,6 +103,11 @@ namespace config
 
 	}
 
+	namespace gui_data
+	{
+		static std::string guiBox = "../resources/gui/gui_box.png";
+	}
+
 	namespace font_data
 	{
 

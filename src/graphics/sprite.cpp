@@ -7,9 +7,10 @@ namespace graphics {
 // Constructor/Destructor #################################
 // ########################################################
 
-Sprite::Sprite(float x, float y, float z, float width, float height, texture::Texture &texture) :
-	transform{x + width / 2, y + height / 2, z},
-	texture(texture)
+Sprite::Sprite(float x, float y, float layer, float width, float height, texture::Texture &texture) :
+	transform{x + width / 2, y + height / 2, 0},
+	texture(texture),
+	layer{layer}
 {
 
 	std::vector<GLfloat> vertices = {
@@ -39,7 +40,8 @@ Sprite::Sprite(float x, float y, float z, float width, float height, texture::Te
 
 Sprite::Sprite(float x, float y, float z, std::shared_ptr<mesh::MeshElement> mesh, texture::Texture &texture) :
 	transform{x, y, z},
-	texture(texture)
+	texture(texture),
+	layer{y}
 {
 	this->mesh = mesh;
 }

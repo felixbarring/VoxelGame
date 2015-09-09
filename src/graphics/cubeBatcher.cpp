@@ -79,7 +79,8 @@ void CubeBatcher::draw()
 	};
 
 	static graphics::ShaderProgram program(vertex, fragment, attributesMap);
-	static texture::TextureArray &texture = graphics::TextureResources::getInstance().getTextureArray(0);
+	static texture::TextureArray &texture = graphics::TextureResources::getInstance().getTextureArray(
+			config::cube_data::textures, config::cube_data::TEXTURE_WIDTH, config::cube_data::TEXTURE_HEIGHT);
 
 	program.bind();
 

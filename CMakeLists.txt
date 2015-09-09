@@ -12,6 +12,8 @@ dependencies/glm/gtc
 dependencies/glm/gtx
 dependencies/Simple-OpenGL-Image-Library/src
 dependencies/tinyobjloader
+dependencies/tinyobjloader
+dependencies/freealut-master/include/AL
 # dependencies/assimp/include/assimp
 )
 include_directories(${INCLUDE_DIRS})
@@ -40,7 +42,8 @@ ${SRC_LIST13} ${SRC_LIST14} ${SRC_LIST15}
 )
 # Link GLFW and GLEW to main executable
 # assimp
-target_link_libraries(${PROJECT_NAME} libglew_static glfw ${GLFW_LIBRARIES} SOIL tinyobjloader )
+# alut
+target_link_libraries(${PROJECT_NAME} libglew_static glfw ${GLFW_LIBRARIES} SOIL tinyobjloader)
 # Define GLEW_STATIC for Windows
 #if(MSVC)
 # add_definitions(-DGLEW_STATIC)

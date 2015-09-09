@@ -1,50 +1,57 @@
 
 /**
- *  \file [button.h]
- *  \brief A button that can be pressed by a mouse pointer.
+ *  \file [widgetGroup.h]
  *  \author Felix Bärring
  *
  *  Copyright (c) 2015, Felix Bärring. All rights reserved.
  */
 
-#ifndef SRC_GUI_WIDGET_BUTTON_H_
-#define SRC_GUI_WIDGET_BUTTON_H_
+#ifndef SRC_GUI_WIDGET_WIDGETGROUP_H_
+#define SRC_GUI_WIDGET_WIDGETGROUP_H_
 
-#include <string>
+#include <vector>
 #include <memory>
 
 #include "abstractWidget.h"
-
-#include "../../graphics/sprite.h"
+#include "iWidget.h"
 
 namespace widget {
 
 /**
- * \class Button
+ * \class WidgetGroup
+ * \brief Handles a group of widgets
  *
- * A button can be used to trigger an event when the user clicks on it.
- * Buttons can have a text/name that will be rendered and hence provide
- * the user with visual information about the purpose of the button.
- *
- * When the mouse pointer is inside the buttons border it will hint
- * that it is interactable by highlight it self.
+ * A simple layer that redirects all function calls to its widgets.
+ * Useful for handling groups of widgets that work together.
  *
  * \author Felix Bärring
  */
-class Button : public AbstractWidget  {
+class WidgetGroup : public AbstractWidget{
 public:
 
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
 
-	Button(int id, int x, int y, int width, int height, std::function<void(int)> observer, const std::string &name);
+	/**
+	 * \brief Constructs a WidgetGroup
+	 */
+	WidgetGroup(int id, int x, int y, int width, int height, std::function<void(int)> observer);
 
-	virtual ~Button();
+	virtual ~WidgetGroup();
 
 // ########################################################
 // Member Functions########################################
 // ########################################################
+
+	/**
+	 * \brief Adds a widget to this group
+	 *
+	 * All other functinos in this class will act on the Widgets added by this function.
+	 *
+	 * \param[in] widget The widget that will be added to this group
+	 */
+	void addWidget(std::shared_ptr<IWidget> widget);
 
 	void draw() override;
 
@@ -60,17 +67,10 @@ public:
 
 private:
 
-	std::function<void(int)> observer;
-
-	bool pointerInsideBorders = false;
-
-	std::shared_ptr<graphics::Sprite> sprite;
-	std::shared_ptr<graphics::Sprite> spriteHover;
-
-	std::shared_ptr<graphics::Sprite> text;
+	std::vector<std::shared_ptr<IWidget>> widgets;
 
 };
 
 } /* namespace widget */
 
-#endif /* SRC_GUI_WIDGET_BUTTON_H_ */
+#endif /* SRC_GUI_WIDGET_WIDGETGROUP_H_ */

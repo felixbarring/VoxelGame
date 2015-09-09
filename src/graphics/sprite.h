@@ -20,7 +20,7 @@ public:
 // Constructor/Destructor #################################
 // ########################################################
 
-	Sprite(float x, float y, float z, float width, float height, texture::Texture &texture);
+	Sprite(float x, float y, float layer, float width, float height, texture::Texture &texture);
 
 	Sprite(float x, float y, float z, std::shared_ptr<mesh::MeshElement> mesh, texture::Texture &texture);
 
@@ -39,6 +39,8 @@ public:
 // ########################################################
 // Instance Variables #####################################
 // ########################################################
+
+	int layer;
 
 private:
 

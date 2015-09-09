@@ -21,7 +21,7 @@ namespace widget {
 
 /**
  * \class AbstractWidget
- * \brief Do this need brief?
+ * \brief Skeletal implementation of iWidget.h
  *
  * Implements the fundamental functionality that all widgets should share.
  * These includes checking if a point is inside this widget, setting the
