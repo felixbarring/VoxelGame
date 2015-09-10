@@ -1,6 +1,6 @@
 
-#ifndef SRC_GRAPHICS_TEXTURERESOURCES_H_
-#define SRC_GRAPHICS_TEXTURERESOURCES_H_
+#ifndef SRC_GRAPHICS_RESOURCES_H_
+#define SRC_GRAPHICS_RESOURCES_H_
 
 #include <vector>
 #include <map>
@@ -12,28 +12,30 @@
 #include "texture/textureArray.h"
 #include "texture/textureCubeMap.h"
 
+#include "fontMeshBuilder.h"
+
 namespace graphics {
 
-class TextureResources {
+class Resources {
 private:
 
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
 
-	TextureResources();
+	Resources();
 
-	virtual ~TextureResources();
+	virtual ~Resources();
 
-	TextureResources(TextureResources const&) = delete;
+	Resources(Resources const&) = delete;
 
-	void operator=(TextureResources const&) = delete;
+	void operator=(Resources const&) = delete;
 
 public:
 
-	static TextureResources& getInstance()
+	static Resources& getInstance()
 	{
-		static TextureResources instance;
+		static Resources instance;
 		return instance;
 	}
 
@@ -50,6 +52,8 @@ public:
 
 	texture::TextureCubeMap& getTextureCubeMap(int value);
 
+	FontMeshBuilder& getFontMeshBuilder(std::string &pathToLayout, int atlasWidth, int atlasHeight);
+
 
 // ########################################################
 // Instance Variables #####################################
@@ -62,8 +66,10 @@ public:
 	std::map<std::string, texture::TextureArray> textureArraysMap;
 	std::map<std::string, texture::TextureCubeMap> textureCubeMapsMap;
 
+	std::map<std::string, FontMeshBuilder> fontMeshBuilders;
+
 };
 
 } /* namespace graphics */
 
-#endif /* SRC_GRAPHICS_TEXTURERESOURCES_H_ */
+#endif /* SRC_GRAPHICS_RESOURCES_H_ */

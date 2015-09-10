@@ -19,6 +19,7 @@ private:
 // ########################################################
 
 	Camera(float xPosition, float yPosition, float zPosition);
+
 	virtual ~Camera();
 
 // ########################################################

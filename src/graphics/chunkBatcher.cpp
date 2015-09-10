@@ -3,9 +3,9 @@
 
 #include <map>
 
+#include "resources.h"
 #include "shaderProgram.h"
 #include "texture/textureArray.h"
-#include "textureResources.h"
 
 namespace graphics
 {
@@ -84,7 +84,7 @@ void ChunkBatcher::draw()
 	};
 
 	static ShaderProgram program(vertex, fragment, attributesMap);
-	static texture::TextureArray &texture = TextureResources::getInstance().getTextureArray(config::cube_data::textures, config::cube_data::TEXTURE_WIDTH, config::cube_data::TEXTURE_HEIGHT);
+	static texture::TextureArray &texture = Resources::getInstance().getTextureArray(config::cube_data::textures, config::cube_data::TEXTURE_WIDTH, config::cube_data::TEXTURE_HEIGHT);
 
 	program.bind();
 

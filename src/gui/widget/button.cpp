@@ -3,9 +3,9 @@
 
 #include "../../graphics/spriteBatcher.h"
 #include "../../graphics/fontMeshBuilder.h"
-#include "../../graphics/textureResources.h"
 #include "../../graphics/mesh/meshElement.h"
 #include "../../config/data.h"
+#include "../../graphics/resources.h"
 
 namespace widget {
 
@@ -19,16 +19,16 @@ Button::Button(int id, int x, int y, int width, int height, std::function<void(i
 
 	this->observer = observer;
 
-	sprite.reset(new graphics::Sprite{x, y, 0, width, height, graphics::TextureResources::getInstance().getTexture(config::gui_data::guiBox)});
-	spriteHover.reset(new graphics::Sprite{x, y, 0, width, height, graphics::TextureResources::getInstance().getTexture(config::gui_data::guiBox)});
+	sprite.reset(new graphics::Sprite{x, y, 0, width, height, graphics::Resources::getInstance().getTexture(config::gui_data::guiBox)});
 
-	// Share these some how
-	graphics::FontMeshBuilder fontBuilder{config::font_data::fontLayout,
-			config::font_data::fontAtlasWidth, config::font_data::fontAtlasHeight};
+	spriteHover.reset(new graphics::Sprite{x, y, 0, width, height, graphics::Resources::getInstance().getTexture(config::gui_data::guiBox)});
 
-	std::shared_ptr<mesh::MeshElement> blool = fontBuilder.buldMeshForString(name, height-5);
+	graphics::FontMeshBuilder &fontMeshBuidler = graphics::Resources::getInstance().getFontMeshBuilder(
+			config::font_data::fontLayout, config::font_data::fontAtlasWidth, config::font_data::fontAtlasHeight);
 
-	text.reset(new graphics::Sprite{x, y+5, 1, blool, graphics::TextureResources::getInstance().getTexture(config::font_data::font)});
+	std::shared_ptr<mesh::MeshElement> blool = fontMeshBuidler.buldMeshForString(name, height-5);
+
+	text.reset(new graphics::Sprite{x, y+5, 1, blool, graphics::Resources::getInstance().getTexture(config::font_data::font)});
 
 }
 

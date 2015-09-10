@@ -76,18 +76,6 @@ void GuiDemo::runDemo()
 
 	MenuState state = MenuState::MainMenu;
 
-	/*
-	if (id == 2) {
-		quit = true;
-	} else if (id == 1) {
-		state = MenuState::Settings;
-	} else if (id == 10 || id == 6) {
-		state = MenuState::MainMenu;
-	} else if (id == 0) {
-
-	}
-	*/
-
 	bool quit = false;
 	std::function<void(int)> observer = [&](int id){
 		switch(id) {
@@ -128,7 +116,6 @@ void GuiDemo::runDemo()
 	std::shared_ptr<widget::IWidget> button4(new widget::Button{3, 325, 350, 150, 30, observer, "New World"});
 	std::shared_ptr<widget::IWidget> button5(new widget::Button{4, 325, 310, 150, 30, observer, "Load World"});
 	std::shared_ptr<widget::IWidget> button6(new widget::Button{5, 325, 270, 150, 30, observer, "Back"});
-
 
 	widget::WidgetGroup widgetGroup2{0, 0, 0, 800, 600, observer};
 
@@ -177,6 +164,7 @@ void GuiDemo::runDemo()
 		glm::vec2 mouse = gui::adjustMouse(800, 600, 1200, 600, input.mouseXPosition, y);
 
 		switch(state) {
+
 			case MenuState::MainMenu: {
 				widgetGroup1.mouseMoved(mouse.x, mouse.y);
 				if (input.action1Pressed) {
@@ -201,6 +189,7 @@ void GuiDemo::runDemo()
 				widgetGroup3.draw();
 				break;
 			}
+
 		}
 
 		graphics::SpriteBatcher::getInstance().draw();

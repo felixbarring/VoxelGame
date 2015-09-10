@@ -106,22 +106,6 @@ std::shared_ptr<mesh::MeshElement> FontMeshBuilder::buldMeshForString(const std:
 		vertices.push_back(yOrigin + height);
 		vertices.push_back(0);
 
-		//std::cout << " " << cd.width << ", " << cd.height << ", " << cd.xPosition << ", " << cd.yPosition << " \n";
-
-		/*
-		uvCoordinates.push_back(0);
-		uvCoordinates.push_back(0);
-
-		uvCoordinates.push_back(1);
-		uvCoordinates.push_back(0);
-
-		uvCoordinates.push_back(1);
-		uvCoordinates.push_back(1);
-
-		uvCoordinates.push_back(0);
-		uvCoordinates.push_back(1);
-		*/
-
 		/*
 		uvCoordinates.push_back(cd.xPosition / static_cast<float>(ATLAS_WIDTH));
 		uvCoordinates.push_back(cd.yPosition / static_cast<float>(ATLAS_HEIGHT));
@@ -162,23 +146,35 @@ std::shared_ptr<mesh::MeshElement> FontMeshBuilder::buldMeshForString(const std:
 		xOffset += width;
 	}
 
-	// mesh::MeshElement mesh{vertices, 3, uvCoordinates, 2, elements};
-
-	std::shared_ptr<mesh::MeshElement> mesh(new mesh::MeshElement(vertices, 3, uvCoordinates, 2, elements));
-
-	return mesh;
+	return std::shared_ptr<mesh::MeshElement>(new mesh::MeshElement(vertices, 3, uvCoordinates, 2, elements));
 }
 
 float FontMeshBuilder::lenghtOfString(const std::string &str, int height)
 {
-	//TODO
-	return 1.01;
+	int stringSize = 0;
+	for (char c : str) {
+		const CharData cd = charData[c];
+		const float width = height * (cd.width / static_cast<float>(cd.height));
+		stringSize += width;
+	}
+	return stringSize;
 }
 
 int FontMeshBuilder::splitStringAt(const  std::string &str, int height, float maxLength)
 {
-	// TODO
-	return 101;
+	if (lenghtOfString(str, height) < maxLength) {
+		return -1;
+	}
+
+	int index = 0;
+	float accumulatedLenght = 0;
+	while (accumulatedLenght < maxLength) {
+		const CharData cd = charData[str[index]];
+		const float width = height*(cd.width / static_cast<float>(cd.height));
+		accumulatedLenght += width;
+		index++;
+	}
+	return index-1;
 }
 
 void FontMeshBuilder::printCharData()

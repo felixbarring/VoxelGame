@@ -36,20 +36,20 @@ void WidgetGroup::draw()
 
 void WidgetGroup::mouseClicked(int button, float x, float y)
 {
-	//if (isInsideBorders(x, y)) {
+	if (isInsideBorders(x, y)) {
 		for (std::shared_ptr<widget::IWidget> widget : widgets) {
 			widget->mouseClicked(button, x, y);
 		}
-	//}
+	}
 }
 
 void WidgetGroup::mouseMoved(float x, float y)
 {
-	//if (isInsideBorders(x, y)) {
+	if (isInsideBorders(x, y)) {
 		for (std::shared_ptr<widget::IWidget> widget : widgets) {
 			widget->mouseMoved(x, y);
 		}
-	//}
+	}
 }
 
 void WidgetGroup::keyPressed(int key, char c)

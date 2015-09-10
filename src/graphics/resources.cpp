@@ -1,5 +1,5 @@
 
-#include "textureResources.h"
+#include "resources.h"
 
 #include <iostream>
 
@@ -9,12 +9,11 @@ namespace graphics {
 // Constructor/Destructor #################################
 // ########################################################
 
-TextureResources::TextureResources()
+Resources::Resources()
 {
-	//textureArrays.push_back({config::cube_data::textures, config::cube_data::TEXTURE_WIDTH, config::cube_data::TEXTURE_HEIGHT});
 }
 
-TextureResources::~TextureResources()
+Resources::~Resources()
 {
 }
 
@@ -22,7 +21,7 @@ TextureResources::~TextureResources()
 // Member Functions########################################
 // ########################################################
 
-texture::Texture& TextureResources::getTexture(const std::string &path)
+texture::Texture& Resources::getTexture(const std::string &path)
 {
 
 	std::map<std::string, texture::Texture>::iterator it = textures.find(path);
@@ -34,7 +33,7 @@ texture::Texture& TextureResources::getTexture(const std::string &path)
 	return textures.at(path);
 }
 
-texture::TextureCubeMap& TextureResources::getTextureCubeMap(int value)
+texture::TextureCubeMap& Resources::getTextureCubeMap(int value)
 {
 	if (value > textureCubeMaps.size() || value < 0) {
 		std::cout << "Texture resources value is out of range! \n";
@@ -43,7 +42,7 @@ texture::TextureCubeMap& TextureResources::getTextureCubeMap(int value)
 	return textureCubeMaps.at(value);
 }
 
-texture::TextureArray& TextureResources::getTextureArray(const std::vector<std::string> &textures, int width, int height)
+texture::TextureArray& Resources::getTextureArray(const std::vector<std::string> &textures, int width, int height)
 {
 	std::map<std::string, texture::TextureArray> ::iterator it = textureArraysMap.find(textures.at(0));
 
@@ -54,20 +53,29 @@ texture::TextureArray& TextureResources::getTextureArray(const std::vector<std::
 	return textureArraysMap.at(textures.at(0));
 }
 
-// TODO Implement
-texture::TextureCubeMap& TextureResources::getTextureCubeMap(const char* right, const char* left, const char* top,
+texture::TextureCubeMap& Resources::getTextureCubeMap(const char* right, const char* left, const char* top,
 		const char* bottom, const char* back, const char* front,  int width, int height)
 {
 	/*
-	std::map<std::string, texture::Texture> ::iterator it = textureCubeMapsMap.at(path);
+	std::map<std::string, texture::TextureCubeMap> ::iterator it = textureCubeMapsMap.at(path);
 
 	if (it == textures.end()) {
 		textureCubeMapsMap.insert(std::make_pair(path, texture::TextureCubeMap{path.c_str()}));
 	}
-
 	*/
+
 	return textureCubeMaps.at(0);
 }
 
+FontMeshBuilder& Resources::getFontMeshBuilder(std::string &pathToLayout, int atlasWidth, int atlasHeight)
+{
+	std::map<std::string, FontMeshBuilder> ::iterator it = fontMeshBuilders.find(pathToLayout);
+
+	if (it == fontMeshBuilders.end()) {
+		fontMeshBuilders.insert(std::make_pair(pathToLayout, FontMeshBuilder{pathToLayout, atlasWidth, atlasHeight}));
+	}
+
+	return fontMeshBuilders.at(pathToLayout);
+}
 
 } /* namespace graphics */
