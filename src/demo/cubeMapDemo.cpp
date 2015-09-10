@@ -15,6 +15,9 @@
 #include "../graphics/texture/textureCubeMap.h"
 #include "../util/fpsManager.h"
 #include "../graphics/cubeMap.h"
+#include "../graphics/resources.h"
+
+#include "../config/data.h"
 
 namespace demo
 {
@@ -70,17 +73,21 @@ void CubeMapDemo::runDemo()
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
 
-    graphics::Camera& camera = graphics::Camera::getInstance();
+    graphics::Camera &camera = graphics::Camera::getInstance();
 
-    graphics::CubeMap skyBox{
-    	"../resources/skybox/right.jpg",
-		"../resources/skybox/left.jpg",
-		"../resources/skybox/top.jpg",
-		"../resources/skybox/bottom.jpg",
-		"../resources/skybox/back.jpg",
-		"../resources/skybox/front.jpg",
-		2048, 2048
-    };
+
+
+    texture::TextureCubeMap &texture = graphics::Resources::getInstance().getTextureCubeMap(
+    	config::cube_map_data::cubeMap1[0],
+		config::cube_map_data::cubeMap1[1],
+		config::cube_map_data::cubeMap1[2],
+		config::cube_map_data::cubeMap1[3],
+		config::cube_map_data::cubeMap1[4],
+		config::cube_map_data::cubeMap1[5],
+		config::cube_map_data::cubeMap1Width,
+		config::cube_map_data::cubeMap1Height);
+
+    graphics::CubeMap skybox{texture};
 
 	float screenCenterX = WIDTH / 2;
 	float screenCenterY = HEIGHT / 2;
@@ -104,7 +111,7 @@ void CubeMapDemo::runDemo()
 		viewDirection.changeViewDirection(screenCenterX - xpos, screenCenterY - ypos);
 		camera.updateView(glm::vec3(0,0,0), viewDirection.getViewDirection(), viewDirection.getUpDirection());
 
-		skyBox.render(camera);
+		skybox.render(camera);
 
         fpsManager.sync();
         glfwSwapBuffers(window);

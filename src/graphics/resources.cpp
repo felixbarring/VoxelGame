@@ -33,15 +33,6 @@ texture::Texture& Resources::getTexture(const std::string &path)
 	return textures.at(path);
 }
 
-texture::TextureCubeMap& Resources::getTextureCubeMap(int value)
-{
-	if (value > textureCubeMaps.size() || value < 0) {
-		std::cout << "Texture resources value is out of range! \n";
-	}
-
-	return textureCubeMaps.at(value);
-}
-
 texture::TextureArray& Resources::getTextureArray(const std::vector<std::string> &textures, int width, int height)
 {
 	std::map<std::string, texture::TextureArray> ::iterator it = textureArraysMap.find(textures.at(0));
@@ -53,18 +44,17 @@ texture::TextureArray& Resources::getTextureArray(const std::vector<std::string>
 	return textureArraysMap.at(textures.at(0));
 }
 
-texture::TextureCubeMap& Resources::getTextureCubeMap(const char* right, const char* left, const char* top,
-		const char* bottom, const char* back, const char* front,  int width, int height)
+texture::TextureCubeMap& Resources::getTextureCubeMap(std::string &right, std::string &left, std::string &top,
+		std::string &bottom, std::string &back, std::string &front,  int width, int height)
 {
-	/*
-	std::map<std::string, texture::TextureCubeMap> ::iterator it = textureCubeMapsMap.at(path);
+	std::map<std::string, texture::TextureCubeMap>::iterator it = textureCubeMaps.find(right);
 
-	if (it == textures.end()) {
-		textureCubeMapsMap.insert(std::make_pair(path, texture::TextureCubeMap{path.c_str()}));
+	if (it == textureCubeMaps.end()) {
+		textureCubeMaps.insert(std::make_pair(right, texture::TextureCubeMap{
+			right.c_str(), left.c_str(), top.c_str(), bottom.c_str(), back.c_str(), front.c_str(), width, height}));
 	}
-	*/
 
-	return textureCubeMaps.at(0);
+	return textureCubeMaps.at(right);
 }
 
 FontMeshBuilder& Resources::getFontMeshBuilder(std::string &pathToLayout, int atlasWidth, int atlasHeight)

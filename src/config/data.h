@@ -120,6 +120,21 @@ namespace config
 
 	}
 
+	namespace cube_map_data
+	{
+		static std::vector<std::string> cubeMap1{
+			"../resources/skybox/right.jpg",
+			"../resources/skybox/left.jpg",
+			"../resources/skybox/top.jpg",
+			"../resources/skybox/bottom.jpg",
+			"../resources/skybox/back.jpg",
+			"../resources/skybox/front.jpg"};
+
+		static constexpr int cubeMap1Width = 2048;
+		static constexpr int cubeMap1Height = 2048;
+
+	}
+
 }
 
 #endif /* SRC_CONFIG_DATA_H_ */

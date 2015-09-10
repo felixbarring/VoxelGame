@@ -15,7 +15,8 @@ public:
 // Constructor/Destructor #################################
 // ########################################################
 
-	CubeMap(const char* right, const char* left, const char* top, const char* bottom, const char* back, const char* front, int widht, int height);
+	CubeMap(texture::TextureCubeMap &texture);
+
 	virtual ~CubeMap();
 
 // ########################################################

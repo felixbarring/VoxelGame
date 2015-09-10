@@ -18,8 +18,8 @@ namespace graphics
 // Constructor/Destructor #################################
 // ########################################################
 
-CubeMap::CubeMap(const char* right, const char* left, const char* top, const char* bottom, const char* back, const char* front, int widht, int height) :
-		texture{right, left, top, bottom, back, front, widht, height}
+CubeMap::CubeMap(texture::TextureCubeMap &texture) :
+	texture{texture}
 {
 }
 
@@ -36,7 +36,6 @@ void CubeMap::render(Camera &camera)
 {
 
 	static std::map<std::string, int> attributesMap{std::pair<std::string, int>("positionIn", 0)};
-
 
 	// TODO Remove the projcetion * view multiplication from the shader
 
@@ -134,6 +133,8 @@ void CubeMap::render(Camera &camera)
     skyboxShader.setUniformMatrix4f("projection", camera.getProjectionMatrix());
     texture.bind();
     mesh.draw();
+
+    skyboxShader.unbind();
 }
 
 }
