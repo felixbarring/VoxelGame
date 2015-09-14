@@ -9,5 +9,5 @@ struct Voxel {
 };
 
 
-
 #endif /* SRC_UTIL_VOXEL_H_ */
+

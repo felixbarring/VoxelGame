@@ -84,7 +84,8 @@ void ChunkBatcher::draw()
 	};
 
 	static ShaderProgram program(vertex, fragment, attributesMap);
-	static texture::TextureArray &texture = Resources::getInstance().getTextureArray(config::cube_data::textures, config::cube_data::TEXTURE_WIDTH, config::cube_data::TEXTURE_HEIGHT);
+	static texture::TextureArray &texture = Resources::getInstance().getTextureArray(
+			config::cube_data::textures, config::cube_data::TEXTURE_WIDTH, config::cube_data::TEXTURE_HEIGHT);
 
 	program.bind();
 

@@ -140,7 +140,7 @@ void GuiDemo::runDemo()
 	util::Input input(window, WIDTH / 2.0, HEIGHT / 2.0);
 	input.unlockMouse();
 
-	glm::mat4 matrix = gui::crateVirtualToScreen(800, 600, 1200, 600);
+	glm::mat4 matrix = gui::createVirtualToScreen(800, 600, 1200, 600);
 	glm:: mat4 matrix2 = glm::ortho(0.0f, 1200.0f, 0.0f, 600.0f, -1.0f, 1.0f) * matrix;
 
 	graphics::SpriteBatcher::getInstance().setProjection(matrix2);

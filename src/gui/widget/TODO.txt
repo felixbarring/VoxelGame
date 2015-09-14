@@ -2,9 +2,10 @@
 Widgets that should be implemented
 More to add...
 
-Button
+Button x
   Radiobutton
   Togglebutton
+Label
 Slider
 TextInput
 TextArea

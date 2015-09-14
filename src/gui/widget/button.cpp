@@ -23,12 +23,12 @@ Button::Button(int id, int x, int y, int width, int height, std::function<void(i
 
 	spriteHover.reset(new graphics::Sprite{x, y, 0, width, height, graphics::Resources::getInstance().getTexture(config::gui_data::guiBox)});
 
-	graphics::FontMeshBuilder &fontMeshBuidler = graphics::Resources::getInstance().getFontMeshBuilder(
+	graphics::FontMeshBuilder &fontMeshBuilder = graphics::Resources::getInstance().getFontMeshBuilder(
 			config::font_data::fontLayout, config::font_data::fontAtlasWidth, config::font_data::fontAtlasHeight);
 
-	std::shared_ptr<mesh::MeshElement> blool = fontMeshBuidler.buldMeshForString(name, height-5);
+	std::shared_ptr<mesh::MeshElement> fontMesh = fontMeshBuilder.buldMeshForString(name, height-5);
 
-	text.reset(new graphics::Sprite{x, y+5, 1, blool, graphics::Resources::getInstance().getTexture(config::font_data::font)});
+	text.reset(new graphics::Sprite{x, y+5, 1, fontMesh, graphics::Resources::getInstance().getTexture(config::font_data::font)});
 
 }
 

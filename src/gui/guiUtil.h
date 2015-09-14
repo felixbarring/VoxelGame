@@ -10,7 +10,7 @@
 namespace gui
 {
 
-glm::mat4 crateVirtualToScreen(int virtualWidth, int virtualHeight, int realWidth, int realHeight)
+glm::mat4 createVirtualToScreen(int virtualWidth, int virtualHeight, int realWidth, int realHeight)
 {
 	float matrix[16];
 

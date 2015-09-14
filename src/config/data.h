@@ -105,7 +105,9 @@ namespace config
 
 	namespace gui_data
 	{
+
 		static std::string guiBox = "../resources/gui/gui_box.png";
+
 	}
 
 	namespace font_data
@@ -122,6 +124,7 @@ namespace config
 
 	namespace cube_map_data
 	{
+
 		static std::vector<std::string> cubeMap1{
 			"../resources/skybox/right.jpg",
 			"../resources/skybox/left.jpg",
