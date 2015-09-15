@@ -15,6 +15,7 @@
 #include "../util/input.h"
 
 #include "../gui/widget/button.h"
+#include "../gui/widget/label.h"
 #include "../gui/widget/widgetGroup.h"
 #include "../gui/guiUtil.h"
 
@@ -113,16 +114,19 @@ void GuiDemo::runDemo()
 	widgetGroup1.addWidget(button2);
 	widgetGroup1.addWidget(button3);
 
+	std::shared_ptr<widget::IWidget> label1(new widget::Label{325, 390, 150, 30, " - Play - "});
 	std::shared_ptr<widget::IWidget> button4(new widget::Button{3, 325, 350, 150, 30, observer, "New World"});
 	std::shared_ptr<widget::IWidget> button5(new widget::Button{4, 325, 310, 150, 30, observer, "Load World"});
 	std::shared_ptr<widget::IWidget> button6(new widget::Button{5, 325, 270, 150, 30, observer, "Back"});
 
 	widget::WidgetGroup widgetGroup2{0, 0, 0, 800, 600, observer};
 
+	widgetGroup2.addWidget(label1);
 	widgetGroup2.addWidget(button4);
 	widgetGroup2.addWidget(button5);
 	widgetGroup2.addWidget(button6);
 
+	std::shared_ptr<widget::IWidget> label2(new widget::Label{325, 390, 150, 30, " - Settings - "});
 	std::shared_ptr<widget::IWidget> button7(new widget::Button{6, 325, 350, 150, 30, observer, "Input"});
 	std::shared_ptr<widget::IWidget> button8(new widget::Button{7, 325, 310, 150, 30, observer, "Graphics"});
 	std::shared_ptr<widget::IWidget> button9(new widget::Button{8, 325, 270, 150, 30, observer, "Audio"});
@@ -131,6 +135,7 @@ void GuiDemo::runDemo()
 
 	widget::WidgetGroup widgetGroup3{0, 0, 0, 800, 600, observer};
 
+	widgetGroup3.addWidget(label2);
 	widgetGroup3.addWidget(button7);
 	widgetGroup3.addWidget(button8);
 	widgetGroup3.addWidget(button9);
