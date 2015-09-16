@@ -78,7 +78,8 @@ void GuiDemo::runDemo()
 	MenuState state = MenuState::MainMenu;
 
 	bool quit = false;
-	std::function<void(int)> observer = [&](int id){
+	std::function<void(int)> observer = [&](int id)
+	{
 		switch(id) {
 			case 0: {
 				state = MenuState::Play;
@@ -101,8 +102,10 @@ void GuiDemo::runDemo()
 				break;
 			}
 		}
-		std::cout << "A button with id: " << id << " was pressed\n";
+	std::cout << "A button with id: " << id << " was pressed\n";
 	};
+
+
 
 	std::shared_ptr<widget::IWidget> button1(new widget::Button{0, 325, 350, 150, 30, observer, "Play"});
 	std::shared_ptr<widget::IWidget> button2(new widget::Button{1, 325, 310, 150, 30, observer, "Settings"});
@@ -113,6 +116,8 @@ void GuiDemo::runDemo()
 	widgetGroup1.addWidget(button1);
 	widgetGroup1.addWidget(button2);
 	widgetGroup1.addWidget(button3);
+
+
 
 	std::shared_ptr<widget::IWidget> label1(new widget::Label{325, 390, 150, 30, " - Play - "});
 	std::shared_ptr<widget::IWidget> button4(new widget::Button{3, 325, 350, 150, 30, observer, "New World"});
@@ -125,6 +130,8 @@ void GuiDemo::runDemo()
 	widgetGroup2.addWidget(button4);
 	widgetGroup2.addWidget(button5);
 	widgetGroup2.addWidget(button6);
+
+
 
 	std::shared_ptr<widget::IWidget> label2(new widget::Label{325, 390, 150, 30, " - Settings - "});
 	std::shared_ptr<widget::IWidget> button7(new widget::Button{6, 325, 350, 150, 30, observer, "Input"});
@@ -141,6 +148,8 @@ void GuiDemo::runDemo()
 	widgetGroup3.addWidget(button9);
 	widgetGroup3.addWidget(button10);
 	widgetGroup3.addWidget(button11);
+
+
 
 	util::Input input(window, WIDTH / 2.0, HEIGHT / 2.0);
 	input.unlockMouse();
@@ -202,6 +211,7 @@ void GuiDemo::runDemo()
 		fpsManager.sync();
 		glfwSwapBuffers(window);
 	}
+
 	glfwTerminate();
 
 }
