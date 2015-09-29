@@ -42,23 +42,6 @@ public:
 // Member Functions########################################
 // ########################################################
 
-	/*
-static std::map<std::string, FontMeshBuilder> fontBuilders;
-
-public:
-
-	static FontMeshBuilder& getFontMeshBuilder(std::string &pathToLayout, int atlasWidth, int atlasHeight)
-	{
-		std::map<std::string, FontMeshBuilder>::iterator it = fontBuilders.find(pathToLayout);
-
-		if (it == fontBuilders.end()) {
-			fontBuilders.insert(std::make_pair(pathToLayout, FontMeshBuilder{pathToLayout, atlasWidth, atlasHeight}));
-		}
-
-		return fontBuilders.at(pathToLayout);
-	}
-*/
-
 	/**
 	 *
 	 */

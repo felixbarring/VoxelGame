@@ -144,6 +144,7 @@ std::shared_ptr<mesh::MeshElement> FontMeshBuilder::buldMeshForString(const std:
 
 		loopCounter++;
 		xOffset += width;
+
 	}
 
 	return std::shared_ptr<mesh::MeshElement>(new mesh::MeshElement(vertices, 3, uvCoordinates, 2, elements));
@@ -180,7 +181,8 @@ int FontMeshBuilder::splitStringAt(const  std::string &str, int height, float ma
 void FontMeshBuilder::printCharData()
 {
 	for (CharData cd : charData) {
-		std::cout << "Width: " << cd.width << ", Height: " << cd.height << ", xPosition: " << cd.xPosition << ", yPosition: " << cd.yPosition << " \n";
+		std::cout << "Width: " << cd.width << ", Height: " << cd.height <<
+				", xPosition: " << cd.xPosition << ", yPosition: " << cd.yPosition << " \n";
 	}
 }
 
