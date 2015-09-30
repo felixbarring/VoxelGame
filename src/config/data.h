@@ -57,11 +57,11 @@ namespace config
 		static int TEXTURE_HEIGHT = 32;
 
 		static std::vector<std::string> textures {
-			"../resources/0001_grass_side.png",
-			"../resources/0002_grass_top.png",
-			"../resources/0003_dirt.png",
-			"../resources/0004_rock.png",
-			"../resources/0005_brick_wall.png",
+			"../resources/cubes/grass_side.png",
+			"../resources/cubes/grass_top.png",
+			"../resources/cubes/dirt.png",
+			"../resources/cubes/rock.png",
+			"../resources/cubes/brick.png",
 		};
 
 	}
@@ -98,6 +98,7 @@ namespace config
 	namespace texture_paths
 	{
 
+		// Remove THES ?
 		static std::string scout =  "../resources/ScoutSmal.png";
 		static std::string scout2 = "../resources/ScoutSmal2.png";
 

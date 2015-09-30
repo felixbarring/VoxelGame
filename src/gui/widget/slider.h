@@ -35,6 +35,7 @@ public:
 // Member Functions########################################
 // ########################################################
 
+/*
 	void draw() override;
 
 	void mouseClicked(int button, float x, float y) override;
@@ -42,6 +43,7 @@ public:
 	void mouseMoved(float x, float y) override;
 
 	void keyPressed(int key, char c) override;
+*/
 
 // ########################################################
 // Instance Variables #####################################
