@@ -133,15 +133,11 @@ bool ChunkManager::intersectWithSolidCube(glm::vec3 origin, glm::vec3 direction,
 
 	float distanceSearched = 0;
 
+	previousCube = glm::vec3(currentCubeX, currentCubeY, currentCubeZ);
+
 	while ( distanceSearched < searchLength) {
 
-		//std::cout << "Search lenght = " << distanceSearched << "\n";
-
-		if (!isAir(currentCubeX, currentCubeY, currentCubeZ)) {
-			//std::cout << "--- Found None Air CUbe" << currentCubeX << " : " << currentCubeY << " : " << currentCubeZ << "\n";
-			intersectedCube = glm::vec3(currentCubeX, currentCubeY, currentCubeZ);
-			return true;
-		}
+		previousCube = glm::vec3(currentCubeX, currentCubeY, currentCubeZ);
 
 		float multiX = (xAxis - origin.x) * xL;
 		float multiY = (yAxis - origin.y) * yL;
@@ -166,6 +162,12 @@ bool ChunkManager::intersectWithSolidCube(glm::vec3 origin, glm::vec3 direction,
 			distanceSearched = glm::length(multiZ * direction);
 
 		}
+
+		if (!isAir(currentCubeX, currentCubeY, currentCubeZ)) {
+			//std::cout << "--- Found None Air CUbe" << currentCubeX << " : " << currentCubeY << " : " << currentCubeZ << "\n";
+			intersectedCube = glm::vec3(currentCubeX, currentCubeY, currentCubeZ);
+			return true;
+		}
 	}
 
 	return false;
@@ -174,6 +176,11 @@ bool ChunkManager::intersectWithSolidCube(glm::vec3 origin, glm::vec3 direction,
 glm::vec3 ChunkManager::getLocationOfInteresectedCube()
 {
 	return intersectedCube;
+}
+
+glm::vec3 ChunkManager::getCubeBeforeIntersectedCube()
+{
+	return previousCube;
 }
 
 }

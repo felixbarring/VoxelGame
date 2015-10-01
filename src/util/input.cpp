@@ -53,7 +53,7 @@ void Input::updateValues()
 
 	// Mouse
 	action1Pressed = glfwGetMouseButton(window, config::input_data::action1Button) == GLFW_PRESS && !action1Active;
-	action2Pressed = glfwGetMouseButton(window, config::input_data::action1Button) == GLFW_PRESS && !action2Active;
+	action2Pressed = glfwGetMouseButton(window, config::input_data::action2Button) == GLFW_PRESS && !action2Active;
 
 	// Keyboard
 	moveForwardActive = glfwGetKey(window, config::input_data::moveForwardButton) == GLFW_PRESS;
@@ -64,7 +64,7 @@ void Input::updateValues()
 
 	// Mouse
 	action1Active = glfwGetMouseButton(window, config::input_data::action1Button) == GLFW_PRESS;
-	action2Active = glfwGetMouseButton(window, config::input_data::action1Button) == GLFW_PRESS;
+	action2Active = glfwGetMouseButton(window, config::input_data::action2Button) == GLFW_PRESS;
 
 	escapeKeyPressed = glfwGetKey(window, GLFW_KEY_ESCAPE);
 

@@ -20,6 +20,7 @@ InGame::InGame(Game *game, util::Input &in) :
 		switch(id) {
 			case 0: {
 				game->changeStateToMainMenu();
+				state = GameState::NoOverlay;
 				break;
 			}
 			case 1: {
@@ -84,6 +85,7 @@ void InGame::update()
 		}
 
 		widgetGroup1->draw();
+
 		graphics::SpriteBatcher::getInstance().draw();
 	}
 }

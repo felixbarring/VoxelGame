@@ -47,6 +47,8 @@ public:
 
 	glm::vec3 getLocationOfInteresectedCube();
 
+	glm::vec3 getCubeBeforeIntersectedCube();
+
 	// ########################################################
 	// Instance Variables #####################################
 	// ########################################################
@@ -55,6 +57,7 @@ private:
 
 	std::unique_ptr<Chunk> chunks[config::chunk_data::NUMBER_OF_CHUNKS_X][config::chunk_data::NUMBER_OF_CHUNKS_Y][config::chunk_data::NUMBER_OF_CHUNKS_Z];
 	glm::vec3 intersectedCube;
+	glm::vec3 previousCube;
 
 };
 

@@ -72,10 +72,21 @@ void Player::update(float timePassed)
 			viewDirection.getViewDirection(), viewDirection.getUpDirection());
 
 	if (chunk::ChunkManager::getInstance().intersectWithSolidCube(location, viewDirection.getViewDirection(), 5)) {
+
 		glm::vec3 selectedCube = chunk::ChunkManager::getInstance().getLocationOfInteresectedCube();
 		if (input.action1Pressed) {
 			chunk::ChunkManager::getInstance().removeCube(selectedCube.x, selectedCube.y, selectedCube.z);
 			return;
+		}
+
+		if (input.action2Pressed) {
+			std::cout << "Pressed Action 2" << "\n";
+			glm::vec3 cube = chunk::ChunkManager::getInstance().getCubeBeforeIntersectedCube();
+
+			std::cout << "Selected cube = " << selectedCube.x << " " << selectedCube.y << " " << selectedCube.z << "\n";
+			std::cout << "Previous cube = " << cube.x << " " << cube.y << " " << cube.z << "\n";
+
+			chunk::ChunkManager::getInstance().setCube(cube.x, cube.y, cube.z, 1);
 		}
 
 		// TODO Dirty hack :o
