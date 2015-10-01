@@ -77,7 +77,7 @@ void PlayerCollisionDemo::runDemo()
 	glClearColor(0.2f, 0.22f, 0.2f, 1.0f);
 
 	glEnable(GL_DEPTH_TEST);
-	glDepthFunc(GL_LESS);
+	//glDepthFunc(GL_LESS);
 
 	util::check_system::checkStuff();
 

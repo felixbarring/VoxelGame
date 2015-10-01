@@ -29,7 +29,10 @@ int main(int argc, char *argv[])
 			playerCollisionDemo.runDemo();
 		} else {
 			std::string str = argv[1];
-
+			if (str == "game") {
+				Game game;
+				game.run();
+			}
 			if (str == "textureDemo") {
 				demo::TextureDemo textureDemo;
 				textureDemo.runDemo();

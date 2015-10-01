@@ -68,7 +68,8 @@ void Player::update(float timePassed)
 
 	location += speed;
 
-	graphics::Camera::getInstance().updateView(glm::vec3(location.x, location.y, location.z), viewDirection.getViewDirection(), viewDirection.getUpDirection());
+	graphics::Camera::getInstance().updateView(glm::vec3(location.x, location.y, location.z),
+			viewDirection.getViewDirection(), viewDirection.getUpDirection());
 
 	if (chunk::ChunkManager::getInstance().intersectWithSolidCube(location, viewDirection.getViewDirection(), 5)) {
 		glm::vec3 selectedCube = chunk::ChunkManager::getInstance().getLocationOfInteresectedCube();
@@ -76,9 +77,11 @@ void Player::update(float timePassed)
 			chunk::ChunkManager::getInstance().removeCube(selectedCube.x, selectedCube.y, selectedCube.z);
 			return;
 		}
+
 		// TODO Dirty hack :o
 		transform.setLocation(selectedCube.x + 0.5, selectedCube.y + 0.5, selectedCube.z + 0.5);
 		graphics::CubeBatcher::getInstance().addBatch(1, transform);
+
 	}
 
 }

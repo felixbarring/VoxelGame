@@ -10,20 +10,23 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
+#include "util/input.h"
 #include "util/fpsManager.h"
 #include "config/data.h"
 
-#include "util/input.h"
+#include "graphics/chunkBatcher.h"
+#include "graphics/cubeBatcher.h"
+
+#include "inGame.h"
+#include "mainMenu.h"
 
 
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
 
-Game::Game():
-	gameState{GameState::InGame}
+Game::Game()
 {
-
 }
 
 Game::~Game()
@@ -37,52 +40,84 @@ Game::~Game()
 void Game::run()
 {
 
-	util::FPSManager fpsManager(config::graphics_data::fps);
-	const int WIDTH = config::graphics_data::windowWidth;
-	const int HEIGHT = config::graphics_data::windowHeight;
+	util::FPSManager fpsManager(60);
+	int WIDTH = 800, HEIGHT = 600;
 
 	if (!glfwInit()) {
-		fprintf(stderr, "Failed to initialize GLFW\n");
+		std::cout << "Failed to initialize GLFW\n";
 	}
-
 	glfwWindowHint(GLFW_SAMPLES, 8);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Game", nullptr, nullptr);
+	GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "GUI Demo", nullptr, nullptr);
 	if (window == nullptr) {
-		fprintf(stderr, "Failed to open GLFW window.\n");
+		std::cout << "Failed to open GLFW window.\n";
 		glfwTerminate();
 	}
-
 	glfwMakeContextCurrent(window);
+	glfwSwapInterval(-1);
 
 	glewExperimental = true;
 	if (glewInit() != GLEW_OK) {
-		fprintf(stderr, "Failed to initialize GLEW\n");
+		std::cout << "Failed to initialize GLEW\n";
 	}
+
+	glViewport(0, 0, WIDTH, HEIGHT);
+	glClearColor(0.2f, 0.22f, 0.2f, 1.0f);
 
 	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
-	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+	//glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 
-	util::Input input(window, WIDTH / 2.0, WIDTH / 2.0);
-	input.unlockMouse();
+	util::Input input(window, WIDTH / 2.0, HEIGHT / 2.0);
 
-	while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0) {
+	entity::Player player{input};
+	player.setLocation(7, 7, 7);
+
+	InGame inGame{this, input};
+	MainMenu mainMenu{this, input};
+
+
+
+	// glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS
+
+	while (!quit && glfwWindowShouldClose(window) == 0) {
 
 		fpsManager.frameStart();
-		input.updateValues();
+		glfwPollEvents();
+		glClear(GL_COLOR_BUFFER_BIT |  GL_DEPTH_BUFFER_BIT);
 
-		// Do shit here!
+		// inGame.update();
+
+		if (state == GameState::MainMenu) {
+			mainMenu.update();
+		} else if (state == GameState::InGame){
+			inGame.update();
+		}
 
 		fpsManager.sync();
-
 		glfwSwapBuffers(window);
-		//glfwPollEvents();
 	}
+
 	glfwTerminate();
 
 }
+
+void Game::changeStateToIngame()
+{
+	state = GameState::InGame;
+}
+
+void Game::changeStateToMainMenu()
+{
+	state = GameState::MainMenu;
+}
+
+void Game::quitGame()
+{
+	quit= true;
+}
+
 

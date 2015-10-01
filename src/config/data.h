@@ -98,9 +98,9 @@ namespace config
 	namespace texture_paths
 	{
 
-		// Remove THES ?
-		static std::string scout =  "../resources/ScoutSmal.png";
-		static std::string scout2 = "../resources/ScoutSmal2.png";
+		// Remove THESE ?
+		static std::string scout =  "../resources/cubes/grass_side.png";
+		static std::string scout2 = "../resources/cubes/grass_top.png";
 
 	}
 

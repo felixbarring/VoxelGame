@@ -2,6 +2,7 @@
 #include "guiDemo.h"
 
 #include <iostream>
+#include <memory>
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -17,6 +18,7 @@
 #include "../gui/widget/button.h"
 #include "../gui/widget/label.h"
 #include "../gui/widget/widgetGroup.h"
+#include "../gui/widget/iWidget.h"
 #include "../gui/guiUtil.h"
 
 #include "../config/data.h"
@@ -158,7 +160,8 @@ void GuiDemo::runDemo()
 	glm:: mat4 matrix2 = glm::ortho(0.0f, 1200.0f, 0.0f, 600.0f, -1.0f, 1.0f) * matrix;
 
 	graphics::SpriteBatcher::getInstance().setProjection(matrix2);
-	graphics::FontMeshBuilder fontBuilder{config::font_data::fontLayout, 1024, 1024};
+	// This resource handler ?!?
+	//graphics::FontMeshBuilder fontBuilder{config::font_data::fontLayout, 1024, 1024};
 
 	while (!quit && glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0) {
 
