@@ -36,6 +36,7 @@ void Player::update(float timePassed)
 	viewDirection.changeViewDirection(input.mouseXMovement, input.mouseYMovement);
 
 	speed.x = 0;
+	speed.y = 0;
 	speed.z = 0;
 
 	if (input.moveForwardActive || input.moveBackwardActive) {
@@ -64,6 +65,14 @@ void Player::update(float timePassed)
 
 		speed.x += dummy.x;
 		speed.z += dummy.z;
+	}
+
+	if (input.jumpActive || input.goDownActive) {
+		int direction = 1;
+		if (input.goDownActive)
+			direction = -1;
+
+		speed.y = direction * movementSpeed;
 	}
 
 	location += speed;

@@ -48,6 +48,9 @@ public:
 	bool jumpPressed{false};
 	bool jumpActive{false};
 
+	bool goDownPressed{false};
+	bool goDownActive{false};
+
 	// Mouse
 	bool action1Pressed{false};
 	bool action1Active{false};

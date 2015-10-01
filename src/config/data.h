@@ -87,6 +87,7 @@ namespace config
 		static int moveBackwardButton = GLFW_KEY_S;
 
 		static int jumpButton = GLFW_KEY_SPACE;
+		static int goDownButton = GLFW_KEY_LEFT_SHIFT;
 
 		// Mouse ########################################################
 

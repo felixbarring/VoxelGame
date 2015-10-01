@@ -50,6 +50,7 @@ void Input::updateValues()
 	moveRightPressed = glfwGetKey(window, config::input_data::moveRightButton) == GLFW_PRESS && moveRightActive;
 	moveBackwardPressed = glfwGetKey(window, config::input_data::moveBackwardButton) == GLFW_PRESS && moveBackwardActive;
 	jumpPressed = glfwGetKey(window, config::input_data::jumpButton) == GLFW_PRESS && jumpActive;
+	goDownPressed = glfwGetKey(window, config::input_data::goDownButton) == GLFW_PRESS && goDownActive;
 
 	// Mouse
 	action1Pressed = glfwGetMouseButton(window, config::input_data::action1Button) == GLFW_PRESS && !action1Active;
@@ -61,6 +62,7 @@ void Input::updateValues()
 	moveRightActive = glfwGetKey(window, config::input_data::moveRightButton) == GLFW_PRESS;
 	moveBackwardActive = glfwGetKey(window, config::input_data::moveBackwardButton) == GLFW_PRESS;
 	jumpActive = glfwGetKey(window, config::input_data::jumpButton) == GLFW_PRESS;
+	goDownActive = glfwGetKey(window, config::input_data::goDownButton) == GLFW_PRESS;
 
 	// Mouse
 	action1Active = glfwGetMouseButton(window, config::input_data::action1Button) == GLFW_PRESS;
