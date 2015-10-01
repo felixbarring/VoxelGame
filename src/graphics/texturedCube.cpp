@@ -24,40 +24,44 @@ TexturedCube::TexturedCube(float xOffset, float yOffset, float zOffset, int id):
 
 	std::vector<GLfloat> vertexData {
 		// Front
-		-size, -size, -size, // 0
-		size, -size, -size, // 1
-		size, size, -size, // 2
 		-size, size, -size, // 3
+		size, size, -size, // 2
+		size, -size, -size, // 1
+		-size, -size, -size, // 0
 
 		// Back
-		size, -size, size, // 0
-		-size, -size, size, // 1
-		-size, size, size, // 2
 		size, size, size, // 3
+		-size, size, size, // 2
+		-size, -size, size, // 1
+		size, -size, size, // 0
 
 		// Left
-		-size, -size, size, // 0
-		-size, -size, -size, // 1
-		-size, size, -size, // 2
 		-size, size, size, // 3
+		-size, size, -size, // 2
+		-size, -size, -size, // 1
+		-size, -size, size, // 0
 
 		// Right
-		size, -size, -size, // 0
-		size, -size, size, // 1
-		size, size, size, // 2
 		size, size, -size, // 3
+		size, size, size, // 2
+		size, -size, size, // 1
+		size, -size, -size, // 0
+
 
 		// Top
-		-size, size, -size, // 0
-		size, size, -size, // 1
-		size, size, size, // 2
 		-size, size, size, // 3
+		size, size, size, // 2
+		size, size, -size, // 1
+		-size, size, -size, // 0
+
 
 		// Bottom
-		-size, -size, size, // 0
-		size, -size, size, // 1
-		size, -size, -size, // 2
 		-size, -size, -size, // 3
+		size, -size, -size, // 2
+		size, -size, size, // 1
+		-size, -size, size, // 0
+
+
 	};
 
 	std::vector<GLfloat> normals {

@@ -77,6 +77,9 @@ void InGame::update()
 
 	skybox.render();
 
+	//glCullFace(GL_FRONT);
+	glEnable(GL_CULL_FACE);
+
 	glEnable(GL_DEPTH_TEST);
 	graphics::ChunkBatcher::getInstance().draw();
 	graphics::CubeBatcher::getInstance().draw();

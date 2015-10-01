@@ -40,7 +40,7 @@ Game::~Game()
 void Game::run()
 {
 
-	util::FPSManager fpsManager(60);
+	util::FPSManager fpsManager(600);
 	int WIDTH = 800, HEIGHT = 600;
 
 	if (!glfwInit()) {
