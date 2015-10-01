@@ -9,20 +9,46 @@
 
 #include "util/input.h"
 
+#include "gui/widget/button.h"
+#include "gui/widget/label.h"
+#include "gui/widget/widgetGroup.h"
+#include "gui/guiUtil.h"
+
 class InGame {
 public:
+
+// ########################################################
+// Constructor/Destructor #################################
+// ########################################################
 
 	InGame(Game *game, util::Input &in);
 
 	virtual ~InGame();
 
+// ########################################################
+// Member Functions########################################
+// ########################################################
+
 	void update();
 
+// ########################################################
+// Instance Variables #####################################
+// ########################################################
+
 private:
+
+	enum class GameState {
+		NoOverlay,
+		OverlayMenu,
+	};
+
+	GameState state = GameState::NoOverlay;
 
 	Game *game;
 	util::Input &input;
 	entity::Player player;
+
+	std::shared_ptr<widget::WidgetGroup> widgetGroup1;
 
 };
 

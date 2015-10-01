@@ -66,6 +66,8 @@ void Input::updateValues()
 	action1Active = glfwGetMouseButton(window, config::input_data::action1Button) == GLFW_PRESS;
 	action2Active = glfwGetMouseButton(window, config::input_data::action1Button) == GLFW_PRESS;
 
+	escapeKeyPressed = glfwGetKey(window, GLFW_KEY_ESCAPE);
+
 	if (mouseLocked) {
 
 		mouseXMovement = screenCenterX - mouseXOffset;

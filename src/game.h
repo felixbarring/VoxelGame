@@ -41,12 +41,12 @@ public:
 // Instance Variables #####################################
 // ########################################################
 
+private:
+
 	enum class GameState {
 		MainMenu,
 		InGame,
 	};
-
-private:
 
 	GameState state = GameState::MainMenu;
 

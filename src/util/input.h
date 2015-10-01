@@ -61,6 +61,8 @@ public:
 	double mouseXPosition = 0.0;
 	double mouseYPosition = 0.0;
 
+	bool escapeKeyPressed{false};
+
 private:
 
 	GLFWwindow* window;

@@ -79,8 +79,6 @@ void Game::run()
 	InGame inGame{this, input};
 	MainMenu mainMenu{this, input};
 
-
-
 	// glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS
 
 	while (!quit && glfwWindowShouldClose(window) == 0) {
