@@ -32,7 +32,7 @@ CubeMap::~CubeMap()
 // Member Functions########################################
 // ########################################################
 
-void CubeMap::render(Camera &camera)
+void CubeMap::render()
 {
 
 	static std::map<std::string, int> attributesMap{std::pair<std::string, int>("positionIn", 0)};
@@ -128,9 +128,9 @@ void CubeMap::render(Camera &camera)
 
     skyboxShader.bind();
 
-    glm::mat4 view = glm::mat4(glm::mat3(camera.getViewMatrix()));
+    glm::mat4 view = glm::mat4(glm::mat3(graphics::Camera::getInstance().getViewMatrix()));
     skyboxShader.setUniformMatrix4f("view", view);
-    skyboxShader.setUniformMatrix4f("projection", camera.getProjectionMatrix());
+    skyboxShader.setUniformMatrix4f("projection", graphics::Camera::getInstance().getProjectionMatrix());
     texture.bind();
     mesh.draw();
 

@@ -80,12 +80,7 @@ void Player::update(float timePassed)
 		}
 
 		if (input.action2Pressed) {
-			std::cout << "Pressed Action 2" << "\n";
 			glm::vec3 cube = chunk::ChunkManager::getInstance().getCubeBeforeIntersectedCube();
-
-			std::cout << "Selected cube = " << selectedCube.x << " " << selectedCube.y << " " << selectedCube.z << "\n";
-			std::cout << "Previous cube = " << cube.x << " " << cube.y << " " << cube.z << "\n";
-
 			chunk::ChunkManager::getInstance().setCube(cube.x, cube.y, cube.z, 1);
 		}
 

@@ -75,8 +75,6 @@ void CubeMapDemo::runDemo()
 
     graphics::Camera &camera = graphics::Camera::getInstance();
 
-
-
     texture::TextureCubeMap &texture = graphics::Resources::getInstance().getTextureCubeMap(
     	config::cube_map_data::cubeMap1[0],
 		config::cube_map_data::cubeMap1[1],
@@ -111,7 +109,7 @@ void CubeMapDemo::runDemo()
 		viewDirection.changeViewDirection(screenCenterX - xpos, screenCenterY - ypos);
 		camera.updateView(glm::vec3(0,0,0), viewDirection.getViewDirection(), viewDirection.getUpDirection());
 
-		skybox.render(camera);
+		skybox.render();
 
         fpsManager.sync();
         glfwSwapBuffers(window);

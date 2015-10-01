@@ -14,6 +14,9 @@
 #include "gui/widget/widgetGroup.h"
 #include "gui/guiUtil.h"
 
+#include "graphics/cubeMap.h"
+#include "graphics/resources.h"
+
 class InGame {
 public:
 
@@ -49,6 +52,8 @@ private:
 	entity::Player player;
 
 	std::shared_ptr<widget::WidgetGroup> widgetGroup1;
+
+	graphics::CubeMap skybox;
 
 };
 

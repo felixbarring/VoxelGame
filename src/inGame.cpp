@@ -11,7 +11,16 @@
 InGame::InGame(Game *game, util::Input &in) :
 	input(in),
 	player(in),
-	game(game)
+	game(game),
+	skybox{graphics::Resources::getInstance().getTextureCubeMap(
+			config::cube_map_data::cubeMap1[0],
+			config::cube_map_data::cubeMap1[1],
+			config::cube_map_data::cubeMap1[2],
+			config::cube_map_data::cubeMap1[3],
+			config::cube_map_data::cubeMap1[4],
+			config::cube_map_data::cubeMap1[5],
+			config::cube_map_data::cubeMap1Width,
+			config::cube_map_data::cubeMap1Height)}
 {
 	player.setLocation(7, 7, 7);
 
@@ -63,6 +72,10 @@ void InGame::update()
 	if (input.escapeKeyPressed) {
 		state = GameState::OverlayMenu;
 	}
+
+	glDisable(GL_DEPTH_TEST);
+
+	skybox.render();
 
 	glEnable(GL_DEPTH_TEST);
 	graphics::ChunkBatcher::getInstance().draw();
