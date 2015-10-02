@@ -16,7 +16,7 @@ Chunk::Chunk(int x, int y, int z):
 	zLocation{z}
 {
 	int counter = 1;
-	const int maxCount = 4;
+	const int maxCount = 5;
 
 	for (int i = 0; i < config::chunk_data::CHUNK_WIDHT; i++) {
 		for (int j = 0; j < config::chunk_data::CHUNK_HEIGHT; j++) {
@@ -26,7 +26,7 @@ Chunk::Chunk(int x, int y, int z):
 					v.id = counter++;
 					voxels[i][j][k] = v;
 					if (counter == maxCount) {
-						counter = 1;
+						counter = 0;
 					}
 				} else {
 					Voxel v;

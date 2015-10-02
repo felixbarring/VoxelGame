@@ -2,6 +2,8 @@
 #ifndef SRC_MODEL_WORLD_ENTITY_AABB_H_
 #define SRC_MODEL_WORLD_ENTITY_AABB_H_
 
+#include <glm/glm.hpp>
+
 namespace entity {
 
 class AABB {
@@ -23,11 +25,13 @@ public:
 
 	bool intersects(const AABB &that);
 
+	static AABB getSweptBroadPhaseBox(AABB &box, glm::vec3 &velocity);
+
 	// ########################################################
 	// Instance Variables #####################################
 	// ########################################################
 
-private:
+//private:
 
 	double xMin, xMax, yMin, yMax, zMin, zMax;
 

@@ -2,10 +2,13 @@
 #include "player.h"
 
 #include <iostream>
+#include <math.h>
 
 #include "../../../graphics/camera.h"
 #include "../chunk/chunkManager.h"
 #include "../../../graphics/cubeBatcher.h"
+
+#include "aabb.h"
 
 namespace entity {
 
@@ -75,7 +78,49 @@ void Player::update(float timePassed)
 		speed.y = direction * movementSpeed;
 	}
 
-	location += speed;
+	std::cout << "Location: " << location.x << " " << location.y << " " << location.z << "\n";
+	std::cout << "Speed: " << speed.x << " " << speed.y << " " << speed.z << "\n";
+
+	glm::vec3 destination = location + speed;
+
+	AABB player{ destination.x, destination.x + 1, destination.y - 1, destination.y, destination.z, destination.z + 1 };
+	AABB box = AABB::getSweptBroadPhaseBox(player, speed);
+
+	int xStart = std::floor(box.xMin);
+	int yStart = std::floor(box.yMin);
+	int zStart = std::floor(box.zMin);
+
+	int xEnd = std::floor(box.xMax);
+	int yEnd = std::floor(box.yMax);
+	int zEnd = std::floor(box.zMax);
+
+	std::cout << "Start: " << xStart << " " << yStart << " " << zStart << "\n";
+	std::cout << "End: " << xEnd << " " << yEnd << " " << zEnd << "\n";
+
+	int counter = 0;
+	bool colided = false;
+
+	for (int i = xStart; i <= xEnd; i++) {
+		for (int j = yStart; j <= yEnd; j++) {
+			for (int k = zStart; k <= zEnd; k++) {
+				AABB cube{i, i + 1, j, j + 1, k, k + 1};
+
+				if (chunk::ChunkManager::getInstance().getCubeId(i, j, k) != config::cube_data::AIR) {
+					if (cube.intersects(player)) {
+						colided = true;
+					}
+				}
+
+				counter++;
+			}
+		}
+	}
+
+	if (!colided) {
+		location += speed;
+	}
+
+	std::cout << "Number of checks:" << counter << "\n";
 
 	graphics::Camera::getInstance().updateView(glm::vec3(location.x, location.y, location.z),
 			viewDirection.getViewDirection(), viewDirection.getUpDirection());

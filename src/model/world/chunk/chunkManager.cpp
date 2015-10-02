@@ -4,7 +4,6 @@
 #include <math.h>
 #include <limits>
 #include <iostream>
-
 #include "../../../util/voxel.h"
 
 namespace chunk

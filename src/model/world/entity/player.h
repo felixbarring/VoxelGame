@@ -10,6 +10,8 @@
 #include "../../../graphics/viewDirection.h"
 #include "../../../graphics/transform.h"
 
+#include "../../../config/data.h"
+
 namespace entity {
 
 class Player : public IEntity {
@@ -36,6 +38,9 @@ public:
 
 private:
 	glm::vec3 location;
+	float width = 1;
+	float height = 1;
+	float depth = 1;
 	glm::vec3 speed;
 	graphics::ViewDirection viewDirection;
 	util::Input& input;

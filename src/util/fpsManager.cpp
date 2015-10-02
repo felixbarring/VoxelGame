@@ -57,7 +57,7 @@ void FPSManager::sync()
 
 	float fps = 1.0 / totalFrameTime;
 
-	std::cout << fps << "\n";
+	// std::cout << fps << "\n";
 
 }
 }
