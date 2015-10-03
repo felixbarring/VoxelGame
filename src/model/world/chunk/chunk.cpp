@@ -16,7 +16,7 @@ Chunk::Chunk(int x, int y, int z):
 	zLocation{z}
 {
 	int counter = 1;
-	const int maxCount = 5;
+	const int maxCount = 3;
 
 	for (int i = 0; i < config::chunk_data::CHUNK_WIDHT; i++) {
 		for (int j = 0; j < config::chunk_data::CHUNK_HEIGHT; j++) {
@@ -40,9 +40,6 @@ Chunk::Chunk(int x, int y, int z):
 	graphics::ChunkBatcher::getInstance().addBatch(graphicalChunk);
 }
 
-Chunk::~Chunk()
-{
-}
 
 // ########################################################
 // Member Functions########################################

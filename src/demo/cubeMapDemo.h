@@ -14,8 +14,9 @@ public:
 // Constructor/Destructor #################################
 // ########################################################
 
-	CubeMapDemo();
-	virtual ~CubeMapDemo();
+	CubeMapDemo() {};
+
+	virtual ~CubeMapDemo() {};
 
 // ########################################################
 // Member Functions########################################

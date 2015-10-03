@@ -32,10 +32,6 @@ Button::Button(int id, int x, int y, int width, int height, std::function<void(i
 
 }
 
-Button::~Button()
-{
-}
-
 // ########################################################
 // Member Functions########################################
 // ########################################################

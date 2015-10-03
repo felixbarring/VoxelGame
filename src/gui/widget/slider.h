@@ -29,7 +29,7 @@ public:
 
 	Slider(int id, int x, int y, int width, int height, std::function<void(int)> observer, const std::string &name);
 
-	virtual ~Slider();
+	virtual ~Slider() {};
 
 // ########################################################
 // Member Functions########################################

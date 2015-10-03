@@ -24,7 +24,7 @@ public:
 
 	Sprite(float x, float y, float z, std::shared_ptr<mesh::MeshElement> mesh, texture::Texture &texture);
 
-	virtual ~Sprite();
+	virtual ~Sprite() {};
 
 // ########################################################
 // Member Functions########################################

@@ -23,9 +23,9 @@ private:
 // Constructor/Destructor #################################
 // ########################################################
 
-	Resources();
+	Resources() {};
 
-	virtual ~Resources();
+	virtual ~Resources() {};
 
 	Resources(Resources const&) = delete;
 

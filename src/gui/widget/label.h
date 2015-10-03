@@ -34,7 +34,7 @@ public:
 
 	Label(int x, int y, int width, int height, const std::string &name);
 
-	virtual ~Label();
+	virtual ~Label() {};
 
 // ########################################################
 // Member Functions########################################

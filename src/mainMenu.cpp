@@ -18,7 +18,7 @@ MainMenu::MainMenu(Game *game, util::Input &in) :
 				game->changeStateToIngame();
 				break;
 			}
-			case 1: {
+			case 2: {
 				game->quitGame();
 				break;
 			}
@@ -26,18 +26,19 @@ MainMenu::MainMenu(Game *game, util::Input &in) :
 		std::cout << "A button with id: " << id << " was pressed\n";
 	};
 
-	std::shared_ptr<widget::IWidget> button1(new widget::Button{0, 325, 350, 150, 30, observer, "Play"});
-	std::shared_ptr<widget::IWidget> button2(new widget::Button{1, 325, 310, 150, 30, observer, "Quit"});
+	std::shared_ptr<widget::IWidget> button1(new widget::Button{0, 325, 350, 150, 30, observer, "Single Player"});
+
+	std::shared_ptr<widget::IWidget> button2(new widget::Button{1, 325, 310, 150, 30, observer, "Settings"});
+
+	std::shared_ptr<widget::IWidget> button3(new widget::Button{2, 325, 270, 150, 30, observer, "Quit"});
 
 	widgetGroup1.reset(new widget::WidgetGroup{0, 0, 0, 800, 600, observer});
 
 	widgetGroup1->addWidget(button1);
 	widgetGroup1->addWidget(button2);
+	widgetGroup1->addWidget(button3);
 
-}
 
-MainMenu::~MainMenu()
-{
 }
 
 // ########################################################
@@ -49,14 +50,14 @@ void MainMenu::update()
 	input.unlockMouse();
 	input.updateValues();
 
-	double y = input.mouseYPosition - 600;
+	double y = input.mouseYPosition - 1080;
 	if (y < 0) {
 		y = -y;
 	} else {
 		y = -1;
 	}
 
-	glm::vec2 mouse = gui::adjustMouse(800, 600, 800, 600, input.mouseXPosition, y);
+	glm::vec2 mouse = gui::adjustMouse(800, 600, 1920, 1080, input.mouseXPosition, y);
 
 	widgetGroup1->mouseMoved(mouse.x, mouse.y);
 	if (input.action1Pressed) {

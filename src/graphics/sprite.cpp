@@ -46,10 +46,6 @@ Sprite::Sprite(float x, float y, float z, std::shared_ptr<mesh::MeshElement> mes
 	this->mesh = mesh;
 }
 
-Sprite::~Sprite()
-{
-}
-
 // ########################################################
 // Member Functions########################################
 // ########################################################

@@ -22,7 +22,8 @@ zLocation{z},
 transform{
 	x + width / 2 + 0.5f,
 	y + height / 2 + 0.5f,
-	z + depth / 2 + 0.5f}
+	z + depth / 2 + 0.5f
+}
 {
 
 	CubeFaceData faceData[width][height][depth];
@@ -608,10 +609,6 @@ transform{
 
 	mesh.reset(new mesh::MeshElement(vertexData, 3, normals, 3, UV, 3, elementData));
 	//std::cout<<"Total number of faces: "<<totalNumberOfFaces<<"\n";
-}
-
-GraphicalChunk::~GraphicalChunk()
-{
 }
 
 // ########################################################

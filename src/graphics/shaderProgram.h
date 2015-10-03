@@ -18,7 +18,7 @@ public :
 
 	 ShaderProgram(const char *vertexSource, const char *fragmentSource , const std::map<std::string, int> &mapUniforms);
 
-	~ShaderProgram();
+	~ShaderProgram() {};
 
 // ########################################################
 // Member Functions########################################

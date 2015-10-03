@@ -15,16 +15,16 @@ namespace config
 	{
 
 		static constexpr int GRAPHICAL_CHUNK_WIDTH = 16;
-		static constexpr int GRAPHICAL_CHUNK_HEIGHT = 16;
+		static constexpr int GRAPHICAL_CHUNK_HEIGHT = 128;
 		static constexpr int GRAPHICAL_CHUNK_DEPTH = 16;
 
 		static constexpr int CHUNK_WIDHT = 16;
-		static constexpr int CHUNK_HEIGHT = 16;
+		static constexpr int CHUNK_HEIGHT = 128;
 		static constexpr int CHUNK_DEPTH = 16;
 
-		static constexpr int NUMBER_OF_CHUNKS_X = 5;
+		static constexpr int NUMBER_OF_CHUNKS_X = 10;
 		static constexpr int NUMBER_OF_CHUNKS_Y = 1;
-		static constexpr int NUMBER_OF_CHUNKS_Z = 5;
+		static constexpr int NUMBER_OF_CHUNKS_Z = 10;
 
 	}
 
@@ -70,9 +70,9 @@ namespace config
 	{
 
 		static int fps = 60;
-		static int windowWidth = 800;
-		static int windowHeight = 600;
-		static float fov = 80;
+		static int windowWidth = 1920;
+		static int windowHeight = 1080;
+		static float fov = 100 * (3.14 /180); // degree to radians
 
 	}
 

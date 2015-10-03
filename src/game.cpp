@@ -25,14 +25,6 @@
 // Constructor/Destructor #################################
 // ########################################################
 
-Game::Game()
-{
-}
-
-Game::~Game()
-{
-}
-
 // ########################################################
 // Member Functions########################################
 // ########################################################
@@ -40,8 +32,8 @@ Game::~Game()
 void Game::run()
 {
 
-	util::FPSManager fpsManager(600);
-	int WIDTH = 800, HEIGHT = 600;
+	util::FPSManager fpsManager(100);
+	int WIDTH = 1920, HEIGHT = 1080;
 
 	if (!glfwInit()) {
 		std::cout << "Failed to initialize GLFW\n";
@@ -52,7 +44,9 @@ void Game::run()
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-	GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "Voxel Game", nullptr, nullptr);
+	GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "Voxel Game", glfwGetPrimaryMonitor(), nullptr);
+
+
 	if (window == nullptr) {
 		std::cout << "Failed to open GLFW window.\n";
 		glfwTerminate();
@@ -78,8 +72,6 @@ void Game::run()
 
 	InGame inGame{this, input};
 	MainMenu mainMenu{this, input};
-
-	// glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS
 
 	while (!quit && glfwWindowShouldClose(window) == 0) {
 

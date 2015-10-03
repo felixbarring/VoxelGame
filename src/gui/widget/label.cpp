@@ -25,11 +25,6 @@ Label::Label(int x, int y, int width, int height, const std::string &name) :
 
 }
 
-Label::~Label()
-{
-	// TODO Auto-generated destructor stub
-}
-
 // ########################################################
 // Member Functions########################################
 // ########################################################

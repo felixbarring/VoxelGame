@@ -14,9 +14,9 @@ public:
 // Constructor/Destructor #################################
 // ########################################################
 
-	TextureDemo();
+	TextureDemo() {};
 
-	virtual ~TextureDemo();
+	virtual ~TextureDemo() {};
 
 // ########################################################
 // Member Functions########################################

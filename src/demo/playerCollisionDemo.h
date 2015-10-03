@@ -13,8 +13,9 @@ public:
 // Constructor/Destructor #################################
 // ########################################################
 
-	PlayerCollisionDemo();
-	virtual ~PlayerCollisionDemo();
+	PlayerCollisionDemo() {};
+
+	virtual ~PlayerCollisionDemo() {};
 
 // ########################################################
 // Member Functions########################################

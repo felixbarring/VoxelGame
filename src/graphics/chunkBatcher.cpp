@@ -15,14 +15,6 @@ namespace graphics
 // Constructor/Destructor #################################
 // ########################################################
 
-ChunkBatcher::ChunkBatcher()
-{
-}
-
-ChunkBatcher::~ChunkBatcher()
-{
-}
-
 // ########################################################
 // Member Functions########################################
 // ########################################################
@@ -84,6 +76,8 @@ void ChunkBatcher::draw()
 	};
 
 	static ShaderProgram program(vertex, fragment, attributesMap);
+
+	// TODO Use the resource handlers
 	static texture::TextureArray &texture = Resources::getInstance().getTextureArray(
 			config::cube_data::textures, config::cube_data::TEXTURE_WIDTH, config::cube_data::TEXTURE_HEIGHT);
 
@@ -95,9 +89,13 @@ void ChunkBatcher::draw()
 
 	Camera &camera = Camera::getInstance();
 
+	//glm::mat4 modelViewProjection = camera.getProjectionMatrix();
+
 	for (auto b : batches) {
-		glm::mat4 modelView = camera.getViewMatrix() * b->getTransform().getMatrix();
-		glm::mat4 modelViewProjection = camera.getProjectionMatrix() * modelView;
+
+		// Matrix multiplications are a bottle neck
+		// Consider using an add instead of multiplication.
+		glm::mat4 modelViewProjection = camera.getProjectionMatrix() * (camera.getViewMatrix() * b->getTransform().getMatrix());
 		program.setUniformMatrix4f("modelViewProjection", modelViewProjection);
 		b->draw();
 	}

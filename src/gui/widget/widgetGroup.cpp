@@ -14,10 +14,6 @@ WidgetGroup::WidgetGroup(int id, int x, int y, int width, int height, std::funct
 {
 }
 
-WidgetGroup::~WidgetGroup()
-{
-}
-
 // ########################################################
 // Member Functions########################################
 // ########################################################

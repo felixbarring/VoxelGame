@@ -29,14 +29,6 @@ namespace demo {
 // Constructor/Destructor #################################
 // ########################################################
 
-PlayerCollisionDemo::PlayerCollisionDemo()
-{
-}
-
-PlayerCollisionDemo::~PlayerCollisionDemo()
-{
-}
-
 // ########################################################
 // Member Functions########################################
 // ########################################################

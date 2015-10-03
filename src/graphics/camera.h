@@ -20,7 +20,7 @@ private:
 
 	Camera(float xPosition, float yPosition, float zPosition);
 
-	virtual ~Camera();
+	virtual ~Camera() {};
 
 // ########################################################
 // Member Functions########################################
@@ -57,8 +57,9 @@ private:
 
 	// TODO Make it possible to change stuff, like fov
 	// TODO Should not really use config ...
+
 	float aspectRatio = config::graphics_data::windowWidth / config::graphics_data::windowHeight;
-	glm::mat4 projection = glm::perspective(config::graphics_data::fov, aspectRatio, 0.1f, 100.0f);
+	glm::mat4 projection = glm::perspective(config::graphics_data::fov, aspectRatio, 0.1f, 1000.0f);
 	glm::mat4 view;
 
 };

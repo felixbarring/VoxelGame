@@ -98,10 +98,6 @@ ShaderProgram::ShaderProgram(const char *vertexSource, const char *fragmentSourc
 
 }
 
-ShaderProgram::~ShaderProgram()
-{
-}
-
 // ########################################################
 // Member Functions #######################################
 // ########################################################

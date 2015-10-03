@@ -33,6 +33,7 @@ Texture::Texture(const char *path)
 
 }
 
+// TODO Delete the texture from OpenGL ?
 Texture::~Texture()
 {
 }

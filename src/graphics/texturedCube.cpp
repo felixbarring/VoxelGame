@@ -153,10 +153,6 @@ TexturedCube::TexturedCube(float xOffset, float yOffset, float zOffset, int id):
 
 }
 
-TexturedCube::~TexturedCube()
-{
-}
-
 // ########################################################
 // Member Functions########################################
 // ########################################################

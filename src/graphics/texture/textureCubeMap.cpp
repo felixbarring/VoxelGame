@@ -42,6 +42,8 @@ TextureCubeMap::TextureCubeMap(const char* right, const char* left, const char* 
 	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 }
 
+
+// TODO Delete the texture from OpenGL ?
 TextureCubeMap::~TextureCubeMap()
 {
 }

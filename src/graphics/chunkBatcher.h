@@ -19,8 +19,8 @@ private:
 	// Constructor/Destructor #################################
 	// ########################################################
 
-	ChunkBatcher();
-	virtual ~ChunkBatcher();
+	ChunkBatcher() {};
+	virtual ~ChunkBatcher() {};
 
 private:
 

@@ -40,7 +40,7 @@ public:
 
 	Button(int id, int x, int y, int width, int height, std::function<void(int)> observer, const std::string &name);
 
-	virtual ~Button();
+	virtual ~Button() {};
 
 // ########################################################
 // Member Functions########################################

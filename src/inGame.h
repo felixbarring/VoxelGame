@@ -26,7 +26,7 @@ public:
 
 	InGame(Game *game, util::Input &in);
 
-	virtual ~InGame();
+	virtual ~InGame() {};
 
 // ########################################################
 // Member Functions########################################

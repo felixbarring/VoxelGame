@@ -22,7 +22,7 @@ public:
 
 	MainMenu(Game *game, util::Input &in);
 
-	virtual ~MainMenu();
+	virtual ~MainMenu() {};
 
 // ########################################################
 // Member Functions########################################

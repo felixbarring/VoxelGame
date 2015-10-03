@@ -61,7 +61,6 @@ FontMeshBuilder::FontMeshBuilder(std::string &pathToLayout, int atlasWidth, int 
 
 FontMeshBuilder::~FontMeshBuilder()
 {
-
 }
 
 // ########################################################

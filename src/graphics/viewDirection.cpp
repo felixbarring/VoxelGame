@@ -7,14 +7,6 @@ namespace graphics {
 // Constructor/Destructor #################################
 // ########################################################
 
-ViewDirection::ViewDirection()
-{
-}
-
-ViewDirection::~ViewDirection()
-{
-}
-
 // ########################################################
 // Member Functions########################################
 // ########################################################
@@ -42,7 +34,8 @@ void ViewDirection::setViewDirection(float horizontal, float vertical)
 	};
 
 	right = glm::normalize(glm::cross(direction, worldUp));
-	up = glm::normalize(glm::cross(direction, right));
+	// Hack :o
+	up = -glm::normalize(glm::cross(direction, right));
 }
 
 glm::vec3 ViewDirection::getViewDirection()

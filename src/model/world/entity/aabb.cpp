@@ -20,9 +20,6 @@ AABB::AABB(double xMinimum, double xMaximum, double yMinimum, double yMaximum, d
 {
 }
 
-AABB::~AABB()
-{
-}
 
 // ########################################################
 // Member Functions########################################

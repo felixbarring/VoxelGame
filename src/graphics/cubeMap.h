@@ -17,7 +17,7 @@ public:
 
 	CubeMap(texture::TextureCubeMap &texture);
 
-	virtual ~CubeMap();
+	virtual ~CubeMap() {};
 
 // ########################################################
 // Member Functions########################################

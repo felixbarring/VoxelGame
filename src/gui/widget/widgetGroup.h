@@ -38,7 +38,7 @@ public:
 	 */
 	WidgetGroup(int id, int x, int y, int width, int height, std::function<void(int)> observer);
 
-	virtual ~WidgetGroup();
+	virtual ~WidgetGroup() {};
 
 // ########################################################
 // Member Functions########################################

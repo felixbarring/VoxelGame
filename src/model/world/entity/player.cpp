@@ -25,10 +25,6 @@ Player::Player(util::Input& in):
 {
 }
 
-Player::~Player()
-{
-}
-
 // ########################################################
 // Member Functions########################################
 // ########################################################
@@ -78,8 +74,8 @@ void Player::update(float timePassed)
 		speed.y = direction * movementSpeed;
 	}
 
-	std::cout << "Location: " << location.x << " " << location.y << " " << location.z << "\n";
-	std::cout << "Speed: " << speed.x << " " << speed.y << " " << speed.z << "\n";
+	//std::cout << "Location: " << location.x << " " << location.y << " " << location.z << "\n";
+	//std::cout << "Speed: " << speed.x << " " << speed.y << " " << speed.z << "\n";
 
 	glm::vec3 destination = location + speed;
 
@@ -94,8 +90,8 @@ void Player::update(float timePassed)
 	int yEnd = std::floor(box.yMax);
 	int zEnd = std::floor(box.zMax);
 
-	std::cout << "Start: " << xStart << " " << yStart << " " << zStart << "\n";
-	std::cout << "End: " << xEnd << " " << yEnd << " " << zEnd << "\n";
+	//std::cout << "Start: " << xStart << " " << yStart << " " << zStart << "\n";
+	//std::cout << "End: " << xEnd << " " << yEnd << " " << zEnd << "\n";
 
 	int counter = 0;
 	bool colided = false;
@@ -120,7 +116,7 @@ void Player::update(float timePassed)
 		location += speed;
 	}
 
-	std::cout << "Number of checks:" << counter << "\n";
+	//std::cout << "Number of checks:" << counter << "\n";
 
 	graphics::Camera::getInstance().updateView(glm::vec3(location.x, location.y, location.z),
 			viewDirection.getViewDirection(), viewDirection.getUpDirection());

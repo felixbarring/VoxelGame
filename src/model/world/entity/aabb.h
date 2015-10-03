@@ -14,8 +14,8 @@ public:
 	// ########################################################
 
 	AABB(double xMinimum, double xMaximum, double yMinimum, double yMaximum, double zMinimum, double zMaximum);
-	//AABB();
-	virtual ~AABB();
+
+	virtual ~AABB() {};
 
 	// ########################################################
 	// Member Functions########################################

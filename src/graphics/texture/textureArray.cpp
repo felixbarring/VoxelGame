@@ -45,6 +45,8 @@ TextureArray::TextureArray(std::vector<std::string> paths, int width, int height
 	glGenerateMipmap(GL_TEXTURE_2D_ARRAY);
 }
 
+
+// TODO Delete the texture from OpenGL ?
 TextureArray::~TextureArray()
 {
 }

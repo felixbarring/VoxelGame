@@ -29,11 +29,6 @@ Input::Input(GLFWwindow* w, float centerX, float centerY):
 	glfwSetCursorPosCallback(window, cursor_position_callback);
 }
 
-Input::~Input()
-{
-
-}
-
 // ########################################################
 // Member Functions########################################
 // ########################################################

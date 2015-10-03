@@ -16,7 +16,7 @@ public:
 
 	Input(GLFWwindow* w, float centerX, float centerY);
 
-	virtual ~Input();
+	virtual ~Input() {};
 
 	// ########################################################
 	// Member Functions########################################

@@ -21,7 +21,7 @@ public:
 
 	SpriteBatcher();
 
-	virtual ~SpriteBatcher();
+	virtual ~SpriteBatcher() {};
 
 	SpriteBatcher(SpriteBatcher const&) = delete;
 

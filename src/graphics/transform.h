@@ -16,7 +16,7 @@ public:
 
 	Transform(float x, float y, float z);
 
-	virtual ~Transform();
+	virtual ~Transform() {};
 
 // ########################################################
 // Member Functions########################################

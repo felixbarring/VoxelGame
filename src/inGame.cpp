@@ -50,10 +50,6 @@ InGame::InGame(Game *game, util::Input &in) :
 
 }
 
-InGame::~InGame()
-{
-}
-
 // ########################################################
 // Member Functions########################################
 // ########################################################
@@ -86,14 +82,14 @@ void InGame::update()
 
 	if (state == GameState::OverlayMenu) {
 
-		double y = input.mouseYPosition - 600;
+		double y = input.mouseYPosition - 1080;
 		if (y < 0) {
 			y = -y;
 		} else {
 			y = -1;
 		}
 
-		glm::vec2 mouse = gui::adjustMouse(800, 600, 800, 600, input.mouseXPosition, y);
+		glm::vec2 mouse = gui::adjustMouse(800, 600, 1920, 1080, input.mouseXPosition, y);
 
 		widgetGroup1->mouseMoved(mouse.x, mouse.y);
 		if (input.action1Pressed) {
