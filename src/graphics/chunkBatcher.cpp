@@ -90,8 +90,6 @@ void ChunkBatcher::draw()
 
 	Camera &camera = Camera::getInstance();
 
-	//glm::mat4 modelViewProjection = camera.getProjectionMatrix();
-
 	for (auto b : batches) {
 
 		// TODO Matrix multiplications are a bottle neck?

@@ -33,6 +33,7 @@ InGame::InGame(Game *game, util::Input &in) :
 				break;
 			}
 			case 1: {
+				input.centerMouse();
 				state = GameState::NoOverlay;
 				break;
 			}
@@ -56,6 +57,11 @@ InGame::InGame(Game *game, util::Input &in) :
 
 void InGame::update()
 {
+
+	if (input.escapeKeyPressed) {
+		state = GameState::OverlayMenu;
+	}
+
 	if (state == GameState::NoOverlay) {
 		input.lockMouse();
 		input.updateValues();
@@ -65,22 +71,19 @@ void InGame::update()
 		input.updateValues();
 	}
 
-	if (input.escapeKeyPressed) {
-		state = GameState::OverlayMenu;
-	}
-
 	glDisable(GL_DEPTH_TEST);
 
 	skybox.render();
 
-	//glCullFace(GL_FRONT);
 	glEnable(GL_CULL_FACE);
-
 	glEnable(GL_DEPTH_TEST);
+
 	graphics::ChunkBatcher::getInstance().draw();
 	graphics::CubeBatcher::getInstance().draw();
 
 	if (state == GameState::OverlayMenu) {
+
+		// TODO Remove the hard code :|
 
 		double y = input.mouseYPosition - 1080;
 		if (y < 0) {

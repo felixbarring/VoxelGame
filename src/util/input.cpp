@@ -70,14 +70,18 @@ void Input::updateValues()
 		mouseXMovement = screenCenterX - mouseXOffset;
 		mouseYMovement = screenCenterY - mouseYOffset;
 
-		glfwSetCursorPos(window, screenCenterX, screenCenterY);
-
-		mouseXOffset = screenCenterX;
-		mouseYOffset = screenCenterY;
+		centerMouse();
 	} else {
 		glfwGetCursorPos(window, &mouseXPosition, &mouseYPosition);
 	}
 
+}
+
+void Input::centerMouse()
+{
+	mouseXOffset = screenCenterX;
+	mouseYOffset = screenCenterY;
+	glfwSetCursorPos(window, screenCenterX, screenCenterY);
 }
 
 void Input::lockMouse()

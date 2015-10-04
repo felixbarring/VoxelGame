@@ -24,6 +24,8 @@ public:
 
 	void updateValues();
 
+	void inline centerMouse();
+
 	void lockMouse();
 
 	void unlockMouse();
