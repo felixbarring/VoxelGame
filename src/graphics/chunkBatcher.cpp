@@ -5,7 +5,6 @@
 
 #include "resources.h"
 #include "shaderProgram.h"
-#include "texture/textureArray.h"
 
 namespace graphics
 {
@@ -14,6 +13,52 @@ namespace graphics
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
+
+ChunkBatcher::ChunkBatcher() :
+	texture(Resources::getInstance().getTextureArray(
+			config::cube_data::textures,
+			config::cube_data::TEXTURE_WIDTH,
+			config::cube_data::TEXTURE_HEIGHT))
+{
+	const char *vertex =
+		"#version 330 core \n"
+
+		"in vec3 positionIn; \n"
+		"in vec3 normalIn; \n"
+		"in vec3 texCoordIn; \n"
+
+		"uniform mat4 modelViewProjection; \n"
+
+		"out vec3 faceNormal; \n"
+		"out vec3 texCoord; \n"
+
+		"void main(){ \n"
+		"  texCoord = vec3(texCoordIn.x, 1 - texCoordIn.y, texCoordIn.z); \n"
+		"  gl_Position =  modelViewProjection * vec4(positionIn, 1); \n"
+		"} \n";
+
+	const char *fragment =
+		"#version 330 core \n"
+
+		"in vec3 texCoord; \n"
+
+		"uniform sampler2DArray texture1; \n"
+
+		"out vec4 color; \n"
+
+		"void main(){ \n"
+		"  color = texture(texture1, texCoord); \n"
+		"} \n";
+
+	std::map<std::string, int> attributesMap{
+		std::pair<std::string, int>("positionIn", 0),
+		std::pair<std::string, int>("normalIn", 1),
+		std::pair<std::string, int>("texCoordIn", 2)
+	};
+
+	program.reset(new ShaderProgram(vertex, fragment, attributesMap));
+
+}
 
 // ########################################################
 // Member Functions########################################
@@ -37,54 +82,10 @@ void ChunkBatcher::removeBatch(std::shared_ptr<GraphicalChunk> batch)
 
 void ChunkBatcher::draw()
 {
-	// Should be some where else!
-
-	static const char *vertex =
-		"#version 330 core \n"
-
-		"in vec3 positionIn; \n"
-		"in vec3 normalIn; \n"
-		"in vec3 texCoordIn; \n"
-
-		"uniform mat4 modelViewProjection; \n"
-
-		"out vec3 faceNormal; \n"
-		"out vec3 texCoord; \n"
-
-		"void main(){ \n"
-		"  texCoord = vec3(texCoordIn.x, 1 - texCoordIn.y, texCoordIn.z); \n"
-		"  gl_Position =  modelViewProjection * vec4(positionIn, 1); \n"
-		"} \n";
-
-	static const char *fragment =
-		"#version 330 core \n"
-
-		"in vec3 texCoord; \n"
-
-		"uniform sampler2DArray texture1; \n"
-
-		"out vec4 color; \n"
-
-		"void main(){ \n"
-		"  color = texture(texture1, texCoord); \n"
-		"} \n";
-
-	static std::map<std::string, int> attributesMap{
-		std::pair<std::string, int>("positionIn", 0),
-		std::pair<std::string, int>("normalIn", 1),
-		std::pair<std::string, int>("texCoordIn", 2)
-	};
-
-	static ShaderProgram program(vertex, fragment, attributesMap);
-
-	// TODO Use the resource handlers
-	static texture::TextureArray &texture = Resources::getInstance().getTextureArray(
-			config::cube_data::textures, config::cube_data::TEXTURE_WIDTH, config::cube_data::TEXTURE_HEIGHT);
-
-	program.bind();
+	program->bind();
 
 	glActiveTexture(GL_TEXTURE0);
-	program.setUniformli("texture1", 0);
+	program->setUniformli("texture1", 0);
 	texture.bind();
 
 	Camera &camera = Camera::getInstance();
@@ -93,14 +94,13 @@ void ChunkBatcher::draw()
 
 	for (auto b : batches) {
 
-		// Matrix multiplications are a bottle neck
-		// Consider using an add instead of multiplication.
+		// TODO Matrix multiplications are a bottle neck?
+		// TODO Consider using an add instead of multiplication.
 		glm::mat4 modelViewProjection = camera.getProjectionMatrix() * (camera.getViewMatrix() * b->getTransform().getMatrix());
-		program.setUniformMatrix4f("modelViewProjection", modelViewProjection);
+		program->setUniformMatrix4f("modelViewProjection", modelViewProjection);
 		b->draw();
 	}
-
-	program.unbind();
+	program->unbind();
 
 }
 

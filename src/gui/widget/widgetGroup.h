@@ -15,6 +15,8 @@
 #include "abstractWidget.h"
 #include "iWidget.h"
 
+#include "../../graphics/sprite.h"
+
 namespace widget {
 
 /**
@@ -67,6 +69,7 @@ public:
 
 private:
 
+	std::shared_ptr<graphics::Sprite> sprite;
 	std::vector<std::shared_ptr<IWidget>> widgets;
 
 };

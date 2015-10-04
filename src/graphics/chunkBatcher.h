@@ -8,6 +8,9 @@
 #include "graphicalChunk.h"
 #include "camera.h"
 
+#include "texture/textureArray.h"
+#include "shaderProgram.h"
+
 namespace graphics
 {
 
@@ -19,7 +22,8 @@ private:
 	// Constructor/Destructor #################################
 	// ########################################################
 
-	ChunkBatcher() {};
+	ChunkBatcher();
+
 	virtual ~ChunkBatcher() {};
 
 private:
@@ -51,6 +55,9 @@ public:
 	// ########################################################
 
 	std::vector<std::shared_ptr<GraphicalChunk>> batches;
+
+	std::shared_ptr<ShaderProgram> program;
+	texture::TextureArray &texture;
 
 };
 

@@ -6,7 +6,6 @@
 #include <iostream>
 
 #include "shaderProgram.h"
-#include "texture/textureArray.h"
 #include "../config/data.h"
 #include "resources.h"
 
@@ -16,26 +15,16 @@ namespace graphics {
 // Constructor/Destructor #################################
 // ########################################################
 
-CubeBatcher::CubeBatcher()
+CubeBatcher::CubeBatcher() :
+	texture(graphics::Resources::getInstance().getTextureArray(
+			config::cube_data::textures, config::cube_data::TEXTURE_WIDTH, config::cube_data::TEXTURE_HEIGHT))
 {
 	for (int i = 0; i <= config::cube_data::LAST_BLOCK + 1; i++) {
 		cubes.push_back(TexturedCube{2, 0, -1.0f, i});
 	}
-}
 
-// ########################################################
-// Member Functions########################################
-// ########################################################
 
-void CubeBatcher::addBatch(char type, Transform &transform)
-{
-	batches.push_back(Batch(cubes.at(type-1), transform));
-}
-
-void CubeBatcher::draw()
-{
-
-	static const char *vertex =
+	const char *vertex =
 		"#version 330 core \n"
 
 		"in vec3 positionIn; \n"
@@ -52,7 +41,7 @@ void CubeBatcher::draw()
 		"  gl_Position =  modelViewProjection * vec4(positionIn, 1); \n"
 		"} \n";
 
-	static const char *fragment =
+	const char *fragment =
 		"#version 330 core \n"
 
 		"in vec3 texCoord; \n"
@@ -65,22 +54,32 @@ void CubeBatcher::draw()
 		"  color = texture(texture1, texCoord); \n"
 		"} \n";
 
-
-	// Use Smart Pointer
-	static std::map<std::string, int> attributesMap{
+	std::map<std::string, int> attributesMap{
 		std::pair<std::string, int>("positionIn", 0),
 		std::pair<std::string, int>("normalIn", 1),
 		std::pair<std::string, int>("texCoordIn", 2)
 	};
 
-	static graphics::ShaderProgram program(vertex, fragment, attributesMap);
-	static texture::TextureArray &texture = graphics::Resources::getInstance().getTextureArray(
-			config::cube_data::textures, config::cube_data::TEXTURE_WIDTH, config::cube_data::TEXTURE_HEIGHT);
+	program.reset(new ShaderProgram{vertex, fragment, attributesMap});
 
-	program.bind();
+}
+
+// ########################################################
+// Member Functions########################################
+// ########################################################
+
+void CubeBatcher::addBatch(char type, Transform &transform)
+{
+	batches.push_back(Batch(cubes.at(type-1), transform));
+}
+
+void CubeBatcher::draw()
+{
+
+	program->bind();
 
 	glActiveTexture(GL_TEXTURE0);
-	program.setUniformli("texture1", 0);
+	program->setUniformli("texture1", 0);
 	texture.bind();
 
 	Camera& camera = Camera::getInstance();
@@ -88,12 +87,11 @@ void CubeBatcher::draw()
 	for (auto b : batches) {
 		glm::mat4 modelView = camera.getViewMatrix() * b.transform.getMatrix();
 		glm::mat4 modelViewProjection = camera.getProjectionMatrix() * modelView;
-		program.setUniformMatrix4f("modelViewProjection", modelViewProjection);
+		program->setUniformMatrix4f("modelViewProjection", modelViewProjection);
 		b.cube.draw();
 	}
 
-	program.unbind();
-
+	program->unbind();
 	batches.clear();
 }
 

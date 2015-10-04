@@ -43,7 +43,7 @@ InGame::InGame(Game *game, util::Input &in) :
 	std::shared_ptr<widget::IWidget> button1(new widget::Button{0, 325, 350, 150, 30, observer, "Main Menu"});
 	std::shared_ptr<widget::IWidget> button2(new widget::Button{1, 325, 310, 150, 30, observer, "Back To Game"});
 
-	widgetGroup1.reset(new widget::WidgetGroup{0, 0, 0, 800, 600, observer});
+	widgetGroup1.reset(new widget::WidgetGroup{0, 300, 300, 200, 90, observer});
 
 	widgetGroup1->addWidget(button1);
 	widgetGroup1->addWidget(button2);

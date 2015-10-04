@@ -69,7 +69,7 @@ namespace config
 	namespace graphics_data
 	{
 
-		static int fps = 60;
+		static int fps = 100;
 		static int windowWidth = 1920;
 		static int windowHeight = 1080;
 		static float fov = 100 * (3.14 /180); // degree to radians

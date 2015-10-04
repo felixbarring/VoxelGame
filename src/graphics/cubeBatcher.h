@@ -9,6 +9,8 @@
 #include "camera.h"
 #include "transform.h"
 
+#include "shaderProgram.h"
+#include "texture/textureArray.h"
 
 namespace graphics {
 
@@ -64,6 +66,9 @@ private:
 
 	std::vector<Batch> batches;
 	std::vector<TexturedCube> cubes;
+
+	std::shared_ptr<ShaderProgram> program;
+	texture::TextureArray &texture;
 
 };
 

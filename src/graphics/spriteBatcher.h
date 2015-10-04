@@ -10,6 +10,8 @@
 
 #include "sprite.h"
 
+#include "shaderProgram.h"
+
 namespace graphics {
 
 class SpriteBatcher {
@@ -53,6 +55,8 @@ private:
 
 	std::vector<std::shared_ptr<Sprite>> batches;
 	glm::mat4 projection;
+
+	std::shared_ptr<ShaderProgram> program;
 
 };
 

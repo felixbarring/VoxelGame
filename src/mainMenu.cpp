@@ -27,12 +27,10 @@ MainMenu::MainMenu(Game *game, util::Input &in) :
 	};
 
 	std::shared_ptr<widget::IWidget> button1(new widget::Button{0, 325, 350, 150, 30, observer, "Single Player"});
-
 	std::shared_ptr<widget::IWidget> button2(new widget::Button{1, 325, 310, 150, 30, observer, "Settings"});
-
 	std::shared_ptr<widget::IWidget> button3(new widget::Button{2, 325, 270, 150, 30, observer, "Quit"});
 
-	widgetGroup1.reset(new widget::WidgetGroup{0, 0, 0, 800, 600, observer});
+	widgetGroup1.reset(new widget::WidgetGroup{0, 300, 260, 200, 130, observer});
 
 	widgetGroup1->addWidget(button1);
 	widgetGroup1->addWidget(button2);

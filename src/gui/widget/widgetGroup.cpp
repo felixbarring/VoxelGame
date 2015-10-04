@@ -3,6 +3,9 @@
 
 #include <iostream>
 
+#include "../../config/data.h"
+#include "../../graphics/resources.h"
+
 namespace widget {
 
 // ########################################################
@@ -12,6 +15,7 @@ namespace widget {
 WidgetGroup::WidgetGroup(int id, int x, int y, int width, int height, std::function<void(int)> observer) :
 	AbstractWidget(id, x, y, width, height)
 {
+	sprite.reset(new graphics::Sprite{x, y, 0, width, height, graphics::Resources::getInstance().getTexture(config::gui_data::guiBox)});
 }
 
 // ########################################################
@@ -25,6 +29,9 @@ void WidgetGroup::addWidget(std::shared_ptr<IWidget> widget)
 
 void WidgetGroup::draw()
 {
+
+	graphics::SpriteBatcher::getInstance().addBatch(sprite);
+
 	for (std::shared_ptr<widget::IWidget> widget : widgets) {
 		widget->draw();
 	}

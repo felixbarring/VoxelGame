@@ -33,6 +33,8 @@ namespace demo {
 // Member Functions########################################
 // ########################################################
 
+// TODO Consider Removing this whole file along with the header
+
 void PlayerCollisionDemo::runDemo()
 {
 

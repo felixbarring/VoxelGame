@@ -32,8 +32,7 @@
 void Game::run()
 {
 
-	util::FPSManager fpsManager(100);
-	int WIDTH = 1920, HEIGHT = 1080;
+	util::FPSManager fpsManager(config::graphics_data::fps);
 
 	if (!glfwInit()) {
 		std::cout << "Failed to initialize GLFW\n";
@@ -44,8 +43,23 @@ void Game::run()
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-	GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "Voxel Game", glfwGetPrimaryMonitor(), nullptr);
 
+	GLFWmonitor *primaryMonitor = glfwGetPrimaryMonitor();
+	const GLFWvidmode *viewMode = glfwGetVideoMode(primaryMonitor);
+
+	int width = viewMode->width;
+	int height = viewMode->height;
+	int refreshRate =viewMode->refreshRate;
+
+	std::cout << "Width: " << width << "\n";
+	std::cout << "Height: " << height << "\n";
+	std::cout << "Refresh Rate: " << refreshRate << "\n";
+
+	int WIDTH = width;
+	int HEIGHT = height;
+
+	GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "Voxel Game", glfwGetPrimaryMonitor(), nullptr);
+	//GLFWwindow *window = glfwCreateWindow(WIDTH-50, HEIGHT-50, "Voxel Game", nullptr, nullptr);
 
 	if (window == nullptr) {
 		std::cout << "Failed to open GLFW window.\n";
@@ -78,8 +92,6 @@ void Game::run()
 		fpsManager.frameStart();
 		glfwPollEvents();
 		glClear(GL_COLOR_BUFFER_BIT |  GL_DEPTH_BUFFER_BIT);
-
-		// inGame.update();
 
 		if (state == GameState::MainMenu) {
 			mainMenu.update();

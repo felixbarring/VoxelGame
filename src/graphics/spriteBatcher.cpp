@@ -1,6 +1,7 @@
 
 #include "spriteBatcher.h"
 
+#include <iostream>
 #include <map>
 #include <algorithm>
 
@@ -16,20 +17,8 @@ SpriteBatcher::SpriteBatcher()
 {
 	// hard coded default value
 	projection = glm::ortho(0.0f, 800.0f, 0.0f, 600.0f, -1.0f, 1.0f);
-}
 
-// ########################################################
-// Member Functions########################################
-// ########################################################
-void SpriteBatcher::addBatch(std::shared_ptr<Sprite> batch)
-{
-	batches.push_back(batch);
-}
-
-void SpriteBatcher::draw()
-{
-
-	static const char *vertex =
+	const char *vertex =
 		"#version 330 core \n"
 		"in vec3 positionIn; \n"
 		"in vec2 texCoordIn; \n"
@@ -44,7 +33,7 @@ void SpriteBatcher::draw()
 		"  texCoord = texCoordIn; \n"
 		"} \n";
 
-	static const char *frag =
+	const char *frag =
 		"#version 330 core \n"
 		"in vec2 texCoord; \n"
 
@@ -57,17 +46,31 @@ void SpriteBatcher::draw()
 		"} \n";
 
 
-	static std::map<std::string, int> attributesMap{
+	std::map<std::string, int> attributesMap{
 		std::pair<std::string, int>("positionIn", 0),
 		std::pair<std::string, int>("texCoordIn", 1)
 	};
 
-	static graphics::ShaderProgram program(vertex, frag, attributesMap);
+	program.reset(new ShaderProgram{vertex, frag, attributesMap});
 
-	program.bind();
+}
+
+// ########################################################
+// Member Functions########################################
+// ########################################################
+void SpriteBatcher::addBatch(std::shared_ptr<Sprite> batch)
+{
+	batches.push_back(batch);
+}
+
+void SpriteBatcher::draw()
+{
+
+	program->bind();
 
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_BLEND);
+	glDisable(GL_DEPTH_TEST);
 
 	std::sort(batches.begin(), batches.end(),
 		[](std::shared_ptr<Sprite> a, std::shared_ptr<Sprite> b) -> bool
@@ -80,17 +83,17 @@ void SpriteBatcher::draw()
 
 		glActiveTexture(GL_TEXTURE0);
 		batch->getTexture().bind();
-		program.setUniformli("texture1", 0);
+		program->setUniformli("texture1", 0);
 
 		glm::mat4 modelViewProjection = projection * batch->getTransform().getMatrix();
 
-		program.setUniformMatrix4f("projection", modelViewProjection);
+		program->setUniformMatrix4f("projection", modelViewProjection);
 		batch->draw();
 	}
 
-	program.unbind();
-
+	program->unbind();
 	batches.clear();
+
 }
 
 void SpriteBatcher::setProjection(glm::mat4 projection)
