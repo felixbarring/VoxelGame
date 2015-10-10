@@ -9,6 +9,7 @@
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
 
 #include "util/input.h"
 #include "util/fpsManager.h"
@@ -20,6 +21,7 @@
 #include "inGame.h"
 #include "mainMenu.h"
 
+#include "gui/guiUtil.h"
 
 // ########################################################
 // Constructor/Destructor #################################
@@ -59,7 +61,6 @@ void Game::run()
 	int HEIGHT = height;
 
 	GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "Voxel Game", glfwGetPrimaryMonitor(), nullptr);
-	//GLFWwindow *window = glfwCreateWindow(WIDTH-50, HEIGHT-50, "Voxel Game", nullptr, nullptr);
 
 	if (window == nullptr) {
 		std::cout << "Failed to open GLFW window.\n";
@@ -76,13 +77,17 @@ void Game::run()
 	glViewport(0, 0, WIDTH, HEIGHT);
 	glClearColor(0.2f, 0.22f, 0.2f, 1.0f);
 
+	config::graphics_data::windowWidth = WIDTH;
+	config::graphics_data::windowHeight = HEIGHT;
+
 	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 	//glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 
 	util::Input input(window, WIDTH / 2.0, HEIGHT / 2.0);
 
-	entity::Player player{input};
-	player.setLocation(7, 7, 7);
+	glm::mat4 matrix = gui::createVirtualToScreen(config::graphics_data::virtualWidth, config::graphics_data::virtualHeight, static_cast<float>(WIDTH), static_cast<float>(HEIGHT));
+	glm:: mat4 matrix2 = glm::ortho(0.0f, static_cast<float>(WIDTH), 0.0f, static_cast<float>(HEIGHT), -1.0f, 1.0f) * matrix;
+	graphics::SpriteBatcher::getInstance().setProjection(matrix2);
 
 	InGame inGame{this, input};
 	MainMenu mainMenu{this, input};
@@ -119,7 +124,7 @@ void Game::changeStateToMainMenu()
 
 void Game::quitGame()
 {
-	quit= true;
+	quit = true;
 }
 
 

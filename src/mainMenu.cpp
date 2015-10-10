@@ -1,6 +1,8 @@
 
 #include "mainMenu.h"
 
+#include "config/data.h"
+
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
@@ -48,14 +50,15 @@ void MainMenu::update()
 	input.unlockMouse();
 	input.updateValues();
 
-	double y = input.mouseYPosition - 1080;
+	double y = input.mouseYPosition - config::graphics_data::windowHeight;
 	if (y < 0) {
 		y = -y;
 	} else {
 		y = -1;
 	}
 
-	glm::vec2 mouse = gui::adjustMouse(800, 600, 1920, 1080, input.mouseXPosition, y);
+	glm::vec2 mouse = gui::adjustMouse(config::graphics_data::virtualWidth, config::graphics_data::virtualHeight,
+			config::graphics_data::windowWidth, config::graphics_data::windowHeight, input.mouseXPosition, y);
 
 	widgetGroup1->mouseMoved(mouse.x, mouse.y);
 	if (input.action1Pressed) {

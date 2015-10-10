@@ -4,6 +4,8 @@
 #include "graphics/chunkBatcher.h"
 #include "graphics/cubeBatcher.h"
 
+#include "config/data.h"
+
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
@@ -43,7 +45,6 @@ InGame::InGame(Game *game, util::Input &in) :
 
 	std::shared_ptr<widget::IWidget> button1(new widget::Button{0, 325, 350, 150, 30, observer, "Main Menu"});
 	std::shared_ptr<widget::IWidget> button2(new widget::Button{1, 325, 310, 150, 30, observer, "Back To Game"});
-
 	widgetGroup1.reset(new widget::WidgetGroup{0, 300, 300, 200, 90, observer});
 
 	widgetGroup1->addWidget(button1);
@@ -83,16 +84,15 @@ void InGame::update()
 
 	if (state == GameState::OverlayMenu) {
 
-		// TODO Remove the hard code :|
-
-		double y = input.mouseYPosition - 1080;
+		double y = input.mouseYPosition - config::graphics_data::windowHeight;
 		if (y < 0) {
 			y = -y;
 		} else {
 			y = -1;
 		}
 
-		glm::vec2 mouse = gui::adjustMouse(800, 600, 1920, 1080, input.mouseXPosition, y);
+		glm::vec2 mouse = gui::adjustMouse(config::graphics_data::virtualWidth, config::graphics_data::virtualHeight,
+				config::graphics_data::windowWidth, config::graphics_data::windowHeight, input.mouseXPosition, y);
 
 		widgetGroup1->mouseMoved(mouse.x, mouse.y);
 		if (input.action1Pressed) {

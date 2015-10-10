@@ -10,9 +10,3 @@
 [submodule "dependencies/glfw"]
 	path = dependencies/glfw
 	url = https://github.com/glfw/glfw
-[submodule "dependencies/tinyobjloader"]
-	path = dependencies/tinyobjloader
-	url = https://github.com/syoyo/tinyobjloader
-[submodule "dependencies/assimp"]
-	path = dependencies/assimp
-	url = https://github.com/assimp/assimp
