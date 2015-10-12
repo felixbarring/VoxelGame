@@ -1,21 +1,20 @@
 cmake_minimum_required(VERSION 2.8)
 project(VoxelGame)
 
+add_definitions(-std=c++0x -Wextra)
+
 # Add deps subdirectory
 add_subdirectory(dependencies)
 
 # Get Include Directories
-set (INCLUDE_DIRS include
-	dependencies/glfw/include/GLFW
-	dependencies/glew/include/GL
-	dependencies/glm
-	dependencies/glm/gtc
-	dependencies/glm/gtx
-	dependencies/Simple-OpenGL-Image-Library/src
-	dependencies/tinyobjloader
-	dependencies/tinyobjloader
-	dependencies/freealut-master/include/AL
-	# dependencies/assimp/include/assimp
+set (INCLUDE_DIRS 
+	include
+	include/GLFW
+	include/GL
+	include/glm
+	include/glm/gtc
+	include/glm/gtx
+	include/SOIL
 )
 
 include_directories(${INCLUDE_DIRS})
@@ -45,16 +44,6 @@ add_executable(${PROJECT_NAME}
 )
 
 # Link GLFW and GLEW to main executable
-# assimp
-# alut
-# tinyobjloader
+# assimp - alut -  tinyobjloader
 
 target_link_libraries(${PROJECT_NAME} libglew_static glfw ${GLFW_LIBRARIES} SOIL )
-
-
-# Define GLEW_STATIC for Windows
-#if(MSVC)
-# add_definitions(-DGLEW_STATIC)
-#endif()
-
-add_definitions(-std=c++0x -Wextra)
