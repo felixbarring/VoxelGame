@@ -65,4 +65,15 @@ texture::Texture& Sprite::getTexture()
 	return texture;
 }
 
+void Sprite::move(float x, float y)
+{
+	transform.translate(x, y, 0);
+}
+
+void Sprite::setLocation(float x, float y, float z)
+{
+	transform.setLocation(x, y, z);
+}
+
+
 } /* namespace graphics */

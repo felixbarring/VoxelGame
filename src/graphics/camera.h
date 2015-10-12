@@ -55,10 +55,8 @@ private:
 	glm::vec3 direction;
 	glm::vec3 up{0.0f, 1.0f, 0.0f};
 
-	// TODO Make it possible to change stuff, like fov
-	// TODO Should not really use config ...
-
-	float aspectRatio = config::graphics_data::windowWidth / config::graphics_data::windowHeight;
+	// TODO Update this in an intelligent way
+	float aspectRatio = config::graphics_data::windowWidth / static_cast<float>(config::graphics_data::windowHeight);
 	glm::mat4 projection = glm::perspective(config::graphics_data::fov, aspectRatio, 0.1f, 1000.0f);
 	glm::mat4 view;
 

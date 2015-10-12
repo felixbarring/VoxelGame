@@ -10,7 +10,6 @@
 #include "mesh/meshElement.h"
 
 
-
 namespace graphics {
 
 class Sprite {
@@ -35,6 +34,10 @@ public:
 	Transform& getTransform();
 
 	texture::Texture& getTexture();
+
+	void move(float x, float y);
+
+	void setLocation(float x, float y, float z);
 
 // ########################################################
 // Instance Variables #####################################

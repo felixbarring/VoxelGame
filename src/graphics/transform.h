@@ -24,6 +24,8 @@ public:
 
 	void translate(glm::vec3 translation);
 
+	void translate(float x, float y, float z);
+
 	// Make one that takes glm::vec3 ?!?
 	void setLocation(float x, float y, float z);
 

@@ -10,7 +10,11 @@
 #ifndef SRC_GUI_WIDGET_SLIDER_H_
 #define SRC_GUI_WIDGET_SLIDER_H_
 
+#include <memory>
+
 #include "abstractWidget.h"
+#include "../../graphics/sprite.h"
+
 
 namespace widget {
 
@@ -27,7 +31,7 @@ public:
 // Constructor/Destructor #################################
 // ########################################################
 
-	Slider(int id, int x, int y, int width, int height, std::function<void(int)> observer, const std::string &name);
+	Slider(int id, int x, int y, int width, int height, std::function<void(int, float)> observer);
 
 	virtual ~Slider() {};
 
@@ -35,7 +39,6 @@ public:
 // Member Functions########################################
 // ########################################################
 
-/*
 	void draw() override;
 
 	void mouseClicked(int button, float x, float y) override;
@@ -43,7 +46,6 @@ public:
 	void mouseMoved(float x, float y) override;
 
 	void keyPressed(int key, char c) override;
-*/
 
 // ########################################################
 // Instance Variables #####################################
@@ -51,12 +53,17 @@ public:
 
 private:
 
-	std::function<void(int)> observer;
+	std::function<void(int, float)> observer;
 
 	bool pointerInsideBorders = false;
 
-	std::shared_ptr<graphics::Sprite> knop;
+	std::shared_ptr<graphics::Sprite> slider;
+	std::shared_ptr<graphics::Sprite> knob;
 
+	float knobPosition;
+	float knobWidth;
+
+	bool grabbed = false;
 
 };
 

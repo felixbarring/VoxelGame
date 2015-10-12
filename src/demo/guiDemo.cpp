@@ -16,6 +16,7 @@
 #include "../util/input.h"
 
 #include "../gui/widget/button.h"
+#include "../gui/widget/slider.h"
 #include "../gui/widget/label.h"
 #include "../gui/widget/widgetGroup.h"
 #include "../gui/widget/iWidget.h"
@@ -99,17 +100,24 @@ void GuiDemo::runDemo()
 	std::cout << "A button with id: " << id << " was pressed\n";
 	};
 
+	std::function<void(int, float)> observer2 = [&](int id, float value)
+	{
 
+	};
 
-	std::shared_ptr<widget::IWidget> button1(new widget::Button{0, 325, 350, 150, 30, observer, "Play"});
+	//std::shared_ptr<widget::IWidget> button1(new widget::Button{0, 325, 350, 150, 30, observer, "Play"});
 	std::shared_ptr<widget::IWidget> button2(new widget::Button{1, 325, 310, 150, 30, observer, "Settings"});
 	std::shared_ptr<widget::IWidget> button3(new widget::Button{2, 325, 270, 150, 30, observer, "Quit"});
 
 	widget::WidgetGroup widgetGroup1{0, 0, 0, 800, 600, observer};
 
-	widgetGroup1.addWidget(button1);
+	//widgetGroup1.addWidget(button1);
 	widgetGroup1.addWidget(button2);
 	widgetGroup1.addWidget(button3);
+
+	std::shared_ptr<widget::IWidget> slider(new widget::Slider{666, 325, 350, 150, 30, observer2});
+
+	widgetGroup1.addWidget(slider);
 
 
 
@@ -142,7 +150,6 @@ void GuiDemo::runDemo()
 	widgetGroup3.addWidget(button9);
 	widgetGroup3.addWidget(button10);
 	widgetGroup3.addWidget(button11);
-
 
 
 	util::Input input(window, WIDTH / 2.0, HEIGHT / 2.0);

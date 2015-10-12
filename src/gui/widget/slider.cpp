@@ -1,20 +1,64 @@
 
 #include "slider.h"
 
+#include "../../graphics/resources.h"
+
+#include "../../graphics/spriteBatcher.h"
+#include "../../graphics/fontMeshBuilder.h"
+#include "../../graphics/mesh/meshElement.h"
+#include "../../config/data.h"
+#include "../../graphics/resources.h"
+
 namespace widget {
 
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
 
-Slider::Slider(int id, int x, int y, int width, int height, std::function<void(int)> observer, const std::string &name) :
+Slider::Slider(int id, int x, int y, int width, int height, std::function<void(int, float)> observer) :
 	AbstractWidget(id, x, y, width, height)
 {
+
+	this->observer = observer;
+	knobPosition = x;
+	knobWidth = height;
+
+	slider.reset(new graphics::Sprite{x, y, 0, width, height, graphics::Resources::getInstance().getTexture(config::gui_data::slider)});
+	knob.reset(new graphics::Sprite{x, y, 0, height, height, graphics::Resources::getInstance().getTexture(config::gui_data::sliderKnob)});
 
 }
 
 // ########################################################
 // Member Functions########################################
 // ########################################################
+
+void Slider::draw()
+{
+	graphics::SpriteBatcher::getInstance().addBatch(slider);
+	graphics::SpriteBatcher::getInstance().addBatch(knob);
+}
+// observer.operator ()(id, 100);
+
+void Slider::mouseClicked(int button, float x, float y)
+{
+	grabbed = !grabbed && pointerInsideBorders && x > knobPosition && x < knobPosition + knobWidth;
+}
+
+void Slider::mouseMoved(float x, float y)
+{
+	pointerInsideBorders = isInsideBorders(x, y);
+	grabbed = grabbed && pointerInsideBorders;
+
+	if (grabbed) {
+		knobPosition = x - knobWidth / 2;
+		knob->setLocation(knobPosition+knobWidth/2, this->y + knobWidth/2, 0);
+	}
+
+}
+
+void Slider::keyPressed(int key, char c)
+{
+	// not relevant
+}
 
 } /* namespace widget */
