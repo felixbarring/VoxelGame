@@ -37,11 +37,11 @@ void Slider::draw()
 	graphics::SpriteBatcher::getInstance().addBatch(slider);
 	graphics::SpriteBatcher::getInstance().addBatch(knob);
 }
-// observer.operator ()(id, 100);
+//
 
 void Slider::mouseClicked(int button, float x, float y)
 {
-	grabbed = !grabbed && pointerInsideBorders && x > knobPosition && x < knobPosition + knobWidth;
+	grabbed = !grabbed && pointerInsideBorders; // && x > knobPosition && x < knobPosition + knobWidth;
 }
 
 void Slider::mouseMoved(float x, float y)
@@ -51,7 +51,18 @@ void Slider::mouseMoved(float x, float y)
 
 	if (grabbed) {
 		knobPosition = x - knobWidth / 2;
-		knob->setLocation(knobPosition+knobWidth/2, this->y + knobWidth/2, 0);
+
+		if (knobPosition < this->x ) {
+			knobPosition = this->x;
+		}
+
+		if (knobPosition > this->x + this->width - knobWidth) {
+			knobPosition = this->x + this->width - knobWidth;
+		}
+
+		knob->setLocation(knobPosition + knobWidth / 2, this->y + knobWidth / 2, 0);
+
+		observer.operator ()(id, (knobPosition - this->x) / (width - knobWidth));
 	}
 
 }

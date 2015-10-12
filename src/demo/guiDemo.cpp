@@ -102,7 +102,7 @@ void GuiDemo::runDemo()
 
 	std::function<void(int, float)> observer2 = [&](int id, float value)
 	{
-
+		std::cout << value << "\n";
 	};
 
 	//std::shared_ptr<widget::IWidget> button1(new widget::Button{0, 325, 350, 150, 30, observer, "Play"});
