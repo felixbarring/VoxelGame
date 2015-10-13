@@ -9,5 +9,4 @@ Label
 Slider
 TextInput
 TextArea
-Panel
 Tabs

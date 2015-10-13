@@ -97,7 +97,7 @@ void GuiDemo::runDemo()
 				break;
 			}
 		}
-	std::cout << "A button with id: " << id << " was pressed\n";
+		std::cout << "A button with id: " << id << " was pressed\n";
 	};
 
 	std::function<void(int, float)> observer2 = [&](int id, float value)

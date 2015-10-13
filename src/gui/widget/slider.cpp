@@ -41,7 +41,7 @@ void Slider::draw()
 
 void Slider::mouseClicked(int button, float x, float y)
 {
-	grabbed = !grabbed && pointerInsideBorders; // && x > knobPosition && x < knobPosition + knobWidth;
+	grabbed = !grabbed && pointerInsideBorders;
 }
 
 void Slider::mouseMoved(float x, float y)

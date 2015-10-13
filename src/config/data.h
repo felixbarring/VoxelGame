@@ -113,7 +113,7 @@ namespace config
 
 		static std::string guiBox = "../resources/gui/gui_box.png";
 		static std::string slider = "../resources/gui/slider_body.png";
-		static std::string sliderKnob = "../resources/gui/sliderKnob.png";
+		static std::string sliderKnob = "../resources/gui/slider_knob.png";
 
 	}
 
