@@ -52,7 +52,9 @@ public:
 
 	void mouseMoved(float x, float y) override;
 
-	void keyPressed(int key, char c) override;
+	void keyPressed(int key) override;
+
+	void keyTyped(char value) override;
 
 // ########################################################
 // Instance Variables #####################################
@@ -65,7 +67,6 @@ private:
 	bool pointerInsideBorders = false;
 
 	std::shared_ptr<graphics::Sprite> sprite;
-	std::shared_ptr<graphics::Sprite> spriteHover;
 
 	std::shared_ptr<graphics::Sprite> text;
 

@@ -55,15 +55,20 @@ public:
 	 */
 	virtual void mouseMoved(float x, float y) = 0;
 
-
-	// char c ?!?
-
 	/**
-	 * Communicate that a certain key on the keyboard was pressed.
+	 * Notifies that a certain key on the keyboard was pressed.
 	 *
 	 * \param[in] key The int value of the key
 	 */
-	virtual void keyPressed(int key, char c) = 0;
+	virtual void keyPressed(int key) = 0;
+
+	/**
+	 * Notifies that a certain key on the keyboard was typed.
+	 * Differs to keyPressed that it only shows which char that was typed.
+	 *
+	 * \param[in] key The int value of the key
+	 */
+	virtual void keyTyped(char value) = 0;
 
 	/**
 	 * Set the position of the widget, relative to the container it's inside.

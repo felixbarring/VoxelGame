@@ -61,7 +61,9 @@ public:
 
 	void mouseMoved(float x, float y) override;
 
-	void keyPressed(int key, char c) override;
+	void keyPressed(int key) override;
+
+	void keyTyped(char value) override;
 
 // ########################################################
 // Instance Variables #####################################

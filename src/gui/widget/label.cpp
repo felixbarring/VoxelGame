@@ -19,7 +19,7 @@ Label::Label(int x, int y, int width, int height, const std::string &name) :
 	graphics::FontMeshBuilder &fontMeshBuilder = graphics::Resources::getInstance().getFontMeshBuilder(
 			config::font_data::fontLayout, config::font_data::fontAtlasWidth, config::font_data::fontAtlasHeight);
 
-	std::shared_ptr<mesh::MeshElement> fontMesh = fontMeshBuilder.buldMeshForString(name, height-5);
+	std::shared_ptr<mesh::MeshElement> fontMesh = fontMeshBuilder.buldMeshForString(name, height - 5);
 
 	text.reset(new graphics::Sprite{x, y+5, 1, fontMesh, graphics::Resources::getInstance().getTexture(config::font_data::font)});
 
@@ -44,7 +44,12 @@ void Label::mouseMoved(float x, float y)
 	// Nothing
 }
 
-void Label::keyPressed(int key, char c)
+void Label::keyPressed(int key)
+{
+	// Nothing
+}
+
+void Label::keyTyped(char value)
 {
 	// Nothing
 }

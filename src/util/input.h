@@ -68,6 +68,9 @@ public:
 
 	bool escapeKeyPressed{false};
 
+	bool keyWasTyped = false;
+	char keyTyped = ' ';
+
 private:
 
 	GLFWwindow* window;

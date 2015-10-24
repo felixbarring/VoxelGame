@@ -6,6 +6,9 @@
 
 #include <string>
 
+#include "../../graphics/fontMeshBuilder.h"
+#include "../../graphics/sprite.h"
+
 namespace widget {
 
 class TextInput : public AbstractWidget {
@@ -15,7 +18,7 @@ public:
 // Constructor/Destructor #################################
 // ########################################################
 
-	TextInput(int id, int x, int y, int width, int height, std::function<void(int, const std::string&)> observer);
+	TextInput(int id, int x, int y, int width, int height);
 
 	virtual ~TextInput() {};
 
@@ -29,15 +32,24 @@ public:
 
 	void mouseMoved(float x, float y) override;
 
-	void keyPressed(int key, char c) override;
+	void keyPressed(int key) override;
+
+	void keyTyped(char value) override;
 
 // ########################################################
 // Instance Variables #####################################
 // ########################################################
+private:
 
-	std::function<void(int, const std::string&)> observer;
+	bool hasFocus = false;
+	bool pointerInsideBorders = false;
 
 	std::string input = "";
+
+	std::shared_ptr<graphics::Sprite> sprite;
+	std::shared_ptr<graphics::Sprite> spriteHover;
+
+	std::shared_ptr<graphics::Sprite> text;
 
 };
 

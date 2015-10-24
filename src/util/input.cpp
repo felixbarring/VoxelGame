@@ -10,10 +10,20 @@ namespace util {
 static double mouseXOffset;
 static double mouseYOffset;
 
+static bool wasTyped = false;
+static double typed = ' ';
+
 static void cursor_position_callback(GLFWwindow* window, double xpos, double ypos)
 {
 	mouseXOffset = xpos;
 	mouseYOffset = ypos;
+}
+
+static void character_callback(GLFWwindow* window, unsigned int codepoint)
+{
+	wasTyped = true;
+	typed = codepoint;
+	// std::cout << "Text Input: " << static_cast<char>(codepoint) << "\n";
 }
 
 
@@ -27,6 +37,7 @@ Input::Input(GLFWwindow* w, float centerX, float centerY):
 	screenCenterY{centerY}
 {
 	glfwSetCursorPosCallback(window, cursor_position_callback);
+	glfwSetCharCallback(window, character_callback);
 }
 
 // ########################################################
@@ -74,6 +85,10 @@ void Input::updateValues()
 	} else {
 		glfwGetCursorPos(window, &mouseXPosition, &mouseYPosition);
 	}
+
+	keyWasTyped = wasTyped;
+	wasTyped = false;
+	keyTyped = typed;
 
 }
 

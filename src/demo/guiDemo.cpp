@@ -18,6 +18,7 @@
 #include "../gui/widget/button.h"
 #include "../gui/widget/slider.h"
 #include "../gui/widget/label.h"
+#include "../gui/widget/textInput.h"
 #include "../gui/widget/widgetGroup.h"
 #include "../gui/widget/iWidget.h"
 #include "../gui/guiUtil.h"
@@ -119,6 +120,10 @@ void GuiDemo::runDemo()
 
 	widgetGroup1.addWidget(slider);
 
+	std::shared_ptr<widget::IWidget> textInput(new widget::TextInput{666, 325, 390, 150, 30});
+
+	widgetGroup1.addWidget(textInput);
+
 
 
 	std::shared_ptr<widget::IWidget> label1(new widget::Label{325, 390, 150, 30, " - Play - "});
@@ -186,6 +191,11 @@ void GuiDemo::runDemo()
 				if (input.action1Pressed) {
 					widgetGroup1.mouseClicked(0, mouse.x, mouse.y);
 				}
+
+				if (input.keyWasTyped) {
+					widgetGroup1.keyTyped(input.keyTyped);
+				}
+
 				widgetGroup1.draw();
 				break;
 			}

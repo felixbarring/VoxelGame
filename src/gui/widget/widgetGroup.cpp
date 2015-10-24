@@ -37,6 +37,9 @@ void WidgetGroup::draw()
 	}
 }
 
+// TODO Maybe not a good idea :o
+// Some widgets need to lose focus when the user clicks outside
+// the widget group
 void WidgetGroup::mouseClicked(int button, float x, float y)
 {
 	if (isInsideBorders(x, y)) {
@@ -55,11 +58,19 @@ void WidgetGroup::mouseMoved(float x, float y)
 	}
 }
 
-void WidgetGroup::keyPressed(int key, char c)
+void WidgetGroup::keyPressed(int key)
 {
 	for (std::shared_ptr<widget::IWidget> widget : widgets) {
-		widget->keyPressed(key, c);
+		widget->keyPressed(key);
 	}
 }
+
+void WidgetGroup::keyTyped(char value)
+{
+	for (std::shared_ptr<widget::IWidget> widget : widgets) {
+		widget->keyTyped(value);
+	}
+}
+
 
 } /* namespace demo */
