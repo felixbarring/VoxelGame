@@ -10,7 +10,6 @@
 namespace util {
 
 class Input {
-public:
 
 	// ########################################################
 	// Constructor/Destructor #################################
@@ -18,9 +17,9 @@ public:
 
 	Input(GLFWwindow* w, float centerX, float centerY);
 
+public:
+
 	virtual ~Input() {};
-
-
 
 	static void createInstance(GLFWwindow* w, float centerX, float centerY);
 

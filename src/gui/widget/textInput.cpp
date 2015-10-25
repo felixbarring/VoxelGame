@@ -67,11 +67,6 @@ void TextInput::mouseMoved(float x, float y)
 	pointerInsideBorders = isInsideBorders(x, y);
 }
 
-void TextInput::keyPressed(int key)
-{
-	// Check if its the remove button, if so -> remove
-}
-
 void TextInput::keyTyped(char value)
 {
 

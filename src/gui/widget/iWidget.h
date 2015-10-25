@@ -56,13 +56,6 @@ public:
 	virtual void mouseMoved(float x, float y) = 0;
 
 	/**
-	 * Notifies that a certain key on the keyboard was pressed.
-	 *
-	 * \param[in] key The int value of the key
-	 */
-	virtual void keyPressed(int key) = 0;
-
-	/**
 	 * Notifies that a certain key on the keyboard was typed.
 	 * Differs to keyPressed that it only shows which char that was typed.
 	 *

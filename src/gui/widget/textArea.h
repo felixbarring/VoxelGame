@@ -1,39 +1,21 @@
 
-/**
- *  \file [slider.h]
- *  \brief A slider can be used to input values in a gui
- *  \author Felix Bärring
- *
- *  Copyright (c) 2015, Felix Bärring. All rights reserved.
- */
-
-#ifndef SRC_GUI_WIDGET_SLIDER_H_
-#define SRC_GUI_WIDGET_SLIDER_H_
-
-#include <memory>
+#ifndef SRC_GUI_WIDGET_TEXTAREA_H_
+#define SRC_GUI_WIDGET_TEXTAREA_H_
 
 #include "abstractWidget.h"
-#include "../../graphics/sprite.h"
-
 
 namespace widget {
 
-/**
- * \class Slider
- *
- * \author Felix Bärring
- */
-class Slider : public AbstractWidget {
+class TextArea : public AbstractWidget {
 public:
-
 
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
 
-	Slider(int id, int x, int y, int width, int height, std::function<void(int, float)> observer);
+	TextArea(int id, int x, int y, int width, int height);
 
-	virtual ~Slider() {};
+	virtual ~TextArea() {};
 
 // ########################################################
 // Member Functions########################################
@@ -51,22 +33,8 @@ public:
 // Instance Variables #####################################
 // ########################################################
 
-private:
-
-	std::function<void(int, float)> observer;
-
-	bool pointerInsideBorders = false;
-
-	std::shared_ptr<graphics::Sprite> slider;
-	std::shared_ptr<graphics::Sprite> knob;
-
-	float knobPosition;
-	float knobWidth;
-
-	bool grabbed = false;
-
 };
 
 } /* namespace widget */
 
-#endif /* SRC_GUI_WIDGET_SLIDER_H_ */
+#endif /* SRC_GUI_WIDGET_TEXTAREA_H_ */

@@ -46,8 +46,6 @@ public:
 
 	void mouseMoved(float x, float y) override;
 
-	void keyPressed(int key) override;
-
 	void keyTyped(char value) override;
 
 // ########################################################

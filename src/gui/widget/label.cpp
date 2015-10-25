@@ -44,11 +44,6 @@ void Label::mouseMoved(float x, float y)
 	// Nothing
 }
 
-void Label::keyPressed(int key)
-{
-	// Nothing
-}
-
 void Label::keyTyped(char value)
 {
 	// Nothing

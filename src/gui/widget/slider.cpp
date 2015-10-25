@@ -67,11 +67,6 @@ void Slider::mouseMoved(float x, float y)
 
 }
 
-void Slider::keyPressed(int key)
-{
-	// not relevant
-}
-
 void Slider::keyTyped(char value)
 {
 	// not relevant for button, do nothing

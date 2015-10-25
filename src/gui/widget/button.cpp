@@ -57,11 +57,6 @@ void Button::mouseMoved(float x, float y)
 	pointerInsideBorders = isInsideBorders(x, y);
 }
 
-void Button::keyPressed(int key)
-{
-	// not relevant for button, do nothing
-}
-
 void Button::keyTyped(char value)
 {
 	// not relevant for button, do nothing
