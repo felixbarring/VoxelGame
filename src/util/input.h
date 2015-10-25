@@ -5,6 +5,8 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
+#include <memory>
+
 namespace util {
 
 class Input {
@@ -18,13 +20,19 @@ public:
 
 	virtual ~Input() {};
 
+
+
+	static void createInstance(GLFWwindow* w, float centerX, float centerY);
+
+	static std::shared_ptr<Input> getInstance();
+
 	// ########################################################
 	// Member Functions########################################
 	// ########################################################
 
 	void updateValues();
 
-	void inline centerMouse();
+	void centerMouse();
 
 	void lockMouse();
 
@@ -68,6 +76,9 @@ public:
 
 	bool escapeKeyPressed{false};
 
+	bool eraseTextPressed{false};
+	bool eraseTextActive{false};
+
 	bool keyWasTyped = false;
 	char keyTyped = ' ';
 
@@ -82,7 +93,7 @@ private:
 
 };
 
-
+static std::shared_ptr<Input> input;
 
 
 } /* namespace util */

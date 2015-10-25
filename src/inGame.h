@@ -24,7 +24,7 @@ public:
 // Constructor/Destructor #################################
 // ########################################################
 
-	InGame(Game *game, util::Input &in);
+	InGame(Game *game);
 
 	virtual ~InGame() {};
 
@@ -48,7 +48,6 @@ private:
 	GameState state = GameState::NoOverlay;
 
 	Game *game;
-	util::Input &input;
 	entity::Player player;
 
 	std::shared_ptr<widget::WidgetGroup> widgetGroup1;

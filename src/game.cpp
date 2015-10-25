@@ -39,6 +39,7 @@ void Game::run()
 	if (!glfwInit()) {
 		std::cout << "Failed to initialize GLFW\n";
 	}
+
 	glfwWindowHint(GLFW_SAMPLES, 8);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -84,7 +85,7 @@ void Game::run()
 	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 	//glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 
-	util::Input input(window, WIDTH / 2.0, HEIGHT / 2.0);
+	util::Input::createInstance(window, WIDTH / 2.0, HEIGHT / 2.0);
 
 	glm::mat4 matrix = gui::createVirtualToScreen(config::graphics_data::virtualWidth,
 			config::graphics_data::virtualHeight,
@@ -94,8 +95,8 @@ void Game::run()
 	glm:: mat4 matrix2 = glm::ortho(0.0f, static_cast<float>(WIDTH), 0.0f, static_cast<float>(HEIGHT), -1.0f, 1.0f) * matrix;
 	graphics::SpriteBatcher::getInstance().setProjection(matrix2);
 
-	InGame inGame{this, input};
-	MainMenu mainMenu{this, input};
+	InGame inGame{this};
+	MainMenu mainMenu{this};
 
 	while (!quit && glfwWindowShouldClose(window) == 0) {
 

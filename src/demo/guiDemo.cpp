@@ -157,8 +157,8 @@ void GuiDemo::runDemo()
 	widgetGroup3.addWidget(button11);
 
 
-	util::Input input(window, WIDTH / 2.0, HEIGHT / 2.0);
-	input.unlockMouse();
+	util::Input::createInstance(window, WIDTH / 2.0, HEIGHT / 2.0);
+	util::Input::getInstance()->unlockMouse();
 
 	glm::mat4 matrix = gui::createVirtualToScreen(800, 600, 1200, 600);
 	glm:: mat4 matrix2 = glm::ortho(0.0f, 1200.0f, 0.0f, 600.0f, -1.0f, 1.0f) * matrix;
@@ -173,27 +173,27 @@ void GuiDemo::runDemo()
 		glfwPollEvents();
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		input.updateValues();
+		util::Input::getInstance()->updateValues();
 
-		double y = input.mouseYPosition - HEIGHT;
+		double y = util::Input::getInstance()->mouseYPosition - HEIGHT;
 		if (y < 0) {
 			y = -y;
 		} else {
 			y = -1;
 		}
 
-		glm::vec2 mouse = gui::adjustMouse(800, 600, 1200, 600, input.mouseXPosition, y);
+		glm::vec2 mouse = gui::adjustMouse(800, 600, 1200, 600, util::Input::getInstance()->mouseXPosition, y);
 
 		switch(state) {
 
 			case MenuState::MainMenu: {
 				widgetGroup1.mouseMoved(mouse.x, mouse.y);
-				if (input.action1Pressed) {
+				if (util::Input::getInstance()->action1Pressed) {
 					widgetGroup1.mouseClicked(0, mouse.x, mouse.y);
 				}
 
-				if (input.keyWasTyped) {
-					widgetGroup1.keyTyped(input.keyTyped);
+				if (util::Input::getInstance()->keyWasTyped) {
+					widgetGroup1.keyTyped(util::Input::getInstance()->keyTyped);
 				}
 
 				widgetGroup1.draw();
@@ -201,7 +201,7 @@ void GuiDemo::runDemo()
 			}
 			case MenuState::Play: {
 				widgetGroup2.mouseMoved(mouse.x, mouse.y);
-				if (input.action1Pressed) {
+				if (util::Input::getInstance()->action1Pressed) {
 					widgetGroup2.mouseClicked(0, mouse.x, mouse.y);
 				}
 				widgetGroup2.draw();
@@ -209,7 +209,7 @@ void GuiDemo::runDemo()
 			}
 			case MenuState::Settings: {
 				widgetGroup3.mouseMoved(mouse.x, mouse.y);
-				if (input.action1Pressed) {
+				if (util::Input::getInstance()->action1Pressed) {
 					widgetGroup3.mouseClicked(0, mouse.x, mouse.y);
 				}
 				widgetGroup3.draw();

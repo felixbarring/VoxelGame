@@ -21,7 +21,7 @@ public:
 // Constructor/Destructor #################################
 // ########################################################
 
-	Player(util::Input& in);
+	Player();
 
 	virtual ~Player() {};
 
@@ -44,7 +44,6 @@ private:
 	float depth = 1;
 	glm::vec3 speed;
 	graphics::ViewDirection viewDirection;
-	util::Input& input;
 	AABB boundingBox; //{0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
 	float movementSpeed = 0.1;
 	graphics::Transform transform;

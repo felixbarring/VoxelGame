@@ -92,6 +92,8 @@ namespace config
 		static int jumpButton = GLFW_KEY_SPACE;
 		static int goDownButton = GLFW_KEY_LEFT_SHIFT;
 
+		static int eraseTextButton = GLFW_KEY_BACKSPACE;
+
 		// Mouse ########################################################
 
 		static int action1Button = GLFW_MOUSE_BUTTON_LEFT;

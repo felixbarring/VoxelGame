@@ -6,13 +6,13 @@
 
 #include "config/data.h"
 
+
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
 
-InGame::InGame(Game *game, util::Input &in) :
-	input(in),
-	player(in),
+InGame::InGame(Game *game) :
+	player(),
 	game(game),
 	skybox{graphics::Resources::getInstance().getTextureCubeMap(
 			config::cube_map_data::cubeMap1[0],
@@ -35,7 +35,7 @@ InGame::InGame(Game *game, util::Input &in) :
 				break;
 			}
 			case 1: {
-				input.centerMouse();
+				util::Input::getInstance()->centerMouse();
 				state = GameState::NoOverlay;
 				break;
 			}
@@ -59,17 +59,17 @@ InGame::InGame(Game *game, util::Input &in) :
 void InGame::update()
 {
 
-	if (input.escapeKeyPressed) {
+	if (util::Input::getInstance()->escapeKeyPressed) {
 		state = GameState::OverlayMenu;
 	}
 
 	if (state == GameState::NoOverlay) {
-		input.lockMouse();
-		input.updateValues();
+		util::Input::getInstance()->lockMouse();
+		util::Input::getInstance()->updateValues();
 		player.update(0.0f);
 	} else {
-		input.unlockMouse();
-		input.updateValues();
+		util::Input::getInstance()->unlockMouse();
+		util::Input::getInstance()->updateValues();
 	}
 
 	glDisable(GL_DEPTH_TEST);
@@ -84,7 +84,7 @@ void InGame::update()
 
 	if (state == GameState::OverlayMenu) {
 
-		double y = input.mouseYPosition - config::graphics_data::windowHeight;
+		double y = util::Input::getInstance()->mouseYPosition - config::graphics_data::windowHeight;
 		if (y < 0) {
 			y = -y;
 		} else {
@@ -92,10 +92,10 @@ void InGame::update()
 		}
 
 		glm::vec2 mouse = gui::adjustMouse(config::graphics_data::virtualWidth, config::graphics_data::virtualHeight,
-				config::graphics_data::windowWidth, config::graphics_data::windowHeight, input.mouseXPosition, y);
+				config::graphics_data::windowWidth, config::graphics_data::windowHeight, util::Input::getInstance()->mouseXPosition, y);
 
 		widgetGroup1->mouseMoved(mouse.x, mouse.y);
-		if (input.action1Pressed) {
+		if (util::Input::getInstance()->action1Pressed) {
 			widgetGroup1->mouseClicked(0, mouse.x, mouse.y);
 		}
 

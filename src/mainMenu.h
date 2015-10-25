@@ -20,7 +20,7 @@ public:
 // Constructor/Destructor #################################
 // ########################################################
 
-	MainMenu(Game *game, util::Input &in);
+	MainMenu(Game *game);
 
 	virtual ~MainMenu() {};
 
@@ -37,7 +37,6 @@ public:
 private:
 
 	Game *game;
-	util::Input &input;
 
 	std::shared_ptr<widget::WidgetGroup> widgetGroup1;
 

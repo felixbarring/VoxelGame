@@ -16,10 +16,9 @@ namespace entity {
 // Constructor/Destructor #################################
 // ########################################################
 
-Player::Player(util::Input& in):
+Player::Player():
 	location{0,0,0},
 	speed{0,0,0},
-	input(in),
 	boundingBox{location.x - 0.5f, location.x + 0.5f, location.y - 1.0f, location.y + 1.0f, location.z - 0.5f, location.z + 0.5f},
 	transform{0,0,0}
 {
@@ -32,16 +31,16 @@ Player::Player(util::Input& in):
 void Player::update(float timePassed)
 {
 
-	viewDirection.changeViewDirection(input.mouseXMovement, input.mouseYMovement);
+	viewDirection.changeViewDirection(util::Input::getInstance()->mouseXMovement, util::Input::getInstance()->mouseYMovement);
 
 	speed.x = 0;
 	speed.y = 0;
 	speed.z = 0;
 
-	if (input.moveForwardActive || input.moveBackwardActive) {
+	if (util::Input::getInstance()->moveForwardActive || util::Input::getInstance()->moveBackwardActive) {
 
 		int direction = 1;
-		if (input.moveBackwardActive)
+		if (util::Input::getInstance()->moveBackwardActive)
 			direction = -1;
 
 		glm::vec3 dummy = viewDirection.getViewDirection();
@@ -52,10 +51,10 @@ void Player::update(float timePassed)
 		speed.z = dummy.z;
 	}
 
-	if (input.moveRightActive || input.moveLeftActive) {
+	if (util::Input::getInstance()->moveRightActive || util::Input::getInstance()->moveLeftActive) {
 
 		int direction = 1;
-		if (input.moveLeftActive)
+		if (util::Input::getInstance()->moveLeftActive)
 			direction = -1;
 
 		glm::vec3 dummy = viewDirection.getRightDirection();
@@ -66,9 +65,9 @@ void Player::update(float timePassed)
 		speed.z += dummy.z;
 	}
 
-	if (input.jumpActive || input.goDownActive) {
+	if (util::Input::getInstance()->jumpActive || util::Input::getInstance()->goDownActive) {
 		int direction = 1;
-		if (input.goDownActive)
+		if (util::Input::getInstance()->goDownActive)
 			direction = -1;
 
 		speed.y = direction * movementSpeed;
@@ -124,12 +123,12 @@ void Player::update(float timePassed)
 	if (chunk::ChunkManager::getInstance().intersectWithSolidCube(location, viewDirection.getViewDirection(), 5)) {
 
 		glm::vec3 selectedCube = chunk::ChunkManager::getInstance().getLocationOfInteresectedCube();
-		if (input.action1Pressed) {
+		if (util::Input::getInstance()->action1Pressed) {
 			chunk::ChunkManager::getInstance().removeCube(selectedCube.x, selectedCube.y, selectedCube.z);
 			return;
 		}
 
-		if (input.action2Pressed) {
+		if (util::Input::getInstance()->action2Pressed) {
 			glm::vec3 cube = chunk::ChunkManager::getInstance().getCubeBeforeIntersectedCube();
 			chunk::ChunkManager::getInstance().setCube(cube.x, cube.y, cube.z, 1);
 		}

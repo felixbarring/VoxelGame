@@ -78,9 +78,9 @@ void PlayerCollisionDemo::runDemo()
 	float screenCenterX = WIDTH / 2.0;
 	float screenCenterY = HEIGHT / 2.0;
 
-	util::Input input{window, screenCenterX, screenCenterY};
+	util::Input::createInstance(window, screenCenterX, screenCenterY);
 
-	entity::Player player{input};
+	entity::Player player;
 	player.setLocation(7, 7, 7);
 
 	while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0)	{
@@ -90,7 +90,7 @@ void PlayerCollisionDemo::runDemo()
 
 		glfwPollEvents();
 
-		input.updateValues();
+		util::Input::getInstance()->updateValues();
 		player.update(0.0f);
 
 		graphics::ChunkBatcher::getInstance().draw();

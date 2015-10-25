@@ -1,14 +1,15 @@
 
 #include "mainMenu.h"
 
+#include <iostream>
+
 #include "config/data.h"
 
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
 
-MainMenu::MainMenu(Game *game, util::Input &in) :
-	input(in),
+MainMenu::MainMenu(Game *game) :
 	game(game)
 {
 
@@ -38,7 +39,6 @@ MainMenu::MainMenu(Game *game, util::Input &in) :
 	widgetGroup1->addWidget(button2);
 	widgetGroup1->addWidget(button3);
 
-
 }
 
 // ########################################################
@@ -47,10 +47,12 @@ MainMenu::MainMenu(Game *game, util::Input &in) :
 
 void MainMenu::update()
 {
-	input.unlockMouse();
-	input.updateValues();
 
-	double y = input.mouseYPosition - config::graphics_data::windowHeight;
+
+	util::Input::getInstance()->unlockMouse();
+	util::Input::getInstance()->updateValues();
+
+	double y = util::Input::getInstance()->mouseYPosition - config::graphics_data::windowHeight;
 	if (y < 0) {
 		y = -y;
 	} else {
@@ -58,10 +60,10 @@ void MainMenu::update()
 	}
 
 	glm::vec2 mouse = gui::adjustMouse(config::graphics_data::virtualWidth, config::graphics_data::virtualHeight,
-			config::graphics_data::windowWidth, config::graphics_data::windowHeight, input.mouseXPosition, y);
+			config::graphics_data::windowWidth, config::graphics_data::windowHeight, util::Input::getInstance()->mouseXPosition, y);
 
 	widgetGroup1->mouseMoved(mouse.x, mouse.y);
-	if (input.action1Pressed) {
+	if (util::Input::getInstance()->action1Pressed) {
 		widgetGroup1->mouseClicked(0, mouse.x, mouse.y);
 	}
 	widgetGroup1->draw();

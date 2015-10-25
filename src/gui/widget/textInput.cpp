@@ -8,6 +8,8 @@
 #include "../../config/data.h"
 #include "../../graphics/resources.h"
 
+#include "../../util/input.h"
+
 namespace widget {
 
 // ########################################################
@@ -33,6 +35,17 @@ TextInput::TextInput(int id, int x, int y, int width, int height) :
 
 void TextInput::draw()
 {
+
+	if (util::Input::getInstance()->eraseTextPressed && input.size() > 0) {
+		input.pop_back();
+
+		graphics::FontMeshBuilder &fontMeshBuilder = graphics::Resources::getInstance().getFontMeshBuilder(
+					config::font_data::fontLayout, config::font_data::fontAtlasWidth, config::font_data::fontAtlasHeight);
+
+		text.reset(new graphics::Sprite{x, y+5, 1, fontMeshBuilder.buldMeshForString(input, height-5),
+				graphics::Resources::getInstance().getTexture(config::font_data::font)});
+
+	}
 
 	graphics::SpriteBatcher::getInstance().addBatch(sprite);
 
