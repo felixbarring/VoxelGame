@@ -93,7 +93,7 @@ void GuiDemo::runDemo()
 				state = MenuState::MainMenu;
 				break;
 			}
-			case 10: {
+			case 6: {
 				state = MenuState::MainMenu;
 				break;
 			}
@@ -106,66 +106,58 @@ void GuiDemo::runDemo()
 		std::cout << value << "\n";
 	};
 
-	//std::shared_ptr<widget::IWidget> button1(new widget::Button{0, 325, 350, 150, 30, observer, "Play"});
+	// ######################################################################################################
+
+	std::shared_ptr<widget::IWidget> button1(new widget::Button{0, 325, 350, 150, 30, observer, "Play"});
 	std::shared_ptr<widget::IWidget> button2(new widget::Button{1, 325, 310, 150, 30, observer, "Settings"});
 	std::shared_ptr<widget::IWidget> button3(new widget::Button{2, 325, 270, 150, 30, observer, "Quit"});
 
-	widget::WidgetGroup widgetGroup1{0, 0, 0, 800, 600, observer};
+	widget::WidgetGroup mainWidgetGroup{0, 0, 0, 800, 600, observer};
 
-	//widgetGroup1.addWidget(button1);
-	widgetGroup1.addWidget(button2);
-	widgetGroup1.addWidget(button3);
+	mainWidgetGroup.addWidget(button1);
+	mainWidgetGroup.addWidget(button2);
+	mainWidgetGroup.addWidget(button3);
 
-	std::shared_ptr<widget::IWidget> slider(new widget::Slider{666, 325, 350, 150, 30, observer2});
-
-	widgetGroup1.addWidget(slider);
-
-	std::shared_ptr<widget::IWidget> textInput(new widget::TextInput{666, 325, 390, 150, 30});
-
-	widgetGroup1.addWidget(textInput);
-
-
+	// ######################################################################################################
 
 	std::shared_ptr<widget::IWidget> label1(new widget::Label{325, 390, 150, 30, " - Play - "});
 	std::shared_ptr<widget::IWidget> button4(new widget::Button{3, 325, 350, 150, 30, observer, "New World"});
 	std::shared_ptr<widget::IWidget> button5(new widget::Button{4, 325, 310, 150, 30, observer, "Load World"});
 	std::shared_ptr<widget::IWidget> button6(new widget::Button{5, 325, 270, 150, 30, observer, "Back"});
 
-	widget::WidgetGroup widgetGroup2{0, 0, 0, 800, 600, observer};
+	widget::WidgetGroup playWidgetGroup{0, 0, 0, 800, 600, observer};
 
-	widgetGroup2.addWidget(label1);
-	widgetGroup2.addWidget(button4);
-	widgetGroup2.addWidget(button5);
-	widgetGroup2.addWidget(button6);
+	playWidgetGroup.addWidget(label1);
+	playWidgetGroup.addWidget(button4);
+	playWidgetGroup.addWidget(button5);
+	playWidgetGroup.addWidget(button6);
 
-
+	// ######################################################################################################
 
 	std::shared_ptr<widget::IWidget> label2(new widget::Label{325, 390, 150, 30, " - Settings - "});
-	std::shared_ptr<widget::IWidget> button7(new widget::Button{6, 325, 350, 150, 30, observer, "Input"});
-	std::shared_ptr<widget::IWidget> button8(new widget::Button{7, 325, 310, 150, 30, observer, "Graphics"});
-	std::shared_ptr<widget::IWidget> button9(new widget::Button{8, 325, 270, 150, 30, observer, "Audio"});
-	std::shared_ptr<widget::IWidget> button10(new widget::Button{9, 325, 230, 150, 30, observer, "Game"});
-	std::shared_ptr<widget::IWidget> button11(new widget::Button{10, 325, 190, 150, 30, observer, "Back"});
+	std::shared_ptr<widget::IWidget> textInput(new widget::TextInput{666, 325, 350, 150, 30});
+	std::shared_ptr<widget::IWidget> slider(new widget::Slider{666, 325, 310, 150, 30, observer2});
+	std::shared_ptr<widget::IWidget> button7(new widget::Button{6, 325, 270, 150, 30, observer, "Back"});
 
-	widget::WidgetGroup widgetGroup3{0, 0, 0, 800, 600, observer};
+	widget::WidgetGroup settingsWidgetGroup{0, 0, 0, 800, 600, observer};
 
-	widgetGroup3.addWidget(label2);
-	widgetGroup3.addWidget(button7);
-	widgetGroup3.addWidget(button8);
-	widgetGroup3.addWidget(button9);
-	widgetGroup3.addWidget(button10);
-	widgetGroup3.addWidget(button11);
+	settingsWidgetGroup.addWidget(label2);
+	settingsWidgetGroup.addWidget(slider);
+	settingsWidgetGroup.addWidget(textInput);
+	settingsWidgetGroup.addWidget(button7);
+
+	// ######################################################################################################
+
+	widget::WidgetGroup *activeGroup = &mainWidgetGroup;
 
 
 	util::Input::createInstance(window, WIDTH / 2.0, HEIGHT / 2.0);
-	util::Input::getInstance()->unlockMouse();
+	std::shared_ptr<util::Input> input = util::Input::getInstance();
+	input->unlockMouse();
 
 	glm::mat4 matrix = gui::createVirtualToScreen(800, 600, 1200, 600);
 	glm:: mat4 matrix2 = glm::ortho(0.0f, 1200.0f, 0.0f, 600.0f, -1.0f, 1.0f) * matrix;
-
 	graphics::SpriteBatcher::getInstance().setProjection(matrix2);
-	// This resource handler ?!?
-	//graphics::FontMeshBuilder fontBuilder{config::font_data::fontLayout, 1024, 1024};
 
 	while (!quit && glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0) {
 
@@ -173,50 +165,43 @@ void GuiDemo::runDemo()
 		glfwPollEvents();
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		util::Input::getInstance()->updateValues();
+		input->updateValues();
 
-		double y = util::Input::getInstance()->mouseYPosition - HEIGHT;
+		double y = input->mouseYPosition - HEIGHT;
 		if (y < 0) {
 			y = -y;
 		} else {
 			y = -1;
 		}
 
-		glm::vec2 mouse = gui::adjustMouse(800, 600, 1200, 600, util::Input::getInstance()->mouseXPosition, y);
+		glm::vec2 mouse = gui::adjustMouse(800, 600, 1200, 600, input->mouseXPosition, y);
 
-		switch(state) {
 
+		switch (state) {
 			case MenuState::MainMenu: {
-				widgetGroup1.mouseMoved(mouse.x, mouse.y);
-				if (util::Input::getInstance()->action1Pressed) {
-					widgetGroup1.mouseClicked(0, mouse.x, mouse.y);
-				}
-
-				if (util::Input::getInstance()->keyWasTyped) {
-					widgetGroup1.keyTyped(util::Input::getInstance()->keyTyped);
-				}
-
-				widgetGroup1.draw();
+				activeGroup = &mainWidgetGroup;
 				break;
 			}
 			case MenuState::Play: {
-				widgetGroup2.mouseMoved(mouse.x, mouse.y);
-				if (util::Input::getInstance()->action1Pressed) {
-					widgetGroup2.mouseClicked(0, mouse.x, mouse.y);
-				}
-				widgetGroup2.draw();
+				activeGroup = &playWidgetGroup;
 				break;
 			}
 			case MenuState::Settings: {
-				widgetGroup3.mouseMoved(mouse.x, mouse.y);
-				if (util::Input::getInstance()->action1Pressed) {
-					widgetGroup3.mouseClicked(0, mouse.x, mouse.y);
-				}
-				widgetGroup3.draw();
+				activeGroup = &settingsWidgetGroup;
 				break;
 			}
-
 		}
+
+		activeGroup->mouseMoved(mouse.x, mouse.y);
+		activeGroup->update();
+
+		if (input->action1Pressed)
+			activeGroup->mouseClicked(0, mouse.x, mouse.y);
+
+		if (input->keyWasTyped)
+			activeGroup->keyTyped(input->keyTyped);
+
+		activeGroup->draw();
 
 		graphics::SpriteBatcher::getInstance().draw();
 

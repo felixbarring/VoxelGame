@@ -36,6 +36,11 @@ public:
 	virtual void draw() = 0;
 
 	/**
+	 * \brief If the Widget needs to be updated each frame, it should implement this method
+	 */
+	virtual void update() = 0;
+
+	/**
 	 * Notifies that the mouse was pressed and that the widget can act on this
 	 * depending on the what button was pressed and where the mouse pointer is at.
 	 *

@@ -35,6 +35,20 @@ TextInput::TextInput(int id, int x, int y, int width, int height) :
 
 void TextInput::draw()
 {
+	graphics::SpriteBatcher::getInstance().addBatch(sprite);
+
+	if (pointerInsideBorders || hasFocus) {
+		graphics::SpriteBatcher::getInstance().addBatch(sprite);
+	}
+
+	graphics::SpriteBatcher::getInstance().addBatch(text);
+
+}
+
+void TextInput::update()
+{
+
+	std::cout << " --- --- Updating Text input Widget --- --- \n";
 
 	if (util::Input::getInstance()->eraseTextPressed && input.size() > 0) {
 		input.pop_back();
@@ -46,14 +60,6 @@ void TextInput::draw()
 				graphics::Resources::getInstance().getTexture(config::font_data::font)});
 
 	}
-
-	graphics::SpriteBatcher::getInstance().addBatch(sprite);
-
-	if (pointerInsideBorders || hasFocus) {
-		graphics::SpriteBatcher::getInstance().addBatch(sprite);
-	}
-
-	graphics::SpriteBatcher::getInstance().addBatch(text);
 
 }
 

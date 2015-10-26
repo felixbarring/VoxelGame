@@ -26,7 +26,9 @@ MainMenu::MainMenu(Game *game) :
 				break;
 			}
 		}
-		std::cout << "A button with id: " << id << " was pressed\n";
+
+		//std::cout << "A button with id: " << id << " was pressed\n";
+
 	};
 
 	std::shared_ptr<widget::IWidget> button1(new widget::Button{0, 325, 350, 150, 30, observer, "Single Player"});
@@ -48,7 +50,6 @@ MainMenu::MainMenu(Game *game) :
 void MainMenu::update()
 {
 
-
 	util::Input::getInstance()->unlockMouse();
 	util::Input::getInstance()->updateValues();
 
@@ -62,7 +63,9 @@ void MainMenu::update()
 	glm::vec2 mouse = gui::adjustMouse(config::graphics_data::virtualWidth, config::graphics_data::virtualHeight,
 			config::graphics_data::windowWidth, config::graphics_data::windowHeight, util::Input::getInstance()->mouseXPosition, y);
 
+	widgetGroup1->update();
 	widgetGroup1->mouseMoved(mouse.x, mouse.y);
+
 	if (util::Input::getInstance()->action1Pressed) {
 		widgetGroup1->mouseClicked(0, mouse.x, mouse.y);
 	}

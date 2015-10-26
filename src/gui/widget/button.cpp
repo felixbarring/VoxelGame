@@ -1,6 +1,8 @@
 
 #include "button.h"
 
+#include <iostream>
+
 #include "../../graphics/spriteBatcher.h"
 #include "../../graphics/fontMeshBuilder.h"
 #include "../../graphics/mesh/meshElement.h"

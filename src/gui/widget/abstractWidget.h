@@ -77,6 +77,8 @@ public:
 	 */
 	bool isInsideBorders(float x, float y);
 
+	void update() override;
+
 	void setLocation(float x, float y, float z) override;
 
 	void setActive() override;

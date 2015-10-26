@@ -37,6 +37,13 @@ void WidgetGroup::draw()
 	}
 }
 
+void WidgetGroup::update()
+{
+	for (std::shared_ptr<widget::IWidget> widget : widgets) {
+		widget->update();
+	}
+}
+
 // TODO Maybe not a good idea :o
 // Some widgets need to lose focus when the user clicks outside
 // the widget group

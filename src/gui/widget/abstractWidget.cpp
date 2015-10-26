@@ -1,6 +1,8 @@
 
 #include "abstractWidget.h"
 
+#include <iostream>
+
 namespace widget {
 
 // ########################################################
@@ -20,6 +22,12 @@ AbstractWidget::AbstractWidget(int id, int x, int y, int width, int height) :
 // ########################################################
 // Member Functions########################################
 // ########################################################
+
+
+void AbstractWidget::update()
+{
+	// Do nothing, Subclasses can override this function if they need update functionality.
+}
 
 bool AbstractWidget::isActive()
 {
