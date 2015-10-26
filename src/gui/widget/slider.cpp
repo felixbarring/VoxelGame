@@ -23,8 +23,8 @@ Slider::Slider(int id, int x, int y, int width, int height, std::function<void(i
 	knobPosition = x;
 	knobWidth = height;
 
-	slider.reset(new graphics::Sprite{x, y, 0, width, height, graphics::Resources::getInstance().getTexture(config::gui_data::slider)});
-	knob.reset(new graphics::Sprite{x, y, 0, height, height, graphics::Resources::getInstance().getTexture(config::gui_data::sliderKnob)});
+	slider.reset(new graphics::Sprite{x, y, 1, width, height, graphics::Resources::getInstance().getTexture(config::gui_data::slider)});
+	knob.reset(new graphics::Sprite{x, y, 2, height, height, graphics::Resources::getInstance().getTexture(config::gui_data::sliderKnob)});
 
 }
 

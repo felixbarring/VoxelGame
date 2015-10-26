@@ -40,7 +40,9 @@ enum class MainMenuState {
 	MainMenu,
 	Play,
 	Settings,
-	GameSettings
+	GameSettings,
+	InputSettings,
+	GraphicsSettings,
 };
 
 private:
@@ -54,6 +56,11 @@ private:
 	std::shared_ptr<widget::WidgetGroup> playWidgetGroup;
 	std::shared_ptr<widget::WidgetGroup> settingsWidgetGroup;
 	std::shared_ptr<widget::WidgetGroup> gameSettingsWidgetGroup;
+	std::shared_ptr<widget::WidgetGroup> inputSettingsWidgetGroup;
+	std::shared_ptr<widget::WidgetGroup> graphicsSettingsWidgetGroup;
+
+	std::shared_ptr<widget::TextInput> textInput;
+	std::shared_ptr<widget::TextInput> textInput2;
 
 };
 

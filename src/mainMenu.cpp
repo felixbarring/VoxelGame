@@ -17,39 +17,19 @@ MainMenu::MainMenu(Game *game) :
 	std::function<void(int)> observer = [&, game](int id)
 	{
 		switch(id) {
-			case 0: {
-				state = MainMenuState::Play;
-				break;
-			}
-			case 1: {
-				state = MainMenuState::Settings;
-				break;
-			}
-			case 2: {
-				game->quitGame();
-				break;
-			}
-			case 3: {
-				game->changeStateToIngame();
-				state = MainMenuState::MainMenu;
-				break;
-			}
-			case 5: {
-				state = MainMenuState::MainMenu;
-				break;
-			}
-			case 6: {
-				state = MainMenuState::GameSettings;
-				break;
-			}
-			case 9: {
-				state = MainMenuState::MainMenu;
-				break;
-			}
-			case 10: {
-				state = MainMenuState::Settings;
-				break;
-			}
+			case 0: state = MainMenuState::Play; break;
+			case 1: state = MainMenuState::Settings; break;
+			case 2: game->quitGame(); break;
+			case 3: game->changeStateToIngame(); state = MainMenuState::MainMenu; break;
+			case 5: state = MainMenuState::MainMenu; break;
+			case 6: state = MainMenuState::GameSettings; break;
+			case 7: state = MainMenuState::InputSettings; break;
+			case 8: state = MainMenuState::GraphicsSettings; break;
+			case 9: state = MainMenuState::MainMenu; break;
+			case 10: state = MainMenuState::Settings; break;
+			case 11: state = MainMenuState::Settings; break;
+			case 12: state = MainMenuState::Settings; break;
+			case 13: state = MainMenuState::Settings; break;
 		}
 
 	};
@@ -57,6 +37,16 @@ MainMenu::MainMenu(Game *game) :
 	std::function<void(int, float)> observer2 = [&](int id, float value)
 	{
 		std::cout << value << "\n";
+		switch (id) {
+			case 100: {
+				textInput->setString(std::to_string(value));
+				break;
+			}
+			case 101: {
+				textInput2->setString(std::to_string(value));
+				break;
+			}
+		}
 	};
 
 	// ################################################################################################################
@@ -105,33 +95,53 @@ MainMenu::MainMenu(Game *game) :
 
 	// ################################################################################################################
 
-	std::shared_ptr<widget::IWidget> label4(new widget::Label{325, 390, 150, 30, " - Settings - Game "});
-
-	std::shared_ptr<widget::IWidget> label5(new widget::Label{             30, 310, 80,  20, "FOV:"});
-	std::shared_ptr<widget::IWidget> slider(new widget::Slider{      666,  125, 310, 150, 30, observer2});
-	std::shared_ptr<widget::IWidget> textInput(new widget::TextInput{666, 285, 310, 60,  30});
-
-	std::shared_ptr<widget::IWidget> label6(new widget::Label{              30, 270, 80, 20, "Render Distance:"});
-	std::shared_ptr<widget::IWidget> slider2(new widget::Slider{      666,  125, 270, 150, 30, observer2});
-	std::shared_ptr<widget::IWidget> textInput2(new widget::TextInput{666, 285, 270, 60, 30});
-
-
-
+	std::shared_ptr<widget::IWidget> label4(new widget::Label{325, 390, 150, 30, " - Game - "});
 	std::shared_ptr<widget::IWidget> button11(new widget::Button{10, 325, 230, 150, 30, observer, "Back"});
 
-	gameSettingsWidgetGroup.reset(new widget::WidgetGroup{0, 0, 120, 800, 270, observer});
+	gameSettingsWidgetGroup.reset(new widget::WidgetGroup{0, 300, 220, 200, 170, observer});
 
 	gameSettingsWidgetGroup->addWidget(label4);
-
-	gameSettingsWidgetGroup->addWidget(label5);
-	gameSettingsWidgetGroup->addWidget(slider);
-	gameSettingsWidgetGroup->addWidget(textInput);
-
-	gameSettingsWidgetGroup->addWidget(label6);
-	gameSettingsWidgetGroup->addWidget(slider2);
-	gameSettingsWidgetGroup->addWidget(textInput2);
-
 	gameSettingsWidgetGroup->addWidget(button11);
+
+	// ################################################################################################################
+
+	std::shared_ptr<widget::IWidget> label5(new widget::Label{325, 390, 150, 30, " - Input - "});
+	std::shared_ptr<widget::IWidget> button12(new widget::Button{11, 325, 230, 150, 30, observer, "Back"});
+
+	inputSettingsWidgetGroup.reset(new widget::WidgetGroup{0, 300, 220, 200, 170, observer});
+
+	inputSettingsWidgetGroup->addWidget(label5);
+	inputSettingsWidgetGroup->addWidget(button12);
+
+	// ################################################################################################################
+
+	std::shared_ptr<widget::IWidget> label6(new widget::Label{325, 390, 150, 30, " - Settings - Game "});
+
+	std::shared_ptr<widget::IWidget> label7(new widget::Label{             30, 310, 80,  20, "FOV:"});
+	std::shared_ptr<widget::IWidget> slider(new widget::Slider{      100,  125, 310, 150, 30, observer2});
+	textInput.reset(new widget::TextInput{666, 285, 310, 60,  30});
+
+	std::shared_ptr<widget::IWidget> label8(new widget::Label{              30, 270, 80, 20, "Render Distance:"});
+	std::shared_ptr<widget::IWidget> slider2(new widget::Slider{      101,  125, 270, 150, 30, observer2});
+	textInput2.reset(new widget::TextInput{666, 285, 270, 60, 30});
+
+	std::shared_ptr<widget::IWidget> button13(new widget::Button{12, 245, 130, 150, 30, observer, "Save"});
+	std::shared_ptr<widget::IWidget> button14(new widget::Button{13, 400, 130, 150, 30, observer, "Cancel"});
+
+	graphicsSettingsWidgetGroup.reset(new widget::WidgetGroup{0, 0, 120, 800, 270, observer});
+
+	graphicsSettingsWidgetGroup->addWidget(label6);
+
+	graphicsSettingsWidgetGroup->addWidget(label7);
+	graphicsSettingsWidgetGroup->addWidget(slider);
+	graphicsSettingsWidgetGroup->addWidget(textInput);
+
+	graphicsSettingsWidgetGroup->addWidget(label8);
+	graphicsSettingsWidgetGroup->addWidget(slider2);
+	graphicsSettingsWidgetGroup->addWidget(textInput2);
+
+	graphicsSettingsWidgetGroup->addWidget(button13);
+	graphicsSettingsWidgetGroup->addWidget(button14);
 
 	// ################################################################################################################
 
@@ -176,6 +186,14 @@ void MainMenu::update()
 		}
 		case MainMenuState::GameSettings: {
 			activeWidgetGroup = gameSettingsWidgetGroup;
+			break;
+		}
+		case MainMenuState::InputSettings: {
+			activeWidgetGroup = inputSettingsWidgetGroup;
+			break;
+		}
+		case MainMenuState::GraphicsSettings: {
+			activeWidgetGroup = graphicsSettingsWidgetGroup;
 		}
 	}
 
