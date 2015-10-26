@@ -48,9 +48,7 @@ void TextInput::draw()
 void TextInput::update()
 {
 
-	std::cout << " --- --- Updating Text input Widget --- --- \n";
-
-	if (util::Input::getInstance()->eraseTextPressed && input.size() > 0) {
+	if (hasFocus && util::Input::getInstance()->eraseTextPressed && input.size() > 0) {
 		input.pop_back();
 
 		graphics::FontMeshBuilder &fontMeshBuilder = graphics::Resources::getInstance().getFontMeshBuilder(

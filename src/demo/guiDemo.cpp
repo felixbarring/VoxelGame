@@ -176,7 +176,6 @@ void GuiDemo::runDemo()
 
 		glm::vec2 mouse = gui::adjustMouse(800, 600, 1200, 600, input->mouseXPosition, y);
 
-
 		switch (state) {
 			case MenuState::MainMenu: {
 				activeGroup = &mainWidgetGroup;
