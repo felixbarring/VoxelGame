@@ -23,7 +23,7 @@ ChunkBatcher::ChunkBatcher() :
 	const char *vertex =
 		"#version 330 core \n"
 
-		"in vec3 positionIn; \n"
+		"in vec4 positionIn; \n"
 		"in vec3 normalIn; \n"
 		"in vec3 texCoordIn; \n"
 
@@ -31,23 +31,28 @@ ChunkBatcher::ChunkBatcher() :
 
 		"out vec3 faceNormal; \n"
 		"out vec3 texCoord; \n"
+		"out float lightValue; \n"
 
 		"void main(){ \n"
-		"  texCoord = vec3(texCoordIn.x, 1 - texCoordIn.y, texCoordIn.z); \n"
-		"  gl_Position =  modelViewProjection * vec4(positionIn, 1); \n"
+		//"  texCoord = vec3(texCoordIn.x, 1 - texCoordIn.y, texCoordIn.z); \n"
+		"  texCoord = vec3(texCoordIn.x, texCoordIn.y, texCoordIn.z); \n"
+		"  lightValue = (positionIn.w + 3) / 16; \n"
+
+		"  gl_Position =  modelViewProjection * vec4(positionIn.xyz, 1); \n"
 		"} \n";
 
 	const char *fragment =
 		"#version 330 core \n"
 
 		"in vec3 texCoord; \n"
+		"in float lightValue; \n"
 
 		"uniform sampler2DArray texture1; \n"
 
 		"out vec4 color; \n"
 
 		"void main(){ \n"
-		"  color = texture(texture1, texCoord); \n"
+		"  color = vec4(lightValue, lightValue, lightValue, 1) * texture(texture1, texCoord); \n"
 		"} \n";
 
 	std::map<std::string, int> attributesMap{

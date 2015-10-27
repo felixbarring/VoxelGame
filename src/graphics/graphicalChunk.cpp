@@ -33,12 +33,23 @@ transform{
 			for (int k = 0; k < depth; k++) {
 				CubeFaceData cube;
 				cube.id = data[i][j][k].id;
+				cube.lightValue = data[i][j][k].lightValue;
+
+				// Maybe constructor / method?!?
+
+				cube.lvFront = 0;
+				cube.lvBack = 0;
+				cube.lvLeft = 0;
+				cube.lvRight = 0;
+				cube.lvTop = 0;
+
 				cube.front = true;
 				cube.back = true;
 				cube.left = true;
 				cube.right = true;
 				cube.top = true;
 				cube.bottom = true;
+
 				faceData[i][j][k] = cube;
 			}
 		}
@@ -49,7 +60,7 @@ transform{
 		for (int j = 0; j < height; j++) {
 			for (int k = 0; k < depth; k++) {
 
-				CubeFaceData& current = faceData[i][j][k];
+				CubeFaceData &current = faceData[i][j][k];
 
 				if (current.id == config::cube_data::AIR) {
 					current.front = false;
@@ -62,19 +73,35 @@ transform{
 				}
 
 				if (i != width - 1) {
-					CubeFaceData& right = faceData[i + 1][j][k];
+					CubeFaceData &right = faceData[i + 1][j][k];
 					if (right.id != config::cube_data::AIR) {
 						current.right = false;
 						right.left = false;
+					} else {
+						current.lvRight = right.lightValue;
+					}
+				}
+				if (i > 0) {
+					CubeFaceData &left = faceData[i - 1][j][k];
+					if (left.id == config::cube_data::AIR) {
+						current.lvLeft = left.lightValue;
 					}
 				}
 
 				if (j != height - 1) {
-					CubeFaceData& up = faceData[i][j + 1][k];
+					CubeFaceData &up = faceData[i][j + 1][k];
 					if (up.id != config::cube_data::AIR) {
 						current.top = false;
 						up.bottom = false;
 					}
+					else {
+						current.lvTop = up.lightValue;
+					}
+				}
+				if (j > 0) {
+					CubeFaceData &bottom = faceData[i][j - 1][k];
+					if (bottom.id == config::cube_data::AIR)
+						current.lvBottom = bottom.lightValue;
 				}
 
 				if (k != depth - 1) {
@@ -83,7 +110,16 @@ transform{
 						current.back = false;
 						back.front = false;
 					}
+					else {
+						current.lvBack = back.lightValue;
+					}
 				}
+				if (k > 0) {
+					CubeFaceData &front = faceData[i][j][k - 1];
+					if (front.id == config::cube_data::AIR)
+						current.lvFront = front.lightValue;
+				}
+
 			}
 		}
 	}
@@ -109,20 +145,19 @@ transform{
 				int id = fd.id;
 
 				GLfloat sideTexture = config::cube_data::BLOCK_TEXTURES[id][config::cube_data::SIDE_TEXTURE];
-				GLfloat topTexture =config::cube_data::BLOCK_TEXTURES[id][config::cube_data::TOP_TEXTURE];
+				GLfloat topTexture = config::cube_data::BLOCK_TEXTURES[id][config::cube_data::TOP_TEXTURE];
 				GLfloat bottomTexture = config::cube_data::BLOCK_TEXTURES[id][config::cube_data::BOTTOM_TEXTURE];
 
 				if (fd.front) {
 
 					std::vector<GLfloat> vertex {
-						-0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz,
+						-0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz, fd.lvFront,
 
-						0.5f + i + dx, 0.5f + j+ dy, -0.5f + k + dz,
-						0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz,
+						0.5f + i + dx, 0.5f + j+ dy, -0.5f + k + dz, fd.lvFront,
+						0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz, fd.lvFront,
 
+						-0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz, fd.lvFront,
 
-
-						-0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz,
 					};
 
 					std::vector<GLfloat> nor {
@@ -157,14 +192,13 @@ transform{
 				if (fd.back) {
 
 					std::vector<GLfloat> vertex {
-						0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz,
+						0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz, fd.lvBack,
 
+						-0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz, fd.lvBack,
+						-0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz, fd.lvBack,
 
-						-0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz,
-						-0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz,
+						0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz, fd.lvBack,
 
-
-						0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz,
 					};
 
 					std::vector<GLfloat> nor {
@@ -198,12 +232,13 @@ transform{
 				if (fd.left) {
 
 					std::vector<GLfloat> vertex {
-						-0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz,
+						-0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz, fd.lvLeft,
 
-						-0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz,
-						-0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz,
+						-0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz, fd.lvLeft,
+						-0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz, fd.lvLeft,
 
-						-0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz,
+						-0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz, fd.lvLeft,
+
 					};
 
 					std::vector<GLfloat> nor {
@@ -237,13 +272,12 @@ transform{
 				if (fd.right) {
 
 					std::vector<GLfloat> vertex {
-						0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz,
+						0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz, fd.lvRight,
 
-						0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz,
-						0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz,
+						0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz, fd.lvRight,
+						0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz, fd.lvRight,
 
-						0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz,
-
+						0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz, fd.lvRight,
 
 					};
 
@@ -279,14 +313,12 @@ transform{
 				if (fd.top) {
 
 					std::vector<GLfloat> vertex {
-						-0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz,
+						-0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz, fd.lvTop,
 
-						0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz,
-						0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz,
+						0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz, fd.lvTop,
+						0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz, fd.lvTop,
 
-
-						-0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz,
-
+						-0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz, fd.lvTop,
 
 					};
 
@@ -321,12 +353,13 @@ transform{
 				if (fd.bottom) {
 
 					std::vector<GLfloat> vertex {
-						-0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz,
+						-0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz, fd.lvBottom,
 
-						0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz,
-						0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz,
+						0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz, fd.lvBottom,
+						0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz, fd.lvBottom,
 
-						-0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz,
+						-0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz, fd.lvBottom,
+
 					};
 
 					std::vector<GLfloat> nor {
@@ -342,8 +375,6 @@ transform{
 						1.0f, 1.0f, static_cast<GLfloat>(bottomTexture),
 						0.0f, 1.0f, static_cast<GLfloat>(bottomTexture)
 					};
-
-
 
 					std::vector<short> el{
 						static_cast<short>(0 + elementOffset), static_cast<short>(1 + elementOffset), static_cast<short>(2 + elementOffset),
@@ -362,7 +393,56 @@ transform{
 		}
 	}
 
-	/*
+	mesh.reset(new mesh::MeshElement(vertexData, 4, normals, 3, UV, 3, elementData));
+	//std::cout<<"Total number of faces: "<<totalNumberOfFaces<<"\n";
+}
+
+// ########################################################
+// Member Functions########################################
+// ########################################################
+
+void GraphicalChunk::draw()
+{
+	mesh->draw();
+}
+
+Transform& GraphicalChunk::getTransform()
+{
+	return transform;
+}
+
+float GraphicalChunk::getxLocation()
+{
+	return xLocation;
+}
+
+float GraphicalChunk::getyLocation()
+{
+	return yLocation;
+}
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
 
 	for (int i = 0; i < width; i++) {
 		for (int j = 0; j < height; j++) {
@@ -606,34 +686,3 @@ transform{
 	}
 
 	*/
-
-	mesh.reset(new mesh::MeshElement(vertexData, 3, normals, 3, UV, 3, elementData));
-	//std::cout<<"Total number of faces: "<<totalNumberOfFaces<<"\n";
-}
-
-// ########################################################
-// Member Functions########################################
-// ########################################################
-
-void GraphicalChunk::draw()
-{
-	mesh->draw();
-}
-
-Transform& GraphicalChunk::getTransform()
-{
-	return transform;
-}
-
-float GraphicalChunk::getxLocation()
-{
-	return xLocation;
-}
-
-float GraphicalChunk::getyLocation()
-{
-	return yLocation;
-}
-
-}
-

@@ -46,6 +46,9 @@ private:
 	struct CubeFaceData {
 		int id;
 		bool vissible, front, back, left, right, top, bottom;
+		char lightValue; // For air blocks
+		// lv means lightValue
+		char lvFront, lvBack, lvLeft, lvRight, lvTop, lvBottom;
 	};
 
 	std::unique_ptr<mesh::MeshElement> mesh;

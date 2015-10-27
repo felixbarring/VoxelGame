@@ -38,11 +38,17 @@ public:
 
 enum class MainMenuState {
 	MainMenu,
-	Play,
+
+	NewWorld,
+	LoadWorld,
+
 	Settings,
 	GameSettings,
 	InputSettings,
 	GraphicsSettings,
+
+	Play,
+
 };
 
 private:
@@ -53,7 +59,11 @@ private:
 	std::shared_ptr<widget::WidgetGroup> activeWidgetGroup;
 
 	std::shared_ptr<widget::WidgetGroup> mainWidgetGroup;
+
 	std::shared_ptr<widget::WidgetGroup> playWidgetGroup;
+	std::shared_ptr<widget::WidgetGroup> newWorldWidgetGroup;
+	std::shared_ptr<widget::WidgetGroup> loadWorldWidgetGroup;
+
 	std::shared_ptr<widget::WidgetGroup> settingsWidgetGroup;
 	std::shared_ptr<widget::WidgetGroup> gameSettingsWidgetGroup;
 	std::shared_ptr<widget::WidgetGroup> inputSettingsWidgetGroup;

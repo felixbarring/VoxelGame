@@ -6,6 +6,7 @@
 
 struct Voxel {
 	char id;
+	char lightValue;
 };
 
 
