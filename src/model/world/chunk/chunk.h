@@ -4,6 +4,8 @@
 
 #include <iostream>
 #include <memory>
+#include <vector>
+#include <glm/glm.hpp>
 
 #include "../../../config/data.h"
 #include "../../../util/voxel.h"
@@ -35,6 +37,8 @@ public:
 
 	void doSunLightning();
 
+	void propagateLight(int x, int y, int z);
+
 	// ########################################################
 	// Instance Variables #####################################
 	// ########################################################
@@ -42,6 +46,9 @@ public:
 	int xLocation, yLocation, zLocation;
 	Voxel voxels[config::chunk_data::CHUNK_WIDHT][config::chunk_data::CHUNK_HEIGHT][config::chunk_data::CHUNK_DEPTH];
 	std::shared_ptr<graphics::GraphicalChunk> graphicalChunk;
+
+	// Cubes that should propagate their light
+	std::vector<glm::vec3> lightPropagate;
 
 };
 

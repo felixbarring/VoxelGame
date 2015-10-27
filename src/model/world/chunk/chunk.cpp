@@ -68,22 +68,78 @@ void Chunk::setCube(int x, int y, int z, char id)
 void Chunk::doSunLightning()
 {
 
-	int lv = 15;
-
+	bool foundSolid = false;
 	// Sun lightning
 	for (int i = 0; i < config::chunk_data::CHUNK_WIDHT; i++) {
 		for (int j = 0; j < config::chunk_data::CHUNK_DEPTH; j++) {
-			lv = 15;
+			foundSolid = false;
 			for (int k = config::chunk_data::CHUNK_HEIGHT-1; k >= 0; k--) {
 				if (voxels[i][k][j].id == config::cube_data::AIR) {
-					voxels[i][k][j].lightValue = lv;
+
+					if (foundSolid) {
+						voxels[i][k][j].lightValue = 0;
+					} else {
+						voxels[i][k][j].lightValue = 15;
+						lightPropagate.push_back(glm::vec3(i,k,j));
+					}
 				} else {
-					lv = 0;
-					//break;
+					foundSolid = true;
 				}
 			}
 		}
 	}
+
+	for (glm::vec3 vec : lightPropagate) {
+		propagateLight(vec.x, vec.y, vec.z);
+	}
+
+}
+
+void Chunk::propagateLight(int x, int y, int z)
+{
+	Voxel &voxel = voxels[x][y][z];
+	int lvInitial = voxel.lightValue - 1;
+
+	int lv = lvInitial;
+
+	for (int i = x + 1; i < 16; i++) {
+		Voxel &v = voxels[i][y][z];
+		if (v.id == config::cube_data::AIR && v.lightValue < voxel.lightValue) {
+			v.lightValue = lv;
+			lv--;
+		}
+	}
+
+	lv = lvInitial;
+
+	for (int i = x - 1; i >= 0; i--) {
+		Voxel &v = voxels[i][y][z];
+		if (v.id == config::cube_data::AIR && v.lightValue < voxel.lightValue) {
+			v.lightValue = lv;
+			lv--;
+		}
+	}
+
+	lv = lvInitial;
+
+	for (int i = x + 1; i < 16; i++) {
+		Voxel &v = voxels[x][y][i];
+		if (v.id == config::cube_data::AIR && v.lightValue < voxel.lightValue) {
+			v.lightValue = lv;
+			lv--;
+		}
+	}
+
+	lv = lvInitial;
+
+	for (int i = x - 1; i >= 0; i--) {
+		Voxel &v = voxels[x][y][i];
+		if (v.id == config::cube_data::AIR && v.lightValue < voxel.lightValue) {
+			v.lightValue = lv;
+			lv--;
+		}
+	}
+
 }
 
 }
