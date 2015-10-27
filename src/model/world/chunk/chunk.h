@@ -47,9 +47,6 @@ public:
 	Voxel voxels[config::chunk_data::CHUNK_WIDHT][config::chunk_data::CHUNK_HEIGHT][config::chunk_data::CHUNK_DEPTH];
 	std::shared_ptr<graphics::GraphicalChunk> graphicalChunk;
 
-	// Cubes that should propagate their light
-	std::vector<glm::vec3> lightPropagate;
-
 };
 
 }

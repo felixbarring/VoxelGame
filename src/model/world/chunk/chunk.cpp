@@ -67,9 +67,11 @@ void Chunk::setCube(int x, int y, int z, char id)
 
 void Chunk::doSunLightning()
 {
+	// Cubes that should propagate their light
+	std::vector<glm::vec3> lightPropagate;
 
 	bool foundSolid = false;
-	// Sun lightning
+	// Sun lightning, only air gets light
 	for (int i = 0; i < config::chunk_data::CHUNK_WIDHT; i++) {
 		for (int j = 0; j < config::chunk_data::CHUNK_DEPTH; j++) {
 			foundSolid = false;
@@ -92,6 +94,7 @@ void Chunk::doSunLightning()
 	for (glm::vec3 vec : lightPropagate) {
 		propagateLight(vec.x, vec.y, vec.z);
 	}
+	lightPropagate.clear();
 
 }
 
@@ -100,44 +103,88 @@ void Chunk::propagateLight(int x, int y, int z)
 	Voxel &voxel = voxels[x][y][z];
 	int lvInitial = voxel.lightValue - 1;
 
+	std::vector<glm::vec3> newPropagates;
+
 	int lv = lvInitial;
-
 	for (int i = x + 1; i < 16; i++) {
 		Voxel &v = voxels[i][y][z];
-		if (v.id == config::cube_data::AIR && v.lightValue < voxel.lightValue) {
+		if (v.id == config::cube_data::AIR && v.lightValue < lv) {
 			v.lightValue = lv;
+			newPropagates.push_back(glm::vec3(i, y, z));
 			lv--;
+		} else {
+			break;
 		}
 	}
 
 	lv = lvInitial;
-
 	for (int i = x - 1; i >= 0; i--) {
 		Voxel &v = voxels[i][y][z];
-		if (v.id == config::cube_data::AIR && v.lightValue < voxel.lightValue) {
+		if (v.id == config::cube_data::AIR && v.lightValue < lv) {
 			v.lightValue = lv;
+			newPropagates.push_back(glm::vec3(i, y, z));
 			lv--;
+		} else {
+			break;
+		}
+	}
+
+	// ##################################################################################
+
+	lv = lvInitial;
+	for (int i = y + 1; i < 16; i++) {
+		Voxel &v = voxels[x][i][z];
+		if (v.id == config::cube_data::AIR && v.lightValue < lv) {
+			v.lightValue = lv;
+			newPropagates.push_back(glm::vec3(x, i, z));
+			lv--;
+		} else {
+			break;
 		}
 	}
 
 	lv = lvInitial;
-
-	for (int i = x + 1; i < 16; i++) {
-		Voxel &v = voxels[x][y][i];
-		if (v.id == config::cube_data::AIR && v.lightValue < voxel.lightValue) {
+	for (int i = y - 1; i >= 0; i--) {
+		Voxel &v = voxels[x][i][z];
+		if (v.id == config::cube_data::AIR && v.lightValue < lv) {
 			v.lightValue = lv;
+			newPropagates.push_back(glm::vec3(x, i, z));
 			lv--;
+		} else {
+			break;
+		}
+	}
+
+	// ##################################################################################
+
+	lv = lvInitial;
+	for (int i = z + 1; i < 16; i++) {
+		Voxel &v = voxels[x][y][i];
+		if (v.id == config::cube_data::AIR && v.lightValue < lv) {
+			v.lightValue = lv;
+			newPropagates.push_back(glm::vec3(x, y, i));
+			lv--;
+		} else {
+			break;
 		}
 	}
 
 	lv = lvInitial;
-
-	for (int i = x - 1; i >= 0; i--) {
+	for (int i = z - 1; i >= 0; i--) {
 		Voxel &v = voxels[x][y][i];
-		if (v.id == config::cube_data::AIR && v.lightValue < voxel.lightValue) {
+		if (v.id == config::cube_data::AIR && v.lightValue < lv) {
 			v.lightValue = lv;
+			newPropagates.push_back(glm::vec3(x, y, i));
 			lv--;
+		} else {
+			break;
 		}
+	}
+
+	// Consider postponing this until the all the propagate calls generated
+	// By the doSunLightning function has completed, to avoid repeating work
+	for (glm::vec3 vec : newPropagates) {
+		propagateLight(vec.x, vec.y, vec.z);
 	}
 
 }
