@@ -36,6 +36,7 @@ ChunkManager::ChunkManager()
 		for (int z = 0; z < zMax-1; z++) {
 			std::shared_ptr<Chunk> right = chunks[x+1][0][z];
 			std::shared_ptr<Chunk> front = chunks[x][0][z+1];
+
 			std::shared_ptr<Chunk> current = chunks[x][0][z];
 
 			current->setRightNeighbor(right);
