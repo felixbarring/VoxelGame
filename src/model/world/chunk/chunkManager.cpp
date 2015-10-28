@@ -20,16 +20,32 @@ ChunkManager::ChunkManager()
 	int yMax = config::chunk_data::NUMBER_OF_CHUNKS_Y;
 	int zMax = config::chunk_data::NUMBER_OF_CHUNKS_Z;
 
+	// Create the Chunks
 	for (int x = 0; x < xMax; x++) {
-		for (int y = 0; y < yMax; y++) {
-			for (int z = 0; z < zMax; z++) {
-				chunks[x][y][z] = std::unique_ptr<chunk::Chunk> ( new chunk::Chunk{
+		for (int z = 0; z < zMax; z++) {
+			chunks[x][0][z] = std::unique_ptr<chunk::Chunk> (
+				new chunk::Chunk{
 					x * config::chunk_data::CHUNK_WIDHT,
-					y * config::chunk_data::CHUNK_HEIGHT,
+					0 * config::chunk_data::CHUNK_HEIGHT,
 					z * config::chunk_data::CHUNK_DEPTH});
-			}
 		}
 	}
+
+	// Connect the Chunks
+	for (int x = 0; x < xMax-1; x++) {
+		for (int z = 0; z < zMax-1; z++) {
+			std::shared_ptr<Chunk> right = chunks[x+1][0][z];
+			std::shared_ptr<Chunk> front = chunks[x][0][z+1];
+			std::shared_ptr<Chunk> current = chunks[x][0][z];
+
+			current->setRightNeighbor(right);
+			right->setLeftNeighbor(current);
+
+			current->setFrontNeighbor(front);
+			front->setBackNeighbor(current);
+		}
+	}
+
 }
 
 // ########################################################
@@ -87,7 +103,6 @@ void ChunkManager::setCube(int x, int y, int z, char id)
 
 bool ChunkManager::intersectWithSolidCube(glm::vec3 origin, glm::vec3 direction, float searchLength)
 {
-
 	// A hack to fix the problem
 	// Should be fixed in the model matrix
 	//origin = origin + glm::vec3(0.5, 0.5, 0.5);

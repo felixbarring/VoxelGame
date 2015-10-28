@@ -35,6 +35,16 @@ public:
 
 	void setCube(int x, int y, int z, char id);
 
+	void setLeftNeighbor(std::shared_ptr<Chunk> chunk);
+
+	void setRightNeighbor(std::shared_ptr<Chunk> chunk);
+
+	void setFrontNeighbor(std::shared_ptr<Chunk> chunk);
+
+	void setBackNeighbor(std::shared_ptr<Chunk> chunk);
+
+private:
+
 	void doSunLightning();
 
 	void propagateLight(int x, int y, int z);
@@ -46,6 +56,12 @@ public:
 	int xLocation, yLocation, zLocation;
 	Voxel voxels[config::chunk_data::CHUNK_WIDHT][config::chunk_data::CHUNK_HEIGHT][config::chunk_data::CHUNK_DEPTH];
 	std::shared_ptr<graphics::GraphicalChunk> graphicalChunk;
+
+	std::shared_ptr<Chunk> rightNeighbor;
+	std::shared_ptr<Chunk> leftNeighbor;
+
+	std::shared_ptr<Chunk> frontNeighbor;
+	std::shared_ptr<Chunk> backNeighbor;
 
 };
 

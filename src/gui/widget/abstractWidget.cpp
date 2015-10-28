@@ -16,13 +16,11 @@ AbstractWidget::AbstractWidget(int id, int x, int y, int width, int height) :
 	width{width},
 	height{height}
 {
-	std::cout << "Abstract widget: " << id << "\n";
 }
 
 // ########################################################
 // Member Functions########################################
 // ########################################################
-
 
 void AbstractWidget::update()
 {
