@@ -37,7 +37,7 @@ CubeBatcher::CubeBatcher() :
 		"out vec3 texCoord; \n"
 
 		"void main(){ \n"
-		"  texCoord = vec3(texCoordIn.x, 1 - texCoordIn.y, texCoordIn.z); \n"
+		"  texCoord = vec3(texCoordIn.x, texCoordIn.y, texCoordIn.z); \n"
 		"  gl_Position =  modelViewProjection * vec4(positionIn, 1); \n"
 		"} \n";
 

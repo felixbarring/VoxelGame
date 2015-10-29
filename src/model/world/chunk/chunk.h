@@ -5,6 +5,7 @@
 #include <iostream>
 #include <memory>
 #include <vector>
+#include <array>
 #include <glm/glm.hpp>
 
 #include "../../../config/data.h"
@@ -43,7 +44,6 @@ public:
 
 	void setBackNeighbor(std::shared_ptr<Chunk> chunk);
 
-private:
 
 	void doSunLightning();
 
@@ -51,11 +51,18 @@ private:
 
 	void updateGraphics();
 
+
+private:
+
 	// ########################################################
 	// Instance Variables #####################################
 	// ########################################################
 
 	int xLocation, yLocation, zLocation;
+
+
+	std::vector<std::vector<std::vector<Voxel>>> vec;
+
 	Voxel voxels[config::chunk_data::CHUNK_WIDHT][config::chunk_data::CHUNK_HEIGHT][config::chunk_data::CHUNK_DEPTH];
 	std::shared_ptr<graphics::GraphicalChunk> graphicalChunk;
 

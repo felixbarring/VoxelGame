@@ -15,7 +15,12 @@ namespace graphics
 // ########################################################
 
 GraphicalChunk::GraphicalChunk(float x, float y, float z,
-		Voxel data[config::chunk_data::GRAPHICAL_CHUNK_WIDTH][config::chunk_data::GRAPHICAL_CHUNK_HEIGHT][config::chunk_data::GRAPHICAL_CHUNK_DEPTH]):
+		std::vector<std::vector<std::vector<Voxel>>> &data,
+		std::vector<std::vector<std::vector<Voxel>>> *right,
+		std::vector<std::vector<std::vector<Voxel>>> *left,
+		std::vector<std::vector<std::vector<Voxel>>> *front,
+		std::vector<std::vector<std::vector<Voxel>>> *back
+	):
 xLocation{x},
 yLocation{y},
 zLocation{z},
@@ -72,22 +77,40 @@ transform{
 					continue;
 				}
 
+				// X
 				if (i != width - 1) {
-					CubeFaceData &right = faceData[i + 1][j][k];
-					if (right.id != config::cube_data::AIR) {
+					CubeFaceData &r = faceData[i + 1][j][k];
+					if (r.id != config::cube_data::AIR) {
 						current.right = false;
-						right.left = false;
+						r.left = false;
 					} else {
-						current.lvRight = right.lightValue;
+						current.lvRight = r.lightValue;
+					}
+				} else if (right != nullptr) {
+					Voxel &r = (*right).at(0).at(j).at(k);
+					if (r.id != config::cube_data::AIR) {
+						current.right = false;
+					} else {
+						current.lvRight = r.lightValue;
 					}
 				}
 				if (i > 0) {
-					CubeFaceData &left = faceData[i - 1][j][k];
-					if (left.id == config::cube_data::AIR) {
-						current.lvLeft = left.lightValue;
+					CubeFaceData &l = faceData[i - 1][j][k];
+					if (l.id == config::cube_data::AIR) {
+						current.lvLeft = l.lightValue;
+					}
+				} else if (left != nullptr){
+					Voxel &l = (*right).at(15).at(j).at(k);
+					if (l.id != config::cube_data::AIR) {
+						current.left = false;
+					} else {
+						current.lvRight = l.lightValue;
 					}
 				}
 
+				// TODO Y -- Wait to fix this
+				// Graphical chunks should not have the same height as logical
+				// leave it for now
 				if (j != height - 1) {
 					CubeFaceData &up = faceData[i][j + 1][k];
 					if (up.id != config::cube_data::AIR) {
@@ -104,26 +127,46 @@ transform{
 						current.lvBottom = bottom.lightValue;
 				}
 
+
+
+
+				// Z
 				if (k != depth - 1) {
-					CubeFaceData& back = faceData[i][j][k + 1];
-					if (back.id != config::cube_data::AIR) {
+					CubeFaceData& b = faceData[i][j][k + 1];
+					if (b.id != config::cube_data::AIR) {
 						current.back = false;
-						back.front = false;
+						b.front = false;
 					}
 					else {
-						current.lvBack = back.lightValue;
+						current.lvBack = b.lightValue;
+					}
+				} else if (back != nullptr) {
+					Voxel &b = (*back).at(i).at(j).at(0); //[i][j][k + 1];
+					if (b.id != config::cube_data::AIR) {
+						current.back = false;
+					}
+					else {
+						current.lvBack = b.lightValue;
 					}
 				}
 				if (k > 0) {
-					CubeFaceData &front = faceData[i][j][k - 1];
-					if (front.id == config::cube_data::AIR)
-						current.lvFront = front.lightValue;
+					CubeFaceData &f = faceData[i][j][k - 1];
+					if (f.id == config::cube_data::AIR)
+						current.lvFront = f.lightValue;
+				} else if (front != nullptr) {
+					Voxel &f = (*front).at(i).at(j).at(15);
+					if (f.id != config::cube_data::AIR) {
+						current.front = false;
+					} else {
+						current.lvRight = f.lightValue;
+					}
 				}
 
 			}
 		}
 	}
 
+	// The fourth element of the vertex data is the light value.
 	std::vector<GLfloat> vertexData;
 	std::vector<GLfloat> normals;
 	std::vector<GLfloat> UV;
@@ -144,6 +187,8 @@ transform{
 
 				int id = fd.id;
 
+				// Continue if air ?!?
+
 				GLfloat sideTexture = config::cube_data::BLOCK_TEXTURES[id][config::cube_data::SIDE_TEXTURE];
 				GLfloat topTexture = config::cube_data::BLOCK_TEXTURES[id][config::cube_data::TOP_TEXTURE];
 				GLfloat bottomTexture = config::cube_data::BLOCK_TEXTURES[id][config::cube_data::BOTTOM_TEXTURE];
@@ -152,12 +197,9 @@ transform{
 
 					std::vector<GLfloat> vertex {
 						-0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz, fd.lvFront,
-
-						0.5f + i + dx, 0.5f + j+ dy, -0.5f + k + dz, fd.lvFront,
+						0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz, fd.lvFront,
 						0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz, fd.lvFront,
-
 						-0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz, fd.lvFront,
-
 					};
 
 					std::vector<GLfloat> nor {
@@ -193,10 +235,8 @@ transform{
 
 					std::vector<GLfloat> vertex {
 						0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz, fd.lvBack,
-
 						-0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz, fd.lvBack,
 						-0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz, fd.lvBack,
-
 						0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz, fd.lvBack,
 
 					};
@@ -233,10 +273,8 @@ transform{
 
 					std::vector<GLfloat> vertex {
 						-0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz, fd.lvLeft,
-
 						-0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz, fd.lvLeft,
 						-0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz, fd.lvLeft,
-
 						-0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz, fd.lvLeft,
 
 					};
@@ -273,10 +311,8 @@ transform{
 
 					std::vector<GLfloat> vertex {
 						0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz, fd.lvRight,
-
 						0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz, fd.lvRight,
 						0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz, fd.lvRight,
-
 						0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz, fd.lvRight,
 
 					};
@@ -314,10 +350,8 @@ transform{
 
 					std::vector<GLfloat> vertex {
 						-0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz, fd.lvTop,
-
 						0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz, fd.lvTop,
 						0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz, fd.lvTop,
-
 						-0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz, fd.lvTop,
 
 					};
@@ -354,10 +388,8 @@ transform{
 
 					std::vector<GLfloat> vertex {
 						-0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz, fd.lvBottom,
-
 						0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz, fd.lvBottom,
 						0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz, fd.lvBottom,
-
 						-0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz, fd.lvBottom,
 
 					};
@@ -423,266 +455,3 @@ float GraphicalChunk::getyLocation()
 
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-
-	for (int i = 0; i < width; i++) {
-		for (int j = 0; j < height; j++) {
-			for (int k = 0; k < depth; k++) {
-
-				CubeFaceData fd = faceData[i][j][k];
-
-				int id = fd.id;
-
-				GLfloat sideTexture = config::cube_data::BLOCK_TEXTURES[id][config::cube_data::SIDE_TEXTURE];
-				GLfloat topTexture =config::cube_data::BLOCK_TEXTURES[id][config::cube_data::TOP_TEXTURE];
-				GLfloat bottomTexture = config::cube_data::BLOCK_TEXTURES[id][config::cube_data::BOTTOM_TEXTURE];
-
-				if (fd.front) {
-
-					std::vector<GLfloat> vertex {
-						-0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz,
-						0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz,
-						0.5f + i + dx, 0.5f + j+ dy, -0.5f + k + dz,
-						-0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz
-					};
-
-					std::vector<GLfloat> nor {
-						0.0f, 0.0f, -1.0f,
-						0.0f, 0.0f, -1.0f,
-						0.0f, 0.0f, -1.0f,
-						0.0f, 0.0f, -1.0f
-					};
-
-					std::vector<GLfloat> uv {
-
-						0.0f, 0.0f, static_cast<GLfloat>(sideTexture),
-						1.0f, 0.0f, static_cast<GLfloat>(sideTexture),
-						1.0f, 1.0f, static_cast<GLfloat>(sideTexture),
-						0.0f, 1.0f, static_cast<GLfloat>(sideTexture),
-					};
-
-					std::vector<short> el{
-						static_cast<short>(0 + elementOffset), static_cast<short>(1 + elementOffset), static_cast<short>(2 + elementOffset),
-						static_cast<short>(0 + elementOffset), static_cast<short>(2 + elementOffset), static_cast<short>(3 + elementOffset)
-					};
-
-					for (auto v : vertex) { vertexData.push_back(v);}
-					for (auto n : nor) { normals.push_back(n);}
-					for (auto u : uv) { UV.push_back(u);}
-					for (auto e : el) { elementData.push_back(e);}
-
-					elementOffset += 4;
-					totalNumberOfFaces++;
-				}
-
-				if (fd.back) {
-
-					std::vector<GLfloat> vertex {
-						0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz,
-						-0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz,
-						-0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz,
-						0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz,
-					};
-
-					std::vector<GLfloat> nor {
-						0.0f, 0.0f, 1.0f,
-						0.0f, 0.0f, 1.0f,
-						0.0f, 0.0f, 1.0f,
-						0.0f, 0.0f, 1.0f,
-					};
-
-					std::vector<GLfloat> uv {
-						0.0f, 0.0f, static_cast<GLfloat>(sideTexture),
-						1.0f, 0.0f, static_cast<GLfloat>(sideTexture),
-						1.0f, 1.0f, static_cast<GLfloat>(sideTexture),
-						0.0f, 1.0f, static_cast<GLfloat>(sideTexture),
-					};
-
-					std::vector<short> el{
-						static_cast<short>(0 + elementOffset), static_cast<short>(1 + elementOffset), static_cast<short>(2 + elementOffset),
-						static_cast<short>(0 + elementOffset), static_cast<short>(2 + elementOffset), static_cast<short>(3 + elementOffset)
-					};
-
-					for (auto v : vertex) { vertexData.push_back(v);}
-					for (auto n : nor) { normals.push_back(n);}
-					for (auto u : uv) { UV.push_back(u);}
-					for (auto e : el) { elementData.push_back(e);}
-
-					elementOffset += 4;
-					totalNumberOfFaces++;
-				}
-
-				if (fd.left) {
-
-					std::vector<GLfloat> vertex {
-						-0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz,
-						-0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz,
-						-0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz,
-						-0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz,
-					};
-
-					std::vector<GLfloat> nor {
-						-1.0f, 0.0f, 0.0f,
-						-1.0f, 0.0f, 0.0f,
-						-1.0f, 0.0f, 0.0f,
-						-1.0f, 0.0f, 0.0f,
-					};
-
-					std::vector<GLfloat> uv {
-						0.0f, 0.0f, static_cast<GLfloat>(sideTexture),
-						1.0f, 0.0f, static_cast<GLfloat>(sideTexture),
-						1.0f, 1.0f, static_cast<GLfloat>(sideTexture),
-						0.0f, 1.0f, static_cast<GLfloat>(sideTexture),
-					};
-
-					std::vector<short> el{
-						static_cast<short>(0 + elementOffset), static_cast<short>(1 + elementOffset), static_cast<short>(2 + elementOffset),
-						static_cast<short>(0 + elementOffset), static_cast<short>(2 + elementOffset), static_cast<short>(3 + elementOffset)
-					};
-
-					for (auto v : vertex) { vertexData.push_back(v);}
-					for (auto n : nor) { normals.push_back(n);}
-					for (auto u : uv) { UV.push_back(u);}
-					for (auto e : el) { elementData.push_back(e);}
-
-					elementOffset += 4;
-					totalNumberOfFaces++;
-				}
-
-				if (fd.right) {
-
-					std::vector<GLfloat> vertex {
-						0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz,
-						0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz,
-						0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz,
-						0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz,
-					};
-
-					std::vector<GLfloat> nor {
-						1.0f, 0.0f, 0.0f,
-						1.0f, 0.0f, 0.0f,
-						1.0f, 0.0f, 0.0f,
-						1.0f, 0.0f, 0.0f,
-					};
-
-					std::vector<GLfloat> uv {
-						0.0f, 0.0f, static_cast<GLfloat>(sideTexture),
-						1.0f, 0.0f, static_cast<GLfloat>(sideTexture),
-						1.0f, 1.0f, static_cast<GLfloat>(sideTexture),
-						0.0f, 1.0f, static_cast<GLfloat>(sideTexture),
-					};
-
-					std::vector<short> el{
-						static_cast<short>(0 + elementOffset), static_cast<short>(1 + elementOffset), static_cast<short>(2 + elementOffset),
-						static_cast<short>(0 + elementOffset), static_cast<short>(2 + elementOffset), static_cast<short>(3 + elementOffset)
-					};
-
-					for (auto v : vertex) { vertexData.push_back(v);}
-					for (auto n : nor) { normals.push_back(n);}
-					for (auto u : uv) { UV.push_back(u);}
-					for (auto e : el) { elementData.push_back(e);}
-
-					elementOffset += 4;
-					totalNumberOfFaces++;
-				}
-
-
-				if (fd.top) {
-
-					std::vector<GLfloat> vertex {
-						-0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz,
-						0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz,
-						0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz,
-						-0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz
-					};
-
-					std::vector<GLfloat> nor {
-						0.0f, 1.0f, 0.0f,
-						0.0f, 1.0f, 0.0f,
-						0.0f, 1.0f, 0.0f,
-						0.0f, 1.0f, 0.0f
-					};
-
-					std::vector<GLfloat> uv {
-						0.0f, 0.0f, static_cast<GLfloat>(topTexture),
-						1.0f, 0.0f, static_cast<GLfloat>(topTexture),
-						1.0f, 1.0f, static_cast<GLfloat>(topTexture),
-						0.0f, 1.0f, static_cast<GLfloat>(topTexture)
-					};
-
-					std::vector<short> el{
-						static_cast<short>(0 + elementOffset), static_cast<short>(1 + elementOffset), static_cast<short>(2 + elementOffset),
-						static_cast<short>(0 + elementOffset), static_cast<short>(2 + elementOffset), static_cast<short>(3 + elementOffset)
-					};
-
-					for (auto v : vertex) { vertexData.push_back(v);}
-					for (auto n : nor) { normals.push_back(n);}
-					for (auto u : uv) { UV.push_back(u);}
-					for (auto e : el) { elementData.push_back(e);}
-
-					elementOffset += 4;
-					totalNumberOfFaces++;
-				}
-
-				if (fd.bottom) {
-
-					std::vector<GLfloat> vertex {
-						-0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz,
-						0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz,
-						0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz,
-						-0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz
-					};
-
-					std::vector<GLfloat> nor {
-						0.0f, -1.0f, 0.0f,
-						0.0f, -1.0f, 0.0f,
-						0.0f, -1.0f, 0.0f,
-						0.0f, -1.0f, 0.0f
-					};
-
-					std::vector<GLfloat> uv {
-						0.0f, 0.0f, static_cast<GLfloat>(bottomTexture),
-						1.0f, 0.0f, static_cast<GLfloat>(bottomTexture),
-						1.0f, 1.0f, static_cast<GLfloat>(bottomTexture),
-						0.0f, 1.0f, static_cast<GLfloat>(bottomTexture)
-					};
-
-
-
-					std::vector<short> el{
-						static_cast<short>(0 + elementOffset), static_cast<short>(1 + elementOffset), static_cast<short>(2 + elementOffset),
-						static_cast<short>(0 + elementOffset), static_cast<short>(2 + elementOffset), static_cast<short>(3 + elementOffset)
-					};
-
-					for (auto v : vertex) { vertexData.push_back(v);}
-					for (auto n : nor) { normals.push_back(n);}
-					for (auto u : uv) { UV.push_back(u);}
-					for (auto e : el) { elementData.push_back(e);}
-
-					elementOffset += 4;
-					totalNumberOfFaces++;
-				}
-			}
-		}
-	}
-
-	*/

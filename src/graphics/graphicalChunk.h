@@ -3,6 +3,7 @@
 #define SRC_GRAPHICS_GRAPHICALCHUNK_H_
 
 #include <memory>
+#include <vector>
 
 #include "mesh/meshElement.h"
 #include "transform.h"
@@ -21,7 +22,12 @@ public:
 // ########################################################
 
 	GraphicalChunk(float x, float y, float z,
-			Voxel data[config::chunk_data::GRAPHICAL_CHUNK_WIDTH][config::chunk_data::GRAPHICAL_CHUNK_HEIGHT][config::chunk_data::GRAPHICAL_CHUNK_DEPTH]);
+			std::vector<std::vector<std::vector<Voxel>>> &data,
+			std::vector<std::vector<std::vector<Voxel>>> *right,
+			std::vector<std::vector<std::vector<Voxel>>> *left,
+			std::vector<std::vector<std::vector<Voxel>>> *front,
+			std::vector<std::vector<std::vector<Voxel>>> *back
+	);
 
 	virtual ~GraphicalChunk() {};
 

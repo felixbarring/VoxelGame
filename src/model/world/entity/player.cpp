@@ -111,9 +111,9 @@ void Player::update(float timePassed)
 		}
 	}
 
-	if (!colided) {
+	//if (!colided) {
 		location += speed;
-	}
+	//}
 
 	//std::cout << "Number of checks:" << counter << "\n";
 

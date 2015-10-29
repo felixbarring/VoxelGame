@@ -16,9 +16,9 @@ namespace chunk
 ChunkManager::ChunkManager()
 {
 
-	int xMax = config::chunk_data::NUMBER_OF_CHUNKS_X;
-	int yMax = config::chunk_data::NUMBER_OF_CHUNKS_Y;
-	int zMax = config::chunk_data::NUMBER_OF_CHUNKS_Z;
+	const int xMax = config::chunk_data::NUMBER_OF_CHUNKS_X;
+	const int yMax = config::chunk_data::NUMBER_OF_CHUNKS_Y;
+	const int zMax = config::chunk_data::NUMBER_OF_CHUNKS_Z;
 
 	// Create the Chunks
 	for (int x = 0; x < xMax; x++) {
@@ -35,15 +35,17 @@ ChunkManager::ChunkManager()
 	for (int x = 0; x < xMax-1; x++) {
 		for (int z = 0; z < zMax-1; z++) {
 			std::shared_ptr<Chunk> right = chunks[x+1][0][z];
-			std::shared_ptr<Chunk> front = chunks[x][0][z+1];
+			std::shared_ptr<Chunk> back = chunks[x][0][z+1];
 
 			std::shared_ptr<Chunk> current = chunks[x][0][z];
 
 			current->setRightNeighbor(right);
 			right->setLeftNeighbor(current);
 
-			current->setFrontNeighbor(front);
-			front->setBackNeighbor(current);
+			current->setBackNeighbor(back);
+			back->setFrontNeighbor(current);
+
+			current->updateGraphics();
 		}
 	}
 
