@@ -15,11 +15,11 @@ namespace graphics
 // ########################################################
 
 GraphicalChunk::GraphicalChunk(float x, float y, float z,
-		std::vector<std::vector<std::vector<Voxel>>> &data,
-		std::vector<std::vector<std::vector<Voxel>>> *right,
-		std::vector<std::vector<std::vector<Voxel>>> *left,
-		std::vector<std::vector<std::vector<Voxel>>> *front,
-		std::vector<std::vector<std::vector<Voxel>>> *back
+	std::vector<std::vector<std::vector<Voxel>>> &data,
+	std::vector<std::vector<std::vector<Voxel>>> *right,
+	std::vector<std::vector<std::vector<Voxel>>> *left,
+	std::vector<std::vector<std::vector<Voxel>>> *front,
+	std::vector<std::vector<std::vector<Voxel>>> *back
 	):
 xLocation{x},
 yLocation{y},
@@ -77,12 +77,11 @@ transform{
 					continue;
 				}
 
-				// X
+				// X ##########################################################
 				if (i != width - 1) {
 					CubeFaceData &r = faceData[i + 1][j][k];
 					if (r.id != config::cube_data::AIR) {
 						current.right = false;
-						r.left = false;
 					} else {
 						current.lvRight = r.lightValue;
 					}
@@ -94,20 +93,23 @@ transform{
 						current.lvRight = r.lightValue;
 					}
 				}
-				if (i > 0) {
+				if (i != 0) {
 					CubeFaceData &l = faceData[i - 1][j][k];
-					if (l.id == config::cube_data::AIR) {
-						current.lvLeft = l.lightValue;
-					}
-				} else if (left != nullptr){
-					Voxel &l = (*right).at(15).at(j).at(k);
 					if (l.id != config::cube_data::AIR) {
 						current.left = false;
 					} else {
-						current.lvRight = l.lightValue;
+						current.lvLeft = l.lightValue;
+					}
+				} else if (left != nullptr){
+					Voxel &l = (*left).at(15).at(j).at(k);
+					if (l.id != config::cube_data::AIR) {
+						current.left = false;
+					} else {
+						current.lvLeft = l.lightValue;
 					}
 				}
 
+				// Y ##########################################################
 				// TODO Y -- Wait to fix this
 				// Graphical chunks should not have the same height as logical
 				// leave it for now
@@ -127,10 +129,7 @@ transform{
 						current.lvBottom = bottom.lightValue;
 				}
 
-
-
-
-				// Z
+				// Z ##########################################################
 				if (k != depth - 1) {
 					CubeFaceData& b = faceData[i][j][k + 1];
 					if (b.id != config::cube_data::AIR) {
@@ -158,7 +157,7 @@ transform{
 					if (f.id != config::cube_data::AIR) {
 						current.front = false;
 					} else {
-						current.lvRight = f.lightValue;
+						current.lvFront = f.lightValue;
 					}
 				}
 

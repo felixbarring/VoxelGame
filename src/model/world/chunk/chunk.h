@@ -44,7 +44,6 @@ public:
 
 	void setBackNeighbor(std::shared_ptr<Chunk> chunk);
 
-
 	void doSunLightning();
 
 	void propagateLight(int x, int y, int z);
