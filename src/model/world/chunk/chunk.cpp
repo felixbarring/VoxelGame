@@ -79,18 +79,47 @@ void Chunk::setCube(int x, int y, int z, char id)
 	voxel.id = id;
 
 	std::vector<glm::vec3> lightPropagate;
+
 	std::vector<glm::vec3> lightPropagateRight;
+	std::vector<glm::vec3> lightPropagateRightBack;
+	std::vector<glm::vec3> lightPropagateRightFront;
+
 	std::vector<glm::vec3> lightPropagateLeft;
+	std::vector<glm::vec3> lightPropagateLeftBack;
+	std::vector<glm::vec3> lightPropagateLeftFront;
+
 	std::vector<glm::vec3> lightPropagateBack;
 	std::vector<glm::vec3> lightPropagateFront;
 
 	doSunLightning(lightPropagate);
 
-	if (rightNeighbor.get() != nullptr)
+	// Sun light ####################################################
+
+	if (rightNeighbor.get() != nullptr) {
 		rightNeighbor->doSunLightning(lightPropagateRight);
 
-	if (leftNeighbor.get() != nullptr)
+		if (rightNeighbor->backNeighbor.get() != nullptr) {
+			rightNeighbor->backNeighbor->doSunLightning(lightPropagateRightBack);
+		}
+
+		if (rightNeighbor->frontNeighbor.get() != nullptr) {
+			rightNeighbor->frontNeighbor->doSunLightning(lightPropagateRightFront);
+		}
+
+	}
+
+	if (leftNeighbor.get() != nullptr) {
 		leftNeighbor->doSunLightning(lightPropagateLeft);
+
+		if (leftNeighbor->backNeighbor.get() != nullptr) {
+			leftNeighbor->backNeighbor->doSunLightning(lightPropagateLeftBack);
+		}
+
+		if (leftNeighbor->frontNeighbor.get() != nullptr) {
+			leftNeighbor->frontNeighbor->doSunLightning(lightPropagateLeftFront);
+		}
+
+	}
 
 	if (backNeighbor.get() != nullptr)
 		backNeighbor->doSunLightning(lightPropagateBack);
@@ -99,44 +128,101 @@ void Chunk::setCube(int x, int y, int z, char id)
 		frontNeighbor->doSunLightning(lightPropagateFront);
 
 
+
+	// Propagate light ##############################################
+
+
 	for (glm::vec3 vec : lightPropagate)
 		propagateLight(vec.x, vec.y, vec.z);
 
 	if (rightNeighbor.get() != nullptr) {
-		rightNeighbor->collectLightFromNeighbors(lightPropagateRight);
+		rightNeighbor->collectLightFromRightNeighbor(lightPropagateRight);
 		for (glm::vec3 vec : lightPropagateRight)
 			rightNeighbor->propagateLight(vec.x, vec.y, vec.z);
 
+		if (rightNeighbor->backNeighbor.get() != nullptr) {
+			rightNeighbor->backNeighbor->collectLightFromRightNeighbor(lightPropagateRightBack);
+			rightNeighbor->backNeighbor->collectLightFromBackNeighbor(lightPropagateRightBack);
+
+			for (glm::vec3 vec : lightPropagateRightBack)
+				rightNeighbor->backNeighbor->propagateLight(vec.x, vec.y, vec.z);
+
+		}
+
+		if (rightNeighbor->frontNeighbor.get() != nullptr) {
+			rightNeighbor->frontNeighbor->collectLightFromRightNeighbor(lightPropagateRightFront);
+			rightNeighbor->frontNeighbor->collectLightFromFrontNeighbor(lightPropagateRightFront);
+
+			for (glm::vec3 vec : lightPropagateRightFront)
+				rightNeighbor->frontNeighbor->backNeighbor->propagateLight(vec.x, vec.y, vec.z);
+
+		}
 	}
 
 	if (leftNeighbor.get() != nullptr) {
-		leftNeighbor->collectLightFromNeighbors(lightPropagateLeft);
+		leftNeighbor->collectLightFromLeftNeighbor(lightPropagateLeft);
 		for (glm::vec3 vec : lightPropagateLeft)
 			leftNeighbor->propagateLight(vec.x, vec.y, vec.z);
 
+		if (leftNeighbor->backNeighbor.get() != nullptr) {
+			leftNeighbor->backNeighbor->collectLightFromLeftNeighbor(lightPropagateLeftBack);
+			leftNeighbor->backNeighbor->collectLightFromBackNeighbor(lightPropagateLeftBack);
+
+			for (glm::vec3 vec : lightPropagateLeftBack)
+				leftNeighbor->backNeighbor->propagateLight(vec.x, vec.y, vec.z);
+
+		}
+
+		if (leftNeighbor->frontNeighbor.get() != nullptr) {
+			leftNeighbor->frontNeighbor->collectLightFromLeftNeighbor(lightPropagateLeftFront);
+			leftNeighbor->frontNeighbor->collectLightFromFrontNeighbor(lightPropagateLeftFront);
+
+			for (glm::vec3 vec : lightPropagateLeftFront)
+				leftNeighbor->frontNeighbor->propagateLight(vec.x, vec.y, vec.z);
+
+		}
 	}
 
 	if (backNeighbor.get() != nullptr) {
-		backNeighbor->collectLightFromNeighbors(lightPropagateBack);
+		backNeighbor->collectLightFromBackNeighbor(lightPropagateBack);
 		for (glm::vec3 vec : lightPropagateBack)
 			backNeighbor->propagateLight(vec.x, vec.y, vec.z);
 
 	}
 
 	if (frontNeighbor.get() != nullptr) {
-		frontNeighbor->collectLightFromNeighbors(lightPropagateFront);
-		for (glm::vec3 vec : lightPropagateFront)
+		frontNeighbor->collectLightFromFrontNeighbor(lightPropagateFront);
+		for (glm::vec3 vec : lightPropagateFront) {
 			frontNeighbor->propagateLight(vec.x, vec.y, vec.z);
+		}
 
 	}
 
 	updateGraphics();
 
-	if (rightNeighbor.get() != nullptr)
+	// More shit to update here ;)
+
+	if (rightNeighbor.get() != nullptr) {
 		rightNeighbor->updateGraphics();
 
-	if (leftNeighbor.get() != nullptr)
+		if (rightNeighbor->backNeighbor.get() != nullptr)
+			rightNeighbor->backNeighbor->updateGraphics();
+
+		if (rightNeighbor->frontNeighbor.get() != nullptr)
+			rightNeighbor->frontNeighbor->updateGraphics();
+
+	}
+
+	if (leftNeighbor.get() != nullptr) {
 		leftNeighbor->updateGraphics();
+
+		if (leftNeighbor->backNeighbor.get() != nullptr)
+			leftNeighbor->backNeighbor->updateGraphics();
+
+		if (leftNeighbor->frontNeighbor.get() != nullptr)
+			leftNeighbor->frontNeighbor->updateGraphics();
+
+	}
 
 	if (backNeighbor.get() != nullptr)
 		backNeighbor->updateGraphics();
@@ -172,7 +258,6 @@ void Chunk::updateGraphics()
 
 }
 
-
 void Chunk::setLeftNeighbor(std::shared_ptr<Chunk> chunk)
 {
 	leftNeighbor = chunk;
@@ -183,7 +268,6 @@ void Chunk::setRightNeighbor(std::shared_ptr<Chunk> chunk)
 	rightNeighbor = chunk;
 }
 
-
 void Chunk::setFrontNeighbor(std::shared_ptr<Chunk> chunk)
 {
 	frontNeighbor = chunk;
@@ -193,7 +277,6 @@ void Chunk::setBackNeighbor(std::shared_ptr<Chunk> chunk)
 {
 	backNeighbor = chunk;
 }
-
 
 void Chunk::doSunLightning(std::vector<glm::vec3> &lightPropagate)
 {
@@ -222,10 +305,8 @@ void Chunk::doSunLightning(std::vector<glm::vec3> &lightPropagate)
 
 }
 
-void Chunk::collectLightFromNeighbors(std::vector<glm::vec3> &lightPropagate)
+void Chunk::collectLightFromRightNeighbor(std::vector<glm::vec3> &lightPropagate)
 {
-
-	// Right side
 	if (rightNeighbor.get() != nullptr) {
 		for (int j = 0; j < config::chunk_data::CHUNK_HEIGHT; j++) {
 			for (int k = 0; k < config::chunk_data::CHUNK_DEPTH; k++) {
@@ -239,8 +320,10 @@ void Chunk::collectLightFromNeighbors(std::vector<glm::vec3> &lightPropagate)
 			}
 		}
 	}
+}
 
-	// Left Side
+void Chunk::collectLightFromLeftNeighbor(std::vector<glm::vec3> &lightPropagate)
+{
 	if (leftNeighbor.get() != nullptr) {
 		for (int j = 0; j < config::chunk_data::CHUNK_HEIGHT; j++) {
 			for (int k = 0; k < config::chunk_data::CHUNK_DEPTH; k++) {
@@ -254,23 +337,35 @@ void Chunk::collectLightFromNeighbors(std::vector<glm::vec3> &lightPropagate)
 			}
 		}
 	}
+}
 
-	// Back Side
+void Chunk::collectLightFromBackNeighbor(std::vector<glm::vec3> &lightPropagate)
+{
+
+
+
 	if (backNeighbor.get() != nullptr) {
+
 		for (int i = 0; i < config::chunk_data::CHUNK_WIDHT; i++) {
 			for (int j = 0; j < config::chunk_data::CHUNK_HEIGHT; j++) {
 				char lv = backNeighbor->vec[i][j][0].lightValue - 1;
 
 				if (backNeighbor->vec[i][j][0].id == config::cube_data::AIR && vec[i][j][15].id == config::cube_data::AIR
 						&& lv > vec[i][j][15].lightValue) {
+
+					std::cout << "Collecting light from back ------------------------ \n";
+					std::cout << "   Collected light " << i << " " << j << " " << 15 << " \n";
+
 					vec[i][j][15].lightValue = lv;
-					lightPropagate.push_back(glm::vec3(i, j, 0));
+					lightPropagate.push_back(glm::vec3(i, j, 15));
 				}
 			}
 		}
 	}
+}
 
-	// Front Side
+void Chunk::collectLightFromFrontNeighbor(std::vector<glm::vec3> &lightPropagate)
+{
 	if (frontNeighbor.get() != nullptr) {
 		for (int i = 0; i < config::chunk_data::CHUNK_WIDHT; i++) {
 			for (int j = 0; j < config::chunk_data::CHUNK_HEIGHT; j++) {
@@ -278,13 +373,18 @@ void Chunk::collectLightFromNeighbors(std::vector<glm::vec3> &lightPropagate)
 
 				if (frontNeighbor->vec[i][j][15].id == config::cube_data::AIR && vec[i][j][0].id == config::cube_data::AIR &&
 						lv > vec[i][j][0].lightValue) {
+
+					std::cout << "Collecting light from front ------------------------ \n";
+					std::cout << "   Collected light " << i << " " << j << " " << 0 << " \n";
+
 					vec[i][j][0].lightValue = lv;
-					lightPropagate.push_back(glm::vec3(i, j, 15));
+					//lightPropagate.push_back(glm::vec3(i, j, 15));
+					propagateLight(i, j, 0);
+
 				}
 			}
 		}
 	}
-
 }
 
 void Chunk::propagateLight(int x, int y, int z)
@@ -298,7 +398,6 @@ void Chunk::propagateLight(int x, int y, int z)
 	// TODO Remove all the hard coded values
 
 	// ##################################################################################
-
 	// Traverse right
 	int lv = lvInitial;
 	for (int i = x + 1; lv > 0; i++) {

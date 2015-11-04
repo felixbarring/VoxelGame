@@ -58,11 +58,19 @@ void Game::run()
 	std::cout << "Height: " << height << "\n";
 	std::cout << "Refresh Rate: " << refreshRate << "\n";
 
-	int WIDTH = width;
-	int HEIGHT = height;
+	//int WIDTH = width;
+	//int HEIGHT = height;
 
-	GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "Voxel Game", glfwGetPrimaryMonitor(), nullptr);
-	//GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "Voxel Game", nullptr, nullptr);
+	int WIDTH = 800;
+	int HEIGHT = 600;
+
+	// Why the fuck dose this not work ?!?
+	config::graphics_data::windowWidth = WIDTH;
+	config::graphics_data::windowHeight = HEIGHT;
+
+
+	//GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "Voxel Game", glfwGetPrimaryMonitor(), nullptr);
+	GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "Voxel Game", nullptr, nullptr);
 
 	if (window == nullptr) {
 		std::cout << "Failed to open GLFW window.\n";
