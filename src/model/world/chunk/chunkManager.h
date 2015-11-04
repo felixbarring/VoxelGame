@@ -7,6 +7,7 @@
 
 #include "chunk.h"
 #include "../../../config/data.h"
+#include "../../../util/voxel.h"
 
 namespace chunk
 {
@@ -34,6 +35,8 @@ public:
 		return INSTANCE;
 	}
 
+	Voxel& getVoxel(int x, int y, int z);
+
 	char getCubeId(int x, int y, int z);
 
 	bool isSolid(int x, int y, int z);
@@ -44,6 +47,7 @@ public:
 
 	void setCube(int x, int y, int z, char id);
 
+	// Return all the data instead of querying
 	bool intersectWithSolidCube(glm::vec3 origin, glm::vec3 direction, float searchLength);
 
 	glm::vec3 getLocationOfInteresectedCube();

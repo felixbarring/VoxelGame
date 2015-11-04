@@ -36,8 +36,8 @@ ChunkBatcher::ChunkBatcher() :
 		"void main(){ \n"
 		//"  texCoord = vec3(texCoordIn.x, 1 - texCoordIn.y, texCoordIn.z); \n"
 		"  texCoord = vec3(texCoordIn.x, texCoordIn.y, texCoordIn.z); \n"
-		"  lightValue = (positionIn.w + 3) / 16; \n"
-		//"  lightValue = positionIn.w / 16; \n"
+		//"  lightValue = (positionIn.w + 3) / 16; \n"
+		"  lightValue = positionIn.w / 16; \n"
 
 		"  gl_Position =  modelViewProjection * vec4(positionIn.xyz, 1); \n"
 		"} \n";

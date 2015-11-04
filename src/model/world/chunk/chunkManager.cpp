@@ -55,6 +55,8 @@ ChunkManager::ChunkManager()
 // Member Functions########################################
 // ########################################################
 
+
+
 char ChunkManager::getCubeId(int x, int y, int z)
 {
 	// Used to avoid Division every time the function is called.

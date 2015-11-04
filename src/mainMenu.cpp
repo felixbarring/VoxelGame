@@ -37,7 +37,7 @@ MainMenu::MainMenu(Game *game) :
 
 	std::function<void(int, float)> observer2 = [&](int id, float value)
 	{
-		std::cout << value << "\n";
+		//std::cout << value << "\n";
 		switch (id) {
 			case 100: {
 				textInput->setString(std::to_string(value));

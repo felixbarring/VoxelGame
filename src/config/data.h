@@ -18,6 +18,7 @@ namespace config
 		static constexpr int GRAPHICAL_CHUNK_HEIGHT = 128;
 		static constexpr int GRAPHICAL_CHUNK_DEPTH = 16;
 
+		// TODO Miss spelled :( width not widht
 		static constexpr int CHUNK_WIDHT = 16;
 		static constexpr int CHUNK_HEIGHT = 128;
 		static constexpr int CHUNK_DEPTH = 16;

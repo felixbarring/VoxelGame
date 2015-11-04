@@ -32,6 +32,8 @@ public:
 
 	// Some kind of update method here
 
+	Voxel& getVoxel(int x, int y, int z);
+
 	char getCubeId(int x, int y, int z);
 
 	void setCube(int x, int y, int z, char id);
@@ -44,14 +46,15 @@ public:
 
 	void setBackNeighbor(std::shared_ptr<Chunk> chunk);
 
-	void doSunLightning();
-
-	void propagateLight(int x, int y, int z);
-
 	void updateGraphics();
 
-
 private:
+
+	void doSunLightning(std::vector<glm::vec3> &lightPropagate);
+
+	void collectLightFromNeighbors(std::vector<glm::vec3> &lightPropagate);
+
+	void propagateLight(int x, int y, int z);
 
 	// ########################################################
 	// Instance Variables #####################################
@@ -59,10 +62,9 @@ private:
 
 	int xLocation, yLocation, zLocation;
 
-
 	std::vector<std::vector<std::vector<Voxel>>> vec;
 
-	Voxel voxels[config::chunk_data::CHUNK_WIDHT][config::chunk_data::CHUNK_HEIGHT][config::chunk_data::CHUNK_DEPTH];
+	//Voxel voxels[config::chunk_data::CHUNK_WIDHT][config::chunk_data::CHUNK_HEIGHT][config::chunk_data::CHUNK_DEPTH];
 	std::shared_ptr<graphics::GraphicalChunk> graphicalChunk;
 
 	std::shared_ptr<Chunk> rightNeighbor;

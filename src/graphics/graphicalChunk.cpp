@@ -140,7 +140,7 @@ transform{
 						current.lvBack = b.lightValue;
 					}
 				} else if (back != nullptr) {
-					Voxel &b = (*back).at(i).at(j).at(0); //[i][j][k + 1];
+					Voxel &b = (*back).at(i).at(j).at(0);
 					if (b.id != config::cube_data::AIR) {
 						current.back = false;
 					}
@@ -209,7 +209,6 @@ transform{
 					};
 
 					std::vector<GLfloat> uv {
-
 						0.0f, 0.0f, static_cast<GLfloat>(sideTexture),
 						1.0f, 0.0f, static_cast<GLfloat>(sideTexture),
 						1.0f, 1.0f, static_cast<GLfloat>(sideTexture),
@@ -275,7 +274,6 @@ transform{
 						-0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz, fd.lvLeft,
 						-0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz, fd.lvLeft,
 						-0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz, fd.lvLeft,
-
 					};
 
 					std::vector<GLfloat> nor {
@@ -313,7 +311,6 @@ transform{
 						0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz, fd.lvRight,
 						0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz, fd.lvRight,
 						0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz, fd.lvRight,
-
 					};
 
 					std::vector<GLfloat> nor {
@@ -352,7 +349,6 @@ transform{
 						0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz, fd.lvTop,
 						0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz, fd.lvTop,
 						-0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz, fd.lvTop,
-
 					};
 
 					std::vector<GLfloat> nor {
@@ -390,7 +386,6 @@ transform{
 						0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz, fd.lvBottom,
 						0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz, fd.lvBottom,
 						-0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz, fd.lvBottom,
-
 					};
 
 					std::vector<GLfloat> nor {

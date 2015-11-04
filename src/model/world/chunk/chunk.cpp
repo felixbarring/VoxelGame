@@ -12,16 +12,23 @@ namespace chunk
 // Constructor/Destructor #################################
 // ########################################################
 
+static 	int counter = 1;
+static const int maxCount = 4;
+
 Chunk::Chunk(int x, int y, int z):
 	xLocation{x},
 	yLocation{y},
 	zLocation{z}
 {
-	int counter = 1;
-	const int maxCount = 7;
+
+	counter++;
 
 	for (int i = 0; i < config::chunk_data::CHUNK_WIDHT; i++) {
 		vec.push_back(std::vector<std::vector<Voxel>>());
+
+		//counter++;
+		if (counter == maxCount)
+			counter = 0;
 
 		for (int j = 0; j < config::chunk_data::CHUNK_HEIGHT; j++) {
 			vec[i].push_back(std::vector<Voxel>());
@@ -30,23 +37,20 @@ Chunk::Chunk(int x, int y, int z):
 				Voxel v;
 				v.lightValue = 0;
 				if (j < 5) {
-					v.id = counter++;
+					v.id = counter;
 					vec[i][j].push_back(v);
-
-					if (counter == maxCount)
-						counter = 0;
-
 				} else {
 					v.id = config::cube_data::AIR;
 					vec[i][j].push_back(v);
 				}
 			}
-
 		}
 	}
 
-
-	doSunLightning();
+	std::vector<glm::vec3> lightPropagate;
+	doSunLightning(lightPropagate);
+	for (glm::vec3 vec : lightPropagate)
+		propagateLight(vec.x, vec.y, vec.z);
 
 }
 
@@ -55,6 +59,12 @@ Chunk::Chunk(int x, int y, int z):
 // Member Functions########################################
 // ########################################################
 
+Voxel& Chunk::getVoxel(int x, int y, int z)
+{
+	return vec.at(x).at(y).at(z);
+	//return vec[x][y][z];
+}
+
 char Chunk::getCubeId(int x, int y, int z)
 {
 	return vec.at(x).at(y).at(z).id;
@@ -62,22 +72,63 @@ char Chunk::getCubeId(int x, int y, int z)
 
 void Chunk::setCube(int x, int y, int z, char id)
 {
+
+	// TODO Consider: Optimize depending on if a cube was removed or added.
+
 	Voxel &voxel = vec[x][y][z];
 	voxel.id = id;
 
-	doSunLightning();
+	std::vector<glm::vec3> lightPropagate;
+	std::vector<glm::vec3> lightPropagateRight;
+	std::vector<glm::vec3> lightPropagateLeft;
+	std::vector<glm::vec3> lightPropagateBack;
+	std::vector<glm::vec3> lightPropagateFront;
+
+	doSunLightning(lightPropagate);
 
 	if (rightNeighbor.get() != nullptr)
-		rightNeighbor->doSunLightning();
+		rightNeighbor->doSunLightning(lightPropagateRight);
 
 	if (leftNeighbor.get() != nullptr)
-		leftNeighbor->doSunLightning();
-
-	if (frontNeighbor.get() != nullptr)
-		frontNeighbor->doSunLightning();
+		leftNeighbor->doSunLightning(lightPropagateLeft);
 
 	if (backNeighbor.get() != nullptr)
-		backNeighbor->doSunLightning();
+		backNeighbor->doSunLightning(lightPropagateBack);
+
+	if (frontNeighbor.get() != nullptr)
+		frontNeighbor->doSunLightning(lightPropagateFront);
+
+
+	for (glm::vec3 vec : lightPropagate)
+		propagateLight(vec.x, vec.y, vec.z);
+
+	if (rightNeighbor.get() != nullptr) {
+		rightNeighbor->collectLightFromNeighbors(lightPropagateRight);
+		for (glm::vec3 vec : lightPropagateRight)
+			rightNeighbor->propagateLight(vec.x, vec.y, vec.z);
+
+	}
+
+	if (leftNeighbor.get() != nullptr) {
+		leftNeighbor->collectLightFromNeighbors(lightPropagateLeft);
+		for (glm::vec3 vec : lightPropagateLeft)
+			leftNeighbor->propagateLight(vec.x, vec.y, vec.z);
+
+	}
+
+	if (backNeighbor.get() != nullptr) {
+		backNeighbor->collectLightFromNeighbors(lightPropagateBack);
+		for (glm::vec3 vec : lightPropagateBack)
+			backNeighbor->propagateLight(vec.x, vec.y, vec.z);
+
+	}
+
+	if (frontNeighbor.get() != nullptr) {
+		frontNeighbor->collectLightFromNeighbors(lightPropagateFront);
+		for (glm::vec3 vec : lightPropagateFront)
+			frontNeighbor->propagateLight(vec.x, vec.y, vec.z);
+
+	}
 
 	updateGraphics();
 
@@ -87,11 +138,11 @@ void Chunk::setCube(int x, int y, int z, char id)
 	if (leftNeighbor.get() != nullptr)
 		leftNeighbor->updateGraphics();
 
-	if (frontNeighbor.get() != nullptr)
-		frontNeighbor->updateGraphics();
-
 	if (backNeighbor.get() != nullptr)
 		backNeighbor->updateGraphics();
+
+	if (frontNeighbor.get() != nullptr)
+		frontNeighbor->updateGraphics();
 
 }
 
@@ -144,10 +195,9 @@ void Chunk::setBackNeighbor(std::shared_ptr<Chunk> chunk)
 }
 
 
-void Chunk::doSunLightning()
+void Chunk::doSunLightning(std::vector<glm::vec3> &lightPropagate)
 {
-	// Cubes that should propagate their light
-	std::vector<glm::vec3> lightPropagate;
+	// TODO Not correct k/j problem
 
 	bool foundSolid = false;
 	// Sun lightning, only air gets light
@@ -170,11 +220,70 @@ void Chunk::doSunLightning()
 		}
 	}
 
-	for (glm::vec3 vec : lightPropagate)
-		propagateLight(vec.x, vec.y, vec.z);
+}
 
-	// Should not be necessary.
-	//lightPropagate.clear();
+void Chunk::collectLightFromNeighbors(std::vector<glm::vec3> &lightPropagate)
+{
+
+	// Right side
+	if (rightNeighbor.get() != nullptr) {
+		for (int j = 0; j < config::chunk_data::CHUNK_HEIGHT; j++) {
+			for (int k = 0; k < config::chunk_data::CHUNK_DEPTH; k++) {
+				char lv = rightNeighbor->vec[0][j][k].lightValue - 1;
+
+				if (rightNeighbor->vec[0][j][k].id == config::cube_data::AIR && vec[15][j][k].id == config::cube_data::AIR &&
+						lv > vec[15][j][k].lightValue) {
+					vec[15][j][k].lightValue = lv;
+					lightPropagate.push_back(glm::vec3(15, j, k));
+				}
+			}
+		}
+	}
+
+	// Left Side
+	if (leftNeighbor.get() != nullptr) {
+		for (int j = 0; j < config::chunk_data::CHUNK_HEIGHT; j++) {
+			for (int k = 0; k < config::chunk_data::CHUNK_DEPTH; k++) {
+				char lv = leftNeighbor->vec[15][j][k].lightValue - 1;
+
+				if (leftNeighbor->vec[15][j][k].id == config::cube_data::AIR && vec[0][j][k].id == config::cube_data::AIR &&
+						lv > vec[0][j][k].lightValue) {
+					vec[0][j][k].lightValue = lv;
+					lightPropagate.push_back(glm::vec3(0, j, k));
+				}
+			}
+		}
+	}
+
+	// Back Side
+	if (backNeighbor.get() != nullptr) {
+		for (int i = 0; i < config::chunk_data::CHUNK_WIDHT; i++) {
+			for (int j = 0; j < config::chunk_data::CHUNK_HEIGHT; j++) {
+				char lv = backNeighbor->vec[i][j][0].lightValue - 1;
+
+				if (backNeighbor->vec[i][j][0].id == config::cube_data::AIR && vec[i][j][15].id == config::cube_data::AIR
+						&& lv > vec[i][j][15].lightValue) {
+					vec[i][j][15].lightValue = lv;
+					lightPropagate.push_back(glm::vec3(i, j, 0));
+				}
+			}
+		}
+	}
+
+	// Front Side
+	if (frontNeighbor.get() != nullptr) {
+		for (int i = 0; i < config::chunk_data::CHUNK_WIDHT; i++) {
+			for (int j = 0; j < config::chunk_data::CHUNK_HEIGHT; j++) {
+				char lv = frontNeighbor->vec[i][j][15].lightValue - 1;
+
+				if (frontNeighbor->vec[i][j][15].id == config::cube_data::AIR && vec[i][j][0].id == config::cube_data::AIR &&
+						lv > vec[i][j][0].lightValue) {
+					vec[i][j][0].lightValue = lv;
+					lightPropagate.push_back(glm::vec3(i, j, 15));
+				}
+			}
+		}
+	}
 
 }
 
@@ -188,11 +297,13 @@ void Chunk::propagateLight(int x, int y, int z)
 
 	// TODO Remove all the hard coded values
 
+	// ##################################################################################
+
 	// Traverse right
 	int lv = lvInitial;
 	for (int i = x + 1; lv > 0; i++) {
 
-		if (i < 16) {
+		if (i < config::chunk_data::CHUNK_WIDHT) {
 			Voxel &v = vec[i][y][z];
 			if (v.id == config::cube_data::AIR && v.lightValue < lv) {
 				v.lightValue = lv;
@@ -266,7 +377,6 @@ void Chunk::propagateLight(int x, int y, int z)
 
 	// ##################################################################################
 
-
 	// Traverse backwards
 	lv = lvInitial;
 	for (int i = z + 1; lv > 0; i++) {
@@ -316,8 +426,6 @@ void Chunk::propagateLight(int x, int y, int z)
 		}
 	}
 
-	// Consider postponing this until the all the propagate calls generated
-	// By the doSunLightning function has completed, to avoid repeating work
 	for (glm::vec3 vec : newPropagates)
 		propagateLight(vec.x, vec.y, vec.z);
 
