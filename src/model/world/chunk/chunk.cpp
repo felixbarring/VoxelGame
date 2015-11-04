@@ -144,6 +144,8 @@ void Chunk::setCube(int x, int y, int z, char id)
 			rightNeighbor->backNeighbor->collectLightFromRightNeighbor(lightPropagateRightBack);
 			rightNeighbor->backNeighbor->collectLightFromBackNeighbor(lightPropagateRightBack);
 
+			std::cout << lightPropagateRightBack.size() << "\n";
+
 			for (glm::vec3 vec : lightPropagateRightBack)
 				rightNeighbor->backNeighbor->propagateLight(vec.x, vec.y, vec.z);
 
@@ -154,7 +156,7 @@ void Chunk::setCube(int x, int y, int z, char id)
 			rightNeighbor->frontNeighbor->collectLightFromFrontNeighbor(lightPropagateRightFront);
 
 			for (glm::vec3 vec : lightPropagateRightFront)
-				rightNeighbor->frontNeighbor->backNeighbor->propagateLight(vec.x, vec.y, vec.z);
+				rightNeighbor->frontNeighbor->propagateLight(vec.x, vec.y, vec.z);
 
 		}
 	}
@@ -205,6 +207,8 @@ void Chunk::setCube(int x, int y, int z, char id)
 	if (rightNeighbor.get() != nullptr) {
 		rightNeighbor->updateGraphics();
 
+		std::cout << "has right neighbor \n";
+
 		if (rightNeighbor->backNeighbor.get() != nullptr)
 			rightNeighbor->backNeighbor->updateGraphics();
 
@@ -216,6 +220,8 @@ void Chunk::setCube(int x, int y, int z, char id)
 	if (leftNeighbor.get() != nullptr) {
 		leftNeighbor->updateGraphics();
 
+		std::cout << "has left neighbor \n";
+
 		if (leftNeighbor->backNeighbor.get() != nullptr)
 			leftNeighbor->backNeighbor->updateGraphics();
 
@@ -224,11 +230,17 @@ void Chunk::setCube(int x, int y, int z, char id)
 
 	}
 
-	if (backNeighbor.get() != nullptr)
-		backNeighbor->updateGraphics();
+	if (backNeighbor.get() != nullptr) {
+		std::cout << "has back neighbor \n";
 
-	if (frontNeighbor.get() != nullptr)
+		backNeighbor->updateGraphics();
+	}
+
+	if (frontNeighbor.get() != nullptr) {
+		std::cout << "has front neighbor \n";
+
 		frontNeighbor->updateGraphics();
+	}
 
 }
 
