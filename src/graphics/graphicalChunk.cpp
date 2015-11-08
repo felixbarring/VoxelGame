@@ -128,6 +128,9 @@ transform{
 						current.lvBottom_BottomRight = voxel->lightValue;
 						current.lvBottom_TopRight = voxel->lightValue;
 						current.lvBottom_TopLeft = voxel->lightValue;
+
+						doAOBottom(current, i, j, k, data, right, left, back, front);
+
 					}
 				}
 
@@ -381,8 +384,10 @@ transform{
 
 				if (fd.bottom) {
 
+
+					// TODO Dose not follow the same pattern as the others?!?
 					std::vector<GLfloat> vertex {
-						-0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz, fd.lvBottom_BottomRight,
+						-0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz, fd.lvBottom_BottomLeft,
 						0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz, fd.lvBottom_BottomRight,
 						0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz, fd.lvBottom_TopRight,
 						-0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz, fd.lvBottom_TopLeft,
@@ -733,6 +738,42 @@ void GraphicalChunk::doAOBottom(CubeFaceData &cf, int x, int y, int z,
 		std::vector<std::vector<std::vector<Voxel>>> *back,
 		std::vector<std::vector<std::vector<Voxel>>> *front)
 {
+	char bottomLeft = 0;
+	char bottomRight = 0;
+	char topRight = 0;
+	char topLeft = 0;
+
+	Voxel *v = getVoxel(x, y - 1, z - 1, data, right, left, back, front);
+	if (v && v->id != config::cube_data::AIR) bottomLeft++;
+	v = getVoxel(x - 1, y - 1, z, data, right, left, back, front);
+	if (v && v->id != config::cube_data::AIR) bottomLeft++;
+	v = getVoxel(x - 1, y - 1, z - 1, data, right, left, back, front);
+	if (v && v->id != config::cube_data::AIR) bottomLeft++;
+	cf.lvBottom_BottomLeft -= bottomLeft*3;
+
+	v = getVoxel(x, y - 1, z - 1, data, right, left, back, front);
+	if (v && v->id != config::cube_data::AIR) bottomRight++;
+	v = getVoxel(x + 1, y - 1, z, data, right, left, back, front);
+	if (v && v->id != config::cube_data::AIR) bottomRight++;
+	v = getVoxel(x + 1, y - 1, z - 1, data, right, left, back, front);
+	if (v && v->id != config::cube_data::AIR) bottomRight++;
+	cf.lvBottom_BottomRight-= bottomRight*3;
+
+	v = getVoxel(x, y - 1, z + 1, data, right, left, back, front);
+	if (v && v->id != config::cube_data::AIR) topRight++;
+	v = getVoxel(x + 1, y - 1, z, data, right, left, back, front);
+	if (v && v->id != config::cube_data::AIR) topRight++;
+	v = getVoxel(x + 1, y - 1, z + 1, data, right, left, back, front);
+	if (v && v->id != config::cube_data::AIR) topRight++;
+	cf.lvBottom_TopRight -= topRight*3;
+
+	v = getVoxel(x, y - 1, z + 1, data, right, left, back, front);
+	if (v && v->id != config::cube_data::AIR) topLeft++;
+	v = getVoxel(x - 1, y - 1, z, data, right, left, back, front);
+	if (v && v->id != config::cube_data::AIR) topLeft++;
+	v = getVoxel(x - 1, y - 1, z + 1, data, right, left, back, front);
+	if (v && v->id != config::cube_data::AIR) topLeft++;
+	cf.lvBottom_TopLeft -= topLeft*3;
 
 }
 
