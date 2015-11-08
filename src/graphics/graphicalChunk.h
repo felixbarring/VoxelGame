@@ -14,12 +14,27 @@
 namespace graphics
 {
 
+struct CubeFaceData {
+	int id;
+	bool vissible, front, back, left, right, top, bottom;
+	char lightValue; // For air blocks
+
+	// lv means lightValue
+	char lvFront_BottomLeft, lvFront_BottomRight, lvFront_TopRight, lvFront_TopLeft;
+	char lvBack_BottomLeft, lvBack_BottomRight, lvBack_TopRight, lvBack_TopLeft;
+	char lvLeft_BottomLeft, lvLeft_BottomRight, lvLeft_TopRight, lvLeft_TopLeft;
+	char lvRight_BottomLeft, lvRight_BottomRight, lvRight_TopRight, lvRight_TopLeft;
+	char lvTop_BottomLeft, lvTop_BottomRight, lvTop_TopRight, lvTop_TopLeft;
+	char lvBottom_BottomLeft, lvBottom_BottomRight, lvBottom_TopRight, lvBottom_TopLeft;
+
+};
+
 class GraphicalChunk {
 public:
 
-// ########################################################
-// Constructor/Destructor #################################
-// ########################################################
+	// ########################################################
+	// Constructor/Destructor #################################
+	// ########################################################
 
 	GraphicalChunk(float x, float y, float z,
 			std::vector<std::vector<std::vector<Voxel>>> &data,
@@ -31,9 +46,9 @@ public:
 
 	virtual ~GraphicalChunk() {};
 
-// ########################################################
-// Member Functions########################################
-// ########################################################
+	// ########################################################
+	// Member Functions########################################
+	// ########################################################
 
 	void draw();
 
@@ -43,6 +58,8 @@ public:
 
 	float getyLocation();
 
+private:
+
 	Voxel* getVoxel(int x, int y, int z,
 			std::vector<std::vector<std::vector<Voxel>>> &data,
 			std::vector<std::vector<std::vector<Voxel>>> *right,
@@ -50,26 +67,51 @@ public:
 			std::vector<std::vector<std::vector<Voxel>>> *back,
 			std::vector<std::vector<std::vector<Voxel>>> *front);
 
-// ########################################################
-// Instance Variables #####################################
-// ########################################################
+	void doAORight(CubeFaceData &cf, int x, int y, int z,
+			std::vector<std::vector<std::vector<Voxel>>> &data,
+			std::vector<std::vector<std::vector<Voxel>>> *right,
+			std::vector<std::vector<std::vector<Voxel>>> *left,
+			std::vector<std::vector<std::vector<Voxel>>> *back,
+			std::vector<std::vector<std::vector<Voxel>>> *front);
 
-private:
+	void doAOLeft(CubeFaceData &cf, int x, int y, int z,
+			std::vector<std::vector<std::vector<Voxel>>> &data,
+			std::vector<std::vector<std::vector<Voxel>>> *right,
+			std::vector<std::vector<std::vector<Voxel>>> *left,
+			std::vector<std::vector<std::vector<Voxel>>> *back,
+			std::vector<std::vector<std::vector<Voxel>>> *front);
 
-	struct CubeFaceData {
-		int id;
-		bool vissible, front, back, left, right, top, bottom;
-		char lightValue; // For air blocks
+	void doAOBack(CubeFaceData &cf, int x, int y, int z,
+			std::vector<std::vector<std::vector<Voxel>>> &data,
+			std::vector<std::vector<std::vector<Voxel>>> *right,
+			std::vector<std::vector<std::vector<Voxel>>> *left,
+			std::vector<std::vector<std::vector<Voxel>>> *back,
+			std::vector<std::vector<std::vector<Voxel>>> *front);
 
-		// lv means lightValue
-		char lvFront_BottomLeft, lvFront_BottomRight, lvFront_TopRight, lvFront_TopLeft;
-		char lvBack_BottomLeft, lvBack_BottomRight, lvBack_TopRight, lvBack_TopLeft;
-		char lvLeft_BottomLeft, lvLeft_BottomRight, lvLeft_TopRight, lvLeft_TopLeft;
-		char lvRight_BottomLeft, lvRight_BottomRight, lvRight_TopRight, lvRight_TopLeft;
-		char lvTop_BottomLeft, lvTop_BottomRight, lvTop_TopRight, lvTop_TopLeft;
-		char lvBottom_BottomLeft, lvBottom_BottomRight, lvBottom_TopRight, lvBottom_TopLeft;
+	void doAOFront(CubeFaceData &cf, int x, int y, int z,
+			std::vector<std::vector<std::vector<Voxel>>> &data,
+			std::vector<std::vector<std::vector<Voxel>>> *right,
+			std::vector<std::vector<std::vector<Voxel>>> *left,
+			std::vector<std::vector<std::vector<Voxel>>> *back,
+			std::vector<std::vector<std::vector<Voxel>>> *front);
 
-	};
+	void doAOTop(CubeFaceData &cf, int x, int y, int z,
+			std::vector<std::vector<std::vector<Voxel>>> &data,
+			std::vector<std::vector<std::vector<Voxel>>> *right,
+			std::vector<std::vector<std::vector<Voxel>>> *left,
+			std::vector<std::vector<std::vector<Voxel>>> *back,
+			std::vector<std::vector<std::vector<Voxel>>> *front);
+
+	void doAOBottom(CubeFaceData &cf, int x, int y, int z,
+			std::vector<std::vector<std::vector<Voxel>>> &data,
+			std::vector<std::vector<std::vector<Voxel>>> *right,
+			std::vector<std::vector<std::vector<Voxel>>> *left,
+			std::vector<std::vector<std::vector<Voxel>>> *back,
+			std::vector<std::vector<std::vector<Voxel>>> *front);
+
+	// ########################################################
+	// Instance Variables #####################################
+	// ########################################################
 
 	std::unique_ptr<mesh::MeshElement> mesh;
 	float xLocation;
