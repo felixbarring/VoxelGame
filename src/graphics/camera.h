@@ -42,6 +42,8 @@ public:
 
 	glm::mat4& getProjectionMatrix();
 
+	glm::vec3& getPosition();
+
 	void updateView(glm::vec3 position, glm::vec3 direction, glm::vec3 up);
 
 

@@ -74,7 +74,7 @@ void InGame::update()
 
 	glDisable(GL_DEPTH_TEST);
 
-	skybox.render();
+	//skybox.render();
 
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);

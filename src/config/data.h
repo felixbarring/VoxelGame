@@ -70,15 +70,12 @@ namespace config
 	namespace graphics_data
 	{
 
-		static int fps = 100;
+		extern int fps;
 
-		//static int windowWidth = 1920;
-		//static int windowHeight = 1080;
+		extern int windowWidth;
+		extern int windowHeight;
 
-		static int windowWidth = 800;
-		static int windowHeight = 600;
-
-		static float fov = 90 * (3.14 /180); // degree to radians
+		extern float fov; // degree to radians
 
 		static float virtualWidth = 800;
 		static float virtualHeight = 600;
@@ -109,7 +106,6 @@ namespace config
 
 	namespace texture_paths
 	{
-
 		// Remove THESE ?
 		static std::string scout =  "../resources/cubes/grass_side.png";
 		static std::string scout2 = "../resources/cubes/grass_top.png";

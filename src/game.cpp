@@ -64,10 +64,8 @@ void Game::run()
 	int WIDTH = 800;
 	int HEIGHT = 600;
 
-	// Why the fuck dose this not work ?!?
 	config::graphics_data::windowWidth = WIDTH;
 	config::graphics_data::windowHeight = HEIGHT;
-
 
 	//GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "Voxel Game", glfwGetPrimaryMonitor(), nullptr);
 	GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "Voxel Game", nullptr, nullptr);

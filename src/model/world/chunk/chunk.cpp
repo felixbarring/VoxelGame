@@ -62,7 +62,6 @@ Chunk::Chunk(int x, int y, int z):
 Voxel& Chunk::getVoxel(int x, int y, int z)
 {
 	return vec.at(x).at(y).at(z);
-	//return vec[x][y][z];
 }
 
 char Chunk::getCubeId(int x, int y, int z)
@@ -77,6 +76,8 @@ void Chunk::setCube(int x, int y, int z, char id)
 
 	Voxel &voxel = vec[x][y][z];
 	voxel.id = id;
+
+	// TODO Move all this to a different function
 
 	std::vector<glm::vec3> lightPropagate;
 
@@ -144,8 +145,6 @@ void Chunk::setCube(int x, int y, int z, char id)
 			rightNeighbor->backNeighbor->collectLightFromRightNeighbor(lightPropagateRightBack);
 			rightNeighbor->backNeighbor->collectLightFromBackNeighbor(lightPropagateRightBack);
 
-			std::cout << lightPropagateRightBack.size() << "\n";
-
 			for (glm::vec3 vec : lightPropagateRightBack)
 				rightNeighbor->backNeighbor->propagateLight(vec.x, vec.y, vec.z);
 
@@ -207,7 +206,7 @@ void Chunk::setCube(int x, int y, int z, char id)
 	if (rightNeighbor.get() != nullptr) {
 		rightNeighbor->updateGraphics();
 
-		std::cout << "has right neighbor \n";
+		//std::cout << "has right neighbor \n";
 
 		if (rightNeighbor->backNeighbor.get() != nullptr)
 			rightNeighbor->backNeighbor->updateGraphics();
@@ -220,7 +219,7 @@ void Chunk::setCube(int x, int y, int z, char id)
 	if (leftNeighbor.get() != nullptr) {
 		leftNeighbor->updateGraphics();
 
-		std::cout << "has left neighbor \n";
+		//std::cout << "has left neighbor \n";
 
 		if (leftNeighbor->backNeighbor.get() != nullptr)
 			leftNeighbor->backNeighbor->updateGraphics();
@@ -231,13 +230,13 @@ void Chunk::setCube(int x, int y, int z, char id)
 	}
 
 	if (backNeighbor.get() != nullptr) {
-		std::cout << "has back neighbor \n";
+		//std::cout << "has back neighbor \n";
 
 		backNeighbor->updateGraphics();
 	}
 
 	if (frontNeighbor.get() != nullptr) {
-		std::cout << "has front neighbor \n";
+		//std::cout << "has front neighbor \n";
 
 		frontNeighbor->updateGraphics();
 	}
@@ -265,7 +264,7 @@ void Chunk::updateGraphics()
 		back = &(backNeighbor->vec);
 
 	graphics::ChunkBatcher::getInstance().removeBatch(graphicalChunk);
-	graphicalChunk.reset(new graphics::GraphicalChunk(xLocation, yLocation, zLocation, vec,	right, left, front, back));
+	graphicalChunk.reset(new graphics::GraphicalChunk(xLocation, yLocation, zLocation, vec,	right, left, back, front));
 	graphics::ChunkBatcher::getInstance().addBatch(graphicalChunk);
 
 }
@@ -365,9 +364,6 @@ void Chunk::collectLightFromBackNeighbor(std::vector<glm::vec3> &lightPropagate)
 				if (backNeighbor->vec[i][j][0].id == config::cube_data::AIR && vec[i][j][15].id == config::cube_data::AIR
 						&& lv > vec[i][j][15].lightValue) {
 
-					std::cout << "Collecting light from back ------------------------ \n";
-					std::cout << "   Collected light " << i << " " << j << " " << 15 << " \n";
-
 					vec[i][j][15].lightValue = lv;
 					lightPropagate.push_back(glm::vec3(i, j, 15));
 				}
@@ -386,11 +382,7 @@ void Chunk::collectLightFromFrontNeighbor(std::vector<glm::vec3> &lightPropagate
 				if (frontNeighbor->vec[i][j][15].id == config::cube_data::AIR && vec[i][j][0].id == config::cube_data::AIR &&
 						lv > vec[i][j][0].lightValue) {
 
-					std::cout << "Collecting light from front ------------------------ \n";
-					std::cout << "   Collected light " << i << " " << j << " " << 0 << " \n";
-
 					vec[i][j][0].lightValue = lv;
-					//lightPropagate.push_back(glm::vec3(i, j, 15));
 					propagateLight(i, j, 0);
 
 				}

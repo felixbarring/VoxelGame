@@ -18,8 +18,9 @@ GraphicalChunk::GraphicalChunk(float x, float y, float z,
 	std::vector<std::vector<std::vector<Voxel>>> &data,
 	std::vector<std::vector<std::vector<Voxel>>> *right,
 	std::vector<std::vector<std::vector<Voxel>>> *left,
-	std::vector<std::vector<std::vector<Voxel>>> *front,
-	std::vector<std::vector<std::vector<Voxel>>> *back
+	std::vector<std::vector<std::vector<Voxel>>> *back,
+	std::vector<std::vector<std::vector<Voxel>>> *front
+
 	):
 xLocation{x},
 yLocation{y},
@@ -40,14 +41,6 @@ transform{
 				cube.id = data[i][j][k].id;
 				cube.lightValue = data[i][j][k].lightValue;
 
-				// Maybe constructor / method?!?
-
-				cube.lvFront = 0;
-				cube.lvBack = 0;
-				cube.lvLeft = 0;
-				cube.lvRight = 0;
-				cube.lvTop = 0;
-
 				cube.front = true;
 				cube.back = true;
 				cube.left = true;
@@ -60,6 +53,7 @@ transform{
 		}
 	}
 
+	// Do smooth and AO here?
 	// Remove faces
 	for (int i = 0; i < width; i++) {
 		for (int j = 0; j < height; j++) {
@@ -77,87 +71,84 @@ transform{
 					continue;
 				}
 
+				//bool lol = getVoxel(16, j, k, data, right, left, back, front) == nullptr;
+				//std::cout << " --- " << lol << "\n";
+
 				// X ##########################################################
-				if (i != width - 1) {
-					CubeFaceData &r = faceData[i + 1][j][k];
-					if (r.id != config::cube_data::AIR) {
+
+				Voxel *voxel = getVoxel(i + 1, j, k, data, right, left, back, front);
+				if (voxel) {
+					if (voxel->id != config::cube_data::AIR) {
 						current.right = false;
 					} else {
-						current.lvRight = r.lightValue;
-					}
-				} else if (right != nullptr) {
-					Voxel &r = (*right).at(0).at(j).at(k);
-					if (r.id != config::cube_data::AIR) {
-						current.right = false;
-					} else {
-						current.lvRight = r.lightValue;
+						current.lvRight_BottomLeft = voxel->lightValue;
+						current.lvRight_BottomRight = voxel->lightValue;
+						current.lvRight_TopRight = voxel->lightValue;
+						current.lvRight_TopLeft = voxel->lightValue;
 					}
 				}
-				if (i != 0) {
-					CubeFaceData &l = faceData[i - 1][j][k];
-					if (l.id != config::cube_data::AIR) {
+
+				voxel = getVoxel(i - 1, j, k, data, right, left, back, front);
+				if (voxel) {
+					if (voxel->id != config::cube_data::AIR) {
 						current.left = false;
 					} else {
-						current.lvLeft = l.lightValue;
-					}
-				} else if (left != nullptr){
-					Voxel &l = (*left).at(15).at(j).at(k);
-					if (l.id != config::cube_data::AIR) {
-						current.left = false;
-					} else {
-						current.lvLeft = l.lightValue;
+						current.lvLeft_BottomLeft = voxel->lightValue;
+						current.lvLeft_BottomRight = voxel->lightValue;
+						current.lvLeft_TopRight = voxel->lightValue;
+						current.lvLeft_TopLeft = voxel->lightValue;
 					}
 				}
 
 				// Y ##########################################################
-				// TODO Y -- Wait to fix this
-				// Graphical chunks should not have the same height as logical
-				// leave it for now
-				if (j != height - 1) {
-					CubeFaceData &up = faceData[i][j + 1][k];
-					if (up.id != config::cube_data::AIR) {
+
+				voxel = getVoxel(i, j + 1, k, data, right, left, back, front);
+				if (voxel) {
+					if (voxel->id != config::cube_data::AIR) {
 						current.top = false;
-						up.bottom = false;
-					}
-					else {
-						current.lvTop = up.lightValue;
+					} else {
+						current.lvTop_BottomLeft = voxel->lightValue;
+						current.lvTop_BottomRight = voxel->lightValue;
+						current.lvTop_TopRight = voxel->lightValue;
+						current.lvTop_TopLeft = voxel->lightValue;
 					}
 				}
-				if (j > 0) {
-					CubeFaceData &bottom = faceData[i][j - 1][k];
-					if (bottom.id == config::cube_data::AIR)
-						current.lvBottom = bottom.lightValue;
+
+				voxel = getVoxel(i, j - 1, k, data, right, left, back, front);
+				if (voxel) {
+					if (voxel->id != config::cube_data::AIR) {
+						current.bottom = false;
+					} else {
+						current.lvBottom_BottomLeft = voxel->lightValue;
+						current.lvBottom_BottomRight = voxel->lightValue;
+						current.lvBottom_TopRight = voxel->lightValue;
+						current.lvBottom_TopLeft = voxel->lightValue;
+					}
 				}
 
 				// Z ##########################################################
-				if (k != depth - 1) {
-					CubeFaceData& b = faceData[i][j][k + 1];
-					if (b.id != config::cube_data::AIR) {
+
+				voxel = getVoxel(i, j, k + 1, data, right, left, back, front);
+				if (voxel) {
+					if (voxel->id != config::cube_data::AIR) {
 						current.back = false;
-						b.front = false;
-					}
-					else {
-						current.lvBack = b.lightValue;
-					}
-				} else if (back != nullptr) {
-					Voxel &b = (*back).at(i).at(j).at(0);
-					if (b.id != config::cube_data::AIR) {
-						current.back = false;
-					}
-					else {
-						current.lvBack = b.lightValue;
+					} else {
+						current.lvBack_BottomLeft = voxel->lightValue;
+						current.lvBack_BottomRight = voxel->lightValue;
+						current.lvBack_TopRight = voxel->lightValue;
+						current.lvBack_TopLeft = voxel->lightValue;
 					}
 				}
-				if (k > 0) {
-					CubeFaceData &f = faceData[i][j][k - 1];
-					if (f.id == config::cube_data::AIR)
-						current.lvFront = f.lightValue;
-				} else if (front != nullptr) {
-					Voxel &f = (*front).at(i).at(j).at(15);
-					if (f.id != config::cube_data::AIR) {
+
+				voxel = getVoxel(i, j, k - 1, data, right, left, back, front);
+				if (voxel) {
+					if (voxel->id != config::cube_data::AIR) {
 						current.front = false;
 					} else {
-						current.lvFront = f.lightValue;
+						current.lvFront_BottomLeft = voxel->lightValue;
+						current.lvFront_BottomRight = voxel->lightValue;
+						current.lvFront_TopRight = voxel->lightValue;
+						current.lvFront_TopLeft = voxel->lightValue;
 					}
 				}
 
@@ -185,8 +176,8 @@ transform{
 				CubeFaceData fd = faceData[i][j][k];
 
 				int id = fd.id;
-
-				// Continue if air ?!?
+				if (id == config::cube_data::AIR)
+					continue;
 
 				GLfloat sideTexture = config::cube_data::BLOCK_TEXTURES[id][config::cube_data::SIDE_TEXTURE];
 				GLfloat topTexture = config::cube_data::BLOCK_TEXTURES[id][config::cube_data::TOP_TEXTURE];
@@ -195,10 +186,10 @@ transform{
 				if (fd.front) {
 
 					std::vector<GLfloat> vertex {
-						-0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz, fd.lvFront,
-						0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz, fd.lvFront,
-						0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz, fd.lvFront,
-						-0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz, fd.lvFront,
+						-0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz, fd.lvFront_BottomLeft,
+						0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz, fd.lvFront_BottomRight,
+						0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz, fd.lvFront_TopRight,
+						-0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz, fd.lvFront_TopLeft,
 					};
 
 					std::vector<GLfloat> nor {
@@ -232,10 +223,10 @@ transform{
 				if (fd.back) {
 
 					std::vector<GLfloat> vertex {
-						0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz, fd.lvBack,
-						-0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz, fd.lvBack,
-						-0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz, fd.lvBack,
-						0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz, fd.lvBack,
+						0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz, fd.lvBack_BottomLeft,
+						-0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz, fd.lvBack_BottomRight,
+						-0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz, fd.lvBack_TopRight,
+						0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz, fd.lvBack_TopLeft,
 
 					};
 
@@ -270,10 +261,10 @@ transform{
 				if (fd.left) {
 
 					std::vector<GLfloat> vertex {
-						-0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz, fd.lvLeft,
-						-0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz, fd.lvLeft,
-						-0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz, fd.lvLeft,
-						-0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz, fd.lvLeft,
+						-0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz, fd.lvLeft_BottomLeft,
+						-0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz, fd.lvLeft_BottomRight,
+						-0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz, fd.lvLeft_TopRight,
+						-0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz, fd.lvLeft_TopLeft,
 					};
 
 					std::vector<GLfloat> nor {
@@ -307,10 +298,10 @@ transform{
 				if (fd.right) {
 
 					std::vector<GLfloat> vertex {
-						0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz, fd.lvRight,
-						0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz, fd.lvRight,
-						0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz, fd.lvRight,
-						0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz, fd.lvRight,
+						0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz, fd.lvRight_BottomLeft,
+						0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz, fd.lvRight_BottomRight,
+						0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz, fd.lvRight_TopRight,
+						0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz, fd.lvRight_TopLeft,
 					};
 
 					std::vector<GLfloat> nor {
@@ -345,10 +336,10 @@ transform{
 				if (fd.top) {
 
 					std::vector<GLfloat> vertex {
-						-0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz, fd.lvTop,
-						0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz, fd.lvTop,
-						0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz, fd.lvTop,
-						-0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz, fd.lvTop,
+						-0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz, fd.lvTop_BottomLeft,
+						0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz, fd.lvTop_BottomRight,
+						0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz, fd.lvTop_TopRight,
+						-0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz, fd.lvTop_TopLeft,
 					};
 
 					std::vector<GLfloat> nor {
@@ -382,10 +373,10 @@ transform{
 				if (fd.bottom) {
 
 					std::vector<GLfloat> vertex {
-						-0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz, fd.lvBottom,
-						0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz, fd.lvBottom,
-						0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz, fd.lvBottom,
-						-0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz, fd.lvBottom,
+						-0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz, fd.lvBottom_BottomRight,
+						0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz, fd.lvBottom_BottomRight,
+						0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz, fd.lvBottom_TopRight,
+						-0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz, fd.lvBottom_TopLeft,
 					};
 
 					std::vector<GLfloat> nor {
@@ -421,11 +412,56 @@ transform{
 
 	mesh.reset(new mesh::MeshElement(vertexData, 4, normals, 3, UV, 3, elementData));
 	//std::cout<<"Total number of faces: "<<totalNumberOfFaces<<"\n";
+
 }
 
 // ########################################################
 // Member Functions########################################
 // ########################################################
+
+// TODO Remove the hardcoded value later
+
+// Function for getting voxels, can collect from neighbor chunks data
+// If there is no neighobor, nullptr will be returned
+// Trying to get a voxel that is not adjacent to this chunk is an error
+Voxel* GraphicalChunk::getVoxel(int x, int y, int z,
+		std::vector<std::vector<std::vector<Voxel>>> &data,
+		std::vector<std::vector<std::vector<Voxel>>> *right,
+		std::vector<std::vector<std::vector<Voxel>>> *left,
+		std::vector<std::vector<std::vector<Voxel>>> *back,
+		std::vector<std::vector<std::vector<Voxel>>> *front)
+{
+
+	if (x < width && x >= 0 && y < height && y >= 0 && z < depth && z >= 0) {
+		return &data[x][y][z];
+	} else if (x == width && (y < height && y >= 0 && z < depth && z >= 0)) {
+		if (right != nullptr) {
+			return &((*right)[0][y][z]);
+		} else {
+			return nullptr;
+		}
+	} else if (x == -1 && (y < height && y >= 0 && z < depth && z >= 0)) {
+		if (left != nullptr) {
+			return &((*left)[width - 1][y][z]);
+		} else {
+			return nullptr;
+		}
+	} else if (z == depth && (x < width && x >= 0 && y < height && y >= 0)) {
+		if (back != nullptr) {
+			return &((*back)[x][y][0]);
+		} else {
+			return nullptr;
+		}
+	} else if (z == -1 && (x < width && x >= 0 && y < height && y >= 0)) {
+		if (front != nullptr) {
+			return &((*front)[x][y][depth - 1]);
+		} else {
+			return nullptr;
+		}
+	}
+
+	return nullptr;
+}
 
 void GraphicalChunk::draw()
 {
@@ -448,4 +484,3 @@ float GraphicalChunk::getyLocation()
 }
 
 }
-
