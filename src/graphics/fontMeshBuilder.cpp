@@ -36,7 +36,7 @@ FontMeshBuilder::FontMeshBuilder(std::string &pathToLayout, int atlasWidth, int 
 		CharData charD;
 		int counter = 0;
 		std::string str = "";
-		for (int j = 0; j < line.size(); j++) {
+		for (unsigned j = 0; j < line.size(); j++) {
 
 			char ch = line[j];
 			if (ch != ' ') {

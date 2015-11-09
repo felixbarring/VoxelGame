@@ -18,14 +18,13 @@ namespace config
 		static constexpr int GRAPHICAL_CHUNK_HEIGHT = 128;
 		static constexpr int GRAPHICAL_CHUNK_DEPTH = 16;
 
-		// TODO Miss spelled :( width not widht
-		static constexpr int CHUNK_WIDHT = 16;
+		static constexpr int CHUNK_WIDTH = 16;
 		static constexpr int CHUNK_HEIGHT = 128;
 		static constexpr int CHUNK_DEPTH = 16;
 
-		static constexpr int NUMBER_OF_CHUNKS_X = 10;
-		static constexpr int NUMBER_OF_CHUNKS_Y = 1;
-		static constexpr int NUMBER_OF_CHUNKS_Z = 10;
+		static constexpr const int NUMBER_OF_CHUNKS_X = 10;
+		static constexpr const int NUMBER_OF_CHUNKS_Y = 1;
+		static constexpr const int NUMBER_OF_CHUNKS_Z = 10;
 
 	}
 
@@ -47,17 +46,17 @@ namespace config
 		static constexpr int BOTTOM_TEXTURE = 2;
 
 		// 0 = Side, 1 = Top, 2 = Bottom
-		static char BLOCK_TEXTURES[4][3]{
+		static constexpr char BLOCK_TEXTURES[4][3]{
 			{0, 1, 2},
 			{2, 2, 2},
 			{3, 3, 3},
 			{4, 4, 4}
 		};
 
-		static int TEXTURE_WIDTH = 32;
-		static int TEXTURE_HEIGHT = 32;
+		static constexpr int TEXTURE_WIDTH = 32;
+		static constexpr int TEXTURE_HEIGHT = 32;
 
-		static std::vector<std::string> textures {
+		static const std::vector<std::string> textures {
 			"../resources/cubes/grass_side.png",
 			"../resources/cubes/grass_top.png",
 			"../resources/cubes/dirt.png",
@@ -76,7 +75,6 @@ namespace config
 		extern int windowHeight;
 
 		extern float fov; // degree to radians
-
 		static float virtualWidth = 800;
 		static float virtualHeight = 600;
 
@@ -115,9 +113,9 @@ namespace config
 	namespace gui_data
 	{
 
-		static std::string guiBox = "../resources/gui/gui_box.png";
-		static std::string slider = "../resources/gui/slider_body.png";
-		static std::string sliderKnob = "../resources/gui/slider_knob.png";
+		static const std::string guiBox = "../resources/gui/gui_box.png";
+		static const std::string slider = "../resources/gui/slider_body.png";
+		static const std::string sliderKnob = "../resources/gui/slider_knob.png";
 
 	}
 

@@ -66,7 +66,9 @@ void InGame::update()
 	if (state == GameState::NoOverlay) {
 		util::Input::getInstance()->lockMouse();
 		util::Input::getInstance()->updateValues();
+
 		player.update(0.0f);
+
 	} else {
 		util::Input::getInstance()->unlockMouse();
 		util::Input::getInstance()->updateValues();

@@ -25,7 +25,7 @@ ChunkManager::ChunkManager()
 		for (int z = 0; z < zMax; z++) {
 			chunks[x][0][z] = std::unique_ptr<chunk::Chunk> (
 				new chunk::Chunk{
-					x * config::chunk_data::CHUNK_WIDHT,
+					x * config::chunk_data::CHUNK_WIDTH,
 					0 * config::chunk_data::CHUNK_HEIGHT,
 					z * config::chunk_data::CHUNK_DEPTH});
 		}
@@ -34,8 +34,8 @@ ChunkManager::ChunkManager()
 	// Connect the Chunks
 	for (int x = 0; x < xMax-1; x++) {
 		for (int z = 0; z < zMax-1; z++) {
-			std::shared_ptr<Chunk> right = chunks[x+1][0][z];
-			std::shared_ptr<Chunk> back = chunks[x][0][z+1];
+			std::shared_ptr<Chunk> right = chunks[x + 1][0][z];
+			std::shared_ptr<Chunk> back = chunks[x][0][z + 1];
 
 			std::shared_ptr<Chunk> current = chunks[x][0][z];
 
@@ -60,7 +60,7 @@ ChunkManager::ChunkManager()
 char ChunkManager::getCubeId(int x, int y, int z)
 {
 	// Used to avoid Division every time the function is called.
-	static float xD = 1.0 / config::chunk_data::CHUNK_WIDHT;
+	static float xD = 1.0 / config::chunk_data::CHUNK_WIDTH;
 	static float yD = 1.0 / config::chunk_data::CHUNK_HEIGHT;
 	static float zD = 1.0 / config::chunk_data::CHUNK_DEPTH;
 
@@ -68,7 +68,7 @@ char ChunkManager::getCubeId(int x, int y, int z)
 	int chunkY = y * yD;
 	int chunkZ = z * zD;
 
-	int localX = x % config::chunk_data::CHUNK_WIDHT;
+	int localX = x % config::chunk_data::CHUNK_WIDTH;
 	int localY = y % config::chunk_data::CHUNK_HEIGHT;
 	int localZ = z % config::chunk_data::CHUNK_DEPTH;
 
@@ -93,11 +93,11 @@ void ChunkManager::removeCube(int x, int y, int z)
 
 void ChunkManager::setCube(int x, int y, int z, char id)
 {
-	int chunkX = x / config::chunk_data::CHUNK_WIDHT;
+	int chunkX = x / config::chunk_data::CHUNK_WIDTH;
 	int chunkY = y / config::chunk_data::CHUNK_HEIGHT;
 	int chunkZ = z / config::chunk_data::CHUNK_DEPTH;
 
-	int localX = x % config::chunk_data::CHUNK_WIDHT;
+	int localX = x % config::chunk_data::CHUNK_WIDTH;
 	int localY = y % config::chunk_data::CHUNK_HEIGHT;
 	int localZ = z % config::chunk_data::CHUNK_DEPTH;
 

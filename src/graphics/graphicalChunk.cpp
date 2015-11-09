@@ -495,7 +495,6 @@ Voxel* GraphicalChunk::getVoxel(int x, int y, int z,
 	return nullptr;
 }
 
-
 void GraphicalChunk::doAORight(CubeFaceData &cf, int x, int y, int z,
 		std::vector<std::vector<std::vector<Voxel>>> &data,
 		std::vector<std::vector<std::vector<Voxel>>> *right,
@@ -543,7 +542,6 @@ void GraphicalChunk::doAORight(CubeFaceData &cf, int x, int y, int z,
 	cf.lvRight_TopLeft -= topLeft;
 
 }
-
 
 void GraphicalChunk::doAOLeft(CubeFaceData &cf, int x, int y, int z,
 		std::vector<std::vector<std::vector<Voxel>>> &data,
@@ -749,7 +747,7 @@ void GraphicalChunk::doAOBottom(CubeFaceData &cf, int x, int y, int z,
 	if (v && v->id != config::cube_data::AIR) bottomLeft++;
 	v = getVoxel(x - 1, y - 1, z - 1, data, right, left, back, front);
 	if (v && v->id != config::cube_data::AIR) bottomLeft++;
-	cf.lvBottom_BottomLeft -= bottomLeft*3;
+	cf.lvBottom_BottomLeft -= bottomLeft;
 
 	v = getVoxel(x, y - 1, z - 1, data, right, left, back, front);
 	if (v && v->id != config::cube_data::AIR) bottomRight++;
@@ -757,7 +755,7 @@ void GraphicalChunk::doAOBottom(CubeFaceData &cf, int x, int y, int z,
 	if (v && v->id != config::cube_data::AIR) bottomRight++;
 	v = getVoxel(x + 1, y - 1, z - 1, data, right, left, back, front);
 	if (v && v->id != config::cube_data::AIR) bottomRight++;
-	cf.lvBottom_BottomRight-= bottomRight*3;
+	cf.lvBottom_BottomRight-= bottomRight;
 
 	v = getVoxel(x, y - 1, z + 1, data, right, left, back, front);
 	if (v && v->id != config::cube_data::AIR) topRight++;
@@ -765,7 +763,7 @@ void GraphicalChunk::doAOBottom(CubeFaceData &cf, int x, int y, int z,
 	if (v && v->id != config::cube_data::AIR) topRight++;
 	v = getVoxel(x + 1, y - 1, z + 1, data, right, left, back, front);
 	if (v && v->id != config::cube_data::AIR) topRight++;
-	cf.lvBottom_TopRight -= topRight*3;
+	cf.lvBottom_TopRight -= topRight;
 
 	v = getVoxel(x, y - 1, z + 1, data, right, left, back, front);
 	if (v && v->id != config::cube_data::AIR) topLeft++;
@@ -773,7 +771,7 @@ void GraphicalChunk::doAOBottom(CubeFaceData &cf, int x, int y, int z,
 	if (v && v->id != config::cube_data::AIR) topLeft++;
 	v = getVoxel(x - 1, y - 1, z + 1, data, right, left, back, front);
 	if (v && v->id != config::cube_data::AIR) topLeft++;
-	cf.lvBottom_TopLeft -= topLeft*3;
+	cf.lvBottom_TopLeft -= topLeft;
 
 }
 
