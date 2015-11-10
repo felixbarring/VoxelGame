@@ -73,9 +73,6 @@ void Player::update(float timePassed)
 		speed.y = direction * movementSpeed;
 	}
 
-	//std::cout << "Location: " << location.x << " " << location.y << " " << location.z << "\n";
-	//std::cout << "Speed: " << speed.x << " " << speed.y << " " << speed.z << "\n";
-
 	glm::vec3 destination = location + speed;
 
 	AABB player{ destination.x, destination.x + 1, destination.y - 1, destination.y, destination.z, destination.z + 1 };
@@ -88,9 +85,6 @@ void Player::update(float timePassed)
 	int xEnd = std::floor(box.xMax);
 	int yEnd = std::floor(box.yMax);
 	int zEnd = std::floor(box.zMax);
-
-	//std::cout << "Start: " << xStart << " " << yStart << " " << zStart << "\n";
-	//std::cout << "End: " << xEnd << " " << yEnd << " " << zEnd << "\n";
 
 	int counter = 0;
 	bool colided = false;
@@ -111,11 +105,9 @@ void Player::update(float timePassed)
 		}
 	}
 
-	//if (!colided) {
+	if (!colided) {
 		location += speed;
-	//}
-
-	//std::cout << "Number of checks:" << counter << "\n";
+	}
 
 	graphics::Camera::getInstance().updateView(glm::vec3(location.x, location.y, location.z),
 			viewDirection.getViewDirection(), viewDirection.getUpDirection());

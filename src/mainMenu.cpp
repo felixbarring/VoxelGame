@@ -20,7 +20,7 @@ MainMenu::MainMenu(Game *game) :
 			case 0: state = MainMenuState::Play; break;
 			case 1: state = MainMenuState::Settings; break;
 			case 2: game->quitGame(); break;
-			case 3: game->changeStateToIngame(); state = MainMenuState::MainMenu; break; // state = MainMenuState::NewWorld; break; //game->changeStateToIngame(); state = MainMenuState::MainMenu; break;
+			case 3: state = MainMenuState::NewWorld; break;// ;
 			case 4: state = MainMenuState::LoadWorld; break;
 			case 5: state = MainMenuState::MainMenu; break;
 			case 6: state = MainMenuState::GameSettings; break;
@@ -31,6 +31,7 @@ MainMenu::MainMenu(Game *game) :
 			case 11: state = MainMenuState::Settings; break;
 			case 12: state = MainMenuState::Settings; break;
 			case 13: state = MainMenuState::Settings; break;
+			case 14: game->changeStateToIngame(); state = MainMenuState::MainMenu; break;
 		}
 
 	};
@@ -149,15 +150,16 @@ MainMenu::MainMenu(Game *game) :
 	std::shared_ptr<widget::IWidget> label15(new widget::Label{325, 390, 150, 50, " - Create New World - "});
 	std::shared_ptr<widget::IWidget> label16(new widget::Label{325, 350, 150, 30, "Enter a Name:"});
 	std::shared_ptr<widget::IWidget> textInput3(new widget::TextInput{666, 450, 350, 100, 30});
+	std::shared_ptr<widget::IWidget> button15(new widget::Button{14, 245, 130, 150, 30, observer, "Create"});
 
 	newWorldWidgetGroup.reset(new widget::WidgetGroup{0, 0, 120, 800, 270, observer});
 
 	newWorldWidgetGroup->addWidget(label15);
 	newWorldWidgetGroup->addWidget(label16);
 	newWorldWidgetGroup->addWidget(textInput3);
+	newWorldWidgetGroup->addWidget(button15);
 
 	// ################################################################################################################
-
 
 	activeWidgetGroup = mainWidgetGroup;
 

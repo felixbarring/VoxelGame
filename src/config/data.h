@@ -75,6 +75,7 @@ namespace config
 		extern int windowHeight;
 
 		extern float fov; // degree to radians
+
 		static float virtualWidth = 800;
 		static float virtualHeight = 600;
 
