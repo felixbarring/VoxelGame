@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <math.h>
+#include <memory>
 
 #include "../../../graphics/camera.h"
 #include "../chunk/chunkManager.h"
@@ -19,7 +20,7 @@ namespace entity {
 Player::Player():
 	location{0,0,0},
 	speed{0,0,0},
-	boundingBox{location.x - 0.5f, location.x + 0.5f, location.y - 1.0f, location.y + 1.0f, location.z - 0.5f, location.z + 0.5f},
+	//boundingBox{location.x - 0.5f, location.x + 0.5f, location.y - 1.0f, location.y + 1.0f, location.z - 0.5f, location.z + 0.5f},
 	transform{0,0,0}
 {
 }
@@ -31,16 +32,18 @@ Player::Player():
 void Player::update(float timePassed)
 {
 
-	viewDirection.changeViewDirection(util::Input::getInstance()->mouseXMovement, util::Input::getInstance()->mouseYMovement);
+	std::shared_ptr<util::Input> input = util::Input::getInstance();
+
+	viewDirection.changeViewDirection(input->mouseXMovement, input->mouseYMovement);
 
 	speed.x = 0;
 	speed.y = 0;
 	speed.z = 0;
 
-	if (util::Input::getInstance()->moveForwardActive || util::Input::getInstance()->moveBackwardActive) {
+	if (input->moveForwardActive || input->moveBackwardActive) {
 
 		int direction = 1;
-		if (util::Input::getInstance()->moveBackwardActive)
+		if (input->moveBackwardActive)
 			direction = -1;
 
 		glm::vec3 dummy = viewDirection.getViewDirection();
@@ -51,10 +54,10 @@ void Player::update(float timePassed)
 		speed.z = dummy.z;
 	}
 
-	if (util::Input::getInstance()->moveRightActive || util::Input::getInstance()->moveLeftActive) {
+	if (input->moveRightActive || input->moveLeftActive) {
 
 		int direction = 1;
-		if (util::Input::getInstance()->moveLeftActive)
+		if (input->moveLeftActive)
 			direction = -1;
 
 		glm::vec3 dummy = viewDirection.getRightDirection();
@@ -65,9 +68,9 @@ void Player::update(float timePassed)
 		speed.z += dummy.z;
 	}
 
-	if (util::Input::getInstance()->jumpActive || util::Input::getInstance()->goDownActive) {
+	if (input->jumpActive || input->goDownActive) {
 		int direction = 1;
-		if (util::Input::getInstance()->goDownActive)
+		if (input->goDownActive)
 			direction = -1;
 
 		speed.y = direction * movementSpeed;
@@ -75,7 +78,7 @@ void Player::update(float timePassed)
 
 	glm::vec3 destination = location + speed;
 
-	AABB player{ destination.x, destination.x + 1, destination.y - 1, destination.y, destination.z, destination.z + 1 };
+	AABB player{ destination.x - 0.5, destination.x + 0.5, destination.y - 1, destination.y, destination.z - 0.5, destination.z + 0.5 };
 	AABB box = AABB::getSweptBroadPhaseBox(player, speed);
 
 	int xStart = std::floor(box.xMin);
@@ -86,7 +89,7 @@ void Player::update(float timePassed)
 	int yEnd = std::floor(box.yMax);
 	int zEnd = std::floor(box.zMax);
 
-	int counter = 0;
+	//int counter = 0;
 	bool colided = false;
 
 	for (int i = xStart; i <= xEnd; i++) {
@@ -100,14 +103,13 @@ void Player::update(float timePassed)
 					}
 				}
 
-				counter++;
+				//counter++;
 			}
 		}
 	}
 
-	if (!colided) {
+	if (!colided)
 		location += speed;
-	}
 
 	graphics::Camera::getInstance().updateView(glm::vec3(location.x, location.y, location.z),
 			viewDirection.getViewDirection(), viewDirection.getUpDirection());
@@ -115,17 +117,17 @@ void Player::update(float timePassed)
 	if (chunk::ChunkManager::getInstance().intersectWithSolidCube(location, viewDirection.getViewDirection(), 5)) {
 
 		glm::vec3 selectedCube = chunk::ChunkManager::getInstance().getLocationOfInteresectedCube();
-		if (util::Input::getInstance()->action1Pressed) {
+		if (input->action1Pressed) {
 			chunk::ChunkManager::getInstance().removeCube(selectedCube.x, selectedCube.y, selectedCube.z);
 			return;
 		}
 
-		if (util::Input::getInstance()->action2Pressed) {
+		if (input->action2Pressed) {
 			glm::vec3 cube = chunk::ChunkManager::getInstance().getCubeBeforeIntersectedCube();
 			chunk::ChunkManager::getInstance().setCube(cube.x, cube.y, cube.z, 1);
 		}
 
-		// TODO Dirty hack :o
+		// TODO Remove hardcoded values
 		transform.setLocation(selectedCube.x + 0.5, selectedCube.y + 0.5, selectedCube.z + 0.5);
 		graphics::CubeBatcher::getInstance().addBatch(1, transform);
 

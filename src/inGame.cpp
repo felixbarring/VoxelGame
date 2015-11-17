@@ -24,7 +24,7 @@ InGame::InGame(Game *game) :
 			config::cube_map_data::cubeMap1Width,
 			config::cube_map_data::cubeMap1Height)}
 {
-	player.setLocation(7, 7, 7);
+	player.setLocation(80, 7, 80);
 
 	std::function<void(int)> observer = [&, game](int id)
 	{
@@ -67,6 +67,7 @@ void InGame::update()
 		util::Input::getInstance()->lockMouse();
 		util::Input::getInstance()->updateValues();
 
+		// Should use how much time that has passed!
 		player.update(0.0f);
 
 	} else {

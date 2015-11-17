@@ -44,7 +44,7 @@ private:
 	float depth = 1;
 	glm::vec3 speed;
 	graphics::ViewDirection viewDirection;
-	AABB boundingBox; //{0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
+	//AABB boundingBox; //{0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
 	float movementSpeed = 0.1;
 	graphics::Transform transform;
 };
