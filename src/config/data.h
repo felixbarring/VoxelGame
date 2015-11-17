@@ -36,7 +36,8 @@ namespace config
 		static constexpr char GRASS = 0;
 		static constexpr char DIRT = 1;
 		static constexpr char ROCK = 2;
-		static constexpr char BRICK_WALL = 2;
+		static constexpr char BRICK_WALL = 3;
+		static constexpr char BED_ROCK = 4;
 
 		// Used for looping over all types, except for air.
 		static constexpr char LAST_BLOCK = BRICK_WALL;
@@ -46,10 +47,11 @@ namespace config
 		static constexpr int BOTTOM_TEXTURE = 2;
 
 		// 0 = Side, 1 = Top, 2 = Bottom
-		static constexpr char BLOCK_TEXTURES[4][3]{
+		static constexpr char BLOCK_TEXTURES[5][3]{
 			{0, 1, 2},
 			{2, 2, 2},
 			{3, 3, 3},
+			{4, 4, 4},
 			{4, 4, 4}
 		};
 

@@ -35,6 +35,13 @@ Chunk::Chunk(int x, int y, int z):
 			for (int k = 0; k < config::chunk_data::CHUNK_DEPTH; k++) {
 				Voxel v;
 				v.lightValue = 0;
+
+				if (j == 0) {
+					v.id = config::cube_data::BED_ROCK;
+					vec[i][j].push_back(v);
+					continue;
+				}
+
 				if (j < 5) {
 					v.id = counter;
 					vec[i][j].push_back(v);
@@ -69,6 +76,9 @@ char Chunk::getCubeId(int x, int y, int z)
 
 void Chunk::setCube(int x, int y, int z, char id)
 {
+
+	if (vec[x][y][z].id == config::cube_data::BED_ROCK)
+		return;
 
 	// TODO Consider: Optimize depending on if a cube was removed or added.
 
