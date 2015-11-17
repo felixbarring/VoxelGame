@@ -31,7 +31,14 @@ MainMenu::MainMenu(Game *game) :
 			case 11: state = MainMenuState::Settings; break;
 			case 12: state = MainMenuState::Settings; break;
 			case 13: state = MainMenuState::Settings; break;
-			case 14: game->changeStateToIngame(); state = MainMenuState::MainMenu; break;
+			case 14: break; //game->changeStateToIngame(); state = MainMenuState::MainMenu; break;
+			case 15: game->changeStateToIngame(); state = MainMenuState::MainMenu; break;
+			case 16: state = MainMenuState::Play; break;
+			case 17: break;
+			case 18: break;
+			case 19: break;
+			case 20: break;
+			case 21: state = MainMenuState::Play; break;
 		}
 
 	};
@@ -147,17 +154,44 @@ MainMenu::MainMenu(Game *game) :
 
 	// ################################################################################################################
 
-	std::shared_ptr<widget::IWidget> label15(new widget::Label{325, 390, 150, 50, " - Create New World - "});
-	std::shared_ptr<widget::IWidget> label16(new widget::Label{325, 350, 150, 30, "Enter a Name:"});
-	std::shared_ptr<widget::IWidget> textInput3(new widget::TextInput{666, 450, 350, 100, 30});
-	std::shared_ptr<widget::IWidget> button15(new widget::Button{14, 245, 130, 150, 30, observer, "Create"});
+	std::shared_ptr<widget::IWidget> label15(new widget::Label{230, 390, 150, 50, " - Create New World - "});
+	std::shared_ptr<widget::IWidget> label16(new widget::Label{220, 330, 150, 30, "Enter a Name:"});
+	std::shared_ptr<widget::IWidget> textInput3(new widget::TextInput{666, 370, 330, 200, 30});
+	std::shared_ptr<widget::IWidget> button15(new widget::Button{14, 240, 135, 100, 30, observer, "Advanced"});
+	std::shared_ptr<widget::IWidget> button16(new widget::Button{15, 350, 135, 100, 30, observer, "Create"});
+	std::shared_ptr<widget::IWidget> button17(new widget::Button{16, 460, 135, 100, 30, observer, "Cancel"});
 
-	newWorldWidgetGroup.reset(new widget::WidgetGroup{0, 0, 120, 800, 270, observer});
+	std::shared_ptr<widget::IWidget> button18(new widget::Button{17, 370, 290, 200, 30, observer, "Random Name"});
+
+
+	newWorldWidgetGroup.reset(new widget::WidgetGroup{0, 200, 120, 400, 270, observer});
 
 	newWorldWidgetGroup->addWidget(label15);
 	newWorldWidgetGroup->addWidget(label16);
 	newWorldWidgetGroup->addWidget(textInput3);
 	newWorldWidgetGroup->addWidget(button15);
+	newWorldWidgetGroup->addWidget(button16);
+	newWorldWidgetGroup->addWidget(button17);
+	newWorldWidgetGroup->addWidget(button18);
+
+
+	// ################################################################################################################
+
+	std::shared_ptr<widget::IWidget> label17(new widget::Label{270, 500, 150, 50, " - Load World - "});
+
+	std::shared_ptr<widget::IWidget> button19(new widget::Button{18, 225, 70, 80, 30, observer, "Rename"});
+	std::shared_ptr<widget::IWidget> button20(new widget::Button{19, 315, 70, 80, 30, observer, "Delete"});
+
+	std::shared_ptr<widget::IWidget> button21(new widget::Button{20, 405, 70, 80, 30, observer, "Load"});
+	std::shared_ptr<widget::IWidget> button22(new widget::Button{21, 495, 70, 80, 30, observer, "Cancel"});
+
+	loadWorldWidgetGroup.reset(new widget::WidgetGroup{0, 200, 50, 400, 450, observer});
+
+	loadWorldWidgetGroup->addWidget(label17);
+	loadWorldWidgetGroup->addWidget(button19);
+	loadWorldWidgetGroup->addWidget(button20);
+	loadWorldWidgetGroup->addWidget(button21);
+	loadWorldWidgetGroup->addWidget(button22);
 
 	// ################################################################################################################
 

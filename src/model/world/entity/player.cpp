@@ -20,7 +20,6 @@ namespace entity {
 Player::Player():
 	location{0,0,0},
 	speed{0,0,0},
-	//boundingBox{location.x - 0.5f, location.x + 0.5f, location.y - 1.0f, location.y + 1.0f, location.z - 0.5f, location.z + 0.5f},
 	transform{0,0,0}
 {
 }
@@ -79,6 +78,8 @@ void Player::update(float timePassed)
 	glm::vec3 destination = location + speed;
 
 	AABB player{ destination.x - 0.5, destination.x + 0.5, destination.y - 1, destination.y, destination.z - 0.5, destination.z + 0.5 };
+
+	// Broad phase
 	AABB box = AABB::getSweptBroadPhaseBox(player, speed);
 
 	int xStart = std::floor(box.xMin);
