@@ -11,6 +11,8 @@
 namespace graphics
 {
 
+// TODO Remove printf
+
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
@@ -32,17 +34,31 @@ ShaderProgram::ShaderProgram(const char *vertexSource, const char *fragmentSourc
 
     // Create locations for all the attributes
 	for (auto attribute : attributes) {
+
+		std::cout << "Size is najs" << attributes.size() << "\n";
+		std::cout << "Attribute = " << attribute.second << " " << attribute.first.c_str() << " \n";
+
 		glBindAttribLocation(programID, attribute.second, attribute.first.c_str());
 		int errorCheck = glGetError();
 		switch (errorCheck) {
 		case GL_NO_ERROR:
 			break; // All is well
 		case GL_INVALID_VALUE:
+			std::cout << " ################################################\n";
 			std::cout << "Error, glBindAttribLocation gave a GL_INVALID_VALUE error \n";
-			return;
+			std::cout << vertexSource;
+			std::cout << fragmentSource;
+			std::cout << " ################################################\n";
+			break;
+			//return;
 		case GL_INVALID_OPERATION:
-			std::cout << "Error, glGetUniformLocation gave a GL_INVALID_OPERATION error. \n";
-			return;
+			std::cout << " ################################################\n";
+			std::cout << "Error, glBindAttribLocation gave a GL_INVALID_OPERATION error. \n";
+			std::cout << vertexSource;
+			std::cout << fragmentSource;
+			std::cout << " ################################################\n";
+			break;
+			//return;
 		}
 	}
 

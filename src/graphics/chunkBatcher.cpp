@@ -23,8 +23,8 @@ ChunkBatcher::ChunkBatcher() :
 	const char *vertex =
 		"#version 330 core \n"
 
-		"const float density = 0.03; \n"
-		"const float gradient = 4; \n"
+		"const float density = 0.001; \n"
+		"const float gradient = 6; \n"
 
 		"in vec4 positionIn; \n"
 		"in vec3 normalIn; \n"

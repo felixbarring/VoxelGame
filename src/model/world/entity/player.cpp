@@ -77,6 +77,7 @@ void Player::update(float timePassed)
 
 	glm::vec3 destination = location + speed;
 
+	AABB playerTurbo{ location.x - 0.5, location.x + 0.5, location.y - 1, location.y, location.z - 0.5, location.z + 0.5 };
 	AABB player{ destination.x - 0.5, destination.x + 0.5, destination.y - 1, destination.y, destination.z - 0.5, destination.z + 0.5 };
 
 	// Broad phase
@@ -99,9 +100,15 @@ void Player::update(float timePassed)
 				AABB cube{i, i + 1, j, j + 1, k, k + 1};
 
 				if (chunk::ChunkManager::getInstance().getCubeId(i, j, k) != config::cube_data::AIR) {
-					if (cube.intersects(player)) {
-						colided = true;
-					}
+
+					//if (cube.intersects(player)) {
+						glm::vec3 vec;
+						int value = AABB::collisionTime(playerTurbo, cube, vec, speed);
+						if (value < 1 && value > 0) {
+							colided = true;
+						}
+					//}
+
 				}
 
 				//counter++;
@@ -120,17 +127,15 @@ void Player::update(float timePassed)
 		glm::vec3 selectedCube = chunk::ChunkManager::getInstance().getLocationOfInteresectedCube();
 		if (input->action1Pressed) {
 			chunk::ChunkManager::getInstance().removeCube(selectedCube.x, selectedCube.y, selectedCube.z);
-			return;
-		}
-
-		if (input->action2Pressed) {
+			//return;
+		} else if (input->action2Pressed) {
 			glm::vec3 cube = chunk::ChunkManager::getInstance().getCubeBeforeIntersectedCube();
 			chunk::ChunkManager::getInstance().setCube(cube.x, cube.y, cube.z, 1);
 		}
 
 		// TODO Remove hardcoded values
 		transform.setLocation(selectedCube.x + 0.5, selectedCube.y + 0.5, selectedCube.z + 0.5);
-		graphics::CubeBatcher::getInstance().addBatch(1, transform);
+		graphics::CubeBatcher::getInstance().addBatch(config::cube_data::SELECTED, transform);
 
 	}
 

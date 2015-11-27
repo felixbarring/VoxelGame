@@ -38,21 +38,23 @@ namespace config
 		static constexpr char ROCK = 2;
 		static constexpr char BRICK_WALL = 3;
 		static constexpr char BED_ROCK = 4;
+		static constexpr char SELECTED = 5;
 
 		// Used for looping over all types, except for air.
-		static constexpr char LAST_BLOCK = BRICK_WALL;
+		static constexpr char LAST_BLOCK = SELECTED;
 
 		static constexpr int SIDE_TEXTURE = 0;
 		static constexpr int TOP_TEXTURE =1;
 		static constexpr int BOTTOM_TEXTURE = 2;
 
 		// 0 = Side, 1 = Top, 2 = Bottom
-		static constexpr char BLOCK_TEXTURES[5][3]{
+		static constexpr char BLOCK_TEXTURES[6][3]{
 			{0, 1, 2},
 			{2, 2, 2},
 			{3, 3, 3},
 			{4, 4, 4},
-			{4, 4, 4}
+			{5, 5, 5},
+			{6, 6, 6}
 		};
 
 		static constexpr int TEXTURE_WIDTH = 32;
@@ -64,6 +66,8 @@ namespace config
 			"../resources/cubes/dirt.png",
 			"../resources/cubes/rock.png",
 			"../resources/cubes/brick.png",
+			"../resources/cubes/bedrock.png",
+			"../resources/cubes/selected.png",
 		};
 
 	}
@@ -115,8 +119,12 @@ namespace config
 
 	namespace gui_data
 	{
+		static const std::string title = "../resources/gui/title.png";
 
 		static const std::string guiBox = "../resources/gui/gui_box.png";
+		static const std::string button = "../resources/gui/button.png";
+		static const std::string highlight = "../resources/gui/highlight.png";
+
 		static const std::string slider = "../resources/gui/slider_body.png";
 		static const std::string sliderKnob = "../resources/gui/slider_knob.png";
 

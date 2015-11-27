@@ -13,6 +13,8 @@ MainMenu::MainMenu(Game *game) :
 	game(game)
 {
 
+	title.reset(new gui::Image{200, 450, 400, 100, config::gui_data::title});
+
 	bool quit = false;
 	std::function<void(int)> observer = [&, game](int id)
 	{
@@ -177,7 +179,7 @@ MainMenu::MainMenu(Game *game) :
 
 	// ################################################################################################################
 
-	std::shared_ptr<widget::IWidget> label17(new widget::Label{270, 500, 150, 50, " - Load World - "});
+	std::shared_ptr<widget::IWidget> label17(new widget::Label{270, 390, 150, 50, " - Load World - "});
 
 	std::shared_ptr<widget::IWidget> button19(new widget::Button{18, 225, 70, 80, 30, observer, "Rename"});
 	std::shared_ptr<widget::IWidget> button20(new widget::Button{19, 315, 70, 80, 30, observer, "Delete"});
@@ -185,7 +187,7 @@ MainMenu::MainMenu(Game *game) :
 	std::shared_ptr<widget::IWidget> button21(new widget::Button{20, 405, 70, 80, 30, observer, "Load"});
 	std::shared_ptr<widget::IWidget> button22(new widget::Button{21, 495, 70, 80, 30, observer, "Cancel"});
 
-	loadWorldWidgetGroup.reset(new widget::WidgetGroup{0, 200, 50, 400, 450, observer});
+	loadWorldWidgetGroup.reset(new widget::WidgetGroup{0, 200, 50, 400, 400, observer});
 
 	loadWorldWidgetGroup->addWidget(label17);
 	loadWorldWidgetGroup->addWidget(button19);
@@ -264,6 +266,7 @@ void MainMenu::update()
 	if (input->action1Pressed)
 		activeWidgetGroup->mouseClicked(0, mouse.x, mouse.y);
 
+	title->draw();
 	activeWidgetGroup->draw();
 
 

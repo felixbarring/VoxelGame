@@ -55,8 +55,6 @@ ChunkManager::ChunkManager()
 // Member Functions########################################
 // ########################################################
 
-
-
 char ChunkManager::getCubeId(int x, int y, int z)
 {
 	// Used to avoid Division every time the function is called.
@@ -105,13 +103,13 @@ void ChunkManager::setCube(int x, int y, int z, char id)
 }
 
 // Requires that direction is normalized!
+// Has one bugg, when the player is exactly located at an integer position
+// the selection will be wrong!
 
 bool ChunkManager::intersectWithSolidCube(glm::vec3 origin, glm::vec3 direction, float searchLength)
 {
-	// A hack to fix the problem
-	// Should be fixed in the model matrix
-	//origin = origin + glm::vec3(0.5, 0.5, 0.5);
 
+	// Get the sign of the directions
 	int signXDirection = (direction.x > 0) - (direction.x < 0);
 	int signYDirection = (direction.y > 0) - (direction.y < 0);
 	int signZDirection = (direction.z > 0) - (direction.z < 0);
@@ -120,20 +118,21 @@ bool ChunkManager::intersectWithSolidCube(glm::vec3 origin, glm::vec3 direction,
 	float xL;
 	float yL;
 	float zL;
+
 	if (direction.x == 0) {
-		xL =  0.00000001; //signXDirection * std::numeric_limits<float>::infinity();
+		xL = 100000000; //signXDirection * std::numeric_limits<float>::infinity();
 	} else {
 		xL = 1.0 / direction.x;
 	}
 
 	if (direction.y == 0) {
-		yL = 0.0000000001; //signYDirection * std::numeric_limits<float>::infinity();
+		yL = 1000000000; //signYDirection * std::numeric_limits<float>::infinity();
 	} else {
 		yL = 1.0 / direction.y;
 	}
 
 	if (direction.z == 0) {
-		zL = 0.00000000001; //signZDirection * std::numeric_limits<float>::infinity();
+		zL = 1000000000; //signZDirection * std::numeric_limits<float>::infinity();
 	} else {
 		zL = 1.0 / direction.z;
 	}
@@ -142,18 +141,22 @@ bool ChunkManager::intersectWithSolidCube(glm::vec3 origin, glm::vec3 direction,
 	int currentCubeY = std::floor(origin.y);
 	int currentCubeZ = std::floor(origin.z);
 
-	int xAxis = signXDirection >= 0 ? std::ceil(origin.x) : std::floor(origin.x);
-	int yAxis = signYDirection >= 0 ? std::ceil(origin.y) : std::floor(origin.y);
-	int zAxis = signZDirection >= 0 ? std::ceil(origin.z) : std::floor(origin.z);
+	// Problem here :s
+	// When the player is located exactly at an integer value ie 7.0 we get errors
+	int xAxis = signXDirection > 0 ? std::ceil(origin.x) : std::floor(origin.x);
+	int yAxis = signYDirection > 0 ? std::ceil(origin.y) : std::floor(origin.y);
+	int zAxis = signZDirection > 0 ? std::ceil(origin.z) : std::floor(origin.z);
 
 	float distanceSearched = 0;
 
 	previousCube = glm::vec3(currentCubeX, currentCubeY, currentCubeZ);
 
-	while ( distanceSearched < searchLength) {
+	while (distanceSearched < searchLength) {
 
 		previousCube = glm::vec3(currentCubeX, currentCubeY, currentCubeZ);
 
+		// Multi means how much along an axis we need to move to pass into the next cube
+		// Step into the next cube by going one step in the direction of the axis with the lowest multi.
 		float multiX = (xAxis - origin.x) * xL;
 		float multiY = (yAxis - origin.y) * yL;
 		float multiZ = (zAxis - origin.z) * zL;
@@ -179,13 +182,13 @@ bool ChunkManager::intersectWithSolidCube(glm::vec3 origin, glm::vec3 direction,
 		}
 
 		if (!isAir(currentCubeX, currentCubeY, currentCubeZ)) {
-			//std::cout << "--- Found None Air CUbe" << currentCubeX << " : " << currentCubeY << " : " << currentCubeZ << "\n";
 			intersectedCube = glm::vec3(currentCubeX, currentCubeY, currentCubeZ);
 			return true;
 		}
 	}
 
 	return false;
+
 }
 
 glm::vec3 ChunkManager::getLocationOfInteresectedCube()

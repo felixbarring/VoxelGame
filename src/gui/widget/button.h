@@ -65,6 +65,7 @@ private:
 	bool pointerInsideBorders = false;
 
 	std::shared_ptr<graphics::Sprite> sprite;
+	std::shared_ptr<graphics::Sprite> highlight;
 
 	std::shared_ptr<graphics::Sprite> text;
 

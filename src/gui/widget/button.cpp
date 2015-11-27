@@ -21,7 +21,8 @@ Button::Button(int id, int x, int y, int width, int height, std::function<void(i
 
 	this->observer = observer;
 
-	sprite.reset(new graphics::Sprite{x, y, 0, width, height, graphics::Resources::getInstance().getTexture(config::gui_data::guiBox)});
+	sprite.reset(new graphics::Sprite{x, y, 0, width, height, graphics::Resources::getInstance().getTexture(config::gui_data::button)});
+	highlight.reset(new graphics::Sprite{x, y, 0, width, height, graphics::Resources::getInstance().getTexture(config::gui_data::highlight)});
 
 	graphics::FontMeshBuilder &fontMeshBuilder = graphics::Resources::getInstance().getFontMeshBuilder(
 			config::font_data::fontLayout, config::font_data::fontAtlasWidth, config::font_data::fontAtlasHeight);
@@ -40,7 +41,7 @@ void Button::draw()
 	if (pointerInsideBorders) {
 		graphics::SpriteBatcher::getInstance().addBatch(text);
 		graphics::SpriteBatcher::getInstance().addBatch(sprite);
-		graphics::SpriteBatcher::getInstance().addBatch(sprite);
+		graphics::SpriteBatcher::getInstance().addBatch(highlight);
 	} else {
 		graphics::SpriteBatcher::getInstance().addBatch(text);
 		graphics::SpriteBatcher::getInstance().addBatch(sprite);

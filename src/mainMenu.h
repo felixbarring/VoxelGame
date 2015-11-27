@@ -8,6 +8,7 @@
 
 #include "util/input.h"
 
+#include "gui/image.h"
 #include "gui/widget/button.h"
 #include "gui/widget/label.h"
 #include "gui/widget/textInput.h"
@@ -55,6 +56,8 @@ private:
 
 	Game *game;
 	MainMenuState state = MainMenuState::MainMenu;
+
+	std::unique_ptr<gui::Image> title;
 
 	std::shared_ptr<widget::WidgetGroup> activeWidgetGroup;
 

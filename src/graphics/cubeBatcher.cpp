@@ -52,6 +52,7 @@ CubeBatcher::CubeBatcher() :
 
 		"void main(){ \n"
 		"  color = texture(texture1, texCoord); \n"
+		"  color.w = 0.2; \n"
 		"} \n";
 
 	std::map<std::string, int> attributesMap{
@@ -70,13 +71,15 @@ CubeBatcher::CubeBatcher() :
 
 void CubeBatcher::addBatch(char type, Transform &transform)
 {
-	batches.push_back(Batch(cubes.at(type-1), transform));
+	batches.push_back(Batch(cubes.at(type), transform));
 }
 
 void CubeBatcher::draw()
 {
 
 	program->bind();
+
+
 
 	glActiveTexture(GL_TEXTURE0);
 	program->setUniformli("texture1", 0);

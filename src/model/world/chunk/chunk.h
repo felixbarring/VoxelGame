@@ -52,6 +52,8 @@ private:
 
 	void doSunLightning(std::vector<glm::vec3> &lightPropagate);
 
+	void updateLightning();
+
 	void collectLightFromRightNeighbor(std::vector<glm::vec3> &lightPropagate);
 
 	void collectLightFromLeftNeighbor(std::vector<glm::vec3> &lightPropagate);
