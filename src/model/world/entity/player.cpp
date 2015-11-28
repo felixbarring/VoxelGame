@@ -122,9 +122,10 @@ void Player::update(float timePassed)
 	graphics::Camera::getInstance().updateView(glm::vec3(location.x, location.y, location.z),
 			viewDirection.getViewDirection(), viewDirection.getUpDirection());
 
-	if (chunk::ChunkManager::getInstance().intersectWithSolidCube(location, viewDirection.getViewDirection(), 5)) {
+	if (chunk::ChunkManager::getInstance().intersectWithSolidCube(location, viewDirection.getViewDirection(), selectCubeDistance)) {
 
 		glm::vec3 selectedCube = chunk::ChunkManager::getInstance().getLocationOfInteresectedCube();
+
 		if (input->action1Pressed) {
 			chunk::ChunkManager::getInstance().removeCube(selectedCube.x, selectedCube.y, selectedCube.z);
 			//return;

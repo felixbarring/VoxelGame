@@ -60,7 +60,7 @@ public:
 
 	void doSunLightning(std::vector<glm::vec3> &lightPropagate);
 
-	void doSunLightning(int x, int z);
+	void doSunLightning(std::vector<glm::vec3> &lightPropagate, int x, int y, int z);
 
 	void updateLightning();
 
@@ -78,6 +78,8 @@ public:
 	void dePropagateLight(int x, int y, int z);
 
 	int highestLightValueFromNeighbors(int x, int y, int z);
+
+	bool isInDirectSunlight(int x, int y, int z);
 
 	// ########################################################
 	// Instance Variables #####################################

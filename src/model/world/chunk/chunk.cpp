@@ -114,35 +114,39 @@ void Chunk::setCube(int x, int y, int z, char id)
 	if (vec[x][y][z].id == config::cube_data::BED_ROCK)
 		return;
 
-	// TODO Consider: Optimize depending on if a cube was removed or added.
-
 	Voxel &voxel = vec[x][y][z];
 	voxel.id = id;
-
-	// TODO Make two different functions
 
 	// If we remove a cube
 	// Get light from neighbor an propagate
 	if (id == config::cube_data::AIR) {
 		updateLightningCubeRemoved(voxel, x, y, z);
+
 	} else { // We added a cube
+
 		updateLightningCubeAdded(x, y, z);
-		//updateLightning();
 	}
 
 }
 
 void Chunk::updateLightningCubeRemoved(Voxel& voxel, int x, int y, int z)
 {
-	int highestLightValue = 0;
 
-	highestLightValue = highestLightValueFromNeighbors(x, y, z) - 1;
-	if (highestLightValue < 0)
-		highestLightValue = 0;
+	if (isInDirectSunlight(x, y, z)) {
 
-	voxel.lightValue = highestLightValue;
+		std::vector<glm::vec3> lightPropagate;
+		doSunLightning(lightPropagate, x, y, z);
+		for (auto x : lightPropagate)
+			propagateLight(x.x, x.y, x.z);
 
-	doSunLightning(x, z);
+	} else {
+		int highestLightValue = 0;
+		highestLightValue = highestLightValueFromNeighbors(x, y, z) - 1;
+		if (highestLightValue < 0)
+			highestLightValue = 0;
+
+		voxel.lightValue = highestLightValue;
+	}
 
 	propagateLight(x, y, z);
 	updateGraphics();
@@ -237,8 +241,6 @@ void Chunk::doSunLightning(std::vector<glm::vec3> &lightPropagate)
 {
 
 	// TODO Not correct k/j problem
-
-	//bool foundSolid = false;
 	// Sun lightning, only air gets light
 	for (int i = 0; i < config::chunk_data::CHUNK_WIDTH; i++) {
 		for (int j = 0; j < config::chunk_data::CHUNK_DEPTH; j++) {
@@ -261,11 +263,12 @@ void Chunk::doSunLightning(std::vector<glm::vec3> &lightPropagate)
 
 }
 
-void Chunk::doSunLightning(int x, int z)
+void Chunk::doSunLightning(std::vector<glm::vec3> &lightPropagate, int x, int y, int z)
 {
-	for (int y = config::chunk_data::CHUNK_HEIGHT-1; y >= 0; y--) {
-		if (vec[x][y][z].id == config::cube_data::AIR) {
-			vec[x][y][z].lightValue = directSunlight;
+	for (int i = y; y >= 0; i--) {
+		if (vec[x][i][z].id == config::cube_data::AIR) {
+			vec[x][i][z].lightValue = directSunlight;
+			lightPropagate.push_back(glm::vec3(x, i, z));
 		} else {
 			break;
 		}
@@ -784,5 +787,13 @@ int Chunk::highestLightValueFromNeighbors(int x, int y, int z)
 	return highestValue;
 }
 
+bool Chunk::isInDirectSunlight(int x, int y, int z)
+{
+	for (int i = height - 1; i >= y; i--)
+		if (vec[x][i][z].id != config::cube_data::AIR)
+			return false;
+
+	return true;
+}
 
 }

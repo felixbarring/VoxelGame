@@ -42,6 +42,7 @@ private:
 	float width = 1;
 	float height = 1;
 	float depth = 1;
+	int selectCubeDistance = 5;
 	glm::vec3 speed;
 	graphics::ViewDirection viewDirection;
 	float movementSpeed = 0.1;

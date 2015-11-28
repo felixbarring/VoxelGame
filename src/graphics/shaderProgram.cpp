@@ -35,8 +35,8 @@ ShaderProgram::ShaderProgram(const char *vertexSource, const char *fragmentSourc
     // Create locations for all the attributes
 	for (auto attribute : attributes) {
 
-		std::cout << "Size is najs" << attributes.size() << "\n";
-		std::cout << "Attribute = " << attribute.second << " " << attribute.first.c_str() << " \n";
+		//std::cout << "Size is najs" << attributes.size() << "\n";
+		//std::cout << "Attribute = " << attribute.second << " " << attribute.first.c_str() << " \n";
 
 		glBindAttribLocation(programID, attribute.second, attribute.first.c_str());
 		int errorCheck = glGetError();
