@@ -34,9 +34,15 @@ public:
 
 	Voxel& getVoxel(int x, int y, int z);
 
+	Voxel* getVoxel2(int x, int y, int z);
+
 	char getCubeId(int x, int y, int z);
 
 	void setCube(int x, int y, int z, char id);
+
+	void updateLightningCubeRemoved(Voxel& voxel, int x, int y, int z);
+
+	void updateLightningCubeAdded(int x, int y, int z);
 
 	void setLeftNeighbor(std::shared_ptr<Chunk> chunk);
 
@@ -48,9 +54,13 @@ public:
 
 	void updateGraphics();
 
-private:
+	void updateNeighborGraphics();
+
+// Private shit here
 
 	void doSunLightning(std::vector<glm::vec3> &lightPropagate);
+
+	void doSunLightning(int x, int z);
 
 	void updateLightning();
 
@@ -64,11 +74,24 @@ private:
 
 	void propagateLight(int x, int y, int z);
 
+	// Removed light that has been propagated from the voxel at x y z
+	void dePropagateLight(int x, int y, int z);
+
+	int highestLightValueFromNeighbors(int x, int y, int z);
+
 	// ########################################################
 	// Instance Variables #####################################
 	// ########################################################
 
+private:
+
 	int xLocation, yLocation, zLocation;
+
+	const int directSunlight = 15;
+
+	int width = config::chunk_data::CHUNK_WIDTH;
+	int height = config::chunk_data::CHUNK_HEIGHT;
+	int depth = config::chunk_data::CHUNK_DEPTH;
 
 	std::vector<std::vector<std::vector<Voxel>>> vec;
 

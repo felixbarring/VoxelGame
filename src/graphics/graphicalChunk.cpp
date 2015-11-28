@@ -454,7 +454,7 @@ float GraphicalChunk::getyLocation()
 }
 
 // Function for getting voxels, can collect from neighbor chunks data
-// If there is no neighobor, nullptr will be returned
+// If there is no neighbor, nullptr will be returned
 // Trying to get a voxel that is not adjacent to this chunk is an error
 Voxel* GraphicalChunk::getVoxel(int x, int y, int z,
 		std::vector<std::vector<std::vector<Voxel>>> &data,
