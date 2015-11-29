@@ -64,6 +64,9 @@ public:
 
 	void updateLightning();
 
+	// Much Optimized version of updateLightning
+	void updateLightning2();
+
 	void collectLightFromRightNeighbor(std::vector<glm::vec3> &lightPropagate);
 
 	void collectLightFromLeftNeighbor(std::vector<glm::vec3> &lightPropagate);

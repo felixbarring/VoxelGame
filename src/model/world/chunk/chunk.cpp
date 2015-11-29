@@ -140,15 +140,16 @@ void Chunk::updateLightningCubeRemoved(Voxel& voxel, int x, int y, int z)
 			propagateLight(x.x, x.y, x.z);
 
 	} else {
+
 		int highestLightValue = 0;
 		highestLightValue = highestLightValueFromNeighbors(x, y, z) - 1;
 		if (highestLightValue < 0)
 			highestLightValue = 0;
 
 		voxel.lightValue = highestLightValue;
+		propagateLight(x, y, z);
 	}
 
-	propagateLight(x, y, z);
 	updateGraphics();
 	// TODO Do more accurate check of which neighbors (if any) that needs to be updated
 	updateNeighborGraphics();
@@ -156,7 +157,10 @@ void Chunk::updateLightningCubeRemoved(Voxel& voxel, int x, int y, int z)
 
 void Chunk::updateLightningCubeAdded(int x, int y, int z)
 {
-	updateLightning();
+	updateLightning2();
+	updateGraphics();
+	// TODO Do more accurate check of which neighbors (if any) that needs to be updated
+	updateNeighborGraphics();
 }
 
 void Chunk::updateGraphics()
@@ -390,11 +394,32 @@ void Chunk::updateLightning()
 		for (glm::vec3 vec : lightPropagateFront)
 			frontNeighbor->propagateLight(vec.x, vec.y, vec.z);
 
-
 	}
 
-	updateGraphics();
-	updateNeighborGraphics();
+	//updateGraphics();
+	//updateNeighborGraphics();
+
+}
+
+void Chunk::updateLightning2()
+{
+	std::vector<glm::vec3> lightPropagate;
+	doSunLightning(lightPropagate);
+
+	if (rightNeighbor.get())
+		collectLightFromRightNeighbor(lightPropagate);
+
+	if (leftNeighbor.get())
+		collectLightFromLeftNeighbor(lightPropagate);
+
+	if (backNeighbor.get())
+		collectLightFromBackNeighbor(lightPropagate);
+
+	if (frontNeighbor.get())
+		collectLightFromFrontNeighbor(lightPropagate);
+
+	for (glm::vec3 vec : lightPropagate)
+		propagateLight(vec.x, vec.y, vec.z);
 
 }
 
@@ -609,149 +634,6 @@ void Chunk::propagateLight(int x, int y, int z)
 	}
 
 	for (glm::vec3 vec : newPropagates)
-		propagateLight(vec.x, vec.y, vec.z);
-
-}
-
-// Good idea?
-void Chunk::dePropagateLight(int x, int y, int z)
-{
-
-	Voxel &voxel = vec[x][y][z];
-	int lvInitial = voxel.lightValue;
-
-	std::vector<glm::vec3> newDepropagates;
-
-	// ##################################################################################
-
-	// Traverse right
-	int lv = lvInitial;
-	for (int i = x + 1; lv > 0; i++) {
-
-		if (i < width) {
-			Voxel &v = vec[i][y][z];
-			if (v.id == config::cube_data::AIR && v.lightValue < lv) {
-				v.lightValue = lv;
-				newDepropagates.push_back(glm::vec3(i, y, z));
-				lv--;
-			} else {
-				break;
-			}
-		} else {
-			if (rightNeighbor.get()) {
-				if (rightNeighbor->vec[0][y][z].id == config::cube_data::AIR && rightNeighbor->vec[0][y][z].lightValue < lv) {
-					rightNeighbor->vec[0][y][z].lightValue = lv;
-					rightNeighbor->propagateLight(0, y, z);
-				}
-			}
-			break;
-		}
-	}
-
-	// Travers left
-	lv = lvInitial;
-	for (int i = x - 1; lv > 0; i--) {
-
-		if (i >= 0) {
-			Voxel &v = vec[i][y][z];
-			if (v.id == config::cube_data::AIR && v.lightValue < lv) {
-				v.lightValue = lv;
-				newDepropagates.push_back(glm::vec3(i, y, z));
-				lv--;
-			} else {
-				break;
-			}
-		} else {
-			if (leftNeighbor.get()) {
-				if (leftNeighbor->vec[width - 1][y][z].id == config::cube_data::AIR && leftNeighbor->vec[width - 1][y][z].lightValue < lv) {
-					leftNeighbor->vec[width - 1][y][z].lightValue = lv;
-					leftNeighbor->propagateLight(width - 1, y, z);
-				}
-			}
-			break;
-		}
-	}
-
-	// ##################################################################################
-
-	// Traverse up
-	lv = lvInitial;
-	for (int i = y + 1; i < height; i++) {
-		Voxel &v = vec[x][i][z];
-		if (v.id == config::cube_data::AIR && v.lightValue < lv) {
-			v.lightValue = lv;
-			newDepropagates.push_back(glm::vec3(x, i, z));
-			lv--;
-		} else {
-			break;
-		}
-	}
-
-	// Treaverse down
-	lv = lvInitial;
-	for (int i = y - 1; i >= 0; i--) {
-		Voxel &v = vec[x][i][z];
-		if (v.id == config::cube_data::AIR && v.lightValue < lv) {
-			v.lightValue = lv;
-			newDepropagates.push_back(glm::vec3(x, i, z));
-			lv--;
-		} else {
-			break;
-		}
-	}
-
-	// ##################################################################################
-
-	// Traverse backwards
-	lv = lvInitial;
-	for (int i = z + 1; lv > 0; i++) {
-
-		if (i < depth) {
-			Voxel &v = vec[x][y][i];
-			if (v.id == config::cube_data::AIR && v.lightValue < lv) {
-				v.lightValue = lv;
-				newDepropagates.push_back(glm::vec3(x, y, i));
-				lv--;
-			} else {
-				break;
-			}
-		} else {
-			if (backNeighbor.get()) {
-				if (backNeighbor->vec[x][y][0].id == config::cube_data::AIR && backNeighbor->vec[x][y][0].lightValue < lv) {
-					backNeighbor->vec[x][y][0].lightValue = lv;
-					backNeighbor->propagateLight(x, y, 0);
-				}
-			}
-			break;
-		}
-	}
-
-	// Traverse forwards
-	lv = lvInitial;
-	for (int i = z - 1; lv > 0; i--) {
-
-		if (i >= 0) {
-
-			Voxel &v = vec[x][y][i];
-			if (v.id == config::cube_data::AIR && v.lightValue < lv) {
-				v.lightValue = lv;
-				newDepropagates.push_back(glm::vec3(x, y, i));
-				lv--;
-			} else {
-				break;
-			}
-		} else {
-			if (frontNeighbor.get()) {
-				if (frontNeighbor->vec[x][y][depth - 1].id == config::cube_data::AIR && frontNeighbor->vec[x][y][depth - 1].lightValue < lv) {
-					frontNeighbor->vec[x][y][depth - 1].lightValue = lv;
-					frontNeighbor->propagateLight(x, y, depth - 1);
-				}
-			}
-			break;
-		}
-	}
-
-	for (glm::vec3 vec : newDepropagates)
 		propagateLight(vec.x, vec.y, vec.z);
 
 }

@@ -35,9 +35,9 @@ void Player::update(float timePassed)
 
 	viewDirection.changeViewDirection(input->mouseXMovement, input->mouseYMovement);
 
-	speed.x = 0;
-	speed.y = 0;
-	speed.z = 0;
+	//
+	//
+	//speed.z = 0;
 
 	if (input->moveForwardActive || input->moveBackwardActive) {
 
@@ -51,6 +51,9 @@ void Player::update(float timePassed)
 
 		speed.x = dummy.x;
 		speed.z = dummy.z;
+	} else {
+		speed.x = 0;
+		speed.z = 0;
 	}
 
 	if (input->moveRightActive || input->moveLeftActive) {
@@ -73,7 +76,19 @@ void Player::update(float timePassed)
 			direction = -1;
 
 		speed.y = direction * movementSpeed;
+	} else {
+		speed.y = 0;
 	}
+
+	/*
+	if(input->jumpPressed) {
+		speed.y = 1;
+	} else {
+		if (speed.y > 0) {
+			speed.y -= 0.01;
+		}
+	}
+	*/
 
 	glm::vec3 destination = location + speed;
 
@@ -101,13 +116,16 @@ void Player::update(float timePassed)
 
 				if (chunk::ChunkManager::getInstance().getCubeId(i, j, k) != config::cube_data::AIR) {
 
-					//if (cube.intersects(player)) {
+					if (cube.intersects(player)) {
+						/*
 						glm::vec3 vec;
 						int value = AABB::collisionTime(playerTurbo, cube, vec, speed);
 						if (value < 1 && value > 0) {
 							colided = true;
 						}
-					//}
+						*/
+						colided = true;
+					}
 
 				}
 
