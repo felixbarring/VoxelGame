@@ -4,6 +4,7 @@
 #include <iostream>
 #include <math.h>
 #include <memory>
+#include <algorithm>
 
 #include "../../../graphics/camera.h"
 #include "../chunk/chunkManager.h"
@@ -31,45 +32,71 @@ Player::Player():
 void Player::update(float timePassed)
 {
 
-	std::shared_ptr<util::Input> input = util::Input::getInstance();
+	updateSpeed();
+	handlePhysics();
+	updateCameraAndTargetCube(); // Updates the camera aswell
 
+}
+
+void Player::updateSpeed()
+{
+	std::shared_ptr<util::Input> input = util::Input::getInstance();
 	viewDirection.changeViewDirection(input->mouseXMovement, input->mouseYMovement);
 
-	//
-	//
-	//speed.z = 0;
+	speed.x = 0;
+	speed.z = 0;
+
+	glm::vec3 movementDirection{0.0f, 0.0f, 0.0f};
 
 	if (input->moveForwardActive || input->moveBackwardActive) {
 
-		int direction = 1;
+		float direction = 1.0f;
 		if (input->moveBackwardActive)
-			direction = -1;
+			direction = -1.0f;
 
 		glm::vec3 dummy = viewDirection.getViewDirection();
 		dummy.y = 0;
-		dummy = direction * movementSpeed * glm::normalize(dummy);
+		movementDirection += direction * dummy;
 
-		speed.x = dummy.x;
-		speed.z = dummy.z;
-	} else {
-		speed.x = 0;
-		speed.z = 0;
 	}
 
 	if (input->moveRightActive || input->moveLeftActive) {
 
-		int direction = 1;
+		float direction = 1.0f;
 		if (input->moveLeftActive)
-			direction = -1;
+			direction = -1.0f;
 
 		glm::vec3 dummy = viewDirection.getRightDirection();
 		dummy.y = 0;
-		dummy = direction * movementSpeed * glm::normalize(dummy);
+		movementDirection += direction * dummy;
 
-		speed.x += dummy.x;
-		speed.z += dummy.z;
 	}
 
+	glm::vec3 normalizedMD = movementSpeed * glm::normalize(movementDirection);
+
+	// Normalize will give nan if the length is 0
+	if (glm::length(movementDirection)) {
+		speed.x = normalizedMD.x;
+		speed.z = normalizedMD.z;
+	}
+
+	// Gravity
+	speed.y -= 0.004;
+
+	// Jump
+	if(input->jumpPressed) {
+		std::vector<std::pair<float, glm::vec3>> collisions;
+		intersected(glm::vec3(0, -0.1, 0), collisions);
+
+		// Only jump if the player stands on solid ground.
+		if (collisions.size())
+			speed.y = 0.1;
+
+	}
+
+
+
+	/*
 	if (input->jumpActive || input->goDownActive) {
 		int direction = 1;
 		if (input->goDownActive)
@@ -77,26 +104,78 @@ void Player::update(float timePassed)
 
 		speed.y = direction * movementSpeed;
 	} else {
-		speed.y = 0;
-	}
-
-	/*
-	if(input->jumpPressed) {
-		speed.y = 1;
-	} else {
-		if (speed.y > 0) {
-			speed.y -= 0.01;
-		}
+		//speed.y = 0;
 	}
 	*/
 
-	glm::vec3 destination = location + speed;
 
-	AABB playerTurbo{ location.x - 0.5, location.x + 0.5, location.y - 1, location.y, location.z - 0.5, location.z + 0.5 };
-	AABB player{ destination.x - 0.5, destination.x + 0.5, destination.y - 1, destination.y, destination.z - 0.5, destination.z + 0.5 };
+}
 
-	// Broad phase
-	AABB box = AABB::getSweptBroadPhaseBox(player, speed);
+void Player::handlePhysics()
+{
+
+	std::vector<std::pair<float, glm::vec3>> collisions;
+	intersected(speed, collisions);
+
+	while(collisions.size()) {
+
+		std::sort(collisions.begin(), collisions.end(),
+			[](std::pair<float, glm::vec3> a, std::pair<float, glm::vec3> b)
+			{
+				return a.first < b.first;
+			}
+		);
+
+		if (collisions.size()) {
+			auto c = collisions[0];
+			speed += glm::vec3(-c.second.x * speed.x, -c.second.y * speed.y, -c.second.z * speed.z);
+		}
+
+		collisions.clear();
+		intersected(speed, collisions);
+
+	}
+
+	location += speed;
+
+}
+
+void Player::updateCameraAndTargetCube()
+{
+	std::shared_ptr<util::Input> input = util::Input::getInstance();
+
+	graphics::Camera::getInstance().updateView(
+		glm::vec3(location.x, location.y, location.z),
+		viewDirection.getViewDirection(),
+		viewDirection.getUpDirection()
+	);
+
+	chunk::ChunkManager &chunkManager = chunk::ChunkManager::getInstance();
+
+	if (chunkManager.intersectWithSolidCube(location, viewDirection.getViewDirection(), selectCubeDistance)) {
+
+		glm::vec3 selectedCube = chunkManager.getLocationOfInteresectedCube();
+
+		if (input->action1Pressed) {
+			chunkManager.removeCube(selectedCube.x, selectedCube.y, selectedCube.z);
+		} else if (input->action2Pressed) {
+			glm::vec3 cube = chunkManager.getCubeBeforeIntersectedCube();
+			chunkManager.setCube(cube.x, cube.y, cube.z, 1);
+		}
+
+		// TODO Remove hardcoded values
+		transform.setLocation(selectedCube.x + 0.5, selectedCube.y + 0.5, selectedCube.z + 0.5);
+		graphics::CubeBatcher::getInstance().addBatch(config::cube_data::SELECTED, transform);
+
+	}
+
+}
+
+void Player::intersected(glm::vec3 movement, std::vector<std::pair<float, glm::vec3>> &collisions)
+{
+
+	AABB start{ location.x - 0.4, location.x + 0.4, location.y - 1.5, location.y, location.z - 0.4, location.z + 0.4 };
+	AABB box = AABB::getSweptBroadPhaseBox(start, movement);
 
 	int xStart = std::floor(box.xMin);
 	int yStart = std::floor(box.yMin);
@@ -106,56 +185,24 @@ void Player::update(float timePassed)
 	int yEnd = std::floor(box.yMax);
 	int zEnd = std::floor(box.zMax);
 
-	//int counter = 0;
-	bool colided = false;
-
 	for (int i = xStart; i <= xEnd; i++) {
 		for (int j = yStart; j <= yEnd; j++) {
 			for (int k = zStart; k <= zEnd; k++) {
+
 				AABB cube{i, i + 1, j, j + 1, k, k + 1};
+				glm::vec3 normal;
 
 				if (chunk::ChunkManager::getInstance().getCubeId(i, j, k) != config::cube_data::AIR) {
+					glm::vec3 vec;
+					float time = AABB::collisionTime(start, cube, vec, movement);
 
-					if (cube.intersects(player)) {
-						/*
-						glm::vec3 vec;
-						int value = AABB::collisionTime(playerTurbo, cube, vec, speed);
-						if (value < 1 && value > 0) {
-							colided = true;
-						}
-						*/
-						colided = true;
-					}
+					if (time <= 1 && time >= 0)
+						collisions.push_back({time, vec});
 
 				}
 
-				//counter++;
 			}
 		}
-	}
-
-	if (!colided)
-		location += speed;
-
-	graphics::Camera::getInstance().updateView(glm::vec3(location.x, location.y, location.z),
-			viewDirection.getViewDirection(), viewDirection.getUpDirection());
-
-	if (chunk::ChunkManager::getInstance().intersectWithSolidCube(location, viewDirection.getViewDirection(), selectCubeDistance)) {
-
-		glm::vec3 selectedCube = chunk::ChunkManager::getInstance().getLocationOfInteresectedCube();
-
-		if (input->action1Pressed) {
-			chunk::ChunkManager::getInstance().removeCube(selectedCube.x, selectedCube.y, selectedCube.z);
-			//return;
-		} else if (input->action2Pressed) {
-			glm::vec3 cube = chunk::ChunkManager::getInstance().getCubeBeforeIntersectedCube();
-			chunk::ChunkManager::getInstance().setCube(cube.x, cube.y, cube.z, 1);
-		}
-
-		// TODO Remove hardcoded values
-		transform.setLocation(selectedCube.x + 0.5, selectedCube.y + 0.5, selectedCube.z + 0.5);
-		graphics::CubeBatcher::getInstance().addBatch(config::cube_data::SELECTED, transform);
-
 	}
 
 }

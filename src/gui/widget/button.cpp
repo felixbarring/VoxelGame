@@ -50,9 +50,9 @@ void Button::draw()
 
 void Button::mouseClicked(int button, float x, float y)
 {
-	if(isInsideBorders(x,y)){
+	if(isInsideBorders(x,y))
 		observer.operator ()(id);
-	}
+
 }
 
 void Button::mouseMoved(float x, float y)

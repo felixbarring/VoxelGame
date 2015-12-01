@@ -4,6 +4,8 @@
 
 #include <glm/glm.hpp>
 
+#include <vector>
+
 #include "ientity.h"
 #include "aabb.h"
 #include "../../../util/input.h"
@@ -32,6 +34,14 @@ public:
 	void update(float timePassed) override;
 
 	void setLocation(float x, float y, float z);
+
+	void updateSpeed();
+
+	void handlePhysics();
+
+	void updateCameraAndTargetCube();
+
+	void intersected(glm::vec3 movement, std::vector<std::pair<float, glm::vec3>> &lol);
 
 // ########################################################
 // Instance Variables #####################################

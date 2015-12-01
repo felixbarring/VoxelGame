@@ -128,18 +128,18 @@ MainMenu::MainMenu(Game *game) :
 
 	std::shared_ptr<widget::IWidget> label6(new widget::Label{325, 390, 150, 30, " - Settings - Game "});
 
-	std::shared_ptr<widget::IWidget> label7(new widget::Label{             30, 310, 80,  20, "FOV:"});
-	std::shared_ptr<widget::IWidget> slider(new widget::Slider{      100,  125, 310, 150, 30, observer2});
-	textInput.reset(new widget::TextInput{666, 285, 310, 60,  30});
+	std::shared_ptr<widget::IWidget> label7(new widget::Label{             30+100, 310, 80, 20, "FOV:"});
+	std::shared_ptr<widget::IWidget> slider(new widget::Slider{      100,  125+100, 310, 150, 30, observer2});
+	textInput.reset(new widget::TextInput{666, 285+100, 310, 100,  30});
 
-	std::shared_ptr<widget::IWidget> label8(new widget::Label{              30, 270, 80, 20, "Render Distance:"});
-	std::shared_ptr<widget::IWidget> slider2(new widget::Slider{      101,  125, 270, 150, 30, observer2});
-	textInput2.reset(new widget::TextInput{666, 285, 270, 60, 30});
+	std::shared_ptr<widget::IWidget> label8(new widget::Label{              30+100, 270, 80, 20, "Render Distance:"});
+	std::shared_ptr<widget::IWidget> slider2(new widget::Slider{      101,  125+100, 270, 150, 30, observer2});
+	textInput2.reset(new widget::TextInput{666, 285+100, 270, 100, 30});
 
 	std::shared_ptr<widget::IWidget> button13(new widget::Button{12, 245, 130, 150, 30, observer, "Save"});
 	std::shared_ptr<widget::IWidget> button14(new widget::Button{13, 400, 130, 150, 30, observer, "Cancel"});
 
-	graphicsSettingsWidgetGroup.reset(new widget::WidgetGroup{0, 0, 120, 800, 270, observer});
+	graphicsSettingsWidgetGroup.reset(new widget::WidgetGroup{0, 100, 100, 600, 250, observer});
 
 	graphicsSettingsWidgetGroup->addWidget(label6);
 

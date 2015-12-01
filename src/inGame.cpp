@@ -40,7 +40,7 @@ InGame::InGame(Game *game) :
 				break;
 			}
 		}
-		std::cout << "A button with id: " << id << " was pressed\n";
+		//std::cout << "A button with id: " << id << " was pressed\n";
 	};
 
 	std::shared_ptr<widget::IWidget> button1(new widget::Button{0, 325, 350, 150, 30, observer, "Main Menu"});
@@ -59,9 +59,8 @@ InGame::InGame(Game *game) :
 void InGame::update()
 {
 
-	if (util::Input::getInstance()->escapeKeyPressed) {
+	if (util::Input::getInstance()->escapeKeyPressed)
 		state = GameState::OverlayMenu;
-	}
 
 	if (state == GameState::NoOverlay) {
 		util::Input::getInstance()->lockMouse();
@@ -98,9 +97,8 @@ void InGame::update()
 				config::graphics_data::windowWidth, config::graphics_data::windowHeight, util::Input::getInstance()->mouseXPosition, y);
 
 		widgetGroup1->mouseMoved(mouse.x, mouse.y);
-		if (util::Input::getInstance()->action1Pressed) {
+		if (util::Input::getInstance()->action1Pressed)
 			widgetGroup1->mouseClicked(0, mouse.x, mouse.y);
-		}
 
 		widgetGroup1->draw();
 

@@ -111,20 +111,19 @@ char Chunk::getCubeId(int x, int y, int z)
 void Chunk::setCube(int x, int y, int z, char id)
 {
 
+	// We can not change bedrock!
 	if (vec[x][y][z].id == config::cube_data::BED_ROCK)
 		return;
 
 	Voxel &voxel = vec[x][y][z];
 	voxel.id = id;
 
-	// If we remove a cube
-	// Get light from neighbor an propagate
+	// If we removed a cube
 	if (id == config::cube_data::AIR) {
 		updateLightningCubeRemoved(voxel, x, y, z);
-
 	} else { // We added a cube
-
 		updateLightningCubeAdded(x, y, z);
+		voxel.lightValue = 0;
 	}
 
 }
@@ -134,10 +133,13 @@ void Chunk::updateLightningCubeRemoved(Voxel& voxel, int x, int y, int z)
 
 	if (isInDirectSunlight(x, y, z)) {
 
+		std::cout << "The cube is direct sunlight \n";
+
 		std::vector<glm::vec3> lightPropagate;
 		doSunLightning(lightPropagate, x, y, z);
-		for (auto x : lightPropagate)
-			propagateLight(x.x, x.y, x.z);
+		for (auto v : lightPropagate)
+			propagateLight(v.x, v.y, v.z);
+
 
 	} else {
 
@@ -145,6 +147,8 @@ void Chunk::updateLightningCubeRemoved(Voxel& voxel, int x, int y, int z)
 		highestLightValue = highestLightValueFromNeighbors(x, y, z) - 1;
 		if (highestLightValue < 0)
 			highestLightValue = 0;
+
+		std::cout << "The highest light value is: " << highestLightValue << " \n";
 
 		voxel.lightValue = highestLightValue;
 		propagateLight(x, y, z);
@@ -157,7 +161,7 @@ void Chunk::updateLightningCubeRemoved(Voxel& voxel, int x, int y, int z)
 
 void Chunk::updateLightningCubeAdded(int x, int y, int z)
 {
-	updateLightning2();
+	updateLightning();
 	updateGraphics();
 	// TODO Do more accurate check of which neighbors (if any) that needs to be updated
 	updateNeighborGraphics();
@@ -395,9 +399,6 @@ void Chunk::updateLightning()
 			frontNeighbor->propagateLight(vec.x, vec.y, vec.z);
 
 	}
-
-	//updateGraphics();
-	//updateNeighborGraphics();
 
 }
 
@@ -671,7 +672,7 @@ int Chunk::highestLightValueFromNeighbors(int x, int y, int z)
 
 bool Chunk::isInDirectSunlight(int x, int y, int z)
 {
-	for (int i = height - 1; i >= y; i--)
+	for (int i = height - 1; i > y; i--)
 		if (vec[x][i][z].id != config::cube_data::AIR)
 			return false;
 
