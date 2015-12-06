@@ -495,7 +495,7 @@ Voxel* GraphicalChunk::getVoxel(int x, int y, int z,
 	return nullptr;
 }
 
-int AOFactor = 3;
+int AOFactor = 1;
 
 void GraphicalChunk::doAORight(CubeFaceData &cf, int x, int y, int z,
 		std::vector<std::vector<std::vector<Voxel>>> &data,

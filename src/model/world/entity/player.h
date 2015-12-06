@@ -41,7 +41,7 @@ public:
 
 	void updateCameraAndTargetCube();
 
-	void intersected(glm::vec3 movement, std::vector<std::pair<float, glm::vec3>> &lol);
+	void intersected(glm::vec3 movement, std::vector<std::pair<float, glm::vec3>> &collisions);
 
 // ########################################################
 // Instance Variables #####################################

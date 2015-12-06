@@ -152,15 +152,15 @@ void Player::updateCameraAndTargetCube()
 
 	chunk::ChunkManager &chunkManager = chunk::ChunkManager::getInstance();
 
-	if (chunkManager.intersectWithSolidCube(location, viewDirection.getViewDirection(), selectCubeDistance)) {
+	glm::vec3 selectedCube;
+	glm::vec3 previous;
 
-		glm::vec3 selectedCube = chunkManager.getLocationOfInteresectedCube();
+	if (chunkManager.intersectWithSolidCube(location, viewDirection.getViewDirection(), selectedCube, previous, selectCubeDistance)) {
 
 		if (input->action1Pressed) {
 			chunkManager.removeCube(selectedCube.x, selectedCube.y, selectedCube.z);
 		} else if (input->action2Pressed) {
-			glm::vec3 cube = chunkManager.getCubeBeforeIntersectedCube();
-			chunkManager.setCube(cube.x, cube.y, cube.z, 1);
+			chunkManager.setCube(previous.x, previous.y, previous.z, 1);
 		}
 
 		// TODO Remove hardcoded values

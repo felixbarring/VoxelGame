@@ -22,7 +22,7 @@ namespace config
 		int windowWidth = 1920;
 		int windowHeight = 1080;
 
-		float fov = 90 * (3.14 /180); // degree to radians
+		float fov = 80 * (3.14 /180); // degree to radians
 
 	}
 

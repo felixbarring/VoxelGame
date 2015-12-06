@@ -48,11 +48,7 @@ public:
 	void setCube(int x, int y, int z, char id);
 
 	// Return all the data instead of querying
-	bool intersectWithSolidCube(glm::vec3 origin, glm::vec3 direction, float searchLength);
-
-	glm::vec3 getLocationOfInteresectedCube();
-
-	glm::vec3 getCubeBeforeIntersectedCube();
+	bool intersectWithSolidCube(glm::vec3 origin, glm::vec3 direction, glm::vec3 &intersected, glm::vec3 &previous, float searchLength);
 
 	// ########################################################
 	// Instance Variables #####################################

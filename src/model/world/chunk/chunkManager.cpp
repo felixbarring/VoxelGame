@@ -106,7 +106,7 @@ void ChunkManager::setCube(int x, int y, int z, char id)
 // Has one bugg, when the player is exactly located at an integer position
 // the selection will be wrong!
 
-bool ChunkManager::intersectWithSolidCube(glm::vec3 origin, glm::vec3 direction, float searchLength)
+bool ChunkManager::intersectWithSolidCube(glm::vec3 origin, glm::vec3 direction, glm::vec3 &intersected, glm::vec3 &previous, float searchLength)
 {
 
 	// Get the sign of the directions
@@ -149,11 +149,11 @@ bool ChunkManager::intersectWithSolidCube(glm::vec3 origin, glm::vec3 direction,
 
 	float distanceSearched = 0;
 
-	previousCube = glm::vec3(currentCubeX, currentCubeY, currentCubeZ);
+	previous = glm::vec3(currentCubeX, currentCubeY, currentCubeZ);
 
 	while (distanceSearched < searchLength) {
 
-		previousCube = glm::vec3(currentCubeX, currentCubeY, currentCubeZ);
+		previous = glm::vec3(currentCubeX, currentCubeY, currentCubeZ);
 
 		// Multi means how much along an axis we need to move to pass into the next cube
 		// Step into the next cube by going one step in the direction of the axis with the lowest multi.
@@ -182,23 +182,13 @@ bool ChunkManager::intersectWithSolidCube(glm::vec3 origin, glm::vec3 direction,
 		}
 
 		if (!isAir(currentCubeX, currentCubeY, currentCubeZ)) {
-			intersectedCube = glm::vec3(currentCubeX, currentCubeY, currentCubeZ);
+			intersected = glm::vec3(currentCubeX, currentCubeY, currentCubeZ);
 			return true;
 		}
 	}
 
 	return false;
 
-}
-
-glm::vec3 ChunkManager::getLocationOfInteresectedCube()
-{
-	return intersectedCube;
-}
-
-glm::vec3 ChunkManager::getCubeBeforeIntersectedCube()
-{
-	return previousCube;
 }
 
 }
