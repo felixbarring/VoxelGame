@@ -78,12 +78,11 @@ void Game::run()
 	glfwSwapInterval(-1);
 
 	glewExperimental = true;
-	if (glewInit() != GLEW_OK) {
+	if (glewInit() != GLEW_OK)
 		std::cout << "Failed to initialize GLEW\n";
-	}
 
 	glViewport(0, 0, WIDTH, HEIGHT);
-	glClearColor(0.2f, 0.22f, 0.2f, 1.0f);
+	glClearColor(0.47f, 0.76f, 0.93f, 1.0f);
 
 	config::graphics_data::windowWidth = WIDTH;
 	config::graphics_data::windowHeight = HEIGHT;

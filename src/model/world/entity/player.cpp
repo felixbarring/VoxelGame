@@ -160,7 +160,7 @@ void Player::updateCameraAndTargetCube()
 		if (input->action1Pressed) {
 			chunkManager.removeCube(selectedCube.x, selectedCube.y, selectedCube.z);
 		} else if (input->action2Pressed) {
-			chunkManager.setCube(previous.x, previous.y, previous.z, 1);
+			chunkManager.setCube(previous.x, previous.y, previous.z, config::cube_data::BRICK_WALL);
 		}
 
 		// TODO Remove hardcoded values

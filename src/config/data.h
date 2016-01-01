@@ -37,7 +37,11 @@ namespace config
 		static constexpr char DIRT = 1;
 		static constexpr char ROCK = 2;
 		static constexpr char BRICK_WALL = 3;
+
+		static constexpr char LAST_CUBE = BRICK_WALL; // Better name needed
+
 		static constexpr char BED_ROCK = 4;
+
 		static constexpr char SELECTED = 5;
 
 		// Used for looping over all types, except for air.

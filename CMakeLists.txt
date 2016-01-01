@@ -47,3 +47,15 @@ add_executable(${PROJECT_NAME}
 # assimp - alut -  tinyobjloader
 
 target_link_libraries(${PROJECT_NAME} libglew_static glfw ${GLFW_LIBRARIES} SOIL )
+
+
+INSTALL(TARGETS VoxelGame DESTINATION derp)
+ 
+SET(CPACK_GENERATOR "DEB")
+SET(CPACK_DEBIAN_PACKAGE_MAINTAINER "Felix Bärring") 
+ 
+INCLUDE(CPack)
+
+
+
+

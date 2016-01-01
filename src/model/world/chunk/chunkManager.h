@@ -48,7 +48,8 @@ public:
 	void setCube(int x, int y, int z, char id);
 
 	// Return all the data instead of querying
-	bool intersectWithSolidCube(glm::vec3 origin, glm::vec3 direction, glm::vec3 &intersected, glm::vec3 &previous, float searchLength);
+	bool intersectWithSolidCube(glm::vec3 origin, glm::vec3 direction,
+			glm::vec3 &intersected, glm::vec3 &previous, float searchLength);
 
 	// ########################################################
 	// Instance Variables #####################################
@@ -56,12 +57,16 @@ public:
 
 private:
 
-	std::shared_ptr<Chunk> chunks[config::chunk_data::NUMBER_OF_CHUNKS_X][config::chunk_data::NUMBER_OF_CHUNKS_Y][config::chunk_data::NUMBER_OF_CHUNKS_Z];
+	std::shared_ptr<Chunk> chunks
+		[config::chunk_data::NUMBER_OF_CHUNKS_X]
+		[config::chunk_data::NUMBER_OF_CHUNKS_Y]
+		[config::chunk_data::NUMBER_OF_CHUNKS_Z];
+
 	glm::vec3 intersectedCube;
 	glm::vec3 previousCube;
 
 };
 
-}
+} /* namespace chunk */
 
 #endif /* SRC_MODEL_WORLD_CHUNK_CHUNKMANAGER_H_ */
