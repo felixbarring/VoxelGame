@@ -35,7 +35,7 @@ public:
 
 	void setLocation(float x, float y, float z);
 
-	void updateSpeed();
+	void updateSpeed(float timePassed);
 
 	void handlePhysics();
 
@@ -49,13 +49,15 @@ public:
 
 private:
 	glm::vec3 location;
-	float width = 1;
-	float height = 1;
-	float depth = 1;
-	int selectCubeDistance = 5;
+	float width {1};
+	float height {1};
+	float depth {1};
+	float gravity {0.3};
+	float jumpSpeed{0.13};
+	int selectCubeDistance {5};
 	glm::vec3 speed;
 	graphics::ViewDirection viewDirection;
-	float movementSpeed = 0.1;
+	float movementSpeed {7};
 	graphics::Transform transform;
 };
 

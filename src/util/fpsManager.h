@@ -35,14 +35,20 @@ public:
 
 	void sync();
 
+	double frameTime();
+
+	int getFps();
+
 // ########################################################
 // Instance Variables #####################################
 // ########################################################
 private:
 	int maxFPS;
-	double frameStartTime = 0;
+	int currentFPS {0};
+	double frameStartTime {0};
 	double timePerFrame;
-	const double mili = 0.001;
+	double timeForLatestFrame {1.0};
+	const double mili {0.001};
 };
 
 }

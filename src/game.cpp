@@ -58,17 +58,17 @@ void Game::run()
 	std::cout << "Height: " << height << "\n";
 	std::cout << "Refresh Rate: " << refreshRate << "\n";
 
-	//int WIDTH = width;
-	//int HEIGHT = height;
+	int WIDTH = width;
+	int HEIGHT = height;
 
-	int WIDTH = 800;
-	int HEIGHT = 600;
+	//int WIDTH = 800;
+	//int HEIGHT = 600;
 
 	config::graphics_data::windowWidth = WIDTH;
 	config::graphics_data::windowHeight = HEIGHT;
 
-	//GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "Voxel Game", glfwGetPrimaryMonitor(), nullptr);
-	GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "Voxel Game", nullptr, nullptr);
+	GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "Voxel Game", glfwGetPrimaryMonitor(), nullptr);
+	//GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "Voxel Game", nullptr, nullptr);
 
 	if (window == nullptr) {
 		std::cout << "Failed to open GLFW window.\n";
@@ -112,7 +112,7 @@ void Game::run()
 		if (state == GameState::MainMenu) {
 			mainMenu.update();
 		} else if (state == GameState::InGame){
-			inGame.update();
+			inGame.update(fpsManager.frameTime());
 		}
 
 		fpsManager.sync();

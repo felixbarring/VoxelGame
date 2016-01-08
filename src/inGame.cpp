@@ -6,6 +6,14 @@
 
 #include "config/data.h"
 
+using namespace std;
+using namespace glm;
+
+using namespace graphics;
+using namespace config;
+using namespace widget;
+using namespace util;
+using namespace gui;
 
 // ########################################################
 // Constructor/Destructor #################################
@@ -15,14 +23,14 @@ InGame::InGame(Game *game) :
 	player(),
 	game(game),
 	skybox{graphics::Resources::getInstance().getTextureCubeMap(
-			config::cube_map_data::cubeMap1[0],
-			config::cube_map_data::cubeMap1[1],
-			config::cube_map_data::cubeMap1[2],
-			config::cube_map_data::cubeMap1[3],
-			config::cube_map_data::cubeMap1[4],
-			config::cube_map_data::cubeMap1[5],
-			config::cube_map_data::cubeMap1Width,
-			config::cube_map_data::cubeMap1Height)}
+			cube_map_data::cubeMap1[0],
+			cube_map_data::cubeMap1[1],
+			cube_map_data::cubeMap1[2],
+			cube_map_data::cubeMap1[3],
+			cube_map_data::cubeMap1[4],
+			cube_map_data::cubeMap1[5],
+			cube_map_data::cubeMap1Width,
+			cube_map_data::cubeMap1Height)}
 {
 	player.setLocation(80, 7, 80);
 
@@ -35,7 +43,7 @@ InGame::InGame(Game *game) :
 				break;
 			}
 			case 1: {
-				util::Input::getInstance()->centerMouse();
+				Input::getInstance()->centerMouse();
 				state = GameState::NoOverlay;
 				break;
 			}
@@ -43,9 +51,9 @@ InGame::InGame(Game *game) :
 		//std::cout << "A button with id: " << id << " was pressed\n";
 	};
 
-	std::shared_ptr<widget::IWidget> button1(new widget::Button{0, 325, 350, 150, 30, observer, "Main Menu"});
-	std::shared_ptr<widget::IWidget> button2(new widget::Button{1, 325, 310, 150, 30, observer, "Back To Game"});
-	widgetGroup1.reset(new widget::WidgetGroup{0, 300, 300, 200, 90, observer});
+	shared_ptr<IWidget> button1(new Button{0, 325, 350, 150, 30, observer, "Main Menu"});
+	shared_ptr<IWidget> button2(new Button{1, 325, 310, 150, 30, observer, "Back To Game"});
+	widgetGroup1.reset(new WidgetGroup{0, 300, 300, 200, 90, observer});
 
 	widgetGroup1->addWidget(button1);
 	widgetGroup1->addWidget(button2);
@@ -56,22 +64,22 @@ InGame::InGame(Game *game) :
 // Member Functions########################################
 // ########################################################
 
-void InGame::update()
+void InGame::update(float timePassed)
 {
 
-	if (util::Input::getInstance()->escapeKeyPressed)
+	if (Input::getInstance()->escapeKeyPressed)
 		state = GameState::OverlayMenu;
 
 	if (state == GameState::NoOverlay) {
-		util::Input::getInstance()->lockMouse();
-		util::Input::getInstance()->updateValues();
+		Input::getInstance()->lockMouse();
+		Input::getInstance()->updateValues();
 
 		// Should use how much time that has passed!
-		player.update(0.0f);
+		player.update(timePassed);
 
 	} else {
-		util::Input::getInstance()->unlockMouse();
-		util::Input::getInstance()->updateValues();
+		Input::getInstance()->unlockMouse();
+		Input::getInstance()->updateValues();
 	}
 
 	glDisable(GL_DEPTH_TEST);
@@ -81,27 +89,27 @@ void InGame::update()
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
 
-	graphics::ChunkBatcher::getInstance().draw();
-	graphics::CubeBatcher::getInstance().draw();
+	ChunkBatcher::getInstance().draw();
+	CubeBatcher::getInstance().draw();
 
 	if (state == GameState::OverlayMenu) {
 
-		double y = util::Input::getInstance()->mouseYPosition - config::graphics_data::windowHeight;
+		double y = Input::getInstance()->mouseYPosition - graphics_data::windowHeight;
 		if (y < 0) {
 			y = -y;
 		} else {
 			y = -1;
 		}
 
-		glm::vec2 mouse = gui::adjustMouse(config::graphics_data::virtualWidth, config::graphics_data::virtualHeight,
-				config::graphics_data::windowWidth, config::graphics_data::windowHeight, util::Input::getInstance()->mouseXPosition, y);
+		vec2 mouse = adjustMouse(graphics_data::virtualWidth, graphics_data::virtualHeight,
+				graphics_data::windowWidth, graphics_data::windowHeight, Input::getInstance()->mouseXPosition, y);
 
 		widgetGroup1->mouseMoved(mouse.x, mouse.y);
-		if (util::Input::getInstance()->action1Pressed)
+		if (Input::getInstance()->action1Pressed)
 			widgetGroup1->mouseClicked(0, mouse.x, mouse.y);
 
 		widgetGroup1->draw();
 
-		graphics::SpriteBatcher::getInstance().draw();
+		SpriteBatcher::getInstance().draw();
 	}
 }

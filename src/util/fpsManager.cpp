@@ -51,9 +51,19 @@ void FPSManager::sync()
 		totalFrameTime = glfwGetTime() - frameStartTime;
 	}
 
-	float fps = 1.0 / totalFrameTime;
-
-	// std::cout << fps << "\n";
+	currentFPS = 1.0 / totalFrameTime;
+	timeForLatestFrame = totalFrameTime;
 
 }
+
+double FPSManager::frameTime()
+{
+	return timeForLatestFrame;
+}
+
+int FPSManager::getFps()
+{
+	return currentFPS;
+}
+
 }

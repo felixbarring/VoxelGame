@@ -53,7 +53,7 @@ Chunk::Chunk(int x, int y, int z):
 					v.id = counter;
 					vec[i][j].push_back(v);
 				} else {
-					v.id = config::cube_data::AIR;
+					v.id = AIR;
 					vec[i][j].push_back(v);
 				}
 			}
@@ -83,25 +83,25 @@ Voxel* Chunk::getVoxel2(int x, int y, int z)
 	if (x < width && x >= 0 && y < height && y >= 0 && z < depth && z >= 0) {
 		return &vec[x][y][z];
 	} else if (x == width && (y < height && y >= 0 && z < depth && z >= 0)) {
-		if (rightNeighbor != nullptr) {
+		if (rightNeighbor) {
 			return &(rightNeighbor.get()->vec[0][y][z]);
 		} else {
 			return nullptr;
 		}
 	} else if (x == -1 && (y < height && y >= 0 && z < depth && z >= 0)) {
-		if (leftNeighbor != nullptr) {
+		if (leftNeighbor) {
 			return &(leftNeighbor.get()->vec[width - 1][y][z]);
 		} else {
 			return nullptr;
 		}
 	} else if (z == depth && (x < width && x >= 0 && y < height && y >= 0)) {
-		if (backNeighbor != nullptr) {
+		if (backNeighbor) {
 			return &(backNeighbor.get()->vec[x][y][0]);
 		} else {
 			return nullptr;
 		}
 	} else if (z == -1 && (x < width && x >= 0 && y < height && y >= 0)) {
-		if (frontNeighbor != nullptr) {
+		if (frontNeighbor) {
 			return &(frontNeighbor.get()->vec[x][y][depth - 1]);
 		} else {
 			return nullptr;
@@ -191,18 +191,18 @@ void Chunk::updateGraphics()
 	if (backNeighbor.get())
 		back = &(backNeighbor->vec);
 
-	graphics::ChunkBatcher::getInstance().removeBatch(graphicalChunk);
+	ChunkBatcher::getInstance().removeBatch(graphicalChunk);
 	graphicalChunk.reset(new graphics::GraphicalChunk(xLocation, yLocation, zLocation, vec,	right, left, back, front));
-	graphics::ChunkBatcher::getInstance().addBatch(graphicalChunk);
+	ChunkBatcher::getInstance().addBatch(graphicalChunk);
 
 }
 
 void Chunk::updateNeighborGraphics()
 {
-	if (rightNeighbor.get()) {
+	if (rightNeighbor) {
 		rightNeighbor->updateGraphics();
 
-		if (rightNeighbor->backNeighbor.get())
+		if (rightNeighbor->backNeighbor)
 			rightNeighbor->backNeighbor->updateGraphics();
 
 		if (rightNeighbor->frontNeighbor.get())
@@ -213,19 +213,19 @@ void Chunk::updateNeighborGraphics()
 	if (leftNeighbor.get()) {
 		leftNeighbor->updateGraphics();
 
-		if (leftNeighbor->backNeighbor.get())
+		if (leftNeighbor->backNeighbor)
 			leftNeighbor->backNeighbor->updateGraphics();
 
-		if (leftNeighbor->frontNeighbor.get())
+		if (leftNeighbor->frontNeighbor)
 			leftNeighbor->frontNeighbor->updateGraphics();
 
 	}
 
-	if (backNeighbor.get())
+	if (backNeighbor)
 		backNeighbor->updateGraphics();
 
 
-	if (frontNeighbor.get())
+	if (frontNeighbor)
 		frontNeighbor->updateGraphics();
 }
 
