@@ -22,6 +22,14 @@ namespace chunk
 ChunkManager::ChunkManager()
 {
 
+}
+
+// ########################################################
+// Member Functions########################################
+// ########################################################
+
+void ChunkManager::createNewWorld()
+{
 	const int xMax = NUMBER_OF_CHUNKS_X;
 	const int yMax = NUMBER_OF_CHUNKS_Y;
 	const int zMax = NUMBER_OF_CHUNKS_Z;
@@ -30,7 +38,7 @@ ChunkManager::ChunkManager()
 	for (int x = 0; x < xMax; x++) {
 		for (int z = 0; z < zMax; z++) {
 			chunks[x][0][z] = unique_ptr<chunk::Chunk> (
-				new Chunk{x * CHUNK_WIDTH, 0 * CHUNK_HEIGHT, z * CHUNK_DEPTH});
+				new Chunk{x * CHUNK_WIDTH, z * CHUNK_DEPTH});
 		}
 	}
 
@@ -59,9 +67,58 @@ ChunkManager::ChunkManager()
 
 }
 
-// ########################################################
-// Member Functions########################################
-// ########################################################
+void ChunkManager::loadWorld(std::string& worldName)
+{
+
+	const int xMax = NUMBER_OF_CHUNKS_X;
+	const int yMax = NUMBER_OF_CHUNKS_Y;
+	const int zMax = NUMBER_OF_CHUNKS_Z;
+
+	for (int x = 0; x < xMax; x++) {
+		for (int z = 0; z < zMax; z++) {
+			chunks[x][0][z] = unique_ptr<chunk::Chunk> (
+				Chunk::loadChunk(worldName, x * CHUNK_WIDTH, z * CHUNK_DEPTH));
+		}
+	}
+
+	// Connect the Chunks
+	for (int x = 0; x < xMax-1; x++) {
+		for (int z = 0; z < zMax-1; z++) {
+			shared_ptr<Chunk> right = chunks[x + 1][0][z];
+			shared_ptr<Chunk> back = chunks[x][0][z + 1];
+
+			shared_ptr<Chunk> current = chunks[x][0][z];
+
+			current->setRightNeighbor(right);
+			right->setLeftNeighbor(current);
+
+			current->setBackNeighbor(back);
+			back->setFrontNeighbor(current);
+
+			current->updateGraphics();
+		}
+	}
+
+	for (int x = 0; x < xMax; x++) {
+		for (int z = 0; z < zMax; z++)
+			chunks[x][0][z]->updateGraphics();
+	}
+
+}
+
+void ChunkManager::saveWorld(std::string& worldName)
+{
+
+	const int xMax = NUMBER_OF_CHUNKS_X;
+	const int yMax = NUMBER_OF_CHUNKS_Y;
+	const int zMax = NUMBER_OF_CHUNKS_Z;
+
+	for (int x = 0; x < xMax; x++) {
+		for (int z = 0; z < zMax; z++) {
+			chunks[x][0][z]->storeChunk(worldName, x * CHUNK_WIDTH, z * CHUNK_DEPTH);
+		}
+	}
+}
 
 char ChunkManager::getCubeId(int x, int y, int z)
 {

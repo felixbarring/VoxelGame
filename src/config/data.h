@@ -11,6 +11,9 @@
 namespace config
 {
 
+
+	static std::string dataFolder = "data";
+
 	namespace chunk_data
 	{
 

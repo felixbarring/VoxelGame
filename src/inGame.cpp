@@ -4,6 +4,8 @@
 #include "graphics/chunkBatcher.h"
 #include "graphics/cubeBatcher.h"
 
+#include "model/world/chunk/chunkManager.h"
+
 #include "config/data.h"
 
 using namespace std;
@@ -34,12 +36,16 @@ InGame::InGame(Game *game) :
 {
 	player.setLocation(80, 7, 80);
 
+	string worldName = "/whaa";
+
 	std::function<void(int)> observer = [&, game](int id)
 	{
 		switch(id) {
 			case 0: {
 				game->changeStateToMainMenu();
 				state = GameState::NoOverlay;
+				string whaa = "/whaa";
+				chunk::ChunkManager::getInstance().saveWorld(whaa);
 				break;
 			}
 			case 1: {
@@ -57,6 +63,10 @@ InGame::InGame(Game *game) :
 
 	widgetGroup1->addWidget(button1);
 	widgetGroup1->addWidget(button2);
+
+	//chunk::ChunkManager::getInstance().createNewWorld();
+	//chunk::ChunkManager::getInstance().saveWorld(worldName);
+	chunk::ChunkManager::getInstance().loadWorld(worldName);
 
 }
 

@@ -205,7 +205,6 @@ void Player::intersected(vec3 movement, vector<pair<float, vec3>> &collisions)
 						collisions.push_back({time, vec});
 
 				}
-
 			}
 		}
 	}

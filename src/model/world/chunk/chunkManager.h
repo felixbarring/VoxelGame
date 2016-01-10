@@ -35,6 +35,12 @@ public:
 		return INSTANCE;
 	}
 
+	void createNewWorld();
+
+	void loadWorld(std::string& worldName);
+
+	void saveWorld(std::string& worldName);
+
 	Voxel& getVoxel(int x, int y, int z);
 
 	char getCubeId(int x, int y, int z);

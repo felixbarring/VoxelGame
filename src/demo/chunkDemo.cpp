@@ -68,7 +68,7 @@ void ChunkDemo::runDemo()
 	float screenCenterX = WIDTH / 2.0;
 	float screenCenterY = HEIGHT / 2.0;
 
-	chunk::Chunk chunk{0,0,0};
+	chunk::Chunk chunk{0, 0};
 
 	chunk.setCube(0,0,0, config::cube_data::AIR);
 	chunk.setCube(8,8,8, config::cube_data::AIR);

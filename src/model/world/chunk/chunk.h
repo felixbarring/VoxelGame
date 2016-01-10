@@ -22,7 +22,9 @@ public:
 	// Constructor/Destructor #################################
 	// ########################################################
 
-	Chunk(int x, int y, int z);
+	Chunk(int x, int z);
+
+	Chunk(std::string name, int x, int z);
 
 	virtual ~Chunk() {};
 
@@ -84,14 +86,21 @@ public:
 
 	bool isInDirectSunlight(int x, int y, int z);
 
+	// Loading/Storing
+
+	void storeChunk(std::string worldName, int x, int z);
+
+	static Chunk* loadChunk(std::string worldName, int x, int z);
+
 	// ########################################################
 	// Instance Variables #####################################
 	// ########################################################
 
 private:
 
-	int xLocation, yLocation, zLocation;
+	int xLocation, zLocation;
 
+	// Should be somewhere else?
 	const int directSunlight = 15;
 
 	int width = config::chunk_data::CHUNK_WIDTH;

@@ -2,6 +2,7 @@
 #include "chunk.h"
 
 #include <iostream>
+#include <fstream>
 
 #include "../../../graphics/chunkBatcher.h"
 
@@ -22,24 +23,23 @@ namespace chunk
 static 	int counter = 1;
 static const int maxCount = LAST_CUBE;
 
-Chunk::Chunk(int x, int y, int z):
+Chunk::Chunk(int x,int z):
 	xLocation{x},
-	yLocation{y},
 	zLocation{z}
 {
 
 	counter++;
 
-	for (int i = 0; i < CHUNK_WIDTH; i++) {
+	for (int i = 0; i < width; i++) {
 		vec.push_back(vector<vector<Voxel>>());
 
 		if (counter > maxCount)
 			counter = 0;
 
-		for (int j = 0; j < CHUNK_HEIGHT; j++) {
+		for (int j = 0; j < height; j++) {
 			vec[i].push_back(vector<Voxel>());
 
-			for (int k = 0; k < CHUNK_DEPTH; k++) {
+			for (int k = 0; k < depth; k++) {
 				Voxel v;
 				v.lightValue = 0;
 
@@ -62,8 +62,51 @@ Chunk::Chunk(int x, int y, int z):
 
 	vector<vec3> lightPropagate;
 	doSunLightning(lightPropagate);
+
 	for (vec3 vec : lightPropagate)
 		propagateLight(vec.x, vec.y, vec.z);
+
+
+}
+
+Chunk::Chunk(std::string name, int x, int z):
+	xLocation{x},
+	zLocation{z}
+{
+	vector<string> list;
+	ifstream inStream;
+	string line;
+
+	string file = config::dataFolder + name + "_" + std::to_string(x) + "_" + std::to_string(z) + ".chunk";
+	cout << file << "\n";
+
+	inStream.open(file);
+
+	// Add all lines to the vector
+	while (getline(inStream, line))
+		list.push_back(line);
+
+	int counter = 0;
+	for (int i = 0; i < width; i++) {
+		vec.push_back(vector<vector<Voxel>>());
+
+		for (int j = 0; j < height; j++) {
+			vec[i].push_back(vector<Voxel>());
+
+			for (int k = 0; k < depth; k++) {
+				char voxelId = std::stoi(list[counter].substr(1, list[counter].length()-1));
+				counter++;
+				vec[i][j].push_back(Voxel{voxelId, 0});
+			}
+		}
+	}
+
+	vector<vec3> lightPropagate;
+	doSunLightning(lightPropagate);
+
+	for (vec3 vec : lightPropagate)
+		propagateLight(vec.x, vec.y, vec.z);
+
 
 }
 
@@ -84,25 +127,25 @@ Voxel* Chunk::getVoxel2(int x, int y, int z)
 		return &vec[x][y][z];
 	} else if (x == width && (y < height && y >= 0 && z < depth && z >= 0)) {
 		if (rightNeighbor) {
-			return &(rightNeighbor.get()->vec[0][y][z]);
+			return &(rightNeighbor->vec[0][y][z]);
 		} else {
 			return nullptr;
 		}
 	} else if (x == -1 && (y < height && y >= 0 && z < depth && z >= 0)) {
 		if (leftNeighbor) {
-			return &(leftNeighbor.get()->vec[width - 1][y][z]);
+			return &(leftNeighbor->vec[width - 1][y][z]);
 		} else {
 			return nullptr;
 		}
 	} else if (z == depth && (x < width && x >= 0 && y < height && y >= 0)) {
 		if (backNeighbor) {
-			return &(backNeighbor.get()->vec[x][y][0]);
+			return &(backNeighbor->vec[x][y][0]);
 		} else {
 			return nullptr;
 		}
 	} else if (z == -1 && (x < width && x >= 0 && y < height && y >= 0)) {
 		if (frontNeighbor) {
-			return &(frontNeighbor.get()->vec[x][y][depth - 1]);
+			return &(frontNeighbor->vec[x][y][depth - 1]);
 		} else {
 			return nullptr;
 		}
@@ -192,7 +235,7 @@ void Chunk::updateGraphics()
 		back = &(backNeighbor->vec);
 
 	ChunkBatcher::getInstance().removeBatch(graphicalChunk);
-	graphicalChunk.reset(new graphics::GraphicalChunk(xLocation, yLocation, zLocation, vec,	right, left, back, front));
+	graphicalChunk.reset(new GraphicalChunk(xLocation, 0, zLocation, vec, right, left, back, front));
 	ChunkBatcher::getInstance().addBatch(graphicalChunk);
 
 }
@@ -205,12 +248,12 @@ void Chunk::updateNeighborGraphics()
 		if (rightNeighbor->backNeighbor)
 			rightNeighbor->backNeighbor->updateGraphics();
 
-		if (rightNeighbor->frontNeighbor.get())
+		if (rightNeighbor->frontNeighbor)
 			rightNeighbor->frontNeighbor->updateGraphics();
 
 	}
 
-	if (leftNeighbor.get()) {
+	if (leftNeighbor) {
 		leftNeighbor->updateGraphics();
 
 		if (leftNeighbor->backNeighbor)
@@ -307,32 +350,32 @@ void Chunk::updateLightning()
 
 	// Sun light ####################################################
 
-	if (rightNeighbor.get()) {
+	if (rightNeighbor) {
 		rightNeighbor->doSunLightning(lightPropagateRight);
 
-		if (rightNeighbor->backNeighbor.get())
+		if (rightNeighbor->backNeighbor)
 			rightNeighbor->backNeighbor->doSunLightning(lightPropagateRightBack);
 
-		if (rightNeighbor->frontNeighbor.get())
+		if (rightNeighbor->frontNeighbor)
 			rightNeighbor->frontNeighbor->doSunLightning(lightPropagateRightFront);
 
 	}
 
-	if (leftNeighbor.get()) {
+	if (leftNeighbor) {
 		leftNeighbor->doSunLightning(lightPropagateLeft);
 
-		if (leftNeighbor->backNeighbor.get())
+		if (leftNeighbor->backNeighbor)
 			leftNeighbor->backNeighbor->doSunLightning(lightPropagateLeftBack);
 
-		if (leftNeighbor->frontNeighbor.get())
+		if (leftNeighbor->frontNeighbor)
 			leftNeighbor->frontNeighbor->doSunLightning(lightPropagateLeftFront);
 
 	}
 
-	if (backNeighbor.get())
+	if (backNeighbor)
 		backNeighbor->doSunLightning(lightPropagateBack);
 
-	if (frontNeighbor.get())
+	if (frontNeighbor)
 		frontNeighbor->doSunLightning(lightPropagateFront);
 
 
@@ -342,7 +385,7 @@ void Chunk::updateLightning()
 	for (vec3 vec : lightPropagate)
 		propagateLight(vec.x, vec.y, vec.z);
 
-	if (rightNeighbor.get()) {
+	if (rightNeighbor) {
 		rightNeighbor->collectLightFromRightNeighbor(lightPropagateRight);
 		for (vec3 vec : lightPropagateRight)
 			rightNeighbor->propagateLight(vec.x, vec.y, vec.z);
@@ -356,7 +399,7 @@ void Chunk::updateLightning()
 
 		}
 
-		if (rightNeighbor->frontNeighbor.get()) {
+		if (rightNeighbor->frontNeighbor) {
 			rightNeighbor->frontNeighbor->collectLightFromRightNeighbor(lightPropagateRightFront);
 			rightNeighbor->frontNeighbor->collectLightFromFrontNeighbor(lightPropagateRightFront);
 
@@ -366,7 +409,7 @@ void Chunk::updateLightning()
 		}
 	}
 
-	if (leftNeighbor.get()) {
+	if (leftNeighbor) {
 		leftNeighbor->collectLightFromLeftNeighbor(lightPropagateLeft);
 		for (vec3 vec : lightPropagateLeft)
 			leftNeighbor->propagateLight(vec.x, vec.y, vec.z);
@@ -380,7 +423,7 @@ void Chunk::updateLightning()
 
 		}
 
-		if (leftNeighbor->frontNeighbor.get()) {
+		if (leftNeighbor->frontNeighbor) {
 			leftNeighbor->frontNeighbor->collectLightFromLeftNeighbor(lightPropagateLeftFront);
 			leftNeighbor->frontNeighbor->collectLightFromFrontNeighbor(lightPropagateLeftFront);
 
@@ -390,14 +433,14 @@ void Chunk::updateLightning()
 		}
 	}
 
-	if (backNeighbor.get()) {
+	if (backNeighbor) {
 		backNeighbor->collectLightFromBackNeighbor(lightPropagateBack);
 		for (vec3 vec : lightPropagateBack)
 			backNeighbor->propagateLight(vec.x, vec.y, vec.z);
 
 	}
 
-	if (frontNeighbor.get()) {
+	if (frontNeighbor) {
 		frontNeighbor->collectLightFromFrontNeighbor(lightPropagateFront);
 		for (vec3 vec : lightPropagateFront)
 			frontNeighbor->propagateLight(vec.x, vec.y, vec.z);
@@ -682,5 +725,42 @@ bool Chunk::isInDirectSunlight(int x, int y, int z)
 
 	return true;
 }
+
+
+// ############################################################################
+
+//Chunk loadChunk(std::string worldName, int x, int z);
+
+// Helper function
+bool fileExists(string& fileName) {
+    ifstream infile(fileName);
+    return infile.good();
+}
+
+void Chunk::storeChunk(string worldName, int x, int z)
+{
+	string fileName = config::dataFolder + worldName + "_" + to_string(x) + "_" + to_string(z) + ".chunk";
+
+	cout << "The file name is: " << fileName << " \n";
+
+	ofstream outStream(fileName);
+	for (int x = 0; x < width; x++) {
+		for (int y = 0; y < height; y++) {
+			for (int z = 0; z < depth; z++) {
+				outStream << "(" << to_string(vec[x][y][z].id) << ") \n";
+			}
+		}
+	}
+
+	outStream.close();
+
+}
+
+// Not really needed?
+Chunk* Chunk::loadChunk(std::string worldName, int x, int z)
+{
+	return new Chunk{worldName, x, z};
+}
+
 
 }
