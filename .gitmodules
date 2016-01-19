@@ -1,9 +1,9 @@
-[submodule "dependencies/Simple-OpenGL-Image-Library"]
-	path = librecraf/dependencies/Simple-OpenGL-Image-Library
+[submodule "librecraft/dependencies/Simple-OpenGL-Image-Library"]
+	path = librecraft/dependencies/Simple-OpenGL-Image-Library
 	url = https://github.com/kbranigan/Simple-OpenGL-Image-Library
-[submodule "dependencies/glew-cmake"]
-	path = librecraf/dependencies/glew-cmake
+[submodule "librecraft/dependencies/glew-cmake"]
+	path = librecraft/dependencies/glew-cmake
 	url = https://github.com/Perlmint/glew-cmake
-[submodule "dependencies/glfw"]
-	path = librecraf/dependencies/glfw
+[submodule "librecraft/dependencies/glfw"]
+	path = librecraft/dependencies/glfw
 	url = https://github.com/glfw/glfw
