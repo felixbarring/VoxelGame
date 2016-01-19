@@ -64,9 +64,9 @@ InGame::InGame(Game *game) :
 	widgetGroup1->addWidget(button1);
 	widgetGroup1->addWidget(button2);
 
-	//chunk::ChunkManager::getInstance().createNewWorld();
+	chunk::ChunkManager::getInstance().createNewWorld();
 	//chunk::ChunkManager::getInstance().saveWorld(worldName);
-	chunk::ChunkManager::getInstance().loadWorld(worldName);
+	//chunk::ChunkManager::getInstance().loadWorld(worldName);
 
 }
 

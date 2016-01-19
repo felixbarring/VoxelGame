@@ -28,9 +28,8 @@
 *.app
 
 # Directories
-build/
 resources/
 doxygen/
-
-
-
+Eclipse/
+librecraft/resources
+librecraft/build
