@@ -38,25 +38,9 @@ public:
 // Instance Variables #####################################
 // ########################################################
 
-enum class MainMenuState {
-	MainMenu,
-
-	NewWorld,
-	LoadWorld,
-
-	Settings,
-	GameSettings,
-	InputSettings,
-	GraphicsSettings,
-
-	Play,
-
-};
-
 private:
 
 	Game *game;
-	MainMenuState state = MainMenuState::MainMenu;
 
 	std::unique_ptr<gui::Image> title;
 

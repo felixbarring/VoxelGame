@@ -19,33 +19,33 @@ MainMenu::MainMenu(Game *game) :
 	std::function<void(int)> observer = [&, game](int id)
 	{
 		switch(id) {
-			case 0: state = MainMenuState::Play; break;
-			case 1: state = MainMenuState::Settings; break;
+			case 0: activeWidgetGroup = playWidgetGroup;break;
+			case 1: activeWidgetGroup = settingsWidgetGroup;break;
 			case 2: game->quitGame(); break;
-			case 3: state = MainMenuState::NewWorld; break;
-			case 4: state = MainMenuState::LoadWorld; break;
-			case 5: state = MainMenuState::MainMenu; break;
-			case 6: state = MainMenuState::GameSettings; break;
-			case 7: state = MainMenuState::InputSettings; break;
-			case 8: state = MainMenuState::GraphicsSettings; break;
-			case 9: state = MainMenuState::MainMenu; break;
-			case 10: state = MainMenuState::Settings; break;
-			case 11: state = MainMenuState::Settings; break;
-			case 12: state = MainMenuState::Settings; break;
-			case 13: state = MainMenuState::Settings; break;
+			case 3: activeWidgetGroup = newWorldWidgetGroup; break;
+			case 4: activeWidgetGroup = loadWorldWidgetGroup; break;
+			case 5: activeWidgetGroup = mainWidgetGroup; break;
+			case 6: activeWidgetGroup = gameSettingsWidgetGroup; break;
+			case 7: activeWidgetGroup = inputSettingsWidgetGroup; break;
+			case 8: activeWidgetGroup = graphicsSettingsWidgetGroup; break;
+			case 9: activeWidgetGroup = mainWidgetGroup; break;
+			case 10: activeWidgetGroup = settingsWidgetGroup; break;
+			case 11: activeWidgetGroup = settingsWidgetGroup; break;
+			case 12: activeWidgetGroup = settingsWidgetGroup; break;
+			case 13: activeWidgetGroup = settingsWidgetGroup; break;
 			case 14: break;
 			case 15: {
 				//if ()
 				game->changeStateToIngame();
-				state = MainMenuState::MainMenu;
+				activeWidgetGroup = mainWidgetGroup;
 				break;
 			}
-			case 16: state = MainMenuState::Play; break;
+			case 16: activeWidgetGroup = playWidgetGroup; break;
 			case 17: break;
 			case 18: break;
 			case 19: break;
 			case 20: break;
-			case 21: state = MainMenuState::Play; break;
+			case 21: activeWidgetGroup = playWidgetGroup; break;
 		}
 
 	};
@@ -227,40 +227,6 @@ void MainMenu::update(float timePassed)
 
 	glm::vec2 mouse = gui::adjustMouse(config::graphics_data::virtualWidth, config::graphics_data::virtualHeight,
 			config::graphics_data::windowWidth, config::graphics_data::windowHeight, input->mouseXPosition, y);
-
-	switch (state) {
-		case MainMenuState::MainMenu: {
-			activeWidgetGroup = mainWidgetGroup;
-			break;
-		}
-		case MainMenuState::NewWorld: {
-			activeWidgetGroup = newWorldWidgetGroup;
-			break;
-		}
-		case MainMenuState::LoadWorld: {
-			activeWidgetGroup = loadWorldWidgetGroup;
-			break;
-		}
-		case MainMenuState::Play: {
-			activeWidgetGroup = playWidgetGroup;
-			break;
-		}
-		case MainMenuState::Settings: {
-			activeWidgetGroup = settingsWidgetGroup;
-			break;
-		}
-		case MainMenuState::GameSettings: {
-			activeWidgetGroup = gameSettingsWidgetGroup;
-			break;
-		}
-		case MainMenuState::InputSettings: {
-			activeWidgetGroup = inputSettingsWidgetGroup;
-			break;
-		}
-		case MainMenuState::GraphicsSettings: {
-			activeWidgetGroup = graphicsSettingsWidgetGroup;
-		}
-	}
 
 	activeWidgetGroup->update();
 	activeWidgetGroup->mouseMoved(mouse.x, mouse.y);
