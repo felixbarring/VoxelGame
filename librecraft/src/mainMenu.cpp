@@ -205,7 +205,7 @@ MainMenu::MainMenu(Game *game) :
 // Member Functions########################################
 // ########################################################
 
-void MainMenu::update()
+void MainMenu::update(float timePassed)
 {
 
 	std::shared_ptr<util::Input> input = util::Input::getInstance();

@@ -58,17 +58,17 @@ void Game::run()
 	std::cout << "Height: " << height << "\n";
 	std::cout << "Refresh Rate: " << refreshRate << "\n";
 
-	int WIDTH = width;
-	int HEIGHT = height;
+	//int WIDTH = width;
+	//int HEIGHT = height;
 
-	//int WIDTH = 800;
-	//int HEIGHT = 600;
+	int WIDTH = 800;
+	int HEIGHT = 600;
 
 	config::graphics_data::windowWidth = WIDTH;
 	config::graphics_data::windowHeight = HEIGHT;
 
-	GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "Voxel Game", glfwGetPrimaryMonitor(), nullptr);
-	//GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "Voxel Game", nullptr, nullptr);
+	//GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "Voxel Game", glfwGetPrimaryMonitor(), nullptr);
+	GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "Voxel Game", nullptr, nullptr);
 
 	if (window == nullptr) {
 		std::cout << "Failed to open GLFW window.\n";
@@ -100,8 +100,9 @@ void Game::run()
 	glm:: mat4 matrix2 = glm::ortho(0.0f, static_cast<float>(WIDTH), 0.0f, static_cast<float>(HEIGHT), -1.0f, 1.0f) * matrix;
 	graphics::SpriteBatcher::getInstance().setProjection(matrix2);
 
-	InGame inGame{this};
-	MainMenu mainMenu{this};
+	inGame.reset(new InGame(this));
+	mainMenu.reset(new MainMenu(this));
+	currentState = mainMenu;
 
 	while (!quit && glfwWindowShouldClose(window) == 0) {
 
@@ -109,11 +110,7 @@ void Game::run()
 		glfwPollEvents();
 		glClear(GL_COLOR_BUFFER_BIT |  GL_DEPTH_BUFFER_BIT);
 
-		if (state == GameState::MainMenu) {
-			mainMenu.update();
-		} else if (state == GameState::InGame){
-			inGame.update(fpsManager.frameTime());
-		}
+		currentState->update(fpsManager.frameTime());
 
 		fpsManager.sync();
 		glfwSwapBuffers(window);
@@ -125,12 +122,22 @@ void Game::run()
 
 void Game::changeStateToIngame()
 {
-	state = GameState::InGame;
+	currentState = inGame;
+}
+
+void Game::createNewWorld()
+{
+
+}
+
+void Game::loadExistingWorld()
+{
+
 }
 
 void Game::changeStateToMainMenu()
 {
-	state = GameState::MainMenu;
+	currentState = mainMenu;
 }
 
 void Game::quitGame()

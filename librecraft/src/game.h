@@ -15,6 +15,8 @@
 
 #include <memory>
 
+#include "iGameState.h"
+
 class Game {
 public:
 
@@ -34,6 +36,10 @@ public:
 
 	void changeStateToIngame();
 
+	void createNewWorld();
+
+	void loadExistingWorld();
+
 	void changeStateToMainMenu();
 
 	void quitGame();
@@ -50,6 +56,10 @@ private:
 	};
 
 	GameState state = GameState::MainMenu;
+
+	std::shared_ptr<IGameState> mainMenu;
+	std::shared_ptr<IGameState> inGame;
+	std::shared_ptr<IGameState> currentState;
 
 	bool quit = false;
 	bool blool = true;

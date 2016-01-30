@@ -4,6 +4,7 @@
 
 #include <memory>
 
+#include "iGameState.h"
 #include "game.h"
 
 #include "util/input.h"
@@ -16,7 +17,7 @@
 #include "gui/widget/widgetGroup.h"
 #include "gui/guiUtil.h"
 
-class MainMenu {
+class MainMenu : public IGameState {
 public:
 
 // ########################################################
@@ -31,7 +32,7 @@ public:
 // Member Functions########################################
 // ########################################################
 
-	void update();
+	void update(float timePassed);
 
 // ########################################################
 // Instance Variables #####################################

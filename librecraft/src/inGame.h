@@ -2,6 +2,7 @@
 #ifndef SRC_INGAME_H_
 #define SRC_INGAME_H_
 
+#include "iGameState.h"
 #include "game.h"
 
 #include "model/world/chunk/chunk.h"
@@ -17,7 +18,7 @@
 #include "graphics/cubeMap.h"
 #include "graphics/resources.h"
 
-class InGame {
+class InGame : public IGameState {
 public:
 
 // ########################################################
