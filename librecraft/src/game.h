@@ -50,13 +50,6 @@ public:
 
 private:
 
-	enum class GameState {
-		MainMenu,
-		InGame,
-	};
-
-	GameState state = GameState::MainMenu;
-
 	std::shared_ptr<IGameState> mainMenu;
 	std::shared_ptr<IGameState> inGame;
 	std::shared_ptr<IGameState> currentState;

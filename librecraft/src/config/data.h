@@ -13,6 +13,7 @@ namespace config
 
 
 	static std::string dataFolder = "data/";
+	static std::string worldMetaFile = "data/meta";
 
 	namespace chunk_data
 	{

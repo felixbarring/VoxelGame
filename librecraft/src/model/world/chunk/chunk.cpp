@@ -77,7 +77,8 @@ Chunk::Chunk(std::string name, int x, int z):
 	ifstream inStream;
 	string line;
 
-	string file = config::dataFolder + name + "_" + std::to_string(x) + "_" + std::to_string(z) + ".chunk";
+	string file = config::dataFolder + name + "_" +
+			std::to_string(x) + "_" + std::to_string(z) + ".chunk";
 	cout << file << "\n";
 
 	inStream.open(file);
@@ -85,6 +86,8 @@ Chunk::Chunk(std::string name, int x, int z):
 	// Add all lines to the vector
 	while (getline(inStream, line))
 		list.push_back(line);
+
+	inStream.close();
 
 	int counter = 0;
 	for (int i = 0; i < width; i++) {
@@ -478,7 +481,8 @@ void Chunk::collectLightFromRightNeighbor(vector<vec3> &lightPropagate)
 			for (int k = 0; k < CHUNK_DEPTH; k++) {
 				char lv = rightNeighbor->vec[0][j][k].lightValue - 1;
 
-				if (rightNeighbor->vec[0][j][k].id == AIR && vec[15][j][k].id == AIR &&
+				if (rightNeighbor->vec[0][j][k].id == AIR &&
+						vec[15][j][k].id == AIR &&
 						lv > vec[15][j][k].lightValue) {
 					vec[15][j][k].lightValue = lv;
 					lightPropagate.push_back(vec3(15, j, k));
@@ -495,7 +499,8 @@ void Chunk::collectLightFromLeftNeighbor(vector<vec3> &lightPropagate)
 			for (int k = 0; k < CHUNK_DEPTH; k++) {
 				char lv = leftNeighbor->vec[15][j][k].lightValue - 1;
 
-				if (leftNeighbor->vec[15][j][k].id == AIR && vec[0][j][k].id == AIR &&
+				if (leftNeighbor->vec[15][j][k].id == AIR &&
+						vec[0][j][k].id == AIR &&
 						lv > vec[0][j][k].lightValue) {
 					vec[0][j][k].lightValue = lv;
 					lightPropagate.push_back(vec3(0, j, k));
@@ -514,7 +519,8 @@ void Chunk::collectLightFromBackNeighbor(vector<vec3> &lightPropagate)
 			for (int j = 0; j < CHUNK_HEIGHT; j++) {
 				char lv = backNeighbor->vec[i][j][0].lightValue - 1;
 
-				if (backNeighbor->vec[i][j][0].id == AIR && vec[i][j][15].id == AIR
+				if (backNeighbor->vec[i][j][0].id == AIR &&
+						vec[i][j][15].id == AIR
 						&& lv > vec[i][j][15].lightValue) {
 
 					vec[i][j][15].lightValue = lv;
@@ -532,7 +538,8 @@ void Chunk::collectLightFromFrontNeighbor(vector<vec3> &lightPropagate)
 			for (int j = 0; j < CHUNK_HEIGHT; j++) {
 				char lv = frontNeighbor->vec[i][j][15].lightValue - 1;
 
-				if (frontNeighbor->vec[i][j][15].id == AIR && vec[i][j][0].id == AIR &&
+				if (frontNeighbor->vec[i][j][15].id == AIR &&
+						vec[i][j][0].id == AIR &&
 						lv > vec[i][j][0].lightValue) {
 
 					vec[i][j][0].lightValue = lv;
@@ -569,7 +576,8 @@ void Chunk::propagateLight(int x, int y, int z)
 			}
 		} else {
 			if (rightNeighbor.get()) {
-				if (rightNeighbor->vec[0][y][z].id == AIR && rightNeighbor->vec[0][y][z].lightValue < lv) {
+				if (rightNeighbor->vec[0][y][z].id == AIR &&
+						rightNeighbor->vec[0][y][z].lightValue < lv) {
 					rightNeighbor->vec[0][y][z].lightValue = lv;
 					rightNeighbor->propagateLight(0, y, z);
 				}
@@ -593,7 +601,8 @@ void Chunk::propagateLight(int x, int y, int z)
 			}
 		} else {
 			if (leftNeighbor.get()) {
-				if (leftNeighbor->vec[width - 1][y][z].id == AIR && leftNeighbor->vec[width - 1][y][z].lightValue < lv) {
+				if (leftNeighbor->vec[width - 1][y][z].id == AIR
+						&& leftNeighbor->vec[width - 1][y][z].lightValue < lv) {
 					leftNeighbor->vec[width - 1][y][z].lightValue = lv;
 					leftNeighbor->propagateLight(width - 1, y, z);
 				}
@@ -647,7 +656,8 @@ void Chunk::propagateLight(int x, int y, int z)
 			}
 		} else {
 			if (backNeighbor.get()) {
-				if (backNeighbor->vec[x][y][0].id == AIR && backNeighbor->vec[x][y][0].lightValue < lv) {
+				if (backNeighbor->vec[x][y][0].id == AIR &&
+						backNeighbor->vec[x][y][0].lightValue < lv) {
 					backNeighbor->vec[x][y][0].lightValue = lv;
 					backNeighbor->propagateLight(x, y, 0);
 				}
@@ -672,7 +682,8 @@ void Chunk::propagateLight(int x, int y, int z)
 			}
 		} else {
 			if (frontNeighbor.get()) {
-				if (frontNeighbor->vec[x][y][depth - 1].id == AIR && frontNeighbor->vec[x][y][depth - 1].lightValue < lv) {
+				if (frontNeighbor->vec[x][y][depth - 1].id == AIR &&
+						frontNeighbor->vec[x][y][depth - 1].lightValue < lv) {
 					frontNeighbor->vec[x][y][depth - 1].lightValue = lv;
 					frontNeighbor->propagateLight(x, y, depth - 1);
 				}
@@ -755,12 +766,5 @@ void Chunk::storeChunk(string worldName, int x, int z)
 	outStream.close();
 
 }
-
-// Not really needed?
-Chunk* Chunk::loadChunk(std::string worldName, int x, int z)
-{
-	return new Chunk{worldName, x, z};
-}
-
 
 }

@@ -22,7 +22,7 @@ MainMenu::MainMenu(Game *game) :
 			case 0: state = MainMenuState::Play; break;
 			case 1: state = MainMenuState::Settings; break;
 			case 2: game->quitGame(); break;
-			case 3: state = MainMenuState::NewWorld; break;// ;
+			case 3: state = MainMenuState::NewWorld; break;
 			case 4: state = MainMenuState::LoadWorld; break;
 			case 5: state = MainMenuState::MainMenu; break;
 			case 6: state = MainMenuState::GameSettings; break;
@@ -33,8 +33,13 @@ MainMenu::MainMenu(Game *game) :
 			case 11: state = MainMenuState::Settings; break;
 			case 12: state = MainMenuState::Settings; break;
 			case 13: state = MainMenuState::Settings; break;
-			case 14: break; //game->changeStateToIngame(); state = MainMenuState::MainMenu; break;
-			case 15: game->changeStateToIngame(); state = MainMenuState::MainMenu; break;
+			case 14: break;
+			case 15: {
+				//if ()
+				game->changeStateToIngame();
+				state = MainMenuState::MainMenu;
+				break;
+			}
 			case 16: state = MainMenuState::Play; break;
 			case 17: break;
 			case 18: break;

@@ -90,8 +90,6 @@ public:
 
 	void storeChunk(std::string worldName, int x, int z);
 
-	static Chunk* loadChunk(std::string worldName, int x, int z);
-
 	// ########################################################
 	// Instance Variables #####################################
 	// ########################################################
@@ -109,7 +107,6 @@ private:
 
 	std::vector<std::vector<std::vector<Voxel>>> vec;
 
-	//Voxel voxels[config::chunk_data::CHUNK_WIDHT][config::chunk_data::CHUNK_HEIGHT][config::chunk_data::CHUNK_DEPTH];
 	std::shared_ptr<graphics::GraphicalChunk> graphicalChunk;
 
 	std::shared_ptr<Chunk> rightNeighbor;
