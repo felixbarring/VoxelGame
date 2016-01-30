@@ -21,7 +21,11 @@
 #include "inGame.h"
 #include "mainMenu.h"
 
+#include "model/world/chunk/chunkManager.h"
+
 #include "gui/guiUtil.h"
+
+using namespace std;
 
 // ########################################################
 // Constructor/Destructor #################################
@@ -37,7 +41,7 @@ void Game::run()
 	util::FPSManager fpsManager(config::graphics_data::fps);
 
 	if (!glfwInit()) {
-		std::cout << "Failed to initialize GLFW\n";
+		cout << "Failed to initialize GLFW\n";
 	}
 
 	glfwWindowHint(GLFW_SAMPLES, 8);
@@ -54,9 +58,9 @@ void Game::run()
 	int height = viewMode->height;
 	int refreshRate =viewMode->refreshRate;
 
-	std::cout << "Width: " << width << "\n";
-	std::cout << "Height: " << height << "\n";
-	std::cout << "Refresh Rate: " << refreshRate << "\n";
+	cout << "Width: " << width << "\n";
+	cout << "Height: " << height << "\n";
+	cout << "Refresh Rate: " << refreshRate << "\n";
 
 	//int WIDTH = width;
 	//int HEIGHT = height;
@@ -71,7 +75,7 @@ void Game::run()
 	GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "Voxel Game", nullptr, nullptr);
 
 	if (window == nullptr) {
-		std::cout << "Failed to open GLFW window.\n";
+		cout << "Failed to open GLFW window.\n";
 		glfwTerminate();
 	}
 	glfwMakeContextCurrent(window);
@@ -79,7 +83,7 @@ void Game::run()
 
 	glewExperimental = true;
 	if (glewInit() != GLEW_OK)
-		std::cout << "Failed to initialize GLEW\n";
+		cout << "Failed to initialize GLEW\n";
 
 	glViewport(0, 0, WIDTH, HEIGHT);
 	glClearColor(0.47f, 0.76f, 0.93f, 1.0f);
@@ -97,10 +101,11 @@ void Game::run()
 			static_cast<float>(WIDTH),
 			static_cast<float>(HEIGHT));
 
-	glm:: mat4 matrix2 = glm::ortho(0.0f, static_cast<float>(WIDTH), 0.0f, static_cast<float>(HEIGHT), -1.0f, 1.0f) * matrix;
+	glm:: mat4 matrix2 = glm::ortho(0.0f,
+			static_cast<float>(WIDTH), 0.0f,
+			static_cast<float>(HEIGHT), -1.0f, 1.0f) * matrix;
 	graphics::SpriteBatcher::getInstance().setProjection(matrix2);
 
-	inGame.reset(new InGame(this));
 	mainMenu.reset(new MainMenu(this));
 	currentState = mainMenu;
 
@@ -120,19 +125,18 @@ void Game::run()
 
 }
 
-void Game::changeStateToIngame()
+void Game::createNewWorld(string name)
 {
+	inGame.reset(new InGame(this, name));
+	chunk::ChunkManager::getInstance().createNewWorld();
 	currentState = inGame;
 }
 
-void Game::createNewWorld()
+void Game::loadExistingWorld(string name)
 {
-
-}
-
-void Game::loadExistingWorld()
-{
-
+	inGame.reset(new InGame(this, name));
+	chunk::ChunkManager::getInstance().loadWorld(name);
+	currentState = inGame;
 }
 
 void Game::changeStateToMainMenu()

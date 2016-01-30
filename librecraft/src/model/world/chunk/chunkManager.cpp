@@ -115,7 +115,8 @@ void ChunkManager::saveWorld(std::string& worldName)
 
 	for (int x = 0; x < xMax; x++) {
 		for (int z = 0; z < zMax; z++) {
-			chunks[x][0][z]->storeChunk(worldName, x * CHUNK_WIDTH, z * CHUNK_DEPTH);
+			chunks[x][0][z]->storeChunk(worldName,
+					x * CHUNK_WIDTH, z * CHUNK_DEPTH);
 		}
 	}
 }
@@ -171,7 +172,8 @@ void ChunkManager::setCube(int x, int y, int z, char id)
 // Has one bugg, when the player is exactly located at an integer position
 // the selection will be wrong!
 
-bool ChunkManager::intersectWithSolidCube(vec3 origin, vec3 direction, vec3 &intersected, vec3 &previous, float searchLength)
+bool ChunkManager::intersectWithSolidCube(vec3 origin, vec3 direction,
+		vec3 &intersected, vec3 &previous, float searchLength)
 {
 
 	// Get the sign of the directions

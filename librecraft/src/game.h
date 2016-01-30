@@ -34,11 +34,9 @@ public:
 
 	void run();
 
-	void changeStateToIngame();
+	void createNewWorld(std::string name);
 
-	void createNewWorld();
-
-	void loadExistingWorld();
+	void loadExistingWorld(std::string name);
 
 	void changeStateToMainMenu();
 

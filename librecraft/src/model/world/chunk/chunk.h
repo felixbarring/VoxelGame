@@ -26,7 +26,7 @@ public:
 
 	Chunk(std::string name, int x, int z);
 
-	virtual ~Chunk() {};
+	virtual ~Chunk();
 
 	// ########################################################
 	// Member Functions########################################

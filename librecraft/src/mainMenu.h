@@ -59,6 +59,7 @@ private:
 
 	std::shared_ptr<widget::TextInput> textInput;
 	std::shared_ptr<widget::TextInput> textInput2;
+	std::shared_ptr<widget::TextInput> textInput3;
 
 };
 

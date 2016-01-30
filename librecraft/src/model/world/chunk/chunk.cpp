@@ -113,6 +113,11 @@ Chunk::Chunk(std::string name, int x, int z):
 
 }
 
+Chunk::~Chunk()
+{
+	ChunkBatcher::getInstance().removeBatch(graphicalChunk);
+};
+
 // ########################################################
 // Member Functions########################################
 // ########################################################

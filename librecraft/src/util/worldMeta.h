@@ -16,6 +16,9 @@
 
 #include "../config/data.h"
 
+namespace world_meta
+{
+
 void addName(std::string name)
 {
 	std::vector<std::string> names{name};
@@ -26,14 +29,13 @@ void addName(std::string name)
 		names.push_back(n);
 
 	inStream.close();
-
 	std::sort(names.begin(), names.end(),
 			[](std::string a, std::string b) -> bool { return a < b; });
 
 	std::ofstream outStream(config::worldMetaFile);
 
 	for (auto nn : names)
-		outStream << nn;
+		outStream << nn << "\n";
 
 	outStream.close();
 }
@@ -69,5 +71,6 @@ std::vector<std::string> getAllWorldNames()
 	return names;
 }
 
+}
 
 #endif /* SRC_UTIL_WORLDMETA_H_ */

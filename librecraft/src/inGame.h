@@ -25,7 +25,7 @@ public:
 // Constructor/Destructor #################################
 // ########################################################
 
-	InGame(Game *game);
+	InGame(Game *game, std::string name);
 
 	virtual ~InGame() {};
 
@@ -48,10 +48,11 @@ private:
 
 	GameState state = GameState::NoOverlay;
 
-	Game *game;
-	entity::Player player;
+	Game *m_game;
+	std::string m_name;
+	entity::Player m_player;
 
-	std::shared_ptr<widget::WidgetGroup> widgetGroup1;
+	std::shared_ptr<widget::WidgetGroup> m_widgetGroup1;
 
 	graphics::CubeMap skybox;
 
