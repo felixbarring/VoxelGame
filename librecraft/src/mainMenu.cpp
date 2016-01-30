@@ -225,8 +225,12 @@ void MainMenu::update(float timePassed)
 		y = -1;
 	}
 
-	glm::vec2 mouse = gui::adjustMouse(config::graphics_data::virtualWidth, config::graphics_data::virtualHeight,
-			config::graphics_data::windowWidth, config::graphics_data::windowHeight, input->mouseXPosition, y);
+	glm::vec2 mouse = gui::adjustMouse(
+			config::graphics_data::virtualWidth,
+			config::graphics_data::virtualHeight,
+			config::graphics_data::windowWidth,
+			config::graphics_data::windowHeight,
+			input->mouseXPosition, y);
 
 	activeWidgetGroup->update();
 	activeWidgetGroup->mouseMoved(mouse.x, mouse.y);

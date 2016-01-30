@@ -10,6 +10,9 @@
 
 #include "../../util/input.h"
 
+using namespace std;
+using namespace graphics;
+
 namespace widget {
 
 // ########################################################
@@ -19,13 +22,20 @@ namespace widget {
 TextInput::TextInput(int id, int x, int y, int width, int height) :
 	AbstractWidget(id, x, y, width, height)
 {
-	sprite.reset(new graphics::Sprite{x, y, 0, width, height, graphics::Resources::getInstance().getTexture(config::gui_data::guiBox)});
 
-	graphics::FontMeshBuilder &fontMeshBuilder = graphics::Resources::getInstance().getFontMeshBuilder(
-			config::font_data::fontLayout, config::font_data::fontAtlasWidth, config::font_data::fontAtlasHeight);
+	auto &res = Resources::getInstance();
 
-	text.reset(new graphics::Sprite{x, y+5, 1, fontMeshBuilder.buldMeshForString(input, height-5),
-		graphics::Resources::getInstance().getTexture(config::font_data::font)});
+	sprite.reset(new Sprite{x, y, 0, width, height,
+		res.getTexture(config::gui_data::guiBox)});
+
+	FontMeshBuilder &fontMeshBuilder = res.getFontMeshBuilder(
+			config::font_data::fontLayout,
+			config::font_data::fontAtlasWidth,
+			config::font_data::fontAtlasHeight);
+
+	text.reset(new Sprite{x, y+5, 1,
+		fontMeshBuilder.buldMeshForString(input, height-5),
+		res.getTexture(config::font_data::font)});
 
 }
 
@@ -35,27 +45,31 @@ TextInput::TextInput(int id, int x, int y, int width, int height) :
 
 void TextInput::draw()
 {
-	graphics::SpriteBatcher::getInstance().addBatch(sprite);
+	SpriteBatcher::getInstance().addBatch(sprite);
 
 	if (pointerInsideBorders || hasFocus) {
-		graphics::SpriteBatcher::getInstance().addBatch(sprite);
+		SpriteBatcher::getInstance().addBatch(sprite);
 	}
 
-	graphics::SpriteBatcher::getInstance().addBatch(text);
+	SpriteBatcher::getInstance().addBatch(text);
 
 }
 
 void TextInput::update()
 {
+	auto &res = Resources::getInstance();
 
 	if (hasFocus && util::Input::getInstance()->eraseTextPressed && input.size() > 0) {
 		input.pop_back();
 
-		graphics::FontMeshBuilder &fontMeshBuilder = graphics::Resources::getInstance().getFontMeshBuilder(
-					config::font_data::fontLayout, config::font_data::fontAtlasWidth, config::font_data::fontAtlasHeight);
+		FontMeshBuilder &fontMeshBuilder = res.getFontMeshBuilder(
+					config::font_data::fontLayout,
+					config::font_data::fontAtlasWidth,
+					config::font_data::fontAtlasHeight);
 
-		text.reset(new graphics::Sprite{x, y+5, 1, fontMeshBuilder.buldMeshForString(input, height-5),
-				graphics::Resources::getInstance().getTexture(config::font_data::font)});
+		text.reset(new Sprite{x, y+5, 1,
+			fontMeshBuilder.buldMeshForString(input, height-5),
+				res.getTexture(config::font_data::font)});
 
 	}
 
@@ -74,29 +88,43 @@ void TextInput::mouseMoved(float x, float y)
 void TextInput::keyTyped(char value)
 {
 
-	std::cout << value << "\n";
+	auto &res = Resources::getInstance();
 
 	if (hasFocus)
 		input.push_back(value);
 
-	graphics::FontMeshBuilder &fontMeshBuilder = graphics::Resources::getInstance().getFontMeshBuilder(
-			config::font_data::fontLayout, config::font_data::fontAtlasWidth, config::font_data::fontAtlasHeight);
+	FontMeshBuilder &fontMeshBuilder = res.getFontMeshBuilder(
+			config::font_data::fontLayout,
+			config::font_data::fontAtlasWidth,
+			config::font_data::fontAtlasHeight);
 
-	text.reset(new graphics::Sprite{x, y+5, 1, fontMeshBuilder.buldMeshForString(input, height-5),
-			graphics::Resources::getInstance().getTexture(config::font_data::font)});
+	text.reset(new Sprite{x, y + 5, 1,
+		fontMeshBuilder.buldMeshForString(input, height-5),
+		res.getTexture(config::font_data::font)});
 
 }
 
-void TextInput::setString(std::string str)
+void TextInput::setString(string str)
 {
+
+	auto &res = Resources::getInstance();
+
 	input = str;
 
-	graphics::FontMeshBuilder &fontMeshBuilder = graphics::Resources::getInstance().getFontMeshBuilder(
-						config::font_data::fontLayout, config::font_data::fontAtlasWidth, config::font_data::fontAtlasHeight);
+	FontMeshBuilder &fontMeshBuilder = res.getFontMeshBuilder(
+						config::font_data::fontLayout,
+						config::font_data::fontAtlasWidth,
+						config::font_data::fontAtlasHeight);
 
-	text.reset(new graphics::Sprite{x, y+5, 1, fontMeshBuilder.buldMeshForString(input, height-5),
-			graphics::Resources::getInstance().getTexture(config::font_data::font)});
+	text.reset(new Sprite{x, y+5, 1,
+		fontMeshBuilder.buldMeshForString(input, height-5),
+		res.getTexture(config::font_data::font)});
 
+}
+
+string TextInput::getString()
+{
+	return input;
 }
 
 } /* namespace widget */
