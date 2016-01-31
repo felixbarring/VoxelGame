@@ -97,7 +97,7 @@ Chunk::Chunk(std::string name, int x, int z):
 			vec[i].push_back(vector<Voxel>());
 
 			for (int k = 0; k < depth; k++) {
-				char voxelId = std::stoi(list[counter].substr(1, list[counter].length()-1));
+				char voxelId = std::stoi(list[counter]);
 				counter++;
 				vec[i][j].push_back(Voxel{voxelId, 0});
 			}
@@ -763,7 +763,7 @@ void Chunk::storeChunk(string worldName, int x, int z)
 	for (int x = 0; x < width; x++) {
 		for (int y = 0; y < height; y++) {
 			for (int z = 0; z < depth; z++) {
-				outStream << "(" << to_string(vec[x][y][z].id) << ") \n";
+				outStream << to_string(vec[x][y][z].id) << "\n";
 			}
 		}
 	}
