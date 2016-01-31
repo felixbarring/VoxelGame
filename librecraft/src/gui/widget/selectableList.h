@@ -7,12 +7,13 @@
 #include <memory>
 
 #include "abstractWidget.h"
+#include "button.h"
 
 #include "../../graphics/sprite.h"
 
 namespace widget {
 
-class SelectableList : AbstractWidget {
+class SelectableList : public AbstractWidget {
 public:
 
 // ########################################################
@@ -48,7 +49,7 @@ private:
 
 	std::function<void(int)> observer;
 
-	std::vector<std::string> m_items;
+	std::vector<Button> m_buttons;
 
 	std::shared_ptr<graphics::Sprite> m_sprite;
 	std::shared_ptr<graphics::Sprite> m_highlight;

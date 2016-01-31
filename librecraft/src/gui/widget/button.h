@@ -39,7 +39,7 @@ public:
 // ########################################################
 
 	Button(int id, int x, int y, int width, int height,
-			std::function<void(int)> observer, const std::string &name);
+			std::function<void(int)> observer, const std::string &name, int layer = 0);
 
 	virtual ~Button() {};
 
@@ -67,8 +67,8 @@ private:
 
 	std::shared_ptr<graphics::Sprite> sprite;
 	std::shared_ptr<graphics::Sprite> highlight;
-
 	std::shared_ptr<graphics::Sprite> text;
+
 };
 
 } /* namespace widget */

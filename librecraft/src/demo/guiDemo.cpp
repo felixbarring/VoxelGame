@@ -15,6 +15,7 @@
 #include "../util/fpsManager.h"
 #include "../util/input.h"
 
+#include "../gui/widget/selectableList.h"
 #include "../gui/widget/button.h"
 #include "../gui/widget/slider.h"
 #include "../gui/widget/label.h"
@@ -75,6 +76,7 @@ void GuiDemo::runDemo()
 	shared_ptr<WidgetGroup> mainWidgetGroup;
 	shared_ptr<WidgetGroup> playWidgetGroup;
 	shared_ptr<WidgetGroup> settingsWidgetGroup;
+	shared_ptr<WidgetGroup> listWidgetGroup;
 
 
 	bool quit = false;
@@ -94,7 +96,7 @@ void GuiDemo::runDemo()
 				break;
 			}
 			case 3: {
-
+				currentWidgetGroup = listWidgetGroup;
 				break;
 			}
 			case 5: {
@@ -153,6 +155,18 @@ void GuiDemo::runDemo()
 	settingsWidgetGroup->addWidget(slider);
 	settingsWidgetGroup->addWidget(textInput);
 	settingsWidgetGroup->addWidget(button7);
+
+	// ######################################################################################################
+
+	shared_ptr<SelectableList> derp(new SelectableList{666, 100, 100, 600, 400, observer});
+	derp->addListItem("BLOOL");
+	derp->addListItem("Jesus");
+	derp->addListItem("Satan");
+	derp->addListItem("Tor");
+
+	listWidgetGroup.reset(new WidgetGroup{0, 0, 0, 800, 600, observer});
+
+	listWidgetGroup->addWidget(derp);
 
 	// ######################################################################################################
 

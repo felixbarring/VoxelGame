@@ -179,15 +179,11 @@ MeshElement::MeshElement(const std::vector<float> &vbd1,  int vbd1Format,
 
 MeshElement::~MeshElement()
 {
-
-	//std::cout << "Dstroying mesh \n";
-
 	glDeleteVertexArrays(1, &VAO);
-	for (GLuint handel : vboHandels) {
+	for (GLuint handel : vboHandels)
 		glDeleteBuffers(1, &handel);
-	}
-	glDeleteBuffers(1, &EBO);
 
+	glDeleteBuffers(1, &EBO);
 }
 
 // ########################################################
@@ -198,15 +194,13 @@ void MeshElement::draw()
 {
 	glBindVertexArray(VAO);
 
-	for (int i = 0; i < vboHandels.size(); i++) {
+	for (int i = 0; i < vboHandels.size(); i++)
 		glEnableVertexAttribArray(i);
-	}
 
 	glDrawElements(GL_TRIANGLES, numberOfElements, GL_UNSIGNED_SHORT, 0);
 
-	for (int i = 0; i < vboHandels.size(); i++) {
+	for (int i = 0; i < vboHandels.size(); i++)
 		glDisableVertexAttribArray(i);
-	}
 
 	glBindVertexArray(0);
 }

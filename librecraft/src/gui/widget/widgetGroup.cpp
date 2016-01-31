@@ -34,19 +34,15 @@ void WidgetGroup::addWidget(shared_ptr<IWidget> widget)
 
 void WidgetGroup::draw()
 {
-
 	SpriteBatcher::getInstance().addBatch(sprite);
-
-	for (shared_ptr<widget::IWidget> widget : widgets) {
+	for (auto widget : widgets)
 		widget->draw();
-	}
 }
 
 void WidgetGroup::update()
 {
-	for (shared_ptr<widget::IWidget> widget : widgets) {
+	for (auto widget : widgets)
 		widget->update();
-	}
 }
 
 // TODO Maybe not a good idea :o
@@ -55,26 +51,23 @@ void WidgetGroup::update()
 void WidgetGroup::mouseClicked(int button, float x, float y)
 {
 	//if (isInsideBorders(x, y)) {
-		for (shared_ptr<widget::IWidget> widget : widgets) {
+		for (auto widget : widgets)
 			widget->mouseClicked(button, x, y);
-		}
 	//}
 }
 
 void WidgetGroup::mouseMoved(float x, float y)
 {
 	if (isInsideBorders(x, y)) {
-		for (shared_ptr<widget::IWidget> widget : widgets) {
+		for (auto widget : widgets)
 			widget->mouseMoved(x, y);
-		}
 	}
 }
 
 void WidgetGroup::keyTyped(char value)
 {
-	for (shared_ptr<widget::IWidget> widget : widgets) {
+	for (auto widget : widgets)
 		widget->keyTyped(value);
-	}
 }
 
 

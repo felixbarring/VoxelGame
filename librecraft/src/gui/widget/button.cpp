@@ -16,16 +16,17 @@ namespace widget {
 // Constructor/Destructor #################################
 // ########################################################
 
-Button::Button(int id, int x, int y, int width, int height, function<void(int)> observer, const string &name) :
+Button::Button(int id, int x, int y, int width, int height,
+		function<void(int)> observer, const string &name, int layer) :
 	AbstractWidget(id, x, y, width, height)
 {
 	this->observer = observer;
 
 	auto &res = Resources::getInstance();
 
-	sprite.reset(new Sprite{x, y, 0, width, height,
+	sprite.reset(new Sprite{x, y, layer, width, height,
 		res.getTexture(config::gui_data::button)});
-	highlight.reset(new Sprite{x, y, 0, width, height,
+	highlight.reset(new Sprite{x, y, layer + 1, width, height,
 		res.getTexture(config::gui_data::highlight)});
 
 	FontMeshBuilder &fontMeshBuilder = res.getFontMeshBuilder(
@@ -33,8 +34,8 @@ Button::Button(int id, int x, int y, int width, int height, function<void(int)> 
 			config::font_data::fontAtlasWidth,
 			config::font_data::fontAtlasHeight);
 
-	text.reset(new Sprite{x, y+5, 1,
-		fontMeshBuilder.buldMeshForString(name, height-5),
+	text.reset(new Sprite{x, y + 5, layer + 1,
+		fontMeshBuilder.buldMeshForString(name, height - 5),
 		res.getTexture(config::font_data::font)});
 
 }
