@@ -1,8 +1,6 @@
 
 #include "button.h"
 
-#include <iostream>
-
 #include "../../graphics/spriteBatcher.h"
 #include "../../graphics/fontMeshBuilder.h"
 #include "../../graphics/mesh/meshElement.h"
@@ -21,7 +19,6 @@ namespace widget {
 Button::Button(int id, int x, int y, int width, int height, function<void(int)> observer, const string &name) :
 	AbstractWidget(id, x, y, width, height)
 {
-
 	this->observer = observer;
 
 	auto &res = Resources::getInstance();

@@ -1,34 +1,38 @@
 
-#ifndef SRC_GUI_WIDGET_TEXTINPUT_H_
-#define SRC_GUI_WIDGET_TEXTINPUT_H_
+#ifndef SRC_GUI_WIDGET_SELECTABLELIST_H_
+#define SRC_GUI_WIDGET_SELECTABLELIST_H_
+
+#include <string>
+#include <vector>
+#include <memory>
 
 #include "abstractWidget.h"
 
-#include <string>
-
-#include "../../graphics/fontMeshBuilder.h"
 #include "../../graphics/sprite.h"
 
 namespace widget {
 
-class TextInput : public AbstractWidget {
+class SelectableList : AbstractWidget {
 public:
 
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
 
-	TextInput(int id, int x, int y, int width, int height);
+	SelectableList(int id, int x, int y, int width, int height,
+			std::function<void(int)> observer);
 
-	virtual ~TextInput() {};
+	virtual ~SelectableList() {};
 
 // ########################################################
 // Member Functions########################################
 // ########################################################
 
-	void draw() override;
+	void addListItem(std::string item);
 
-	void update() override;
+	void deleteListItem(std::string item);
+
+	void draw() override;
 
 	void mouseClicked(int button, float x, float y) override;
 
@@ -36,26 +40,22 @@ public:
 
 	void keyTyped(char value) override;
 
-	void setString(std::string str);
-
-	std::string getString();
-
 // ########################################################
 // Instance Variables #####################################
 // ########################################################
 
 private:
 
-	bool hasFocus = false;
-	bool pointerInsideBorders = false;
+	std::function<void(int)> observer;
 
-	std::string input = "";
+	std::vector<std::string> m_items;
 
-	std::shared_ptr<graphics::Sprite> sprite;
-	std::shared_ptr<graphics::Sprite> text;
+	std::shared_ptr<graphics::Sprite> m_sprite;
+	std::shared_ptr<graphics::Sprite> m_highlight;
+	std::shared_ptr<graphics::Sprite> m_text;
 
 };
 
 } /* namespace widget */
 
-#endif /* SRC_GUI_WIDGET_TEXTINPUT_H_ */
+#endif /* SRC_GUI_WIDGET_SELECTABLELIST_H_ */

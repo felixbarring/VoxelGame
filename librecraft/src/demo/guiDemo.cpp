@@ -25,6 +25,9 @@
 
 #include "../config/data.h"
 
+using namespace std;
+using namespace widget;
+
 namespace demo {
 
 // ########################################################
@@ -35,19 +38,13 @@ namespace demo {
 // Member Functions########################################
 // ########################################################
 
-enum class MenuState {
-	MainMenu,
-	Play,
-	Settings
-};
-
 void GuiDemo::runDemo()
 {
 	util::FPSManager fpsManager(60);
 	const GLuint WIDTH = 800, HEIGHT = 600;
 
 	if (!glfwInit()) {
-		std::cout << "Failed to initialize GLFW\n";
+		cout << "Failed to initialize GLFW\n";
 	}
 	glfwWindowHint(GLFW_SAMPLES, 8);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -57,7 +54,7 @@ void GuiDemo::runDemo()
 
 	GLFWwindow *window = glfwCreateWindow(WIDTH+400, HEIGHT, "GUI Demo", nullptr, nullptr);
 	if (window == nullptr) {
-		std::cout << "Failed to open GLFW window.\n";
+		cout << "Failed to open GLFW window.\n";
 		glfwTerminate();
 	}
 	glfwMakeContextCurrent(window);
@@ -65,95 +62,104 @@ void GuiDemo::runDemo()
 
 	glewExperimental = true;
 	if (glewInit() != GLEW_OK) {
-		std::cout << "Failed to initialize GLEW\n";
+		cout << "Failed to initialize GLEW\n";
 	}
 
 	glViewport(0, 0, WIDTH+400, HEIGHT);
-	glClearColor(0.2f, 0.22f, 0.2f, 1.0f);
+	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
-	MenuState state = MenuState::MainMenu;
+	shared_ptr<TextInput> textInput;
+	shared_ptr<Slider> slider;
 
-	std::shared_ptr<widget::TextInput> textInput;
-	std::shared_ptr<widget::Slider> slider;
+	shared_ptr<WidgetGroup> currentWidgetGroup;
+	shared_ptr<WidgetGroup> mainWidgetGroup;
+	shared_ptr<WidgetGroup> playWidgetGroup;
+	shared_ptr<WidgetGroup> settingsWidgetGroup;
+
 
 	bool quit = false;
-	std::function<void(int)> observer = [&](int id)
+	function<void(int)> observer = [&](int id)
 	{
 		switch(id) {
 			case 0: {
-				state = MenuState::Play;
+				currentWidgetGroup = playWidgetGroup;
 				break;
 			}
 			case 1: {
-				state = MenuState::Settings;
+				currentWidgetGroup = settingsWidgetGroup;
 				break;
 			}
 			case 2: {
 				quit = true;
 				break;
 			}
+			case 3: {
+
+				break;
+			}
 			case 5: {
-				state = MenuState::MainMenu;
+				currentWidgetGroup = mainWidgetGroup;
 				break;
 			}
 			case 6: {
-				state = MenuState::MainMenu;
+				currentWidgetGroup = mainWidgetGroup;
 				break;
 			}
 			case 666: {
-				textInput->setString(std::to_string(slider->getValue()));
+				textInput->setString(to_string(slider->getValue()));
 			}
 		}
-		std::cout << "A button with id: " << id << " was pressed\n";
+		cout << "A button with id: " << id << " was pressed\n";
 	};
 
 	// ######################################################################################################
 
-	std::shared_ptr<widget::IWidget> button1(new widget::Button{0, 325, 350, 150, 30, observer, "Play"});
-	std::shared_ptr<widget::IWidget> button2(new widget::Button{1, 325, 310, 150, 30, observer, "Settings"});
-	std::shared_ptr<widget::IWidget> button3(new widget::Button{2, 325, 270, 150, 30, observer, "Quit"});
+	shared_ptr<IWidget> button1(new Button{0, 325, 350, 150, 30, observer, "Play"});
+	shared_ptr<IWidget> button2(new Button{1, 325, 310, 150, 30, observer, "Settings"});
+	shared_ptr<IWidget> button3(new Button{2, 325, 270, 150, 30, observer, "Quit"});
+	shared_ptr<IWidget> button8(new Button{3, 325, 230, 150, 30, observer, "List"});
 
-	widget::WidgetGroup mainWidgetGroup{0, 0, 0, 800, 600, observer};
+	mainWidgetGroup.reset(new WidgetGroup{0, 0, 0, 800, 600, observer});
 
-	mainWidgetGroup.addWidget(button1);
-	mainWidgetGroup.addWidget(button2);
-	mainWidgetGroup.addWidget(button3);
-
-	// ######################################################################################################
-
-	std::shared_ptr<widget::IWidget> label1(new widget::Label{325, 390, 150, 30, " - Play - "});
-	std::shared_ptr<widget::IWidget> button4(new widget::Button{3, 325, 350, 150, 30, observer, "New World"});
-	std::shared_ptr<widget::IWidget> button5(new widget::Button{4, 325, 310, 150, 30, observer, "Load World"});
-	std::shared_ptr<widget::IWidget> button6(new widget::Button{5, 325, 270, 150, 30, observer, "Back"});
-
-	widget::WidgetGroup playWidgetGroup{0, 0, 0, 800, 600, observer};
-
-	playWidgetGroup.addWidget(label1);
-	playWidgetGroup.addWidget(button4);
-	playWidgetGroup.addWidget(button5);
-	playWidgetGroup.addWidget(button6);
+	mainWidgetGroup->addWidget(button1);
+	mainWidgetGroup->addWidget(button2);
+	mainWidgetGroup->addWidget(button3);
+	mainWidgetGroup->addWidget(button8);
 
 	// ######################################################################################################
 
-	std::shared_ptr<widget::IWidget> label2(new widget::Label{325, 390, 150, 30, " - Settings - "});
-	textInput.reset(new widget::TextInput{666, 325, 350, 150, 30});
-	slider.reset(new widget::Slider{666, 325, 310, 150, 30, observer});
-	std::shared_ptr<widget::IWidget> button7(new widget::Button{6, 325, 270, 150, 30, observer, "Back"});
+	shared_ptr<IWidget> label1(new Label{325, 390, 150, 30, " - Play - "});
+	shared_ptr<IWidget> button4(new Button{666, 325, 350, 150, 30, observer, "New World"});
+	shared_ptr<IWidget> button5(new Button{666, 325, 310, 150, 30, observer, "Load World"});
+	shared_ptr<IWidget> button6(new Button{5, 325, 270, 150, 30, observer, "Back"});
 
-	widget::WidgetGroup settingsWidgetGroup{0, 0, 0, 800, 600, observer};
+	playWidgetGroup.reset(new WidgetGroup{0, 0, 0, 800, 600, observer});
 
-	settingsWidgetGroup.addWidget(label2);
-	settingsWidgetGroup.addWidget(slider);
-	settingsWidgetGroup.addWidget(textInput);
-	settingsWidgetGroup.addWidget(button7);
+	playWidgetGroup->addWidget(label1);
+	playWidgetGroup->addWidget(button4);
+	playWidgetGroup->addWidget(button5);
+	playWidgetGroup->addWidget(button6);
 
 	// ######################################################################################################
 
-	widget::WidgetGroup *activeGroup = &mainWidgetGroup;
+	shared_ptr<IWidget> label2(new Label{325, 390, 150, 30, " - Settings - "});
+	textInput.reset(new TextInput{666, 325, 350, 150, 30});
+	slider.reset(new Slider{666, 325, 310, 150, 30, observer});
+	shared_ptr<IWidget> button7(new Button{6, 325, 270, 150, 30, observer, "Back"});
 
+	settingsWidgetGroup.reset(new WidgetGroup{0, 0, 0, 800, 600, observer});
+
+	settingsWidgetGroup->addWidget(label2);
+	settingsWidgetGroup->addWidget(slider);
+	settingsWidgetGroup->addWidget(textInput);
+	settingsWidgetGroup->addWidget(button7);
+
+	// ######################################################################################################
+
+	currentWidgetGroup = mainWidgetGroup;
 
 	util::Input::createInstance(window, WIDTH / 2.0, HEIGHT / 2.0);
-	std::shared_ptr<util::Input> input = util::Input::getInstance();
+	shared_ptr<util::Input> input = util::Input::getInstance();
 	input->unlockMouse();
 
 	glm::mat4 matrix = gui::createVirtualToScreen(800, 600, 1200, 600);
@@ -177,31 +183,16 @@ void GuiDemo::runDemo()
 
 		glm::vec2 mouse = gui::adjustMouse(800, 600, 1200, 600, input->mouseXPosition, y);
 
-		switch (state) {
-			case MenuState::MainMenu: {
-				activeGroup = &mainWidgetGroup;
-				break;
-			}
-			case MenuState::Play: {
-				activeGroup = &playWidgetGroup;
-				break;
-			}
-			case MenuState::Settings: {
-				activeGroup = &settingsWidgetGroup;
-				break;
-			}
-		}
-
-		activeGroup->mouseMoved(mouse.x, mouse.y);
-		activeGroup->update();
+		currentWidgetGroup->mouseMoved(mouse.x, mouse.y);
+		currentWidgetGroup->update();
 
 		if (input->action1Pressed)
-			activeGroup->mouseClicked(0, mouse.x, mouse.y);
+			currentWidgetGroup->mouseClicked(0, mouse.x, mouse.y);
 
 		if (input->keyWasTyped)
-			activeGroup->keyTyped(input->keyTyped);
+			currentWidgetGroup->keyTyped(input->keyTyped);
 
-		activeGroup->draw();
+		currentWidgetGroup->draw();
 
 		graphics::SpriteBatcher::getInstance().draw();
 

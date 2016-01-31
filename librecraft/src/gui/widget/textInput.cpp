@@ -26,7 +26,7 @@ TextInput::TextInput(int id, int x, int y, int width, int height) :
 	auto &res = Resources::getInstance();
 
 	sprite.reset(new Sprite{x, y, 0, width, height,
-		res.getTexture(config::gui_data::guiBox)});
+		res.getTexture(config::gui_data::solidBlack)});
 
 	FontMeshBuilder &fontMeshBuilder = res.getFontMeshBuilder(
 			config::font_data::fontLayout,
@@ -47,9 +47,7 @@ void TextInput::draw()
 {
 	SpriteBatcher::getInstance().addBatch(sprite);
 
-	if (pointerInsideBorders || hasFocus) {
-		SpriteBatcher::getInstance().addBatch(sprite);
-	}
+	// TODO Draw a blinking marker
 
 	SpriteBatcher::getInstance().addBatch(text);
 

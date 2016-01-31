@@ -129,6 +129,8 @@ namespace config
 	{
 		static const std::string title = "../resources/gui/title.png";
 
+		static const std::string solidBlack = "../resources/gui/solid_black.png";
+
 		static const std::string guiBox = "../resources/gui/gui_box.png";
 		static const std::string button = "../resources/gui/button.png";
 		static const std::string highlight = "../resources/gui/highlight.png";
