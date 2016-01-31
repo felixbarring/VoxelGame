@@ -5,8 +5,5 @@ More to add...
 Button x
   Radiobutton
   Togglebutton
-Label
-Slider
-TextInput
 TextArea
 Tabs

@@ -16,12 +16,14 @@ namespace widget
 /**
  *  \class IWidget
  *
- * A widget is a visual component of a Graphical user interface (abbreviated GUI).
- * Its purpose is to be interactable and provide means to perform some task.
- * This interface defines all the basic functionality that all widgets must implement.
+ * A widget is a visual component of a Graphical user interface
+ * (abbreviated GUI). Its purpose is to be interactable and provide
+ * means to perform some task. This interface defines all the basic
+ * functionality that all widgets must implement.
  *
- * All Widgets should have a mode where they ignore methods calls if they are set into an inactive state.
- * This state can be controlled with setActive and deactivate.
+ * All Widgets should have a mode where they ignore methods calls if
+ * they are set into an inactive state. This state can be controlled
+ * with setActive and deactivate.
  *
  *  \author Felix Bärring
  */

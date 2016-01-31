@@ -38,7 +38,8 @@ public:
 // Constructor/Destructor #################################
 // ########################################################
 
-	Button(int id, int x, int y, int width, int height, std::function<void(int)> observer, const std::string &name);
+	Button(int id, int x, int y, int width, int height,
+			std::function<void(int)> observer, const std::string &name);
 
 	virtual ~Button() {};
 
@@ -68,7 +69,6 @@ private:
 	std::shared_ptr<graphics::Sprite> highlight;
 
 	std::shared_ptr<graphics::Sprite> text;
-
 };
 
 } /* namespace widget */

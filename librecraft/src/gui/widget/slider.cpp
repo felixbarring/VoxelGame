@@ -9,13 +9,16 @@
 #include "../../config/data.h"
 #include "../../graphics/resources.h"
 
+using namespace graphics;
+
 namespace widget {
 
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
 
-Slider::Slider(int id, int x, int y, int width, int height, std::function<void(int)> observer) :
+Slider::Slider(int id, int x, int y, int width, int height,
+		std::function<void(int)> observer) :
 	AbstractWidget(id, x, y, width, height)
 {
 
@@ -23,10 +26,10 @@ Slider::Slider(int id, int x, int y, int width, int height, std::function<void(i
 	knobPosition = x;
 	knobWidth = height;
 
-	slider.reset(new graphics::Sprite{x, y, 1, width, height,
-		graphics::Resources::getInstance().getTexture(config::gui_data::slider)});
-	knob.reset(new graphics::Sprite{x, y, 2, height, height,
-		graphics::Resources::getInstance().getTexture(config::gui_data::sliderKnob)});
+	slider.reset(new Sprite{x, y, 1, width, height,
+		Resources::getInstance().getTexture(config::gui_data::slider)});
+	knob.reset(new Sprite{x, y, 2, height, height,
+		Resources::getInstance().getTexture(config::gui_data::sliderKnob)});
 
 }
 
@@ -36,8 +39,8 @@ Slider::Slider(int id, int x, int y, int width, int height, std::function<void(i
 
 void Slider::draw()
 {
-	graphics::SpriteBatcher::getInstance().addBatch(slider);
-	graphics::SpriteBatcher::getInstance().addBatch(knob);
+	SpriteBatcher::getInstance().addBatch(slider);
+	SpriteBatcher::getInstance().addBatch(knob);
 }
 //
 
@@ -62,7 +65,8 @@ void Slider::mouseMoved(float x, float y)
 			knobPosition = this->x + this->width - knobWidth;
 		}
 
-		knob->setLocation(knobPosition + knobWidth / 2, this->y + knobWidth / 2, 0);
+		knob->setLocation(knobPosition + knobWidth / 2,
+				this->y + knobWidth / 2, 0);
 
 		observer.operator ()(id);
 	}

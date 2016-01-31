@@ -31,7 +31,8 @@ public:
 // Constructor/Destructor #################################
 // ########################################################
 
-	Slider(int id, int x, int y, int width, int height, std::function<void(int)> observer);
+	Slider(int id, int x, int y, int width, int height,
+			std::function<void(int)> observer);
 
 	virtual ~Slider() {};
 

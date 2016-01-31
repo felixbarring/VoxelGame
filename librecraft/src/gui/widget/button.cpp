@@ -9,26 +9,36 @@
 #include "../../config/data.h"
 #include "../../graphics/resources.h"
 
+using namespace std;
+using namespace graphics;
+
 namespace widget {
 
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
 
-Button::Button(int id, int x, int y, int width, int height, std::function<void(int)> observer, const std::string &name) :
+Button::Button(int id, int x, int y, int width, int height, function<void(int)> observer, const string &name) :
 	AbstractWidget(id, x, y, width, height)
 {
 
 	this->observer = observer;
 
-	sprite.reset(new graphics::Sprite{x, y, 0, width, height, graphics::Resources::getInstance().getTexture(config::gui_data::button)});
-	highlight.reset(new graphics::Sprite{x, y, 0, width, height, graphics::Resources::getInstance().getTexture(config::gui_data::highlight)});
+	auto &res = Resources::getInstance();
 
-	graphics::FontMeshBuilder &fontMeshBuilder = graphics::Resources::getInstance().getFontMeshBuilder(
-			config::font_data::fontLayout, config::font_data::fontAtlasWidth, config::font_data::fontAtlasHeight);
+	sprite.reset(new Sprite{x, y, 0, width, height,
+		res.getTexture(config::gui_data::button)});
+	highlight.reset(new Sprite{x, y, 0, width, height,
+		res.getTexture(config::gui_data::highlight)});
 
-	text.reset(new graphics::Sprite{x, y+5, 1, fontMeshBuilder.buldMeshForString(name, height-5),
-		graphics::Resources::getInstance().getTexture(config::font_data::font)});
+	FontMeshBuilder &fontMeshBuilder = res.getFontMeshBuilder(
+			config::font_data::fontLayout,
+			config::font_data::fontAtlasWidth,
+			config::font_data::fontAtlasHeight);
+
+	text.reset(new Sprite{x, y+5, 1,
+		fontMeshBuilder.buldMeshForString(name, height-5),
+		res.getTexture(config::font_data::font)});
 
 }
 
@@ -39,12 +49,12 @@ Button::Button(int id, int x, int y, int width, int height, std::function<void(i
 void Button::draw()
 {
 	if (pointerInsideBorders) {
-		graphics::SpriteBatcher::getInstance().addBatch(text);
-		graphics::SpriteBatcher::getInstance().addBatch(sprite);
-		graphics::SpriteBatcher::getInstance().addBatch(highlight);
+		SpriteBatcher::getInstance().addBatch(text);
+		SpriteBatcher::getInstance().addBatch(sprite);
+		SpriteBatcher::getInstance().addBatch(highlight);
 	} else {
-		graphics::SpriteBatcher::getInstance().addBatch(text);
-		graphics::SpriteBatcher::getInstance().addBatch(sprite);
+		SpriteBatcher::getInstance().addBatch(text);
+		SpriteBatcher::getInstance().addBatch(sprite);
 	}
 }
 

@@ -73,6 +73,9 @@ void GuiDemo::runDemo()
 
 	MenuState state = MenuState::MainMenu;
 
+	std::shared_ptr<widget::TextInput> textInput;
+	std::shared_ptr<widget::Slider> slider;
+
 	bool quit = false;
 	std::function<void(int)> observer = [&](int id)
 	{
@@ -96,6 +99,9 @@ void GuiDemo::runDemo()
 			case 6: {
 				state = MenuState::MainMenu;
 				break;
+			}
+			case 666: {
+				textInput->setString(std::to_string(slider->getValue()));
 			}
 		}
 		std::cout << "A button with id: " << id << " was pressed\n";
@@ -130,8 +136,8 @@ void GuiDemo::runDemo()
 	// ######################################################################################################
 
 	std::shared_ptr<widget::IWidget> label2(new widget::Label{325, 390, 150, 30, " - Settings - "});
-	std::shared_ptr<widget::IWidget> textInput(new widget::TextInput{666, 325, 350, 150, 30});
-	std::shared_ptr<widget::IWidget> slider(new widget::Slider{666, 325, 310, 150, 30, observer});
+	textInput.reset(new widget::TextInput{666, 325, 350, 150, 30});
+	slider.reset(new widget::Slider{666, 325, 310, 150, 30, observer});
 	std::shared_ptr<widget::IWidget> button7(new widget::Button{6, 325, 270, 150, 30, observer, "Back"});
 
 	widget::WidgetGroup settingsWidgetGroup{0, 0, 0, 800, 600, observer};

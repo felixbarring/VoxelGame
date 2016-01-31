@@ -38,7 +38,8 @@ public:
 	/**
 	 * \brief Constructs a WidgetGroup
 	 */
-	WidgetGroup(int id, int x, int y, int width, int height, std::function<void(int)> observer);
+	WidgetGroup(int id, int x, int y, int width, int height,
+			std::function<void(int)> observer);
 
 	virtual ~WidgetGroup() {};
 
@@ -49,7 +50,8 @@ public:
 	/**
 	 * \brief Adds a widget to this group
 	 *
-	 * All other functinos in this class will act on the Widgets added by this function.
+	 * All other functinos in this class will act on the Widgets
+	 * added by this function.
 	 *
 	 * \param[in] widget The widget that will be added to this group
 	 */

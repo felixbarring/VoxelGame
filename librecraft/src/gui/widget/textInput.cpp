@@ -33,8 +33,8 @@ TextInput::TextInput(int id, int x, int y, int width, int height) :
 			config::font_data::fontAtlasWidth,
 			config::font_data::fontAtlasHeight);
 
-	text.reset(new Sprite{x, y+5, 1,
-		fontMeshBuilder.buldMeshForString(input, height-5),
+	text.reset(new Sprite{x, y + 5, 1,
+		fontMeshBuilder.buldMeshForString(input, height - 5),
 		res.getTexture(config::font_data::font)});
 
 }
@@ -59,7 +59,8 @@ void TextInput::update()
 {
 	auto &res = Resources::getInstance();
 
-	if (hasFocus && util::Input::getInstance()->eraseTextPressed && input.size() > 0) {
+	if (hasFocus && util::Input::getInstance()->eraseTextPressed &&
+			input.size() > 0) {
 		input.pop_back();
 
 		FontMeshBuilder &fontMeshBuilder = res.getFontMeshBuilder(
@@ -67,8 +68,8 @@ void TextInput::update()
 					config::font_data::fontAtlasWidth,
 					config::font_data::fontAtlasHeight);
 
-		text.reset(new Sprite{x, y+5, 1,
-			fontMeshBuilder.buldMeshForString(input, height-5),
+		text.reset(new Sprite{x, y + 5, 1,
+			fontMeshBuilder.buldMeshForString(input, height - 5),
 				res.getTexture(config::font_data::font)});
 
 	}
@@ -99,7 +100,7 @@ void TextInput::keyTyped(char value)
 			config::font_data::fontAtlasHeight);
 
 	text.reset(new Sprite{x, y + 5, 1,
-		fontMeshBuilder.buldMeshForString(input, height-5),
+		fontMeshBuilder.buldMeshForString(input, height - 5),
 		res.getTexture(config::font_data::font)});
 
 }
@@ -116,8 +117,8 @@ void TextInput::setString(string str)
 						config::font_data::fontAtlasWidth,
 						config::font_data::fontAtlasHeight);
 
-	text.reset(new Sprite{x, y+5, 1,
-		fontMeshBuilder.buldMeshForString(input, height-5),
+	text.reset(new Sprite{x, y + 5, 1,
+		fontMeshBuilder.buldMeshForString(input, height - 5),
 		res.getTexture(config::font_data::font)});
 
 }
