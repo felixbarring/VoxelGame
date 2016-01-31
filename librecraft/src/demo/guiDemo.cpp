@@ -101,11 +101,6 @@ void GuiDemo::runDemo()
 		std::cout << "A button with id: " << id << " was pressed\n";
 	};
 
-	std::function<void(int, float)> observer2 = [&](int id, float value)
-	{
-		std::cout << value << "\n";
-	};
-
 	// ######################################################################################################
 
 	std::shared_ptr<widget::IWidget> button1(new widget::Button{0, 325, 350, 150, 30, observer, "Play"});
@@ -136,7 +131,7 @@ void GuiDemo::runDemo()
 
 	std::shared_ptr<widget::IWidget> label2(new widget::Label{325, 390, 150, 30, " - Settings - "});
 	std::shared_ptr<widget::IWidget> textInput(new widget::TextInput{666, 325, 350, 150, 30});
-	std::shared_ptr<widget::IWidget> slider(new widget::Slider{666, 325, 310, 150, 30, observer2});
+	std::shared_ptr<widget::IWidget> slider(new widget::Slider{666, 325, 310, 150, 30, observer});
 	std::shared_ptr<widget::IWidget> button7(new widget::Button{6, 325, 270, 150, 30, observer, "Back"});
 
 	widget::WidgetGroup settingsWidgetGroup{0, 0, 0, 800, 600, observer};

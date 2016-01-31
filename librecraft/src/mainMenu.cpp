@@ -61,23 +61,17 @@ MainMenu::MainMenu(Game *game) :
 			case 19: break;
 			case 20: break;
 			case 21: activeWidgetGroup = playWidgetGroup; break;
-		}
 
-	};
-
-	function<void(int, float)> observer2 = [&](int id, float value)
-	{
-		//cout << value << "\n";
-		switch (id) {
 			case 100: {
-				textInput->setString(to_string(value));
+				textInput->setString(to_string(slider->getValue()));
 				break;
 			}
 			case 101: {
-				textInput2->setString(to_string(value));
+				textInput2->setString(to_string(slider2->getValue()));
 				break;
 			}
 		}
+
 	};
 
 	// TODO Give the variables better names
@@ -151,11 +145,11 @@ MainMenu::MainMenu(Game *game) :
 	shared_ptr<widget::IWidget> label6(new widget::Label{325, 390, 150, 30, " - Settings - Game "});
 
 	shared_ptr<widget::IWidget> label7(new widget::Label{             30+100, 310, 80, 20, "FOV:"});
-	shared_ptr<widget::IWidget> slider(new widget::Slider{      100,  125+100, 310, 150, 30, observer2});
+	slider.reset(new widget::Slider{      100,  125+100, 310, 150, 30, observer});
 	textInput.reset(new widget::TextInput{666, 285+100, 310, 100,  30});
 
 	shared_ptr<widget::IWidget> label8(new widget::Label{              30+100, 270, 80, 20, "Render Distance:"});
-	shared_ptr<widget::IWidget> slider2(new widget::Slider{      101,  125+100, 270, 150, 30, observer2});
+	slider2.reset(new widget::Slider{      101,  125+100, 270, 150, 30, observer});
 	textInput2.reset(new widget::TextInput{666, 285+100, 270, 100, 30});
 
 	shared_ptr<widget::IWidget> button13(new widget::Button{12, 245, 130, 150, 30, observer, "Save"});

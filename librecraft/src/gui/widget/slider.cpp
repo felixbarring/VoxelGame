@@ -15,7 +15,7 @@ namespace widget {
 // Constructor/Destructor #################################
 // ########################################################
 
-Slider::Slider(int id, int x, int y, int width, int height, std::function<void(int, float)> observer) :
+Slider::Slider(int id, int x, int y, int width, int height, std::function<void(int)> observer) :
 	AbstractWidget(id, x, y, width, height)
 {
 
@@ -23,8 +23,10 @@ Slider::Slider(int id, int x, int y, int width, int height, std::function<void(i
 	knobPosition = x;
 	knobWidth = height;
 
-	slider.reset(new graphics::Sprite{x, y, 1, width, height, graphics::Resources::getInstance().getTexture(config::gui_data::slider)});
-	knob.reset(new graphics::Sprite{x, y, 2, height, height, graphics::Resources::getInstance().getTexture(config::gui_data::sliderKnob)});
+	slider.reset(new graphics::Sprite{x, y, 1, width, height,
+		graphics::Resources::getInstance().getTexture(config::gui_data::slider)});
+	knob.reset(new graphics::Sprite{x, y, 2, height, height,
+		graphics::Resources::getInstance().getTexture(config::gui_data::sliderKnob)});
 
 }
 
@@ -62,7 +64,7 @@ void Slider::mouseMoved(float x, float y)
 
 		knob->setLocation(knobPosition + knobWidth / 2, this->y + knobWidth / 2, 0);
 
-		observer.operator ()(id, (knobPosition - this->x) / (width - knobWidth));
+		observer.operator ()(id);
 	}
 
 }
@@ -70,6 +72,11 @@ void Slider::mouseMoved(float x, float y)
 void Slider::keyTyped(char value)
 {
 	// not relevant for button, do nothing
+}
+
+float Slider::getValue()
+{
+	return (knobPosition - this->x) / (width - knobWidth);
 }
 
 } /* namespace widget */

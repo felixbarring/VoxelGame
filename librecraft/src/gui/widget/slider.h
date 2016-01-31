@@ -31,7 +31,7 @@ public:
 // Constructor/Destructor #################################
 // ########################################################
 
-	Slider(int id, int x, int y, int width, int height, std::function<void(int, float)> observer);
+	Slider(int id, int x, int y, int width, int height, std::function<void(int)> observer);
 
 	virtual ~Slider() {};
 
@@ -47,13 +47,15 @@ public:
 
 	void keyTyped(char value) override;
 
+	float getValue();
+
 // ########################################################
 // Instance Variables #####################################
 // ########################################################
 
 private:
 
-	std::function<void(int, float)> observer;
+	std::function<void(int)> observer;
 
 	bool pointerInsideBorders = false;
 

@@ -767,9 +767,7 @@ void Chunk::storeChunk(string worldName, int x, int z)
 			}
 		}
 	}
-
 	outStream.close();
-
 }
 
 }

@@ -61,6 +61,9 @@ private:
 	std::shared_ptr<widget::TextInput> textInput2;
 	std::shared_ptr<widget::TextInput> textInput3;
 
+	std::shared_ptr<widget::Slider> slider;
+	std::shared_ptr<widget::Slider> slider2;
+
 };
 
 
