@@ -34,9 +34,9 @@ Button::Button(int id, int x, int y, int width, int height,
 			config::font_data::fontAtlasWidth,
 			config::font_data::fontAtlasHeight);
 
-//	m_text.reset(new Sprite(x, y + 5, 0,
-//		fontMeshBuilder.buldMeshForString(name, height - 5),
-//		res.getTexture(config::font_data::font)));
+	m_text.reset(new Sprite(x, y + 5, layer + 1,
+		fontMeshBuilder.buldMeshForString(name, height - 5),
+		res.getTexture(config::font_data::font)));
 
 }
 
@@ -48,11 +48,11 @@ void Button::draw()
 {
 	if (m_pointerInsideBorders) {
 		SpriteBatcher::getInstance().addBatch(m_sprite);
-		//SpriteBatcher::getInstance().addBatch(m_text);
+		SpriteBatcher::getInstance().addBatch(m_text);
 		SpriteBatcher::getInstance().addBatch(m_highlight);
 	} else {
 		SpriteBatcher::getInstance().addBatch(m_sprite);
-		//SpriteBatcher::getInstance().addBatch(m_text);
+		SpriteBatcher::getInstance().addBatch(m_text);
 	}
 }
 

@@ -18,7 +18,7 @@ namespace graphics {
 SpriteBatcher::SpriteBatcher()
 {
 	// hard coded default value
-	projection = glm::ortho(0.0f, 800.0f, 0.0f, 600.0f, -1.0f, 1.0f);
+	m_projection = glm::ortho(0.0f, 800.0f, 0.0f, 600.0f, -1.0f, 1.0f);
 
 	const char *vertex =
 		"#version 330 core \n"
@@ -53,7 +53,7 @@ SpriteBatcher::SpriteBatcher()
 		pair<string, int>("texCoordIn", 1)
 	};
 
-	program.reset(new ShaderProgram{vertex, frag, attributesMap});
+	m_program.reset(new ShaderProgram{vertex, frag, attributesMap});
 
 }
 
@@ -62,19 +62,19 @@ SpriteBatcher::SpriteBatcher()
 // ########################################################
 void SpriteBatcher::addBatch(shared_ptr<Sprite> batch)
 {
-	batches.push_back(batch);
+	m_batches.push_back(batch);
 }
 
 void SpriteBatcher::draw()
 {
 
-	program->bind();
+	m_program->bind();
 
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_BLEND);
 	glDisable(GL_DEPTH_TEST);
 
-	sort(batches.begin(), batches.end(),
+	sort(m_batches.begin(), m_batches.end(),
 		[](shared_ptr<Sprite> a, shared_ptr<Sprite> b) -> bool
 	    {
 	      return a->layer < b->layer;
@@ -83,33 +83,29 @@ void SpriteBatcher::draw()
 
 	texture::Texture *current;
 
-	cout << "---------------"<< "\n";
-
-	for (auto batch : batches) {
-
-		cout << batch->layer << "\n";
-
+	for (auto batch : m_batches) {
 		glActiveTexture(GL_TEXTURE0);
 		if (&batch->getTexture() != current) {
 			current = &batch->getTexture();
 			current->bind();
 		}
-		program->setUniformli("texture1", 0);
+		m_program->setUniformli("texture1", 0);
 
-		glm::mat4 modelViewProjection = projection * batch->getTransform().getMatrix();
+		glm::mat4 modelViewProjection{m_projection *
+			batch->getTransform().getMatrix()};
 
-		program->setUniformMatrix4f("projection", modelViewProjection);
+		m_program->setUniformMatrix4f("projection", modelViewProjection);
 		batch->draw();
 	}
 
-	program->unbind();
-	batches.clear();
+	m_program->unbind();
+	m_batches.clear();
 
 }
 
 void SpriteBatcher::setProjection(glm::mat4 projection)
 {
-	this->projection = projection;
+	this->m_projection = projection;
 }
 
 

@@ -53,10 +53,10 @@ public:
 
 private:
 
-	std::vector<std::shared_ptr<Sprite>> batches;
-	glm::mat4 projection;
+	std::vector<std::shared_ptr<Sprite>> m_batches;
+	glm::mat4 m_projection;
 
-	std::shared_ptr<ShaderProgram> program;
+	std::shared_ptr<ShaderProgram> m_program;
 
 };
 

@@ -160,8 +160,7 @@ void GuiDemo::runDemo()
 
 	shared_ptr<Button> button1337(new Button(666, 325, 270, 150, 30, observer, "DERP"));
 
-	shared_ptr<SelectableList> derp(new SelectableList{666, 100, 100, 600, 400, observer, 10});
-	//derp->addButton(button1337);
+	shared_ptr<SelectableList> derp(new SelectableList{666, 100, 100, 600, 400, observer, 2});
 	derp->addListItem("BLOOL");
 	derp->addListItem("Jesus");
 	derp->addListItem("Satan");

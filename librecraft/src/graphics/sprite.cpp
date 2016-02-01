@@ -8,8 +8,8 @@ namespace graphics {
 // ########################################################
 
 Sprite::Sprite(float x, float y, float layer, float width, float height, texture::Texture &texture) :
-	transform{x + width / 2, y + height / 2, 0},
-	texture(texture),
+	m_transform{x + width / 2, y + height / 2, 0},
+	m_texture(texture),
 	layer{layer}
 {
 
@@ -34,16 +34,16 @@ Sprite::Sprite(float x, float y, float layer, float width, float height, texture
 		0, 2, 3,
 	};
 
-	mesh.reset(new mesh::MeshElement(vertices, 3, texCoords, 2, indices));
+	m_mesh.reset(new mesh::MeshElement(vertices, 3, texCoords, 2, indices));
 
 }
 
-Sprite::Sprite(float x, float y, float z, std::shared_ptr<mesh::MeshElement> mesh, texture::Texture &texture) :
-	transform{x, y, z},
-	texture(texture),
-	layer{y}
+Sprite::Sprite(float x, float y, float layer, std::shared_ptr<mesh::MeshElement> mesh, texture::Texture &texture) :
+	m_transform{x, y, 0},
+	m_texture(texture),
+	layer{layer}
 {
-	this->mesh = mesh;
+	this->m_mesh = mesh;
 }
 
 // ########################################################
@@ -52,27 +52,27 @@ Sprite::Sprite(float x, float y, float z, std::shared_ptr<mesh::MeshElement> mes
 
 void Sprite::draw()
 {
-	mesh->draw();
+	m_mesh->draw();
 }
 
 Transform& Sprite::getTransform()
 {
-	return transform;
+	return m_transform;
 }
 
 texture::Texture& Sprite::getTexture()
 {
-	return texture;
+	return m_texture;
 }
 
 void Sprite::move(float x, float y)
 {
-	transform.translate(x, y, 0);
+	m_transform.translate(x, y, 0);
 }
 
 void Sprite::setLocation(float x, float y, float z)
 {
-	transform.setLocation(x, y, z);
+	m_transform.setLocation(x, y, z);
 }
 
 
