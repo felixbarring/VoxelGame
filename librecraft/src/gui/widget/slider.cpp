@@ -18,17 +18,17 @@ namespace widget {
 // ########################################################
 
 Slider::Slider(int id, int x, int y, int width, int height,
-		std::function<void(int)> observer) :
+		std::function<void(int)> observer, int layer) :
 	AbstractWidget(id, x, y, width, height)
 {
 
-	this->observer = observer;
-	knobPosition = x;
-	knobWidth = height;
+	this->m_observer = observer;
+	m_knobPosition = x;
+	m_knobWidth = height;
 
-	slider.reset(new Sprite{x, y, 1, width, height,
+	m_slider.reset(new Sprite{x, y, 1, width, height,
 		Resources::getInstance().getTexture(config::gui_data::slider)});
-	knob.reset(new Sprite{x, y, 2, height, height,
+	m_knob.reset(new Sprite{x, y, 2, height, height,
 		Resources::getInstance().getTexture(config::gui_data::sliderKnob)});
 
 }
@@ -39,36 +39,36 @@ Slider::Slider(int id, int x, int y, int width, int height,
 
 void Slider::draw()
 {
-	SpriteBatcher::getInstance().addBatch(slider);
-	SpriteBatcher::getInstance().addBatch(knob);
+	SpriteBatcher::getInstance().addBatch(m_slider);
+	SpriteBatcher::getInstance().addBatch(m_knob);
 }
 //
 
 void Slider::mouseClicked(int button, float x, float y)
 {
-	grabbed = !grabbed && pointerInsideBorders;
+	m_grabbed = !m_grabbed && m_pointerInsideBorders;
 }
 
 void Slider::mouseMoved(float x, float y)
 {
-	pointerInsideBorders = isInsideBorders(x, y);
-	grabbed = grabbed && pointerInsideBorders;
+	m_pointerInsideBorders = isInsideBorders(x, y);
+	m_grabbed = m_grabbed && m_pointerInsideBorders;
 
-	if (grabbed) {
-		knobPosition = x - knobWidth / 2;
+	if (m_grabbed) {
+		m_knobPosition = x - m_knobWidth / 2;
 
-		if (knobPosition < this->x ) {
-			knobPosition = this->x;
+		if (m_knobPosition < this->m_xCoordinate ) {
+			m_knobPosition = this->m_xCoordinate;
 		}
 
-		if (knobPosition > this->x + this->width - knobWidth) {
-			knobPosition = this->x + this->width - knobWidth;
+		if (m_knobPosition > this->m_xCoordinate + this->m_width - m_knobWidth) {
+			m_knobPosition = this->m_xCoordinate + this->m_width - m_knobWidth;
 		}
 
-		knob->setLocation(knobPosition + knobWidth / 2,
-				this->y + knobWidth / 2, 0);
+		m_knob->setLocation(m_knobPosition + m_knobWidth / 2,
+				this->m_yCoordinate + m_knobWidth / 2, 0);
 
-		observer.operator ()(id);
+		m_observer.operator ()(m_id);
 	}
 
 }
@@ -80,7 +80,7 @@ void Slider::keyTyped(char value)
 
 float Slider::getValue()
 {
-	return (knobPosition - this->x) / (width - knobWidth);
+	return (m_knobPosition - this->m_xCoordinate) / (m_width - m_knobWidth);
 }
 
 } /* namespace widget */

@@ -39,7 +39,7 @@ public:
 	 * \brief Constructs a WidgetGroup
 	 */
 	WidgetGroup(int id, int x, int y, int width, int height,
-			std::function<void(int)> observer);
+			std::function<void(int)> observer, int layer = 0);
 
 	virtual ~WidgetGroup() {};
 
@@ -73,8 +73,8 @@ public:
 
 private:
 
-	std::shared_ptr<graphics::Sprite> sprite;
-	std::vector<std::shared_ptr<IWidget>> widgets;
+	std::shared_ptr<graphics::Sprite> m_sprite;
+	std::vector<std::shared_ptr<IWidget>> m_widgets;
 
 };
 

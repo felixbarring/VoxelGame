@@ -20,23 +20,23 @@ Button::Button(int id, int x, int y, int width, int height,
 		function<void(int)> observer, const string &name, int layer) :
 	AbstractWidget(id, x, y, width, height)
 {
-	this->observer = observer;
+	this->m_observer = observer;
 
 	auto &res = Resources::getInstance();
 
-	sprite.reset(new Sprite{x, y, layer, width, height,
-		res.getTexture(config::gui_data::button)});
-	highlight.reset(new Sprite{x, y, layer + 1, width, height,
-		res.getTexture(config::gui_data::highlight)});
+	m_sprite.reset(new Sprite(x, y, layer, width, height,
+		res.getTexture(config::gui_data::button)));
+	m_highlight.reset(new Sprite(x, y, layer + 1, width, height,
+		res.getTexture(config::gui_data::highlight)));
 
 	FontMeshBuilder &fontMeshBuilder = res.getFontMeshBuilder(
 			config::font_data::fontLayout,
 			config::font_data::fontAtlasWidth,
 			config::font_data::fontAtlasHeight);
 
-	text.reset(new Sprite{x, y + 5, layer + 1,
-		fontMeshBuilder.buldMeshForString(name, height - 5),
-		res.getTexture(config::font_data::font)});
+//	m_text.reset(new Sprite(x, y + 5, 0,
+//		fontMeshBuilder.buldMeshForString(name, height - 5),
+//		res.getTexture(config::font_data::font)));
 
 }
 
@@ -46,26 +46,26 @@ Button::Button(int id, int x, int y, int width, int height,
 
 void Button::draw()
 {
-	if (pointerInsideBorders) {
-		SpriteBatcher::getInstance().addBatch(text);
-		SpriteBatcher::getInstance().addBatch(sprite);
-		SpriteBatcher::getInstance().addBatch(highlight);
+	if (m_pointerInsideBorders) {
+		SpriteBatcher::getInstance().addBatch(m_sprite);
+		//SpriteBatcher::getInstance().addBatch(m_text);
+		SpriteBatcher::getInstance().addBatch(m_highlight);
 	} else {
-		SpriteBatcher::getInstance().addBatch(text);
-		SpriteBatcher::getInstance().addBatch(sprite);
+		SpriteBatcher::getInstance().addBatch(m_sprite);
+		//SpriteBatcher::getInstance().addBatch(m_text);
 	}
 }
 
 void Button::mouseClicked(int button, float x, float y)
 {
 	if(isInsideBorders(x,y))
-		observer.operator ()(id);
+		m_observer.operator ()(m_id);
 
 }
 
 void Button::mouseMoved(float x, float y)
 {
-	pointerInsideBorders = isInsideBorders(x, y);
+	m_pointerInsideBorders = isInsideBorders(x, y);
 }
 
 void Button::keyTyped(char value)

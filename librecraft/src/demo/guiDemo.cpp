@@ -158,14 +158,21 @@ void GuiDemo::runDemo()
 
 	// ######################################################################################################
 
-	shared_ptr<SelectableList> derp(new SelectableList{666, 100, 100, 600, 400, observer});
+	shared_ptr<Button> button1337(new Button(666, 325, 270, 150, 30, observer, "DERP"));
+
+	shared_ptr<SelectableList> derp(new SelectableList{666, 100, 100, 600, 400, observer, 10});
+	//derp->addButton(button1337);
+	derp->addListItem("BLOOL");
+	derp->addListItem("Jesus");
+	derp->addListItem("Satan");
+	derp->addListItem("Tor");
 	derp->addListItem("BLOOL");
 	derp->addListItem("Jesus");
 	derp->addListItem("Satan");
 	derp->addListItem("Tor");
 
-	listWidgetGroup.reset(new WidgetGroup{0, 0, 0, 800, 600, observer});
 
+	listWidgetGroup.reset(new WidgetGroup{0, 0, 0, 800, 600, observer});
 	listWidgetGroup->addWidget(derp);
 
 	// ######################################################################################################

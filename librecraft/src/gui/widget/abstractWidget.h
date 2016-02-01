@@ -93,11 +93,10 @@ public:
 
 protected:
 
-	bool active = true;
-	const int id;
-	int x, y;
-	const int width, height;
-
+	bool m_active{true};
+	const int m_id;
+	int m_xCoordinate, m_yCoordinate;
+	const int m_width, m_height;
 };
 
 

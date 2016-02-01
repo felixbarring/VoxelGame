@@ -61,13 +61,13 @@ public:
 
 private:
 
-	std::function<void(int)> observer;
+	std::function<void(int)> m_observer;
 
-	bool pointerInsideBorders = false;
+	bool m_pointerInsideBorders{false};
 
-	std::shared_ptr<graphics::Sprite> sprite;
-	std::shared_ptr<graphics::Sprite> highlight;
-	std::shared_ptr<graphics::Sprite> text;
+	std::shared_ptr<graphics::Sprite> m_sprite;
+	std::shared_ptr<graphics::Sprite> m_highlight;
+	std::shared_ptr<graphics::Sprite> m_text;
 
 };
 

@@ -32,7 +32,7 @@ public:
 // ########################################################
 
 	Slider(int id, int x, int y, int width, int height,
-			std::function<void(int)> observer);
+			std::function<void(int)> observer, int layer = 0);
 
 	virtual ~Slider() {};
 
@@ -56,17 +56,17 @@ public:
 
 private:
 
-	std::function<void(int)> observer;
+	std::function<void(int)> m_observer;
 
-	bool pointerInsideBorders = false;
+	bool m_pointerInsideBorders{false};
 
-	std::shared_ptr<graphics::Sprite> slider;
-	std::shared_ptr<graphics::Sprite> knob;
+	std::shared_ptr<graphics::Sprite> m_slider;
+	std::shared_ptr<graphics::Sprite> m_knob;
 
-	float knobPosition;
-	float knobWidth;
+	float m_knobPosition;
+	float m_knobWidth;
 
-	bool grabbed = false;
+	bool m_grabbed{false};
 
 };
 

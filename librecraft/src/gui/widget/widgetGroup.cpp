@@ -16,10 +16,10 @@ namespace widget {
 // ########################################################
 
 WidgetGroup::WidgetGroup(int id, int x, int y, int width, int height,
-		function<void(int)> observer) :
+		function<void(int)> observer, int layer) :
 	AbstractWidget(id, x, y, width, height)
 {
-	sprite.reset(new Sprite{x, y, 0, width, height,
+	m_sprite.reset(new Sprite{x, y, 0, width, height,
 		Resources::getInstance().getTexture(config::gui_data::guiBox)});
 }
 
@@ -29,19 +29,19 @@ WidgetGroup::WidgetGroup(int id, int x, int y, int width, int height,
 
 void WidgetGroup::addWidget(shared_ptr<IWidget> widget)
 {
-	widgets.push_back(widget);
+	m_widgets.push_back(widget);
 }
 
 void WidgetGroup::draw()
 {
-	SpriteBatcher::getInstance().addBatch(sprite);
-	for (auto widget : widgets)
+	SpriteBatcher::getInstance().addBatch(m_sprite);
+	for (auto widget : m_widgets)
 		widget->draw();
 }
 
 void WidgetGroup::update()
 {
-	for (auto widget : widgets)
+	for (auto widget : m_widgets)
 		widget->update();
 }
 
@@ -51,7 +51,7 @@ void WidgetGroup::update()
 void WidgetGroup::mouseClicked(int button, float x, float y)
 {
 	//if (isInsideBorders(x, y)) {
-		for (auto widget : widgets)
+		for (auto widget : m_widgets)
 			widget->mouseClicked(button, x, y);
 	//}
 }
@@ -59,14 +59,14 @@ void WidgetGroup::mouseClicked(int button, float x, float y)
 void WidgetGroup::mouseMoved(float x, float y)
 {
 	if (isInsideBorders(x, y)) {
-		for (auto widget : widgets)
+		for (auto widget : m_widgets)
 			widget->mouseMoved(x, y);
 	}
 }
 
 void WidgetGroup::keyTyped(char value)
 {
-	for (auto widget : widgets)
+	for (auto widget : m_widgets)
 		widget->keyTyped(value);
 }
 

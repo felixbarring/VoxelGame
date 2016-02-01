@@ -32,7 +32,7 @@ public:
 // ########################################################
 
 
-	Label(int x, int y, int width, int height, const std::string &name);
+	Label(int x, int y, int width, int height, const std::string &name, int layer = 0);
 
 	virtual ~Label() {};
 
@@ -52,7 +52,7 @@ public:
 // Instance Variables #####################################
 // ########################################################
 
-	std::shared_ptr<graphics::Sprite> text;
+	std::shared_ptr<graphics::Sprite> m_text;
 
 };
 

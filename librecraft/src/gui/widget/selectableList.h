@@ -9,6 +9,7 @@
 #include "abstractWidget.h"
 #include "button.h"
 
+
 #include "../../graphics/sprite.h"
 
 namespace widget {
@@ -21,7 +22,7 @@ public:
 // ########################################################
 
 	SelectableList(int id, int x, int y, int width, int height,
-			std::function<void(int)> observer);
+			std::function<void(int)> observer, int layer = 0);
 
 	virtual ~SelectableList() {};
 
@@ -47,9 +48,10 @@ public:
 
 private:
 
-	std::function<void(int)> observer;
+	std::function<void(int)> m_observer;
+	int m_layer;
 
-	std::vector<Button> m_buttons;
+	std::vector<std::shared_ptr<Button>> m_buttons;
 
 	std::shared_ptr<graphics::Sprite> m_sprite;
 	std::shared_ptr<graphics::Sprite> m_highlight;

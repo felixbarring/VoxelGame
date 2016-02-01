@@ -18,7 +18,7 @@ public:
 // Constructor/Destructor #################################
 // ########################################################
 
-	TextInput(int id, int x, int y, int width, int height);
+	TextInput(int id, int x, int y, int width, int height, int layer = 0);
 
 	virtual ~TextInput() {};
 
@@ -46,13 +46,13 @@ public:
 
 private:
 
-	bool hasFocus = false;
-	bool pointerInsideBorders = false;
+	bool m_hasFocus{false};
+	bool m_pointerInsideBorders{false};
 
-	std::string input = "";
+	std::string m_input{""};
 
-	std::shared_ptr<graphics::Sprite> sprite;
-	std::shared_ptr<graphics::Sprite> text;
+	std::shared_ptr<graphics::Sprite> m_sprite;
+	std::shared_ptr<graphics::Sprite> m_text;
 
 };
 

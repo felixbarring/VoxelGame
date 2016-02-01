@@ -1,4 +1,3 @@
-
 #include "label.h"
 
 #include "../../graphics/spriteBatcher.h"
@@ -16,8 +15,8 @@ namespace widget {
 // Constructor/Destructor #################################
 // ########################################################
 
-Label::Label(int x, int y, int width, int height, const string &name) :
-		AbstractWidget(id, x, y, width, height)
+Label::Label(int x, int y, int width, int height, const string &name, int layer) :
+		AbstractWidget(m_id, x, y, width, height)
 {
 
 	auto &res = Resources::getInstance();
@@ -30,7 +29,7 @@ Label::Label(int x, int y, int width, int height, const string &name) :
 	shared_ptr<mesh::MeshElement> fontMesh =
 			fontMeshBuilder.buldMeshForString(name, height - 5);
 
-	text.reset(new Sprite{x, y+5, 1, fontMesh,
+	m_text.reset(new Sprite{x, y+5, layer, fontMesh,
 		res.getTexture(config::font_data::font)});
 
 }
@@ -41,7 +40,7 @@ Label::Label(int x, int y, int width, int height, const string &name) :
 
 void Label::draw()
 {
-	SpriteBatcher::getInstance().addBatch(text);
+	SpriteBatcher::getInstance().addBatch(m_text);
 }
 
 void Label::mouseClicked(int button, float x, float y)

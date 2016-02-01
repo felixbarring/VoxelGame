@@ -10,11 +10,11 @@ namespace widget {
 // ########################################################
 
 AbstractWidget::AbstractWidget(int id, int x, int y, int width, int height) :
-	id{id},
-	x{x},
-	y{y},
-	width{width},
-	height{height}
+	m_id{id},
+	m_xCoordinate{x},
+	m_yCoordinate{y},
+	m_width{width},
+	m_height{height}
 {
 }
 
@@ -29,29 +29,29 @@ void AbstractWidget::update()
 
 bool AbstractWidget::isActive()
 {
-	return active;
+	return m_active;
 }
 
 bool AbstractWidget::isInsideBorders(float x, float y)
 {
-	return (x > this->x && x < this->x + width &&
-			y > this->y && y < this->y + height);
+	return (x > this->m_xCoordinate && x < this->m_xCoordinate + m_width &&
+			y > this->m_yCoordinate && y < this->m_yCoordinate + m_height);
 }
 
 void AbstractWidget::setActive()
 {
-	active = true;
+	m_active = true;
 }
 
 void AbstractWidget::setInactive()
 {
-	active = false;
+	m_active = false;
 }
 
 void AbstractWidget::setLocation(float x, float y, float z)
 {
-	this->x = x;
-	this->y = y;
+	this->m_xCoordinate = x;
+	this->m_yCoordinate = y;
 }
 
 } /* namespace widget */

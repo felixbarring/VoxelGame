@@ -7,6 +7,8 @@
 
 #include "shaderProgram.h"
 
+using namespace std;
+
 namespace graphics {
 
 // ########################################################
@@ -46,9 +48,9 @@ SpriteBatcher::SpriteBatcher()
 		"} \n";
 
 
-	std::map<std::string, int> attributesMap{
-		std::pair<std::string, int>("positionIn", 0),
-		std::pair<std::string, int>("texCoordIn", 1)
+	map<string, int> attributesMap{
+		pair<string, int>("positionIn", 0),
+		pair<string, int>("texCoordIn", 1)
 	};
 
 	program.reset(new ShaderProgram{vertex, frag, attributesMap});
@@ -58,7 +60,7 @@ SpriteBatcher::SpriteBatcher()
 // ########################################################
 // Member Functions########################################
 // ########################################################
-void SpriteBatcher::addBatch(std::shared_ptr<Sprite> batch)
+void SpriteBatcher::addBatch(shared_ptr<Sprite> batch)
 {
 	batches.push_back(batch);
 }
@@ -72,17 +74,26 @@ void SpriteBatcher::draw()
 	glEnable(GL_BLEND);
 	glDisable(GL_DEPTH_TEST);
 
-	std::sort(batches.begin(), batches.end(),
-		[](std::shared_ptr<Sprite> a, std::shared_ptr<Sprite> b) -> bool
+	sort(batches.begin(), batches.end(),
+		[](shared_ptr<Sprite> a, shared_ptr<Sprite> b) -> bool
 	    {
 	      return a->layer < b->layer;
 	    }
 	);
 
-	for (std::shared_ptr<Sprite> batch : batches) {
+	texture::Texture *current;
+
+	cout << "---------------"<< "\n";
+
+	for (auto batch : batches) {
+
+		cout << batch->layer << "\n";
 
 		glActiveTexture(GL_TEXTURE0);
-		batch->getTexture().bind();
+		if (&batch->getTexture() != current) {
+			current = &batch->getTexture();
+			current->bind();
+		}
 		program->setUniformli("texture1", 0);
 
 		glm::mat4 modelViewProjection = projection * batch->getTransform().getMatrix();
