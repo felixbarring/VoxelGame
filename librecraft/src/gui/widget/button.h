@@ -59,7 +59,7 @@ public:
 // Instance Variables #####################################
 // ########################################################
 
-private:
+protected:
 
 	std::function<void(int)> m_observer;
 

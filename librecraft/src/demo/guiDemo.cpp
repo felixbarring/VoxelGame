@@ -17,6 +17,7 @@
 
 #include "../gui/widget/selectableList.h"
 #include "../gui/widget/button.h"
+#include "../gui/widget/toggleButton.h"
 #include "../gui/widget/slider.h"
 #include "../gui/widget/label.h"
 #include "../gui/widget/textInput.h"
@@ -53,7 +54,8 @@ void GuiDemo::runDemo()
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-	GLFWwindow *window = glfwCreateWindow(WIDTH+400, HEIGHT, "GUI Demo", nullptr, nullptr);
+	GLFWwindow *window = glfwCreateWindow(WIDTH + 400, HEIGHT, ""
+			"GUI Demo", nullptr, nullptr);
 	if (window == nullptr) {
 		cout << "Failed to open GLFW window.\n";
 		glfwTerminate();
@@ -114,12 +116,13 @@ void GuiDemo::runDemo()
 		cout << "A button with id: " << id << " was pressed\n";
 	};
 
-	// ######################################################################################################
+	// ########################################################################
 
 	shared_ptr<IWidget> button1(new Button{0, 325, 350, 150, 30, observer, "Play"});
 	shared_ptr<IWidget> button2(new Button{1, 325, 310, 150, 30, observer, "Settings"});
 	shared_ptr<IWidget> button3(new Button{2, 325, 270, 150, 30, observer, "Quit"});
 	shared_ptr<IWidget> button8(new Button{3, 325, 230, 150, 30, observer, "List"});
+	shared_ptr<IWidget> toggleButton(new ToggleButton{666, 325, 190, 150, 30, observer, "Toggle"});
 
 	mainWidgetGroup.reset(new WidgetGroup{0, 0, 0, 800, 600, observer});
 
@@ -127,8 +130,9 @@ void GuiDemo::runDemo()
 	mainWidgetGroup->addWidget(button2);
 	mainWidgetGroup->addWidget(button3);
 	mainWidgetGroup->addWidget(button8);
+	mainWidgetGroup->addWidget(toggleButton);
 
-	// ######################################################################################################
+	// ########################################################################
 
 	shared_ptr<IWidget> label1(new Label{325, 390, 150, 30, " - Play - "});
 	shared_ptr<IWidget> button4(new Button{666, 325, 350, 150, 30, observer, "New World"});
@@ -142,7 +146,7 @@ void GuiDemo::runDemo()
 	playWidgetGroup->addWidget(button5);
 	playWidgetGroup->addWidget(button6);
 
-	// ######################################################################################################
+	// ########################################################################
 
 	shared_ptr<IWidget> label2(new Label{325, 390, 150, 30, " - Settings - "});
 	textInput.reset(new TextInput{666, 325, 350, 150, 30});
@@ -156,7 +160,7 @@ void GuiDemo::runDemo()
 	settingsWidgetGroup->addWidget(textInput);
 	settingsWidgetGroup->addWidget(button7);
 
-	// ######################################################################################################
+	// ########################################################################
 
 	shared_ptr<Button> button1337(new Button(666, 325, 270, 150, 30, observer, "DERP"));
 
@@ -170,11 +174,10 @@ void GuiDemo::runDemo()
 	derp->addListItem("Satan");
 	derp->addListItem("Tor");
 
-
 	listWidgetGroup.reset(new WidgetGroup{0, 0, 0, 800, 600, observer});
 	listWidgetGroup->addWidget(derp);
 
-	// ######################################################################################################
+	// ########################################################################
 
 	currentWidgetGroup = mainWidgetGroup;
 
@@ -186,7 +189,8 @@ void GuiDemo::runDemo()
 	glm:: mat4 matrix2 = glm::ortho(0.0f, 1200.0f, 0.0f, 600.0f, -1.0f, 1.0f) * matrix;
 	graphics::SpriteBatcher::getInstance().setProjection(matrix2);
 
-	while (!quit && glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0) {
+	while (!quit && glfwGetKey(window, GLFW_KEY_ESCAPE) !=
+			GLFW_PRESS && glfwWindowShouldClose(window) == 0) {
 
 		fpsManager.frameStart();
 		glfwPollEvents();
