@@ -46,6 +46,7 @@ MainMenu::MainMenu(Game *game) :
 						world_meta::addName(name);
 						game->createNewWorld(name);
 						activeWidgetGroup = mainWidgetGroup;
+						m_worldList->addListItem(name);
 					} else
 					{
 						// Error: Name already taken
@@ -62,12 +63,11 @@ MainMenu::MainMenu(Game *game) :
 			case 19: break;
 			case 20: {
 				if (m_worldList->getSelectedListItem().size()) {
-
 					string name =  m_worldList->getSelectedListItem();
-					cout << name << world_meta::worldNameExists(name) << "\n";
-
-					game->loadExistingWorld((m_worldList->getSelectedListItem()));
+					game->loadExistingWorld(
+							m_worldList->getSelectedListItem());
 					activeWidgetGroup = mainWidgetGroup;
+					m_worldList->reset();
 				}
 				break;
 			}
@@ -87,7 +87,7 @@ MainMenu::MainMenu(Game *game) :
 
 	// TODO Give the variables better names
 
-	// ################################################################################################################
+	// ########################################################################
 
 	shared_ptr<IWidget> label1(new Label{325, 390, 150, 30, " - Main - "});
 	shared_ptr<IWidget> button1(new Button{0, 325, 350, 150, 30, observer, "Play"});
@@ -101,7 +101,7 @@ MainMenu::MainMenu(Game *game) :
 	mainWidgetGroup->addWidget(button2);
 	mainWidgetGroup->addWidget(button3);
 
-	// ################################################################################################################
+	// ########################################################################
 
 	shared_ptr<IWidget> label2(new Label{325, 390, 150, 30, " - Play - "});
 	shared_ptr<IWidget> button4(new Button{3, 325, 350, 150, 30, observer, "New World"});
@@ -115,7 +115,7 @@ MainMenu::MainMenu(Game *game) :
 	playWidgetGroup->addWidget(button5);
 	playWidgetGroup->addWidget(button6);
 
-	// ################################################################################################################
+	// ########################################################################
 
 	shared_ptr<IWidget> label3(new Label{325, 390, 150, 30, " - Settings - "});
 	shared_ptr<IWidget> button7(new Button{6, 325, 350, 150, 30, observer, "Game"});
@@ -131,7 +131,7 @@ MainMenu::MainMenu(Game *game) :
 	settingsWidgetGroup->addWidget(button9);
 	settingsWidgetGroup->addWidget(button10);
 
-	// ################################################################################################################
+	// ########################################################################
 
 	shared_ptr<IWidget> label4(new Label{325, 390, 150, 30, " - Game - "});
 	shared_ptr<IWidget> button11(new Button{10, 325, 230, 150, 30, observer, "Back"});
@@ -141,7 +141,7 @@ MainMenu::MainMenu(Game *game) :
 	gameSettingsWidgetGroup->addWidget(label4);
 	gameSettingsWidgetGroup->addWidget(button11);
 
-	// ################################################################################################################
+	// ########################################################################
 
 	shared_ptr<IWidget> label5(new Label{325, 390, 150, 30, " - Input - "});
 	shared_ptr<IWidget> button12(new Button{11, 325, 230, 150, 30, observer, "Back"});
@@ -151,7 +151,7 @@ MainMenu::MainMenu(Game *game) :
 	inputSettingsWidgetGroup->addWidget(label5);
 	inputSettingsWidgetGroup->addWidget(button12);
 
-	// ################################################################################################################
+	// ########################################################################
 
 	shared_ptr<IWidget> label6(new Label{325, 390, 150, 30, " - Settings - Game "});
 
@@ -181,7 +181,7 @@ MainMenu::MainMenu(Game *game) :
 	graphicsSettingsWidgetGroup->addWidget(button13);
 	graphicsSettingsWidgetGroup->addWidget(button14);
 
-	// ################################################################################################################
+	// ########################################################################
 
 	shared_ptr<IWidget> label15(new Label{230, 390, 150, 50, " - Create New World - "});
 	shared_ptr<IWidget> label16(new Label{220, 330, 150, 30, "Enter a Name:"});
@@ -204,7 +204,7 @@ MainMenu::MainMenu(Game *game) :
 	newWorldWidgetGroup->addWidget(button18);
 
 
-	// ################################################################################################################
+	// ########################################################################
 
 	shared_ptr<IWidget> label17(new Label{270, 390, 150, 50, " - Load World - "});
 
@@ -228,7 +228,7 @@ MainMenu::MainMenu(Game *game) :
 	loadWorldWidgetGroup->addWidget(button22);
 	loadWorldWidgetGroup->addWidget(m_worldList);
 
-	// ################################################################################################################
+	// ########################################################################
 
 	activeWidgetGroup = mainWidgetGroup;
 

@@ -115,6 +115,7 @@ Chunk::Chunk(std::string name, int x, int z):
 
 Chunk::~Chunk()
 {
+	cout << "Removing chunk " << xLocation << " " << zLocation << "\n";
 	ChunkBatcher::getInstance().removeBatch(graphicalChunk);
 };
 
@@ -298,6 +299,14 @@ void Chunk::setFrontNeighbor(shared_ptr<Chunk> chunk)
 void Chunk::setBackNeighbor(shared_ptr<Chunk> chunk)
 {
 	backNeighbor = chunk;
+}
+
+void Chunk::removeAllNeighbores()
+{
+	leftNeighbor.reset();
+	rightNeighbor.reset();
+	frontNeighbor.reset();
+	backNeighbor.reset();
 }
 
 void Chunk::doSunLightning(vector<vec3> &lightPropagate)

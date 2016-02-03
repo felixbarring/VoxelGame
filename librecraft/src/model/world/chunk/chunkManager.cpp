@@ -37,7 +37,7 @@ void ChunkManager::createNewWorld()
 	// Create the Chunks
 	for (int x = 0; x < xMax; x++) {
 		for (int z = 0; z < zMax; z++) {
-			chunks[x][0][z] = unique_ptr<chunk::Chunk> (
+			chunks[x][0][z].reset(
 				new Chunk{x * CHUNK_WIDTH, z * CHUNK_DEPTH});
 		}
 	}
@@ -76,7 +76,9 @@ void ChunkManager::loadWorld(std::string& worldName)
 
 	for (int x = 0; x < xMax; x++) {
 		for (int z = 0; z < zMax; z++) {
-			chunks[x][0][z] = unique_ptr<chunk::Chunk> (
+			if (chunks[x][0][z])
+				chunks[x][0][z]->removeAllNeighbores();
+			chunks[x][0][z].reset(
 				new Chunk{worldName, x * CHUNK_WIDTH, z * CHUNK_DEPTH});
 		}
 	}

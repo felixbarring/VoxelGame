@@ -47,10 +47,9 @@ void SelectableList::addListItem(std::string item)
 					{
 						auto button = getButtonWithId(id);
 						if (button->isToggled()) {
-							cout << button->getId() << "\n";
-							if (m_currentlyToggled) {
+							if (m_currentlyToggled)
 								m_currentlyToggled->toggle();
-							}
+
 							m_currentlyToggled = button;
 						} else {
 							m_currentlyToggled.reset();
@@ -66,6 +65,11 @@ void SelectableList::deleteListItem(std::string item)
 	// TODO
 }
 
+void SelectableList::clear()
+{
+	m_buttons.clear();
+}
+
 std::string SelectableList::getSelectedListItem()
 {
 	if (m_currentlyToggled && m_currentlyToggled->isToggled())
@@ -74,6 +78,14 @@ std::string SelectableList::getSelectedListItem()
 	return "";
 }
 
+
+void SelectableList::reset()
+{
+	if (m_currentlyToggled && m_currentlyToggled->isToggled()) {
+		m_currentlyToggled->toggle();
+	}
+	m_currentlyToggled.reset();
+}
 
 void SelectableList::draw()
 {

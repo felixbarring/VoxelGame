@@ -54,6 +54,8 @@ public:
 
 	void setBackNeighbor(std::shared_ptr<Chunk> chunk);
 
+	void removeAllNeighbores();
+
 	void updateGraphics();
 
 	void updateNeighborGraphics();

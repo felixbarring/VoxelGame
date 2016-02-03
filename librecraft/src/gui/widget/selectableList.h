@@ -36,6 +36,10 @@ public:
 
 	std::string getSelectedListItem();
 
+	void clear();
+
+	void reset();
+
 	void draw() override;
 
 	void mouseClicked(int button, float x, float y) override;
