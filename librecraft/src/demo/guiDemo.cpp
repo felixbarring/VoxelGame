@@ -174,8 +174,11 @@ void GuiDemo::runDemo()
 	derp->addListItem("Satan");
 	derp->addListItem("Tor");
 
+	shared_ptr<IWidget> button9(new Button{6, 325, 0, 150, 30, observer, "Back"});
+
 	listWidgetGroup.reset(new WidgetGroup{0, 0, 0, 800, 600, observer});
 	listWidgetGroup->addWidget(derp);
+	listWidgetGroup->addWidget(button9);
 
 	// ########################################################################
 

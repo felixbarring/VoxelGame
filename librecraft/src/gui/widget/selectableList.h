@@ -7,7 +7,7 @@
 #include <memory>
 
 #include "abstractWidget.h"
-#include "button.h"
+#include "toggleButton.h"
 
 
 #include "../../graphics/sprite.h"
@@ -34,6 +34,8 @@ public:
 
 	void deleteListItem(std::string item);
 
+	std::string getSelectedListItem();
+
 	void draw() override;
 
 	void mouseClicked(int button, float x, float y) override;
@@ -48,10 +50,15 @@ public:
 
 private:
 
+	std::shared_ptr<ToggleButton> getButtonWithId(int i);
+
 	std::function<void(int)> m_observer;
 	int m_layer;
 
-	std::vector<std::shared_ptr<Button>> m_buttons;
+	int idCounter{0};
+	std::vector<std::shared_ptr<ToggleButton>> m_buttons;
+
+	std::shared_ptr<ToggleButton> m_currentlyToggled{nullptr};
 
 	std::shared_ptr<graphics::Sprite> m_sprite;
 	std::shared_ptr<graphics::Sprite> m_highlight;

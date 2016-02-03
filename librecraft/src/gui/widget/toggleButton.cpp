@@ -30,7 +30,7 @@ bool ToggleButton::isToggled()
 
 void ToggleButton::toggle()
 {
-	m_toggled = true;
+	m_toggled = !m_toggled;
 }
 
 void ToggleButton::draw()

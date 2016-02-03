@@ -38,6 +38,11 @@ public:
 	virtual void draw() = 0;
 
 	/**
+	 *  \brief Returns the button's ID
+	 */
+	virtual int getId() = 0;
+
+	/**
 	 * \brief If the Widget needs to be updated each frame, it should implement this method
 	 */
 	virtual void update() = 0;

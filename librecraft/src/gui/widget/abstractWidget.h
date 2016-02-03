@@ -66,16 +66,7 @@ public:
 // Member Functions########################################
 // ########################################################
 
-	/**
-	 *  \brief Determines if the point is inside this widgets borders
-	 *
-	 *	Detailed description here
-	 *
-	 *  \param[in] x The x coordinate of the point
-	 *  \param[in] y The y coordinate of the point
-	 *  \return True if the point is inside the borders, else false
-	 */
-	bool isInsideBorders(float x, float y);
+	int getId() override;
 
 	void update() override;
 
@@ -92,6 +83,17 @@ public:
 // ########################################################
 
 protected:
+
+	/**
+	 *  \brief Determines if the point is inside this widgets borders
+	 *
+	 *	Detailed description here
+	 *
+	 *  \param[in] x The x coordinate of the point
+	 *  \param[in] y The y coordinate of the point
+	 *  \return True if the point is inside the borders, else false
+	 */
+	bool isInsideBorders(float x, float y);
 
 	bool m_active{true};
 	const int m_id;

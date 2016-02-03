@@ -39,13 +39,15 @@ public:
 // ########################################################
 
 	Button(int id, int x, int y, int width, int height,
-			std::function<void(int)> observer, const std::string &name, int layer = 0);
+			std::function<void(int)> observer, std::string name, int layer = 0);
 
 	virtual ~Button() {};
 
 // ########################################################
 // Member Functions########################################
 // ########################################################
+
+	std::string getName();
 
 	void draw() override;
 
@@ -64,6 +66,7 @@ protected:
 	std::function<void(int)> m_observer;
 
 	bool m_pointerInsideBorders{false};
+	std::string m_name;
 
 	std::shared_ptr<graphics::Sprite> m_sprite;
 	std::shared_ptr<graphics::Sprite> m_highlight;

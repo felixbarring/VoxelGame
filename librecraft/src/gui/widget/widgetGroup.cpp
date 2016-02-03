@@ -51,17 +51,17 @@ void WidgetGroup::update()
 void WidgetGroup::mouseClicked(int button, float x, float y)
 {
 	//if (isInsideBorders(x, y)) {
-		for (auto widget : m_widgets)
-			widget->mouseClicked(button, x, y);
+	for (auto widget : m_widgets)
+		widget->mouseClicked(button, x, y);
 	//}
 }
 
 void WidgetGroup::mouseMoved(float x, float y)
 {
-	if (isInsideBorders(x, y)) {
+	//if (isInsideBorders(x, y)) {
 		for (auto widget : m_widgets)
 			widget->mouseMoved(x, y);
-	}
+	//}
 }
 
 void WidgetGroup::keyTyped(char value)

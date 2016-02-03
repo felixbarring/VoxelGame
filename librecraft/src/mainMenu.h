@@ -9,12 +9,14 @@
 
 #include "util/input.h"
 
+// Some can probably
 #include "gui/image.h"
 #include "gui/widget/button.h"
 #include "gui/widget/label.h"
 #include "gui/widget/textInput.h"
 #include "gui/widget/slider.h"
 #include "gui/widget/widgetGroup.h"
+#include "gui/widget/selectableList.h"
 #include "gui/guiUtil.h"
 
 class MainMenu : public IGameState {
@@ -43,6 +45,7 @@ private:
 	Game *game;
 
 	std::unique_ptr<gui::Image> title;
+	std::shared_ptr<widget::SelectableList> m_worldList;
 
 	std::shared_ptr<widget::WidgetGroup> activeWidgetGroup;
 

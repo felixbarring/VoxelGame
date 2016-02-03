@@ -17,8 +17,9 @@ namespace widget {
 // ########################################################
 
 Button::Button(int id, int x, int y, int width, int height,
-		function<void(int)> observer, const string &name, int layer) :
-	AbstractWidget(id, x, y, width, height)
+		function<void(int)> observer, string name, int layer) :
+	AbstractWidget(id, x, y, width, height),
+	m_name(name)
 {
 	this->m_observer = observer;
 
@@ -43,6 +44,11 @@ Button::Button(int id, int x, int y, int width, int height,
 // ########################################################
 // Member Functions########################################
 // ########################################################
+
+std::string Button::getName()
+{
+	return m_name;
+}
 
 void Button::draw()
 {

@@ -8,6 +8,7 @@
 #include "util/worldMeta.h"
 
 using namespace std;
+using namespace widget;
 
 // ########################################################
 // Constructor/Destructor #################################
@@ -59,7 +60,17 @@ MainMenu::MainMenu(Game *game) :
 			case 17: break;
 			case 18: break;
 			case 19: break;
-			case 20: break;
+			case 20: {
+				if (m_worldList->getSelectedListItem().size()) {
+
+					string name =  m_worldList->getSelectedListItem();
+					cout << name << world_meta::worldNameExists(name) << "\n";
+
+					game->loadExistingWorld((m_worldList->getSelectedListItem()));
+					activeWidgetGroup = mainWidgetGroup;
+				}
+				break;
+			}
 			case 21: activeWidgetGroup = playWidgetGroup; break;
 
 			case 100: {
@@ -78,12 +89,12 @@ MainMenu::MainMenu(Game *game) :
 
 	// ################################################################################################################
 
-	shared_ptr<widget::IWidget> label1(new widget::Label{325, 390, 150, 30, " - Main - "});
-	shared_ptr<widget::IWidget> button1(new widget::Button{0, 325, 350, 150, 30, observer, "Play"});
-	shared_ptr<widget::IWidget> button2(new widget::Button{1, 325, 310, 150, 30, observer, "Settings"});
-	shared_ptr<widget::IWidget> button3(new widget::Button{2, 325, 270, 150, 30, observer, "Quit"});
+	shared_ptr<IWidget> label1(new Label{325, 390, 150, 30, " - Main - "});
+	shared_ptr<IWidget> button1(new Button{0, 325, 350, 150, 30, observer, "Play"});
+	shared_ptr<IWidget> button2(new Button{1, 325, 310, 150, 30, observer, "Settings"});
+	shared_ptr<IWidget> button3(new Button{2, 325, 270, 150, 30, observer, "Quit"});
 
-	mainWidgetGroup.reset(new widget::WidgetGroup{0, 300, 260, 200, 130, observer});
+	mainWidgetGroup.reset(new WidgetGroup{0, 300, 260, 200, 130, observer});
 
 	mainWidgetGroup->addWidget(label1);
 	mainWidgetGroup->addWidget(button1);
@@ -92,12 +103,12 @@ MainMenu::MainMenu(Game *game) :
 
 	// ################################################################################################################
 
-	shared_ptr<widget::IWidget> label2(new widget::Label{325, 390, 150, 30, " - Play - "});
-	shared_ptr<widget::IWidget> button4(new widget::Button{3, 325, 350, 150, 30, observer, "New World"});
-	shared_ptr<widget::IWidget> button5(new widget::Button{4, 325, 310, 150, 30, observer, "Load World"});
-	shared_ptr<widget::IWidget> button6(new widget::Button{5, 325, 270, 150, 30, observer, "Back"});
+	shared_ptr<IWidget> label2(new Label{325, 390, 150, 30, " - Play - "});
+	shared_ptr<IWidget> button4(new Button{3, 325, 350, 150, 30, observer, "New World"});
+	shared_ptr<IWidget> button5(new Button{4, 325, 310, 150, 30, observer, "Load World"});
+	shared_ptr<IWidget> button6(new Button{5, 325, 270, 150, 30, observer, "Back"});
 
-	playWidgetGroup.reset(new widget::WidgetGroup{0, 300, 260, 200, 130, observer});
+	playWidgetGroup.reset(new WidgetGroup{0, 300, 260, 200, 130, observer});
 
 	playWidgetGroup->addWidget(label2);
 	playWidgetGroup->addWidget(button4);
@@ -106,13 +117,13 @@ MainMenu::MainMenu(Game *game) :
 
 	// ################################################################################################################
 
-	shared_ptr<widget::IWidget> label3(new widget::Label{325, 390, 150, 30, " - Settings - "});
-	shared_ptr<widget::IWidget> button7(new widget::Button{6, 325, 350, 150, 30, observer, "Game"});
-	shared_ptr<widget::IWidget> button8(new widget::Button{7, 325, 310, 150, 30, observer, "Input"});
-	shared_ptr<widget::IWidget> button9(new widget::Button{8, 325, 270, 150, 30, observer, "Graphics"});
-	shared_ptr<widget::IWidget> button10(new widget::Button{9, 325, 230, 150, 30, observer, "Back"});
+	shared_ptr<IWidget> label3(new Label{325, 390, 150, 30, " - Settings - "});
+	shared_ptr<IWidget> button7(new Button{6, 325, 350, 150, 30, observer, "Game"});
+	shared_ptr<IWidget> button8(new Button{7, 325, 310, 150, 30, observer, "Input"});
+	shared_ptr<IWidget> button9(new Button{8, 325, 270, 150, 30, observer, "Graphics"});
+	shared_ptr<IWidget> button10(new Button{9, 325, 230, 150, 30, observer, "Back"});
 
-	settingsWidgetGroup.reset(new widget::WidgetGroup{0, 300, 220, 200, 170, observer});
+	settingsWidgetGroup.reset(new WidgetGroup{0, 300, 220, 200, 170, observer});
 
 	settingsWidgetGroup->addWidget(label3);
 	settingsWidgetGroup->addWidget(button7);
@@ -122,40 +133,40 @@ MainMenu::MainMenu(Game *game) :
 
 	// ################################################################################################################
 
-	shared_ptr<widget::IWidget> label4(new widget::Label{325, 390, 150, 30, " - Game - "});
-	shared_ptr<widget::IWidget> button11(new widget::Button{10, 325, 230, 150, 30, observer, "Back"});
+	shared_ptr<IWidget> label4(new Label{325, 390, 150, 30, " - Game - "});
+	shared_ptr<IWidget> button11(new Button{10, 325, 230, 150, 30, observer, "Back"});
 
-	gameSettingsWidgetGroup.reset(new widget::WidgetGroup{0, 300, 220, 200, 170, observer});
+	gameSettingsWidgetGroup.reset(new WidgetGroup{0, 300, 220, 200, 170, observer});
 
 	gameSettingsWidgetGroup->addWidget(label4);
 	gameSettingsWidgetGroup->addWidget(button11);
 
 	// ################################################################################################################
 
-	shared_ptr<widget::IWidget> label5(new widget::Label{325, 390, 150, 30, " - Input - "});
-	shared_ptr<widget::IWidget> button12(new widget::Button{11, 325, 230, 150, 30, observer, "Back"});
+	shared_ptr<IWidget> label5(new Label{325, 390, 150, 30, " - Input - "});
+	shared_ptr<IWidget> button12(new Button{11, 325, 230, 150, 30, observer, "Back"});
 
-	inputSettingsWidgetGroup.reset(new widget::WidgetGroup{0, 300, 220, 200, 170, observer});
+	inputSettingsWidgetGroup.reset(new WidgetGroup{0, 300, 220, 200, 170, observer});
 
 	inputSettingsWidgetGroup->addWidget(label5);
 	inputSettingsWidgetGroup->addWidget(button12);
 
 	// ################################################################################################################
 
-	shared_ptr<widget::IWidget> label6(new widget::Label{325, 390, 150, 30, " - Settings - Game "});
+	shared_ptr<IWidget> label6(new Label{325, 390, 150, 30, " - Settings - Game "});
 
-	shared_ptr<widget::IWidget> label7(new widget::Label{             30+100, 310, 80, 20, "FOV:"});
-	slider.reset(new widget::Slider{      100,  125+100, 310, 150, 30, observer});
-	textInput.reset(new widget::TextInput{666, 285+100, 310, 100,  30});
+	shared_ptr<IWidget> label7(new Label{             30+100, 310, 80, 20, "FOV:"});
+	slider.reset(new Slider{      100,  125+100, 310, 150, 30, observer});
+	textInput.reset(new TextInput{666, 285+100, 310, 100,  30});
 
-	shared_ptr<widget::IWidget> label8(new widget::Label{              30+100, 270, 80, 20, "Render Distance:"});
-	slider2.reset(new widget::Slider{      101,  125+100, 270, 150, 30, observer});
-	textInput2.reset(new widget::TextInput{666, 285+100, 270, 100, 30});
+	shared_ptr<IWidget> label8(new Label{              30+100, 270, 80, 20, "Render Distance:"});
+	slider2.reset(new Slider{      101,  125+100, 270, 150, 30, observer});
+	textInput2.reset(new TextInput{666, 285+100, 270, 100, 30});
 
-	shared_ptr<widget::IWidget> button13(new widget::Button{12, 245, 130, 150, 30, observer, "Save"});
-	shared_ptr<widget::IWidget> button14(new widget::Button{13, 400, 130, 150, 30, observer, "Cancel"});
+	shared_ptr<IWidget> button13(new Button{12, 245, 130, 150, 30, observer, "Save"});
+	shared_ptr<IWidget> button14(new Button{13, 400, 130, 150, 30, observer, "Cancel"});
 
-	graphicsSettingsWidgetGroup.reset(new widget::WidgetGroup{0, 100, 100, 600, 250, observer});
+	graphicsSettingsWidgetGroup.reset(new WidgetGroup{0, 100, 100, 600, 250, observer});
 
 	graphicsSettingsWidgetGroup->addWidget(label6);
 
@@ -172,17 +183,17 @@ MainMenu::MainMenu(Game *game) :
 
 	// ################################################################################################################
 
-	shared_ptr<widget::IWidget> label15(new widget::Label{230, 390, 150, 50, " - Create New World - "});
-	shared_ptr<widget::IWidget> label16(new widget::Label{220, 330, 150, 30, "Enter a Name:"});
-	textInput3.reset(new widget::TextInput{666, 370, 330, 200, 30});
-	shared_ptr<widget::IWidget> button15(new widget::Button{14, 240, 135, 100, 30, observer, "Advanced"});
-	shared_ptr<widget::IWidget> button16(new widget::Button{15, 350, 135, 100, 30, observer, "Create"});
-	shared_ptr<widget::IWidget> button17(new widget::Button{16, 460, 135, 100, 30, observer, "Cancel"});
+	shared_ptr<IWidget> label15(new Label{230, 390, 150, 50, " - Create New World - "});
+	shared_ptr<IWidget> label16(new Label{220, 330, 150, 30, "Enter a Name:"});
+	textInput3.reset(new TextInput{666, 370, 330, 200, 30});
+	shared_ptr<IWidget> button15(new Button{14, 240, 135, 100, 30, observer, "Advanced"});
+	shared_ptr<IWidget> button16(new Button{15, 350, 135, 100, 30, observer, "Create"});
+	shared_ptr<IWidget> button17(new Button{16, 460, 135, 100, 30, observer, "Cancel"});
 
-	shared_ptr<widget::IWidget> button18(new widget::Button{17, 370, 290, 200, 30, observer, "Random Name"});
+	shared_ptr<IWidget> button18(new Button{17, 370, 290, 200, 30, observer, "Random Name"});
 
 
-	newWorldWidgetGroup.reset(new widget::WidgetGroup{0, 200, 120, 400, 270, observer});
+	newWorldWidgetGroup.reset(new WidgetGroup{0, 200, 120, 400, 270, observer});
 
 	newWorldWidgetGroup->addWidget(label15);
 	newWorldWidgetGroup->addWidget(label16);
@@ -195,21 +206,27 @@ MainMenu::MainMenu(Game *game) :
 
 	// ################################################################################################################
 
-	shared_ptr<widget::IWidget> label17(new widget::Label{270, 390, 150, 50, " - Load World - "});
+	shared_ptr<IWidget> label17(new Label{270, 390, 150, 50, " - Load World - "});
 
-	shared_ptr<widget::IWidget> button19(new widget::Button{18, 225, 70, 80, 30, observer, "Rename"});
-	shared_ptr<widget::IWidget> button20(new widget::Button{19, 315, 70, 80, 30, observer, "Delete"});
+	shared_ptr<IWidget> button19(new Button{18, 225, 70, 80, 30, observer, "Rename"});
+	shared_ptr<IWidget> button20(new Button{19, 315, 70, 80, 30, observer, "Delete"});
 
-	shared_ptr<widget::IWidget> button21(new widget::Button{20, 405, 70, 80, 30, observer, "Load"});
-	shared_ptr<widget::IWidget> button22(new widget::Button{21, 495, 70, 80, 30, observer, "Cancel"});
+	shared_ptr<IWidget> button21(new Button{20, 405, 70, 80, 30, observer, "Load"});
+	shared_ptr<IWidget> button22(new Button{21, 495, 70, 80, 30, observer, "Cancel"});
 
-	loadWorldWidgetGroup.reset(new widget::WidgetGroup{0, 200, 50, 400, 400, observer});
+	loadWorldWidgetGroup.reset(new WidgetGroup{0, 200, 50, 400, 400, observer});
+
+	m_worldList.reset(new SelectableList{666, 220, 100, 360, 300, observer, 2});
+
+	for (auto s : world_meta::getAllWorldNames())
+		m_worldList->addListItem(s);
 
 	loadWorldWidgetGroup->addWidget(label17);
 	loadWorldWidgetGroup->addWidget(button19);
 	loadWorldWidgetGroup->addWidget(button20);
 	loadWorldWidgetGroup->addWidget(button21);
 	loadWorldWidgetGroup->addWidget(button22);
+	loadWorldWidgetGroup->addWidget(m_worldList);
 
 	// ################################################################################################################
 
