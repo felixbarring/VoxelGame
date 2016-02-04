@@ -99,6 +99,7 @@ public:
 private:
 
 	int xLocation, zLocation;
+	bool isDirty;
 
 	// Should be somewhere else?
 	const int directSunlight = 15;

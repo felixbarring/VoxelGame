@@ -185,7 +185,7 @@ void Chunk::setCube(int x, int y, int z, char id)
 		updateLightningCubeAdded(x, y, z);
 		voxel.lightValue = 0;
 	}
-
+	isDirty = true;
 }
 
 void Chunk::updateLightningCubeRemoved(Voxel& voxel, int x, int y, int z)
@@ -764,6 +764,10 @@ bool fileExists(string& fileName) {
 
 void Chunk::storeChunk(string worldName, int x, int z)
 {
+
+	if (!isDirty)
+		return;
+
 	string fileName = config::dataFolder + worldName + "_" + to_string(x) + "_" + to_string(z) + ".chunk";
 
 	cout << "The file name is: " << fileName << " \n";
