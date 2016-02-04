@@ -50,6 +50,7 @@ private:
 	bool m_pointerInsideBorders{false};
 
 	std::string m_input{""};
+	unsigned m_maxInputLenght;
 
 	std::shared_ptr<graphics::Sprite> m_sprite;
 	std::shared_ptr<graphics::Sprite> m_text;

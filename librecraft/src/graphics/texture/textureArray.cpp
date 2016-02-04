@@ -10,6 +10,8 @@ namespace texture
 // Constructor/Destructor #################################
 // ########################################################
 
+// TODO Clean up this class
+
 TextureArray::TextureArray(std::vector<std::string> paths, int width, int height)
 {
 	GLsizei layerCount = paths.size();

@@ -20,7 +20,8 @@ namespace widget {
 // ########################################################
 
 TextInput::TextInput(int id, int x, int y, int width, int height, int layer) :
-	AbstractWidget(id, x, y, width, height)
+	AbstractWidget(id, x, y, width, height),
+	m_maxInputLenght{width}
 {
 
 	auto &res = Resources::getInstance();
@@ -69,7 +70,6 @@ void TextInput::update()
 		m_text.reset(new Sprite{m_xCoordinate, m_yCoordinate + 5, 1,
 			fontMeshBuilder.buldMeshForString(m_input, m_height - 5),
 				res.getTexture(config::font_data::font)});
-
 	}
 
 }
@@ -92,10 +92,14 @@ void TextInput::keyTyped(char value)
 	if (m_hasFocus)
 		m_input.push_back(value);
 
+	// Need a bettr way to handle resources
 	FontMeshBuilder &fontMeshBuilder = res.getFontMeshBuilder(
-			config::font_data::fontLayout,
-			config::font_data::fontAtlasWidth,
-			config::font_data::fontAtlasHeight);
+						config::font_data::fontLayout,
+						config::font_data::fontAtlasWidth,
+						config::font_data::fontAtlasHeight);
+
+	if (fontMeshBuilder.lenghtOfString(m_input, m_height) > m_maxInputLenght)
+		m_input.pop_back();
 
 	m_text.reset(new Sprite{m_xCoordinate, m_yCoordinate + 5, 1,
 		fontMeshBuilder.buldMeshForString(m_input, m_height - 5),

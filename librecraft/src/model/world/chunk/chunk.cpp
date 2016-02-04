@@ -170,7 +170,6 @@ char Chunk::getCubeId(int x, int y, int z)
 
 void Chunk::setCube(int x, int y, int z, char id)
 {
-
 	// We can not change bedrock!
 	if (vec[x][y][z].id == BED_ROCK)
 		return;
@@ -753,8 +752,6 @@ bool Chunk::isInDirectSunlight(int x, int y, int z)
 
 
 // ############################################################################
-
-//Chunk loadChunk(std::string worldName, int x, int z);
 
 // Helper function
 bool fileExists(string& fileName) {
