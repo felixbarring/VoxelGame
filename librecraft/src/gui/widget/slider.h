@@ -40,15 +40,11 @@ public:
 // Member Functions########################################
 // ########################################################
 
+	float getValue();
+
 	void draw() override;
 
-	void mouseClicked(int button, float x, float y) override;
-
-	void mouseMoved(float x, float y) override;
-
-	void keyTyped(char value) override;
-
-	float getValue();
+	void update() override;
 
 // ########################################################
 // Instance Variables #####################################

@@ -79,8 +79,6 @@ Chunk::Chunk(std::string name, int x, int z):
 
 	string file = config::dataFolder + name + "_" +
 			std::to_string(x) + "_" + std::to_string(z) + ".chunk";
-	cout << file << "\n";
-
 	inStream.open(file);
 
 	// Add all lines to the vector
@@ -765,9 +763,8 @@ void Chunk::storeChunk(string worldName, int x, int z)
 	if (!isDirty)
 		return;
 
-	string fileName = config::dataFolder + worldName + "_" + to_string(x) + "_" + to_string(z) + ".chunk";
-
-	cout << "The file name is: " << fileName << " \n";
+	string fileName = config::dataFolder + worldName + "_"
+			+ to_string(x) + "_" + to_string(z) + ".chunk";
 
 	ofstream outStream(fileName);
 	for (int x = 0; x < width; x++) {

@@ -70,26 +70,27 @@ public:
 	float mouseXMovement{0.0f};
 	float mouseYMovement{0.0f};
 
-	double mouseXPosition = 0.0;
-	double mouseYPosition = 0.0;
+	double mouseXPosition{0.0};
+	double mouseYPosition{0.0};
+
+	double mouseVirtualAdjustedX{0.0};
+	double mouseVirtualAdjustedY{0.0};
 
 	bool escapeKeyPressed{false};
 
 	bool eraseTextPressed{false};
 	bool eraseTextActive{false};
 
-	bool keyWasTyped = false;
-	char keyTyped = ' ';
+	bool keyWasTyped{false};
+	char keyTyped{' '};
 
 private:
-
 	GLFWwindow* window;
 
 	float screenCenterX;
 	float screenCenterY;
 
-	bool mouseLocked = true;
-
+	bool mouseLocked{true};
 };
 
 static std::shared_ptr<Input> input;

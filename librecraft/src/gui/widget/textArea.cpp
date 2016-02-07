@@ -20,16 +20,9 @@ void TextArea::draw()
 {
 }
 
-void TextArea::mouseClicked(int button, float x, float y)
+void TextArea::update()
 {
-}
 
-void TextArea::mouseMoved(float x, float y)
-{
-}
-
-void TextArea::keyTyped(char value)
-{
 }
 
 } /* namespace widget */

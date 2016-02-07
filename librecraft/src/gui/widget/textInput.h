@@ -18,7 +18,7 @@ public:
 // Constructor/Destructor #################################
 // ########################################################
 
-	TextInput(int id, int x, int y, int width, int height, int layer = 0);
+	TextInput(int id, int x, int y, unsigned width, int height, int layer = 0);
 
 	virtual ~TextInput() {};
 
@@ -26,19 +26,13 @@ public:
 // Member Functions########################################
 // ########################################################
 
-	void draw() override;
-
-	void update() override;
-
-	void mouseClicked(int button, float x, float y) override;
-
-	void mouseMoved(float x, float y) override;
-
-	void keyTyped(char value) override;
-
 	void setString(std::string str);
 
 	std::string getString();
+
+	void draw() override;
+
+	void update() override;
 
 // ########################################################
 // Instance Variables #####################################

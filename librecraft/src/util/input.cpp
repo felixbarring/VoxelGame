@@ -4,6 +4,8 @@
 
 #include "../config/data.h"
 
+using namespace config::input_data;
+
 namespace util {
 
 static double mouseXOffset;
@@ -60,40 +62,38 @@ void Input::updateValues()
 	mouseYMovement = 0.0;
 
 	// Keyboard
-	moveForwardPressed = glfwGetKey(window, config::input_data::moveForwardButton) == GLFW_PRESS && !moveForwardActive;
-	moveLeftPressed = glfwGetKey(window, config::input_data::moveLeftButton) == GLFW_PRESS && !moveLeftActive;
-	moveRightPressed = glfwGetKey(window, config::input_data::moveRightButton) == GLFW_PRESS && !moveRightActive;
-	moveBackwardPressed = glfwGetKey(window, config::input_data::moveBackwardButton) == GLFW_PRESS && !moveBackwardActive;
-	jumpPressed = glfwGetKey(window, config::input_data::jumpButton) == GLFW_PRESS && !jumpActive;
-	goDownPressed = glfwGetKey(window, config::input_data::goDownButton) == GLFW_PRESS && !goDownActive;
+	moveForwardPressed = glfwGetKey(window, moveForwardButton) == GLFW_PRESS && !moveForwardActive;
+	moveLeftPressed = glfwGetKey(window, moveLeftButton) == GLFW_PRESS && !moveLeftActive;
+	moveRightPressed = glfwGetKey(window, moveRightButton) == GLFW_PRESS && !moveRightActive;
+	moveBackwardPressed = glfwGetKey(window, moveBackwardButton) == GLFW_PRESS && !moveBackwardActive;
+	jumpPressed = glfwGetKey(window, jumpButton) == GLFW_PRESS && !jumpActive;
+	goDownPressed = glfwGetKey(window, goDownButton) == GLFW_PRESS && !goDownActive;
 
-	eraseTextPressed = glfwGetKey(window, config::input_data::eraseTextButton) == GLFW_PRESS && !eraseTextActive;
+	eraseTextPressed = glfwGetKey(window, eraseTextButton) == GLFW_PRESS && !eraseTextActive;
 
 	// Mouse
-	action1Pressed = glfwGetMouseButton(window, config::input_data::action1Button) == GLFW_PRESS && !action1Active;
-	action2Pressed = glfwGetMouseButton(window, config::input_data::action2Button) == GLFW_PRESS && !action2Active;
+	action1Pressed = glfwGetMouseButton(window, action1Button) == GLFW_PRESS && !action1Active;
+	action2Pressed = glfwGetMouseButton(window, action2Button) == GLFW_PRESS && !action2Active;
 
 	// Keyboard
-	moveForwardActive = glfwGetKey(window, config::input_data::moveForwardButton) == GLFW_PRESS;
-	moveLeftActive = glfwGetKey(window, config::input_data::moveLeftButton) == GLFW_PRESS;
-	moveRightActive = glfwGetKey(window, config::input_data::moveRightButton) == GLFW_PRESS;
-	moveBackwardActive = glfwGetKey(window, config::input_data::moveBackwardButton) == GLFW_PRESS;
-	jumpActive = glfwGetKey(window, config::input_data::jumpButton) == GLFW_PRESS;
-	goDownActive = glfwGetKey(window, config::input_data::goDownButton) == GLFW_PRESS;
+	moveForwardActive = glfwGetKey(window, moveForwardButton) == GLFW_PRESS;
+	moveLeftActive = glfwGetKey(window, moveLeftButton) == GLFW_PRESS;
+	moveRightActive = glfwGetKey(window, moveRightButton) == GLFW_PRESS;
+	moveBackwardActive = glfwGetKey(window, moveBackwardButton) == GLFW_PRESS;
+	jumpActive = glfwGetKey(window, jumpButton) == GLFW_PRESS;
+	goDownActive = glfwGetKey(window, goDownButton) == GLFW_PRESS;
 
-	eraseTextActive = glfwGetKey(window, config::input_data::eraseTextButton) == GLFW_PRESS;
+	eraseTextActive = glfwGetKey(window, eraseTextButton) == GLFW_PRESS;
 
 	// Mouse
-	action1Active = glfwGetMouseButton(window, config::input_data::action1Button) == GLFW_PRESS;
-	action2Active = glfwGetMouseButton(window, config::input_data::action2Button) == GLFW_PRESS;
+	action1Active = glfwGetMouseButton(window, action1Button) == GLFW_PRESS;
+	action2Active = glfwGetMouseButton(window, action2Button) == GLFW_PRESS;
 
 	escapeKeyPressed = glfwGetKey(window, GLFW_KEY_ESCAPE);
 
 	if (mouseLocked) {
-
 		mouseXMovement = screenCenterX - mouseXOffset;
 		mouseYMovement = screenCenterY - mouseYOffset;
-
 		centerMouse();
 	} else {
 		glfwGetCursorPos(window, &mouseXPosition, &mouseYPosition);

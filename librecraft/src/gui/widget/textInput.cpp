@@ -19,12 +19,12 @@ namespace widget {
 // Constructor/Destructor #################################
 // ########################################################
 
-TextInput::TextInput(int id, int x, int y, int width, int height, int layer) :
+TextInput::TextInput(int id, int x, int y, unsigned width, int height, int layer) :
 	AbstractWidget(id, x, y, width, height),
 	m_maxInputLenght{width}
 {
 
-	auto &res = Resources::getInstance();
+	Resources &res = Resources::getInstance();
 
 	m_sprite.reset(new Sprite{x, y, 0, width, height,
 		res.getTexture(config::gui_data::solidBlack)});
@@ -44,74 +44,9 @@ TextInput::TextInput(int id, int x, int y, int width, int height, int layer) :
 // Member Functions########################################
 // ########################################################
 
-void TextInput::draw()
-{
-	SpriteBatcher::getInstance().addBatch(m_sprite);
-
-	// TODO Draw a blinking marker
-
-	SpriteBatcher::getInstance().addBatch(m_text);
-
-}
-
-void TextInput::update()
-{
-	auto &res = Resources::getInstance();
-
-	if (m_hasFocus && util::Input::getInstance()->eraseTextPressed &&
-			m_input.size() > 0) {
-		m_input.pop_back();
-
-		FontMeshBuilder &fontMeshBuilder = res.getFontMeshBuilder(
-					config::font_data::fontLayout,
-					config::font_data::fontAtlasWidth,
-					config::font_data::fontAtlasHeight);
-
-		m_text.reset(new Sprite{m_xCoordinate, m_yCoordinate + 5, 1,
-			fontMeshBuilder.buldMeshForString(m_input, m_height - 5),
-				res.getTexture(config::font_data::font)});
-	}
-
-}
-
-void TextInput::mouseClicked(int button, float x, float y)
-{
-	m_hasFocus = isInsideBorders(x, y);
-}
-
-void TextInput::mouseMoved(float x, float y)
-{
-	m_pointerInsideBorders = isInsideBorders(x, y);
-}
-
-void TextInput::keyTyped(char value)
-{
-
-	auto &res = Resources::getInstance();
-
-	if (m_hasFocus)
-		m_input.push_back(value);
-
-	// Need a bettr way to handle resources
-	FontMeshBuilder &fontMeshBuilder = res.getFontMeshBuilder(
-						config::font_data::fontLayout,
-						config::font_data::fontAtlasWidth,
-						config::font_data::fontAtlasHeight);
-
-	if (fontMeshBuilder.lenghtOfString(m_input, m_height) > m_maxInputLenght)
-		m_input.pop_back();
-
-	m_text.reset(new Sprite{m_xCoordinate, m_yCoordinate + 5, 1,
-		fontMeshBuilder.buldMeshForString(m_input, m_height - 5),
-		res.getTexture(config::font_data::font)});
-
-}
-
 void TextInput::setString(string str)
 {
-
-	auto &res = Resources::getInstance();
-
+	Resources &res = Resources::getInstance();
 	m_input = str;
 
 	FontMeshBuilder &fontMeshBuilder = res.getFontMeshBuilder(
@@ -129,5 +64,86 @@ string TextInput::getString()
 {
 	return m_input;
 }
+
+void TextInput::draw()
+{
+	SpriteBatcher::getInstance().addBatch(m_sprite);
+	// TODO Draw a blinking marker
+	SpriteBatcher::getInstance().addBatch(m_text);
+}
+
+void TextInput::update()
+{
+
+//	m_hasFocus = isInsideBorders(x, y);
+//
+//	m_pointerInsideBorders = isInsideBorders(x, y);
+//
+//	Resources &res = Resources::getInstance();
+//
+//	if (m_hasFocus)
+//		m_input.push_back(value);
+//
+//	// Need a better way to handle resources
+//	FontMeshBuilder &fontMeshBuilder = res.getFontMeshBuilder(
+//						config::font_data::fontLayout,
+//						config::font_data::fontAtlasWidth,
+//						config::font_data::fontAtlasHeight);
+//
+//	if (fontMeshBuilder.lenghtOfString(m_input, m_height) > m_maxInputLenght)
+//		m_input.pop_back();
+//
+//	m_text.reset(new Sprite{m_xCoordinate, m_yCoordinate + 5, 1,
+//		fontMeshBuilder.buldMeshForString(m_input, m_height - 5),
+//		res.getTexture(config::font_data::font)});
+
+	Resources &res = Resources::getInstance();
+	if (m_hasFocus && util::Input::getInstance()->eraseTextPressed &&
+			m_input.size() > 0) {
+		m_input.pop_back();
+
+		FontMeshBuilder &fontMeshBuilder = res.getFontMeshBuilder(
+					config::font_data::fontLayout,
+					config::font_data::fontAtlasWidth,
+					config::font_data::fontAtlasHeight);
+
+		m_text.reset(new Sprite{m_xCoordinate, m_yCoordinate + 5, 1,
+			fontMeshBuilder.buldMeshForString(m_input, m_height - 5),
+				res.getTexture(config::font_data::font)});
+	}
+
+}
+
+//void TextInput::mouseClicked(int button, float x, float y)
+//{
+//	m_hasFocus = isInsideBorders(x, y);
+//}
+//
+//void TextInput::mouseMoved(float x, float y)
+//{
+//	m_pointerInsideBorders = isInsideBorders(x, y);
+//}
+//
+//void TextInput::keyTyped(char value)
+//{
+//	Resources &res = Resources::getInstance();
+//
+//	if (m_hasFocus)
+//		m_input.push_back(value);
+//
+//	// Need a better way to handle resources
+//	FontMeshBuilder &fontMeshBuilder = res.getFontMeshBuilder(
+//						config::font_data::fontLayout,
+//						config::font_data::fontAtlasWidth,
+//						config::font_data::fontAtlasHeight);
+//
+//	if (fontMeshBuilder.lenghtOfString(m_input, m_height) > m_maxInputLenght)
+//		m_input.pop_back();
+//
+//	m_text.reset(new Sprite{m_xCoordinate, m_yCoordinate + 5, 1,
+//		fontMeshBuilder.buldMeshForString(m_input, m_height - 5),
+//		res.getTexture(config::font_data::font)});
+//
+//}
 
 } /* namespace widget */

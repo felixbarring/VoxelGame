@@ -43,20 +43,4 @@ void Label::draw()
 	SpriteBatcher::getInstance().addBatch(m_text);
 }
 
-void Label::mouseClicked(int button, float x, float y)
-{
-	// Nothing
-}
-
-void Label::mouseMoved(float x, float y)
-{
-	// Nothing
-}
-
-void Label::keyTyped(char value)
-{
-	// Nothing
-}
-
-
 } /* namespace demo */

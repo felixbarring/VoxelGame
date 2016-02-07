@@ -7,8 +7,11 @@
 #include "../../config/data.h"
 #include "../../graphics/resources.h"
 
+#include "../../util/input.h"
+
 using namespace std;
 using namespace graphics;
+using namespace util;
 
 namespace widget {
 
@@ -22,7 +25,6 @@ Button::Button(int id, int x, int y, int width, int height,
 	m_name(name)
 {
 	this->m_observer = observer;
-
 	auto &res = Resources::getInstance();
 
 	m_sprite.reset(new Sprite(x, y, layer, width, height,
@@ -62,21 +64,16 @@ void Button::draw()
 	}
 }
 
-void Button::mouseClicked(int button, float x, float y)
+void Button::update()
 {
-	if(isInsideBorders(x,y))
+	shared_ptr<Input> input = Input::getInstance();
+
+	m_pointerInsideBorders = isInsideBorders(
+			input->mouseVirtualAdjustedX,
+			input->mouseVirtualAdjustedY);
+
+	if (m_pointerInsideBorders && input->action1Pressed)
 		m_observer.operator ()(m_id);
-
-}
-
-void Button::mouseMoved(float x, float y)
-{
-	m_pointerInsideBorders = isInsideBorders(x, y);
-}
-
-void Button::keyTyped(char value)
-{
-	// not relevant for button, do nothing
 }
 
 

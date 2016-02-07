@@ -37,50 +37,77 @@ Slider::Slider(int id, int x, int y, int width, int height,
 // Member Functions########################################
 // ########################################################
 
+float Slider::getValue()
+{
+	return (m_knobPosition - this->m_xCoordinate) / (m_width - m_knobWidth);
+}
+
 void Slider::draw()
 {
 	SpriteBatcher::getInstance().addBatch(m_slider);
 	SpriteBatcher::getInstance().addBatch(m_knob);
 }
-//
 
-void Slider::mouseClicked(int button, float x, float y)
+
+void Slider::update()
 {
 	m_grabbed = !m_grabbed && m_pointerInsideBorders;
 }
 
-void Slider::mouseMoved(float x, float y)
-{
-	m_pointerInsideBorders = isInsideBorders(x, y);
-	m_grabbed = m_grabbed && m_pointerInsideBorders;
-
-	if (m_grabbed) {
-		m_knobPosition = x - m_knobWidth / 2;
-
-		if (m_knobPosition < this->m_xCoordinate ) {
-			m_knobPosition = this->m_xCoordinate;
-		}
-
-		if (m_knobPosition > this->m_xCoordinate + this->m_width - m_knobWidth) {
-			m_knobPosition = this->m_xCoordinate + this->m_width - m_knobWidth;
-		}
-
-		m_knob->setLocation(m_knobPosition + m_knobWidth / 2,
-				this->m_yCoordinate + m_knobWidth / 2, 0);
-
-		m_observer.operator ()(m_id);
-	}
-
-}
-
-void Slider::keyTyped(char value)
-{
-	// not relevant for button, do nothing
-}
-
-float Slider::getValue()
-{
-	return (m_knobPosition - this->m_xCoordinate) / (m_width - m_knobWidth);
-}
+//void Slider::mouseClicked(int button, float x, float y)
+//{
+//	m_grabbed = !m_grabbed && m_pointerInsideBorders;
+//
+//
+//	m_pointerInsideBorders = isInsideBorders(x, y);
+//		m_grabbed = m_grabbed && m_pointerInsideBorders;
+//
+//		if (m_grabbed) {
+//			m_knobPosition = x - m_knobWidth / 2;
+//
+//			if (m_knobPosition < this->m_xCoordinate ) {
+//				m_knobPosition = this->m_xCoordinate;
+//			}
+//
+//			if (m_knobPosition > this->m_xCoordinate + this->m_width - m_knobWidth) {
+//				m_knobPosition = this->m_xCoordinate + this->m_width - m_knobWidth;
+//			}
+//
+//			m_knob->setLocation(m_knobPosition + m_knobWidth / 2,
+//					this->m_yCoordinate + m_knobWidth / 2, 0);
+//
+//			m_observer.operator ()(m_id);
+//		}
+//
+//}
+//
+//void Slider::mouseMoved(float x, float y)
+//{
+//	m_pointerInsideBorders = isInsideBorders(x, y);
+//	m_grabbed = m_grabbed && m_pointerInsideBorders;
+//
+//	if (m_grabbed) {
+//		m_knobPosition = x - m_knobWidth / 2;
+//
+//		if (m_knobPosition < this->m_xCoordinate ) {
+//			m_knobPosition = this->m_xCoordinate;
+//		}
+//
+//		if (m_knobPosition > this->m_xCoordinate + this->m_width - m_knobWidth) {
+//			m_knobPosition = this->m_xCoordinate + this->m_width - m_knobWidth;
+//		}
+//
+//		m_knob->setLocation(m_knobPosition + m_knobWidth / 2,
+//				this->m_yCoordinate + m_knobWidth / 2, 0);
+//
+//		m_observer.operator ()(m_id);
+//	}
+//
+//}
+//
+//void Slider::keyTyped(char value)
+//{
+//	// not relevant for button, do nothing
+//}
 
 } /* namespace widget */

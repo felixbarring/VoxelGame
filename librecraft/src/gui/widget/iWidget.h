@@ -48,34 +48,6 @@ public:
 	virtual void update() = 0;
 
 	/**
-	 * Notifies that the mouse was pressed and that the widget can act on this
-	 * depending on the what button was pressed and where the mouse pointer is at.
-	 *
-	 * \param[in] button The mouse button that was pressed
-	 * \param[in] x The x coordinate of the mouse when the button was pressed
-	 * \param[in] y The y coordinate of the mouse when the button was pressed
-	 */
-	virtual void mouseClicked(int button, float x, float y) = 0;
-
-	/**
-	 *  Notifies that the mouse was moved and where the new position is.
-	 *  Is particular useful for widgets that hints that they are interactable when
-	 *  the mouse pointer is inside its borders.
-	 *
-	 * \param[in] x The new x location of the mouse pointer
-	 * \param[in] The new y location of the mouse pointer
-	 */
-	virtual void mouseMoved(float x, float y) = 0;
-
-	/**
-	 * Notifies that a certain key on the keyboard was typed.
-	 * Differs to keyPressed that it only shows which char that was typed.
-	 *
-	 * \param[in] key The int value of the key
-	 */
-	virtual void keyTyped(char value) = 0;
-
-	/**
 	 * Set the position of the widget, relative to the container it's inside.
 	 *
 	 * \param[in] x The new horizontal location

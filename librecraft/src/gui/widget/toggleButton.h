@@ -17,7 +17,6 @@ public:
 			std::function<void(int)> observer,
 			const std::string &name, int layer = 0);
 
-
 	virtual ~ToggleButton() {};
 
 // ########################################################
@@ -30,12 +29,13 @@ public:
 
 	void draw() override;
 
-	void mouseClicked(int button, float x, float y) override;
+	void update() override;
 
 // ########################################################
 // Instance Variables #####################################
 // ########################################################
 private:
+
 	bool m_toggled{false};
 
 };

@@ -82,7 +82,6 @@ MainMenu::MainMenu(Game *game) :
 				break;
 			}
 		}
-
 	};
 
 	// TODO Give the variables better names
@@ -284,6 +283,8 @@ void MainMenu::update(float timePassed)
 	input->unlockMouse();
 	input->updateValues();
 
+	// --- This shit should probably be in input
+
 	double y = input->mouseYPosition - config::graphics_data::windowHeight;
 	if (y < 0)
 		y = -y;
@@ -297,14 +298,12 @@ void MainMenu::update(float timePassed)
 			config::graphics_data::windowHeight,
 			input->mouseXPosition, y);
 
+	input->mouseVirtualAdjustedX = mouse.x;
+	input->mouseVirtualAdjustedY = mouse.y;
+
+	// ---
+
 	activeWidgetGroup->update();
-	activeWidgetGroup->mouseMoved(mouse.x, mouse.y);
-
-	if (input->keyWasTyped)
-		activeWidgetGroup->keyTyped(input->keyTyped);
-
-	if (input->action1Pressed)
-		activeWidgetGroup->mouseClicked(0, mouse.x, mouse.y);
 
 	title->draw();
 	activeWidgetGroup->draw();

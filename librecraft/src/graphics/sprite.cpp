@@ -7,7 +7,8 @@ namespace graphics {
 // Constructor/Destructor #################################
 // ########################################################
 
-Sprite::Sprite(float x, float y, float layer, float width, float height, texture::Texture &texture) :
+Sprite::Sprite(float x, float y, float layer, float width,
+		float height, texture::Texture &texture) :
 	m_transform{x + width / 2, y + height / 2, 0},
 	m_texture(texture),
 	layer{layer}
@@ -38,7 +39,8 @@ Sprite::Sprite(float x, float y, float layer, float width, float height, texture
 
 }
 
-Sprite::Sprite(float x, float y, float layer, std::shared_ptr<mesh::MeshElement> mesh, texture::Texture &texture) :
+Sprite::Sprite(float x, float y, float layer,
+		std::shared_ptr<mesh::MeshElement> mesh, texture::Texture &texture) :
 	m_transform{x, y, 0},
 	m_texture(texture),
 	layer{layer}

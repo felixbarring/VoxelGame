@@ -37,11 +37,6 @@ bool AbstractWidget::isActive()
 	return m_active;
 }
 
-bool AbstractWidget::isInsideBorders(float x, float y)
-{
-	return (x > this->m_xCoordinate && x < this->m_xCoordinate + m_width &&
-			y > this->m_yCoordinate && y < this->m_yCoordinate + m_height);
-}
 
 void AbstractWidget::setActive()
 {
@@ -57,6 +52,12 @@ void AbstractWidget::setLocation(float x, float y, float z)
 {
 	this->m_xCoordinate = x;
 	this->m_yCoordinate = y;
+}
+
+bool AbstractWidget::isInsideBorders(double x, double y)
+{
+	return (x > this->m_xCoordinate && x < this->m_xCoordinate + m_width &&
+			y > this->m_yCoordinate && y < this->m_yCoordinate + m_height);
 }
 
 } /* namespace widget */

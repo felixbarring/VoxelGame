@@ -45,12 +45,20 @@ void ToggleButton::draw()
 	}
 }
 
-void ToggleButton::mouseClicked(int button, float x, float y)
+void ToggleButton::update()
 {
-	if(isInsideBorders(x,y)) {
-		m_toggled = !m_toggled;
-		m_observer.operator ()(m_id);
-	}
+//	if(isInsideBorders(x,y)) {
+//		m_toggled = !m_toggled;
+//		m_observer.operator ()(m_id);
+//	}
 }
+
+//void ToggleButton::mouseClicked(int button, float x, float y)
+//{
+//	if(isInsideBorders(x,y)) {
+//		m_toggled = !m_toggled;
+//		m_observer.operator ()(m_id);
+//	}
+//}
 
 } /* namespace widget */

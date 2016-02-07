@@ -93,7 +93,7 @@ protected:
 	 *  \param[in] y The y coordinate of the point
 	 *  \return True if the point is inside the borders, else false
 	 */
-	bool isInsideBorders(float x, float y);
+	bool isInsideBorders(double x, double y);
 
 	bool m_active{true};
 	const int m_id;

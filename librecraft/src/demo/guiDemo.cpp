@@ -210,14 +210,14 @@ void GuiDemo::runDemo()
 
 		glm::vec2 mouse = gui::adjustMouse(800, 600, 1200, 600, input->mouseXPosition, y);
 
-		currentWidgetGroup->mouseMoved(mouse.x, mouse.y);
-		currentWidgetGroup->update();
-
-		if (input->action1Pressed)
-			currentWidgetGroup->mouseClicked(0, mouse.x, mouse.y);
-
-		if (input->keyWasTyped)
-			currentWidgetGroup->keyTyped(input->keyTyped);
+//		currentWidgetGroup->mouseMoved(mouse.x, mouse.y);
+//		currentWidgetGroup->update();
+//
+//		if (input->action1Pressed)
+//			currentWidgetGroup->mouseClicked(0, mouse.x, mouse.y);
+//
+//		if (input->keyWasTyped)
+//			currentWidgetGroup->keyTyped(input->keyTyped);
 
 		currentWidgetGroup->draw();
 

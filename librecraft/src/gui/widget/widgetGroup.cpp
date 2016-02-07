@@ -45,30 +45,4 @@ void WidgetGroup::update()
 		widget->update();
 }
 
-// TODO Maybe not a good idea :o
-// Some widgets need to lose focus when the user clicks outside
-// the widget group
-void WidgetGroup::mouseClicked(int button, float x, float y)
-{
-	//if (isInsideBorders(x, y)) {
-	for (auto widget : m_widgets)
-		widget->mouseClicked(button, x, y);
-	//}
-}
-
-void WidgetGroup::mouseMoved(float x, float y)
-{
-	//if (isInsideBorders(x, y)) {
-		for (auto widget : m_widgets)
-			widget->mouseMoved(x, y);
-	//}
-}
-
-void WidgetGroup::keyTyped(char value)
-{
-	for (auto widget : m_widgets)
-		widget->keyTyped(value);
-}
-
-
 } /* namespace demo */

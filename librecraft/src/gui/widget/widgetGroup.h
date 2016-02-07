@@ -61,12 +61,6 @@ public:
 
 	void update() override;
 
-	void mouseClicked(int button, float x, float y) override;
-
-	void mouseMoved(float x, float y) override;
-
-	void keyTyped(char value) override;
-
 // ########################################################
 // Instance Variables #####################################
 // ########################################################

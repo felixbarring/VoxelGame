@@ -13,6 +13,8 @@
 #include "../../config/data.h"
 #include "../../graphics/resources.h"
 
+#include "../../util/input.h"
+
 #include <iostream>
 
 using namespace std;
@@ -40,7 +42,8 @@ void SelectableList::addListItem(std::string item)
 	m_buttons.push_back(shared_ptr<ToggleButton>(
 			new ToggleButton(++idCounter,
 					m_xCoordinate + 5,
-					m_yCoordinate + m_height - (5 + 30 * (1 + m_buttons.size())),
+					m_yCoordinate + m_height -
+					(5 + 30 * (1 + m_buttons.size())),
 					m_width - 10,
 					30,
 					[&](int id)
@@ -62,7 +65,6 @@ void SelectableList::addListItem(std::string item)
 
 void SelectableList::deleteListItem(std::string item)
 {
-	// TODO
 }
 
 void SelectableList::clear()
@@ -94,21 +96,13 @@ void SelectableList::draw()
 		b->draw();
 }
 
-void SelectableList::mouseClicked(int button, float x, float y)
+void SelectableList::update()
 {
 	for (auto b : m_buttons)
-		b->mouseClicked(button, x, y);
-}
+		b->update();
 
-void SelectableList::mouseMoved(float x, float y)
-{
 	for (auto b : m_buttons)
-		b->mouseMoved(x, y);
-}
-
-void SelectableList::keyTyped(char value)
-{
-	// Nothing
+		b->update();
 }
 
 shared_ptr<ToggleButton> SelectableList::getButtonWithId(int id)

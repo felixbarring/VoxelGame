@@ -94,27 +94,27 @@ void InGame::update(float timePassed)
 	ChunkBatcher::getInstance().draw();
 	CubeBatcher::getInstance().draw();
 
-	if (state == GameState::OverlayMenu) {
-
-		double y = input->mouseYPosition - graphics_data::windowHeight;
-		if (y < 0) {
-			y = -y;
-		} else {
-			y = -1;
-		}
-
-		vec2 mouse = adjustMouse(graphics_data::virtualWidth,
-				graphics_data::virtualHeight,
-				graphics_data::windowWidth,
-				graphics_data::windowHeight,
-				Input::getInstance()->mouseXPosition, y);
-
-		m_widgetGroup1->mouseMoved(mouse.x, mouse.y);
-		if (Input::getInstance()->action1Pressed)
-			m_widgetGroup1->mouseClicked(0, mouse.x, mouse.y);
-
-		m_widgetGroup1->draw();
-
-		SpriteBatcher::getInstance().draw();
-	}
+//	if (state == GameState::OverlayMenu) {
+//
+//		double y = input->mouseYPosition - graphics_data::windowHeight;
+//		if (y < 0) {
+//			y = -y;
+//		} else {
+//			y = -1;
+//		}
+//
+//		vec2 mouse = adjustMouse(graphics_data::virtualWidth,
+//				graphics_data::virtualHeight,
+//				graphics_data::windowWidth,
+//				graphics_data::windowHeight,
+//				Input::getInstance()->mouseXPosition, y);
+//
+//		m_widgetGroup1->mouseMoved(mouse.x, mouse.y);
+//		if (Input::getInstance()->action1Pressed)
+//			m_widgetGroup1->mouseClicked(0, mouse.x, mouse.y);
+//
+//		m_widgetGroup1->draw();
+//
+//		SpriteBatcher::getInstance().draw();
+//	}
 }
