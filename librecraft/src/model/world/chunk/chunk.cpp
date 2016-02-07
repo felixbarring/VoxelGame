@@ -25,7 +25,8 @@ static const int maxCount = LAST_CUBE;
 
 Chunk::Chunk(int x,int z):
 	xLocation{x},
-	zLocation{z}
+	zLocation{z},
+	isDirty{true}
 {
 
 	counter++;
@@ -67,11 +68,13 @@ Chunk::Chunk(int x,int z):
 		propagateLight(vec.x, vec.y, vec.z);
 
 
+
 }
 
 Chunk::Chunk(std::string name, int x, int z):
 	xLocation{x},
-	zLocation{z}
+	zLocation{z},
+	isDirty{false}
 {
 	vector<string> list;
 	ifstream inStream;

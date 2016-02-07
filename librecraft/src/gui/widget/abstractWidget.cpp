@@ -27,7 +27,7 @@ int AbstractWidget::getId()
 	return m_id;
 }
 
-void AbstractWidget::update()
+void AbstractWidget::update(float timePassed)
 {
 	// Do nothing, Subclasses can override this function if they need update functionality.
 }

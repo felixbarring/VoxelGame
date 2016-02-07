@@ -52,7 +52,7 @@ void ToggleButton::draw()
 
 }
 
-void ToggleButton::update()
+void ToggleButton::update(float timePassed)
 {
 	shared_ptr<util::Input> input = util::Input::getInstance();
 

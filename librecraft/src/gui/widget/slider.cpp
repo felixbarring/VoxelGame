@@ -49,7 +49,7 @@ void Slider::draw()
 }
 
 
-void Slider::update()
+void Slider::update(float timePassed)
 {
 	m_grabbed = !m_grabbed && m_pointerInsideBorders;
 }

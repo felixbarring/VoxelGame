@@ -269,7 +269,6 @@ MainMenu::MainMenu(Game *game) :
 	// ########################################################################
 
 	activeWidgetGroup = mainWidgetGroup;
-
 }
 
 // ########################################################
@@ -303,7 +302,7 @@ void MainMenu::update(float timePassed)
 
 	// ---
 
-	activeWidgetGroup->update();
+	activeWidgetGroup->update(timePassed);
 
 	title->draw();
 	activeWidgetGroup->draw();

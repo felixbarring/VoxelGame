@@ -68,7 +68,7 @@ public:
 
 	int getId() override;
 
-	void update() override;
+	void update(float timePassed) override;
 
 	void setLocation(float x, float y, float z) override;
 

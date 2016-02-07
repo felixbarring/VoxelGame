@@ -112,7 +112,7 @@ void InGame::update(float timePassed)
 		input->mouseVirtualAdjustedX = mouse.x;
 		input->mouseVirtualAdjustedY = mouse.y;
 
-		m_widgetGroup1->update();
+		m_widgetGroup1->update(timePassed);
 		m_widgetGroup1->draw();
 		SpriteBatcher::getInstance().draw();
 	}

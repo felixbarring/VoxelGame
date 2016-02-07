@@ -45,7 +45,7 @@ public:
 	/**
 	 * \brief If the Widget needs to be updated each frame, it should implement this method
 	 */
-	virtual void update() = 0;
+	virtual void update(float timePassed) = 0;
 
 	/**
 	 * Set the position of the widget, relative to the container it's inside.

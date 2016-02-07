@@ -33,7 +33,7 @@ public:
 
 	void draw() override;
 
-	void update() override;
+	void update(float timePassed) override;
 
 // ########################################################
 // Instance Variables #####################################
@@ -46,9 +46,11 @@ private:
 	std::string m_input{""};
 	unsigned m_maxInputLength;
 
+	float m_eraseDelay{0.2f};
+	float m_accumulatedEraseTime{0.0f};
+
 	std::shared_ptr<graphics::Sprite> m_sprite;
 	std::shared_ptr<graphics::Sprite> m_text;
-
 };
 
 } /* namespace widget */

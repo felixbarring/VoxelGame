@@ -64,7 +64,7 @@ void Button::draw()
 	}
 }
 
-void Button::update()
+void Button::update(float timePassed)
 {
 	shared_ptr<Input> input = Input::getInstance();
 

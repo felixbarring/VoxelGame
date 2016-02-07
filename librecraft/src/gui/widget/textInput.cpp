@@ -73,43 +73,49 @@ void TextInput::draw()
 	SpriteBatcher::getInstance().addBatch(m_text);
 }
 
-void TextInput::update()
+void TextInput::update(float timePassed)
 {
 	shared_ptr<Input> input = Input::getInstance();
-
 	m_hasFocus = isInsideBorders(
 			input->mouseVirtualAdjustedX,
 			input->mouseVirtualAdjustedY);
 
 	Resources &res = Resources::getInstance();
-
-	if (input->keyWasTyped && m_hasFocus)
-		m_input.push_back(input->keyTyped);
-
 	// Need a better way to handle resources
 	FontMeshBuilder &fontMeshBuilder = res.getFontMeshBuilder(
 						config::font_data::fontLayout,
 						config::font_data::fontAtlasWidth,
 						config::font_data::fontAtlasHeight);
 
-	if (fontMeshBuilder.lenghtOfString(m_input, m_height) > m_maxInputLength)
-		m_input.pop_back();
-
-
-	m_text.reset(new Sprite(
-			m_xCoordinate, m_yCoordinate + 5, 1,
-			fontMeshBuilder.buldMeshForString(m_input, m_height - 5),
-			res.getTexture(config::font_data::font)));
-
-	if (m_hasFocus && Input::getInstance()->eraseTextPressed &&
-			m_input.size() > 0) {
-
-		m_input.pop_back();
-
+	if (input->keyWasTyped && m_hasFocus) {
+			m_input.push_back(input->keyTyped);
+		if (fontMeshBuilder.lenghtOfString(m_input, m_height) > m_maxInputLength) {
+			m_input.pop_back();
+			return;
+		}
 		m_text.reset(new Sprite(
 				m_xCoordinate, m_yCoordinate + 5, 1,
-			fontMeshBuilder.buldMeshForString(m_input, m_height - 5),
+				fontMeshBuilder.buldMeshForString(m_input, m_height - 5),
 				res.getTexture(config::font_data::font)));
+	} else {
+		if (m_hasFocus && Input::getInstance()->eraseTextActive &&
+				m_input.size() > 0) {
+
+
+			if (!Input::getInstance()->eraseTextPressed &&
+					m_accumulatedEraseTime < m_eraseDelay) {
+				m_accumulatedEraseTime += timePassed;
+				return;
+			}
+
+			m_accumulatedEraseTime = 0.0;
+
+			m_input.pop_back();
+			m_text.reset(new Sprite(
+					m_xCoordinate, m_yCoordinate + 5, 1,
+					fontMeshBuilder.buldMeshForString(m_input, m_height - 5),
+					res.getTexture(config::font_data::font)));
+		}
 	}
 
 }

@@ -95,10 +95,10 @@ void SelectableList::draw()
 		b->draw();
 }
 
-void SelectableList::update()
+void SelectableList::update(float timePassed)
 {
 	for (auto b : m_buttons)
-		b->update();
+		b->update(timePassed);
 }
 
 shared_ptr<ToggleButton> SelectableList::getButtonWithId(int id)

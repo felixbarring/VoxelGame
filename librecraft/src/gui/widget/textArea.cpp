@@ -20,7 +20,7 @@ void TextArea::draw()
 {
 }
 
-void TextArea::update()
+void TextArea::update(float timePassed)
 {
 
 }

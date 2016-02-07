@@ -39,10 +39,10 @@ void WidgetGroup::draw()
 		widget->draw();
 }
 
-void WidgetGroup::update()
+void WidgetGroup::update(float timePassed)
 {
 	for (auto widget : m_widgets)
-		widget->update();
+		widget->update(timePassed);
 }
 
 } /* namespace demo */

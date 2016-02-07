@@ -29,7 +29,7 @@ public:
 
 	void draw() override;
 
-	void update() override;
+	void update(float timePassed) override;
 
 // ########################################################
 // Instance Variables #####################################

@@ -42,7 +42,7 @@ public:
 
 	void draw() override;
 
-	void update() override;
+	void update(float timePassed) override;
 
 //	void mouseClicked(int button, float x, float y) override;
 //
