@@ -7,7 +7,12 @@
 
 #include "toggleButton.h"
 
+#include <memory>
+#include <iostream>
+
 #include "../../graphics/spriteBatcher.h"
+
+#include "../../util/input.h"
 
 using namespace std;
 using namespace graphics;
@@ -19,9 +24,7 @@ ToggleButton::ToggleButton(int id, int x, int y, int width, int height,
 		const string &name, int layer) :
 			Button(id, x, y, width, height, observer, name, layer)
 {
-
 }
-
 
 bool ToggleButton::isToggled()
 {
@@ -35,7 +38,7 @@ void ToggleButton::toggle()
 
 void ToggleButton::draw()
 {
-	if (m_pointerInsideBorders || m_toggled) {
+	if (m_pointerInsideBorders) {
 		SpriteBatcher::getInstance().addBatch(m_sprite);
 		SpriteBatcher::getInstance().addBatch(m_text);
 		SpriteBatcher::getInstance().addBatch(m_highlight);
@@ -43,22 +46,25 @@ void ToggleButton::draw()
 		SpriteBatcher::getInstance().addBatch(m_sprite);
 		SpriteBatcher::getInstance().addBatch(m_text);
 	}
+
+	if (m_toggled)
+		SpriteBatcher::getInstance().addBatch(m_highlight);
+
 }
 
 void ToggleButton::update()
 {
-//	if(isInsideBorders(x,y)) {
-//		m_toggled = !m_toggled;
-//		m_observer.operator ()(m_id);
-//	}
-}
+	shared_ptr<util::Input> input = util::Input::getInstance();
 
-//void ToggleButton::mouseClicked(int button, float x, float y)
-//{
-//	if(isInsideBorders(x,y)) {
-//		m_toggled = !m_toggled;
-//		m_observer.operator ()(m_id);
-//	}
-//}
+	m_pointerInsideBorders = isInsideBorders(
+			input->mouseVirtualAdjustedX,
+			input->mouseVirtualAdjustedY);
+
+	if (m_pointerInsideBorders && input->action1Pressed) {
+		toggle();
+		m_observer.operator ()(m_id);
+	}
+
+}
 
 } /* namespace widget */

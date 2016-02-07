@@ -5,6 +5,7 @@
 #include "abstractWidget.h"
 
 #include <string>
+#include <memory>
 
 #include "../../graphics/fontMeshBuilder.h"
 #include "../../graphics/sprite.h"
@@ -41,10 +42,9 @@ public:
 private:
 
 	bool m_hasFocus{false};
-	bool m_pointerInsideBorders{false};
 
 	std::string m_input{""};
-	unsigned m_maxInputLenght;
+	unsigned m_maxInputLength;
 
 	std::shared_ptr<graphics::Sprite> m_sprite;
 	std::shared_ptr<graphics::Sprite> m_text;

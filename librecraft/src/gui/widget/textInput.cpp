@@ -12,6 +12,7 @@
 
 using namespace std;
 using namespace graphics;
+using namespace util;
 
 namespace widget {
 
@@ -21,7 +22,7 @@ namespace widget {
 
 TextInput::TextInput(int id, int x, int y, unsigned width, int height, int layer) :
 	AbstractWidget(id, x, y, width, height),
-	m_maxInputLenght{width}
+	m_maxInputLength{width}
 {
 
 	Resources &res = Resources::getInstance();
@@ -54,9 +55,9 @@ void TextInput::setString(string str)
 						config::font_data::fontAtlasWidth,
 						config::font_data::fontAtlasHeight);
 
-	m_text.reset(new Sprite{m_xCoordinate, m_yCoordinate + 5, 1,
+	m_text.reset(new Sprite(m_xCoordinate, m_yCoordinate + 5, 1,
 		fontMeshBuilder.buldMeshForString(m_input, m_height - 5),
-		res.getTexture(config::font_data::font)});
+		res.getTexture(config::font_data::font)));
 
 }
 
@@ -74,76 +75,43 @@ void TextInput::draw()
 
 void TextInput::update()
 {
+	shared_ptr<Input> input = Input::getInstance();
 
-//	m_hasFocus = isInsideBorders(x, y);
-//
-//	m_pointerInsideBorders = isInsideBorders(x, y);
-//
-//	Resources &res = Resources::getInstance();
-//
-//	if (m_hasFocus)
-//		m_input.push_back(value);
-//
-//	// Need a better way to handle resources
-//	FontMeshBuilder &fontMeshBuilder = res.getFontMeshBuilder(
-//						config::font_data::fontLayout,
-//						config::font_data::fontAtlasWidth,
-//						config::font_data::fontAtlasHeight);
-//
-//	if (fontMeshBuilder.lenghtOfString(m_input, m_height) > m_maxInputLenght)
-//		m_input.pop_back();
-//
-//	m_text.reset(new Sprite{m_xCoordinate, m_yCoordinate + 5, 1,
-//		fontMeshBuilder.buldMeshForString(m_input, m_height - 5),
-//		res.getTexture(config::font_data::font)});
+	m_hasFocus = isInsideBorders(
+			input->mouseVirtualAdjustedX,
+			input->mouseVirtualAdjustedY);
 
 	Resources &res = Resources::getInstance();
-	if (m_hasFocus && util::Input::getInstance()->eraseTextPressed &&
-			m_input.size() > 0) {
+
+	if (input->keyWasTyped && m_hasFocus)
+		m_input.push_back(input->keyTyped);
+
+	// Need a better way to handle resources
+	FontMeshBuilder &fontMeshBuilder = res.getFontMeshBuilder(
+						config::font_data::fontLayout,
+						config::font_data::fontAtlasWidth,
+						config::font_data::fontAtlasHeight);
+
+	if (fontMeshBuilder.lenghtOfString(m_input, m_height) > m_maxInputLength)
 		m_input.pop_back();
 
-		FontMeshBuilder &fontMeshBuilder = res.getFontMeshBuilder(
-					config::font_data::fontLayout,
-					config::font_data::fontAtlasWidth,
-					config::font_data::fontAtlasHeight);
 
-		m_text.reset(new Sprite{m_xCoordinate, m_yCoordinate + 5, 1,
+	m_text.reset(new Sprite(
+			m_xCoordinate, m_yCoordinate + 5, 1,
 			fontMeshBuilder.buldMeshForString(m_input, m_height - 5),
-				res.getTexture(config::font_data::font)});
+			res.getTexture(config::font_data::font)));
+
+	if (m_hasFocus && Input::getInstance()->eraseTextPressed &&
+			m_input.size() > 0) {
+
+		m_input.pop_back();
+
+		m_text.reset(new Sprite(
+				m_xCoordinate, m_yCoordinate + 5, 1,
+			fontMeshBuilder.buldMeshForString(m_input, m_height - 5),
+				res.getTexture(config::font_data::font)));
 	}
 
 }
-
-//void TextInput::mouseClicked(int button, float x, float y)
-//{
-//	m_hasFocus = isInsideBorders(x, y);
-//}
-//
-//void TextInput::mouseMoved(float x, float y)
-//{
-//	m_pointerInsideBorders = isInsideBorders(x, y);
-//}
-//
-//void TextInput::keyTyped(char value)
-//{
-//	Resources &res = Resources::getInstance();
-//
-//	if (m_hasFocus)
-//		m_input.push_back(value);
-//
-//	// Need a better way to handle resources
-//	FontMeshBuilder &fontMeshBuilder = res.getFontMeshBuilder(
-//						config::font_data::fontLayout,
-//						config::font_data::fontAtlasWidth,
-//						config::font_data::fontAtlasHeight);
-//
-//	if (fontMeshBuilder.lenghtOfString(m_input, m_height) > m_maxInputLenght)
-//		m_input.pop_back();
-//
-//	m_text.reset(new Sprite{m_xCoordinate, m_yCoordinate + 5, 1,
-//		fontMeshBuilder.buldMeshForString(m_input, m_height - 5),
-//		res.getTexture(config::font_data::font)});
-//
-//}
 
 } /* namespace widget */

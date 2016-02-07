@@ -57,7 +57,6 @@ void SelectableList::addListItem(std::string item)
 						} else {
 							m_currentlyToggled.reset();
 						}
-
 					}
 					, item, m_layer)));
 
@@ -98,9 +97,6 @@ void SelectableList::draw()
 
 void SelectableList::update()
 {
-	for (auto b : m_buttons)
-		b->update();
-
 	for (auto b : m_buttons)
 		b->update();
 }
