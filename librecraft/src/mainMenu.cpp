@@ -2,6 +2,7 @@
 #include "mainMenu.h"
 
 #include <iostream>
+#include <random>
 #include <string>
 
 #include "config/data.h"
@@ -58,7 +59,11 @@ MainMenu::MainMenu(Game *game) :
 				break;
 			}
 			case 16: activeWidgetGroup = playWidgetGroup; break;
-			case 17: break;
+			case 17: {
+				textInput3->setString(randomName());
+
+				break;
+			}
 			case 18: break;
 			case 19: break;
 			case 20: {
@@ -310,3 +315,24 @@ void MainMenu::update(float timePassed)
 	graphics::SpriteBatcher::getInstance().draw();
 }
 
+
+std::string MainMenu::randomName()
+{
+
+	static vector<string> names{
+		"Dank World", "Bloxel", "Sees", "Soos", "Satan", "Shrek", "Memus",
+		"Adventure", "Swoosh", "Blool"};
+	static int last{-1};
+
+	std::random_device randomDevice;
+	std::mt19937 randomNumber(randomDevice());
+	std::uniform_int_distribution<int> uni(0, names.size() - 1);
+
+	int value;
+	do {
+		value = uni(randomNumber);
+	} while(value == last);
+	last = value;
+
+	return names[value];
+}

@@ -42,6 +42,8 @@ public:
 
 private:
 
+	std::string randomName();
+
 	Game *game;
 
 	std::unique_ptr<gui::Image> title;
