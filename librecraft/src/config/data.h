@@ -17,7 +17,6 @@ namespace config
 
 	namespace chunk_data
 	{
-
 		static constexpr int GRAPHICAL_CHUNK_WIDTH = 16;
 		static constexpr int GRAPHICAL_CHUNK_HEIGHT = 128;
 		static constexpr int GRAPHICAL_CHUNK_DEPTH = 16;
@@ -29,12 +28,10 @@ namespace config
 		static constexpr const int NUMBER_OF_CHUNKS_X = 10;
 		static constexpr const int NUMBER_OF_CHUNKS_Y = 1;
 		static constexpr const int NUMBER_OF_CHUNKS_Z = 10;
-
 	}
 
 	namespace cube_data
 	{
-
 		static constexpr char AIR = 255;
 
 		static constexpr char GRASS = 0;
@@ -77,12 +74,10 @@ namespace config
 			"../resources/cubes/bedrock.png",
 			"../resources/cubes/selected.png",
 		};
-
 	}
 
 	namespace graphics_data
 	{
-
 		extern int fps;
 
 		extern int windowWidth;
@@ -92,12 +87,10 @@ namespace config
 
 		static float virtualWidth = 800;
 		static float virtualHeight = 600;
-
 	}
 
 	namespace input_data
 	{
-
 		// Keyboard #####################################################
 
 		static int moveForwardButton = GLFW_KEY_W;
@@ -114,7 +107,6 @@ namespace config
 
 		static int action1Button = GLFW_MOUSE_BUTTON_LEFT;
 		static int action2Button = GLFW_MOUSE_BUTTON_RIGHT;
-
 	}
 
 	namespace texture_paths
@@ -122,7 +114,6 @@ namespace config
 		// Remove THESE ?
 		static std::string scout =  "../resources/cubes/grass_side.png";
 		static std::string scout2 = "../resources/cubes/grass_top.png";
-
 	}
 
 	namespace gui_data
@@ -140,23 +131,21 @@ namespace config
 
 		static const std::string crossHair = "../resources/gui/crosshair.png";
 
+		static const std::string mouse = "../resources/gui/mouse.png";
 	}
 
 	namespace font_data
 	{
-
 		static constexpr int charsInFont = 256;
 		static constexpr int fontAtlasWidth = 1024;
 		static constexpr int fontAtlasHeight = 1024;
 
 		static std::string font = "../resources/font/font1.png";
 		static std::string fontLayout = "../resources/font/font1.txt";
-
 	}
 
 	namespace cube_map_data
 	{
-
 		static std::vector<std::string> cubeMap1{
 			"../resources/skybox/right.jpg",
 			"../resources/skybox/left.jpg",
@@ -167,7 +156,6 @@ namespace config
 
 		static constexpr int cubeMap1Width = 2048;
 		static constexpr int cubeMap1Height = 2048;
-
 	}
 
 }

@@ -45,14 +45,18 @@ public:
 
 	texture::Texture& getTexture(const std::string &path);
 
-	texture::TextureArray& getTextureArray(const std::vector<std::string> &textures, int width, int height);
+	texture::TextureArray& getTextureArray(
+			const std::vector<std::string> &textures, int width, int height);
 
-	texture::TextureCubeMap& getTextureCubeMap(std::string &right, std::string &left, std::string &top,
-			std::string &bottom, std::string &back, std::string &front,  int width, int height);
+	texture::TextureCubeMap& getTextureCubeMap(
+			std::string &right, std::string &left, std::string &top,
+			std::string &bottom, std::string &back, std::string &front,
+			int width, int height);
 
 	texture::TextureCubeMap& getTextureCubeMap(int value);
 
-	FontMeshBuilder& getFontMeshBuilder(std::string &pathToLayout, int atlasWidth, int atlasHeight);
+	FontMeshBuilder& getFontMeshBuilder(
+			std::string &pathToLayout, int atlasWidth, int atlasHeight);
 
 
 // ########################################################
@@ -62,7 +66,6 @@ public:
 	std::map<std::string, texture::Texture> textures;
 	std::map<std::string, texture::TextureArray> textureArraysMap;
 	std::map<std::string, texture::TextureCubeMap> textureCubeMaps;
-
 	std::map<std::string, FontMeshBuilder> fontMeshBuilders;
 
 };

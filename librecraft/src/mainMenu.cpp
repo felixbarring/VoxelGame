@@ -6,6 +6,7 @@
 #include <string>
 
 #include "config/data.h"
+#include "gui/mouse.h"
 #include "util/worldMeta.h"
 
 using namespace std;
@@ -250,7 +251,6 @@ MainMenu::MainMenu(Game *game) :
 	m_newWorldWidgetGroup->addWidget(button17);
 	m_newWorldWidgetGroup->addWidget(button18);
 
-
 	// ########################################################################
 
 	shared_ptr<IWidget> label17(
@@ -298,25 +298,12 @@ void MainMenu::update(float timePassed)
 	input->unlockMouse();
 	input->updateValues();
 
-	// --- This shit should probably be in input
-
-	double y = input->mouseYPosition - config::graphics_data::windowHeight;
-	if (y < 0)
-		y = -y;
-	else
-		y = -1;
-
-	glm::vec2 mouse = gui::adjustMouse(
-			config::graphics_data::virtualWidth,
-			config::graphics_data::virtualHeight,
-			config::graphics_data::windowWidth,
-			config::graphics_data::windowHeight,
-			input->mouseXPosition, y);
-
-	input->mouseVirtualAdjustedX = mouse.x;
-	input->mouseVirtualAdjustedY = mouse.y;
-
 	// ---
+	// --- This shit should probably be in input
+	// ---
+
+	Mouse::getInstance().update();
+	Mouse::getInstance().draw();
 
 	m_activeWidgetGroup->update(timePassed);
 

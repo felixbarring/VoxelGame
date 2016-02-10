@@ -3,6 +3,9 @@
 
 #include <iostream>
 
+using namespace std;
+using namespace texture;
+
 namespace graphics {
 
 // ########################################################
@@ -13,51 +16,49 @@ namespace graphics {
 // Member Functions########################################
 // ########################################################
 
-// TODO Clean up this class
-
-texture::Texture& Resources::getTexture(const std::string &path)
+Texture& Resources::getTexture(const string &path)
 {
+	auto it = textures.find(path);
 
-	std::map<std::string, texture::Texture>::iterator it = textures.find(path);
-
-	if (it == textures.end()) {
-		textures.insert(std::make_pair(path, texture::Texture{path.c_str()}));
-	}
+	if (it == textures.end())
+		textures.insert(make_pair(path, Texture{path.c_str()}));
 
 	return textures.at(path);
 }
 
-texture::TextureArray& Resources::getTextureArray(const std::vector<std::string> &textures, int width, int height)
+TextureArray& Resources::getTextureArray(
+		const vector<string> &textures, int width, int height)
 {
-	std::map<std::string, texture::TextureArray> ::iterator it = textureArraysMap.find(textures.at(0));
+	auto it = textureArraysMap.find(textures.at(0));
 
-	if (it == textureArraysMap.end()) {
-		textureArraysMap.insert(std::make_pair(textures.at(0), texture::TextureArray{textures, width, height}));
-	}
+	if (it == textureArraysMap.end())
+		textureArraysMap.insert(make_pair(textures.at(0),
+				TextureArray{textures, width, height}));
 
 	return textureArraysMap.at(textures.at(0));
 }
 
-texture::TextureCubeMap& Resources::getTextureCubeMap(std::string &right, std::string &left, std::string &top,
-		std::string &bottom, std::string &back, std::string &front,  int width, int height)
+TextureCubeMap& Resources::getTextureCubeMap(string &right, string &left, string &top,
+		string &bottom, string &back, string &front,  int width, int height)
 {
-	std::map<std::string, texture::TextureCubeMap>::iterator it = textureCubeMaps.find(right);
+	auto it = textureCubeMaps.find(right);
 
-	if (it == textureCubeMaps.end()) {
-		textureCubeMaps.insert(std::make_pair(right, texture::TextureCubeMap{
-			right.c_str(), left.c_str(), top.c_str(), bottom.c_str(), back.c_str(), front.c_str(), width, height}));
-	}
+	if (it == textureCubeMaps.end())
+		textureCubeMaps.insert(make_pair(right, TextureCubeMap{
+			right.c_str(), left.c_str(), top.c_str(), bottom.c_str(),
+			back.c_str(), front.c_str(), width, height}));
 
 	return textureCubeMaps.at(right);
 }
 
-FontMeshBuilder& Resources::getFontMeshBuilder(std::string &pathToLayout, int atlasWidth, int atlasHeight)
+FontMeshBuilder& Resources::getFontMeshBuilder(
+		string &pathToLayout, int atlasWidth, int atlasHeight)
 {
-	std::map<std::string, FontMeshBuilder> ::iterator it = fontMeshBuilders.find(pathToLayout);
+	auto it = fontMeshBuilders.find(pathToLayout);
 
-	if (it == fontMeshBuilders.end()) {
-		fontMeshBuilders.insert(std::make_pair(pathToLayout, FontMeshBuilder{pathToLayout, atlasWidth, atlasHeight}));
-	}
+	if (it == fontMeshBuilders.end())
+		fontMeshBuilders.insert(make_pair(pathToLayout,
+				FontMeshBuilder{pathToLayout, atlasWidth, atlasHeight}));
 
 	return fontMeshBuilders.at(pathToLayout);
 }
