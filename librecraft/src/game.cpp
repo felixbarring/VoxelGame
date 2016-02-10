@@ -96,16 +96,6 @@ void Game::run()
 
 	util::Input::createInstance(window, WIDTH / 2.0, HEIGHT / 2.0);
 
-	glm::mat4 matrix = gui::createVirtualToScreen(config::graphics_data::virtualWidth,
-			config::graphics_data::virtualHeight,
-			static_cast<float>(WIDTH),
-			static_cast<float>(HEIGHT));
-
-	glm:: mat4 matrix2 = glm::ortho(0.0f,
-			static_cast<float>(WIDTH), 0.0f,
-			static_cast<float>(HEIGHT), -1.0f, 1.0f) * matrix;
-	graphics::SpriteBatcher::getInstance().setProjection(matrix2);
-
 	mainMenu.reset(new MainMenu(this));
 	currentState = mainMenu;
 

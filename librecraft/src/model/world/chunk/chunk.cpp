@@ -755,10 +755,10 @@ bool Chunk::isInDirectSunlight(int x, int y, int z)
 // ############################################################################
 
 // Helper function
-bool fileExists(string& fileName) {
-    ifstream infile(fileName);
-    return infile.good();
-}
+//bool fileExists(string& fileName) {
+//    ifstream infile(fileName);
+//    return infile.good();
+//}
 
 void Chunk::storeChunk(string worldName, int x, int z)
 {

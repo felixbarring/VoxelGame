@@ -46,28 +46,30 @@ private:
 
 	Game *game;
 
-	std::unique_ptr<gui::Image> title;
+	glm::mat4 m_virtualProjection;
+
+	std::unique_ptr<gui::Image> m_title;
 	std::shared_ptr<widget::SelectableList> m_worldList;
 
-	std::shared_ptr<widget::WidgetGroup> activeWidgetGroup;
+	std::shared_ptr<widget::WidgetGroup> m_activeWidgetGroup;
 
-	std::shared_ptr<widget::WidgetGroup> mainWidgetGroup;
+	std::shared_ptr<widget::WidgetGroup> m_mainWidgetGroup;
 
-	std::shared_ptr<widget::WidgetGroup> playWidgetGroup;
-	std::shared_ptr<widget::WidgetGroup> newWorldWidgetGroup;
-	std::shared_ptr<widget::WidgetGroup> loadWorldWidgetGroup;
+	std::shared_ptr<widget::WidgetGroup> m_playWidgetGroup;
+	std::shared_ptr<widget::WidgetGroup> m_newWorldWidgetGroup;
+	std::shared_ptr<widget::WidgetGroup> m_loadWorldWidgetGroup;
 
-	std::shared_ptr<widget::WidgetGroup> settingsWidgetGroup;
-	std::shared_ptr<widget::WidgetGroup> gameSettingsWidgetGroup;
-	std::shared_ptr<widget::WidgetGroup> inputSettingsWidgetGroup;
-	std::shared_ptr<widget::WidgetGroup> graphicsSettingsWidgetGroup;
+	std::shared_ptr<widget::WidgetGroup> m_settingsWidgetGroup;
+	std::shared_ptr<widget::WidgetGroup> m_gameSettingsWidgetGroup;
+	std::shared_ptr<widget::WidgetGroup> m_inputSettingsWidgetGroup;
+	std::shared_ptr<widget::WidgetGroup> m_graphicsSettingsWidgetGroup;
 
-	std::shared_ptr<widget::TextInput> textInput;
-	std::shared_ptr<widget::TextInput> textInput2;
-	std::shared_ptr<widget::TextInput> textInput3;
+	std::shared_ptr<widget::TextInput> m_textInput;
+	std::shared_ptr<widget::TextInput> m_textInput2;
+	std::shared_ptr<widget::TextInput> m_textInput3;
 
-	std::shared_ptr<widget::Slider> slider;
-	std::shared_ptr<widget::Slider> slider2;
+	std::shared_ptr<widget::Slider> m_slider;
+	std::shared_ptr<widget::Slider> m_slider2;
 
 };
 

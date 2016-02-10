@@ -8,6 +8,7 @@
 #ifndef SRC_UTIL_WORLDMETA_H_
 #define SRC_UTIL_WORLDMETA_H_
 
+#include <stdio.h>
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -15,6 +16,8 @@
 #include <algorithm>
 
 #include "../config/data.h"
+
+// Maybe rename to file util
 
 namespace world_meta
 {
@@ -54,7 +57,11 @@ bool worldNameExists(std::string name)
 
 void deleteName(std::string name)
 {
+	std::vector<std::string> files;
 
+
+
+	std::remove("");
 }
 
 std::vector<std::string> getAllWorldNames()

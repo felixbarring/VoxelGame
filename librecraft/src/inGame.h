@@ -48,6 +48,8 @@ private:
 
 	GameState state = GameState::NoOverlay;
 
+	glm::mat4 m_virtualProjection;
+
 	Game *m_game;
 	std::string m_name;
 	entity::Player m_player;

@@ -81,6 +81,8 @@ void SpriteBatcher::draw()
 	    }
 	);
 
+	m_program->setUniformli("texture1", 0);
+
 	texture::Texture *current;
 
 	for (auto batch : m_batches) {
@@ -89,10 +91,9 @@ void SpriteBatcher::draw()
 			current = &batch->getTexture();
 			current->bind();
 		}
-		m_program->setUniformli("texture1", 0);
 
-		glm::mat4 modelViewProjection{m_projection *
-			batch->getTransform().getMatrix()};
+		glm::mat4 modelViewProjection{
+			m_projection * batch->getTransform().getMatrix()};
 
 		m_program->setUniformMatrix4f("projection", modelViewProjection);
 		batch->draw();
@@ -100,7 +101,6 @@ void SpriteBatcher::draw()
 
 	m_program->unbind();
 	m_batches.clear();
-
 }
 
 void SpriteBatcher::setProjection(glm::mat4 projection)

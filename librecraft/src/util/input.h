@@ -85,6 +85,7 @@ public:
 	char keyTyped{' '};
 
 private:
+
 	GLFWwindow* window;
 
 	float screenCenterX;
