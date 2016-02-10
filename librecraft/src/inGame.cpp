@@ -46,7 +46,6 @@ InGame::InGame(Game *game, string name) :
 //			static_cast<float>(config::graphics_data::windowHeight), -1.0f, 1.0f) * matrix;
 //	graphics::SpriteBatcher::getInstance().setProjection(m_virtualProjection);
 
-
 	m_player.setLocation(80, 7, 80);
 
 	std::function<void(int)> observer = [&, game](int id)
@@ -72,6 +71,9 @@ InGame::InGame(Game *game, string name) :
 
 	m_widgetGroup1->addWidget(button1);
 	m_widgetGroup1->addWidget(button2);
+
+	m_crossHair.reset(new Sprite(380, 280, 0, 40, 40,
+			Resources::getInstance().getTexture(config::gui_data::crossHair)));
 
 }
 
@@ -106,6 +108,9 @@ void InGame::update(float timePassed)
 
 	ChunkBatcher::getInstance().draw();
 	CubeBatcher::getInstance().draw();
+
+	SpriteBatcher::getInstance().addBatch(m_crossHair);
+	SpriteBatcher::getInstance().draw();
 
 	if (state == GameState::OverlayMenu) {
 

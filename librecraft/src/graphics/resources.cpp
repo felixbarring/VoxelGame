@@ -13,6 +13,8 @@ namespace graphics {
 // Member Functions########################################
 // ########################################################
 
+// TODO Clean up this class
+
 texture::Texture& Resources::getTexture(const std::string &path)
 {
 

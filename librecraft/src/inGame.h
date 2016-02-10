@@ -17,6 +17,7 @@
 
 #include "graphics/cubeMap.h"
 #include "graphics/resources.h"
+#include "graphics/sprite.h"
 
 class InGame : public IGameState {
 public:
@@ -55,6 +56,7 @@ private:
 	entity::Player m_player;
 
 	std::shared_ptr<widget::WidgetGroup> m_widgetGroup1;
+	std::shared_ptr<graphics::Sprite> m_crossHair;
 
 	graphics::CubeMap skybox;
 

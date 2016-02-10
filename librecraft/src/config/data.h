@@ -138,6 +138,8 @@ namespace config
 		static const std::string slider = "../resources/gui/slider_body.png";
 		static const std::string sliderKnob = "../resources/gui/slider_knob.png";
 
+		static const std::string crossHair = "../resources/gui/crosshair.png";
+
 	}
 
 	namespace font_data

@@ -12,7 +12,8 @@ namespace gui {
 
 Image::Image(int x, int y, int width, int height, const std::string image)
 {
-	sprite.reset(new graphics::Sprite{x, y, 0, width, height, graphics::Resources::getInstance().getTexture(image)});
+	sprite.reset(new graphics::Sprite{x, y, 0, width, height,
+		graphics::Resources::getInstance().getTexture(image)});
 }
 
 // ########################################################
