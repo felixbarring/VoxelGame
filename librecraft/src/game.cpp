@@ -74,6 +74,8 @@ void Game::run()
 	//GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "Voxel Game", glfwGetPrimaryMonitor(), nullptr);
 	GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "Voxel Game", nullptr, nullptr);
 
+	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+
 	if (window == nullptr) {
 		cout << "Failed to open GLFW window.\n";
 		glfwTerminate();

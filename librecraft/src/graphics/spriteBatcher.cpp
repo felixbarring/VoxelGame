@@ -77,7 +77,7 @@ void SpriteBatcher::draw()
 	sort(m_batches.begin(), m_batches.end(),
 		[](shared_ptr<Sprite> a, shared_ptr<Sprite> b) -> bool
 	    {
-	      return a->layer < b->layer;
+	      return a->getLayer() < b->getLayer();
 	    }
 	);
 
@@ -92,12 +92,16 @@ void SpriteBatcher::draw()
 			current->bind();
 		}
 
+		cout << batch->getLayer() << "\n";
+
 		glm::mat4 modelViewProjection{
 			m_projection * batch->getTransform().getMatrix()};
 
 		m_program->setUniformMatrix4f("projection", modelViewProjection);
 		batch->draw();
 	}
+
+	cout << " --- \n";
 
 	m_program->unbind();
 	m_batches.clear();

@@ -5,6 +5,8 @@
 #include <memory>
 
 #include "../graphics/sprite.h"
+#include "../gui/guiUtil.h"
+#include "../util/input.h"
 
 namespace widget {
 
@@ -35,14 +37,20 @@ public:
 
 	void draw();
 
+	void lock();
+
+	void unlock();
+
 // ########################################################
 // Instance Variables #####################################
 // ########################################################
 
+	std::shared_ptr<util::Input> m_input;
+	bool m_locked{false};
+
 	std::shared_ptr<graphics::Sprite> m_sprite;
 	int m_width{20};
 	int m_height{20};
-
 };
 
 } /* namespace widget */

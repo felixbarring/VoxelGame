@@ -7,7 +7,6 @@
 #include "../util/input.h"
 #include "../config/data.h"
 #include "../graphics/spriteBatcher.h"
-#include "../gui/guiUtil.h"
 
 using namespace std;
 using namespace graphics;
@@ -20,6 +19,8 @@ namespace widget {
 
 Mouse::Mouse()
 {
+	m_input = util::Input::getInstance();
+
 	m_sprite.reset(new Sprite(380, 280, 100, m_width, m_height,
 			Resources::getInstance().getTexture(config::gui_data::mouse)));
 }
@@ -30,9 +31,7 @@ Mouse::Mouse()
 
 void Mouse::update()
 {
-	shared_ptr<util::Input> input = util::Input::getInstance();
-
-	double y = input->mouseYPosition - config::graphics_data::windowHeight;
+	double y = m_input->mouseYPosition - config::graphics_data::windowHeight;
 	if (y < 0)
 		y = -y;
 	else
@@ -43,10 +42,10 @@ void Mouse::update()
 			config::graphics_data::virtualHeight,
 			config::graphics_data::windowWidth,
 			config::graphics_data::windowHeight,
-			input->mouseXPosition, y);
+			m_input->mouseXPosition, y);
 
-	input->mouseVirtualAdjustedX = mouse.x;
-	input->mouseVirtualAdjustedY = mouse.y;
+	m_input->mouseVirtualAdjustedX = mouse.x;
+	m_input->mouseVirtualAdjustedY = mouse.y;
 
 	m_sprite->setLocation(
 			mouse.x + 5, mouse.y - 5, 0);
@@ -55,6 +54,18 @@ void Mouse::update()
 void Mouse::draw()
 {
 	SpriteBatcher::getInstance().addBatch(m_sprite);
+}
+
+void Mouse::lock()
+{
+	m_input->lockMouse();
+	m_locked = true;
+}
+
+void Mouse::unlock()
+{
+	m_input->unlockMouse();
+	m_locked = false;
 }
 
 } /* namespace widget */

@@ -7,6 +7,7 @@
 #include "model/world/chunk/chunkManager.h"
 
 #include "config/data.h"
+#include "gui/mouse.h"
 
 using namespace std;
 using namespace glm;
@@ -85,18 +86,23 @@ void InGame::update(float timePassed)
 {
 
 	auto input = Input::getInstance();
+	auto &mouse = Mouse::getInstance();
 
 	if (input->escapeKeyPressed)
 		state = GameState::OverlayMenu;
 
 	if (state == GameState::NoOverlay) {
-		input->lockMouse();
+		mouse.lock();
 		input->updateValues();
+		mouse.update();
 		m_player.update(timePassed);
 
+		SpriteBatcher::getInstance().addBatch(m_crossHair);
 	} else {
-		input->unlockMouse();
+		mouse.unlock();
 		input->updateValues();
+		mouse.update();
+		mouse.draw();
 	}
 
 	glDisable(GL_DEPTH_TEST);
@@ -108,9 +114,6 @@ void InGame::update(float timePassed)
 
 	ChunkBatcher::getInstance().draw();
 	CubeBatcher::getInstance().draw();
-
-	SpriteBatcher::getInstance().addBatch(m_crossHair);
-	SpriteBatcher::getInstance().draw();
 
 	if (state == GameState::OverlayMenu) {
 
@@ -132,6 +135,7 @@ void InGame::update(float timePassed)
 
 		m_widgetGroup1->update(timePassed);
 		m_widgetGroup1->draw();
-		SpriteBatcher::getInstance().draw();
 	}
+
+	SpriteBatcher::getInstance().draw();
 }

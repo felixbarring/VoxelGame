@@ -42,17 +42,18 @@ public:
 
 	void setLocation(float x, float y, float z);
 
+	int getLayer();
+
 // ########################################################
 // Instance Variables #####################################
 // ########################################################
-
-	int layer;
 
 private:
 
 	std::shared_ptr<mesh::MeshElement> m_mesh;
 	texture::Texture &m_texture;
 	Transform m_transform;
+	int m_layer;
 
 };
 

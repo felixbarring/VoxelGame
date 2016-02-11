@@ -189,23 +189,23 @@ MainMenu::MainMenu(Game *game) :
 	// ########################################################################
 
 	shared_ptr<IWidget> label6(
-			new Label{325, 390, 150, 30, " - Settings - Game "});
+			new Label{325, 390, 150, 30, " - Graphics - "});
 
 	shared_ptr<IWidget> label7(
-			new Label{30 + 100, 310, 80, 20, "FOV:"});
-	m_slider.reset(new Slider{100, 125 + 100, 310, 150, 30, observer});
-	m_textInput.reset(new TextInput{666,285 + 100, 310, 100,  30});
+			new Label{30 + 100, 310, 80, 20, "FOV:", 1});
+	m_slider.reset(new Slider{100, 125 + 100, 310, 150, 30, observer, 1});
+	m_textInput.reset(new TextInput{666,285 + 100, 310, 100,  30, 1});
 
 	shared_ptr<IWidget> label8(
-			new Label{30 + 100, 270, 80, 20, "Render Distance:"});
+			new Label{30 + 100, 270, 80, 20, "Render Distance:", 1});
 	m_slider2.reset(
-			new Slider{101, 125 + 100, 270, 150, 30, observer});
-	m_textInput2.reset(new TextInput{666, 285 + 100, 270, 100, 30});
+			new Slider{101, 125 + 100, 270, 150, 30, observer, 1});
+	m_textInput2.reset(new TextInput{666, 285 + 100, 270, 100, 30, 1});
 
 	shared_ptr<IWidget> button13(
-			new Button{12, 245, 130, 150, 30, observer, "Save"});
+			new Button{12, 245, 130, 150, 30, observer, "Save", 1});
 	shared_ptr<IWidget> button14(
-			new Button{13, 400, 130, 150, 30, observer, "Cancel"});
+			new Button{13, 400, 130, 150, 30, observer, "Cancel", 1});
 
 	m_graphicsSettingsWidgetGroup.reset(
 			new WidgetGroup{0, 100, 100, 600, 250, observer});
@@ -228,17 +228,16 @@ MainMenu::MainMenu(Game *game) :
 	shared_ptr<IWidget> label15(
 			new Label{230, 390, 150, 50, " - Create New World - "});
 	shared_ptr<IWidget> label16(
-			new Label{250, 330, 150, 30, "Enter a Name:"});
-	m_textInput3.reset(new TextInput{666, 250, 290, 300, 30});
+			new Label{250, 330, 150, 30, "Enter a Name:", 1});
+	m_textInput3.reset(new TextInput{666, 250, 290, 300, 30, 1});
 	shared_ptr<IWidget> button15(
-			new Button{14, 240, 135, 100, 30, observer, "Advanced"});
+			new Button{14, 240, 135, 100, 30, observer, "Advanced", 1});
 	shared_ptr<IWidget> button16(
-			new Button{15, 350, 135, 100, 30, observer, "Create"});
+			new Button{15, 350, 135, 100, 30, observer, "Create", 1});
 	shared_ptr<IWidget> button17(
-			new Button{16, 460, 135, 100, 30, observer, "Cancel"});
-
+			new Button{16, 460, 135, 100, 30, observer, "Cancel", 1});
 	shared_ptr<IWidget> button18(
-			new Button{17, 250, 250, 300, 30, observer, "Random Name"});
+			new Button{17, 250, 250, 300, 30, observer, "Random Name", 1});
 
 
 	m_newWorldWidgetGroup.reset(new WidgetGroup{0, 200, 120, 400, 270, observer});
@@ -255,16 +254,15 @@ MainMenu::MainMenu(Game *game) :
 
 	shared_ptr<IWidget> label17(
 			new Label{270, 390, 150, 50, " - Load World - "});
-
 	shared_ptr<IWidget> button19(
-			new Button{18, 225, 70, 80, 30, observer, "Rename"});
+			new Button{18, 225, 70, 80, 30, observer, "Rename", 1});
 	shared_ptr<IWidget> button20(
-			new Button{19, 315, 70, 80, 30, observer, "Delete"});
+			new Button{19, 315, 70, 80, 30, observer, "Delete", 1});
 
 	shared_ptr<IWidget> button21(
-			new Button{20, 405, 70, 80, 30, observer, "Load"});
+			new Button{20, 405, 70, 80, 30, observer, "Load", 1});
 	shared_ptr<IWidget> button22(
-			new Button{21, 495, 70, 80, 30, observer, "Cancel"});
+			new Button{21, 495, 70, 80, 30, observer, "Cancel", 1});
 
 	m_loadWorldWidgetGroup.reset(
 			new WidgetGroup{0, 200, 50, 400, 400, observer});
@@ -295,13 +293,8 @@ void MainMenu::update(float timePassed)
 {
 	shared_ptr<util::Input> input = util::Input::getInstance();
 
-	input->unlockMouse();
+	Mouse::getInstance().unlock();
 	input->updateValues();
-
-	// ---
-	// --- This shit should probably be in input
-	// ---
-
 	Mouse::getInstance().update();
 	Mouse::getInstance().draw();
 

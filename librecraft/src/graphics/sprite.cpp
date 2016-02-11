@@ -11,7 +11,7 @@ Sprite::Sprite(float x, float y, float layer, float width,
 		float height, texture::Texture &texture) :
 	m_transform{x + width / 2, y + height / 2, 0},
 	m_texture(texture),
-	layer{layer}
+	m_layer{layer}
 {
 
 	std::vector<GLfloat> vertices = {
@@ -43,7 +43,7 @@ Sprite::Sprite(float x, float y, float layer,
 		std::shared_ptr<mesh::MeshElement> mesh, texture::Texture &texture) :
 	m_transform{x, y, 0},
 	m_texture(texture),
-	layer{layer}
+	m_layer{layer}
 {
 	this->m_mesh = mesh;
 }
@@ -75,6 +75,11 @@ void Sprite::move(float x, float y)
 void Sprite::setLocation(float x, float y, float z)
 {
 	m_transform.setLocation(x, y, z);
+}
+
+int Sprite::getLayer()
+{
+	return m_layer;
 }
 
 
