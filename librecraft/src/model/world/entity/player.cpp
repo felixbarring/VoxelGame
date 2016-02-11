@@ -9,6 +9,7 @@
 #include "../../../graphics/camera.h"
 #include "../chunk/chunkManager.h"
 #include "../../../graphics/cubeBatcher.h"
+#include "../../../util/voxel.h"
 
 #include "aabb.h"
 
@@ -174,13 +175,21 @@ void Player::updateCameraAndTargetCube()
 
 		if (input->action1Pressed) {
 			chunkManager.removeCube(selectedCube.x, selectedCube.y, selectedCube.z);
+			return;
 		} else if (input->action2Pressed) {
 			chunkManager.setCube(previous.x, previous.y, previous.z, m_cubeUsedForBuilding);
+			return;
 		}
 
 		// TODO Remove hardcoded values
 		m_transform.setLocation(selectedCube.x + 0.5, selectedCube.y + 0.5, selectedCube.z + 0.5);
-		CubeBatcher::getInstance().addBatch(cube_data::SELECTED, m_transform);
+		Voxel &v = chunkManager.getVoxel(selectedCube.x, selectedCube.y, selectedCube.z);
+
+		cout << " --- " << v.lightValue << "\n";
+
+		CubeBatcher::getInstance().addBatch(
+				v.id,
+				m_transform, v.lightValue + 1);
 
 	}
 

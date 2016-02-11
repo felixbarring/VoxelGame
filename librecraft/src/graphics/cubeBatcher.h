@@ -41,7 +41,7 @@ public:
 // Member Functions########################################
 // ########################################################
 
-	void addBatch(char type, Transform &transform);
+	void addBatch(char type, Transform &transform, int lightValue = 16);
 
 	void draw();
 
@@ -54,14 +54,16 @@ private:
 	class Batch {
 	public:
 
-		Batch(TexturedCube &cube, Transform &transform):
-			cube(cube),
-			transform(transform)
+		Batch(TexturedCube &cube, Transform &transform, int lightValue):
+			m_cube(cube),
+			m_transform(transform),
+			m_lightValue(lightValue)
 		{
 		}
 
-		TexturedCube &cube;
-		Transform &transform;
+		TexturedCube &m_cube;
+		Transform &m_transform;
+		int m_lightValue;
 	};
 
 	std::vector<Batch> batches;

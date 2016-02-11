@@ -64,7 +64,9 @@ ChunkBatcher::ChunkBatcher() :
 
 		"void main(){ \n"
 
-		"  color = mix(vec4(fogColor, 1.0), vec4(lightValue, lightValue, lightValue, 1) * texture(texture1, texCoord), fogFactor);"
+		"  color = mix(vec4(fogColor, 1.0), "
+		"    vec4(lightValue, lightValue, lightValue, 1) * texture(texture1, texCoord), "
+		"    fogFactor);"
 
 		"} \n";
 

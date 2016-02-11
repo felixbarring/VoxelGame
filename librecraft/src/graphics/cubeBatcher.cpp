@@ -47,12 +47,13 @@ CubeBatcher::CubeBatcher() :
 		"in vec3 texCoord; \n"
 
 		"uniform sampler2DArray texture1; \n"
+		"uniform float lightValue; \n"
 
 		"out vec4 color; \n"
 
 		"void main(){ \n"
-		"  color = texture(texture1, texCoord); \n"
-		"  color.w = 0.2; \n"
+		"  color = (lightValue / 16) * texture(texture1, texCoord); \n"
+		"  color.w = 1.0; \n"
 		"} \n";
 
 	std::map<std::string, int> attributesMap{
@@ -69,17 +70,15 @@ CubeBatcher::CubeBatcher() :
 // Member Functions########################################
 // ########################################################
 
-void CubeBatcher::addBatch(char type, Transform &transform)
+void CubeBatcher::addBatch(char type, Transform &transform, int lightValue)
 {
-	batches.push_back(Batch(cubes.at(type), transform));
+	batches.push_back(Batch(cubes.at(type), transform, lightValue));
 }
 
 void CubeBatcher::draw()
 {
 
 	program->bind();
-
-
 
 	glActiveTexture(GL_TEXTURE0);
 	program->setUniformli("texture1", 0);
@@ -88,10 +87,13 @@ void CubeBatcher::draw()
 	Camera& camera = Camera::getInstance();
 
 	for (auto b : batches) {
-		glm::mat4 modelView = camera.getViewMatrix() * b.transform.getMatrix();
+
+		program->setUniform1f("lightValue", b.m_lightValue);
+
+		glm::mat4 modelView = camera.getViewMatrix() * b.m_transform.getMatrix();
 		glm::mat4 modelViewProjection = camera.getProjectionMatrix() * modelView;
 		program->setUniformMatrix4f("modelViewProjection", modelViewProjection);
-		b.cube.draw();
+		b.m_cube.draw();
 	}
 
 	program->unbind();

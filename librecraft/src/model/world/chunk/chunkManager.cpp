@@ -123,7 +123,7 @@ void ChunkManager::saveWorld(std::string& worldName)
 	}
 }
 
-char ChunkManager::getCubeId(int x, int y, int z)
+Voxel& ChunkManager::getVoxel(int x, int y, int z)
 {
 	// Used to avoid Division every time the function is called.
 	static float xD = 1.0 / CHUNK_WIDTH;
@@ -138,7 +138,12 @@ char ChunkManager::getCubeId(int x, int y, int z)
 	int localY = y % CHUNK_HEIGHT;
 	int localZ = z % CHUNK_DEPTH;
 
-	return chunks[chunkX][chunkY][chunkZ]->getCubeId(localX, localY, localZ);
+	return chunks[chunkX][chunkY][chunkZ]->getVoxel(localX, localY, localZ);
+}
+
+char ChunkManager::getCubeId(int x, int y, int z)
+{
+	return getVoxel(x, y, z).id; //chunks[chunkX][chunkY][chunkZ]->getCubeId(localX, localY, localZ);
 }
 
 bool ChunkManager::isSolid(int x, int y, int z)

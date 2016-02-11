@@ -92,16 +92,12 @@ void SpriteBatcher::draw()
 			current->bind();
 		}
 
-		cout << batch->getLayer() << "\n";
-
 		glm::mat4 modelViewProjection{
 			m_projection * batch->getTransform().getMatrix()};
 
 		m_program->setUniformMatrix4f("projection", modelViewProjection);
 		batch->draw();
 	}
-
-	cout << " --- \n";
 
 	m_program->unbind();
 	m_batches.clear();
