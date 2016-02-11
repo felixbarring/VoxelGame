@@ -48,17 +48,18 @@ public:
 // ########################################################
 
 private:
-	glm::vec3 location;
-	float width {1};
-	float height {1};
-	float depth {1};
-	float gravity {0.3};
-	float jumpSpeed{0.13};
-	int selectCubeDistance {5};
-	glm::vec3 speed;
-	graphics::ViewDirection viewDirection;
-	float movementSpeed {7};
-	graphics::Transform transform;
+	glm::vec3 m_location;
+	float m_width {1};
+	float m_height {1};
+	float m_depth {1};
+	float m_gravity {0.3};
+	float m_jumpSpeed{0.13};
+	int m_selectCubeDistance {5};
+	glm::vec3 m_speed;
+	graphics::ViewDirection m_viewDirection;
+	float m_movementSpeed{7};
+	graphics::Transform m_transform;
+	int m_cubeUsedForBuilding{0};
 };
 
 } /* namespace entity */

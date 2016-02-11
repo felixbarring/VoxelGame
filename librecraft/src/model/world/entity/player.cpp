@@ -27,9 +27,9 @@ namespace entity {
 // ########################################################
 
 Player::Player():
-	location{0,0,0},
-	speed{0,0,0},
-	transform{0,0,0}
+	m_location{0,0,0},
+	m_speed{0,0,0},
+	m_transform{0,0,0}
 {
 }
 
@@ -49,10 +49,10 @@ void Player::update(float timePassed)
 void Player::updateSpeed(float timePassed)
 {
 	shared_ptr<Input> input = Input::getInstance();
-	viewDirection.changeViewDirection(input->mouseXMovement, input->mouseYMovement);
+	m_viewDirection.changeViewDirection(input->mouseXMovement, input->mouseYMovement);
 
-	speed.x = 0;
-	speed.z = 0;
+	m_speed.x = 0;
+	m_speed.z = 0;
 
 	vec3 movementDirection{0.0f, 0.0f, 0.0f};
 
@@ -62,7 +62,7 @@ void Player::updateSpeed(float timePassed)
 		if (input->moveBackwardActive)
 			direction = -1.0f;
 
-		vec3 dummy = viewDirection.getViewDirection();
+		vec3 dummy = m_viewDirection.getViewDirection();
 		dummy.y = 0;
 		movementDirection += direction * dummy;
 
@@ -74,22 +74,22 @@ void Player::updateSpeed(float timePassed)
 		if (input->moveLeftActive)
 			direction = -1.0f;
 
-		vec3 dummy = viewDirection.getRightDirection();
+		vec3 dummy = m_viewDirection.getRightDirection();
 		dummy.y = 0;
 		movementDirection += direction * dummy;
 
 	}
 
-	vec3 normalizedMD = movementSpeed * timePassed * normalize(movementDirection);
+	vec3 normalizedMD = m_movementSpeed * timePassed * normalize(movementDirection);
 
 	// Normalize will give nan if the length is 0
 	if (length(movementDirection)) {
-		speed.x = normalizedMD.x;
-		speed.z = normalizedMD.z;
+		m_speed.x = normalizedMD.x;
+		m_speed.z = normalizedMD.z;
 	}
 
 	// Gravity
-	speed.y -= gravity * timePassed;
+	m_speed.y -= m_gravity * timePassed;
 
 	// Jump
 	if(input->jumpPressed) {
@@ -98,9 +98,17 @@ void Player::updateSpeed(float timePassed)
 
 		// Only jump if the player stands on solid ground.
 		if (collisions.size())
-			speed.y = jumpSpeed;
+			m_speed.y = m_jumpSpeed;
 
 	}
+
+
+
+
+	if (input->switchCubePressed &&
+			++m_cubeUsedForBuilding > config::cube_data::LAST_CUBE)
+		m_cubeUsedForBuilding = 0;
+
 
 	/*
 	if (input->jumpActive || input->goDownActive) {
@@ -120,7 +128,7 @@ void Player::handlePhysics()
 {
 
 	vector<pair<float, vec3>> collisions;
-	intersected(speed, collisions);
+	intersected(m_speed, collisions);
 
 	while(collisions.size()) {
 
@@ -133,15 +141,16 @@ void Player::handlePhysics()
 
 		if (collisions.size()) {
 			auto c = collisions[0];
-			speed += vec3(-c.second.x * speed.x, -c.second.y * speed.y, -c.second.z * speed.z);
+			m_speed += vec3(-c.second.x * m_speed.x,
+					-c.second.y * m_speed.y, -c.second.z * m_speed.z);
 		}
 
 		collisions.clear();
-		intersected(speed, collisions);
+		intersected(m_speed, collisions);
 
 	}
 
-	location += speed;
+	m_location += m_speed;
 
 }
 
@@ -150,9 +159,9 @@ void Player::updateCameraAndTargetCube()
 	shared_ptr<Input> input = Input::getInstance();
 
 	Camera::getInstance().updateView(
-		vec3(location.x, location.y, location.z),
-		viewDirection.getViewDirection(),
-		viewDirection.getUpDirection()
+		vec3(m_location.x, m_location.y, m_location.z),
+		m_viewDirection.getViewDirection(),
+		m_viewDirection.getUpDirection()
 	);
 
 	chunk::ChunkManager &chunkManager = chunk::ChunkManager::getInstance();
@@ -160,17 +169,18 @@ void Player::updateCameraAndTargetCube()
 	vec3 selectedCube;
 	vec3 previous;
 
-	if (chunkManager.intersectWithSolidCube(location, viewDirection.getViewDirection(), selectedCube, previous, selectCubeDistance)) {
+	if (chunkManager.intersectWithSolidCube(m_location,
+			m_viewDirection.getViewDirection(), selectedCube, previous, m_selectCubeDistance)) {
 
 		if (input->action1Pressed) {
 			chunkManager.removeCube(selectedCube.x, selectedCube.y, selectedCube.z);
 		} else if (input->action2Pressed) {
-			chunkManager.setCube(previous.x, previous.y, previous.z, config::cube_data::BRICK_WALL);
+			chunkManager.setCube(previous.x, previous.y, previous.z, m_cubeUsedForBuilding);
 		}
 
 		// TODO Remove hardcoded values
-		transform.setLocation(selectedCube.x + 0.5, selectedCube.y + 0.5, selectedCube.z + 0.5);
-		CubeBatcher::getInstance().addBatch(cube_data::SELECTED, transform);
+		m_transform.setLocation(selectedCube.x + 0.5, selectedCube.y + 0.5, selectedCube.z + 0.5);
+		CubeBatcher::getInstance().addBatch(cube_data::SELECTED, m_transform);
 
 	}
 
@@ -179,7 +189,7 @@ void Player::updateCameraAndTargetCube()
 void Player::intersected(vec3 movement, vector<pair<float, vec3>> &collisions)
 {
 
-	AABB start{ location.x - 0.4, location.x + 0.4, location.y - 1.5, location.y, location.z - 0.4, location.z + 0.4 };
+	AABB start{ m_location.x - 0.4, m_location.x + 0.4, m_location.y - 1.5, m_location.y, m_location.z - 0.4, m_location.z + 0.4 };
 	AABB box = AABB::getSweptBroadPhaseBox(start, movement);
 
 	int xStart = floor(box.xMin);
@@ -213,7 +223,7 @@ void Player::intersected(vec3 movement, vector<pair<float, vec3>> &collisions)
 
 void Player::setLocation(float x, float y, float z)
 {
-	location = vec3(x,y,z);
+	m_location = vec3(x,y,z);
 }
 
 } /* namespace entity */

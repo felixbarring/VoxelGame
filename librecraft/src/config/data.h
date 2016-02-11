@@ -103,6 +103,8 @@ namespace config
 
 		static int eraseTextButton = GLFW_KEY_BACKSPACE;
 
+		static int switchBuildingCube = GLFW_KEY_E;
+
 		// Mouse ########################################################
 
 		static int action1Button = GLFW_MOUSE_BUTTON_LEFT;

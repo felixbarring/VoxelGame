@@ -81,6 +81,9 @@ public:
 	bool eraseTextPressed{false};
 	bool eraseTextActive{false};
 
+	bool switchCubeActive{false};
+	bool switchCubePressed{false};
+
 	bool keyWasTyped{false};
 	char keyTyped{' '};
 

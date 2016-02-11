@@ -70,6 +70,7 @@ void Input::updateValues()
 	goDownPressed = glfwGetKey(window, goDownButton) == GLFW_PRESS && !goDownActive;
 
 	eraseTextPressed = glfwGetKey(window, eraseTextButton) == GLFW_PRESS && !eraseTextActive;
+	switchCubePressed = glfwGetKey(window, switchBuildingCube) == GLFW_PRESS && !switchCubeActive;
 
 	// Mouse
 	action1Pressed = glfwGetMouseButton(window, action1Button) == GLFW_PRESS && !action1Active;
@@ -84,6 +85,7 @@ void Input::updateValues()
 	goDownActive = glfwGetKey(window, goDownButton) == GLFW_PRESS;
 
 	eraseTextActive = glfwGetKey(window, eraseTextButton) == GLFW_PRESS;
+	switchCubeActive = glfwGetKey(window, switchBuildingCube) == GLFW_PRESS;
 
 	// Mouse
 	action1Active = glfwGetMouseButton(window, action1Button) == GLFW_PRESS;
