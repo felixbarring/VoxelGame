@@ -54,19 +54,21 @@ std::string Button::getName()
 
 void Button::draw()
 {
+	SpriteBatcher &spriteBatcher(SpriteBatcher::getInstance());
+
 	if (m_pointerInsideBorders) {
-		SpriteBatcher::getInstance().addBatch(m_sprite);
-		SpriteBatcher::getInstance().addBatch(m_text);
-		SpriteBatcher::getInstance().addBatch(m_highlight);
+		spriteBatcher.addBatch(m_sprite);
+		spriteBatcher.addBatch(m_text);
+		spriteBatcher.addBatch(m_highlight);
 	} else {
-		SpriteBatcher::getInstance().addBatch(m_sprite);
-		SpriteBatcher::getInstance().addBatch(m_text);
+		spriteBatcher.addBatch(m_sprite);
+		spriteBatcher.addBatch(m_text);
 	}
 }
 
 void Button::update(float timePassed)
 {
-	shared_ptr<Input> input = Input::getInstance();
+	shared_ptr<Input> input{Input::getInstance()};
 
 	m_pointerInsideBorders = isInsideBorders(
 			input->mouseVirtualAdjustedX,

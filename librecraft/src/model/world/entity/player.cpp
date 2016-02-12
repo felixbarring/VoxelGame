@@ -185,7 +185,7 @@ void Player::updateCameraAndTargetCube()
 		m_transform.setLocation(selectedCube.x + 0.5, selectedCube.y + 0.5, selectedCube.z + 0.5);
 		Voxel &v = chunkManager.getVoxel(selectedCube.x, selectedCube.y, selectedCube.z);
 
-		cout << " --- " << v.lightValue << "\n";
+		cout << " --- " << 1 + v.lightValue << " --- \n";
 
 		CubeBatcher::getInstance().addBatch(
 				v.id,

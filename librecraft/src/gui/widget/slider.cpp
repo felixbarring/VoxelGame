@@ -8,8 +8,11 @@
 #include "../../graphics/mesh/meshElement.h"
 #include "../../config/data.h"
 #include "../../graphics/resources.h"
+#include "../../util/input.h"
 
+using namespace std;
 using namespace graphics;
+using namespace util;
 
 namespace widget {
 
@@ -26,10 +29,10 @@ Slider::Slider(int id, int x, int y, int width, int height,
 	m_knobPosition = x;
 	m_knobWidth = height;
 
-	m_slider.reset(new Sprite{x, y, 1, width, height,
-		Resources::getInstance().getTexture(config::gui_data::slider)});
-	m_knob.reset(new Sprite{x, y, 2, height, height,
-		Resources::getInstance().getTexture(config::gui_data::sliderKnob)});
+	m_slider.reset(new Sprite(x, y, 1, width, height,
+		Resources::getInstance().getTexture(config::gui_data::slider)));
+	m_knob.reset(new Sprite(x, y, 2, height, height,
+		Resources::getInstance().getTexture(config::gui_data::sliderKnob)));
 
 }
 
@@ -48,66 +51,32 @@ void Slider::draw()
 	SpriteBatcher::getInstance().addBatch(m_knob);
 }
 
-
 void Slider::update(float timePassed)
 {
+	shared_ptr<Input> input = Input::getInstance();
+	m_pointerInsideBorders = isInsideBorders(
+			input->mouseVirtualAdjustedX, input->mouseVirtualAdjustedY);
 	m_grabbed = !m_grabbed && m_pointerInsideBorders;
-}
 
-//void Slider::mouseClicked(int button, float x, float y)
-//{
-//	m_grabbed = !m_grabbed && m_pointerInsideBorders;
-//
-//
-//	m_pointerInsideBorders = isInsideBorders(x, y);
-//		m_grabbed = m_grabbed && m_pointerInsideBorders;
-//
-//		if (m_grabbed) {
-//			m_knobPosition = x - m_knobWidth / 2;
-//
-//			if (m_knobPosition < this->m_xCoordinate ) {
-//				m_knobPosition = this->m_xCoordinate;
-//			}
-//
-//			if (m_knobPosition > this->m_xCoordinate + this->m_width - m_knobWidth) {
-//				m_knobPosition = this->m_xCoordinate + this->m_width - m_knobWidth;
-//			}
-//
-//			m_knob->setLocation(m_knobPosition + m_knobWidth / 2,
-//					this->m_yCoordinate + m_knobWidth / 2, 0);
-//
-//			m_observer.operator ()(m_id);
-//		}
-//
-//}
-//
-//void Slider::mouseMoved(float x, float y)
-//{
-//	m_pointerInsideBorders = isInsideBorders(x, y);
-//	m_grabbed = m_grabbed && m_pointerInsideBorders;
-//
-//	if (m_grabbed) {
-//		m_knobPosition = x - m_knobWidth / 2;
-//
-//		if (m_knobPosition < this->m_xCoordinate ) {
-//			m_knobPosition = this->m_xCoordinate;
-//		}
-//
-//		if (m_knobPosition > this->m_xCoordinate + this->m_width - m_knobWidth) {
-//			m_knobPosition = this->m_xCoordinate + this->m_width - m_knobWidth;
-//		}
-//
-//		m_knob->setLocation(m_knobPosition + m_knobWidth / 2,
-//				this->m_yCoordinate + m_knobWidth / 2, 0);
-//
-//		m_observer.operator ()(m_id);
-//	}
-//
-//}
-//
-//void Slider::keyTyped(char value)
-//{
-//	// not relevant for button, do nothing
-//}
+	if (m_grabbed) {
+		m_knobPosition = input->mouseVirtualAdjustedX - m_knobWidth / 2;
+
+		if (m_knobPosition < this->m_xCoordinate ) {
+			m_knobPosition = this->m_xCoordinate;
+		}
+
+		if (m_knobPosition > this->m_xCoordinate +
+				this->m_width - m_knobWidth) {
+			m_knobPosition = this->m_xCoordinate +
+					this->m_width - m_knobWidth;
+		}
+
+		m_knob->setLocation(m_knobPosition + m_knobWidth / 2,
+				this->m_yCoordinate + m_knobWidth / 2, 0);
+
+		m_observer.operator ()(m_id);
+	}
+
+}
 
 } /* namespace widget */

@@ -53,7 +53,7 @@ private:
 	float m_height {1};
 	float m_depth {1};
 	float m_gravity {0.3};
-	float m_jumpSpeed{0.13};
+	float m_jumpSpeed{0.08};
 	int m_selectCubeDistance {5};
 	glm::vec3 m_speed;
 	graphics::ViewDirection m_viewDirection;
