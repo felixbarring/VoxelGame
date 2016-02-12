@@ -34,7 +34,7 @@ public:
 
 	// Some kind of update method here
 
-	Voxel& getVoxel(int x, int y, int z);
+	Voxel getVoxel(int x, int y, int z);
 
 	Voxel* getVoxel2(int x, int y, int z);
 

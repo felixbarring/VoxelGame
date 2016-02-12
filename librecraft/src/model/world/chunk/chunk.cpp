@@ -124,9 +124,9 @@ Chunk::~Chunk()
 // Member Functions########################################
 // ########################################################
 
-Voxel& Chunk::getVoxel(int x, int y, int z)
+Voxel Chunk::getVoxel(int x, int y, int z)
 {
-	return vec.at(x).at(y).at(z);
+	return vec[x][y][z];
 }
 
 // TODO Duplicated from graphical chunk
@@ -225,7 +225,6 @@ void Chunk::updateLightningCubeAdded(int x, int y, int z)
 
 void Chunk::updateGraphics()
 {
-
 	vector<vector<vector<Voxel>>> *right = nullptr;
 	vector<vector<vector<Voxel>>> *left = nullptr;
 	vector<vector<vector<Voxel>>> *front = nullptr;
@@ -244,9 +243,9 @@ void Chunk::updateGraphics()
 		back = &(backNeighbor->vec);
 
 	ChunkBatcher::getInstance().removeBatch(graphicalChunk);
-	graphicalChunk.reset(new GraphicalChunk(xLocation, 0, zLocation, vec, right, left, back, front));
+	graphicalChunk.reset(new GraphicalChunk(xLocation, 0, zLocation, vec,
+			right, left, back, front));
 	ChunkBatcher::getInstance().addBatch(graphicalChunk);
-
 }
 
 void Chunk::updateNeighborGraphics()

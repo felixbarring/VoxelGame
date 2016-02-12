@@ -123,7 +123,7 @@ void ChunkManager::saveWorld(std::string& worldName)
 	}
 }
 
-Voxel& ChunkManager::getVoxel(int x, int y, int z)
+Voxel ChunkManager::getVoxel(int x, int y, int z)
 {
 	// Used to avoid Division every time the function is called.
 	static float xD = 1.0 / CHUNK_WIDTH;
@@ -143,7 +143,7 @@ Voxel& ChunkManager::getVoxel(int x, int y, int z)
 
 char ChunkManager::getCubeId(int x, int y, int z)
 {
-	return getVoxel(x, y, z).id; //chunks[chunkX][chunkY][chunkZ]->getCubeId(localX, localY, localZ);
+	return getVoxel(x, y, z).id;
 }
 
 bool ChunkManager::isSolid(int x, int y, int z)
@@ -164,9 +164,13 @@ void ChunkManager::removeCube(int x, int y, int z)
 
 void ChunkManager::setCube(int x, int y, int z, char id)
 {
-	int chunkX = x / CHUNK_WIDTH;
-	int chunkY = y / CHUNK_HEIGHT;
-	int chunkZ = z / CHUNK_DEPTH;
+	static float xD = 1.0 / CHUNK_WIDTH;
+	static float yD = 1.0 / CHUNK_HEIGHT;
+	static float zD = 1.0 / CHUNK_DEPTH;
+
+	int chunkX = x * xD;
+	int chunkY = y * yD;
+	int chunkZ = z * zD;
 
 	int localX = x % CHUNK_WIDTH;
 	int localY = y % CHUNK_HEIGHT;
@@ -178,7 +182,6 @@ void ChunkManager::setCube(int x, int y, int z, char id)
 // Requires that direction is normalized!
 // Has one bugg, when the player is exactly located at an integer position
 // the selection will be wrong!
-
 bool ChunkManager::intersectWithSolidCube(vec3 origin, vec3 direction,
 		vec3 &intersected, vec3 &previous, float searchLength)
 {

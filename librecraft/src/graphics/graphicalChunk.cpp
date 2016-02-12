@@ -21,13 +21,13 @@ GraphicalChunk::GraphicalChunk(float x, float y, float z,
 	std::vector<std::vector<std::vector<Voxel>>> *back,
 	std::vector<std::vector<std::vector<Voxel>>> *front
 	):
-xLocation{x},
-yLocation{y},
-zLocation{z},
-transform{
-	x + width / 2 + 0.5f,
-	y + height / 2 + 0.5f,
-	z + depth / 2 + 0.5f
+	xLocation{x},
+	yLocation{y},
+	zLocation{z},
+	transform{
+		x + width / 2 + 0.5f,
+		y + height / 2 + 0.5f,
+		z + depth / 2 + 0.5f
 }
 {
 

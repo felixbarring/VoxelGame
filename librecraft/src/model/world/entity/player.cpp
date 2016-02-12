@@ -44,13 +44,13 @@ void Player::update(float timePassed)
 	updateSpeed(timePassed);
 	handlePhysics();
 	updateCameraAndTargetCube(); // Updates the camera aswell
-
 }
 
 void Player::updateSpeed(float timePassed)
 {
 	shared_ptr<Input> input = Input::getInstance();
-	m_viewDirection.changeViewDirection(input->mouseXMovement, input->mouseYMovement);
+	m_viewDirection.changeViewDirection(
+			input->mouseXMovement, input->mouseYMovement);
 
 	m_speed.x = 0;
 	m_speed.z = 0;
@@ -58,7 +58,6 @@ void Player::updateSpeed(float timePassed)
 	vec3 movementDirection{0.0f, 0.0f, 0.0f};
 
 	if (input->moveForwardActive || input->moveBackwardActive) {
-
 		float direction = 1.0f;
 		if (input->moveBackwardActive)
 			direction = -1.0f;
@@ -66,11 +65,9 @@ void Player::updateSpeed(float timePassed)
 		vec3 dummy = m_viewDirection.getViewDirection();
 		dummy.y = 0;
 		movementDirection += direction * dummy;
-
 	}
 
 	if (input->moveRightActive || input->moveLeftActive) {
-
 		float direction = 1.0f;
 		if (input->moveLeftActive)
 			direction = -1.0f;
@@ -78,10 +75,10 @@ void Player::updateSpeed(float timePassed)
 		vec3 dummy = m_viewDirection.getRightDirection();
 		dummy.y = 0;
 		movementDirection += direction * dummy;
-
 	}
 
-	vec3 normalizedMD = m_movementSpeed * timePassed * normalize(movementDirection);
+	vec3 normalizedMD = m_movementSpeed *
+			timePassed * normalize(movementDirection);
 
 	// Normalize will give nan if the length is 0
 	if (length(movementDirection)) {
@@ -103,13 +100,9 @@ void Player::updateSpeed(float timePassed)
 
 	}
 
-
-
-
 	if (input->switchCubePressed &&
 			++m_cubeUsedForBuilding > config::cube_data::LAST_CUBE)
 		m_cubeUsedForBuilding = 0;
-
 
 	/*
 	if (input->jumpActive || input->goDownActive) {
@@ -127,12 +120,10 @@ void Player::updateSpeed(float timePassed)
 
 void Player::handlePhysics()
 {
-
 	vector<pair<float, vec3>> collisions;
 	intersected(m_speed, collisions);
 
 	while(collisions.size()) {
-
 		sort(collisions.begin(), collisions.end(),
 			[](pair<float, vec3> a, pair<float, vec3> b)
 			{
@@ -145,10 +136,8 @@ void Player::handlePhysics()
 			m_speed += vec3(-c.second.x * m_speed.x,
 					-c.second.y * m_speed.y, -c.second.z * m_speed.z);
 		}
-
 		collisions.clear();
 		intersected(m_speed, collisions);
-
 	}
 
 	m_location += m_speed;
@@ -171,26 +160,30 @@ void Player::updateCameraAndTargetCube()
 	vec3 previous;
 
 	if (chunkManager.intersectWithSolidCube(m_location,
-			m_viewDirection.getViewDirection(), selectedCube, previous, m_selectCubeDistance)) {
+			m_viewDirection.getViewDirection(),
+			selectedCube, previous, m_selectCubeDistance)) {
 
 		if (input->action1Pressed) {
-			chunkManager.removeCube(selectedCube.x, selectedCube.y, selectedCube.z);
+			chunkManager.removeCube(
+					selectedCube.x, selectedCube.y, selectedCube.z);
 			return;
 		} else if (input->action2Pressed) {
-			chunkManager.setCube(previous.x, previous.y, previous.z, m_cubeUsedForBuilding);
+			chunkManager.setCube(previous.x, previous.y,
+					previous.z, m_cubeUsedForBuilding);
 			return;
 		}
 
 		// TODO Remove hardcoded values
-		m_transform.setLocation(selectedCube.x + 0.5, selectedCube.y + 0.5, selectedCube.z + 0.5);
-		Voxel &v = chunkManager.getVoxel(selectedCube.x, selectedCube.y, selectedCube.z);
+		m_transform.setLocation(selectedCube.x + 0.5,
+				selectedCube.y + 0.5, selectedCube.z + 0.5);
 
-		cout << " --- " << 1 + v.lightValue << " --- \n";
-
+		char voxelID = chunkManager.getCubeId(
+				selectedCube.x, selectedCube.y, selectedCube.z);
+		char voxelLightValue = chunkManager.getVoxel(
+				previous.x, previous.y, previous.z).lightValue;
 		CubeBatcher::getInstance().addBatch(
-				v.id,
-				m_transform, v.lightValue + 1);
-
+				voxelID,
+				m_transform, voxelLightValue + 3);
 	}
 
 }
@@ -198,7 +191,9 @@ void Player::updateCameraAndTargetCube()
 void Player::intersected(vec3 movement, vector<pair<float, vec3>> &collisions)
 {
 
-	AABB start{ m_location.x - 0.4, m_location.x + 0.4, m_location.y - 1.5, m_location.y, m_location.z - 0.4, m_location.z + 0.4 };
+	AABB start{ m_location.x - 0.4, m_location.x + 0.4,
+		m_location.y - 1.5, m_location.y,
+		m_location.z - 0.4, m_location.z + 0.4 };
 	AABB box = AABB::getSweptBroadPhaseBox(start, movement);
 
 	int xStart = floor(box.xMin);
@@ -216,9 +211,11 @@ void Player::intersected(vec3 movement, vector<pair<float, vec3>> &collisions)
 				AABB cube{i, i + 1, j, j + 1, k, k + 1};
 				vec3 normal;
 
-				if (ChunkManager::getInstance().getCubeId(i, j, k) != cube_data::AIR) {
+				if (ChunkManager::getInstance().getCubeId(i, j, k) !=
+						cube_data::AIR) {
 					vec3 vec;
-					float time = AABB::collisionTime(start, cube, vec, movement);
+					float time = AABB::collisionTime(
+							start, cube, vec, movement);
 
 					if (time <= 1 && time >= 0)
 						collisions.push_back({time, vec});
