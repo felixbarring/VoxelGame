@@ -28,9 +28,9 @@ public:
 
 	virtual ~GraphicalChunk() {};
 
-	// ########################################################
-	// Member Functions########################################
-	// ########################################################
+// ########################################################
+// Member Functions########################################
+// ########################################################
 
 	void draw();
 
@@ -40,6 +40,10 @@ public:
 
 	float getyLocation();
 
+// ########################################################
+// Implementation #########################################
+// ########################################################
+
 private:
 
 	struct CubeFaceData {
@@ -48,22 +52,22 @@ private:
 		char lightValue; // For air blocks
 
 		// lv means lightValue
-		char lvFront_BottomLeft, lvFront_BottomRight,
+		float lvFront_BottomLeft, lvFront_BottomRight,
 				lvFront_TopRight, lvFront_TopLeft;
 
-		char lvBack_BottomLeft, lvBack_BottomRight,
+		float lvBack_BottomLeft, lvBack_BottomRight,
 				lvBack_TopRight, lvBack_TopLeft;
 
-		char lvLeft_BottomLeft, lvLeft_BottomRight,
+		float lvLeft_BottomLeft, lvLeft_BottomRight,
 				lvLeft_TopRight, lvLeft_TopLeft;
 
-		char lvRight_BottomLeft, lvRight_BottomRight,
+		float lvRight_BottomLeft, lvRight_BottomRight,
 				lvRight_TopRight, lvRight_TopLeft;
 
-		char lvTop_BottomLeft, lvTop_BottomRight,
+		float lvTop_BottomLeft, lvTop_BottomRight,
 				lvTop_TopRight, lvTop_TopLeft;
 
-		char lvBottom_BottomLeft, lvBottom_BottomRight,
+		float lvBottom_BottomLeft, lvBottom_BottomRight,
 				lvBottom_TopRight, lvBottom_TopLeft;
 	};
 
@@ -116,9 +120,23 @@ private:
 	std::vector<std::vector<std::vector<Voxel>>> *back,
 	std::vector<std::vector<std::vector<Voxel>>> *front);
 
-	// ########################################################
-	// Instance Variables #####################################
-	// ########################################################
+	void computeAverageRight(float &bottomLeft, float &bottomRight,
+			float &topRight, float &topLeft);
+
+	void computeAverageLeft(float &bottomLeft, float &bottomRight,
+			float &topRight, float &topLeft);
+
+	void computeAverageTop(float &bottomLeft, float &bottomRight,
+			float &topRight, float &topLeft);
+
+	void computeAverageBottom(float &bottomLeft, float &bottomRight,
+			float &topRight, float &topLeft);
+
+	void computeAverageBack(float &bottomLeft, float &bottomRight,
+			float &topRight, float &topLeft);
+
+	void computeAverageFront(float &bottomLeft, float &bottomRight,
+			float &topRight, float &topLeft);
 
 	std::unique_ptr<mesh::MeshElement> mesh;
 	float xLocation;

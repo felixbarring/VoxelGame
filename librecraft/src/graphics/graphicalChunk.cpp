@@ -53,8 +53,7 @@ transform {
 		}
 	}
 
-	// Do smooth and AO here?
-	// Remove faces
+	// Remove faces and compute lightning
 	for (int i = 0; i < width; i++) {
 		for (int j = 0; j < height; j++) {
 			for (int k = 0; k < depth; k++) {
@@ -84,8 +83,7 @@ transform {
 						current.lvRight_TopLeft = voxel->lightValue;
 
 						doAORight(current, i, j, k, data, right, left, back,
-						front);
-
+								front);
 					}
 				}
 
@@ -100,8 +98,7 @@ transform {
 						current.lvLeft_TopLeft = voxel->lightValue;
 
 						doAOLeft(current, i, j, k, data, right, left, back,
-						front);
-
+								front);
 					}
 				}
 
@@ -118,8 +115,7 @@ transform {
 						current.lvTop_TopLeft = voxel->lightValue;
 
 						doAOTop(current, i, j, k, data, right, left, back,
-						front);
-
+								front);
 					}
 				}
 
@@ -134,8 +130,7 @@ transform {
 						current.lvBottom_TopLeft = voxel->lightValue;
 
 						doAOBottom(current, i, j, k, data, right, left, back,
-						front);
-
+								front);
 					}
 				}
 
@@ -152,7 +147,7 @@ transform {
 						current.lvBack_TopLeft = voxel->lightValue;
 
 						doAOBack(current, i, j, k, data, right, left, back,
-						front);
+								front);
 					}
 				}
 
@@ -167,14 +162,17 @@ transform {
 						current.lvFront_TopLeft = voxel->lightValue;
 
 						doAOFront(current, i, j, k, data, right, left, back,
-						front);
-
+								front);
 					}
 				}
 
 			}
 		}
 	}
+
+	// ########################################################################
+	// ########################################################################
+	// ########################################################################
 
 	// The fourth element of the vertex data is the light value.
 	vector<GLfloat> vertexData;
@@ -478,9 +476,9 @@ transform {
 		}
 	}
 
-	mesh.reset(new mesh::MeshElement(vertexData, 4, normals, 3, UV, 3, elementData));
+	mesh.reset(new mesh::MeshElement(vertexData, 4, normals, 3, UV, 3,
+			elementData));
 	//cout<<"Total number of faces: "<<totalNumberOfFaces<<"\n";
-
 }
 
 // ########################################################
@@ -552,11 +550,8 @@ vector<vector<vector<Voxel>>> *right,
 vector<vector<vector<Voxel>>> *left,
 vector<vector<vector<Voxel>>> *back,
 vector<vector<vector<Voxel>>> *front) {
-	char bottomLeft = 0;
-	char bottomRight = 0;
-	char topRight = 0;
-	char topLeft = 0;
 
+	char bottomLeft = 0;
 	Voxel *v = getVoxel(x + 1, y - 1, z, data, right, left, back, front);
 	if (v && v->id != AIR) bottomLeft++;
 	v = getVoxel(x + 1, y, z - 1, data, right, left, back, front);
@@ -565,6 +560,7 @@ vector<vector<vector<Voxel>>> *front) {
 	if (v && v->id != AIR) bottomLeft++;
 	cf.lvRight_BottomLeft -= bottomLeft * AOFactor;
 
+	char bottomRight = 0;
 	v = getVoxel(x + 1, y - 1, z, data, right, left, back, front);
 	if (v && v->id != AIR) bottomRight++;
 	v = getVoxel(x + 1, y, z + 1, data, right, left, back, front);
@@ -573,6 +569,7 @@ vector<vector<vector<Voxel>>> *front) {
 	if (v && v->id != AIR) bottomRight++;
 	cf.lvRight_BottomRight -= bottomRight * AOFactor;
 
+	char topRight = 0;
 	v = getVoxel(x + 1, y + 1, z, data, right, left, back, front);
 	if (v && v->id != AIR) topRight++;
 	v = getVoxel(x + 1, y, z + 1, data, right, left, back, front);
@@ -581,6 +578,7 @@ vector<vector<vector<Voxel>>> *front) {
 	if (v && v->id != AIR) topRight++;
 	cf.lvRight_TopRight -= topRight * AOFactor;
 
+	char topLeft = 0;
 	v = getVoxel(x + 1, y + 1, z, data, right, left, back, front);
 	if (v && v->id != AIR) topLeft++;
 	v = getVoxel(x + 1, y, z - 1, data, right, left, back, front);
@@ -596,11 +594,8 @@ vector<vector<vector<Voxel>>> *right,
 vector<vector<vector<Voxel>>> *left,
 vector<vector<vector<Voxel>>> *back,
 vector<vector<vector<Voxel>>> *front) {
-	char bottomLeft = 0;
-	char bottomRight = 0;
-	char topRight = 0;
-	char topLeft = 0;
 
+	char bottomLeft = 0;
 	Voxel *v = getVoxel(x - 1, y - 1, z, data, right, left, back, front);
 	if (v && v->id != AIR) bottomLeft++;
 	v = getVoxel(x - 1, y, z + 1, data, right, left, back, front);
@@ -609,6 +604,7 @@ vector<vector<vector<Voxel>>> *front) {
 	if (v && v->id != AIR) bottomLeft++;
 	cf.lvLeft_BottomLeft -= bottomLeft * AOFactor;
 
+	char bottomRight = 0;
 	v = getVoxel(x - 1, y - 1, z, data, right, left, back, front);
 	if (v && v->id != AIR) bottomRight++;
 	v = getVoxel(x - 1, y, z - 1, data, right, left, back, front);
@@ -617,6 +613,7 @@ vector<vector<vector<Voxel>>> *front) {
 	if (v && v->id != AIR) bottomRight++;
 	cf.lvLeft_BottomRight -= bottomRight * AOFactor;
 
+	char topRight = 0;
 	v = getVoxel(x - 1, y + 1, z, data, right, left, back, front);
 	if (v && v->id != AIR) topRight++;
 	v = getVoxel(x - 1, y, z + 1, data, right, left, back, front);
@@ -625,6 +622,7 @@ vector<vector<vector<Voxel>>> *front) {
 	if (v && v->id != AIR) topRight++;
 	cf.lvLeft_TopLeft -= topRight * AOFactor;
 
+	char topLeft = 0;
 	v = getVoxel(x - 1, y + 1, z, data, right, left, back, front);
 	if (v && v->id != AIR) topLeft++;
 	v = getVoxel(x - 1, y, z - 1, data, right, left, back, front);
@@ -642,10 +640,6 @@ vector<vector<vector<Voxel>>> *back,
 vector<vector<vector<Voxel>>> *front) {
 
 	char bottomLeft = 0;
-	char bottomRight = 0;
-	char topRight = 0;
-	char topLeft = 0;
-
 	Voxel *v = getVoxel(x, y - 1, z + 1, data, right, left, back, front);
 	if (v && v->id != AIR) bottomLeft++;
 	v = getVoxel(x + 1, y, z + 1, data, right, left, back, front);
@@ -654,6 +648,7 @@ vector<vector<vector<Voxel>>> *front) {
 	if (v && v->id != AIR) bottomLeft++;
 	cf.lvBack_BottomLeft -= bottomLeft * AOFactor;
 
+	char bottomRight = 0;
 	v = getVoxel(x, y - 1, z + 1, data, right, left, back, front);
 	if (v && v->id != AIR) bottomRight++;
 	v = getVoxel(x - 1, y, z + 1, data, right, left, back, front);
@@ -662,6 +657,7 @@ vector<vector<vector<Voxel>>> *front) {
 	if (v && v->id != AIR) bottomRight++;
 	cf.lvBack_BottomRight -= bottomRight * AOFactor;
 
+	char topRight = 0;
 	v = getVoxel(x, y + 1, z + 1, data, right, left, back, front);
 	if (v && v->id != AIR) topRight++;
 	v = getVoxel(x - 1, y, z + 1, data, right, left, back, front);
@@ -670,6 +666,7 @@ vector<vector<vector<Voxel>>> *front) {
 	if (v && v->id != AIR) topRight++;
 	cf.lvBack_TopRight -= topRight * AOFactor;
 
+	char topLeft = 0;
 	v = getVoxel(x, y + 1, z + 1, data, right, left, back, front);
 	if (v && v->id != AIR) topLeft++;
 	v = getVoxel(x + 1, y, z + 1, data, right, left, back, front);
@@ -687,10 +684,6 @@ vector<vector<vector<Voxel>>> *back,
 vector<vector<vector<Voxel>>> *front) {
 
 	char bottomLeft = 0;
-	char bottomRight = 0;
-	char topRight = 0;
-	char topLeft = 0;
-
 	Voxel *v = getVoxel(x, y - 1, z - 1, data, right, left, back, front);
 	if (v && v->id != AIR) bottomLeft++;
 	v = getVoxel(x - 1, y, z - 1, data, right, left, back, front);
@@ -699,6 +692,7 @@ vector<vector<vector<Voxel>>> *front) {
 	if (v && v->id != AIR) bottomLeft++;
 	cf.lvFront_BottomLeft -= bottomLeft * AOFactor;
 
+	char bottomRight = 0;
 	v = getVoxel(x, y - 1, z - 1, data, right, left, back, front);
 	if (v && v->id != AIR) bottomRight++;
 	v = getVoxel(x + 1, y, z - 1, data, right, left, back, front);
@@ -707,6 +701,7 @@ vector<vector<vector<Voxel>>> *front) {
 	if (v && v->id != AIR) bottomRight++;
 	cf.lvFront_BottomRight -= bottomRight * AOFactor;
 
+	char topRight = 0;
 	v = getVoxel(x, y + 1, z - 1, data, right, left, back, front);
 	if (v && v->id != AIR) topRight++;
 	v = getVoxel(x + 1, y, z-+ 1, data, right, left, back, front);
@@ -715,6 +710,7 @@ vector<vector<vector<Voxel>>> *front) {
 	if (v && v->id != AIR) topRight++;
 	cf.lvFront_TopRight -= topRight * AOFactor;
 
+	char topLeft = 0;
 	v = getVoxel(x, y + 1, z - 1, data, right, left, back, front);
 	if (v && v->id != AIR) topLeft++;
 	v = getVoxel(x - 1, y, z - 1, data, right, left, back, front);
@@ -730,11 +726,8 @@ vector<vector<vector<Voxel>>> *right,
 vector<vector<vector<Voxel>>> *left,
 vector<vector<vector<Voxel>>> *back,
 vector<vector<vector<Voxel>>> *front) {
-	char bottomLeft = 0;
-	char bottomRight = 0;
-	char topRight = 0;
-	char topLeft = 0;
 
+	char bottomLeft = 0;
 	Voxel *v = getVoxel(x, y + 1, z - 1, data, right, left, back, front);
 	if (v && v->id != AIR) bottomLeft++;
 	v = getVoxel(x - 1, y + 1, z, data, right, left, back, front);
@@ -743,6 +736,7 @@ vector<vector<vector<Voxel>>> *front) {
 	if (v && v->id != AIR) bottomLeft++;
 	cf.lvTop_BottomLeft -= bottomLeft * AOFactor;
 
+	char bottomRight = 0;
 	v = getVoxel(x, y + 1, z - 1, data, right, left, back, front);
 	if (v && v->id != AIR) bottomRight++;
 	v = getVoxel(x + 1, y + 1, z, data, right, left, back, front);
@@ -751,6 +745,7 @@ vector<vector<vector<Voxel>>> *front) {
 	if (v && v->id != AIR) bottomRight++;
 	cf.lvTop_BottomRight-= bottomRight * AOFactor;
 
+	char topRight = 0;
 	v = getVoxel(x, y + 1, z + 1, data, right, left, back, front);
 	if (v && v->id != AIR) topRight++;
 	v = getVoxel(x + 1, y + 1, z, data, right, left, back, front);
@@ -759,6 +754,7 @@ vector<vector<vector<Voxel>>> *front) {
 	if (v && v->id != AIR) topRight++;
 	cf.lvTop_TopRight -= topRight * AOFactor;
 
+	char topLeft = 0;
 	v = getVoxel(x, y + 1, z + 1, data, right, left, back, front);
 	if (v && v->id != AIR) topLeft++;
 	v = getVoxel(x - 1, y + 1, z, data, right, left, back, front);
@@ -776,10 +772,6 @@ vector<vector<vector<Voxel>>> *back,
 vector<vector<vector<Voxel>>> *front) {
 
 	char bottomLeft = 0;
-	char bottomRight = 0;
-	char topRight = 0;
-	char topLeft = 0;
-
 	Voxel *v = getVoxel(x, y - 1, z - 1, data, right, left, back, front);
 	if (v && v->id != AIR) bottomLeft++;
 	v = getVoxel(x - 1, y - 1, z, data, right, left, back, front);
@@ -788,6 +780,7 @@ vector<vector<vector<Voxel>>> *front) {
 	if (v && v->id != AIR) bottomLeft++;
 	cf.lvBottom_BottomLeft -= bottomLeft * AOFactor;
 
+	char bottomRight = 0;
 	v = getVoxel(x, y - 1, z - 1, data, right, left, back, front);
 	if (v && v->id != AIR) bottomRight++;
 	v = getVoxel(x + 1, y - 1, z, data, right, left, back, front);
@@ -796,6 +789,7 @@ vector<vector<vector<Voxel>>> *front) {
 	if (v && v->id != AIR) bottomRight++;
 	cf.lvBottom_BottomRight-= bottomRight * AOFactor;
 
+	char topRight = 0;
 	v = getVoxel(x, y - 1, z + 1, data, right, left, back, front);
 	if (v && v->id != AIR) topRight++;
 	v = getVoxel(x + 1, y - 1, z, data, right, left, back, front);
@@ -804,6 +798,7 @@ vector<vector<vector<Voxel>>> *front) {
 	if (v && v->id != AIR) topRight++;
 	cf.lvBottom_TopRight -= topRight * AOFactor;
 
+	char topLeft = 0;
 	v = getVoxel(x, y - 1, z + 1, data, right, left, back, front);
 	if (v && v->id != AIR) topLeft++;
 	v = getVoxel(x - 1, y - 1, z, data, right, left, back, front);
@@ -811,6 +806,36 @@ vector<vector<vector<Voxel>>> *front) {
 	v = getVoxel(x - 1, y - 1, z + 1, data, right, left, back, front);
 	if (v && v->id != AIR) topLeft++;
 	cf.lvBottom_TopLeft -= topLeft * AOFactor;
+}
+
+void computeAverageRight(float &bottomLeft, float &bottomRight,
+		float &topRight, float &topLeft) {
+
+}
+
+void computeAverageLeft(float &bottomLeft, float &bottomRight,
+		float &topRight, float &topLeft) {
+
+}
+
+void computeAverageTop(float &bottomLeft, float &bottomRight,
+		float &topRight, float &topLeft) {
+
+}
+
+void computeAverageBottom(float &bottomLeft, float &bottomRight,
+		float &topRight, float &topLeft) {
+
+}
+
+void computeAverageBack(float &bottomLeft, float &bottomRight,
+		float &topRight, float &topLeft) {
+
+}
+
+void computeAverageFront(float &bottomLeft, float &bottomRight,
+		float &topRight, float &topLeft) {
+
 }
 
 }

@@ -62,6 +62,14 @@ public:
 
 	void doSunLightning(std::vector<glm::vec3> &lightPropagate);
 
+	/**
+	 * Only does the lightning for one row.
+	 *
+	 * @param lightPropagate
+	 * @param x
+	 * @param y
+	 * @param z
+	 */
 	void doSunLightning(std::vector<glm::vec3> &lightPropagate, int x, int y,
 			int z);
 
@@ -97,23 +105,24 @@ public:
 
 private:
 
-	int xLocation, zLocation;
-	bool isDirty;
+	int m_xLocation, m_zLocation;
+	bool m_isDirty;
 
 	// Should be somewhere else?
-	const int directSunlight = 15;
+	const int m_directSunlight = 15;
 
-	int width = config::chunk_data::CHUNK_WIDTH;
-	int height = config::chunk_data::CHUNK_HEIGHT;
-	int depth = config::chunk_data::CHUNK_DEPTH;
+	int m_width = config::chunk_data::CHUNK_WIDTH;
+	int m_height = config::chunk_data::CHUNK_HEIGHT;
+	int m_depth = config::chunk_data::CHUNK_DEPTH;
 
-	std::vector<std::vector<std::vector<Voxel>>>vec;
+	std::vector<std::vector<std::vector<Voxel>>> m_vec;
 
-	std::shared_ptr<graphics::GraphicalChunk> graphicalChunk;
+	std::shared_ptr<graphics::GraphicalChunk> m_graphicalChunk;
 
-	std::shared_ptr<Chunk> rightNeighbor;
-	std::shared_ptr<Chunk> leftNeighbor;
+	std::shared_ptr<Chunk> m_rightNeighbor;
+	std::shared_ptr<Chunk> m_leftNeighbor;
 
+	// TODO Can not refactor, fix this !?!
 	std::shared_ptr<Chunk> frontNeighbor;
 	std::shared_ptr<Chunk> backNeighbor;
 
