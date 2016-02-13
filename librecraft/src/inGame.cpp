@@ -73,7 +73,7 @@ InGame::InGame(Game *game, string name) :
 	m_widgetGroup1->addWidget(button1);
 	m_widgetGroup1->addWidget(button2);
 
-	m_crossHair.reset(new Sprite(380, 280, 0, 40, 40,
+	m_crossHair.reset(new Sprite(390, 290, 0, 20, 20,
 			Resources::getInstance().getTexture(config::gui_data::crossHair)));
 
 }

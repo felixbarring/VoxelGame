@@ -183,7 +183,7 @@ void Player::updateCameraAndTargetCube()
 				previous.x, previous.y, previous.z).lightValue;
 		CubeBatcher::getInstance().addBatch(
 				voxelID,
-				m_transform, voxelLightValue + 3);
+				m_transform, voxelLightValue + 5);
 	}
 
 }
@@ -191,8 +191,9 @@ void Player::updateCameraAndTargetCube()
 void Player::intersected(vec3 movement, vector<pair<float, vec3>> &collisions)
 {
 
+	// TODO Remove the hardcoded shit
 	AABB start{ m_location.x - 0.4, m_location.x + 0.4,
-		m_location.y - 1.5, m_location.y,
+		m_location.y - 1.5, m_location.y + 0.1,
 		m_location.z - 0.4, m_location.z + 0.4 };
 	AABB box = AABB::getSweptBroadPhaseBox(start, movement);
 
