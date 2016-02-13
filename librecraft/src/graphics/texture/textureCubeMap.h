@@ -1,4 +1,3 @@
-
 #ifndef SRC_GRAPHICS_TEXTURE_TEXTURECUBEMAP_H_
 #define SRC_GRAPHICS_TEXTURE_TEXTURECUBEMAP_H_
 
@@ -6,8 +5,7 @@
 #include <vector>
 #include <string>
 
-namespace texture
-{
+namespace texture {
 
 class TextureCubeMap {
 public:
@@ -18,7 +16,10 @@ public:
 
 	// TODO Take all six paths as arguments!
 
-	TextureCubeMap(const char* right, const char* left, const char* top, const char* bottom, const char* back, const char* front,  int width, int height);
+	TextureCubeMap(const char* right, const char* left, const char* top,
+			const char* bottom, const char* back, const char* front, int width,
+			int height);
+
 	virtual ~TextureCubeMap();
 
 	// ########################################################

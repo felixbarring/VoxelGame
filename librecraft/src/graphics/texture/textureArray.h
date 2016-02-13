@@ -1,4 +1,3 @@
-
 #ifndef SRC_GRAPHICS_TEXTUREARRAY_H_
 #define SRC_GRAPHICS_TEXTUREARRAY_H_
 
@@ -6,8 +5,7 @@
 #include <vector>
 #include <string>
 
-namespace texture
-{
+namespace texture {
 
 class TextureArray {
 public:

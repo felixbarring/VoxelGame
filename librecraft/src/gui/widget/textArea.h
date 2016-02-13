@@ -1,4 +1,3 @@
-
 #ifndef SRC_GUI_WIDGET_TEXTAREA_H_
 #define SRC_GUI_WIDGET_TEXTAREA_H_
 
@@ -6,7 +5,7 @@
 
 namespace widget {
 
-class TextArea : public AbstractWidget {
+class TextArea: public AbstractWidget {
 public:
 
 // ########################################################
@@ -15,7 +14,9 @@ public:
 
 	TextArea(int id, int x, int y, int width, int height);
 
-	virtual ~TextArea() {};
+	virtual ~TextArea() {
+	}
+	;
 
 // ########################################################
 // Member Functions########################################
@@ -26,7 +27,7 @@ public:
 	void update(float timePassed) override;
 
 // ########################################################
-// Instance Variables #####################################
+// Implementation #########################################
 // ########################################################
 
 };

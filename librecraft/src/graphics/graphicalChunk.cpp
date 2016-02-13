@@ -1,4 +1,3 @@
-
 #include "graphicalChunk.h"
 
 #include <vector>
@@ -7,27 +6,29 @@
 #include "texturedCube.h"
 #include "transform.h"
 
-namespace graphics
-{
+using namespace std;
+using namespace config::cube_data;
+
+namespace graphics {
 
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
 
 GraphicalChunk::GraphicalChunk(float x, float y, float z,
-	std::vector<std::vector<std::vector<Voxel>>> &data,
-	std::vector<std::vector<std::vector<Voxel>>> *right,
-	std::vector<std::vector<std::vector<Voxel>>> *left,
-	std::vector<std::vector<std::vector<Voxel>>> *back,
-	std::vector<std::vector<std::vector<Voxel>>> *front
-	):
-	xLocation{x},
-	yLocation{y},
-	zLocation{z},
-	transform{
-		x + width / 2 + 0.5f,
-		y + height / 2 + 0.5f,
-		z + depth / 2 + 0.5f
+		vector<vector<vector<Voxel>>>&data,
+vector<vector<vector<Voxel>>> *right,
+vector<vector<vector<Voxel>>> *left,
+vector<vector<vector<Voxel>>> *back,
+vector<vector<vector<Voxel>>> *front
+):
+xLocation {x},
+yLocation {y},
+zLocation {z},
+transform {
+	x + width / 2 + 0.5f,
+	y + height / 2 + 0.5f,
+	z + depth / 2 + 0.5f
 }
 {
 
@@ -59,8 +60,7 @@ GraphicalChunk::GraphicalChunk(float x, float y, float z,
 			for (int k = 0; k < depth; k++) {
 
 				CubeFaceData &current = faceData[i][j][k];
-
-				if (current.id == config::cube_data::AIR) {
+				if (current.id == AIR) {
 					current.front = false;
 					current.back = false;
 					current.left = false;
@@ -72,9 +72,10 @@ GraphicalChunk::GraphicalChunk(float x, float y, float z,
 
 				// X ##########################################################
 
-				Voxel *voxel = getVoxel(i + 1, j, k, data, right, left, back, front);
+				Voxel *voxel = getVoxel(i + 1, j, k, data, right, left, back,
+				front);
 				if (voxel) {
-					if (voxel->id != config::cube_data::AIR) {
+					if (voxel->id != AIR) {
 						current.right = false;
 					} else {
 						current.lvRight_BottomLeft = voxel->lightValue;
@@ -82,14 +83,15 @@ GraphicalChunk::GraphicalChunk(float x, float y, float z,
 						current.lvRight_TopRight = voxel->lightValue;
 						current.lvRight_TopLeft = voxel->lightValue;
 
-						doAORight(current, i, j, k, data, right, left, back, front);
+						doAORight(current, i, j, k, data, right, left, back,
+						front);
 
 					}
 				}
 
 				voxel = getVoxel(i - 1, j, k, data, right, left, back, front);
 				if (voxel) {
-					if (voxel->id != config::cube_data::AIR) {
+					if (voxel->id != AIR) {
 						current.left = false;
 					} else {
 						current.lvLeft_BottomLeft = voxel->lightValue;
@@ -97,7 +99,8 @@ GraphicalChunk::GraphicalChunk(float x, float y, float z,
 						current.lvLeft_TopRight = voxel->lightValue;
 						current.lvLeft_TopLeft = voxel->lightValue;
 
-						doAOLeft(current, i, j, k, data, right, left, back, front);
+						doAOLeft(current, i, j, k, data, right, left, back,
+						front);
 
 					}
 				}
@@ -106,7 +109,7 @@ GraphicalChunk::GraphicalChunk(float x, float y, float z,
 
 				voxel = getVoxel(i, j + 1, k, data, right, left, back, front);
 				if (voxel) {
-					if (voxel->id != config::cube_data::AIR) {
+					if (voxel->id != AIR) {
 						current.top = false;
 					} else {
 						current.lvTop_BottomLeft = voxel->lightValue;
@@ -114,14 +117,15 @@ GraphicalChunk::GraphicalChunk(float x, float y, float z,
 						current.lvTop_TopRight = voxel->lightValue;
 						current.lvTop_TopLeft = voxel->lightValue;
 
-						doAOTop(current, i, j, k, data, right, left, back, front);
+						doAOTop(current, i, j, k, data, right, left, back,
+						front);
 
 					}
 				}
 
 				voxel = getVoxel(i, j - 1, k, data, right, left, back, front);
 				if (voxel) {
-					if (voxel->id != config::cube_data::AIR) {
+					if (voxel->id != AIR) {
 						current.bottom = false;
 					} else {
 						current.lvBottom_BottomLeft = voxel->lightValue;
@@ -129,7 +133,8 @@ GraphicalChunk::GraphicalChunk(float x, float y, float z,
 						current.lvBottom_TopRight = voxel->lightValue;
 						current.lvBottom_TopLeft = voxel->lightValue;
 
-						doAOBottom(current, i, j, k, data, right, left, back, front);
+						doAOBottom(current, i, j, k, data, right, left, back,
+						front);
 
 					}
 				}
@@ -138,7 +143,7 @@ GraphicalChunk::GraphicalChunk(float x, float y, float z,
 
 				voxel = getVoxel(i, j, k + 1, data, right, left, back, front);
 				if (voxel) {
-					if (voxel->id != config::cube_data::AIR) {
+					if (voxel->id != AIR) {
 						current.back = false;
 					} else {
 						current.lvBack_BottomLeft = voxel->lightValue;
@@ -146,13 +151,14 @@ GraphicalChunk::GraphicalChunk(float x, float y, float z,
 						current.lvBack_TopRight = voxel->lightValue;
 						current.lvBack_TopLeft = voxel->lightValue;
 
-						doAOBack(current, i, j, k, data, right, left, back, front);
+						doAOBack(current, i, j, k, data, right, left, back,
+						front);
 					}
 				}
 
 				voxel = getVoxel(i, j, k - 1, data, right, left, back, front);
 				if (voxel) {
-					if (voxel->id != config::cube_data::AIR) {
+					if (voxel->id != AIR) {
 						current.front = false;
 					} else {
 						current.lvFront_BottomLeft = voxel->lightValue;
@@ -160,7 +166,8 @@ GraphicalChunk::GraphicalChunk(float x, float y, float z,
 						current.lvFront_TopRight = voxel->lightValue;
 						current.lvFront_TopLeft = voxel->lightValue;
 
-						doAOFront(current, i, j, k, data, right, left, back, front);
+						doAOFront(current, i, j, k, data, right, left, back,
+						front);
 
 					}
 				}
@@ -170,10 +177,10 @@ GraphicalChunk::GraphicalChunk(float x, float y, float z,
 	}
 
 	// The fourth element of the vertex data is the light value.
-	std::vector<GLfloat> vertexData;
-	std::vector<GLfloat> normals;
-	std::vector<GLfloat> UV;
-	std::vector<short> elementData;
+	vector<GLfloat> vertexData;
+	vector<GLfloat> normals;
+	vector<GLfloat> UV;
+	vector<short> elementData;
 
 	short elementOffset = 0;
 	int totalNumberOfFaces = 0;
@@ -189,45 +196,53 @@ GraphicalChunk::GraphicalChunk(float x, float y, float z,
 				CubeFaceData fd = faceData[i][j][k];
 
 				int id = fd.id;
-				if (id == config::cube_data::AIR)
-					continue;
+				if (id == AIR)
+				continue;
 
-				GLfloat sideTexture = config::cube_data::BLOCK_TEXTURES[id][config::cube_data::SIDE_TEXTURE];
-				GLfloat topTexture = config::cube_data::BLOCK_TEXTURES[id][config::cube_data::TOP_TEXTURE];
-				GLfloat bottomTexture = config::cube_data::BLOCK_TEXTURES[id][config::cube_data::BOTTOM_TEXTURE];
+				GLfloat sideTexture = BLOCK_TEXTURES[id][SIDE_TEXTURE];
+				GLfloat topTexture = BLOCK_TEXTURES[id][TOP_TEXTURE];
+				GLfloat bottomTexture = BLOCK_TEXTURES[id][BOTTOM_TEXTURE];
 
 				if (fd.right) {
 
-					std::vector<GLfloat> vertex {
-						0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz, fd.lvRight_TopLeft,
-						0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz, fd.lvRight_TopRight,
-						0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz, fd.lvRight_BottomRight,
-						0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz, fd.lvRight_BottomLeft,
+					vector<GLfloat> vertex {
+						0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz,
+							fd.lvRight_TopLeft,
+						0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz,
+							fd.lvRight_TopRight,
+						0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz,
+							fd.lvRight_BottomRight,
+						0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz,
+							fd.lvRight_BottomLeft,
 					};
 
-					std::vector<GLfloat> nor {
+					vector<GLfloat> nor {
 						1.0f, 0.0f, 0.0f,
 						1.0f, 0.0f, 0.0f,
 						1.0f, 0.0f, 0.0f,
 						1.0f, 0.0f, 0.0f,
 					};
 
-					std::vector<GLfloat> uv {
+					vector<GLfloat> uv {
 						0.0f, 0.0f, static_cast<GLfloat>(sideTexture),
 						1.0f, 0.0f, static_cast<GLfloat>(sideTexture),
 						1.0f, 1.0f, static_cast<GLfloat>(sideTexture),
 						0.0f, 1.0f, static_cast<GLfloat>(sideTexture),
 					};
 
-					std::vector<short> el{
-						static_cast<short>(0 + elementOffset), static_cast<short>(1 + elementOffset), static_cast<short>(2 + elementOffset),
-						static_cast<short>(0 + elementOffset), static_cast<short>(2 + elementOffset), static_cast<short>(3 + elementOffset)
+					vector<short> el {
+						static_cast<short>(0 + elementOffset),
+						static_cast<short>(1 + elementOffset),
+						static_cast<short>(2 + elementOffset),
+						static_cast<short>(0 + elementOffset),
+						static_cast<short>(2 + elementOffset),
+						static_cast<short>(3 + elementOffset)
 					};
 
-					for (auto v : vertex) { vertexData.push_back(v);}
-					for (auto n : nor) { normals.push_back(n);}
-					for (auto u : uv) { UV.push_back(u);}
-					for (auto e : el) { elementData.push_back(e);}
+					for (auto v : vertex) {vertexData.push_back(v);}
+					for (auto n : nor) {normals.push_back(n);}
+					for (auto u : uv) {UV.push_back(u);}
+					for (auto e : el) {elementData.push_back(e);}
 
 					elementOffset += 4;
 					totalNumberOfFaces++;
@@ -235,36 +250,44 @@ GraphicalChunk::GraphicalChunk(float x, float y, float z,
 
 				if (fd.left) {
 
-					std::vector<GLfloat> vertex {
-						-0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz, fd.lvLeft_TopLeft,
-						-0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz, fd.lvLeft_TopRight ,
-						-0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz, fd.lvLeft_BottomRight,
-						-0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz, fd.lvLeft_BottomLeft,
+					vector<GLfloat> vertex {
+						-0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz,
+							fd.lvLeft_TopLeft,
+						-0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz,
+							fd.lvLeft_TopRight ,
+						-0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz,
+							fd.lvLeft_BottomRight,
+						-0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz,
+							fd.lvLeft_BottomLeft,
 					};
 
-					std::vector<GLfloat> nor {
+					vector<GLfloat> nor {
 						-1.0f, 0.0f, 0.0f,
 						-1.0f, 0.0f, 0.0f,
 						-1.0f, 0.0f, 0.0f,
 						-1.0f, 0.0f, 0.0f,
 					};
 
-					std::vector<GLfloat> uv {
+					vector<GLfloat> uv {
 						0.0f, 0.0f, static_cast<GLfloat>(sideTexture),
 						1.0f, 0.0f, static_cast<GLfloat>(sideTexture),
 						1.0f, 1.0f, static_cast<GLfloat>(sideTexture),
 						0.0f, 1.0f, static_cast<GLfloat>(sideTexture),
 					};
 
-					std::vector<short> el{
-						static_cast<short>(0 + elementOffset), static_cast<short>(1 + elementOffset), static_cast<short>(2 + elementOffset),
-						static_cast<short>(0 + elementOffset), static_cast<short>(2 + elementOffset), static_cast<short>(3 + elementOffset)
+					vector<short> el {
+						static_cast<short>(0 + elementOffset),
+						static_cast<short>(1 + elementOffset),
+						static_cast<short>(2 + elementOffset),
+						static_cast<short>(0 + elementOffset),
+						static_cast<short>(2 + elementOffset),
+						static_cast<short>(3 + elementOffset)
 					};
 
-					for (auto v : vertex) { vertexData.push_back(v);}
-					for (auto n : nor) { normals.push_back(n);}
-					for (auto u : uv) { UV.push_back(u);}
-					for (auto e : el) { elementData.push_back(e);}
+					for (auto v : vertex) {vertexData.push_back(v);}
+					for (auto n : nor) {normals.push_back(n);}
+					for (auto u : uv) {UV.push_back(u);}
+					for (auto e : el) {elementData.push_back(e);}
 
 					elementOffset += 4;
 					totalNumberOfFaces++;
@@ -272,37 +295,45 @@ GraphicalChunk::GraphicalChunk(float x, float y, float z,
 
 				if (fd.back) {
 
-					std::vector<GLfloat> vertex {
-						0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz, fd.lvBack_TopLeft,
-						-0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz, fd.lvBack_TopRight,
-						-0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz, fd.lvBack_BottomRight,
-						0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz, fd.lvBack_BottomLeft,
+					vector<GLfloat> vertex {
+						0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz,
+							fd.lvBack_TopLeft,
+						-0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz,
+							fd.lvBack_TopRight,
+						-0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz,
+							fd.lvBack_BottomRight,
+						0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz,
+						fd.lvBack_BottomLeft,
 
 					};
 
-					std::vector<GLfloat> nor {
+					vector<GLfloat> nor {
 						0.0f, 0.0f, 1.0f,
 						0.0f, 0.0f, 1.0f,
 						0.0f, 0.0f, 1.0f,
 						0.0f, 0.0f, 1.0f,
 					};
 
-					std::vector<GLfloat> uv {
+					vector<GLfloat> uv {
 						0.0f, 0.0f, static_cast<GLfloat>(sideTexture),
 						1.0f, 0.0f, static_cast<GLfloat>(sideTexture),
 						1.0f, 1.0f, static_cast<GLfloat>(sideTexture),
 						0.0f, 1.0f, static_cast<GLfloat>(sideTexture),
 					};
 
-					std::vector<short> el{
-						static_cast<short>(0 + elementOffset), static_cast<short>(1 + elementOffset), static_cast<short>(2 + elementOffset),
-						static_cast<short>(0 + elementOffset), static_cast<short>(2 + elementOffset), static_cast<short>(3 + elementOffset)
+					vector<short> el {
+						static_cast<short>(0 + elementOffset),
+						static_cast<short>(1 + elementOffset),
+						static_cast<short>(2 + elementOffset),
+						static_cast<short>(0 + elementOffset),
+						static_cast<short>(2 + elementOffset),
+						static_cast<short>(3 + elementOffset)
 					};
 
-					for (auto v : vertex) { vertexData.push_back(v);}
-					for (auto n : nor) { normals.push_back(n);}
-					for (auto u : uv) { UV.push_back(u);}
-					for (auto e : el) { elementData.push_back(e);}
+					for (auto v : vertex) {vertexData.push_back(v);}
+					for (auto n : nor) {normals.push_back(n);}
+					for (auto u : uv) {UV.push_back(u);}
+					for (auto e : el) {elementData.push_back(e);}
 
 					elementOffset += 4;
 					totalNumberOfFaces++;
@@ -310,36 +341,44 @@ GraphicalChunk::GraphicalChunk(float x, float y, float z,
 
 				if (fd.front) {
 
-					std::vector<GLfloat> vertex {
-						-0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz, fd.lvFront_TopLeft,
-						0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz, fd.lvFront_TopRight,
-						0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz, fd.lvFront_BottomRight,
-						-0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz, fd.lvFront_BottomLeft,
+					vector<GLfloat> vertex {
+						-0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz,
+							fd.lvFront_TopLeft,
+						0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz,
+							fd.lvFront_TopRight,
+						0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz,
+							fd.lvFront_BottomRight,
+						-0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz,
+							fd.lvFront_BottomLeft,
 					};
 
-					std::vector<GLfloat> nor {
+					vector<GLfloat> nor {
 						0.0f, 0.0f, -1.0f,
 						0.0f, 0.0f, -1.0f,
 						0.0f, 0.0f, -1.0f,
 						0.0f, 0.0f, -1.0f
 					};
 
-					std::vector<GLfloat> uv {
+					vector<GLfloat> uv {
 						0.0f, 0.0f, static_cast<GLfloat>(sideTexture),
 						1.0f, 0.0f, static_cast<GLfloat>(sideTexture),
 						1.0f, 1.0f, static_cast<GLfloat>(sideTexture),
 						0.0f, 1.0f, static_cast<GLfloat>(sideTexture),
 					};
 
-					std::vector<short> el{
-						static_cast<short>(0 + elementOffset), static_cast<short>(1 + elementOffset), static_cast<short>(2 + elementOffset),
-						static_cast<short>(0 + elementOffset), static_cast<short>(2 + elementOffset), static_cast<short>(3 + elementOffset)
+					vector<short> el {
+						static_cast<short>(0 + elementOffset),
+						static_cast<short>(1 + elementOffset),
+						static_cast<short>(2 + elementOffset),
+						static_cast<short>(0 + elementOffset),
+						static_cast<short>(2 + elementOffset),
+						static_cast<short>(3 + elementOffset)
 					};
 
-					for (auto v : vertex) { vertexData.push_back(v);}
-					for (auto n : nor) { normals.push_back(n);}
-					for (auto u : uv) { UV.push_back(u);}
-					for (auto e : el) { elementData.push_back(e);}
+					for (auto v : vertex) {vertexData.push_back(v);}
+					for (auto n : nor) {normals.push_back(n);}
+					for (auto u : uv) {UV.push_back(u);}
+					for (auto e : el) {elementData.push_back(e);}
 
 					elementOffset += 4;
 					totalNumberOfFaces++;
@@ -347,36 +386,44 @@ GraphicalChunk::GraphicalChunk(float x, float y, float z,
 
 				if (fd.top) {
 
-					std::vector<GLfloat> vertex {
-						-0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz, fd.lvTop_TopLeft,
-						0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz, fd.lvTop_TopRight,
-						0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz, fd.lvTop_BottomRight,
-						-0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz, fd.lvTop_BottomLeft,
+					vector<GLfloat> vertex {
+						-0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz,
+							fd.lvTop_TopLeft,
+						0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz,
+							fd.lvTop_TopRight,
+						0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz,
+							fd.lvTop_BottomRight,
+						-0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz,
+							fd.lvTop_BottomLeft,
 					};
 
-					std::vector<GLfloat> nor {
+					vector<GLfloat> nor {
 						0.0f, 1.0f, 0.0f,
 						0.0f, 1.0f, 0.0f,
 						0.0f, 1.0f, 0.0f,
 						0.0f, 1.0f, 0.0f
 					};
 
-					std::vector<GLfloat> uv {
+					vector<GLfloat> uv {
 						0.0f, 0.0f, static_cast<GLfloat>(topTexture),
 						1.0f, 0.0f, static_cast<GLfloat>(topTexture),
 						1.0f, 1.0f, static_cast<GLfloat>(topTexture),
 						0.0f, 1.0f, static_cast<GLfloat>(topTexture)
 					};
 
-					std::vector<short> el{
-						static_cast<short>(0 + elementOffset), static_cast<short>(1 + elementOffset), static_cast<short>(2 + elementOffset),
-						static_cast<short>(0 + elementOffset), static_cast<short>(2 + elementOffset), static_cast<short>(3 + elementOffset)
+					vector<short> el {
+						static_cast<short>(0 + elementOffset),
+						static_cast<short>(1 + elementOffset),
+						static_cast<short>(2 + elementOffset),
+						static_cast<short>(0 + elementOffset),
+						static_cast<short>(2 + elementOffset),
+						static_cast<short>(3 + elementOffset)
 					};
 
-					for (auto v : vertex) { vertexData.push_back(v);}
-					for (auto n : nor) { normals.push_back(n);}
-					for (auto u : uv) { UV.push_back(u);}
-					for (auto e : el) { elementData.push_back(e);}
+					for (auto v : vertex) {vertexData.push_back(v);}
+					for (auto n : nor) {normals.push_back(n);}
+					for (auto u : uv) {UV.push_back(u);}
+					for (auto e : el) {elementData.push_back(e);}
 
 					elementOffset += 4;
 					totalNumberOfFaces++;
@@ -384,38 +431,45 @@ GraphicalChunk::GraphicalChunk(float x, float y, float z,
 
 				if (fd.bottom) {
 
-
 					// TODO Dose not follow the same pattern as the others?!?
-					std::vector<GLfloat> vertex {
-						-0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz, fd.lvBottom_BottomLeft,
-						0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz, fd.lvBottom_BottomRight,
-						0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz, fd.lvBottom_TopRight,
-						-0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz, fd.lvBottom_TopLeft,
+					vector<GLfloat> vertex {
+						-0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz,
+							fd.lvBottom_BottomLeft,
+						0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz,
+							fd.lvBottom_BottomRight,
+						0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz,
+							fd.lvBottom_TopRight,
+						-0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz,
+							fd.lvBottom_TopLeft,
 					};
 
-					std::vector<GLfloat> nor {
+					vector<GLfloat> nor {
 						0.0f, -1.0f, 0.0f,
 						0.0f, -1.0f, 0.0f,
 						0.0f, -1.0f, 0.0f,
 						0.0f, -1.0f, 0.0f
 					};
 
-					std::vector<GLfloat> uv {
+					vector<GLfloat> uv {
 						0.0f, 0.0f, static_cast<GLfloat>(bottomTexture),
 						1.0f, 0.0f, static_cast<GLfloat>(bottomTexture),
 						1.0f, 1.0f, static_cast<GLfloat>(bottomTexture),
 						0.0f, 1.0f, static_cast<GLfloat>(bottomTexture)
 					};
 
-					std::vector<short> el{
-						static_cast<short>(0 + elementOffset), static_cast<short>(1 + elementOffset), static_cast<short>(2 + elementOffset),
-						static_cast<short>(0 + elementOffset), static_cast<short>(2 + elementOffset), static_cast<short>(3 + elementOffset)
+					vector<short> el {
+						static_cast<short>(0 + elementOffset),
+						static_cast<short>(1 + elementOffset),
+						static_cast<short>(2 + elementOffset),
+						static_cast<short>(0 + elementOffset),
+						static_cast<short>(2 + elementOffset),
+						static_cast<short>(3 + elementOffset)
 					};
 
-					for (auto v : vertex) { vertexData.push_back(v);}
-					for (auto n : nor) { normals.push_back(n);}
-					for (auto u : uv) { UV.push_back(u);}
-					for (auto e : el) { elementData.push_back(e);}
+					for (auto v : vertex) {vertexData.push_back(v);}
+					for (auto n : nor) {normals.push_back(n);}
+					for (auto u : uv) {UV.push_back(u);}
+					for (auto e : el) {elementData.push_back(e);}
 
 					elementOffset += 4;
 					totalNumberOfFaces++;
@@ -425,7 +479,7 @@ GraphicalChunk::GraphicalChunk(float x, float y, float z,
 	}
 
 	mesh.reset(new mesh::MeshElement(vertexData, 4, normals, 3, UV, 3, elementData));
-	//std::cout<<"Total number of faces: "<<totalNumberOfFaces<<"\n";
+	//cout<<"Total number of faces: "<<totalNumberOfFaces<<"\n";
 
 }
 
@@ -433,23 +487,19 @@ GraphicalChunk::GraphicalChunk(float x, float y, float z,
 // Member Functions########################################
 // ########################################################
 
-void GraphicalChunk::draw()
-{
+void GraphicalChunk::draw() {
 	mesh->draw();
 }
 
-Transform& GraphicalChunk::getTransform()
-{
+Transform& GraphicalChunk::getTransform() {
 	return transform;
 }
 
-float GraphicalChunk::getxLocation()
-{
+float GraphicalChunk::getxLocation() {
 	return xLocation;
 }
 
-float GraphicalChunk::getyLocation()
-{
+float GraphicalChunk::getyLocation() {
 	return yLocation;
 }
 
@@ -457,12 +507,11 @@ float GraphicalChunk::getyLocation()
 // If there is no neighbor, nullptr will be returned
 // Trying to get a voxel that is not adjacent to this chunk is an error
 Voxel* GraphicalChunk::getVoxel(int x, int y, int z,
-		std::vector<std::vector<std::vector<Voxel>>> &data,
-		std::vector<std::vector<std::vector<Voxel>>> *right,
-		std::vector<std::vector<std::vector<Voxel>>> *left,
-		std::vector<std::vector<std::vector<Voxel>>> *back,
-		std::vector<std::vector<std::vector<Voxel>>> *front)
-{
+vector<vector<vector<Voxel>>>&data,
+vector<vector<vector<Voxel>>> *right,
+vector<vector<vector<Voxel>>> *left,
+vector<vector<vector<Voxel>>> *back,
+vector<vector<vector<Voxel>>> *front) {
 
 	if (x < width && x >= 0 && y < height && y >= 0 && z < depth && z >= 0) {
 		return &data[x][y][z];
@@ -498,106 +547,99 @@ Voxel* GraphicalChunk::getVoxel(int x, int y, int z,
 int AOFactor = 1;
 
 void GraphicalChunk::doAORight(CubeFaceData &cf, int x, int y, int z,
-		std::vector<std::vector<std::vector<Voxel>>> &data,
-		std::vector<std::vector<std::vector<Voxel>>> *right,
-		std::vector<std::vector<std::vector<Voxel>>> *left,
-		std::vector<std::vector<std::vector<Voxel>>> *back,
-		std::vector<std::vector<std::vector<Voxel>>> *front)
-{
+vector<vector<vector<Voxel>>>&data,
+vector<vector<vector<Voxel>>> *right,
+vector<vector<vector<Voxel>>> *left,
+vector<vector<vector<Voxel>>> *back,
+vector<vector<vector<Voxel>>> *front) {
 	char bottomLeft = 0;
 	char bottomRight = 0;
 	char topRight = 0;
 	char topLeft = 0;
 
 	Voxel *v = getVoxel(x + 1, y - 1, z, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) bottomLeft++;
+	if (v && v->id != AIR) bottomLeft++;
 	v = getVoxel(x + 1, y, z - 1, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) bottomLeft++;
+	if (v && v->id != AIR) bottomLeft++;
 	v = getVoxel(x + 1, y - 1, z - 1, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) bottomLeft++;
+	if (v && v->id != AIR) bottomLeft++;
 	cf.lvRight_BottomLeft -= bottomLeft * AOFactor;
 
-
 	v = getVoxel(x + 1, y - 1, z, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) bottomRight++;
+	if (v && v->id != AIR) bottomRight++;
 	v = getVoxel(x + 1, y, z + 1, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) bottomRight++;
+	if (v && v->id != AIR) bottomRight++;
 	v = getVoxel(x + 1, y - 1, z + 1, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) bottomRight++;
+	if (v && v->id != AIR) bottomRight++;
 	cf.lvRight_BottomRight -= bottomRight * AOFactor;
 
-
 	v = getVoxel(x + 1, y + 1, z, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) topRight++;
+	if (v && v->id != AIR) topRight++;
 	v = getVoxel(x + 1, y, z + 1, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) topRight++;
+	if (v && v->id != AIR) topRight++;
 	v = getVoxel(x + 1, y + 1, z + 1, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) topRight++;
+	if (v && v->id != AIR) topRight++;
 	cf.lvRight_TopRight -= topRight * AOFactor;
 
 	v = getVoxel(x + 1, y + 1, z, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) topLeft++;
+	if (v && v->id != AIR) topLeft++;
 	v = getVoxel(x + 1, y, z - 1, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) topLeft++;
+	if (v && v->id != AIR) topLeft++;
 	v = getVoxel(x + 1, y + 1, z - 1, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) topLeft++;
+	if (v && v->id != AIR) topLeft++;
 	cf.lvRight_TopLeft -= topLeft * AOFactor;
-
 }
 
 void GraphicalChunk::doAOLeft(CubeFaceData &cf, int x, int y, int z,
-		std::vector<std::vector<std::vector<Voxel>>> &data,
-		std::vector<std::vector<std::vector<Voxel>>> *right,
-		std::vector<std::vector<std::vector<Voxel>>> *left,
-		std::vector<std::vector<std::vector<Voxel>>> *back,
-		std::vector<std::vector<std::vector<Voxel>>> *front)
-{
+vector<vector<vector<Voxel>>>&data,
+vector<vector<vector<Voxel>>> *right,
+vector<vector<vector<Voxel>>> *left,
+vector<vector<vector<Voxel>>> *back,
+vector<vector<vector<Voxel>>> *front) {
 	char bottomLeft = 0;
 	char bottomRight = 0;
 	char topRight = 0;
 	char topLeft = 0;
 
-
 	Voxel *v = getVoxel(x - 1, y - 1, z, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) bottomLeft++;
+	if (v && v->id != AIR) bottomLeft++;
 	v = getVoxel(x - 1, y, z + 1, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) bottomLeft++;
+	if (v && v->id != AIR) bottomLeft++;
 	v = getVoxel(x - 1, y - 1, z + 1, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) bottomLeft++;
+	if (v && v->id != AIR) bottomLeft++;
 	cf.lvLeft_BottomLeft -= bottomLeft * AOFactor;
 
 	v = getVoxel(x - 1, y - 1, z, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) bottomRight++;
+	if (v && v->id != AIR) bottomRight++;
 	v = getVoxel(x - 1, y, z - 1, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) bottomRight++;
+	if (v && v->id != AIR) bottomRight++;
 	v = getVoxel(x - 1, y - 1, z - 1, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) bottomRight++;
+	if (v && v->id != AIR) bottomRight++;
 	cf.lvLeft_BottomRight -= bottomRight * AOFactor;
 
 	v = getVoxel(x - 1, y + 1, z, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) topRight++;
+	if (v && v->id != AIR) topRight++;
 	v = getVoxel(x - 1, y, z + 1, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) topRight++;
+	if (v && v->id != AIR) topRight++;
 	v = getVoxel(x - 1, y + 1, z + 1, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) topRight++;
+	if (v && v->id != AIR) topRight++;
 	cf.lvLeft_TopLeft -= topRight * AOFactor;
 
 	v = getVoxel(x - 1, y + 1, z, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) topLeft++;
+	if (v && v->id != AIR) topLeft++;
 	v = getVoxel(x - 1, y, z - 1, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) topLeft++;
+	if (v && v->id != AIR) topLeft++;
 	v = getVoxel(x - 1, y + 1, z - 1, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) topLeft++;
+	if (v && v->id != AIR) topLeft++;
 	cf.lvLeft_TopRight -= topLeft * AOFactor;
 }
 
 void GraphicalChunk::doAOBack(CubeFaceData &cf, int x, int y, int z,
-		std::vector<std::vector<std::vector<Voxel>>> &data,
-		std::vector<std::vector<std::vector<Voxel>>> *right,
-		std::vector<std::vector<std::vector<Voxel>>> *left,
-		std::vector<std::vector<std::vector<Voxel>>> *back,
-		std::vector<std::vector<std::vector<Voxel>>> *front)
-{
+vector<vector<vector<Voxel>>>&data,
+vector<vector<vector<Voxel>>> *right,
+vector<vector<vector<Voxel>>> *left,
+vector<vector<vector<Voxel>>> *back,
+vector<vector<vector<Voxel>>> *front) {
 
 	char bottomLeft = 0;
 	char bottomRight = 0;
@@ -605,46 +647,44 @@ void GraphicalChunk::doAOBack(CubeFaceData &cf, int x, int y, int z,
 	char topLeft = 0;
 
 	Voxel *v = getVoxel(x, y - 1, z + 1, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) bottomLeft++;
+	if (v && v->id != AIR) bottomLeft++;
 	v = getVoxel(x + 1, y, z + 1, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) bottomLeft++;
+	if (v && v->id != AIR) bottomLeft++;
 	v = getVoxel(x + 1, y - 1, z + 1, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) bottomLeft++;
+	if (v && v->id != AIR) bottomLeft++;
 	cf.lvBack_BottomLeft -= bottomLeft * AOFactor;
 
 	v = getVoxel(x, y - 1, z + 1, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) bottomRight++;
+	if (v && v->id != AIR) bottomRight++;
 	v = getVoxel(x - 1, y, z + 1, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) bottomRight++;
+	if (v && v->id != AIR) bottomRight++;
 	v = getVoxel(x - 1, y - 1, z + 1, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) bottomRight++;
+	if (v && v->id != AIR) bottomRight++;
 	cf.lvBack_BottomRight -= bottomRight * AOFactor;
 
 	v = getVoxel(x, y + 1, z + 1, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) topRight++;
+	if (v && v->id != AIR) topRight++;
 	v = getVoxel(x - 1, y, z + 1, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) topRight++;
+	if (v && v->id != AIR) topRight++;
 	v = getVoxel(x - 1, y + 1, z + 1, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) topRight++;
+	if (v && v->id != AIR) topRight++;
 	cf.lvBack_TopRight -= topRight * AOFactor;
 
 	v = getVoxel(x, y + 1, z + 1, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) topLeft++;
+	if (v && v->id != AIR) topLeft++;
 	v = getVoxel(x + 1, y, z + 1, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) topLeft++;
+	if (v && v->id != AIR) topLeft++;
 	v = getVoxel(x + 1, y + 1, z + 1, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) topLeft++;
+	if (v && v->id != AIR) topLeft++;
 	cf.lvBack_TopLeft -= topLeft * AOFactor;
-
 }
 
 void GraphicalChunk::doAOFront(CubeFaceData &cf, int x, int y, int z,
-		std::vector<std::vector<std::vector<Voxel>>> &data,
-		std::vector<std::vector<std::vector<Voxel>>> *right,
-		std::vector<std::vector<std::vector<Voxel>>> *left,
-		std::vector<std::vector<std::vector<Voxel>>> *back,
-		std::vector<std::vector<std::vector<Voxel>>> *front)
-{
+		vector<vector<vector<Voxel>>>&data,
+vector<vector<vector<Voxel>>> *right,
+vector<vector<vector<Voxel>>> *left,
+vector<vector<vector<Voxel>>> *back,
+vector<vector<vector<Voxel>>> *front) {
 
 	char bottomLeft = 0;
 	char bottomRight = 0;
@@ -652,129 +692,125 @@ void GraphicalChunk::doAOFront(CubeFaceData &cf, int x, int y, int z,
 	char topLeft = 0;
 
 	Voxel *v = getVoxel(x, y - 1, z - 1, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) bottomLeft++;
+	if (v && v->id != AIR) bottomLeft++;
 	v = getVoxel(x - 1, y, z - 1, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) bottomLeft++;
+	if (v && v->id != AIR) bottomLeft++;
 	v = getVoxel(x - 1, y - 1, z - 1, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) bottomLeft++;
+	if (v && v->id != AIR) bottomLeft++;
 	cf.lvFront_BottomLeft -= bottomLeft * AOFactor;
 
 	v = getVoxel(x, y - 1, z - 1, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) bottomRight++;
+	if (v && v->id != AIR) bottomRight++;
 	v = getVoxel(x + 1, y, z - 1, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) bottomRight++;
+	if (v && v->id != AIR) bottomRight++;
 	v = getVoxel(x + 1, y - 1, z - 1, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) bottomRight++;
+	if (v && v->id != AIR) bottomRight++;
 	cf.lvFront_BottomRight -= bottomRight * AOFactor;
 
 	v = getVoxel(x, y + 1, z - 1, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) topRight++;
+	if (v && v->id != AIR) topRight++;
 	v = getVoxel(x + 1, y, z-+ 1, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) topRight++;
+	if (v && v->id != AIR) topRight++;
 	v = getVoxel(x + 1, y + 1, z - 1, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) topRight++;
+	if (v && v->id != AIR) topRight++;
 	cf.lvFront_TopRight -= topRight * AOFactor;
 
 	v = getVoxel(x, y + 1, z - 1, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) topLeft++;
+	if (v && v->id != AIR) topLeft++;
 	v = getVoxel(x - 1, y, z - 1, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) topLeft++;
+	if (v && v->id != AIR) topLeft++;
 	v = getVoxel(x - 1, y + 1, z - 1, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) topLeft++;
+	if (v && v->id != AIR) topLeft++;
 	cf.lvFront_TopLeft -= topLeft * AOFactor;
-
 }
 
 void GraphicalChunk::doAOTop(CubeFaceData &cf, int x, int y, int z,
-		std::vector<std::vector<std::vector<Voxel>>> &data,
-		std::vector<std::vector<std::vector<Voxel>>> *right,
-		std::vector<std::vector<std::vector<Voxel>>> *left,
-		std::vector<std::vector<std::vector<Voxel>>> *back,
-		std::vector<std::vector<std::vector<Voxel>>> *front)
-{
+		vector<vector<vector<Voxel>>>&data,
+vector<vector<vector<Voxel>>> *right,
+vector<vector<vector<Voxel>>> *left,
+vector<vector<vector<Voxel>>> *back,
+vector<vector<vector<Voxel>>> *front) {
 	char bottomLeft = 0;
 	char bottomRight = 0;
 	char topRight = 0;
 	char topLeft = 0;
 
 	Voxel *v = getVoxel(x, y + 1, z - 1, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) bottomLeft++;
+	if (v && v->id != AIR) bottomLeft++;
 	v = getVoxel(x - 1, y + 1, z, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) bottomLeft++;
+	if (v && v->id != AIR) bottomLeft++;
 	v = getVoxel(x - 1, y + 1, z - 1, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) bottomLeft++;
+	if (v && v->id != AIR) bottomLeft++;
 	cf.lvTop_BottomLeft -= bottomLeft * AOFactor;
 
 	v = getVoxel(x, y + 1, z - 1, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) bottomRight++;
+	if (v && v->id != AIR) bottomRight++;
 	v = getVoxel(x + 1, y + 1, z, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) bottomRight++;
+	if (v && v->id != AIR) bottomRight++;
 	v = getVoxel(x + 1, y + 1, z - 1, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) bottomRight++;
+	if (v && v->id != AIR) bottomRight++;
 	cf.lvTop_BottomRight-= bottomRight * AOFactor;
 
 	v = getVoxel(x, y + 1, z + 1, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) topRight++;
+	if (v && v->id != AIR) topRight++;
 	v = getVoxel(x + 1, y + 1, z, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) topRight++;
+	if (v && v->id != AIR) topRight++;
 	v = getVoxel(x + 1, y + 1, z + 1, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) topRight++;
+	if (v && v->id != AIR) topRight++;
 	cf.lvTop_TopRight -= topRight * AOFactor;
 
 	v = getVoxel(x, y + 1, z + 1, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) topLeft++;
+	if (v && v->id != AIR) topLeft++;
 	v = getVoxel(x - 1, y + 1, z, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) topLeft++;
+	if (v && v->id != AIR) topLeft++;
 	v = getVoxel(x - 1, y + 1, z + 1, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) topLeft++;
+	if (v && v->id != AIR) topLeft++;
 	cf.lvTop_TopLeft -= topLeft * AOFactor;
-
 }
 
 void GraphicalChunk::doAOBottom(CubeFaceData &cf, int x, int y, int z,
-		std::vector<std::vector<std::vector<Voxel>>> &data,
-		std::vector<std::vector<std::vector<Voxel>>> *right,
-		std::vector<std::vector<std::vector<Voxel>>> *left,
-		std::vector<std::vector<std::vector<Voxel>>> *back,
-		std::vector<std::vector<std::vector<Voxel>>> *front)
-{
+vector<vector<vector<Voxel>>>&data,
+vector<vector<vector<Voxel>>> *right,
+vector<vector<vector<Voxel>>> *left,
+vector<vector<vector<Voxel>>> *back,
+vector<vector<vector<Voxel>>> *front) {
+
 	char bottomLeft = 0;
 	char bottomRight = 0;
 	char topRight = 0;
 	char topLeft = 0;
 
 	Voxel *v = getVoxel(x, y - 1, z - 1, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) bottomLeft++;
+	if (v && v->id != AIR) bottomLeft++;
 	v = getVoxel(x - 1, y - 1, z, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) bottomLeft++;
+	if (v && v->id != AIR) bottomLeft++;
 	v = getVoxel(x - 1, y - 1, z - 1, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) bottomLeft++;
+	if (v && v->id != AIR) bottomLeft++;
 	cf.lvBottom_BottomLeft -= bottomLeft * AOFactor;
 
 	v = getVoxel(x, y - 1, z - 1, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) bottomRight++;
+	if (v && v->id != AIR) bottomRight++;
 	v = getVoxel(x + 1, y - 1, z, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) bottomRight++;
+	if (v && v->id != AIR) bottomRight++;
 	v = getVoxel(x + 1, y - 1, z - 1, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) bottomRight++;
+	if (v && v->id != AIR) bottomRight++;
 	cf.lvBottom_BottomRight-= bottomRight * AOFactor;
 
 	v = getVoxel(x, y - 1, z + 1, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) topRight++;
+	if (v && v->id != AIR) topRight++;
 	v = getVoxel(x + 1, y - 1, z, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) topRight++;
+	if (v && v->id != AIR) topRight++;
 	v = getVoxel(x + 1, y - 1, z + 1, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) topRight++;
+	if (v && v->id != AIR) topRight++;
 	cf.lvBottom_TopRight -= topRight * AOFactor;
 
 	v = getVoxel(x, y - 1, z + 1, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) topLeft++;
+	if (v && v->id != AIR) topLeft++;
 	v = getVoxel(x - 1, y - 1, z, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) topLeft++;
+	if (v && v->id != AIR) topLeft++;
 	v = getVoxel(x - 1, y - 1, z + 1, data, right, left, back, front);
-	if (v && v->id != config::cube_data::AIR) topLeft++;
+	if (v && v->id != AIR) topLeft++;
 	cf.lvBottom_TopLeft -= topLeft * AOFactor;
-
 }
 
 }

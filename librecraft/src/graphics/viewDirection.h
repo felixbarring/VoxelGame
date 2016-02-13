@@ -1,4 +1,3 @@
-
 #ifndef SRC_GRAPHICS_VIEWDIRECTION_H_
 #define SRC_GRAPHICS_VIEWDIRECTION_H_
 
@@ -15,9 +14,13 @@ public:
 // Constructor/Destructor #################################
 // ########################################################
 
-	ViewDirection() {};
+	ViewDirection() {
+	}
+	;
 
-	virtual ~ViewDirection() {};
+	virtual ~ViewDirection() {
+	}
+	;
 
 	// ########################################################
 	// Member Functions########################################
@@ -42,12 +45,12 @@ private:
 	glm::vec3 direction;
 	glm::vec3 up;
 	glm::vec3 right;
-	glm::vec3 worldUp{0.0f, 1.0f, 0.0f};
+	glm::vec3 worldUp { 0.0f, 1.0f, 0.0f };
 	float horizontalAngle = 0.1f;
 	float verticalAngle = 0.0f;
 
-	float maxVerticalAngle = 3.14/2;
-	float minVerticalAngle = -3.14/2;
+	float maxVerticalAngle = 3.14 / 2;
+	float minVerticalAngle = -3.14 / 2;
 
 	float xSensitivity = 0.01;
 	float ySensitivity = 0.01;

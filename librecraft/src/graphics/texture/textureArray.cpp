@@ -1,10 +1,8 @@
-
 #include "textureArray.h"
 
 #include <SOIL.h>
 
-namespace texture
-{
+namespace texture {
 
 // ########################################################
 // Constructor/Destructor #################################
@@ -12,8 +10,8 @@ namespace texture
 
 // TODO Clean up this class
 
-TextureArray::TextureArray(std::vector<std::string> paths, int width, int height)
-{
+TextureArray::TextureArray(std::vector<std::string> paths, int width,
+		int height) {
 	GLsizei layerCount = paths.size();
 
 	glGenTextures(1, &textureID);
@@ -29,37 +27,37 @@ TextureArray::TextureArray(std::vector<std::string> paths, int width, int height
 	glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
-	glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, GL_RGBA8, width, height, layerCount, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
+	glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, GL_RGBA8, width, height, layerCount, 0,
+			GL_RGB, GL_UNSIGNED_BYTE, nullptr);
 
 	int i = 0;
 	for (auto path : paths) {
 
 		int w;
 		int h;
-		unsigned char* image = SOIL_load_image(path.c_str(), &w, &h, 0, SOIL_LOAD_RGB);
+		unsigned char* image = SOIL_load_image(path.c_str(), &w, &h, 0,
+				SOIL_LOAD_RGB);
 
 		if (w != width || h != height) {
 			// ERROR HERE :(
 		}
-		glTexSubImage3D(GL_TEXTURE_2D_ARRAY, 0, 0, 0, i++, w, h, 1, GL_RGB, GL_UNSIGNED_BYTE, image);
+		glTexSubImage3D(GL_TEXTURE_2D_ARRAY, 0, 0, 0, i++, w, h, 1, GL_RGB,
+				GL_UNSIGNED_BYTE, image);
 		SOIL_free_image_data(image);
 	}
 
 	glGenerateMipmap(GL_TEXTURE_2D_ARRAY);
 }
 
-
 // TODO Delete the texture from OpenGL ?
-TextureArray::~TextureArray()
-{
+TextureArray::~TextureArray() {
 }
 
 // ########################################################
 // Member Functions########################################
 // ########################################################
 
-void TextureArray::bind()
-{
+void TextureArray::bind() {
 	glBindTexture(GL_TEXTURE_2D_ARRAY, textureID);
 }
 

@@ -1,4 +1,3 @@
-
 #ifndef SRC_MODEL_WORLD_CHUNK_CHUNK_H_
 #define SRC_MODEL_WORLD_CHUNK_CHUNK_H_
 
@@ -12,15 +11,14 @@
 #include "../../../util/voxel.h"
 #include "../../../graphics/graphicalChunk.h"
 
-namespace chunk
-{
+namespace chunk {
 
 class Chunk {
 public:
 
-	// ########################################################
-	// Constructor/Destructor #################################
-	// ########################################################
+// ########################################################
+// Constructor/Destructor #################################
+// ########################################################
 
 	Chunk(int x, int z);
 
@@ -28,9 +26,9 @@ public:
 
 	virtual ~Chunk();
 
-	// ########################################################
-	// Member Functions########################################
-	// ########################################################
+// ########################################################
+// Member Functions########################################
+// ########################################################
 
 	// Some kind of update method here
 
@@ -64,7 +62,8 @@ public:
 
 	void doSunLightning(std::vector<glm::vec3> &lightPropagate);
 
-	void doSunLightning(std::vector<glm::vec3> &lightPropagate, int x, int y, int z);
+	void doSunLightning(std::vector<glm::vec3> &lightPropagate, int x, int y,
+			int z);
 
 	void updateLightning();
 
@@ -92,9 +91,9 @@ public:
 
 	void storeChunk(std::string worldName, int x, int z);
 
-	// ########################################################
-	// Instance Variables #####################################
-	// ########################################################
+// ########################################################
+// Implementation #########################################
+// ########################################################
 
 private:
 
@@ -108,7 +107,7 @@ private:
 	int height = config::chunk_data::CHUNK_HEIGHT;
 	int depth = config::chunk_data::CHUNK_DEPTH;
 
-	std::vector<std::vector<std::vector<Voxel>>> vec;
+	std::vector<std::vector<std::vector<Voxel>>>vec;
 
 	std::shared_ptr<graphics::GraphicalChunk> graphicalChunk;
 

@@ -1,4 +1,3 @@
-
 #include "textArea.h"
 
 namespace widget {
@@ -7,21 +6,18 @@ namespace widget {
 // Constructor/Destructor #################################
 // ########################################################
 
-TextArea::TextArea(int id, int x, int y, int width, int height) :
-		AbstractWidget(id, x, y, width, height)
-{
+TextArea::TextArea(int id, int x, int y, int width, int height)
+		: AbstractWidget(id, x, y, width, height) {
 }
 
 // ########################################################
 // Member Functions########################################
 // ########################################################
 
-void TextArea::draw()
-{
+void TextArea::draw() {
 }
 
-void TextArea::update(float timePassed)
-{
+void TextArea::update(float timePassed) {
 
 }
 

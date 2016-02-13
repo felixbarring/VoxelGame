@@ -1,4 +1,3 @@
-
 #include "fpsManager.h"
 
 #include <iostream>
@@ -7,8 +6,7 @@
 #include <chrono>
 #include <thread>
 
-namespace util
-{
+namespace util {
 
 std::chrono::milliseconds oneMilliSecond(1);
 
@@ -16,23 +14,19 @@ std::chrono::milliseconds oneMilliSecond(1);
 // Constructor/Destructor #################################
 // ########################################################
 
-FPSManager::FPSManager(int maxFPS):
-	maxFPS{maxFPS},
-	timePerFrame{1.0 / maxFPS}
-{
+FPSManager::FPSManager(int maxFPS)
+		: maxFPS {maxFPS}, timePerFrame {1.0 / maxFPS} {
 }
 
 // ########################################################
 // Member Functions########################################
 // ########################################################
 
-void FPSManager::frameStart()
-{
-	 frameStartTime = glfwGetTime();
+void FPSManager::frameStart() {
+	frameStartTime = glfwGetTime();
 }
 
-void FPSManager::sync()
-{
+void FPSManager::sync() {
 
 	// Sleep the thread if we are running fast to save computer power.
 	// If we are running too fast and there is more than 1 miliseconds left until
@@ -44,8 +38,10 @@ void FPSManager::sync()
 	while (totalFrameTime < timePerFrame) {
 		double timeRemainingInMilis = (timePerFrame - totalFrameTime) / mili;
 		if (timeRemainingInMilis > 2) {
-			std::this_thread::sleep_for((timeRemainingInMilis - 1) * oneMilliSecond);
-		} else if (timeRemainingInMilis > 1) {
+			std::this_thread::sleep_for(
+					(timeRemainingInMilis - 1) * oneMilliSecond);
+		}
+		else if (timeRemainingInMilis > 1) {
 			std::this_thread::sleep_for(oneMilliSecond);
 		}
 		totalFrameTime = glfwGetTime() - frameStartTime;
@@ -56,13 +52,11 @@ void FPSManager::sync()
 
 }
 
-double FPSManager::frameTime()
-{
+double FPSManager::frameTime() {
 	return timeForLatestFrame;
 }
 
-int FPSManager::getFps()
-{
+int FPSManager::getFps() {
 	return currentFPS;
 }
 

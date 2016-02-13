@@ -1,11 +1,9 @@
-
 #ifndef SRC_GRAPHICS_TRANSFORM_H_
 #define SRC_GRAPHICS_TRANSFORM_H_
 
 #include <glm/glm.hpp>
 
-namespace graphics
-{
+namespace graphics {
 
 class Transform {
 public:
@@ -16,7 +14,9 @@ public:
 
 	Transform(float x, float y, float z);
 
-	virtual ~Transform() {};
+	virtual ~Transform() {
+	}
+	;
 
 // ########################################################
 // Member Functions########################################

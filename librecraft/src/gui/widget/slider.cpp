@@ -1,4 +1,3 @@
-
 #include "slider.h"
 
 #include "../../graphics/resources.h"
@@ -21,18 +20,21 @@ namespace widget {
 // ########################################################
 
 Slider::Slider(int id, int x, int y, int width, int height,
-		std::function<void(int)> observer, int layer) :
-	AbstractWidget(id, x, y, width, height)
-{
+		std::function<void(int)> observer, int layer)
+		: AbstractWidget(id, x, y, width, height) {
 
 	this->m_observer = observer;
 	m_knobPosition = x;
 	m_knobWidth = height;
 
-	m_slider.reset(new Sprite(x, y, 1, width, height,
-		Resources::getInstance().getTexture(config::gui_data::slider)));
-	m_knob.reset(new Sprite(x, y, 2, height, height,
-		Resources::getInstance().getTexture(config::gui_data::sliderKnob)));
+	m_slider.reset(
+			new Sprite(x, y, 1, width, height,
+					Resources::getInstance().getTexture(
+							config::gui_data::slider)));
+	m_knob.reset(
+			new Sprite(x, y, 2, height, height,
+					Resources::getInstance().getTexture(
+							config::gui_data::sliderKnob)));
 
 }
 
@@ -40,35 +42,31 @@ Slider::Slider(int id, int x, int y, int width, int height,
 // Member Functions########################################
 // ########################################################
 
-float Slider::getValue()
-{
+float Slider::getValue() {
 	return (m_knobPosition - this->m_xCoordinate) / (m_width - m_knobWidth);
 }
 
-void Slider::draw()
-{
+void Slider::draw() {
 	SpriteBatcher::getInstance().addBatch(m_slider);
 	SpriteBatcher::getInstance().addBatch(m_knob);
 }
 
-void Slider::update(float timePassed)
-{
+void Slider::update(float timePassed) {
 	shared_ptr<Input> input = Input::getInstance();
-	m_pointerInsideBorders = isInsideBorders(
-			input->mouseVirtualAdjustedX, input->mouseVirtualAdjustedY);
+	m_pointerInsideBorders = isInsideBorders(input->mouseVirtualAdjustedX,
+			input->mouseVirtualAdjustedY);
 	m_grabbed = !m_grabbed && m_pointerInsideBorders;
 
 	if (m_grabbed) {
 		m_knobPosition = input->mouseVirtualAdjustedX - m_knobWidth / 2;
 
-		if (m_knobPosition < this->m_xCoordinate ) {
+		if (m_knobPosition < this->m_xCoordinate) {
 			m_knobPosition = this->m_xCoordinate;
 		}
 
-		if (m_knobPosition > this->m_xCoordinate +
-				this->m_width - m_knobWidth) {
-			m_knobPosition = this->m_xCoordinate +
-					this->m_width - m_knobWidth;
+		if (m_knobPosition
+				> this->m_xCoordinate + this->m_width - m_knobWidth) {
+			m_knobPosition = this->m_xCoordinate + this->m_width - m_knobWidth;
 		}
 
 		m_knob->setLocation(m_knobPosition + m_knobWidth / 2,

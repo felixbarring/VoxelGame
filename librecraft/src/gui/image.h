@@ -1,4 +1,3 @@
-
 #ifndef SRC_GUI_IMAGE_H_
 #define SRC_GUI_IMAGE_H_
 
@@ -24,8 +23,10 @@ public:
 	void draw();
 
 // ########################################################
-// Instance Variables #####################################
+// Implementation #########################################
 // ########################################################
+
+private:
 
 	std::shared_ptr<graphics::Sprite> sprite;
 

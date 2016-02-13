@@ -1,4 +1,3 @@
-
 #ifndef GAME_MODEL_ENTITIES_CUBE_H_
 #define GAME_MODEL_ENTITIES_CUBE_H_
 
@@ -7,8 +6,7 @@
 #include "mesh/meshElement.h"
 #include "transform.h"
 
-namespace graphics
-{
+namespace graphics {
 
 class TexturedCube {
 public:
@@ -19,7 +17,9 @@ public:
 
 	TexturedCube(float xOffset, float yOffset, float zOffset, int id);
 
-	virtual ~TexturedCube() {};
+	virtual ~TexturedCube() {
+	}
+	;
 
 // ########################################################
 // Member Functions########################################
@@ -36,7 +36,6 @@ public:
 // ########################################################
 
 private:
-
 	// unique pointer gives error?!?
 	std::shared_ptr<mesh::MeshElement> mesh;
 

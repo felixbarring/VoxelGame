@@ -1,4 +1,3 @@
-
 #include "button.h"
 
 #include "../../graphics/spriteBatcher.h"
@@ -20,26 +19,26 @@ namespace widget {
 // ########################################################
 
 Button::Button(int id, int x, int y, int width, int height,
-		function<void(int)> observer, string name, int layer) :
-	AbstractWidget(id, x, y, width, height),
-	m_name(name)
-{
+		function<void(int)> observer, string name, int layer)
+		: AbstractWidget(id, x, y, width, height), m_name(name) {
 	this->m_observer = observer;
 	auto &res = Resources::getInstance();
 
-	m_sprite.reset(new Sprite(x, y, layer, width, height,
-		res.getTexture(config::gui_data::button)));
-	m_highlight.reset(new Sprite(x, y, layer + 1, width, height,
-		res.getTexture(config::gui_data::highlight)));
+	m_sprite.reset(
+			new Sprite(x, y, layer, width, height,
+					res.getTexture(config::gui_data::button)));
+	m_highlight.reset(
+			new Sprite(x, y, layer + 1, width, height,
+					res.getTexture(config::gui_data::highlight)));
 
 	FontMeshBuilder &fontMeshBuilder = res.getFontMeshBuilder(
-			config::font_data::fontLayout,
-			config::font_data::fontAtlasWidth,
+			config::font_data::fontLayout, config::font_data::fontAtlasWidth,
 			config::font_data::fontAtlasHeight);
 
-	m_text.reset(new Sprite(x, y + 5, layer + 1,
-		fontMeshBuilder.buldMeshForString(name, height - 5),
-		res.getTexture(config::font_data::font)));
+	m_text.reset(
+			new Sprite(x, y + 5, layer + 1,
+					fontMeshBuilder.buldMeshForString(name, height - 5),
+					res.getTexture(config::font_data::font)));
 
 }
 
@@ -47,13 +46,11 @@ Button::Button(int id, int x, int y, int width, int height,
 // Member Functions########################################
 // ########################################################
 
-std::string Button::getName()
-{
+std::string Button::getName() {
 	return m_name;
 }
 
-void Button::draw()
-{
+void Button::draw() {
 	SpriteBatcher &spriteBatcher(SpriteBatcher::getInstance());
 
 	if (m_pointerInsideBorders) {
@@ -66,17 +63,14 @@ void Button::draw()
 	}
 }
 
-void Button::update(float timePassed)
-{
-	shared_ptr<Input> input{Input::getInstance()};
+void Button::update(float timePassed) {
+	shared_ptr<Input> input {Input::getInstance()};
 
-	m_pointerInsideBorders = isInsideBorders(
-			input->mouseVirtualAdjustedX,
+	m_pointerInsideBorders = isInsideBorders(input->mouseVirtualAdjustedX,
 			input->mouseVirtualAdjustedY);
 
 	if (m_pointerInsideBorders && input->action1Pressed)
 		m_observer.operator ()(m_id);
 }
-
 
 } /* namespace widget */

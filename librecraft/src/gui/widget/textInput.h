@@ -1,4 +1,3 @@
-
 #ifndef SRC_GUI_WIDGET_TEXTINPUT_H_
 #define SRC_GUI_WIDGET_TEXTINPUT_H_
 
@@ -12,7 +11,7 @@
 
 namespace widget {
 
-class TextInput : public AbstractWidget {
+class TextInput: public AbstractWidget {
 public:
 
 // ########################################################
@@ -21,7 +20,9 @@ public:
 
 	TextInput(int id, int x, int y, unsigned width, int height, int layer = 0);
 
-	virtual ~TextInput() {};
+	virtual ~TextInput() {
+	}
+	;
 
 // ########################################################
 // Member Functions########################################
@@ -36,18 +37,18 @@ public:
 	void update(float timePassed) override;
 
 // ########################################################
-// Instance Variables #####################################
+// Implementation #########################################
 // ########################################################
 
 private:
 
-	bool m_hasFocus{false};
+	bool m_hasFocus {false};
 
-	std::string m_input{""};
+	std::string m_input {""};
 	unsigned m_maxInputLength;
 
-	float m_eraseDelay{0.2f};
-	float m_accumulatedEraseTime{0.0f};
+	float m_eraseDelay {0.2f};
+	float m_accumulatedEraseTime {0.0f};
 
 	std::shared_ptr<graphics::Sprite> m_sprite;
 	std::shared_ptr<graphics::Sprite> m_text;

@@ -1,4 +1,3 @@
-
 #ifndef SRC_UTIL_INPUT_H_
 #define SRC_UTIL_INPUT_H_
 
@@ -11,23 +10,25 @@ namespace util {
 
 class Input {
 
-	// ########################################################
-	// Constructor/Destructor #################################
-	// ########################################################
+// ########################################################
+// Constructor/Destructor #################################
+// ########################################################
 
 	Input(GLFWwindow* w, float centerX, float centerY);
 
 public:
 
-	virtual ~Input() {};
+	virtual ~Input() {
+	}
+	;
 
 	static void createInstance(GLFWwindow* w, float centerX, float centerY);
 
 	static std::shared_ptr<Input> getInstance();
 
-	// ########################################################
-	// Member Functions########################################
-	// ########################################################
+// ########################################################
+// Member Functions########################################
+// ########################################################
 
 	void updateValues();
 
@@ -37,55 +38,55 @@ public:
 
 	void unlockMouse();
 
-	// ########################################################
-	// Instance Variables #####################################
-	// ########################################################
+// ########################################################
+// Implementation #########################################
+// ########################################################
 
 	// Keyboard
-	bool moveForwardPressed{false};
-	bool moveForwardActive{false};
+	bool moveForwardPressed {false};
+	bool moveForwardActive {false};
 
-	bool moveLeftPressed{false};
-	bool moveLeftActive{false};
+	bool moveLeftPressed {false};
+	bool moveLeftActive {false};
 
-	bool moveRightPressed{false};
-	bool moveRightActive{false};
+	bool moveRightPressed {false};
+	bool moveRightActive {false};
 
-	bool moveBackwardPressed{false};
-	bool moveBackwardActive{false};
+	bool moveBackwardPressed {false};
+	bool moveBackwardActive {false};
 
-	bool jumpPressed{false};
-	bool jumpActive{false};
+	bool jumpPressed {false};
+	bool jumpActive {false};
 
-	bool goDownPressed{false};
-	bool goDownActive{false};
+	bool goDownPressed {false};
+	bool goDownActive {false};
 
 	// Mouse
-	bool action1Pressed{false};
-	bool action1Active{false};
+	bool action1Pressed {false};
+	bool action1Active {false};
 
-	bool action2Pressed{false};
-	bool action2Active{false};
+	bool action2Pressed {false};
+	bool action2Active {false};
 
-	float mouseXMovement{0.0f};
-	float mouseYMovement{0.0f};
+	float mouseXMovement {0.0f};
+	float mouseYMovement {0.0f};
 
-	double mouseXPosition{0.0};
-	double mouseYPosition{0.0};
+	double mouseXPosition {0.0};
+	double mouseYPosition {0.0};
 
-	double mouseVirtualAdjustedX{0.0};
-	double mouseVirtualAdjustedY{0.0};
+	double mouseVirtualAdjustedX {0.0};
+	double mouseVirtualAdjustedY {0.0};
 
-	bool escapeKeyPressed{false};
+	bool escapeKeyPressed {false};
 
-	bool eraseTextPressed{false};
-	bool eraseTextActive{false};
+	bool eraseTextPressed {false};
+	bool eraseTextActive {false};
 
-	bool switchCubeActive{false};
-	bool switchCubePressed{false};
+	bool switchCubeActive {false};
+	bool switchCubePressed {false};
 
-	bool keyWasTyped{false};
-	char keyTyped{' '};
+	bool keyWasTyped {false};
+	char keyTyped {' '};
 
 private:
 
@@ -94,11 +95,10 @@ private:
 	float screenCenterX;
 	float screenCenterY;
 
-	bool mouseLocked{true};
+	bool mouseLocked {true};
 };
 
 static std::shared_ptr<Input> input;
-
 
 } /* namespace util */
 

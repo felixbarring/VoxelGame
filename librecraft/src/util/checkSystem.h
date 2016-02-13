@@ -1,4 +1,3 @@
-
 #ifndef SRC_UTIL_CHECKSYSTEM_H_
 #define SRC_UTIL_CHECKSYSTEM_H_
 
@@ -6,23 +5,22 @@
 
 #include <GL/glew.h>
 
-namespace util
-{
+namespace util {
 
-namespace check_system
-{
+namespace check_system {
 
-static void checkStuff(){
+static void checkStuff() {
 
 	int maxLayers;
 	glGetIntegerv(GL_MAX_ARRAY_TEXTURE_LAYERS, &maxLayers);
 
-	std::cout << "Number of Array Texture Layers that are supported " << maxLayers << "\n";
+	std::cout << "Number of Array Texture Layers that are supported "
+			<< maxLayers << "\n";
 
-	const GLubyte *renderer = glGetString( GL_RENDERER );
-	const GLubyte *vendor = glGetString( GL_VENDOR );
-	const GLubyte *version = glGetString( GL_VERSION );
-	const GLubyte *glslVersion = glGetString( GL_SHADING_LANGUAGE_VERSION );
+	const GLubyte *renderer = glGetString(GL_RENDERER);
+	const GLubyte *vendor = glGetString(GL_VENDOR);
+	const GLubyte *version = glGetString(GL_VERSION);
+	const GLubyte *glslVersion = glGetString(GL_SHADING_LANGUAGE_VERSION);
 
 	std::cout << "-------------------------\n";
 	std::cout << "Graphics Card Info \n";
@@ -37,6 +35,5 @@ static void checkStuff(){
 }
 
 }
-
 
 #endif /* SRC_UTIL_CHECKSYSTEM_H_ */

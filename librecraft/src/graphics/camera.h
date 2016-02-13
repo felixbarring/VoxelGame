@@ -1,4 +1,3 @@
-
 #ifndef SRC_GRAPHICS_CAMERA_H_
 #define SRC_GRAPHICS_CAMERA_H_
 
@@ -8,8 +7,7 @@
 
 #include "../config/data.h"
 
-namespace graphics
-{
+namespace graphics {
 
 class Camera {
 private:
@@ -20,7 +18,9 @@ private:
 
 	Camera(float xPosition, float yPosition, float zPosition);
 
-	virtual ~Camera() {};
+	virtual ~Camera() {
+	}
+	;
 
 // ########################################################
 // Member Functions########################################
@@ -28,9 +28,8 @@ private:
 
 public:
 
-	static Camera& getInstance()
-	{
-		static Camera INSTANCE{0,0,0};
+	static Camera& getInstance() {
+		static Camera INSTANCE {0, 0, 0};
 		return INSTANCE;
 	}
 
@@ -46,7 +45,6 @@ public:
 
 	void updateView(glm::vec3 position, glm::vec3 direction, glm::vec3 up);
 
-
 // ########################################################
 // Instance Variables #####################################
 // ########################################################
@@ -55,11 +53,13 @@ private:
 
 	glm::vec3 position;
 	glm::vec3 direction;
-	glm::vec3 up{0.0f, 1.0f, 0.0f};
+	glm::vec3 up {0.0f, 1.0f, 0.0f};
 
 	// TODO Update this in an intelligent way
-	float aspectRatio = config::graphics_data::windowWidth / static_cast<float>(config::graphics_data::windowHeight);
-	glm::mat4 projection = glm::perspective(config::graphics_data::fov, aspectRatio, 0.1f, 1000.0f);
+	float aspectRatio = config::graphics_data::windowWidth
+			/ static_cast<float>(config::graphics_data::windowHeight);
+	glm::mat4 projection = glm::perspective(config::graphics_data::fov,
+			aspectRatio, 0.1f, 1000.0f);
 	glm::mat4 view;
 
 };

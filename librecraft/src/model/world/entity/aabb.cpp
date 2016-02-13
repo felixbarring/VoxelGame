@@ -1,33 +1,26 @@
-
 #include "aabb.h"
 
 #include <iostream>
 #include <algorithm>
 
-namespace entity
-{
+namespace entity {
 
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
 
-AABB::AABB(double xMinimum, double xMaximum, double yMinimum, double yMaximum, double zMinimum, double zMaximum) :
-	xMin{xMinimum},
-	xMax{xMaximum},
-	yMin{yMinimum},
-	yMax{yMaximum},
-	zMin{zMinimum},
-	zMax{zMaximum}
-{
+AABB::AABB(double xMinimum, double xMaximum, double yMinimum, double yMaximum,
+		double zMinimum, double zMaximum)
+		: xMin {xMinimum}, xMax {xMaximum}, yMin {yMinimum}, yMax {yMaximum}, zMin {
+				zMinimum}, zMax {zMaximum} {
 }
-
 
 // ########################################################
 // Member Functions########################################
 // ########################################################
 
-void AABB::setBounds(double xMinimum, double xMaximum, double yMinimum, double yMaximum, double zMinimum, double zMaximum)
-{
+void AABB::setBounds(double xMinimum, double xMaximum, double yMinimum,
+		double yMaximum, double zMinimum, double zMaximum) {
 
 	xMin = xMinimum;
 	xMax = xMaximum;
@@ -38,48 +31,47 @@ void AABB::setBounds(double xMinimum, double xMaximum, double yMinimum, double y
 
 }
 
-bool AABB::intersects(const AABB &that)
-{
-	return
-		((this->xMin <= that.xMin && this->xMax >= that.xMin) || (this->xMin <= that.xMax && this->xMax >= that.xMax )) &&
-		((this->yMin <= that.yMin && this->yMax >= that.yMin) || (this->yMin <= that.yMax && this->yMax >= that.yMax )) &&
-		((this->zMin <= that.zMin && this->zMax >= that.zMin) || (this->zMin <= that.zMax && this->zMax >= that.zMax ));
+bool AABB::intersects(const AABB &that) {
+	return ((this->xMin <= that.xMin && this->xMax >= that.xMin)
+			|| (this->xMin <= that.xMax && this->xMax >= that.xMax))
+			&& ((this->yMin <= that.yMin && this->yMax >= that.yMin)
+					|| (this->yMin <= that.yMax && this->yMax >= that.yMax))
+			&& ((this->zMin <= that.zMin && this->zMax >= that.zMin)
+					|| (this->zMin <= that.zMax && this->zMax >= that.zMax));
 }
 
+AABB AABB::getSweptBroadPhaseBox(AABB &box, glm::vec3 &velocity) {
+	float xMin, xMax, yMin, yMax, zMin, zMax;
 
-AABB AABB::getSweptBroadPhaseBox(AABB &box, glm::vec3 &velocity){
-    float xMin, xMax, yMin, yMax, zMin, zMax;
+	if (velocity.x > 0.0f) {
+		xMin = box.xMin;
+		xMax = box.xMax + velocity.x;
+	} else {
+		xMin = box.xMin + velocity.x;
+		xMax = box.xMax;
+	}
 
-    if (velocity.x > 0.0f) {
-    	xMin = box.xMin;
-    	xMax = box.xMax + velocity.x;
-    } else {
-    	xMin =box.xMin + velocity.x;
-    	xMax = box.xMax;
-    }
+	if (velocity.y > 0.0f) {
+		yMin = box.yMin;
+		yMax = box.yMax + velocity.y;
+	} else {
+		yMin = box.yMin + velocity.y;
+		yMax = box.yMax;
+	}
 
-    if (velocity.y > 0.0f) {
-    	yMin = box.yMin;
-    	yMax = box.yMax + velocity.y;
-    } else {
-    	yMin = box.yMin + velocity.y;
-    	yMax = box.yMax;
-    }
+	if (velocity.z > 0.0f) {
+		zMin = box.zMin;
+		zMax = box.zMax + velocity.z;
+	} else {
+		zMin = box.zMin + velocity.z;
+		zMax = box.zMax;
+	}
 
-    if (velocity.z > 0.0f) {
-    	zMin = box.zMin;
-    	zMax = box.zMax + velocity.z;
-    } else {
-    	zMin = box.zMin + velocity.z;
-    	zMax = box.zMax;
-    }
-
-    return AABB{xMin, xMax, yMin, yMax, zMin, zMax};
+	return AABB {xMin, xMax, yMin, yMax, zMin, zMax};
 }
 
-
-float AABB::collisionTime(AABB &box1, AABB &box2, glm::vec3 &collisionNormal, glm::vec3 &velocity)
-{
+float AABB::collisionTime(AABB &box1, AABB &box2, glm::vec3 &collisionNormal,
+		glm::vec3 &velocity) {
 
 	float xEntryDistance, yEntryDistance, zEntryDistance;
 	float xExitDistance, yExitDistance, zExitDistance;
@@ -136,19 +128,23 @@ float AABB::collisionTime(AABB &box1, AABB &box2, glm::vec3 &collisionNormal, gl
 	}
 
 	// TODO Correct?
-	if (xEntryTime > 1.0f) { xEntryTime = -1000000; }
-	if (yEntryTime > 1.0f) { yEntryTime = -1000000; }
-	if (zEntryTime > 1.0f) { zEntryTime = -1000000; }
+	if (xEntryTime > 1.0f)
+		xEntryTime = -1000000;
+	if (yEntryTime > 1.0f)
+		yEntryTime = -1000000;
+	if (zEntryTime > 1.0f)
+		zEntryTime = -1000000;
 
 	float entryTime = std::max(xEntryTime, std::max(yEntryTime, zEntryTime));
 	float exitTime = std::min(xExitTime, std::min(yExitTime, zExitTime));
 
 	// No collision
-	if(entryTime > exitTime || (xEntryTime < 0.0f && yEntryTime < 0.0f && zEntryTime < 0.0f))
+	if (entryTime > exitTime
+			|| (xEntryTime < 0.0f && yEntryTime < 0.0f && zEntryTime < 0.0f))
 		return -1.0f;
 
 	// Collision!
-	if(xEntryTime > yEntryTime && xEntryTime > zEntryTime){
+	if (xEntryTime > yEntryTime && xEntryTime > zEntryTime) {
 		collisionNormal = glm::vec3(1.0f, 0.0f, 0.0f);
 	} else if (yEntryTime > xEntryTime && yEntryTime > zEntryTime) {
 		collisionNormal = glm::vec3(0.0f, 1.0f, 0.0f);

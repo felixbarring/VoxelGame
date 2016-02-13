@@ -1,4 +1,3 @@
-
 #ifndef SRC_MODEL_WORLD_ENTITY_PLAYER_H_
 #define SRC_MODEL_WORLD_ENTITY_PLAYER_H_
 
@@ -16,7 +15,7 @@
 
 namespace entity {
 
-class Player : public IEntity {
+class Player: public IEntity {
 public:
 
 // ########################################################
@@ -25,7 +24,9 @@ public:
 
 	Player();
 
-	virtual ~Player() {};
+	virtual ~Player() {
+	}
+	;
 
 // ########################################################
 // Member Functions########################################
@@ -41,10 +42,11 @@ public:
 
 	void updateCameraAndTargetCube();
 
-	void intersected(glm::vec3 movement, std::vector<std::pair<float, glm::vec3>> &collisions);
+	void intersected(glm::vec3 movement,
+			std::vector<std::pair<float, glm::vec3>> &collisions);
 
 // ########################################################
-// Instance Variables #####################################
+// Implementation #########################################
 // ########################################################
 
 private:
@@ -53,13 +55,13 @@ private:
 	float m_height {1};
 	float m_depth {1};
 	float m_gravity {0.3};
-	float m_jumpSpeed{0.08};
+	float m_jumpSpeed {0.08};
 	int m_selectCubeDistance {5};
 	glm::vec3 m_speed;
 	graphics::ViewDirection m_viewDirection;
-	float m_movementSpeed{7};
+	float m_movementSpeed {7};
 	graphics::Transform m_transform;
-	int m_cubeUsedForBuilding{0};
+	int m_cubeUsedForBuilding {0};
 };
 
 } /* namespace entity */

@@ -1,4 +1,3 @@
-
 #ifndef SRC_GRAPHICS_CUBEBATCHER_H_
 #define SRC_GRAPHICS_CUBEBATCHER_H_
 
@@ -23,7 +22,9 @@ private:
 
 	CubeBatcher();
 
-	virtual ~CubeBatcher() {};
+	virtual ~CubeBatcher() {
+	}
+	;
 
 	CubeBatcher(CubeBatcher const&) = delete;
 
@@ -31,8 +32,7 @@ private:
 
 public:
 
-	static CubeBatcher& getInstance()
-	{
+	static CubeBatcher& getInstance() {
 		static CubeBatcher INSTANCE;
 		return INSTANCE;
 	}
@@ -54,12 +54,9 @@ private:
 	class Batch {
 	public:
 
-		Batch(TexturedCube &cube, Transform &transform, int lightValue):
-			m_cube(cube),
-			m_transform(transform),
-			m_lightValue(lightValue)
-		{
-		}
+		Batch(TexturedCube &cube, Transform &transform, int lightValue)
+				: m_cube(cube), m_transform(transform),
+				  m_lightValue(lightValue) {}
 
 		TexturedCube &m_cube;
 		Transform &m_transform;

@@ -14,28 +14,23 @@ static double mouseYOffset;
 static bool wasTyped = false;
 static double typed = ' ';
 
-static void cursor_position_callback(GLFWwindow* window, double xpos, double ypos)
-{
+static void cursor_position_callback(GLFWwindow* window, double xpos,
+		double ypos) {
 	mouseXOffset = xpos;
 	mouseYOffset = ypos;
 }
 
-static void character_callback(GLFWwindow* window, unsigned int codepoint)
-{
+static void character_callback(GLFWwindow* window, unsigned int codepoint) {
 	wasTyped = true;
 	typed = codepoint;
 }
-
 
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
 
-Input::Input(GLFWwindow* w, float centerX, float centerY):
-	window{w},
-	screenCenterX{centerX},
-	screenCenterY{centerY}
-{
+Input::Input(GLFWwindow* w, float centerX, float centerY)
+		: window {w}, screenCenterX {centerX}, screenCenterY {centerY} {
 	glfwSetCursorPosCallback(window, cursor_position_callback);
 	glfwSetCharCallback(window, character_callback);
 }
@@ -44,37 +39,42 @@ Input::Input(GLFWwindow* w, float centerX, float centerY):
 // Member Functions########################################
 // ########################################################
 
-void Input::createInstance(GLFWwindow* w, float centerX, float centerY)
-{
-	input.reset(new Input{w, centerX, centerY});
+void Input::createInstance(GLFWwindow* w, float centerX, float centerY) {
+	input.reset(new Input {w, centerX, centerY});
 }
 
-std::shared_ptr<Input> Input::getInstance()
-{
+std::shared_ptr<Input> Input::getInstance() {
 	return input;
 }
 
-
-void Input::updateValues()
-{
+void Input::updateValues() {
 
 	mouseXMovement = 0.0;
 	mouseYMovement = 0.0;
 
 	// Keyboard
-	moveForwardPressed = glfwGetKey(window, moveForwardButton) == GLFW_PRESS && !moveForwardActive;
-	moveLeftPressed = glfwGetKey(window, moveLeftButton) == GLFW_PRESS && !moveLeftActive;
-	moveRightPressed = glfwGetKey(window, moveRightButton) == GLFW_PRESS && !moveRightActive;
-	moveBackwardPressed = glfwGetKey(window, moveBackwardButton) == GLFW_PRESS && !moveBackwardActive;
+	moveForwardPressed = glfwGetKey(window, moveForwardButton) == GLFW_PRESS
+			&& !moveForwardActive;
+	moveLeftPressed = glfwGetKey(window, moveLeftButton) == GLFW_PRESS
+			&& !moveLeftActive;
+	moveRightPressed = glfwGetKey(window, moveRightButton) == GLFW_PRESS
+			&& !moveRightActive;
+	moveBackwardPressed = glfwGetKey(window, moveBackwardButton) == GLFW_PRESS
+			&& !moveBackwardActive;
 	jumpPressed = glfwGetKey(window, jumpButton) == GLFW_PRESS && !jumpActive;
-	goDownPressed = glfwGetKey(window, goDownButton) == GLFW_PRESS && !goDownActive;
+	goDownPressed = glfwGetKey(window, goDownButton) == GLFW_PRESS
+			&& !goDownActive;
 
-	eraseTextPressed = glfwGetKey(window, eraseTextButton) == GLFW_PRESS && !eraseTextActive;
-	switchCubePressed = glfwGetKey(window, switchBuildingCube) == GLFW_PRESS && !switchCubeActive;
+	eraseTextPressed = glfwGetKey(window, eraseTextButton) == GLFW_PRESS
+			&& !eraseTextActive;
+	switchCubePressed = glfwGetKey(window, switchBuildingCube) == GLFW_PRESS
+			&& !switchCubeActive;
 
 	// Mouse
-	action1Pressed = glfwGetMouseButton(window, action1Button) == GLFW_PRESS && !action1Active;
-	action2Pressed = glfwGetMouseButton(window, action2Button) == GLFW_PRESS && !action2Active;
+	action1Pressed = glfwGetMouseButton(window, action1Button) == GLFW_PRESS
+			&& !action1Active;
+	action2Pressed = glfwGetMouseButton(window, action2Button) == GLFW_PRESS
+			&& !action2Active;
 
 	// Keyboard
 	moveForwardActive = glfwGetKey(window, moveForwardButton) == GLFW_PRESS;
@@ -97,7 +97,8 @@ void Input::updateValues()
 		mouseXMovement = screenCenterX - mouseXOffset;
 		mouseYMovement = screenCenterY - mouseYOffset;
 		centerMouse();
-	} else {
+	}
+	else {
 		glfwGetCursorPos(window, &mouseXPosition, &mouseYPosition);
 	}
 
@@ -107,20 +108,17 @@ void Input::updateValues()
 
 }
 
-void Input::centerMouse()
-{
+void Input::centerMouse() {
 	mouseXOffset = screenCenterX;
 	mouseYOffset = screenCenterY;
 	glfwSetCursorPos(window, screenCenterX, screenCenterY);
 }
 
-void Input::lockMouse()
-{
+void Input::lockMouse() {
 	mouseLocked = true;
 }
 
-void Input::unlockMouse()
-{
+void Input::unlockMouse() {
 	mouseLocked = false;
 }
 

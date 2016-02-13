@@ -1,12 +1,10 @@
-
 #ifndef SRC_UTIL_FPSMANAGER_H_
 #define SRC_UTIL_FPSMANAGER_H_
 
 #include <chrono>
 #include <thread>
 
-namespace util
-{
+namespace util {
 
 /**
  *  \file    pootis.h
@@ -26,7 +24,9 @@ public:
 // ########################################################
 	FPSManager(int maxFPS);
 
-	virtual ~FPSManager() {};
+	virtual ~FPSManager() {
+	}
+	;
 
 // ########################################################
 // Member Functions########################################
@@ -40,7 +40,7 @@ public:
 	int getFps();
 
 // ########################################################
-// Instance Variables #####################################
+// Implementation #########################################
 // ########################################################
 private:
 	int maxFPS;

@@ -7,12 +7,10 @@ namespace graphics {
 // Constructor/Destructor #################################
 // ########################################################
 
-Sprite::Sprite(float x, float y, float layer, float width,
-		float height, texture::Texture &texture) :
-	m_transform{x + width / 2, y + height / 2, 0},
-	m_texture(texture),
-	m_layer{layer}
-{
+Sprite::Sprite(float x, float y, float layer, float width, float height,
+		texture::Texture &texture)
+		: m_transform { x + width / 2, y + height / 2, 0 },
+		  m_texture(texture), m_layer {layer} {
 
 	std::vector<GLfloat> vertices = {
 		-width/2, -height/2, 0.0f,
@@ -22,12 +20,10 @@ Sprite::Sprite(float x, float y, float layer, float width,
 	};
 
 	std::vector<GLfloat> texCoords = {
-
 		0.0f, 1.0f,
 		1.0f, 1.0f,
 		1.0f, 0.0f,
 		0.0f, 0.0f,
-
 	};
 
 	std::vector<GLshort> indices = {

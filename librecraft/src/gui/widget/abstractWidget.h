@@ -1,4 +1,3 @@
-
 /**
  *  \file [abstractWidget.h]
  *  \author Felix Bärring
@@ -31,7 +30,7 @@ namespace widget {
  *
  * \author Felix Bärring
  */
-class AbstractWidget : public IWidget{
+class AbstractWidget: public IWidget {
 public:
 
 // ########################################################
@@ -60,7 +59,9 @@ public:
 	 */
 	AbstractWidget(int id, int x, int y, int width, int height);
 
-	virtual ~AbstractWidget() {};
+	virtual ~AbstractWidget() {
+	}
+	;
 
 // ########################################################
 // Member Functions########################################
@@ -79,7 +80,7 @@ public:
 	bool isActive() override;
 
 // ########################################################
-// Instance Variables #####################################
+// Implementation #########################################
 // ########################################################
 
 protected:
@@ -95,12 +96,11 @@ protected:
 	 */
 	bool isInsideBorders(double x, double y);
 
-	bool m_active{true};
+	bool m_active {true};
 	const int m_id;
 	int m_xCoordinate, m_yCoordinate;
 	const int m_width, m_height;
 };
-
 
 } /* namespace widget */
 

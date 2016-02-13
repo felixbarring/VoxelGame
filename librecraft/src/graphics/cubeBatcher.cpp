@@ -1,4 +1,3 @@
-
 #include "cubeBatcher.h"
 
 #include <string>
@@ -15,12 +14,14 @@ namespace graphics {
 // Constructor/Destructor #################################
 // ########################################################
 
-CubeBatcher::CubeBatcher() :
-	texture(graphics::Resources::getInstance().getTextureArray(
-			config::cube_data::textures, config::cube_data::TEXTURE_WIDTH, config::cube_data::TEXTURE_HEIGHT))
-{
+CubeBatcher::CubeBatcher()
+		: texture(
+				graphics::Resources::getInstance().getTextureArray(
+						config::cube_data::textures,
+						config::cube_data::TEXTURE_WIDTH,
+						config::cube_data::TEXTURE_HEIGHT)) {
 	for (int i = 0; i <= config::cube_data::LAST_BLOCK + 1; i++) {
-		cubes.push_back(TexturedCube{2, 0, -1.0f, i});
+		cubes.push_back(TexturedCube {2, 0, -1.0f, i});
 	}
 
 
@@ -70,13 +71,11 @@ CubeBatcher::CubeBatcher() :
 // Member Functions########################################
 // ########################################################
 
-void CubeBatcher::addBatch(char type, Transform &transform, int lightValue)
-{
+void CubeBatcher::addBatch(char type, Transform &transform, int lightValue) {
 	batches.push_back(Batch(cubes.at(type), transform, lightValue));
 }
 
-void CubeBatcher::draw()
-{
+void CubeBatcher::draw() {
 
 	program->bind();
 
@@ -90,8 +89,10 @@ void CubeBatcher::draw()
 
 		program->setUniform1f("lightValue", b.m_lightValue);
 
-		glm::mat4 modelView = camera.getViewMatrix() * b.m_transform.getMatrix();
-		glm::mat4 modelViewProjection = camera.getProjectionMatrix() * modelView;
+		glm::mat4 modelView = camera.getViewMatrix()
+				* b.m_transform.getMatrix();
+		glm::mat4 modelViewProjection = camera.getProjectionMatrix()
+				* modelView;
 		program->setUniformMatrix4f("modelViewProjection", modelViewProjection);
 		b.m_cube.draw();
 	}
@@ -99,6 +100,5 @@ void CubeBatcher::draw()
 	program->unbind();
 	batches.clear();
 }
-
 
 } /* namespace graphics */

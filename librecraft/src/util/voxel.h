@@ -1,4 +1,3 @@
-
 #ifndef SRC_UTIL_VOXEL_H_
 #define SRC_UTIL_VOXEL_H_
 

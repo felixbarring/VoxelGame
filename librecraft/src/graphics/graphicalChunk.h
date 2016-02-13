@@ -1,4 +1,3 @@
-
 #ifndef SRC_GRAPHICS_GRAPHICALCHUNK_H_
 #define SRC_GRAPHICS_GRAPHICALCHUNK_H_
 
@@ -11,38 +10,21 @@
 #include "../config/data.h"
 #include "../util/voxel.h"
 
-namespace graphics
-{
-
-struct CubeFaceData {
-	int id;
-	bool vissible, front, back, left, right, top, bottom;
-	char lightValue; // For air blocks
-
-	// lv means lightValue
-	char lvFront_BottomLeft, lvFront_BottomRight, lvFront_TopRight, lvFront_TopLeft;
-	char lvBack_BottomLeft, lvBack_BottomRight, lvBack_TopRight, lvBack_TopLeft;
-	char lvLeft_BottomLeft, lvLeft_BottomRight, lvLeft_TopRight, lvLeft_TopLeft;
-	char lvRight_BottomLeft, lvRight_BottomRight, lvRight_TopRight, lvRight_TopLeft;
-	char lvTop_BottomLeft, lvTop_BottomRight, lvTop_TopRight, lvTop_TopLeft;
-	char lvBottom_BottomLeft, lvBottom_BottomRight, lvBottom_TopRight, lvBottom_TopLeft;
-
-};
+namespace graphics {
 
 class GraphicalChunk {
 public:
 
-	// ########################################################
-	// Constructor/Destructor #################################
-	// ########################################################
+// ########################################################
+// Constructor/Destructor #################################
+// ########################################################
 
 	GraphicalChunk(float x, float y, float z,
-			std::vector<std::vector<std::vector<Voxel>>> &data,
+			std::vector<std::vector<std::vector<Voxel>>>&data,
 			std::vector<std::vector<std::vector<Voxel>>> *right,
 			std::vector<std::vector<std::vector<Voxel>>> *left,
 			std::vector<std::vector<std::vector<Voxel>>> *back,
-			std::vector<std::vector<std::vector<Voxel>>> *front
-	);
+			std::vector<std::vector<std::vector<Voxel>>> *front);
 
 	virtual ~GraphicalChunk() {};
 
@@ -60,54 +42,79 @@ public:
 
 private:
 
+	struct CubeFaceData {
+		int id;
+		bool vissible, front, back, left, right, top, bottom;
+		char lightValue; // For air blocks
+
+		// lv means lightValue
+		char lvFront_BottomLeft, lvFront_BottomRight,
+				lvFront_TopRight, lvFront_TopLeft;
+
+		char lvBack_BottomLeft, lvBack_BottomRight,
+				lvBack_TopRight, lvBack_TopLeft;
+
+		char lvLeft_BottomLeft, lvLeft_BottomRight,
+				lvLeft_TopRight, lvLeft_TopLeft;
+
+		char lvRight_BottomLeft, lvRight_BottomRight,
+				lvRight_TopRight, lvRight_TopLeft;
+
+		char lvTop_BottomLeft, lvTop_BottomRight,
+				lvTop_TopRight, lvTop_TopLeft;
+
+		char lvBottom_BottomLeft, lvBottom_BottomRight,
+				lvBottom_TopRight, lvBottom_TopLeft;
+	};
+
 	Voxel* getVoxel(int x, int y, int z,
-			std::vector<std::vector<std::vector<Voxel>>> &data,
-			std::vector<std::vector<std::vector<Voxel>>> *right,
-			std::vector<std::vector<std::vector<Voxel>>> *left,
-			std::vector<std::vector<std::vector<Voxel>>> *back,
-			std::vector<std::vector<std::vector<Voxel>>> *front);
+	std::vector<std::vector<std::vector<Voxel>>> &data,
+	std::vector<std::vector<std::vector<Voxel>>> *right,
+	std::vector<std::vector<std::vector<Voxel>>> *left,
+	std::vector<std::vector<std::vector<Voxel>>> *back,
+	std::vector<std::vector<std::vector<Voxel>>> *front);
 
 	void doAORight(CubeFaceData &cf, int x, int y, int z,
-			std::vector<std::vector<std::vector<Voxel>>> &data,
-			std::vector<std::vector<std::vector<Voxel>>> *right,
-			std::vector<std::vector<std::vector<Voxel>>> *left,
-			std::vector<std::vector<std::vector<Voxel>>> *back,
-			std::vector<std::vector<std::vector<Voxel>>> *front);
+	std::vector<std::vector<std::vector<Voxel>>> &data,
+	std::vector<std::vector<std::vector<Voxel>>> *right,
+	std::vector<std::vector<std::vector<Voxel>>> *left,
+	std::vector<std::vector<std::vector<Voxel>>> *back,
+	std::vector<std::vector<std::vector<Voxel>>> *front);
 
 	void doAOLeft(CubeFaceData &cf, int x, int y, int z,
-			std::vector<std::vector<std::vector<Voxel>>> &data,
-			std::vector<std::vector<std::vector<Voxel>>> *right,
-			std::vector<std::vector<std::vector<Voxel>>> *left,
-			std::vector<std::vector<std::vector<Voxel>>> *back,
-			std::vector<std::vector<std::vector<Voxel>>> *front);
+	std::vector<std::vector<std::vector<Voxel>>> &data,
+	std::vector<std::vector<std::vector<Voxel>>> *right,
+	std::vector<std::vector<std::vector<Voxel>>> *left,
+	std::vector<std::vector<std::vector<Voxel>>> *back,
+	std::vector<std::vector<std::vector<Voxel>>> *front);
 
 	void doAOBack(CubeFaceData &cf, int x, int y, int z,
-			std::vector<std::vector<std::vector<Voxel>>> &data,
-			std::vector<std::vector<std::vector<Voxel>>> *right,
-			std::vector<std::vector<std::vector<Voxel>>> *left,
-			std::vector<std::vector<std::vector<Voxel>>> *back,
-			std::vector<std::vector<std::vector<Voxel>>> *front);
+	std::vector<std::vector<std::vector<Voxel>>> &data,
+	std::vector<std::vector<std::vector<Voxel>>> *right,
+	std::vector<std::vector<std::vector<Voxel>>> *left,
+	std::vector<std::vector<std::vector<Voxel>>> *back,
+	std::vector<std::vector<std::vector<Voxel>>> *front);
 
 	void doAOFront(CubeFaceData &cf, int x, int y, int z,
-			std::vector<std::vector<std::vector<Voxel>>> &data,
-			std::vector<std::vector<std::vector<Voxel>>> *right,
-			std::vector<std::vector<std::vector<Voxel>>> *left,
-			std::vector<std::vector<std::vector<Voxel>>> *back,
-			std::vector<std::vector<std::vector<Voxel>>> *front);
+	std::vector<std::vector<std::vector<Voxel>>> &data,
+	std::vector<std::vector<std::vector<Voxel>>> *right,
+	std::vector<std::vector<std::vector<Voxel>>> *left,
+	std::vector<std::vector<std::vector<Voxel>>> *back,
+	std::vector<std::vector<std::vector<Voxel>>> *front);
 
 	void doAOTop(CubeFaceData &cf, int x, int y, int z,
-			std::vector<std::vector<std::vector<Voxel>>> &data,
-			std::vector<std::vector<std::vector<Voxel>>> *right,
-			std::vector<std::vector<std::vector<Voxel>>> *left,
-			std::vector<std::vector<std::vector<Voxel>>> *back,
-			std::vector<std::vector<std::vector<Voxel>>> *front);
+	std::vector<std::vector<std::vector<Voxel>>> &data,
+	std::vector<std::vector<std::vector<Voxel>>> *right,
+	std::vector<std::vector<std::vector<Voxel>>> *left,
+	std::vector<std::vector<std::vector<Voxel>>> *back,
+	std::vector<std::vector<std::vector<Voxel>>> *front);
 
 	void doAOBottom(CubeFaceData &cf, int x, int y, int z,
-			std::vector<std::vector<std::vector<Voxel>>> &data,
-			std::vector<std::vector<std::vector<Voxel>>> *right,
-			std::vector<std::vector<std::vector<Voxel>>> *left,
-			std::vector<std::vector<std::vector<Voxel>>> *back,
-			std::vector<std::vector<std::vector<Voxel>>> *front);
+	std::vector<std::vector<std::vector<Voxel>>> &data,
+	std::vector<std::vector<std::vector<Voxel>>> *right,
+	std::vector<std::vector<std::vector<Voxel>>> *left,
+	std::vector<std::vector<std::vector<Voxel>>> *back,
+	std::vector<std::vector<std::vector<Voxel>>> *front);
 
 	// ########################################################
 	// Instance Variables #####################################
@@ -123,9 +130,8 @@ private:
 	int depth = config::chunk_data::GRAPHICAL_CHUNK_DEPTH;
 
 	Transform transform;
-
 };
 
-}
+} /* graphics namespace */
 
 #endif /* SRC_GRAPHICS_GRAPHICALCHUNK_H_ */

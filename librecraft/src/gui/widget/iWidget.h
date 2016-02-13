@@ -1,4 +1,3 @@
-
 /**
  *  \file [iWidget.h]
  *  \brief An Interface for Widgets
@@ -10,8 +9,7 @@
 #ifndef SRC_GUI_WIDGET_IWIDGET_H_
 #define SRC_GUI_WIDGET_IWIDGET_H_
 
-namespace widget
-{
+namespace widget {
 
 /**
  *  \class IWidget
@@ -30,7 +28,9 @@ namespace widget
 class IWidget {
 public:
 
-	virtual ~IWidget() {};
+	virtual ~IWidget() {
+	}
+	;
 
 	/**
 	 *  \brief Makes the Widget draw itself

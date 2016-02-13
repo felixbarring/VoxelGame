@@ -1,4 +1,3 @@
-
 /**
  *  \file [button.h]
  *  \brief A button that can be pressed by a mouse pointer.
@@ -31,7 +30,7 @@ namespace widget {
  *
  * \author Felix Bärring
  */
-class Button : public AbstractWidget  {
+class Button: public AbstractWidget {
 public:
 
 // ########################################################
@@ -41,7 +40,9 @@ public:
 	Button(int id, int x, int y, int width, int height,
 			std::function<void(int)> observer, std::string name, int layer = 0);
 
-	virtual ~Button() {};
+	virtual ~Button() {
+	}
+	;
 
 // ########################################################
 // Member Functions########################################
@@ -54,14 +55,14 @@ public:
 	void update(float timePassed) override;
 
 // ########################################################
-// Instance Variables #####################################
+// Implementation #########################################
 // ########################################################
 
 protected:
 
 	std::function<void(int)> m_observer;
 
-	bool m_pointerInsideBorders{false};
+	bool m_pointerInsideBorders {false};
 	std::string m_name;
 
 	std::shared_ptr<graphics::Sprite> m_sprite;

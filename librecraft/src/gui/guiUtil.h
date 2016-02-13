@@ -1,4 +1,3 @@
-
 #ifndef SRC_GUI_GUIUTIL_H_
 #define SRC_GUI_GUIUTIL_H_
 
@@ -7,11 +6,10 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-namespace gui
-{
+namespace gui {
 
-static glm::mat4 createVirtualToScreen(int virtualWidth, int virtualHeight, int realWidth, int realHeight)
-{
+static glm::mat4 createVirtualToScreen(int virtualWidth, int virtualHeight,
+		int realWidth, int realHeight) {
 	float matrix[16];
 
 	float vW = virtualWidth;
@@ -24,7 +22,7 @@ static glm::mat4 createVirtualToScreen(int virtualWidth, int virtualHeight, int 
 	float xOffset;
 	float yOffset;
 
-	if(requiredXScale < requiredYScale){
+	if (requiredXScale < requiredYScale) {
 		scale = requiredXScale;
 		yOffset = (realHeight - vH * scale) / 2;
 		xOffset = 0;
@@ -57,8 +55,8 @@ static glm::mat4 createVirtualToScreen(int virtualWidth, int virtualHeight, int 
 	return glm::make_mat4(matrix);
 }
 
-static glm::vec2 adjustMouse(int virtualWidth, int virtualHeight, int realWidth, int realHeight, int mouseX, int mouseY)
-{
+static glm::vec2 adjustMouse(int virtualWidth, int virtualHeight, int realWidth,
+		int realHeight, int mouseX, int mouseY) {
 	float mouseOffX = 0;
 	float mouseOffY = 0;
 	float mouseScale = 1;
@@ -69,7 +67,7 @@ static glm::vec2 adjustMouse(int virtualWidth, int virtualHeight, int realWidth,
 	float requiredXScale = realWidth / vW;
 	float requiredYScale = realHeight / vH;
 
-	if(requiredXScale < requiredYScale){
+	if (requiredXScale < requiredYScale) {
 		mouseScale = requiredXScale;
 		mouseOffY = (realHeight - virtualHeight * mouseScale) / 2.0f;
 		mouseOffX = 0;
@@ -83,7 +81,6 @@ static glm::vec2 adjustMouse(int virtualWidth, int virtualHeight, int realWidth,
 
 	return glm::vec2(mouseXAdjusted, mouseYAdjusted);
 }
-
 
 }
 

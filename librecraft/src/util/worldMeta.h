@@ -19,12 +19,10 @@
 
 // Maybe rename to file util
 
-namespace world_meta
-{
+namespace world_meta {
 
-void addName(std::string name)
-{
-	std::vector<std::string> names{name};
+void addName(std::string name) {
+	std::vector<std::string> names {name};
 	std::ifstream inStream(config::worldMetaFile);
 
 	std::string n;
@@ -33,7 +31,7 @@ void addName(std::string name)
 
 	inStream.close();
 	std::sort(names.begin(), names.end(),
-			[](std::string a, std::string b) -> bool { return a < b; });
+			[](std::string a, std::string b) -> bool {return a < b;});
 
 	std::ofstream outStream(config::worldMetaFile);
 
@@ -43,8 +41,7 @@ void addName(std::string name)
 	outStream.close();
 }
 
-bool worldNameExists(std::string name)
-{
+bool worldNameExists(std::string name) {
 	std::ifstream inStream(config::worldMetaFile);
 
 	std::string n;
@@ -55,17 +52,13 @@ bool worldNameExists(std::string name)
 	return false;
 }
 
-void deleteName(std::string name)
-{
+void deleteName(std::string name) {
 	std::vector<std::string> files;
-
-
 
 	std::remove("");
 }
 
-std::vector<std::string> getAllWorldNames()
-{
+std::vector<std::string> getAllWorldNames() {
 	std::vector<std::string> names;
 	std::ifstream inStream(config::worldMetaFile);
 

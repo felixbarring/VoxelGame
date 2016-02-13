@@ -1,4 +1,3 @@
-
 /**
  *  \file [slider.h]
  *  \brief A slider can be used to input values in a gui
@@ -15,7 +14,6 @@
 #include "abstractWidget.h"
 #include "../../graphics/sprite.h"
 
-
 namespace widget {
 
 /**
@@ -23,9 +21,8 @@ namespace widget {
  *
  * \author Felix Bärring
  */
-class Slider : public AbstractWidget {
+class Slider: public AbstractWidget {
 public:
-
 
 // ########################################################
 // Constructor/Destructor #################################
@@ -34,7 +31,9 @@ public:
 	Slider(int id, int x, int y, int width, int height,
 			std::function<void(int)> observer, int layer = 0);
 
-	virtual ~Slider() {};
+	virtual ~Slider() {
+	}
+	;
 
 // ########################################################
 // Member Functions########################################
@@ -47,14 +46,14 @@ public:
 	void update(float timePassed) override;
 
 // ########################################################
-// Instance Variables #####################################
+// Implementation #########################################
 // ########################################################
 
 private:
 
 	std::function<void(int)> m_observer;
 
-	bool m_pointerInsideBorders{false};
+	bool m_pointerInsideBorders {false};
 
 	std::shared_ptr<graphics::Sprite> m_slider;
 	std::shared_ptr<graphics::Sprite> m_knob;
@@ -62,7 +61,7 @@ private:
 	float m_knobPosition;
 	float m_knobWidth;
 
-	bool m_grabbed{false};
+	bool m_grabbed {false};
 
 };
 

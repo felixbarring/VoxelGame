@@ -1,4 +1,3 @@
-
 #ifndef SRC_DEMO_TOGGLEBUTTON_H_
 #define SRC_DEMO_TOGGLEBUTTON_H_
 
@@ -6,7 +5,7 @@
 
 namespace widget {
 
-class ToggleButton : public Button {
+class ToggleButton: public Button {
 public:
 
 // ########################################################
@@ -14,10 +13,12 @@ public:
 // ########################################################
 
 	ToggleButton(int id, int x, int y, int width, int height,
-			std::function<void(int)> observer,
-			const std::string &name, int layer = 0);
+			std::function<void(int)> observer, const std::string &name,
+			int layer = 0);
 
-	virtual ~ToggleButton() {};
+	virtual ~ToggleButton() {
+	}
+	;
 
 // ########################################################
 // Member Functions########################################
@@ -32,11 +33,12 @@ public:
 	void update(float timePassed) override;
 
 // ########################################################
-// Instance Variables #####################################
+// Implementation #########################################
 // ########################################################
+
 private:
 
-	bool m_toggled{false};
+	bool m_toggled {false};
 
 };
 

@@ -1,4 +1,3 @@
-
 #include "viewDirection.h"
 
 namespace graphics {
@@ -11,13 +10,12 @@ namespace graphics {
 // Member Functions########################################
 // ########################################################
 
-void ViewDirection::changeViewDirection(float horizontal, float vertical)
-{
-	ViewDirection::setViewDirection(horizontalAngle + horizontal * xSensitivity, verticalAngle + vertical * ySensitivity);
+void ViewDirection::changeViewDirection(float horizontal, float vertical) {
+	ViewDirection::setViewDirection(horizontalAngle + horizontal * xSensitivity,
+			verticalAngle + vertical * ySensitivity);
 }
 
-void ViewDirection::setViewDirection(float horizontal, float vertical)
-{
+void ViewDirection::setViewDirection(float horizontal, float vertical) {
 	horizontalAngle = horizontal;
 	verticalAngle = vertical;
 
@@ -27,29 +25,23 @@ void ViewDirection::setViewDirection(float horizontal, float vertical)
 		verticalAngle = minVerticalAngle;
 	}
 
-	direction = glm::vec3{
-		cos(verticalAngle) * sin(horizontalAngle),
-		sin(verticalAngle),
-		cos(verticalAngle) * cos(horizontalAngle)
-	};
+	direction = glm::vec3 { cos(verticalAngle) * sin(horizontalAngle), sin(
+			verticalAngle), cos(verticalAngle) * cos(horizontalAngle) };
 
 	right = glm::normalize(glm::cross(direction, worldUp));
 	// Hack :o
 	up = -glm::normalize(glm::cross(direction, right));
 }
 
-glm::vec3 ViewDirection::getViewDirection()
-{
+glm::vec3 ViewDirection::getViewDirection() {
 	return direction;
 }
 
-glm::vec3 ViewDirection::getUpDirection()
-{
+glm::vec3 ViewDirection::getUpDirection() {
 	return up;
 }
 
-glm::vec3 ViewDirection::getRightDirection()
-{
+glm::vec3 ViewDirection::getRightDirection() {
 	return right;
 }
 

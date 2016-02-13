@@ -1,4 +1,3 @@
-
 #ifndef SRC_GRAPHICS_SPRITE_H_
 #define SRC_GRAPHICS_SPRITE_H_
 
@@ -8,7 +7,6 @@
 #include "texture/texture.h"
 #include "texture/texture.h"
 #include "mesh/meshElement.h"
-
 
 namespace graphics {
 
@@ -23,10 +21,11 @@ public:
 			texture::Texture &texture);
 
 	Sprite(float x, float y, float layer,
-			std::shared_ptr<mesh::MeshElement> mesh,
-			texture::Texture &texture);
+			std::shared_ptr<mesh::MeshElement> mesh, texture::Texture &texture);
 
-	virtual ~Sprite() {};
+	virtual ~Sprite() {
+	}
+	;
 
 // ########################################################
 // Member Functions########################################

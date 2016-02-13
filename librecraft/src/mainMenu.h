@@ -1,4 +1,3 @@
-
 #ifndef SRC_MAINMENU_H_
 #define SRC_MAINMENU_H_
 
@@ -19,7 +18,7 @@
 #include "gui/widget/selectableList.h"
 #include "gui/guiUtil.h"
 
-class MainMenu : public IGameState {
+class MainMenu: public IGameState {
 public:
 
 // ########################################################
@@ -28,7 +27,9 @@ public:
 
 	MainMenu(Game *game);
 
-	virtual ~MainMenu() {};
+	virtual ~MainMenu() {
+	}
+	;
 
 // ########################################################
 // Member Functions########################################
@@ -37,14 +38,14 @@ public:
 	void update(float timePassed);
 
 // ########################################################
-// Instance Variables #####################################
+// Implementation #########################################
 // ########################################################
 
 private:
 
 	std::string randomName();
 
-	Game *game;
+	Game *m_game;
 
 	glm::mat4 m_virtualProjection;
 
@@ -72,6 +73,5 @@ private:
 	std::shared_ptr<widget::Slider> m_slider2;
 
 };
-
 
 #endif /* SRC_MAINMENU_H_ */

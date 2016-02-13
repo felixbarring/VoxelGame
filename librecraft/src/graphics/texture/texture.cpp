@@ -1,17 +1,14 @@
-
 #include "texture.h"
 
 #include <SOIL.h>
 
-namespace texture
-{
+namespace texture {
 
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
 
-Texture::Texture(const char *path)
-{
+Texture::Texture(const char *path) {
 
 	glGenTextures(1, &textureID);
 	glBindTexture(GL_TEXTURE_2D, textureID);
@@ -25,8 +22,10 @@ Texture::Texture(const char *path)
 	// Load, create texture and generate mipmaps
 	int width, height;
 
-	unsigned char* image = SOIL_load_image(path, &width, &height, 0, SOIL_LOAD_RGBA);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
+	unsigned char* image = SOIL_load_image(path, &width, &height, 0,
+			SOIL_LOAD_RGBA);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA,
+			GL_UNSIGNED_BYTE, image);
 
 	glGenerateMipmap(GL_TEXTURE_2D);
 	SOIL_free_image_data(image);
@@ -34,16 +33,14 @@ Texture::Texture(const char *path)
 }
 
 // TODO Delete the texture from OpenGL ?
-Texture::~Texture()
-{
+Texture::~Texture() {
 }
 
 // ########################################################
 // Member Functions########################################
 // ########################################################
 
-void Texture::bind()
-{
+void Texture::bind() {
 	glBindTexture(GL_TEXTURE_2D, textureID);
 }
 

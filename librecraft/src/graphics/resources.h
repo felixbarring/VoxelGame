@@ -1,4 +1,3 @@
-
 #ifndef SRC_GRAPHICS_RESOURCES_H_
 #define SRC_GRAPHICS_RESOURCES_H_
 
@@ -23,9 +22,13 @@ private:
 // Constructor/Destructor #################################
 // ########################################################
 
-	Resources() {};
+	Resources() {
+	}
+	;
 
-	virtual ~Resources() {};
+	virtual ~Resources() {
+	}
+	;
 
 	Resources(Resources const&) = delete;
 
@@ -33,8 +36,7 @@ private:
 
 public:
 
-	static Resources& getInstance()
-	{
+	static Resources& getInstance() {
 		static Resources instance;
 		return instance;
 	}
@@ -48,16 +50,14 @@ public:
 	texture::TextureArray& getTextureArray(
 			const std::vector<std::string> &textures, int width, int height);
 
-	texture::TextureCubeMap& getTextureCubeMap(
-			std::string &right, std::string &left, std::string &top,
-			std::string &bottom, std::string &back, std::string &front,
-			int width, int height);
+	texture::TextureCubeMap& getTextureCubeMap(std::string &right,
+			std::string &left, std::string &top, std::string &bottom,
+			std::string &back, std::string &front, int width, int height);
 
 	texture::TextureCubeMap& getTextureCubeMap(int value);
 
-	FontMeshBuilder& getFontMeshBuilder(
-			std::string &pathToLayout, int atlasWidth, int atlasHeight);
-
+	FontMeshBuilder& getFontMeshBuilder(std::string &pathToLayout,
+			int atlasWidth, int atlasHeight);
 
 // ########################################################
 // Instance Variables #####################################

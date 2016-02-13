@@ -1,4 +1,3 @@
-
 /**
  *  \file [fontMeshBuilder.h]
  *  \brief used to build meshed that can be used to render text
@@ -19,7 +18,6 @@
 #include "../config/data.h"
 
 namespace graphics {
-
 
 /**
  * \class FontMeshBuilder
@@ -45,7 +43,8 @@ public:
 	/**
 	 *
 	 */
-	std::shared_ptr<mesh::MeshElement> buldMeshForString(const std::string &str, float height);
+	std::shared_ptr<mesh::MeshElement> buldMeshForString(const std::string &str,
+			float height);
 
 	/**
 	 *
@@ -55,7 +54,7 @@ public:
 	/**
 	 *
 	 */
-	int splitStringAt(const  std::string &str, int height, float maxLength);
+	int splitStringAt(const std::string &str, int height, float maxLength);
 
 private:
 

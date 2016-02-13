@@ -7,6 +7,9 @@
 
 #include "../config/data.h"
 
+using namespace std;
+using namespace config::cube_data;
+
 namespace graphics
 {
 
@@ -22,7 +25,7 @@ TexturedCube::TexturedCube(float xOffset, float yOffset, float zOffset, int id):
 
 	float size = 0.51f;
 
-	std::vector<GLfloat> vertexData {
+	vector<GLfloat> vertexData {
 		// Front
 		-size, size, -size, // 3
 		size, size, -size, // 2
@@ -64,7 +67,7 @@ TexturedCube::TexturedCube(float xOffset, float yOffset, float zOffset, int id):
 
 	};
 
-	std::vector<GLfloat> normals {
+	vector<GLfloat> normals {
 		// Normals
 		0.0f, 0.0f, -1.0f,
 		0.0f, 0.0f, -1.0f,
@@ -97,11 +100,11 @@ TexturedCube::TexturedCube(float xOffset, float yOffset, float zOffset, int id):
 		0.0f, -1.0f, 0.0f,
 	};
 
-	GLfloat sideTexture = config::cube_data::BLOCK_TEXTURES[id][config::cube_data::SIDE_TEXTURE];
-	GLfloat topTexture = config::cube_data::BLOCK_TEXTURES[id][config::cube_data::TOP_TEXTURE];
-	GLfloat bottomTexture = config::cube_data::BLOCK_TEXTURES[id][config::cube_data::BOTTOM_TEXTURE];
+	GLfloat sideTexture = BLOCK_TEXTURES[id][SIDE_TEXTURE];
+	GLfloat topTexture = BLOCK_TEXTURES[id][TOP_TEXTURE];
+	GLfloat bottomTexture = BLOCK_TEXTURES[id][BOTTOM_TEXTURE];
 
-	std::vector<GLfloat> UV {
+	vector<GLfloat> UV {
 
 		// Front
 		0.0f, 0.0f, sideTexture,
@@ -140,7 +143,7 @@ TexturedCube::TexturedCube(float xOffset, float yOffset, float zOffset, int id):
 		0.0f, 1.0f, bottomTexture,
 	};
 
-	std::vector<short> elementData{
+	vector<short> elementData{
 		0, 1, 2, 0, 2, 3,
 		0+4, 1+4, 2+4, 0+4, 2+4, 3+4,
 		0+8, 1+8, 2+8, 0+8, 2+8, 3+8,
@@ -157,8 +160,7 @@ TexturedCube::TexturedCube(float xOffset, float yOffset, float zOffset, int id):
 // Member Functions########################################
 // ########################################################
 
-void TexturedCube::draw()
-{
+void TexturedCube::draw() {
 	mesh->draw();
 }
 

@@ -1,4 +1,3 @@
-
 #ifndef SRC_GRAPHICS_SPRITEBATCHER_H_
 #define SRC_GRAPHICS_SPRITEBATCHER_H_
 
@@ -23,7 +22,9 @@ public:
 
 	SpriteBatcher();
 
-	virtual ~SpriteBatcher() {};
+	virtual ~SpriteBatcher() {
+	}
+	;
 
 	SpriteBatcher(SpriteBatcher const&) = delete;
 
@@ -31,8 +32,7 @@ public:
 
 public:
 
-	static SpriteBatcher& getInstance()
-	{
+	static SpriteBatcher& getInstance() {
 		static SpriteBatcher INSTANCE;
 		return INSTANCE;
 	}
@@ -55,9 +55,7 @@ private:
 
 	std::vector<std::shared_ptr<Sprite>> m_batches;
 	glm::mat4 m_projection;
-
 	std::shared_ptr<ShaderProgram> m_program;
-
 };
 
 } /* namespace graphics */

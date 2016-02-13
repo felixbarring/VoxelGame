@@ -1,4 +1,3 @@
-
 #ifndef SRC_MODEL_WORLD_ENTITY_AABB_H_
 #define SRC_MODEL_WORLD_ENTITY_AABB_H_
 
@@ -9,29 +8,34 @@ namespace entity {
 class AABB {
 public:
 
-	// ########################################################
-	// Constructor/Destructor #################################
-	// ########################################################
+// ########################################################
+// Constructor/Destructor #################################
+// ########################################################
 
-	AABB(double xMinimum, double xMaximum, double yMinimum, double yMaximum, double zMinimum, double zMaximum);
+	AABB(double xMinimum, double xMaximum, double yMinimum, double yMaximum,
+			double zMinimum, double zMaximum);
 
-	virtual ~AABB() {};
+	virtual ~AABB() {
+	}
+	;
 
-	// ########################################################
-	// Member Functions########################################
-	// ########################################################
+// ########################################################
+// Member Functions########################################
+// ########################################################
 
-	void setBounds(double xMinimum, double xMaximum, double yMinimum, double yMaximum, double zMinimum, double zMaximum);
+	void setBounds(double xMinimum, double xMaximum, double yMinimum,
+			double yMaximum, double zMinimum, double zMaximum);
 
 	bool intersects(const AABB &that);
 
 	static AABB getSweptBroadPhaseBox(AABB &box, glm::vec3 &velocity);
 
-	static float collisionTime(AABB &box1, AABB &box2, glm::vec3 &collisionNormal, glm::vec3 &velocity);
+	static float collisionTime(AABB &box1, AABB &box2,
+			glm::vec3 &collisionNormal, glm::vec3 &velocity);
 
-	// ########################################################
-	// Instance Variables #####################################
-	// ########################################################
+// ########################################################
+// Implementation #########################################
+// ########################################################
 
 //private:
 

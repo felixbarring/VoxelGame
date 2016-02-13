@@ -6,25 +6,27 @@
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 
-namespace graphics
-{
+namespace graphics {
 
 class ShaderProgram {
-public :
+public:
 
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
 
-	 ShaderProgram(const char *vertexSource, const char *fragmentSource , const std::map<std::string, int> &mapUniforms);
+	ShaderProgram(const char *vertexSource, const char *fragmentSource,
+			const std::map<std::string, int> &mapUniforms);
 
-	~ShaderProgram() {};
+	~ShaderProgram() {
+	}
+	;
 
 // ########################################################
 // Member Functions########################################
 // ########################################################
 
-private :
+private:
 
 	GLuint createVertexShader(const char *vertexSource);
 
@@ -32,7 +34,7 @@ private :
 
 	GLuint createShader(GLenum shaderType, const char *source);
 
-public :
+public:
 
 	// TODO Use GLuint and other correct types
 
@@ -56,10 +58,9 @@ public :
 // Instance Variables #####################################
 // ########################################################
 
-private :
+private:
 	GLuint programID;
 	std::map<std::string, int> uniforms;
-
 };
 
 }

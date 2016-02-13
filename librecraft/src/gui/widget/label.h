@@ -1,4 +1,3 @@
-
 /**
  *  \file [label.h]
  *  \brief A label displays text in GUIs
@@ -24,17 +23,19 @@ namespace widget {
  * A label can be used to provide information in GUIs by displaying text
  *
  */
-class Label : public AbstractWidget {
+class Label: public AbstractWidget {
 public:
 
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
 
+	Label(int x, int y, int width, int height, const std::string &name,
+			int layer = 0);
 
-	Label(int x, int y, int width, int height, const std::string &name, int layer = 0);
-
-	virtual ~Label() {};
+	virtual ~Label() {
+	}
+	;
 
 // ########################################################
 // Member Functions########################################
@@ -43,8 +44,10 @@ public:
 	void draw() override;
 
 // ########################################################
-// Instance Variables #####################################
+// Implementation #########################################
 // ########################################################
+
+private:
 
 	std::shared_ptr<graphics::Sprite> m_text;
 

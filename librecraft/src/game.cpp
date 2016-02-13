@@ -1,4 +1,3 @@
-
 #include "game.h"
 
 #include <stdio.h>
@@ -35,8 +34,7 @@ using namespace std;
 // Member Functions########################################
 // ########################################################
 
-void Game::run()
-{
+void Game::run() {
 
 	util::FPSManager fpsManager(config::graphics_data::fps);
 
@@ -50,13 +48,12 @@ void Game::run()
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-
 	GLFWmonitor *primaryMonitor = glfwGetPrimaryMonitor();
 	const GLFWvidmode *viewMode = glfwGetVideoMode(primaryMonitor);
 
 	int width = viewMode->width;
 	int height = viewMode->height;
-	int refreshRate =viewMode->refreshRate;
+	int refreshRate = viewMode->refreshRate;
 
 	cout << "Width: " << width << "\n";
 	cout << "Height: " << height << "\n";
@@ -72,7 +69,8 @@ void Game::run()
 	config::graphics_data::windowHeight = HEIGHT;
 
 	//GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "Voxel Game", glfwGetPrimaryMonitor(), nullptr);
-	GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "Voxel Game", nullptr, nullptr);
+	GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "Voxel Game", nullptr,
+			nullptr);
 
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 
@@ -98,16 +96,15 @@ void Game::run()
 
 	util::Input::createInstance(window, WIDTH / 2.0, HEIGHT / 2.0);
 
-	mainMenu.reset(new MainMenu(this));
-	currentState = mainMenu;
+	m_mainMenu.reset(new MainMenu(this));
+	m_currentState = m_mainMenu;
 
-	while (!quit && glfwWindowShouldClose(window) == 0) {
-
+	while (!m_quit && glfwWindowShouldClose(window) == 0) {
 		fpsManager.frameStart();
 		glfwPollEvents();
-		glClear(GL_COLOR_BUFFER_BIT |  GL_DEPTH_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		currentState->update(fpsManager.frameTime());
+		m_currentState->update(fpsManager.frameTime());
 
 		fpsManager.sync();
 		glfwSwapBuffers(window);
@@ -117,28 +114,23 @@ void Game::run()
 
 }
 
-void Game::createNewWorld(string name)
-{
-	inGame.reset(new InGame(this, name));
+void Game::createNewWorld(string name) {
+	m_inGame.reset(new InGame(this, name));
 	chunk::ChunkManager::getInstance().createNewWorld();
-	currentState = inGame;
+	m_currentState = m_inGame;
 }
 
-void Game::loadExistingWorld(string name)
-{
-	inGame.reset(new InGame(this, name));
+void Game::loadExistingWorld(string name) {
+	m_inGame.reset(new InGame(this, name));
 	chunk::ChunkManager::getInstance().loadWorld(name);
-	currentState = inGame;
+	m_currentState = m_inGame;
 }
 
-void Game::changeStateToMainMenu()
-{
-	currentState = mainMenu;
+void Game::changeStateToMainMenu() {
+	m_currentState = m_mainMenu;
 }
 
-void Game::quitGame()
-{
-	quit = true;
+void Game::quitGame() {
+	m_quit = true;
 }
-
 

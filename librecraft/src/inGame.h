@@ -1,4 +1,3 @@
-
 #ifndef SRC_INGAME_H_
 #define SRC_INGAME_H_
 
@@ -19,7 +18,7 @@
 #include "graphics/resources.h"
 #include "graphics/sprite.h"
 
-class InGame : public IGameState {
+class InGame: public IGameState {
 public:
 
 // ########################################################
@@ -28,7 +27,9 @@ public:
 
 	InGame(Game *game, std::string name);
 
-	virtual ~InGame() {};
+	virtual ~InGame() {
+	}
+	;
 
 // ########################################################
 // Member Functions########################################
@@ -37,17 +38,16 @@ public:
 	void update(float timePassed);
 
 // ########################################################
-// Instance Variables #####################################
+// Implementation #########################################
 // ########################################################
 
 private:
 
 	enum class GameState {
-		NoOverlay,
-		OverlayMenu,
+		NoOverlay, OverlayMenu,
 	};
 
-	GameState state = GameState::NoOverlay;
+	GameState m_state = GameState::NoOverlay;
 
 	glm::mat4 m_virtualProjection;
 
@@ -61,6 +61,5 @@ private:
 	graphics::CubeMap skybox;
 
 };
-
 
 #endif /* SRC_INGAME_H_ */

@@ -1,4 +1,3 @@
-
 #include "spriteBatcher.h"
 
 #include <iostream>
@@ -15,8 +14,7 @@ namespace graphics {
 // Constructor/Destructor #################################
 // ########################################################
 
-SpriteBatcher::SpriteBatcher()
-{
+SpriteBatcher::SpriteBatcher() {
 	// hard coded default value
 	m_projection = glm::ortho(0.0f, 800.0f, 0.0f, 600.0f, -1.0f, 1.0f);
 
@@ -60,13 +58,11 @@ SpriteBatcher::SpriteBatcher()
 // ########################################################
 // Member Functions########################################
 // ########################################################
-void SpriteBatcher::addBatch(shared_ptr<Sprite> batch)
-{
+void SpriteBatcher::addBatch(shared_ptr<Sprite> batch) {
 	m_batches.push_back(batch);
 }
 
-void SpriteBatcher::draw()
-{
+void SpriteBatcher::draw() {
 
 	m_program->bind();
 
@@ -75,11 +71,10 @@ void SpriteBatcher::draw()
 	glDisable(GL_DEPTH_TEST);
 
 	sort(m_batches.begin(), m_batches.end(),
-		[](shared_ptr<Sprite> a, shared_ptr<Sprite> b) -> bool
-	    {
-	      return a->getLayer() < b->getLayer();
-	    }
-	);
+			[](shared_ptr<Sprite> a, shared_ptr<Sprite> b) -> bool
+			{
+				return a->getLayer() < b->getLayer();
+			});
 
 	m_program->setUniformli("texture1", 0);
 
@@ -92,8 +87,8 @@ void SpriteBatcher::draw()
 			current->bind();
 		}
 
-		glm::mat4 modelViewProjection{
-			m_projection * batch->getTransform().getMatrix()};
+		glm::mat4 modelViewProjection { m_projection
+				* batch->getTransform().getMatrix() };
 
 		m_program->setUniformMatrix4f("projection", modelViewProjection);
 		batch->draw();
@@ -103,8 +98,7 @@ void SpriteBatcher::draw()
 	m_batches.clear();
 }
 
-void SpriteBatcher::setProjection(glm::mat4 projection)
-{
+void SpriteBatcher::setProjection(glm::mat4 projection) {
 	this->m_projection = projection;
 }
 

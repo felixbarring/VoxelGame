@@ -1,4 +1,3 @@
-
 #include "widgetGroup.h"
 
 #include <iostream>
@@ -16,31 +15,29 @@ namespace widget {
 // ########################################################
 
 WidgetGroup::WidgetGroup(int id, int x, int y, int width, int height,
-		function<void(int)> observer, int layer) :
-	AbstractWidget(id, x, y, width, height)
-{
-	m_sprite.reset(new Sprite{x, y, 0, width, height,
-		Resources::getInstance().getTexture(config::gui_data::guiBox)});
+		function<void(int)> observer, int layer)
+		: AbstractWidget(id, x, y, width, height) {
+	m_sprite.reset(
+			new Sprite {x, y, 0, width, height,
+					Resources::getInstance().getTexture(
+							config::gui_data::guiBox)});
 }
 
 // ########################################################
 // Member Functions########################################
 // ########################################################
 
-void WidgetGroup::addWidget(shared_ptr<IWidget> widget)
-{
+void WidgetGroup::addWidget(shared_ptr<IWidget> widget) {
 	m_widgets.push_back(widget);
 }
 
-void WidgetGroup::draw()
-{
+void WidgetGroup::draw() {
 	SpriteBatcher::getInstance().addBatch(m_sprite);
 	for (auto widget : m_widgets)
 		widget->draw();
 }
 
-void WidgetGroup::update(float timePassed)
-{
+void WidgetGroup::update(float timePassed) {
 	for (auto widget : m_widgets)
 		widget->update(timePassed);
 }

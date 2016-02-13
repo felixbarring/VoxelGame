@@ -1,4 +1,3 @@
-
 /**
  *  \file [widgetGroup.h]
  *  \author Felix Bärring
@@ -28,7 +27,7 @@ namespace widget {
  *
  * \author Felix Bärring
  */
-class WidgetGroup : public AbstractWidget{
+class WidgetGroup: public AbstractWidget {
 public:
 
 // ########################################################
@@ -41,7 +40,9 @@ public:
 	WidgetGroup(int id, int x, int y, int width, int height,
 			std::function<void(int)> observer, int layer = 0);
 
-	virtual ~WidgetGroup() {};
+	virtual ~WidgetGroup() {
+	}
+	;
 
 // ########################################################
 // Member Functions########################################
@@ -62,7 +63,7 @@ public:
 	void update(float timePassed) override;
 
 // ########################################################
-// Instance Variables #####################################
+// Implementation #########################################
 // ########################################################
 
 private:

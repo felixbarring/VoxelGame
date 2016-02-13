@@ -1,4 +1,3 @@
-
 #ifndef SRC_MODEL_WORLD_CHUNK_CHUNKMANAGER_H_
 #define SRC_MODEL_WORLD_CHUNK_CHUNKMANAGER_H_
 
@@ -9,8 +8,7 @@
 #include "../../../config/data.h"
 #include "../../../util/voxel.h"
 
-namespace chunk
-{
+namespace chunk {
 
 class ChunkManager {
 private:
@@ -21,7 +19,9 @@ private:
 
 	ChunkManager();
 
-	virtual ~ChunkManager() {};
+	virtual ~ChunkManager() {
+	}
+	;
 
 // ########################################################
 // Member Functions########################################
@@ -29,8 +29,7 @@ private:
 
 public:
 
-	static ChunkManager& getInstance()
-	{
+	static ChunkManager& getInstance() {
 		static ChunkManager INSTANCE;
 		return INSTANCE;
 	}
@@ -57,16 +56,15 @@ public:
 	bool intersectWithSolidCube(glm::vec3 origin, glm::vec3 direction,
 			glm::vec3 &intersected, glm::vec3 &previous, float searchLength);
 
-	// ########################################################
-	// Instance Variables #####################################
-	// ########################################################
+// ########################################################
+// Implementation #########################################
+// ########################################################
 
 private:
 
-	std::shared_ptr<Chunk> chunks
-		[config::chunk_data::NUMBER_OF_CHUNKS_X]
-		[config::chunk_data::NUMBER_OF_CHUNKS_Y]
-		[config::chunk_data::NUMBER_OF_CHUNKS_Z];
+	std::shared_ptr<Chunk> chunks[config::chunk_data::NUMBER_OF_CHUNKS_X]
+								  [config::chunk_data::NUMBER_OF_CHUNKS_Y]
+								   [config::chunk_data::NUMBER_OF_CHUNKS_Z];
 
 	glm::vec3 intersectedCube;
 	glm::vec3 previousCube;

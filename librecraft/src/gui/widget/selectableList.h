@@ -1,4 +1,3 @@
-
 #ifndef SRC_GUI_WIDGET_SELECTABLELIST_H_
 #define SRC_GUI_WIDGET_SELECTABLELIST_H_
 
@@ -9,12 +8,11 @@
 #include "abstractWidget.h"
 #include "toggleButton.h"
 
-
 #include "../../graphics/sprite.h"
 
 namespace widget {
 
-class SelectableList : public AbstractWidget {
+class SelectableList: public AbstractWidget {
 public:
 
 // ########################################################
@@ -24,7 +22,9 @@ public:
 	SelectableList(int id, int x, int y, int width, int height,
 			std::function<void(int)> observer, int layer = 0);
 
-	virtual ~SelectableList() {};
+	virtual ~SelectableList() {
+	}
+	;
 
 // ########################################################
 // Member Functions########################################
@@ -44,14 +44,8 @@ public:
 
 	void update(float timePassed) override;
 
-//	void mouseClicked(int button, float x, float y) override;
-//
-//	void mouseMoved(float x, float y) override;
-//
-//	void keyTyped(char value) override;
-
 // ########################################################
-// Instance Variables #####################################
+// Implementation #########################################
 // ########################################################
 
 private:
@@ -61,10 +55,10 @@ private:
 	std::function<void(int)> m_observer;
 	int m_layer;
 
-	int idCounter{0};
+	int idCounter {0};
 	std::vector<std::shared_ptr<ToggleButton>> m_buttons;
 
-	std::shared_ptr<ToggleButton> m_currentlyToggled{nullptr};
+	std::shared_ptr<ToggleButton> m_currentlyToggled {nullptr};
 
 	std::shared_ptr<graphics::Sprite> m_sprite;
 	std::shared_ptr<graphics::Sprite> m_highlight;

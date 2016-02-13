@@ -1,4 +1,3 @@
-
 #ifndef SRC_GRAPHICS_CHUNKBATCHER_H_
 #define SRC_GRAPHICS_CHUNKBATCHER_H_
 
@@ -11,9 +10,7 @@
 #include "texture/textureArray.h"
 #include "shaderProgram.h"
 
-namespace graphics
-{
-
+namespace graphics {
 
 class ChunkBatcher {
 private:
@@ -24,7 +21,9 @@ private:
 
 	ChunkBatcher();
 
-	virtual ~ChunkBatcher() {};
+	virtual ~ChunkBatcher() {
+	}
+	;
 
 private:
 
@@ -38,8 +37,7 @@ private:
 
 public:
 
-	static ChunkBatcher& getInstance()
-	{
+	static ChunkBatcher& getInstance() {
 		static ChunkBatcher INSTANCE;
 		return INSTANCE;
 	}

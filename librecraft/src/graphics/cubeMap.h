@@ -1,12 +1,10 @@
-
 #ifndef SRC_GRAPHICS_CUBEMAP_H_
 #define SRC_GRAPHICS_CUBEMAP_H_
 
 #include "texture/textureCubeMap.h"
 #include "camera.h"
 
-namespace graphics
-{
+namespace graphics {
 
 class CubeMap {
 public:
@@ -17,7 +15,9 @@ public:
 
 	CubeMap(texture::TextureCubeMap &texture);
 
-	virtual ~CubeMap() {};
+	virtual ~CubeMap() {
+	}
+	;
 
 // ########################################################
 // Member Functions########################################

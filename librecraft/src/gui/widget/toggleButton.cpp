@@ -20,24 +20,19 @@ using namespace graphics;
 namespace widget {
 
 ToggleButton::ToggleButton(int id, int x, int y, int width, int height,
-		function<void(int)> observer,
-		const string &name, int layer) :
-			Button(id, x, y, width, height, observer, name, layer)
-{
+		function<void(int)> observer, const string &name, int layer)
+		: Button(id, x, y, width, height, observer, name, layer) {
 }
 
-bool ToggleButton::isToggled()
-{
+bool ToggleButton::isToggled() {
 	return m_toggled;
 }
 
-void ToggleButton::toggle()
-{
+void ToggleButton::toggle() {
 	m_toggled = !m_toggled;
 }
 
-void ToggleButton::draw()
-{
+void ToggleButton::draw() {
 	if (m_pointerInsideBorders) {
 		SpriteBatcher::getInstance().addBatch(m_sprite);
 		SpriteBatcher::getInstance().addBatch(m_text);
@@ -52,12 +47,10 @@ void ToggleButton::draw()
 
 }
 
-void ToggleButton::update(float timePassed)
-{
+void ToggleButton::update(float timePassed) {
 	shared_ptr<util::Input> input = util::Input::getInstance();
 
-	m_pointerInsideBorders = isInsideBorders(
-			input->mouseVirtualAdjustedX,
+	m_pointerInsideBorders = isInsideBorders(input->mouseVirtualAdjustedX,
 			input->mouseVirtualAdjustedY);
 
 	if (m_pointerInsideBorders && input->action1Pressed) {

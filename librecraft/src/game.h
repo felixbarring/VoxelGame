@@ -1,4 +1,3 @@
-
 /**
  *  \file    game.h
  *
@@ -24,9 +23,13 @@ public:
 // Constructor/Destructor #################################
 // ########################################################
 
-	Game() {};
+	Game() {
+	}
+	;
 
-	virtual ~Game() {};
+	virtual ~Game() {
+	}
+	;
 
 // ########################################################
 // Member Functions########################################
@@ -43,17 +46,16 @@ public:
 	void quitGame();
 
 // ########################################################
-// Instance Variables #####################################
+// Implementation #########################################
 // ########################################################
 
 private:
 
-	std::shared_ptr<IGameState> mainMenu;
-	std::shared_ptr<IGameState> inGame;
-	std::shared_ptr<IGameState> currentState;
+	std::shared_ptr<IGameState> m_mainMenu;
+	std::shared_ptr<IGameState> m_inGame;
+	std::shared_ptr<IGameState> m_currentState;
 
-	bool quit = false;
-	bool blool = true;
+	bool m_quit = false;
 
 };
 

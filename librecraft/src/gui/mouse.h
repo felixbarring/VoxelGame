@@ -1,4 +1,3 @@
-
 #ifndef SRC_GUI_MOUSE_H_
 #define SRC_GUI_MOUSE_H_
 
@@ -12,14 +11,15 @@ namespace widget {
 
 class Mouse {
 
-
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
 
 	Mouse();
 
-	virtual ~Mouse() {};
+	virtual ~Mouse() {
+	}
+	;
 
 // ########################################################
 // Member Functions########################################
@@ -27,8 +27,7 @@ class Mouse {
 
 public:
 
-	static Mouse& getInstance()
-	{
+	static Mouse& getInstance() {
 		static Mouse instance;
 		return instance;
 	}
@@ -42,15 +41,15 @@ public:
 	void unlock();
 
 // ########################################################
-// Instance Variables #####################################
+// Implementation #########################################
 // ########################################################
 
 	std::shared_ptr<util::Input> m_input;
-	bool m_locked{false};
+	bool m_locked {false};
 
 	std::shared_ptr<graphics::Sprite> m_sprite;
-	int m_width{10};
-	int m_height{10};
+	int m_width {10};
+	int m_height {10};
 };
 
 } /* namespace widget */
