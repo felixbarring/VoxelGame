@@ -69,6 +69,9 @@ private:
 	std::shared_ptr<widget::TextInput> m_textInput2;
 	std::shared_ptr<widget::TextInput> m_textInput3;
 
+	std::shared_ptr<widget::TextInput> m_mouseSensitivityInput;
+	std::shared_ptr<widget::Slider> m_mouseSensitivitySlider;
+
 	std::shared_ptr<widget::Slider> m_slider;
 	std::shared_ptr<widget::Slider> m_slider2;
 

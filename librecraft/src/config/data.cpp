@@ -28,7 +28,8 @@ namespace config
 
 	namespace input_data
 	{
-
+		float mouseSensitivityX {0.001};
+		float mouseSensitivityY {0.001};
 	}
 
 	namespace texture_paths

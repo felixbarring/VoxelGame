@@ -69,8 +69,8 @@ namespace config {
 
 		extern float fov; // degree to radians
 
-		static float virtualWidth = 800;
-		static float virtualHeight = 600;
+		static float virtualWidth {800};
+		static float virtualHeight {600};
 	}
 
 	namespace input_data {
@@ -92,6 +92,10 @@ namespace config {
 
 		static int action1Button = GLFW_MOUSE_BUTTON_LEFT;
 		static int action2Button = GLFW_MOUSE_BUTTON_RIGHT;
+
+		extern float mouseSensitivityX;
+		extern float mouseSensitivityY;
+
 	}
 
 	namespace texture_paths {

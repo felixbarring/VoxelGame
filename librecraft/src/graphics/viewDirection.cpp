@@ -1,5 +1,9 @@
 #include "viewDirection.h"
 
+#include "../config/data.h"
+
+using namespace config;
+
 namespace graphics {
 
 // ########################################################
@@ -11,8 +15,8 @@ namespace graphics {
 // ########################################################
 
 void ViewDirection::changeViewDirection(float horizontal, float vertical) {
-	ViewDirection::setViewDirection(horizontalAngle + horizontal * xSensitivity,
-			verticalAngle + vertical * ySensitivity);
+	ViewDirection::setViewDirection(horizontalAngle + horizontal * config::input_data::mouseSensitivityX,
+			verticalAngle + vertical * config::input_data::mouseSensitivityY);
 }
 
 void ViewDirection::setViewDirection(float horizontal, float vertical) {

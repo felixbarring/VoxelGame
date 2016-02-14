@@ -52,9 +52,6 @@ private:
 	float maxVerticalAngle = 3.14 / 2;
 	float minVerticalAngle = -3.14 / 2;
 
-	float xSensitivity = 0.01;
-	float ySensitivity = 0.01;
-
 };
 
 } /* namespace graphics */
