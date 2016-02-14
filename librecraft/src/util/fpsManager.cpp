@@ -50,7 +50,7 @@ void FPSManager::sync() {
 	currentFPS = 1.0 / totalFrameTime;
 	timeForLatestFrame = totalFrameTime;
 
-	std::cout << currentFPS << "\n";
+//	std::cout << currentFPS << "\n";
 
 }
 
