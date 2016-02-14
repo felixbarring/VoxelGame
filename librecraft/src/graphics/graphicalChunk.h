@@ -49,7 +49,7 @@ private:
 	struct CubeFaceData {
 		int id;
 		bool vissible, front, back, left, right, top, bottom;
-		char lightValue; // For air blocks
+		char lightValue;
 
 		// lv means lightValue
 		float lvFront_BottomLeft, lvFront_BottomRight,
@@ -72,71 +72,125 @@ private:
 	};
 
 	Voxel* getVoxel(int x, int y, int z,
-	std::vector<std::vector<std::vector<Voxel>>> &data,
-	std::vector<std::vector<std::vector<Voxel>>> *right,
-	std::vector<std::vector<std::vector<Voxel>>> *left,
-	std::vector<std::vector<std::vector<Voxel>>> *back,
-	std::vector<std::vector<std::vector<Voxel>>> *front);
+		std::vector<std::vector<std::vector<CubeFaceData>>> &faceData);
 
 	void doAORight(CubeFaceData &cf, int x, int y, int z,
-	std::vector<std::vector<std::vector<Voxel>>> &data,
-	std::vector<std::vector<std::vector<Voxel>>> *right,
-	std::vector<std::vector<std::vector<Voxel>>> *left,
-	std::vector<std::vector<std::vector<Voxel>>> *back,
-	std::vector<std::vector<std::vector<Voxel>>> *front);
+		std::vector<std::vector<std::vector<CubeFaceData>>> &faceData);
 
 	void doAOLeft(CubeFaceData &cf, int x, int y, int z,
-	std::vector<std::vector<std::vector<Voxel>>> &data,
-	std::vector<std::vector<std::vector<Voxel>>> *right,
-	std::vector<std::vector<std::vector<Voxel>>> *left,
-	std::vector<std::vector<std::vector<Voxel>>> *back,
-	std::vector<std::vector<std::vector<Voxel>>> *front);
+		std::vector<std::vector<std::vector<CubeFaceData>>> &faceData);
 
 	void doAOBack(CubeFaceData &cf, int x, int y, int z,
-	std::vector<std::vector<std::vector<Voxel>>> &data,
-	std::vector<std::vector<std::vector<Voxel>>> *right,
-	std::vector<std::vector<std::vector<Voxel>>> *left,
-	std::vector<std::vector<std::vector<Voxel>>> *back,
-	std::vector<std::vector<std::vector<Voxel>>> *front);
+		std::vector<std::vector<std::vector<CubeFaceData>>> &faceData);
 
 	void doAOFront(CubeFaceData &cf, int x, int y, int z,
-	std::vector<std::vector<std::vector<Voxel>>> &data,
-	std::vector<std::vector<std::vector<Voxel>>> *right,
-	std::vector<std::vector<std::vector<Voxel>>> *left,
-	std::vector<std::vector<std::vector<Voxel>>> *back,
-	std::vector<std::vector<std::vector<Voxel>>> *front);
+		std::vector<std::vector<std::vector<CubeFaceData>>> &faceData);
 
 	void doAOTop(CubeFaceData &cf, int x, int y, int z,
-	std::vector<std::vector<std::vector<Voxel>>> &data,
-	std::vector<std::vector<std::vector<Voxel>>> *right,
-	std::vector<std::vector<std::vector<Voxel>>> *left,
-	std::vector<std::vector<std::vector<Voxel>>> *back,
-	std::vector<std::vector<std::vector<Voxel>>> *front);
+		std::vector<std::vector<std::vector<CubeFaceData>>> &faceData);
 
 	void doAOBottom(CubeFaceData &cf, int x, int y, int z,
-	std::vector<std::vector<std::vector<Voxel>>> &data,
-	std::vector<std::vector<std::vector<Voxel>>> *right,
-	std::vector<std::vector<std::vector<Voxel>>> *left,
-	std::vector<std::vector<std::vector<Voxel>>> *back,
-	std::vector<std::vector<std::vector<Voxel>>> *front);
+		std::vector<std::vector<std::vector<CubeFaceData>>> &faceData);
 
-	void computeAverageRight(float &bottomLeft, float &bottomRight,
-			float &topRight, float &topLeft);
 
-	void computeAverageLeft(float &bottomLeft, float &bottomRight,
-			float &topRight, float &topLeft);
+	Voxel* getVoxel(int x, int y, int z,
+		std::vector<std::vector<std::vector<Voxel>>> &data,
+		std::vector<std::vector<std::vector<Voxel>>> *right,
+		std::vector<std::vector<std::vector<Voxel>>> *left,
+		std::vector<std::vector<std::vector<Voxel>>> *back,
+		std::vector<std::vector<std::vector<Voxel>>> *front);
 
-	void computeAverageTop(float &bottomLeft, float &bottomRight,
-			float &topRight, float &topLeft);
+//	void doAORight(CubeFaceData &cf, int x, int y, int z,
+//		std::vector<std::vector<std::vector<Voxel>>> &data,
+//		std::vector<std::vector<std::vector<Voxel>>> *right,
+//		std::vector<std::vector<std::vector<Voxel>>> *left,
+//		std::vector<std::vector<std::vector<Voxel>>> *back,
+//		std::vector<std::vector<std::vector<Voxel>>> *front);
+//
+//	void doAOLeft(CubeFaceData &cf, int x, int y, int z,
+//		std::vector<std::vector<std::vector<Voxel>>> &data,
+//		std::vector<std::vector<std::vector<Voxel>>> *right,
+//		std::vector<std::vector<std::vector<Voxel>>> *left,
+//		std::vector<std::vector<std::vector<Voxel>>> *back,
+//		std::vector<std::vector<std::vector<Voxel>>> *front);
+//
+//	void doAOBack(CubeFaceData &cf, int x, int y, int z,
+//		std::vector<std::vector<std::vector<Voxel>>> &data,
+//		std::vector<std::vector<std::vector<Voxel>>> *right,
+//		std::vector<std::vector<std::vector<Voxel>>> *left,
+//		std::vector<std::vector<std::vector<Voxel>>> *back,
+//		std::vector<std::vector<std::vector<Voxel>>> *front);
+//
+//	void doAOFront(CubeFaceData &cf, int x, int y, int z,
+//		std::vector<std::vector<std::vector<Voxel>>> &data,
+//		std::vector<std::vector<std::vector<Voxel>>> *right,
+//		std::vector<std::vector<std::vector<Voxel>>> *left,
+//		std::vector<std::vector<std::vector<Voxel>>> *back,
+//		std::vector<std::vector<std::vector<Voxel>>> *front);
+//
+//	void doAOTop(CubeFaceData &cf, int x, int y, int z,
+//		std::vector<std::vector<std::vector<Voxel>>> &data,
+//		std::vector<std::vector<std::vector<Voxel>>> *right,
+//		std::vector<std::vector<std::vector<Voxel>>> *left,
+//		std::vector<std::vector<std::vector<Voxel>>> *back,
+//		std::vector<std::vector<std::vector<Voxel>>> *front);
+//
+//	void doAOBottom(CubeFaceData &cf, int x, int y, int z,
+//		std::vector<std::vector<std::vector<Voxel>>> &data,
+//		std::vector<std::vector<std::vector<Voxel>>> *right,
+//		std::vector<std::vector<std::vector<Voxel>>> *left,
+//		std::vector<std::vector<std::vector<Voxel>>> *back,
+//		std::vector<std::vector<std::vector<Voxel>>> *front);
 
-	void computeAverageBottom(float &bottomLeft, float &bottomRight,
-			float &topRight, float &topLeft);
 
-	void computeAverageBack(float &bottomLeft, float &bottomRight,
-			float &topRight, float &topLeft);
+	void computeAverageRight(int lightValue, int x, int y, int z, float &bottomLeft,
+			float &bottomRight, float &topRight, float &topLeft,
+			std::vector<std::vector<std::vector<CubeFaceData>>> &faceData);
 
-	void computeAverageFront(float &bottomLeft, float &bottomRight,
-			float &topRight, float &topLeft);
+	void computeAverageLeft(int x, int y, int z,float &bottomLeft,
+		float &bottomRight, float &topRight, float &topLeft,
+		std::vector<std::vector<std::vector<Voxel>>> &data,
+		std::vector<std::vector<std::vector<Voxel>>> *right,
+		std::vector<std::vector<std::vector<Voxel>>> *left,
+		std::vector<std::vector<std::vector<Voxel>>> *back,
+		std::vector<std::vector<std::vector<Voxel>>> *front,
+		std::vector<std::vector<std::vector<CubeFaceData>>> &faceData);
+
+	void computeAverageTop(int x, int y, int z,float &bottomLeft,
+		float &bottomRight, float &topRight, float &topLeft,
+		std::vector<std::vector<std::vector<Voxel>>> &data,
+		std::vector<std::vector<std::vector<Voxel>>> *right,
+		std::vector<std::vector<std::vector<Voxel>>> *left,
+		std::vector<std::vector<std::vector<Voxel>>> *back,
+		std::vector<std::vector<std::vector<Voxel>>> *front,
+		std::vector<std::vector<std::vector<CubeFaceData>>> &faceData);
+
+	void computeAverageBottom(int x, int y, int z,float &bottomLeft,
+		float &bottomRight, float &topRight, float &topLeft,
+		std::vector<std::vector<std::vector<Voxel>>> &data,
+		std::vector<std::vector<std::vector<Voxel>>> *right,
+		std::vector<std::vector<std::vector<Voxel>>> *left,
+		std::vector<std::vector<std::vector<Voxel>>> *back,
+		std::vector<std::vector<std::vector<Voxel>>> *front,
+		std::vector<std::vector<std::vector<CubeFaceData>>> &faceData);
+
+	void computeAverageBack(int x, int y, int z,float &bottomLeft,
+		float &bottomRight, float &topRight, float &topLeft,
+		std::vector<std::vector<std::vector<Voxel>>> &data,
+		std::vector<std::vector<std::vector<Voxel>>> *right,
+		std::vector<std::vector<std::vector<Voxel>>> *left,
+		std::vector<std::vector<std::vector<Voxel>>> *back,
+		std::vector<std::vector<std::vector<Voxel>>> *front,
+		std::vector<std::vector<std::vector<CubeFaceData>>> &faceData);
+
+	void computeAverageFront(int x, int y, int z,float &bottomLeft,
+		float &bottomRight, float &topRight, float &topLeft,
+		std::vector<std::vector<std::vector<Voxel>>> &data,
+		std::vector<std::vector<std::vector<Voxel>>> *right,
+		std::vector<std::vector<std::vector<Voxel>>> *left,
+		std::vector<std::vector<std::vector<Voxel>>> *back,
+		std::vector<std::vector<std::vector<Voxel>>> *front,
+		std::vector<std::vector<std::vector<CubeFaceData>>> &faceData);
 
 	std::unique_ptr<mesh::MeshElement> mesh;
 	float xLocation;
