@@ -32,6 +32,9 @@ MainMenu::MainMenu(Game *game)
 
 	m_title.reset(new gui::Image {200, 450, 400, 100, config::gui_data::title});
 
+	// TODO Use constants for each ID.
+	// TODO use better names for the widgets variables.
+
 	bool quit = false;
 	function<void(int)> observer = [&, game](int id)
 	{

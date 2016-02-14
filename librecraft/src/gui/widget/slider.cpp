@@ -55,7 +55,8 @@ void Slider::update(float timePassed) {
 	shared_ptr<Input> input = Input::getInstance();
 	m_pointerInsideBorders = isInsideBorders(input->mouseVirtualAdjustedX,
 			input->mouseVirtualAdjustedY);
-	m_grabbed = !m_grabbed && m_pointerInsideBorders;
+
+	m_grabbed = input->action1Active && m_pointerInsideBorders;
 
 	if (m_grabbed) {
 		m_knobPosition = input->mouseVirtualAdjustedX - m_knobWidth / 2;
