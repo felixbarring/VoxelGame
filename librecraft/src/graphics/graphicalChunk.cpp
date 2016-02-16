@@ -35,7 +35,7 @@ transform {
 	//CubeFaceData faceData[width][height][depth];
 
 // ############################################################################
-// ### Generate Cubeface Data##################################################
+// ### Generate Cubeface Data #################################################
 // ############################################################################
 	for (int i = 0; i < width + 2; i++) {
 		faceData.push_back(vector<vector<CubeFaceData>>());
@@ -233,10 +233,16 @@ transform {
 				if (cd.id != AIR) {
 					current.back = false;
 				} else {
-					current.lvBack_BottomLeft = cd.lightValue;
-					current.lvBack_BottomRight = cd.lightValue;
-					current.lvBack_TopRight = cd.lightValue;
-					current.lvBack_TopLeft = cd.lightValue;
+//					current.lvBack_BottomLeft = cd.lightValue;
+//					current.lvBack_BottomRight = cd.lightValue;
+//					current.lvBack_TopRight = cd.lightValue;
+//					current.lvBack_TopLeft = cd.lightValue;
+
+					computeAverageBack(cd.lightValue, i + 1, j + 1, k + 1,
+							current.lvBack_BottomLeft,
+							current.lvBack_BottomRight,
+							current.lvBack_TopRight,
+							current.lvBack_TopLeft, faceData);
 
 //					doAOBack(current, i + 1, j + 1, k + 1, faceData);
 				}
@@ -260,10 +266,16 @@ transform {
 					if (cd.id != AIR) {
 						current.front = false;
 					} else {
-						current.lvFront_BottomLeft = cd.lightValue;
-						current.lvFront_BottomRight = cd.lightValue;
-						current.lvFront_TopRight = cd.lightValue;
-						current.lvFront_TopLeft = cd.lightValue;
+//						current.lvFront_BottomLeft = cd.lightValue;
+//						current.lvFront_BottomRight = cd.lightValue;
+//						current.lvFront_TopRight = cd.lightValue;
+//						current.lvFront_TopLeft = cd.lightValue;
+
+						computeAverageFront(cd.lightValue, i + 1, j + 1, k + 1,
+							current.lvFront_BottomLeft,
+							current.lvFront_BottomRight,
+							current.lvFront_TopRight,
+							current.lvFront_TopLeft, faceData);
 
 //						doAOFront(current, i + 1, j + 1, k + 1, faceData);
 					}
@@ -548,13 +560,6 @@ transform {
 
 					// TODO Dose not follow the same pattern as the others?!?
 					// TODO FIX THIS SHIT
-					// TODO
-					// TODO
-					// TODO
-					// TODO
-					// TODO
-					// TODO
-					// TODO
 					vector<GLfloat> vertex {
 
 						-0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz,
@@ -1289,12 +1294,194 @@ void GraphicalChunk::computeAverageBack(int lightValue, int x, int y, int z,
 		float &bottomLeft, float &bottomRight,
 		float &topRight, float &topLeft,
 		std::vector<std::vector<std::vector<CubeFaceData>>> &faceData) {
+
+	CubeFaceData cBottomLeft = faceData[x + 1][y - 1][z];
+	CubeFaceData cBottomLeft_Bottom = faceData[x + 1][y - 1][z + 1];
+
+	CubeFaceData cBottomMiddle = faceData[x][y - 1][z];
+	CubeFaceData cBottomMiddle_Bottom = faceData[x][y - 1][z + 1];
+
+	CubeFaceData cBottomRight = faceData[x - 1][y - 1][z];
+	CubeFaceData cBottomRight_Bottom = faceData[x - 1][y - 1][z + 1];
+
+	CubeFaceData cRightRight = faceData[x - 1][y][z];
+	CubeFaceData cRightRight_Bottom = faceData[x - 1][y][z + 1];
+
+	CubeFaceData cTopRight = faceData[x - 1][y + 1][z];
+	CubeFaceData cTopRight_Bottom = faceData[x - 1][y + 1][z + 1];
+
+	CubeFaceData cTopMiddle = faceData[x][y + 1][z];
+	CubeFaceData cTopMiddle_Bottom = faceData[x][y + 1][z + 1];
+
+	CubeFaceData cTopLeft = faceData[x + 1][y + 1][z];
+	CubeFaceData cTopLeft_Bottom = faceData[x + 1][y + 1][z + 1];
+
+	CubeFaceData cLeftLeft = faceData[x + 1][y][z];
+	CubeFaceData cLeftLeft_Bottom = faceData[x + 1][y][z + 1];
+
+//	bottomLeft = lightValue;
+//	bottomRight = lightValue;
+//	topRight = lightValue;
+//	topLeft = lightValue;
+
+
+	float counter {1};
+	float acc = lightValue;
+	if (cLeftLeft.id != AIR && cLeftLeft_Bottom.id == AIR) {
+		acc += cLeftLeft_Bottom.lightValue;
+		++counter;
+	}
+	if (cBottomLeft.id != AIR && cBottomLeft_Bottom.id == AIR) {
+		acc += cBottomLeft_Bottom.lightValue;
+		++counter;
+	}
+	if (cBottomMiddle.id != AIR && cBottomMiddle_Bottom.id == AIR) {
+		acc += cBottomMiddle_Bottom.lightValue;
+		++counter;
+	}
+	bottomLeft = acc / counter;
+
+	counter = 1;
+	acc = lightValue;
+	if (cBottomMiddle.id != AIR && cBottomMiddle_Bottom.id == AIR) {
+		acc += cBottomMiddle_Bottom.lightValue;
+		++counter;
+	}
+	if (cBottomRight.id != AIR && cBottomRight_Bottom.id == AIR) {
+		acc += cBottomRight_Bottom.lightValue;
+		++counter;
+	}
+	if (cRightRight.id != AIR && cRightRight_Bottom.id == AIR) {
+		acc += cRightRight_Bottom.lightValue;
+		++counter;
+	}
+	bottomRight = acc / counter;
+
+	counter = 1;
+	acc = lightValue;
+	if (cRightRight.id != AIR && cRightRight.id == AIR) {
+		acc += cRightRight_Bottom.lightValue;
+		++counter;
+	}
+	if (cTopRight.id != AIR && cTopRight_Bottom.id == AIR) {
+		acc += cTopRight_Bottom.lightValue;
+		++counter;
+	}
+	topRight = acc / counter;
+
+	counter = 1;
+	acc = lightValue;
+	if (cTopMiddle.id != AIR && cTopMiddle_Bottom.id == AIR) {
+		acc += cTopMiddle_Bottom.lightValue;
+		++counter;
+	}
+	if (cTopLeft.id != AIR && cTopLeft_Bottom.id == AIR) {
+		acc += cTopLeft_Bottom.lightValue;
+		++counter;
+	}
+	if (cLeftLeft.id != AIR && cLeftLeft_Bottom.id == AIR) {
+		acc += cLeftLeft_Bottom.lightValue;
+		++counter;
+	}
+	topLeft = acc / counter;
+
 }
 
 void GraphicalChunk::computeAverageFront(int lightValue, int x, int y, int z,
 		float &bottomLeft, float &bottomRight,
 		float &topRight, float &topLeft,
 		std::vector<std::vector<std::vector<CubeFaceData>>> &faceData) {
+
+	CubeFaceData cBottomLeft = faceData[x - 1][y - 1][z];
+	CubeFaceData cBottomLeft_Bottom = faceData[x - 1][y - 1][z - 1];
+
+	CubeFaceData cBottomMiddle = faceData[x][y - 1][z];
+	CubeFaceData cBottomMiddle_Bottom = faceData[x][y - 1][z - 1];
+
+	CubeFaceData cBottomRight = faceData[x + 1][y - 1][z];
+	CubeFaceData cBottomRight_Bottom = faceData[x + 1][y - 1][z - 1];
+
+	CubeFaceData cRightRight = faceData[x + 1][y][z];
+	CubeFaceData cRightRight_Bottom = faceData[x + 1][y][z - 1];
+
+	CubeFaceData cTopRight = faceData[x + 1][y + 1][z];
+	CubeFaceData cTopRight_Bottom = faceData[x + 1][y + 1][z - 1];
+
+	CubeFaceData cTopMiddle = faceData[x][y + 1][z];
+	CubeFaceData cTopMiddle_Bottom = faceData[x][y + 1][z - 1];
+
+	CubeFaceData cTopLeft = faceData[x - 1][y + 1][z];
+	CubeFaceData cTopLeft_Bottom = faceData[x - 1][y + 1][z - 1];
+
+	CubeFaceData cLeftLeft = faceData[x - 1][y][z];
+	CubeFaceData cLeftLeft_Bottom = faceData[x - 1][y][z - 1];
+
+//	bottomLeft = lightValue;
+//	bottomRight = lightValue;
+//	topRight = lightValue;
+//	topLeft = lightValue;
+
+
+	float counter {1};
+	float acc = lightValue;
+	if (cLeftLeft.id != AIR && cLeftLeft_Bottom.id == AIR) {
+		acc += cLeftLeft_Bottom.lightValue;
+		++counter;
+	}
+	if (cBottomLeft.id != AIR && cBottomLeft_Bottom.id == AIR) {
+		acc += cBottomLeft_Bottom.lightValue;
+		++counter;
+	}
+	if (cBottomMiddle.id != AIR && cBottomMiddle_Bottom.id == AIR) {
+		acc += cBottomMiddle_Bottom.lightValue;
+		++counter;
+	}
+	bottomLeft = acc / counter;
+
+	counter = 1;
+	acc = lightValue;
+	if (cBottomMiddle.id != AIR && cBottomMiddle_Bottom.id == AIR) {
+		acc += cBottomMiddle_Bottom.lightValue;
+		++counter;
+	}
+	if (cBottomRight.id != AIR && cBottomRight_Bottom.id == AIR) {
+		acc += cBottomRight_Bottom.lightValue;
+		++counter;
+	}
+	if (cRightRight.id != AIR && cRightRight_Bottom.id == AIR) {
+		acc += cRightRight_Bottom.lightValue;
+		++counter;
+	}
+	bottomRight = acc / counter;
+
+	counter = 1;
+	acc = lightValue;
+	if (cRightRight.id != AIR && cRightRight.id == AIR) {
+		acc += cRightRight_Bottom.lightValue;
+		++counter;
+	}
+	if (cTopRight.id != AIR && cTopRight_Bottom.id == AIR) {
+		acc += cTopRight_Bottom.lightValue;
+		++counter;
+	}
+	topRight = acc / counter;
+
+	counter = 1;
+	acc = lightValue;
+	if (cTopMiddle.id != AIR && cTopMiddle_Bottom.id == AIR) {
+		acc += cTopMiddle_Bottom.lightValue;
+		++counter;
+	}
+	if (cTopLeft.id != AIR && cTopLeft_Bottom.id == AIR) {
+		acc += cTopLeft_Bottom.lightValue;
+		++counter;
+	}
+	if (cLeftLeft.id != AIR && cLeftLeft_Bottom.id == AIR) {
+		acc += cLeftLeft_Bottom.lightValue;
+		++counter;
+	}
+	topLeft = acc / counter;
+
 }
 
 }
