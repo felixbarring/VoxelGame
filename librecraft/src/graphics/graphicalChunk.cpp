@@ -301,7 +301,7 @@ transform {
 // Create the mesh data #######################################################
 // ############################################################################
 
-	// The fourth element of the vertex data is the light value.
+// The fourth element of the vertex data is the light value.
 
 
 	vector<GLfloat> vertexData;
@@ -563,16 +563,16 @@ transform {
 					vector<GLfloat> vertex {
 
 						-0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz,
-							fd.lvBottom_BottomLeft,
+							fd.lvBottom_TopLeft,
 
 						0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz,
-							fd.lvBottom_BottomRight,
-
-						0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz,
 							fd.lvBottom_TopRight,
 
+						0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz,
+							fd.lvBottom_BottomRight,
+
 						-0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz,
-							fd.lvBottom_TopLeft,
+							fd.lvBottom_BottomLeft,
 					};
 
 					vector<GLfloat> nor {
