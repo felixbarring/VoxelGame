@@ -130,6 +130,28 @@ private:
 			float &topRight, float &topLeft,
 			std::vector<std::vector<std::vector<CubeFaceData>>> &faceData);
 
+	void computeAverageHelper(int lightValue,
+			const CubeFaceData& cLeftLeft,
+			const CubeFaceData& cLeftLeft_Right,
+			const CubeFaceData&	cBottomLeft,
+			const CubeFaceData& cBottomLeft_Right,
+			const CubeFaceData& cBottomMiddle,
+			const CubeFaceData&	cBottomMiddle_Right,
+			const CubeFaceData& cBottomRight,
+			const CubeFaceData& cBottomRight_Right,
+			const CubeFaceData& cRightRight,
+			const CubeFaceData& cRightRight_Right,
+			const CubeFaceData& cTopRight,
+			const CubeFaceData& cTopRight_Right,
+			const CubeFaceData& cTopMiddle,
+			const CubeFaceData& cTopMiddle_Right,
+			const CubeFaceData& cTopLeft,
+			const CubeFaceData& cTopLeft_Right,
+			float& bottomLeft,
+			float& bottomRight,
+			float& topRight,
+			float& topLeft);
+
 	std::unique_ptr<mesh::MeshElement> mesh;
 	float xLocation;
 	float yLocation;
