@@ -11,9 +11,11 @@ using namespace config::cube_data;
 
 namespace graphics {
 
-// ########################################################
-// Constructor/Destructor #################################
-// ########################################################
+
+
+// ############################################################################
+// Constructor/Destructor #####################################################
+// ############################################################################
 
 GraphicalChunk::GraphicalChunk(float x, float y, float z,
 	vector<vector<vector<Voxel>>>&data,
@@ -82,7 +84,7 @@ transform {
 					continue;
 				}
 
-				// X ##########################################################
+// X ##########################################################################
 
 				CubeFaceData cd = faceData[i + 2][j + 1][k + 1];
 				if (cd.id != AIR) {
@@ -111,10 +113,10 @@ transform {
 						current.lvLeft_TopLeft,
 						faceData);
 
-					doAOLeft(current, i + 1, j + 1, k + 1, faceData);
+//					doAOLeft(current, i + 1, j + 1, k + 1, faceData);
 				}
 
-				// Y ##########################################################
+// Y ##########################################################################
 
 				cd = faceData[i + 1][j + 2][k + 1];
 				if (cd.id != AIR) {
@@ -127,7 +129,7 @@ transform {
 						current.lvTop_TopRight,
 						current.lvTop_TopLeft, faceData);
 
-					doAOTop(current, i + 1, j + 1, k + 1, faceData);
+//					doAOTop(current, i + 1, j + 1, k + 1, faceData);
 				}
 
 				cd = faceData[i + 1][j][k + 1];
@@ -141,10 +143,10 @@ transform {
 						current.lvBottom_TopRight,
 						current.lvBottom_TopLeft, faceData);
 
-					doAOBottom(current, i + 1, j + 1, k + 1, faceData);
+//					doAOBottom(current, i + 1, j + 1, k + 1, faceData);
 				}
 
-				// Z ##########################################################
+// Z ##########################################################################
 
 				cd = faceData[i + 1][j + 1][k + 2];
 				if (cd.id != AIR) {
@@ -157,7 +159,7 @@ transform {
 							current.lvBack_TopRight,
 							current.lvBack_TopLeft, faceData);
 
-					doAOBack(current, i + 1, j + 1, k + 1, faceData);
+//					doAOBack(current, i + 1, j + 1, k + 1, faceData);
 				}
 
 				cd = faceData[i + 1][j + 1][k];
@@ -171,21 +173,94 @@ transform {
 						current.lvFront_TopRight,
 						current.lvFront_TopLeft, faceData);
 
-					doAOFront(current, i + 1, j + 1, k + 1, faceData);
+//					doAOFront(current, i + 1, j + 1, k + 1, faceData);
 				}
 			}
 		}
 	}
-
-// ############################################################################
-// Create the mesh data #######################################################
-// ############################################################################
 
 	// The fourth element of the vertex data is the light value.
 	vector<GLfloat> vertexData;
 	vector<GLfloat> normals;
 	vector<GLfloat> UV;
 	vector<short> elementData;
+
+	createMeshData(faceData, vertexData, normals, UV, elementData);
+
+	mesh.reset(new mesh::MeshElement(
+			vertexData, 4, normals, 3, UV, 3, elementData));
+
+	//cout<<"Total number of faces: "<<totalNumberOfFaces<<"\n";
+
+}
+
+// ########################################################
+// Member Functions########################################
+// ########################################################
+
+void GraphicalChunk::draw() {
+	mesh->draw();
+}
+
+Transform& GraphicalChunk::getTransform() {
+	return transform;
+}
+
+float GraphicalChunk::getxLocation() {
+	return xLocation;
+}
+
+float GraphicalChunk::getyLocation() {
+	return yLocation;
+}
+
+// Function for getting voxels, can collect from neighbor chunks data
+// If there is no neighbor, nullptr will be returned
+// Trying to get a voxel that is not adjacent to this chunk is an error
+Voxel* GraphicalChunk::getVoxel(int x, int y, int z,
+	vector<vector<vector<Voxel>>>&data,
+	vector<vector<vector<Voxel>>> *right,
+	vector<vector<vector<Voxel>>> *left,
+	vector<vector<vector<Voxel>>> *back,
+	vector<vector<vector<Voxel>>> *front) {
+
+	if (x < width && x >= 0 && y < height && y >= 0 && z < depth && z >= 0) {
+		return &data[x][y][z];
+	} else if (x == width && (y < height && y >= 0 && z < depth && z >= 0)) {
+		if (right != nullptr) {
+			return &((*right)[0][y][z]);
+		} else {
+			return nullptr;
+		}
+	} else if (x == -1 && (y < height && y >= 0 && z < depth && z >= 0)) {
+		if (left != nullptr) {
+			return &((*left)[width - 1][y][z]);
+		} else {
+			return nullptr;
+		}
+	} else if (z == depth && (x < width && x >= 0 && y < height && y >= 0)) {
+		if (back != nullptr) {
+			return &((*back)[x][y][0]);
+		} else {
+			return nullptr;
+		}
+	} else if (z == -1 && (x < width && x >= 0 && y < height && y >= 0)) {
+		if (front != nullptr) {
+			return &((*front)[x][y][depth - 1]);
+		} else {
+			return nullptr;
+		}
+	}
+	return nullptr;
+}
+
+
+void GraphicalChunk::createMeshData(
+		const vector<vector<vector<CubeFaceData>>> &faceData,
+		vector<GLfloat> &vertexData,
+		vector<GLfloat> &normals,
+		vector<GLfloat> &UV,
+		vector<short> &elementData) {
 
 	short elementOffset = 0;
 	int totalNumberOfFaces = 0;
@@ -439,13 +514,10 @@ transform {
 					vector<GLfloat> vertex {
 						-0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz,
 							fd.lvBottom_TopLeft,
-
 						0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz,
 							fd.lvBottom_TopRight,
-
 						0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz,
 							fd.lvBottom_BottomRight,
-
 						-0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz,
 							fd.lvBottom_BottomLeft,
 					};
@@ -484,111 +556,50 @@ transform {
 			}
 		}
 	}
-
-	mesh.reset(new mesh::MeshElement(vertexData, 4, normals, 3, UV, 3,
-			elementData));
-	//cout<<"Total number of faces: "<<totalNumberOfFaces<<"\n";
 }
 
-// ########################################################
-// Member Functions########################################
-// ########################################################
-
-void GraphicalChunk::draw() {
-	mesh->draw();
-}
-
-Transform& GraphicalChunk::getTransform() {
-	return transform;
-}
-
-float GraphicalChunk::getxLocation() {
-	return xLocation;
-}
-
-float GraphicalChunk::getyLocation() {
-	return yLocation;
-}
-
-// Function for getting voxels, can collect from neighbor chunks data
-// If there is no neighbor, nullptr will be returned
-// Trying to get a voxel that is not adjacent to this chunk is an error
-Voxel* GraphicalChunk::getVoxel(int x, int y, int z,
-	vector<vector<vector<Voxel>>>&data,
-	vector<vector<vector<Voxel>>> *right,
-	vector<vector<vector<Voxel>>> *left,
-	vector<vector<vector<Voxel>>> *back,
-	vector<vector<vector<Voxel>>> *front) {
-
-	if (x < width && x >= 0 && y < height && y >= 0 && z < depth && z >= 0) {
-		return &data[x][y][z];
-	} else if (x == width && (y < height && y >= 0 && z < depth && z >= 0)) {
-		if (right != nullptr) {
-			return &((*right)[0][y][z]);
-		} else {
-			return nullptr;
-		}
-	} else if (x == -1 && (y < height && y >= 0 && z < depth && z >= 0)) {
-		if (left != nullptr) {
-			return &((*left)[width - 1][y][z]);
-		} else {
-			return nullptr;
-		}
-	} else if (z == depth && (x < width && x >= 0 && y < height && y >= 0)) {
-		if (back != nullptr) {
-			return &((*back)[x][y][0]);
-		} else {
-			return nullptr;
-		}
-	} else if (z == -1 && (x < width && x >= 0 && y < height && y >= 0)) {
-		if (front != nullptr) {
-			return &((*front)[x][y][depth - 1]);
-		} else {
-			return nullptr;
-		}
-	}
-
-	return nullptr;
-}
-
-int AOFactor = 5;
+int AOFactor = 3;
 
 void GraphicalChunk::doAORight(CubeFaceData &cf, int x, int y, int z,
 		std::vector<std::vector<std::vector<CubeFaceData>>> &faceData) {
 
+	// THIS IS ALL WRONG
+
+	CubeFaceData v;
+
 	char bottomLeft = 0;
-	CubeFaceData v = faceData[x + 1][y - 1][z];
+	v = faceData[x + 1][y - 1][z - 1];
 	if (v.id != AIR) bottomLeft++;
 	v = faceData[x + 1][y][z - 1];
 	if (v.id != AIR) bottomLeft++;
-	v = faceData[x + 1][y - 1][z - 1];
+	v = faceData[x + 1][y - 1][z];
 	if (v.id != AIR) bottomLeft++;
 	cf.lvRight_BottomLeft -= bottomLeft * AOFactor;
 
 	char bottomRight = 0;
 	v = faceData[x + 1][y - 1][z];
 	if (v.id != AIR) bottomRight++;
-	v = faceData[x + 1][y][z];
-	if (v.id != AIR) bottomRight++;
 	v = faceData[x + 1][y - 1][z + 1];
+	if (v.id != AIR) bottomRight++;
+	v = faceData[x + 1][y][z + 1];
 	if ( v.id != AIR) bottomRight++;
 	cf.lvRight_BottomRight -= bottomRight * AOFactor;
 
 	char topRight = 0;
 	v = faceData[x + 1][y + 1][z];
 	if (v.id != AIR) topRight++;
-	v = faceData[x + 1][y][z + 1];
+	v = faceData[x + 1][y][z - 1];
 	if (v.id != AIR) topRight++;
-	v = faceData[x + 1][y + 1][z + 1];
+	v = faceData[x + 1][y + 1][z - 1];
 	if (v.id != AIR) topRight++;
 	cf.lvRight_TopRight -= topRight * AOFactor;
 
 	char topLeft = 0;
 	v = faceData[x + 1][y + 1][z];
 	if (v.id != AIR) topLeft++;
-	v = faceData[x + 1][y][z - 1];
+	v = faceData[x + 1][y][z + 1];
 	if (v.id != AIR) topLeft++;
-	v = faceData[x + 1][y + 1][z - 1];
+	v = faceData[x + 1][y + 1][z + 1];
 	if (v.id != AIR) topLeft++;
 	cf.lvRight_TopLeft -= topLeft * AOFactor;
 }
@@ -596,8 +607,11 @@ void GraphicalChunk::doAORight(CubeFaceData &cf, int x, int y, int z,
 void GraphicalChunk::doAOLeft(CubeFaceData &cf, int x, int y, int z,
 		std::vector<std::vector<std::vector<CubeFaceData>>> &faceData) {
 
+
+	CubeFaceData v;
+
 	char bottomLeft = 0;
-	CubeFaceData v = faceData[x - 1][y - 1][z];
+	v = faceData[x - 1][y - 1][z];
 	if (v.id != AIR) bottomLeft++;
 	v = faceData[x - 1][y][z + 1];
 	if (v.id != AIR) bottomLeft++;
@@ -636,8 +650,10 @@ void GraphicalChunk::doAOLeft(CubeFaceData &cf, int x, int y, int z,
 void GraphicalChunk::doAOBack(CubeFaceData &cf, int x, int y, int z,
 		std::vector<std::vector<std::vector<CubeFaceData>>> &faceData) {
 
+	CubeFaceData v;
+
 	char bottomLeft = 0;
-	CubeFaceData v = faceData[x][y - 1][z + 1];
+	v = faceData[x][y - 1][z + 1];
 	if (v.id != AIR) bottomLeft++;
 	v = faceData[x + 1][y][z + 1];
 	if (v.id != AIR) bottomLeft++;
@@ -676,8 +692,10 @@ void GraphicalChunk::doAOBack(CubeFaceData &cf, int x, int y, int z,
 void GraphicalChunk::doAOFront(CubeFaceData &cf, int x, int y, int z,
 		std::vector<std::vector<std::vector<CubeFaceData>>> &faceData) {
 
+	CubeFaceData v;
+
 	char bottomLeft = 0;
-	CubeFaceData v = faceData[x][y - 1][z - 1];
+	v = faceData[x][y - 1][z - 1];
 	if (v.id != AIR) bottomLeft++;
 	v = faceData[x - 1][y][z - 1];
 	if (v.id != AIR) bottomLeft++;
@@ -716,8 +734,10 @@ void GraphicalChunk::doAOFront(CubeFaceData &cf, int x, int y, int z,
 void GraphicalChunk::doAOTop(CubeFaceData &cf, int x, int y, int z,
 		std::vector<std::vector<std::vector<CubeFaceData>>> &faceData) {
 
+	CubeFaceData v;
+
 	char bottomLeft = 0;
-	CubeFaceData v = faceData[x][y + 1][z - 1];
+	v = faceData[x][y + 1][z - 1];
 	if (v.id != AIR) bottomLeft++;
 	v = faceData[x - 1][y + 1][z];
 	if (v.id != AIR) bottomLeft++;
@@ -795,26 +815,28 @@ void GraphicalChunk::doAOBottom(CubeFaceData &cf, int x, int y, int z,
 
 inline void GraphicalChunk::computeAverageHelper(
 		int lightValue,
-		const CubeFaceData& cLeftLeft,
-		const CubeFaceData& cLeftLeft_Opposite,
-		const CubeFaceData& cBottomLeft,
-		const CubeFaceData& cBottomLeft_Opposite,
-		const CubeFaceData& cBottomMiddle,
-		const CubeFaceData& cBottomMiddle_Opposite,
-		const CubeFaceData& cBottomRight,
-		const CubeFaceData& cBottomRight_Opposite,
-		const CubeFaceData& cRightRight,
-		const CubeFaceData& cRightRight_Opposite,
-		const CubeFaceData& cTopRight,
-		const CubeFaceData& cTopRight_Opposite,
-		const CubeFaceData& cTopMiddle,
-		const CubeFaceData& cTopMiddle_Opposite,
-		const CubeFaceData& cTopLeft,
-		const CubeFaceData& cTopLeft_Opposite,
-		float& bottomLeft,
-		float& bottomRight,
-		float& topRight,
-		float& topLeft) {
+		const CubeFaceData &cLeftLeft,
+		const CubeFaceData &cLeftLeft_Opposite,
+		const CubeFaceData &cBottomLeft,
+		const CubeFaceData &cBottomLeft_Opposite,
+		const CubeFaceData &cBottomMiddle,
+		const CubeFaceData &cBottomMiddle_Opposite,
+		const CubeFaceData &cBottomRight,
+		const CubeFaceData &cBottomRight_Opposite,
+		const CubeFaceData &cRightRight,
+		const CubeFaceData &cRightRight_Opposite,
+		const CubeFaceData &cTopRight,
+		const CubeFaceData &cTopRight_Opposite,
+		const CubeFaceData &cTopMiddle,
+		const CubeFaceData &cTopMiddle_Opposite,
+		const CubeFaceData &cTopLeft,
+		const CubeFaceData &cTopLeft_Opposite,
+		float &bottomLeft,
+		float &bottomRight,
+		float &topRight,
+		float &topLeft) {
+
+// ############################################################################
 
 	float counter {1};
 	float acc = lightValue;
@@ -831,6 +853,9 @@ inline void GraphicalChunk::computeAverageHelper(
 		++counter;
 	}
 	bottomLeft = acc / counter;
+
+// ############################################################################
+
 	counter = 1;
 	acc = lightValue;
 	if (cBottomMiddle.id != AIR && cBottomMiddle_Opposite.id == AIR) {
@@ -846,9 +871,12 @@ inline void GraphicalChunk::computeAverageHelper(
 		++counter;
 	}
 	bottomRight = acc / counter;
+
+// ############################################################################
+
 	counter = 1;
 	acc = lightValue;
-	if (cRightRight.id != AIR && cRightRight.id == AIR) {
+	if (cRightRight.id != AIR && cRightRight_Opposite.id == AIR) {
 		acc += cRightRight_Opposite.lightValue;
 		++counter;
 	}
@@ -856,7 +884,14 @@ inline void GraphicalChunk::computeAverageHelper(
 		acc += cTopRight_Opposite.lightValue;
 		++counter;
 	}
+	if (cTopMiddle.id != AIR && cTopMiddle.id == AIR) {
+		acc += cTopMiddle.lightValue;
+		++counter;
+	}
 	topRight = acc / counter;
+
+// ############################################################################
+
 	counter = 1;
 	acc = lightValue;
 	if (cTopMiddle.id != AIR && cTopMiddle_Opposite.id == AIR) {
@@ -872,6 +907,9 @@ inline void GraphicalChunk::computeAverageHelper(
 		++counter;
 	}
 	topLeft = acc / counter;
+
+// ############################################################################
+
 }
 
 void GraphicalChunk::computeAverageRight(int lightValue, int x, int y, int z,
@@ -1024,8 +1062,6 @@ void GraphicalChunk::computeAverageBack(int lightValue, int x, int y, int z,
 		float &topRight, float &topLeft,
 		std::vector<std::vector<std::vector<CubeFaceData>>> &faceData) {
 
-	// TODO give them correct names
-
 	CubeFaceData cBottomLeft = faceData[x + 1][y - 1][z];
 	CubeFaceData cBottomLeft_Back = faceData[x + 1][y - 1][z + 1];
 
@@ -1062,8 +1098,6 @@ void GraphicalChunk::computeAverageFront(int lightValue, int x, int y, int z,
 		float &bottomLeft, float &bottomRight,
 		float &topRight, float &topLeft,
 		std::vector<std::vector<std::vector<CubeFaceData>>> &faceData) {
-
-	// TODO give the correct names
 
 	CubeFaceData cBottomLeft = faceData[x - 1][y - 1][z];
 	CubeFaceData cBottomLeft_Front = faceData[x - 1][y - 1][z - 1];

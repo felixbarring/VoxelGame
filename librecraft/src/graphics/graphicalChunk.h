@@ -74,6 +74,13 @@ private:
 	Voxel* getVoxel(int x, int y, int z,
 		std::vector<std::vector<std::vector<CubeFaceData>>> &faceData);
 
+	void createMeshData(
+			const std::vector<std::vector<std::vector<CubeFaceData>>> &faceData,
+			std::vector<GLfloat>& vertexData,
+			std::vector<GLfloat>& normals,
+			std::vector<GLfloat>& UV,
+			std::vector<short >& elementData);
+
 	void doAORight(CubeFaceData &cf, int x, int y, int z,
 		std::vector<std::vector<std::vector<CubeFaceData>>> &faceData);
 
