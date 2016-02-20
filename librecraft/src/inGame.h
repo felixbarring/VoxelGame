@@ -57,6 +57,9 @@ private:
 
 	std::shared_ptr<widget::WidgetGroup> m_widgetGroup1;
 	std::shared_ptr<graphics::Sprite> m_crossHair;
+	std::shared_ptr<graphics::Sprite> m_direction;
+	std::shared_ptr<graphics::Sprite> m_fps;
+	std::shared_ptr<graphics::Sprite> m_lastSelecteCube;
 
 	graphics::CubeMap skybox;
 

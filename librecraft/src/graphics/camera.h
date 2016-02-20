@@ -58,10 +58,12 @@ private:
 	// TODO Update this in an intelligent way
 	float aspectRatio = config::graphics_data::windowWidth
 			/ static_cast<float>(config::graphics_data::windowHeight);
-	glm::mat4 projection = glm::perspective(config::graphics_data::fov,
-			aspectRatio, 0.1f, 1000.0f);
-	glm::mat4 view;
 
+	glm::mat4 projection = glm::perspective(config::graphics_data::fov,
+
+			aspectRatio, 0.1f, 1000.0f);
+
+	glm::mat4 view;
 };
 
 }

@@ -45,6 +45,10 @@ public:
 	void intersected(glm::vec3 movement,
 			std::vector<std::pair<float, glm::vec3>> &collisions);
 
+	glm::vec3 getViewingDirection();
+
+	glm::vec3 getLastSelectedCube();
+
 // ########################################################
 // Implementation #########################################
 // ########################################################
@@ -58,6 +62,7 @@ private:
 	float m_jumpSpeed {0.09};
 	int m_selectCubeDistance {5};
 	glm::vec3 m_speed;
+	glm::vec3 m_lastSelecteCube;
 	graphics::ViewDirection m_viewDirection;
 	float m_movementSpeed {7};
 	graphics::Transform m_transform;

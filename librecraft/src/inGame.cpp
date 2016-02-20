@@ -7,6 +7,7 @@
 
 #include "config/data.h"
 #include "gui/mouse.h"
+#include "util/fpsManager.h"
 
 using namespace std;
 using namespace glm;
@@ -41,7 +42,7 @@ InGame::InGame(Game *game, string name)
 //			static_cast<float>(config::graphics_data::windowHeight), -1.0f, 1.0f) * matrix;
 //	graphics::SpriteBatcher::getInstance().setProjection(m_virtualProjection);
 
-	m_player.setLocation(80, 7, 80);
+	m_player.setLocation(80.1, 20.1, 80.1);
 
 	std::function<void(int)> observer = [&, game](int id)
 	{
@@ -95,6 +96,44 @@ void InGame::update(float timePassed) {
 		m_player.update(timePassed);
 
 		SpriteBatcher::getInstance().addBatch(m_crossHair);
+
+		auto &res = Resources::getInstance();
+		FontMeshBuilder &fontMeshBuilder = res.getFontMeshBuilder(
+				config::font_data::fontLayout, config::font_data::fontAtlasWidth,
+				config::font_data::fontAtlasHeight);
+
+		vec3 dir = m_player.getViewingDirection();
+		string derp =
+				"Vied direction: " +
+				to_string(dir.x) + ", " +
+				to_string(dir.y) + ", "	+
+				to_string(dir.z);
+
+		m_direction.reset(
+				new Sprite(0, 20, 10,
+						fontMeshBuilder.buldMeshForString(derp, 20),
+						res.getTexture(config::font_data::font)));
+
+		m_fps.reset(
+			new Sprite(0, 45, 10,
+					fontMeshBuilder.buldMeshForString(
+							"FPS: " + to_string(util::FPSManager::getFps()), 20),
+					res.getTexture(config::font_data::font)));
+
+
+		vec3 ses = m_player.getLastSelectedCube();
+		string soos = "Last Selected: " + to_string(ses.x) +
+				", " + to_string(ses.y) + ", " + to_string(ses.z);
+		m_lastSelecteCube.reset(
+			new Sprite(0, 70, 10,
+					fontMeshBuilder.buldMeshForString(
+							soos, 20),
+					res.getTexture(config::font_data::font)));
+
+		SpriteBatcher::getInstance().addBatch(m_direction);
+		SpriteBatcher::getInstance().addBatch(m_fps);
+		SpriteBatcher::getInstance().addBatch(m_lastSelecteCube);
+
 	}
 	else {
 		mouse.unlock();

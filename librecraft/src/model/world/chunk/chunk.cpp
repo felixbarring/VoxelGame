@@ -21,36 +21,36 @@ namespace chunk {
 static int counter = 1;
 static const int maxCount = LAST_CUBE;
 
-Chunk::Chunk(int x, int z)
-		: m_xLocation {x}, m_zLocation {z}, m_isDirty {true} {
+Chunk::Chunk(int _x, int _z)
+		: m_xLocation {_x}, m_zLocation {_z}, m_isDirty {true} {
 
 	counter++;
 
-	for (int i = 0; i < m_width; i++) {
+	for (int x = 0; x < m_width; ++x) {
 		m_vec.push_back(vector<vector<Voxel>>());
 
 		if (counter > maxCount)
 			counter = 0;
 
-		for (int j = 0; j < m_height; j++) {
-			m_vec[i].push_back(vector<Voxel>());
+		for (int z = 0; z < m_height; ++z) {
+			m_vec[x].push_back(vector<Voxel>());
 
-			for (int k = 0; k < m_depth; k++) {
+			for (int y = 0; y < m_depth; ++y) {
 				Voxel v;
 				v.lightValue = 0;
 
-				if (j == 0) {
+				if (z == 0) {
 					v.id = BED_ROCK;
-					m_vec[i][j].push_back(v);
+					m_vec[x][z].push_back(v);
 					continue;
 				}
 
-				if (j < 5) {
+				if (z < 5) {
 					v.id = counter;
-					m_vec[i][j].push_back(v);
+					m_vec[x][z].push_back(v);
 				} else {
 					v.id = AIR;
-					m_vec[i][j].push_back(v);
+					m_vec[x][z].push_back(v);
 				}
 			}
 		}
@@ -70,7 +70,8 @@ Chunk::Chunk(std::string name, int x, int z)
 	ifstream inStream;
 	string line;
 
-	string file = config::dataFolder + name + "_" + std::to_string(x) + "_"
+	string file = config::dataFolder + name + "_"
+			+ std::to_string(x) + "_"
 			+ std::to_string(z) + ".chunk";
 	inStream.open(file);
 
@@ -107,7 +108,6 @@ Chunk::~Chunk() {
 	cout << "Removing chunk " << m_xLocation << " " << m_zLocation << "\n";
 	ChunkBatcher::getInstance().removeBatch(m_graphicalChunk);
 }
-;
 
 // ########################################################
 // Member Functions########################################

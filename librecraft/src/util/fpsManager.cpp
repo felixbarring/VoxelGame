@@ -26,14 +26,17 @@ void FPSManager::frameStart() {
 	frameStartTime = glfwGetTime();
 }
 
+int currentFPS {0};
+
 void FPSManager::sync() {
 
 	// Sleep the thread if we are running fast to save computer power.
-	// If we are running too fast and there is more than 1 miliseconds left until
-	//  next frame then the thread will sleep for the time that remains.
-	// If there is less than 1 milliseconds left, we busy wait until it is time to proceed with the next frame.
-	// The busy waiting is used to increase the timing accuracy, we do not want to start the next frame to late.
-
+	// If we are running too fast and there is more than 1 miliseconds
+	// left until next frame then the thread will sleep for the time
+	// that remains. If there is less than 1 milliseconds left, we busy
+	// wait until it is time to proceed with the next frame.
+	// The busy waiting is used to increase the timing accuracy, we do not
+	// want to start the next frame to late.
 	double totalFrameTime = glfwGetTime() - frameStartTime;
 	while (totalFrameTime < timePerFrame) {
 		double timeRemainingInMilis = (timePerFrame - totalFrameTime) / mili;
@@ -51,7 +54,6 @@ void FPSManager::sync() {
 	timeForLatestFrame = totalFrameTime;
 
 //	std::cout << currentFPS << "\n";
-
 }
 
 double FPSManager::frameTime() {

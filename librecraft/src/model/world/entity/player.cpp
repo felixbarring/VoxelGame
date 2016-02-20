@@ -146,12 +146,17 @@ void Player::updateCameraAndTargetCube() {
 
 	chunk::ChunkManager &chunkManager = chunk::ChunkManager::getInstance();
 
+	auto lol = m_viewDirection.getViewDirection();
+
 	vec3 selectedCube;
 	vec3 previous;
 
 	if (chunkManager.intersectWithSolidCube(m_location,
 			m_viewDirection.getViewDirection(), selectedCube, previous,
 			m_selectCubeDistance)) {
+
+//		cout << selectedCube.x << ", " << selectedCube.y << ", " << selectedCube.z << "\n";
+		m_lastSelecteCube = selectedCube;
 
 		if (input->action1Pressed) {
 			chunkManager.removeCube(selectedCube.x, selectedCube.y,
@@ -219,5 +224,10 @@ void Player::intersected(vec3 movement, vector<pair<float, vec3>> &collisions) {
 void Player::setLocation(float x, float y, float z) {
 	m_location = vec3(x, y, z);
 }
+
+
+vec3 Player::getViewingDirection() { return m_viewDirection.getViewDirection(); };
+
+glm::vec3 Player::getLastSelectedCube() { return m_lastSelecteCube; };
 
 } /* namespace entity */

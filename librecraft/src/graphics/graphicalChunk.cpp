@@ -85,18 +85,24 @@ transform {
 				}
 
 // X ##########################################################################
+				CubeFaceData cd;
 
-				CubeFaceData cd = faceData[i + 2][j + 1][k + 1];
+				cd = faceData[i + 2][j + 1][k + 1];
 				if (cd.id != AIR) {
 					current.right = false;
 				} else {
 
-					computeAverageRight(cd.lightValue, i + 1, j + 1, k + 1,
-						current.lvRight_BottomLeft,
-						current.lvRight_BottomRight,
-						current.lvRight_TopRight,
-						current.lvRight_TopLeft,
-						faceData);
+					current.lvRight_BottomLeft = cd.lightValue;
+					current.lvRight_BottomRight = cd.lightValue;
+					current.lvRight_TopRight = cd.lightValue;
+					current.lvRight_TopLeft = cd.lightValue;
+
+//					computeAverageRight(cd.lightValue, i + 1, j + 1, k + 1,
+//						current.lvRight_BottomLeft,
+//						current.lvRight_BottomRight,
+//						current.lvRight_TopRight,
+//						current.lvRight_TopLeft,
+//						faceData);
 
 					doAORight(current, i + 1, j + 1, k + 1,faceData);
 				}
@@ -106,12 +112,18 @@ transform {
 					current.left = false;
 				} else {
 
-					computeAverageLeft(cd.lightValue, i + 1, j + 1, k + 1,
-						current.lvLeft_BottomLeft,
-						current.lvLeft_BottomRight,
-						current.lvLeft_TopRight,
-						current.lvLeft_TopLeft,
-						faceData);
+
+					current.lvLeft_BottomLeft = cd.lightValue;
+					current.lvLeft_BottomRight = cd.lightValue;
+					current.lvLeft_TopRight = cd.lightValue;
+					current.lvLeft_TopLeft = cd.lightValue;
+
+//					computeAverageLeft(cd.lightValue, i + 1, j + 1, k + 1,
+//						current.lvLeft_BottomLeft,
+//						current.lvLeft_BottomRight,
+//						current.lvLeft_TopRight,
+//						current.lvLeft_TopLeft,
+//						faceData);
 
 //					doAOLeft(current, i + 1, j + 1, k + 1, faceData);
 				}
@@ -148,7 +160,7 @@ transform {
 
 // Z ##########################################################################
 
-				cd = faceData[i + 1][j + 1][k + 2];
+				cd = faceData[i + 1][j + 1][k];
 				if (cd.id != AIR) {
 					current.back = false;
 				} else {
@@ -162,7 +174,7 @@ transform {
 //					doAOBack(current, i + 1, j + 1, k + 1, faceData);
 				}
 
-				cd = faceData[i + 1][j + 1][k];
+				cd = faceData[i + 1][j + 1][k + 2];
 				if (cd.id != AIR) {
 					current.front = false;
 				} else {
@@ -286,14 +298,17 @@ void GraphicalChunk::createMeshData(
 				if (fd.right) {
 
 					vector<GLfloat> vertex {
-						0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz,
-							fd.lvRight_TopLeft,
-						0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz,
-							fd.lvRight_TopRight,
 						0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz,
-							fd.lvRight_BottomRight,
-						0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz,
 							fd.lvRight_BottomLeft,
+
+						0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz,
+							fd.lvRight_BottomRight,
+
+						0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz,
+							fd.lvRight_TopRight,
+
+						0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz,
+							fd.lvRight_TopLeft,
 					};
 
 					vector<GLfloat> nor {
@@ -303,6 +318,7 @@ void GraphicalChunk::createMeshData(
 						1.0f, 0.0f, 0.0f,
 					};
 
+					// REDO THESE
 					vector<GLfloat> uv {
 						0.0f, 0.0f, static_cast<GLfloat>(sideTexture),
 						1.0f, 0.0f, static_cast<GLfloat>(sideTexture),
@@ -331,14 +347,14 @@ void GraphicalChunk::createMeshData(
 				if (fd.left) {
 
 					vector<GLfloat> vertex {
-						-0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz,
-							fd.lvLeft_TopLeft,
-						-0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz,
-							fd.lvLeft_TopRight ,
 						-0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz,
-							fd.lvLeft_BottomRight,
-						-0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz,
 							fd.lvLeft_BottomLeft,
+						-0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz,
+							fd.lvLeft_BottomRight,
+						-0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz,
+							fd.lvLeft_TopRight ,
+						-0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz,
+							fd.lvLeft_TopLeft,
 					};
 
 					vector<GLfloat> nor {
@@ -376,15 +392,14 @@ void GraphicalChunk::createMeshData(
 				if (fd.back) {
 
 					vector<GLfloat> vertex {
-						0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz,
-							fd.lvBack_TopLeft,
-						-0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz,
-							fd.lvBack_TopRight,
-						-0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz,
+						0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz,
+							fd.lvBack_BottomLeft,
+						-0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz,
 							fd.lvBack_BottomRight,
-						0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz,
-						fd.lvBack_BottomLeft,
-
+						-0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz,
+							fd.lvBack_TopRight,
+						0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz,
+							fd.lvBack_TopLeft,
 					};
 
 					vector<GLfloat> nor {
@@ -422,14 +437,14 @@ void GraphicalChunk::createMeshData(
 				if (fd.front) {
 
 					vector<GLfloat> vertex {
-						-0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz,
-							fd.lvFront_TopLeft,
-						0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz,
-							fd.lvFront_TopRight,
-						0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz,
-							fd.lvFront_BottomRight,
-						-0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz,
+						-0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz,
 							fd.lvFront_BottomLeft,
+						0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz,
+							fd.lvFront_BottomRight,
+						0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz,
+							fd.lvFront_TopRight,
+						-0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz,
+							fd.lvFront_TopLeft,
 					};
 
 					vector<GLfloat> nor {
@@ -468,13 +483,13 @@ void GraphicalChunk::createMeshData(
 
 					vector<GLfloat> vertex {
 						-0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz,
-							fd.lvTop_TopLeft,
-						0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz,
-							fd.lvTop_TopRight,
-						0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz,
-							fd.lvTop_BottomRight,
-						-0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz,
 							fd.lvTop_BottomLeft,
+						0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz,
+							fd.lvTop_BottomRight,
+						0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz,
+							fd.lvTop_TopRight,
+						-0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz,
+							fd.lvTop_TopLeft,
 					};
 
 					vector<GLfloat> nor {
@@ -513,13 +528,13 @@ void GraphicalChunk::createMeshData(
 
 					vector<GLfloat> vertex {
 						-0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz,
-							fd.lvBottom_TopLeft,
-						0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz,
-							fd.lvBottom_TopRight,
-						0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz,
-							fd.lvBottom_BottomRight,
-						-0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz,
 							fd.lvBottom_BottomLeft,
+						0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz,
+							fd.lvBottom_BottomRight,
+						0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz,
+							fd.lvBottom_TopRight,
+						-0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz,
+							fd.lvBottom_TopLeft,
 					};
 
 					vector<GLfloat> nor {
@@ -558,7 +573,7 @@ void GraphicalChunk::createMeshData(
 	}
 }
 
-int AOFactor = 3;
+int AOFactor = 1;
 
 void GraphicalChunk::doAORight(CubeFaceData &cf, int x, int y, int z,
 		std::vector<std::vector<std::vector<CubeFaceData>>> &faceData) {
@@ -568,9 +583,9 @@ void GraphicalChunk::doAORight(CubeFaceData &cf, int x, int y, int z,
 	CubeFaceData v;
 
 	char bottomLeft = 0;
-	v = faceData[x + 1][y - 1][z - 1];
+	v = faceData[x + 1][y][z + 1];
 	if (v.id != AIR) bottomLeft++;
-	v = faceData[x + 1][y][z - 1];
+	v = faceData[x + 1][y - 1][z + 1];
 	if (v.id != AIR) bottomLeft++;
 	v = faceData[x + 1][y - 1][z];
 	if (v.id != AIR) bottomLeft++;
@@ -579,27 +594,27 @@ void GraphicalChunk::doAORight(CubeFaceData &cf, int x, int y, int z,
 	char bottomRight = 0;
 	v = faceData[x + 1][y - 1][z];
 	if (v.id != AIR) bottomRight++;
-	v = faceData[x + 1][y - 1][z + 1];
+	v = faceData[x + 1][y - 1][z - 1];
 	if (v.id != AIR) bottomRight++;
-	v = faceData[x + 1][y][z + 1];
+	v = faceData[x + 1][y][z - 1];
 	if ( v.id != AIR) bottomRight++;
 	cf.lvRight_BottomRight -= bottomRight * AOFactor;
 
 	char topRight = 0;
-	v = faceData[x + 1][y + 1][z];
-	if (v.id != AIR) topRight++;
 	v = faceData[x + 1][y][z - 1];
 	if (v.id != AIR) topRight++;
 	v = faceData[x + 1][y + 1][z - 1];
+	if (v.id != AIR) topRight++;
+	v = faceData[x + 1][y + 1][z];
 	if (v.id != AIR) topRight++;
 	cf.lvRight_TopRight -= topRight * AOFactor;
 
 	char topLeft = 0;
 	v = faceData[x + 1][y + 1][z];
 	if (v.id != AIR) topLeft++;
-	v = faceData[x + 1][y][z + 1];
-	if (v.id != AIR) topLeft++;
 	v = faceData[x + 1][y + 1][z + 1];
+	if (v.id != AIR) topLeft++;
+	v = faceData[x + 1][y][z + 1];
 	if (v.id != AIR) topLeft++;
 	cf.lvRight_TopLeft -= topLeft * AOFactor;
 }
@@ -626,7 +641,7 @@ void GraphicalChunk::doAOLeft(CubeFaceData &cf, int x, int y, int z,
 	if (v.id != AIR) bottomRight++;
 	v = faceData[x - 1][y -1 ][z - 1];
 	if (v.id != AIR) bottomRight++;
-	cf.lvLeft_BottomRight -= bottomRight * AOFactor;
+//	cf.lvLeft_BottomRight -= bottomRight * AOFactor;
 
 	char topRight = 0;
 	v = faceData[x - 1][y + 1][z];
@@ -635,7 +650,7 @@ void GraphicalChunk::doAOLeft(CubeFaceData &cf, int x, int y, int z,
 	if (v.id != AIR) topRight++;
 	v = faceData[x - 1][y +1][z + 1];
 	if (v.id != AIR) topRight++;
-	cf.lvLeft_TopLeft -= topRight * AOFactor;
+//	cf.lvLeft_TopLeft -= topRight * AOFactor;
 
 	char topLeft = 0;
 	v = faceData[x - 1][y + 1][z];
@@ -644,7 +659,7 @@ void GraphicalChunk::doAOLeft(CubeFaceData &cf, int x, int y, int z,
 	if (v.id != AIR) topLeft++;
 	v = faceData[x - 1][y + 1][z - 1];
 	if (v.id != AIR) topLeft++;
-	cf.lvLeft_TopRight -= topLeft * AOFactor;
+//	cf.lvLeft_TopRight -= topLeft * AOFactor;
 }
 
 void GraphicalChunk::doAOBack(CubeFaceData &cf, int x, int y, int z,

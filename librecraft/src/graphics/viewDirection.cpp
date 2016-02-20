@@ -29,8 +29,9 @@ void ViewDirection::setViewDirection(float horizontal, float vertical) {
 		verticalAngle = minVerticalAngle;
 	}
 
-	direction = glm::vec3 { cos(verticalAngle) * sin(horizontalAngle), sin(
-			verticalAngle), cos(verticalAngle) * cos(horizontalAngle) };
+	direction = glm::vec3 { cos(verticalAngle) * sin(horizontalAngle),
+							sin(verticalAngle),
+							cos(verticalAngle) * cos(horizontalAngle) };
 
 	right = glm::normalize(glm::cross(direction, worldUp));
 	// Hack :o

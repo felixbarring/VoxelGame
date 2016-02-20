@@ -37,14 +37,13 @@ public:
 
 	double frameTime();
 
-	int getFps();
+	static int getFps();
 
 // ########################################################
 // Implementation #########################################
 // ########################################################
 private:
 	int maxFPS;
-	int currentFPS {0};
 	double frameStartTime {0};
 	double timePerFrame;
 	double timeForLatestFrame {1.0};
