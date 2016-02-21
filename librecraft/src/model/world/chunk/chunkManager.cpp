@@ -90,8 +90,6 @@ void ChunkManager::loadWorld(std::string& worldName) {
 
 			current->setBackNeighbor(back);
 			back->setFrontNeighbor(current);
-
-			current->updateGraphics();
 		}
 	}
 

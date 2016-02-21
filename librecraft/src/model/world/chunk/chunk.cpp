@@ -45,7 +45,7 @@ Chunk::Chunk(int _x, int _z)
 					continue;
 				}
 
-				if (z < 5) {
+				if (z < 20) {
 					v.id = counter;
 					m_vec[x][z].push_back(v);
 				} else {
@@ -726,11 +726,16 @@ int Chunk::highestLightValueFromNeighbors(int x, int y, int z) {
 }
 
 bool Chunk::isInDirectSunlight(int x, int y, int z) {
-	for (int i = m_height - 1; i > y; i--)
-		if (m_vec[x][i][z].id != AIR)
-			return false;
+	if (y < m_height)
+		return getVoxel(x, y + 1, z).lightValue == m_directSunlight;
 
-	return true;
+	return false;
+
+//	for (int i = m_height - 1; i > y; i--)
+//		if (m_vec[x][i][z].id != AIR)
+//			return false;
+//
+//	return true;
 }
 
 // ############################################################################

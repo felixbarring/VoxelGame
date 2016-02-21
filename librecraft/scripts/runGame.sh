@@ -1,3 +1,3 @@
 cd ../build
-./VoxelGame game
+./VoxelGame
 cd ../scripts

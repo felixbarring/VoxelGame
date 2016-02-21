@@ -6,7 +6,6 @@
 #include "demo/chunkDemo.h"
 #include "demo/arrayTextureDemo.h"
 #include "demo/cubeMapDemo.h"
-#include "demo/playerCollisionDemo.h"
 #include "demo/spriteDemo.h"
 #include "demo/guiDemo.h"
 #include "demo/fontDemo.h"
@@ -22,16 +21,12 @@ int main(int argc, char *argv[]) {
 		std::cout << "argc =" << argc << "\n";
 
 		if (argc == 1) {
-			// Run game here
-			demo::PlayerCollisionDemo playerCollisionDemo;
-			playerCollisionDemo.runDemo();
-		}
-		else {
+			Game game;
+			game.run();
+		} else {
+
 			std::string str = argv[1];
-			if (str == "game") {
-				Game game;
-				game.run();
-			}
+
 			if (str == "textureDemo") {
 				demo::TextureDemo textureDemo;
 				textureDemo.runDemo();
@@ -51,10 +46,6 @@ int main(int argc, char *argv[]) {
 			else if (str == "cubeMapDemo") {
 				demo::CubeMapDemo cubeMapDemo;
 				cubeMapDemo.runDemo();
-			}
-			else if (str == "playerCollisionDemo") {
-				demo::PlayerCollisionDemo playerCollisionDemo;
-				playerCollisionDemo.runDemo();
 			}
 			else if (str == "spriteDemo") {
 				demo::SpriteDemo spriteDemo;
