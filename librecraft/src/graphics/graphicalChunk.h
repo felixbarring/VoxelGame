@@ -87,10 +87,10 @@ private:
 	void doAOLeft(CubeFaceData &cf, int x, int y, int z,
 		std::vector<std::vector<std::vector<CubeFaceData>>> &faceData);
 
-	void doAOBack(CubeFaceData &cf, int x, int y, int z,
+	void doAOFront(CubeFaceData &cf, int x, int y, int z,
 		std::vector<std::vector<std::vector<CubeFaceData>>> &faceData);
 
-	void doAOFront(CubeFaceData &cf, int x, int y, int z,
+	void doAOBack(CubeFaceData &cf, int x, int y, int z,
 		std::vector<std::vector<std::vector<CubeFaceData>>> &faceData);
 
 	void doAOTop(CubeFaceData &cf, int x, int y, int z,

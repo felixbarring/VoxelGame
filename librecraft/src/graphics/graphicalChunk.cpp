@@ -39,6 +39,7 @@ transform {
 // ############################################################################
 // ### Generate Cubeface Data #################################################
 // ############################################################################
+
 	for (int i = 0; i < width + 2; i++) {
 		faceData.push_back(vector<vector<CubeFaceData>>());
 		for (int j = 0; j < height + 2; j++) {
@@ -92,17 +93,17 @@ transform {
 					current.right = false;
 				} else {
 
-					current.lvRight_BottomLeft = cd.lightValue;
-					current.lvRight_BottomRight = cd.lightValue;
-					current.lvRight_TopRight = cd.lightValue;
-					current.lvRight_TopLeft = cd.lightValue;
+//					current.lvRight_BottomLeft = cd.lightValue;
+//					current.lvRight_BottomRight = cd.lightValue;
+//					current.lvRight_TopRight = cd.lightValue;
+//					current.lvRight_TopLeft = cd.lightValue;
 
-//					computeAverageRight(cd.lightValue, i + 1, j + 1, k + 1,
-//						current.lvRight_BottomLeft,
-//						current.lvRight_BottomRight,
-//						current.lvRight_TopRight,
-//						current.lvRight_TopLeft,
-//						faceData);
+					computeAverageRight(cd.lightValue, i + 1, j + 1, k + 1,
+						current.lvRight_BottomLeft,
+						current.lvRight_BottomRight,
+						current.lvRight_TopRight,
+						current.lvRight_TopLeft,
+						faceData);
 
 					doAORight(current, i + 1, j + 1, k + 1,faceData);
 				}
@@ -113,19 +114,59 @@ transform {
 				} else {
 
 
-					current.lvLeft_BottomLeft = cd.lightValue;
-					current.lvLeft_BottomRight = cd.lightValue;
-					current.lvLeft_TopRight = cd.lightValue;
-					current.lvLeft_TopLeft = cd.lightValue;
+//					current.lvLeft_BottomLeft = cd.lightValue;
+//					current.lvLeft_BottomRight = cd.lightValue;
+//					current.lvLeft_TopRight = cd.lightValue;
+//					current.lvLeft_TopLeft = cd.lightValue;
 
-//					computeAverageLeft(cd.lightValue, i + 1, j + 1, k + 1,
-//						current.lvLeft_BottomLeft,
-//						current.lvLeft_BottomRight,
-//						current.lvLeft_TopRight,
-//						current.lvLeft_TopLeft,
-//						faceData);
+					computeAverageLeft(cd.lightValue, i + 1, j + 1, k + 1,
+						current.lvLeft_BottomLeft,
+						current.lvLeft_BottomRight,
+						current.lvLeft_TopRight,
+						current.lvLeft_TopLeft,
+						faceData);
 
-//					doAOLeft(current, i + 1, j + 1, k + 1, faceData);
+					doAOLeft(current, i + 1, j + 1, k + 1, faceData);
+				}
+
+// Z ##########################################################################
+
+				cd = faceData[i + 1][j + 1][k + 2];
+				if (cd.id != AIR) {
+					current.front = false;
+				} else {
+
+//					current.lvFront_BottomLeft = cd.lightValue;
+//					current.lvFront_BottomRight = cd.lightValue;
+//					current.lvFront_TopRight = cd.lightValue;
+//					current.lvFront_TopLeft = cd.lightValue;
+
+					computeAverageFront(cd.lightValue, i + 1, j + 1, k + 1,
+						current.lvFront_BottomLeft,
+						current.lvFront_BottomRight,
+						current.lvFront_TopRight,
+						current.lvFront_TopLeft, faceData);
+
+					doAOFront(current, i + 1, j + 1, k + 1, faceData);
+				}
+
+				cd = faceData[i + 1][j + 1][k];
+				if (cd.id != AIR) {
+					current.back = false;
+				} else {
+
+//					current.lvBack_BottomLeft = cd.lightValue;
+//					current.lvBack_BottomRight = cd.lightValue;
+//					current.lvBack_TopRight = cd.lightValue;
+//					current.lvBack_TopLeft = cd.lightValue;
+
+					computeAverageBack(cd.lightValue, i + 1, j + 1, k + 1,
+							current.lvBack_BottomLeft,
+							current.lvBack_BottomRight,
+							current.lvBack_TopRight,
+							current.lvBack_TopLeft, faceData);
+
+					doAOBack(current, i + 1, j + 1, k + 1, faceData);
 				}
 
 // Y ##########################################################################
@@ -135,13 +176,18 @@ transform {
 					current.top = false;
 				} else {
 
+//					current.lvTop_BottomLeft = cd.lightValue;
+//					current.lvTop_BottomRight = cd.lightValue;
+//					current.lvTop_TopRight = cd.lightValue;
+//					current.lvTop_TopLeft = cd.lightValue;
+
 					computeAverageTop(cd.lightValue, i + 1, j + 1, k + 1,
 						current.lvTop_BottomLeft,
 						current.lvTop_BottomRight,
 						current.lvTop_TopRight,
 						current.lvTop_TopLeft, faceData);
 
-//					doAOTop(current, i + 1, j + 1, k + 1, faceData);
+					doAOTop(current, i + 1, j + 1, k + 1, faceData);
 				}
 
 				cd = faceData[i + 1][j][k + 1];
@@ -149,44 +195,20 @@ transform {
 					current.bottom = false;
 				} else {
 
+//					current.lvBottom_BottomLeft = cd.lightValue;
+//					current.lvBottom_BottomRight = cd.lightValue;
+//					current.lvBottom_TopRight = cd.lightValue;
+//					current.lvBottom_TopLeft = cd.lightValue;
+
 					computeAverageBottom(cd.lightValue, i + 1, j + 1, k + 1,
 						current.lvBottom_BottomLeft,
 						current.lvBottom_BottomRight,
 						current.lvBottom_TopRight,
 						current.lvBottom_TopLeft, faceData);
 
-//					doAOBottom(current, i + 1, j + 1, k + 1, faceData);
+					doAOBottom(current, i + 1, j + 1, k + 1, faceData);
 				}
 
-// Z ##########################################################################
-
-				cd = faceData[i + 1][j + 1][k];
-				if (cd.id != AIR) {
-					current.back = false;
-				} else {
-
-					computeAverageBack(cd.lightValue, i + 1, j + 1, k + 1,
-							current.lvBack_BottomLeft,
-							current.lvBack_BottomRight,
-							current.lvBack_TopRight,
-							current.lvBack_TopLeft, faceData);
-
-//					doAOBack(current, i + 1, j + 1, k + 1, faceData);
-				}
-
-				cd = faceData[i + 1][j + 1][k + 2];
-				if (cd.id != AIR) {
-					current.front = false;
-				} else {
-
-					computeAverageFront(cd.lightValue, i + 1, j + 1, k + 1,
-						current.lvFront_BottomLeft,
-						current.lvFront_BottomRight,
-						current.lvFront_TopRight,
-						current.lvFront_TopLeft, faceData);
-
-//					doAOFront(current, i + 1, j + 1, k + 1, faceData);
-				}
 			}
 		}
 	}
@@ -265,7 +287,6 @@ Voxel* GraphicalChunk::getVoxel(int x, int y, int z,
 	}
 	return nullptr;
 }
-
 
 void GraphicalChunk::createMeshData(
 		const vector<vector<vector<CubeFaceData>>> &faceData,
@@ -573,7 +594,7 @@ void GraphicalChunk::createMeshData(
 	}
 }
 
-int AOFactor = 1;
+int AOFactor = 1.5;
 
 void GraphicalChunk::doAORight(CubeFaceData &cf, int x, int y, int z,
 		std::vector<std::vector<std::vector<CubeFaceData>>> &faceData) {
@@ -584,124 +605,81 @@ void GraphicalChunk::doAORight(CubeFaceData &cf, int x, int y, int z,
 
 	char bottomLeft = 0;
 	v = faceData[x + 1][y][z + 1];
-	if (v.id != AIR) bottomLeft++;
+	if (v.id != AIR) ++bottomLeft;
 	v = faceData[x + 1][y - 1][z + 1];
-	if (v.id != AIR) bottomLeft++;
+	if (v.id != AIR) ++bottomLeft;
 	v = faceData[x + 1][y - 1][z];
-	if (v.id != AIR) bottomLeft++;
+	if (v.id != AIR) ++bottomLeft;
 	cf.lvRight_BottomLeft -= bottomLeft * AOFactor;
 
 	char bottomRight = 0;
 	v = faceData[x + 1][y - 1][z];
-	if (v.id != AIR) bottomRight++;
+	if (v.id != AIR) ++bottomRight;
 	v = faceData[x + 1][y - 1][z - 1];
-	if (v.id != AIR) bottomRight++;
+	if (v.id != AIR) ++bottomRight;
 	v = faceData[x + 1][y][z - 1];
-	if ( v.id != AIR) bottomRight++;
+	if ( v.id != AIR) ++bottomRight;
 	cf.lvRight_BottomRight -= bottomRight * AOFactor;
 
 	char topRight = 0;
 	v = faceData[x + 1][y][z - 1];
-	if (v.id != AIR) topRight++;
+	if (v.id != AIR) ++topRight;
 	v = faceData[x + 1][y + 1][z - 1];
-	if (v.id != AIR) topRight++;
+	if (v.id != AIR) ++topRight;
 	v = faceData[x + 1][y + 1][z];
-	if (v.id != AIR) topRight++;
+	if (v.id != AIR) ++topRight;
 	cf.lvRight_TopRight -= topRight * AOFactor;
 
 	char topLeft = 0;
 	v = faceData[x + 1][y + 1][z];
-	if (v.id != AIR) topLeft++;
+	if (v.id != AIR) ++topLeft;
 	v = faceData[x + 1][y + 1][z + 1];
-	if (v.id != AIR) topLeft++;
+	if (v.id != AIR) ++topLeft;
 	v = faceData[x + 1][y][z + 1];
-	if (v.id != AIR) topLeft++;
+	if (v.id != AIR) ++topLeft;
 	cf.lvRight_TopLeft -= topLeft * AOFactor;
 }
 
 void GraphicalChunk::doAOLeft(CubeFaceData &cf, int x, int y, int z,
 		std::vector<std::vector<std::vector<CubeFaceData>>> &faceData) {
 
-
 	CubeFaceData v;
 
 	char bottomLeft = 0;
+	v = faceData[x - 1][y][z - 1];
+	if (v.id != AIR) ++bottomLeft;
+	v = faceData[x - 1][y - 1][z - 1];
+	if (v.id != AIR) ++bottomLeft;
 	v = faceData[x - 1][y - 1][z];
-	if (v.id != AIR) bottomLeft++;
-	v = faceData[x - 1][y][z + 1];
-	if (v.id != AIR) bottomLeft++;
-	v = faceData[x - 1][y - 1][z + 1];
-	if (v.id != AIR) bottomLeft++;
+	if (v.id != AIR) ++bottomLeft;
 	cf.lvLeft_BottomLeft -= bottomLeft * AOFactor;
 
 	char bottomRight = 0;
 	v = faceData[x - 1][y - 1][z];
-	if (v.id != AIR) bottomRight++;
-	v = faceData[x - 1][y][z - 1];
-	if (v.id != AIR) bottomRight++;
-	v = faceData[x - 1][y -1 ][z - 1];
-	if (v.id != AIR) bottomRight++;
-//	cf.lvLeft_BottomRight -= bottomRight * AOFactor;
-
-	char topRight = 0;
-	v = faceData[x - 1][y + 1][z];
-	if (v.id != AIR) topRight++;
-	v = faceData[x - 1][y][z + 1];
-	if (v.id != AIR) topRight++;
-	v = faceData[x - 1][y +1][z + 1];
-	if (v.id != AIR) topRight++;
-//	cf.lvLeft_TopLeft -= topRight * AOFactor;
-
-	char topLeft = 0;
-	v = faceData[x - 1][y + 1][z];
-	if (v.id != AIR) topLeft++;
-	v = faceData[x - 1][y][z - 1];
-	if (v.id != AIR) topLeft++;
-	v = faceData[x - 1][y + 1][z - 1];
-	if (v.id != AIR) topLeft++;
-//	cf.lvLeft_TopRight -= topLeft * AOFactor;
-}
-
-void GraphicalChunk::doAOBack(CubeFaceData &cf, int x, int y, int z,
-		std::vector<std::vector<std::vector<CubeFaceData>>> &faceData) {
-
-	CubeFaceData v;
-
-	char bottomLeft = 0;
-	v = faceData[x][y - 1][z + 1];
-	if (v.id != AIR) bottomLeft++;
-	v = faceData[x + 1][y][z + 1];
-	if (v.id != AIR) bottomLeft++;
-	v = faceData[x + 1][y - 1][z + 1];
-	if (v.id != AIR) bottomLeft++;
-	cf.lvBack_BottomLeft -= bottomLeft * AOFactor;
-
-	char bottomRight = 0;
-	v = faceData[x][y - 1][z + 1];
-	if (v.id != AIR) bottomRight++;
-	v = faceData[x - 1][y][z + 1];
-	if (v.id != AIR) bottomRight++;
+	if (v.id != AIR) ++bottomRight;
 	v = faceData[x - 1][y - 1][z + 1];
-	if (v.id != AIR) bottomRight++;
-	cf.lvBack_BottomRight -= bottomRight * AOFactor;
+	if (v.id != AIR) ++bottomRight;
+	v = faceData[x - 1][y][z + 1];
+	if (v.id != AIR) ++bottomRight;
+	cf.lvLeft_BottomRight -= bottomRight * AOFactor;
 
 	char topRight = 0;
-	v = faceData[x][y + 1][z + 1];
-	if (v.id != AIR) topRight++;
 	v = faceData[x - 1][y][z + 1];
-	if (v.id != AIR) topRight++;
+	if (v.id != AIR) ++topRight;
 	v = faceData[x - 1][y + 1][z + 1];
-	if (v.id != AIR) topRight++;
-	cf.lvBack_TopRight -= topRight * AOFactor;
+	if (v.id != AIR) ++topRight;
+	v = faceData[x - 1][y + 1][z];
+	if (v.id != AIR) ++topRight;
+	cf.lvLeft_TopRight -= topRight * AOFactor;
 
 	char topLeft = 0;
-	v = faceData[x][y + 1][z + 1];
-	if (v.id != AIR) topLeft++;
-	v = faceData[x + 1][y][z + 1];
-	if (v.id != AIR) topLeft++;
-	v = faceData[x + 1][y + 1][z + 1];
-	if (v.id != AIR) topLeft++;
-	cf.lvBack_TopLeft -= topLeft * AOFactor;
+	v = faceData[x - 1][y + 1][z];
+	if (v.id != AIR) ++topLeft;
+	v = faceData[x - 1][y + 1][z - 1];
+	if (v.id != AIR) ++topLeft;
+	v = faceData[x - 1][y][z - 1];
+	if (v.id != AIR) ++topLeft;
+	cf.lvLeft_TopLeft -= topLeft * AOFactor;
 }
 
 void GraphicalChunk::doAOFront(CubeFaceData &cf, int x, int y, int z,
@@ -710,40 +688,82 @@ void GraphicalChunk::doAOFront(CubeFaceData &cf, int x, int y, int z,
 	CubeFaceData v;
 
 	char bottomLeft = 0;
-	v = faceData[x][y - 1][z - 1];
-	if (v.id != AIR) bottomLeft++;
-	v = faceData[x - 1][y][z - 1];
-	if (v.id != AIR) bottomLeft++;
-	v = faceData[x - 1][y - 1][z - 1];
-	if ( v.id != AIR) bottomLeft++;
+	v = faceData[x - 1][y][z + 1];
+	if (v.id != AIR) ++bottomLeft;
+	v = faceData[x - 1][y - 1][z + 1];
+	if (v.id != AIR) ++bottomLeft;
+	v = faceData[x][y - 1][z + 1];
+	if ( v.id != AIR) ++bottomLeft;
 	cf.lvFront_BottomLeft -= bottomLeft * AOFactor;
 
 	char bottomRight = 0;
-	v = faceData[x][y - 1][z - 1];
-	if (v.id != AIR) bottomRight++;
-	v = faceData[x + 1][y][z - 1];
-	if (v.id != AIR) bottomRight++;
-	v = faceData[x + 1][y - 1][z - 1];
-	if (v.id != AIR) bottomRight++;
+	v = faceData[x][y - 1][z + 1];
+	if (v.id != AIR) ++bottomRight;
+	v = faceData[x + 1][y - 1][z + 1];
+	if (v.id != AIR) ++bottomRight;
+	v = faceData[x + 1][y][z + 1];
+	if (v.id != AIR) ++bottomRight;
 	cf.lvFront_BottomRight -= bottomRight * AOFactor;
 
 	char topRight = 0;
-	v = faceData[x][y + 1][z - 1];
-	if (v.id != AIR) topRight++;
-	v = faceData[x + 1][y][z-+ 1];
-	if (v.id != AIR) topRight++;
-	v = faceData[x + 1][y + 1][z - 1];
-	if (v.id != AIR) topRight++;
+	v = faceData[x + 1][y][z + 1];
+	if (v.id != AIR) ++topRight;
+	v = faceData[x + 1][y + 1][z + 1];
+	if (v.id != AIR) ++topRight;
+	v = faceData[x][y + 1][z + 1];
+	if (v.id != AIR) ++topRight;
 	cf.lvFront_TopRight -= topRight * AOFactor;
 
 	char topLeft = 0;
-	v = faceData[x][y + 1][z - 1];
-	if (v.id != AIR) topLeft++;
-	v = faceData[x - 1][y][z - 1];
-	if (v.id != AIR) topLeft++;
-	v = faceData[x - 1][y + 1][z - 1];
-	if (v.id != AIR) topLeft++;
+	v = faceData[x][y + 1][z + 1];
+	if (v.id != AIR) ++topLeft;
+	v = faceData[x - 1][y + 1][z + 1];
+	if (v.id != AIR) ++topLeft;
+	v = faceData[x - 1][y][z + 1];
+	if (v.id != AIR) ++topLeft;
 	cf.lvFront_TopLeft -= topLeft * AOFactor;
+}
+
+void GraphicalChunk::doAOBack(CubeFaceData &cf, int x, int y, int z,
+		std::vector<std::vector<std::vector<CubeFaceData>>> &faceData) {
+
+	CubeFaceData v;
+
+	char bottomLeft = 0;
+	v = faceData[x + 1][y][z - 1];
+	if (v.id != AIR) ++bottomLeft;
+	v = faceData[x + 1][y - 1][z - 1];
+	if (v.id != AIR) ++bottomLeft;
+	v = faceData[x][y - 1][z - 1];
+	if (v.id != AIR) ++bottomLeft;
+	cf.lvBack_BottomLeft -= bottomLeft * AOFactor;
+
+	char bottomRight = 0;
+	v = faceData[x][y - 1][z - 1];
+	if (v.id != AIR) ++bottomRight;
+	v = faceData[x - 1][y - 1][z - 1];
+	if (v.id != AIR) ++bottomRight;
+	v = faceData[x - 1][y][z - 1];
+	if (v.id != AIR) ++bottomRight;
+	cf.lvBack_BottomRight -= bottomRight * AOFactor;
+
+	char topRight = 0;
+	v = faceData[x - 1][y][z - 1];
+	if (v.id != AIR) ++topRight;
+	v = faceData[x - 1][y + 1][z - 1];
+	if (v.id != AIR) ++topRight;
+	v = faceData[x][y + 1][z - 1];
+	if (v.id != AIR) ++topRight;
+	cf.lvBack_TopRight -= topRight * AOFactor;
+
+	char topLeft = 0;
+	v = faceData[x][y + 1][z - 1];
+	if (v.id != AIR) ++topLeft;
+	v = faceData[x + 1][y + 1][z - 1];
+	if (v.id != AIR) ++topLeft;
+	v = faceData[x + 1][y][z - 1];
+	if (v.id != AIR) ++topLeft;
+	cf.lvBack_TopLeft -= topLeft * AOFactor;
 }
 
 void GraphicalChunk::doAOTop(CubeFaceData &cf, int x, int y, int z,
@@ -752,39 +772,39 @@ void GraphicalChunk::doAOTop(CubeFaceData &cf, int x, int y, int z,
 	CubeFaceData v;
 
 	char bottomLeft = 0;
-	v = faceData[x][y + 1][z - 1];
-	if (v.id != AIR) bottomLeft++;
 	v = faceData[x - 1][y + 1][z];
-	if (v.id != AIR) bottomLeft++;
-	v = faceData[x - 1][y + 1][z - 1];
-	if (v.id != AIR) bottomLeft++;
+	if (v.id != AIR) ++bottomLeft;
+	v = faceData[x - 1][y + 1][z + 1];
+	if (v.id != AIR) ++bottomLeft;
+	v = faceData[x][y + 1][z + 1];
+	if (v.id != AIR) ++bottomLeft;
 	cf.lvTop_BottomLeft -= bottomLeft * AOFactor;
 
 	char bottomRight = 0;
-	v = faceData[x][y + 1][z - 1];
-	if (v.id != AIR) bottomRight++;
+	v = faceData[x][y + 1][z + 1];
+	if (v.id != AIR) ++bottomRight;
+	v = faceData[x + 1][y + 1][z + 1];
+	if (v.id != AIR) ++bottomRight;
 	v = faceData[x + 1][y + 1][z];
-	if (v.id != AIR) bottomRight++;
-	v = faceData[x + 1][y + 1][z - 1];
-	if (v.id != AIR) bottomRight++;
+	if (v.id != AIR) ++bottomRight;
 	cf.lvTop_BottomRight-= bottomRight * AOFactor;
 
 	char topRight = 0;
-	v = faceData[x][y + 1][z + 1];
-	if (v.id != AIR) topRight++;
 	v = faceData[x + 1][y + 1][z];
-	if (v.id != AIR) topRight++;
-	v = faceData[x + 1][y + 1][z + 1];
-	if (v.id != AIR) topRight++;
+	if (v.id != AIR) ++topRight;
+	v = faceData[x + 1][y + 1][z - 1];
+	if (v.id != AIR) ++topRight;
+	v = faceData[x][y + 1][z - 1];
+	if (v.id != AIR) ++topRight;
 	cf.lvTop_TopRight -= topRight * AOFactor;
 
 	char topLeft = 0;
-	v = faceData[x][y + 1][z + 1];
-	if (v.id != AIR) topLeft++;
+	v = faceData[x][y + 1][z - 1];
+	if (v.id != AIR) ++topLeft;
+	v = faceData[x - 1][y + 1][z -1];
+	if ( v.id != AIR) ++topLeft;
 	v = faceData[x - 1][y + 1][z];
-	if ( v.id != AIR) topLeft++;
-	v = faceData[x - 1][y + 1][z + 1];
-	if (v.id != AIR) topLeft++;
+	if (v.id != AIR) ++topLeft;
 	cf.lvTop_TopLeft -= topLeft * AOFactor;
 }
 
@@ -792,39 +812,39 @@ void GraphicalChunk::doAOBottom(CubeFaceData &cf, int x, int y, int z,
 		std::vector<std::vector<std::vector<CubeFaceData>>> &faceData) {
 
 	char bottomLeft = 0;
-	CubeFaceData v = faceData[x][y - 1][z - 1];
-	if (v.id != AIR) bottomLeft++;
-	v = faceData[x - 1][y - 1][z];
-	if (v.id != AIR) bottomLeft++;
+	CubeFaceData v = faceData[x - 1][y - 1][z];
+	if (v.id != AIR) ++bottomLeft;
 	v = faceData[x - 1][y - 1][z - 1];
-	if (v.id != AIR) bottomLeft++;
+	if (v.id != AIR) ++bottomLeft;
+	v = faceData[x][y - 1][z - 1];
+	if (v.id != AIR) ++bottomLeft;
 	cf.lvBottom_BottomLeft -= bottomLeft * AOFactor;
 
 	char bottomRight = 0;
 	v = faceData[x][y - 1][z - 1];
-	if (v.id != AIR) bottomRight++;
-	v = faceData[x + 1][y - 1][z];
-	if (v.id != AIR) bottomRight++;
+	if (v.id != AIR) ++bottomRight;
 	v = faceData[x + 1][y - 1][z - 1];
-	if (v.id != AIR) bottomRight++;
+	if (v.id != AIR) ++bottomRight;
+	v = faceData[x + 1][y - 1][z];
+	if (v.id != AIR) ++bottomRight;
 	cf.lvBottom_BottomRight-= bottomRight * AOFactor;
 
 	char topRight = 0;
-	v = faceData[x][y - 1][z + 1];
-	if (v.id != AIR) topRight++;
 	v = faceData[x + 1][y - 1][z];
-	if (v.id != AIR) topRight++;
+	if (v.id != AIR) ++topRight;
 	v = faceData[x + 1][y - 1][z + 1];
-	if (v.id != AIR) topRight++;
+	if (v.id != AIR) ++topRight;
+	v = faceData[x][y - 1][z + 1];
+	if (v.id != AIR) ++topRight;
 	cf.lvBottom_TopRight -= topRight * AOFactor;
 
 	char topLeft = 0;
 	v = faceData[x][y - 1][z + 1];
-	if (v.id != AIR) topLeft++;
-	v = faceData[x - 1][y - 1][z];
-	if (v.id != AIR) topLeft++;
+	if (v.id != AIR) ++topLeft;
 	v = faceData[x - 1][y - 1][z + 1];
-	if (v.id != AIR) topLeft++;
+	if (v.id != AIR) ++topLeft;
+	v = faceData[x - 1][y - 1][z];
+	if (v.id != AIR) ++topLeft;
 	cf.lvBottom_TopLeft -= topLeft * AOFactor;
 }
 
@@ -931,29 +951,29 @@ void GraphicalChunk::computeAverageRight(int lightValue, int x, int y, int z,
 		float &bottomLeft, float &bottomRight, float &topRight, float &topLeft,
 		std::vector<std::vector<std::vector<CubeFaceData>>> &faceData) {
 
-	CubeFaceData cBottomLeft = faceData[x][y - 1][z - 1];
-	CubeFaceData cBottomLeft_Right = faceData[x + 1][y - 1][z - 1];
+	CubeFaceData cBottomLeft = faceData[x][y - 1][z + 1];
+	CubeFaceData cBottomLeft_Right = faceData[x + 1][y - 1][z + 1];
 
 	CubeFaceData cBottomMiddle = faceData[x][y - 1][z];
 	CubeFaceData cBottomMiddle_Right = faceData[x + 1][y - 1][z];
 
-	CubeFaceData cBottomRight = faceData[x][y - 1][z + 1];
-	CubeFaceData cBottomRight_Right = faceData[x + 1][y - 1][z + 1];
+	CubeFaceData cBottomRight = faceData[x][y - 1][z - 1];
+	CubeFaceData cBottomRight_Right = faceData[x + 1][y - 1][z - 1];
 
-	CubeFaceData cRightRight = faceData[x][y][z + 1];
-	CubeFaceData cRightRight_Right = faceData[x + 1][y][z + 1];
+	CubeFaceData cRightRight = faceData[x][y][z - 1];
+	CubeFaceData cRightRight_Right = faceData[x + 1][y][z - 1];
 
-	CubeFaceData cTopRight = faceData[x][y + 1][z + 1];
-	CubeFaceData cTopRight_Right = faceData[x + 1][y + 1][z + 1];
+	CubeFaceData cTopRight = faceData[x][y + 1][z - 1];
+	CubeFaceData cTopRight_Right = faceData[x + 1][y + 1][z - 1];
 
 	CubeFaceData cTopMiddle = faceData[x][y + 1][z];
 	CubeFaceData cTopMiddle_Right = faceData[x + 1][y + 1][z];
 
-	CubeFaceData cTopLeft = faceData[x][y + 1][z - 1];
-	CubeFaceData cTopLeft_Right = faceData[x + 1][y + 1][z - 1];
+	CubeFaceData cTopLeft = faceData[x][y + 1][z + 1];
+	CubeFaceData cTopLeft_Right = faceData[x + 1][y + 1][z + 1];
 
-	CubeFaceData cLeftLeft = faceData[x][y][z - 1];
-	CubeFaceData cLeftLeft_Right = faceData[x + 1][y][z - 1];
+	CubeFaceData cLeftLeft = faceData[x][y][z + 1];
+	CubeFaceData cLeftLeft_Right = faceData[x + 1][y][z + 1];
 
 	computeAverageHelper(lightValue, cLeftLeft, cLeftLeft_Right, cBottomLeft,
 			cBottomLeft_Right, cBottomMiddle, cBottomMiddle_Right, cBottomRight,
@@ -967,29 +987,29 @@ void GraphicalChunk::computeAverageLeft(int lightValue, int x, int y, int z,
 		float &topRight, float &topLeft,
 		std::vector<std::vector<std::vector<CubeFaceData>>> &faceData) {
 
-	CubeFaceData cBottomLeft = faceData[x][y - 1][z + 1];
-	CubeFaceData cBottomLeft_Left = faceData[x - 1][y - 1][z + 1];
+	CubeFaceData cBottomLeft = faceData[x][y - 1][z - 1];
+	CubeFaceData cBottomLeft_Left = faceData[x - 1][y - 1][z - 1];
 
 	CubeFaceData cBottomMiddle = faceData[x][y - 1][z];
 	CubeFaceData cBottomMiddle_Left = faceData[x - 1][y - 1][z];
 
-	CubeFaceData cBottomRight = faceData[x][y - 1][z +- 1];
-	CubeFaceData cBottomRight_Left = faceData[x - 1][y - 1][z - 1];
+	CubeFaceData cBottomRight = faceData[x][y - 1][z + 1];
+	CubeFaceData cBottomRight_Left = faceData[x - 1][y - 1][z + 1];
 
-	CubeFaceData cRightRight = faceData[x][y][z - 1];
-	CubeFaceData cRightRight_Left = faceData[x - 1][y][z - 1];
+	CubeFaceData cRightRight = faceData[x][y][z + 1];
+	CubeFaceData cRightRight_Left = faceData[x - 1][y][z + 1];
 
-	CubeFaceData cTopRight = faceData[x][y + 1][z - 1];
-	CubeFaceData cTopRight_Left = faceData[x - 1][y + 1][z - 1];
+	CubeFaceData cTopRight = faceData[x][y + 1][z + 1];
+	CubeFaceData cTopRight_Left = faceData[x - 1][y + 1][z + 1];
 
 	CubeFaceData cTopMiddle = faceData[x][y + 1][z];
 	CubeFaceData cTopMiddle_Left = faceData[x - 1][y + 1][z];
 
-	CubeFaceData cTopLeft = faceData[x][y + 1][z + 1];
-	CubeFaceData cTopLeft_Left = faceData[x - 1][y + 1][z + 1];
+	CubeFaceData cTopLeft = faceData[x][y + 1][z - 1];
+	CubeFaceData cTopLeft_Left = faceData[x - 1][y + 1][z - 1];
 
-	CubeFaceData cLeftLeft = faceData[x][y][z + 1];
-	CubeFaceData cLeftLeft_Left = faceData[x - 1][y][z + 1];
+	CubeFaceData cLeftLeft = faceData[x][y][z - 1];
+	CubeFaceData cLeftLeft_Left = faceData[x - 1][y][z - 1];
 
 	computeAverageHelper(lightValue, cLeftLeft, cLeftLeft_Left, cBottomLeft,
 			cBottomLeft_Left, cBottomMiddle, cBottomMiddle_Left, cBottomRight,
@@ -1004,26 +1024,26 @@ void GraphicalChunk::computeAverageTop(int lightValue, int x, int y, int z,
 		float &topRight, float &topLeft,
 		std::vector<std::vector<std::vector<CubeFaceData>>> &faceData) {
 
-	CubeFaceData cBottomLeft = faceData[x - 1][y][z - 1];
-	CubeFaceData cBottomLeft_Top = faceData[x - 1][y + 1][z - 1];
+	CubeFaceData cBottomLeft = faceData[x - 1][y][z + 1];
+	CubeFaceData cBottomLeft_Top = faceData[x - 1][y + 1][z + 1];
 
-	CubeFaceData cBottomMiddle = faceData[x][y][z - 1];
-	CubeFaceData cBottomMiddle_Top = faceData[x][y + 1][z - 1];
+	CubeFaceData cBottomMiddle = faceData[x][y][z + 1];
+	CubeFaceData cBottomMiddle_Top = faceData[x][y + 1][z + 1];
 
-	CubeFaceData cBottomRight = faceData[x + 1][y][z - 1];
+	CubeFaceData cBottomRight = faceData[x + 1][y][z + 1];
 	CubeFaceData cBottomRight_Top = faceData[x + 1][y + 1][z + 1];
 
 	CubeFaceData cRightRight = faceData[x + 1][y][z];
 	CubeFaceData cRightRight_Top = faceData[x + 1][y + 1][z];
 
-	CubeFaceData cTopRight = faceData[x + 1][y][z + 1];
-	CubeFaceData cTopRight_Top = faceData[x + 1][y + 1][z + 1];
+	CubeFaceData cTopRight = faceData[x + 1][y][z - 1];
+	CubeFaceData cTopRight_Top = faceData[x + 1][y + 1][z - 1];
 
-	CubeFaceData cTopMiddle = faceData[x][y][z + 1];
-	CubeFaceData cTopMiddle_Top = faceData[x][y + 1][z + 1];
+	CubeFaceData cTopMiddle = faceData[x][y][z - 1];
+	CubeFaceData cTopMiddle_Top = faceData[x][y + 1][z - 1];
 
-	CubeFaceData cTopLeft = faceData[x - 1][y][z + 1];
-	CubeFaceData cTopLeft_Top = faceData[x - 1][y + 1][z + 1];
+	CubeFaceData cTopLeft = faceData[x - 1][y][z - 1];
+	CubeFaceData cTopLeft_Top = faceData[x - 1][y + 1][z - 1];
 
 	CubeFaceData cLeftLeft = faceData[x - 1][y][z];
 	CubeFaceData cLeftLeft_Top = faceData[x - 1][y + 1][z];
@@ -1041,26 +1061,26 @@ void GraphicalChunk::computeAverageBottom(int lightValue, int x, int y, int z,
 		float &topRight, float &topLeft,
 		std::vector<std::vector<std::vector<CubeFaceData>>> &faceData) {
 
-	CubeFaceData cBottomLeft = faceData[x - 1][y][z + 1];
-	CubeFaceData cBottomLeft_Bottom = faceData[x - 1][y - 1][z + 1];
+	CubeFaceData cBottomLeft = faceData[x - 1][y][z - 1];
+	CubeFaceData cBottomLeft_Bottom = faceData[x - 1][y - 1][z - 1];
 
-	CubeFaceData cBottomMiddle = faceData[x][y][z + 1];
-	CubeFaceData cBottomMiddle_Bottom = faceData[x][y - 1][z + 1];
+	CubeFaceData cBottomMiddle = faceData[x][y][z - 1];
+	CubeFaceData cBottomMiddle_Bottom = faceData[x][y - 1][z - 1];
 
-	CubeFaceData cBottomRight = faceData[x + 1][y][z + 1];
-	CubeFaceData cBottomRight_Bottom = faceData[x + 1][y - 1][z + 1];
+	CubeFaceData cBottomRight = faceData[x + 1][y][z - 1];
+	CubeFaceData cBottomRight_Bottom = faceData[x + 1][y - 1][z - 1];
 
 	CubeFaceData cRightRight = faceData[x + 1][y][z];
 	CubeFaceData cRightRight_Bottom = faceData[x + 1][y - 1][z];
 
-	CubeFaceData cTopRight = faceData[x + 1][y][z - 1];
-	CubeFaceData cTopRight_Bottom = faceData[x + 1][y - 1][z - 1];
+	CubeFaceData cTopRight = faceData[x + 1][y][z + 1];
+	CubeFaceData cTopRight_Bottom = faceData[x + 1][y - 1][z + 1];
 
-	CubeFaceData cTopMiddle = faceData[x][y][z - 1];
-	CubeFaceData cTopMiddle_Bottom = faceData[x][y - 1][z - 1];
+	CubeFaceData cTopMiddle = faceData[x][y][z + 1];
+	CubeFaceData cTopMiddle_Bottom = faceData[x][y - 1][z + 1];
 
-	CubeFaceData cTopLeft = faceData[x - 1][y][z - 1];
-	CubeFaceData cTopLeft_Bottom = faceData[x - 1][y - 1][z - 1];
+	CubeFaceData cTopLeft = faceData[x - 1][y][z + 1];
+	CubeFaceData cTopLeft_Bottom = faceData[x - 1][y - 1][z + 1];
 
 	CubeFaceData cLeftLeft = faceData[x - 1][y][z];
 	CubeFaceData cLeftLeft_Bottom = faceData[x - 1][y - 1][z];
@@ -1078,28 +1098,28 @@ void GraphicalChunk::computeAverageBack(int lightValue, int x, int y, int z,
 		std::vector<std::vector<std::vector<CubeFaceData>>> &faceData) {
 
 	CubeFaceData cBottomLeft = faceData[x + 1][y - 1][z];
-	CubeFaceData cBottomLeft_Back = faceData[x + 1][y - 1][z + 1];
+	CubeFaceData cBottomLeft_Back = faceData[x + 1][y - 1][z - 1];
 
 	CubeFaceData cBottomMiddle = faceData[x][y - 1][z];
-	CubeFaceData cBottomMiddle_Back = faceData[x][y - 1][z + 1];
+	CubeFaceData cBottomMiddle_Back = faceData[x][y - 1][z - 1];
 
 	CubeFaceData cBottomRight = faceData[x - 1][y - 1][z];
-	CubeFaceData cBottomRight_Back = faceData[x - 1][y - 1][z + 1];
+	CubeFaceData cBottomRight_Back = faceData[x - 1][y - 1][z - 1];
 
 	CubeFaceData cRightRight = faceData[x - 1][y][z];
-	CubeFaceData cRightRight_Back = faceData[x - 1][y][z + 1];
+	CubeFaceData cRightRight_Back = faceData[x - 1][y][z - 1];
 
 	CubeFaceData cTopRight = faceData[x - 1][y + 1][z];
-	CubeFaceData cTopRight_Back = faceData[x - 1][y + 1][z + 1];
+	CubeFaceData cTopRight_Back = faceData[x - 1][y + 1][z - 1];
 
 	CubeFaceData cTopMiddle = faceData[x][y + 1][z];
-	CubeFaceData cTopMiddle_Back = faceData[x][y + 1][z + 1];
+	CubeFaceData cTopMiddle_Back = faceData[x][y + 1][z - 1];
 
 	CubeFaceData cTopLeft = faceData[x + 1][y + 1][z];
-	CubeFaceData cTopLeft_Back = faceData[x + 1][y + 1][z + 1];
+	CubeFaceData cTopLeft_Back = faceData[x + 1][y + 1][z - 1];
 
 	CubeFaceData cLeftLeft = faceData[x + 1][y][z];
-	CubeFaceData cLeftLeft_Back = faceData[x + 1][y][z + 1];
+	CubeFaceData cLeftLeft_Back = faceData[x + 1][y][z - 1];
 
 	computeAverageHelper(lightValue, cLeftLeft, cLeftLeft_Back, cBottomLeft,
 			cBottomLeft_Back, cBottomMiddle, cBottomMiddle_Back, cBottomRight,
@@ -1115,28 +1135,28 @@ void GraphicalChunk::computeAverageFront(int lightValue, int x, int y, int z,
 		std::vector<std::vector<std::vector<CubeFaceData>>> &faceData) {
 
 	CubeFaceData cBottomLeft = faceData[x - 1][y - 1][z];
-	CubeFaceData cBottomLeft_Front = faceData[x - 1][y - 1][z - 1];
+	CubeFaceData cBottomLeft_Front = faceData[x - 1][y - 1][z + 1];
 
 	CubeFaceData cBottomMiddle = faceData[x][y - 1][z];
-	CubeFaceData cBottomMiddle_Front = faceData[x][y - 1][z - 1];
+	CubeFaceData cBottomMiddle_Front = faceData[x][y - 1][z + 1];
 
 	CubeFaceData cBottomRight = faceData[x + 1][y - 1][z];
-	CubeFaceData cBottomRight_Front = faceData[x + 1][y - 1][z - 1];
+	CubeFaceData cBottomRight_Front = faceData[x + 1][y - 1][z + 1];
 
 	CubeFaceData cRightRight = faceData[x + 1][y][z];
-	CubeFaceData cRightRight_Front = faceData[x + 1][y][z - 1];
+	CubeFaceData cRightRight_Front = faceData[x + 1][y][z + 1];
 
 	CubeFaceData cTopRight = faceData[x + 1][y + 1][z];
-	CubeFaceData cTopRight_Front = faceData[x + 1][y + 1][z - 1];
+	CubeFaceData cTopRight_Front = faceData[x + 1][y + 1][z + 1];
 
 	CubeFaceData cTopMiddle = faceData[x][y + 1][z];
-	CubeFaceData cTopMiddle_Front = faceData[x][y + 1][z - 1];
+	CubeFaceData cTopMiddle_Front = faceData[x][y + 1][z + 1];
 
 	CubeFaceData cTopLeft = faceData[x - 1][y + 1][z];
-	CubeFaceData cTopLeft_Front = faceData[x - 1][y + 1][z - 1];
+	CubeFaceData cTopLeft_Front = faceData[x - 1][y + 1][z + 1];
 
 	CubeFaceData cLeftLeft = faceData[x - 1][y][z];
-	CubeFaceData cLeftLeft_Front = faceData[x - 1][y][z - 1];
+	CubeFaceData cLeftLeft_Front = faceData[x - 1][y][z + 1];
 
 	computeAverageHelper(lightValue, cLeftLeft, cLeftLeft_Front, cBottomLeft,
 			cBottomLeft_Front, cBottomMiddle, cBottomMiddle_Front, cBottomRight,
