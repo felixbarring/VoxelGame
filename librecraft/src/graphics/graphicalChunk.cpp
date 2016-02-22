@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <iostream>
+#include <algorithm>
 
 #include "texturedCube.h"
 #include "transform.h"
@@ -599,45 +600,43 @@ int AOFactor = 1.5;
 void GraphicalChunk::doAORight(CubeFaceData &cf, int x, int y, int z,
 		std::vector<std::vector<std::vector<CubeFaceData>>> &faceData) {
 
-	// THIS IS ALL WRONG
-
 	CubeFaceData v;
 
-	char bottomLeft = 0;
+	float bottomLeft = 0;
 	v = faceData[x + 1][y][z + 1];
 	if (v.id != AIR) ++bottomLeft;
 	v = faceData[x + 1][y - 1][z + 1];
 	if (v.id != AIR) ++bottomLeft;
 	v = faceData[x + 1][y - 1][z];
 	if (v.id != AIR) ++bottomLeft;
-	cf.lvRight_BottomLeft -= bottomLeft * AOFactor;
+	cf.lvRight_BottomLeft -= min<float>(2.0, bottomLeft) * AOFactor;
 
-	char bottomRight = 0;
+	float bottomRight = 0;
 	v = faceData[x + 1][y - 1][z];
 	if (v.id != AIR) ++bottomRight;
 	v = faceData[x + 1][y - 1][z - 1];
 	if (v.id != AIR) ++bottomRight;
 	v = faceData[x + 1][y][z - 1];
 	if ( v.id != AIR) ++bottomRight;
-	cf.lvRight_BottomRight -= bottomRight * AOFactor;
+	cf.lvRight_BottomRight -= min<float>(2.0, bottomRight) * AOFactor;
 
-	char topRight = 0;
+	float topRight = 0;
 	v = faceData[x + 1][y][z - 1];
 	if (v.id != AIR) ++topRight;
 	v = faceData[x + 1][y + 1][z - 1];
 	if (v.id != AIR) ++topRight;
 	v = faceData[x + 1][y + 1][z];
 	if (v.id != AIR) ++topRight;
-	cf.lvRight_TopRight -= topRight * AOFactor;
+	cf.lvRight_TopRight -= min<float>(2.0, topRight) * AOFactor;
 
-	char topLeft = 0;
+	float topLeft = 0;
 	v = faceData[x + 1][y + 1][z];
 	if (v.id != AIR) ++topLeft;
 	v = faceData[x + 1][y + 1][z + 1];
 	if (v.id != AIR) ++topLeft;
 	v = faceData[x + 1][y][z + 1];
 	if (v.id != AIR) ++topLeft;
-	cf.lvRight_TopLeft -= topLeft * AOFactor;
+	cf.lvRight_TopLeft -= min<float>(2.0, topLeft) * AOFactor;
 }
 
 void GraphicalChunk::doAOLeft(CubeFaceData &cf, int x, int y, int z,
@@ -645,32 +644,32 @@ void GraphicalChunk::doAOLeft(CubeFaceData &cf, int x, int y, int z,
 
 	CubeFaceData v;
 
-	char bottomLeft = 0;
+	float bottomLeft = 0;
 	v = faceData[x - 1][y][z - 1];
 	if (v.id != AIR) ++bottomLeft;
 	v = faceData[x - 1][y - 1][z - 1];
 	if (v.id != AIR) ++bottomLeft;
 	v = faceData[x - 1][y - 1][z];
 	if (v.id != AIR) ++bottomLeft;
-	cf.lvLeft_BottomLeft -= bottomLeft * AOFactor;
+	cf.lvLeft_BottomLeft -= min<float>(2.0,bottomLeft) * AOFactor;
 
-	char bottomRight = 0;
+	float bottomRight = 0;
 	v = faceData[x - 1][y - 1][z];
 	if (v.id != AIR) ++bottomRight;
 	v = faceData[x - 1][y - 1][z + 1];
 	if (v.id != AIR) ++bottomRight;
 	v = faceData[x - 1][y][z + 1];
 	if (v.id != AIR) ++bottomRight;
-	cf.lvLeft_BottomRight -= bottomRight * AOFactor;
+	cf.lvLeft_BottomRight -= min<float>(2.0, bottomRight) * AOFactor;
 
-	char topRight = 0;
+	float topRight = 0;
 	v = faceData[x - 1][y][z + 1];
 	if (v.id != AIR) ++topRight;
 	v = faceData[x - 1][y + 1][z + 1];
 	if (v.id != AIR) ++topRight;
 	v = faceData[x - 1][y + 1][z];
 	if (v.id != AIR) ++topRight;
-	cf.lvLeft_TopRight -= topRight * AOFactor;
+	cf.lvLeft_TopRight -= min<float>(2.0, topRight) * AOFactor;
 
 	char topLeft = 0;
 	v = faceData[x - 1][y + 1][z];
@@ -687,41 +686,41 @@ void GraphicalChunk::doAOFront(CubeFaceData &cf, int x, int y, int z,
 
 	CubeFaceData v;
 
-	char bottomLeft = 0;
+	float bottomLeft = 0;
 	v = faceData[x - 1][y][z + 1];
 	if (v.id != AIR) ++bottomLeft;
 	v = faceData[x - 1][y - 1][z + 1];
 	if (v.id != AIR) ++bottomLeft;
 	v = faceData[x][y - 1][z + 1];
 	if ( v.id != AIR) ++bottomLeft;
-	cf.lvFront_BottomLeft -= bottomLeft * AOFactor;
+	cf.lvFront_BottomLeft -= min<float>(2.0, bottomLeft) * AOFactor;
 
-	char bottomRight = 0;
+	float bottomRight = 0;
 	v = faceData[x][y - 1][z + 1];
 	if (v.id != AIR) ++bottomRight;
 	v = faceData[x + 1][y - 1][z + 1];
 	if (v.id != AIR) ++bottomRight;
 	v = faceData[x + 1][y][z + 1];
 	if (v.id != AIR) ++bottomRight;
-	cf.lvFront_BottomRight -= bottomRight * AOFactor;
+	cf.lvFront_BottomRight -= min<float>(2.0, bottomRight) * AOFactor;
 
-	char topRight = 0;
+	float topRight = 0;
 	v = faceData[x + 1][y][z + 1];
 	if (v.id != AIR) ++topRight;
 	v = faceData[x + 1][y + 1][z + 1];
 	if (v.id != AIR) ++topRight;
 	v = faceData[x][y + 1][z + 1];
 	if (v.id != AIR) ++topRight;
-	cf.lvFront_TopRight -= topRight * AOFactor;
+	cf.lvFront_TopRight -= min<float>(2.0, topRight) * AOFactor;
 
-	char topLeft = 0;
+	float topLeft = 0;
 	v = faceData[x][y + 1][z + 1];
 	if (v.id != AIR) ++topLeft;
 	v = faceData[x - 1][y + 1][z + 1];
 	if (v.id != AIR) ++topLeft;
 	v = faceData[x - 1][y][z + 1];
 	if (v.id != AIR) ++topLeft;
-	cf.lvFront_TopLeft -= topLeft * AOFactor;
+	cf.lvFront_TopLeft -= min<float>(2.0, topLeft) * AOFactor;
 }
 
 void GraphicalChunk::doAOBack(CubeFaceData &cf, int x, int y, int z,
@@ -729,41 +728,41 @@ void GraphicalChunk::doAOBack(CubeFaceData &cf, int x, int y, int z,
 
 	CubeFaceData v;
 
-	char bottomLeft = 0;
+	float bottomLeft = 0;
 	v = faceData[x + 1][y][z - 1];
 	if (v.id != AIR) ++bottomLeft;
 	v = faceData[x + 1][y - 1][z - 1];
 	if (v.id != AIR) ++bottomLeft;
 	v = faceData[x][y - 1][z - 1];
 	if (v.id != AIR) ++bottomLeft;
-	cf.lvBack_BottomLeft -= bottomLeft * AOFactor;
+	cf.lvBack_BottomLeft -= min<float>(2.0, bottomLeft) * AOFactor;
 
-	char bottomRight = 0;
+	float bottomRight = 0;
 	v = faceData[x][y - 1][z - 1];
 	if (v.id != AIR) ++bottomRight;
 	v = faceData[x - 1][y - 1][z - 1];
 	if (v.id != AIR) ++bottomRight;
 	v = faceData[x - 1][y][z - 1];
 	if (v.id != AIR) ++bottomRight;
-	cf.lvBack_BottomRight -= bottomRight * AOFactor;
+	cf.lvBack_BottomRight -= min<float>(2.0, bottomRight) * AOFactor;
 
-	char topRight = 0;
+	float topRight = 0;
 	v = faceData[x - 1][y][z - 1];
 	if (v.id != AIR) ++topRight;
 	v = faceData[x - 1][y + 1][z - 1];
 	if (v.id != AIR) ++topRight;
 	v = faceData[x][y + 1][z - 1];
 	if (v.id != AIR) ++topRight;
-	cf.lvBack_TopRight -= topRight * AOFactor;
+	cf.lvBack_TopRight -= min<float>(2.0, topRight) * AOFactor;
 
-	char topLeft = 0;
+	float topLeft = 0;
 	v = faceData[x][y + 1][z - 1];
 	if (v.id != AIR) ++topLeft;
 	v = faceData[x + 1][y + 1][z - 1];
 	if (v.id != AIR) ++topLeft;
 	v = faceData[x + 1][y][z - 1];
 	if (v.id != AIR) ++topLeft;
-	cf.lvBack_TopLeft -= topLeft * AOFactor;
+	cf.lvBack_TopLeft -= min<float>(2.0, topLeft) * AOFactor;
 }
 
 void GraphicalChunk::doAOTop(CubeFaceData &cf, int x, int y, int z,
@@ -771,81 +770,81 @@ void GraphicalChunk::doAOTop(CubeFaceData &cf, int x, int y, int z,
 
 	CubeFaceData v;
 
-	char bottomLeft = 0;
+	float bottomLeft = 0;
 	v = faceData[x - 1][y + 1][z];
 	if (v.id != AIR) ++bottomLeft;
 	v = faceData[x - 1][y + 1][z + 1];
 	if (v.id != AIR) ++bottomLeft;
 	v = faceData[x][y + 1][z + 1];
 	if (v.id != AIR) ++bottomLeft;
-	cf.lvTop_BottomLeft -= bottomLeft * AOFactor;
+	cf.lvTop_BottomLeft -= min<float>(2.0, bottomLeft) * AOFactor;
 
-	char bottomRight = 0;
+	float bottomRight = 0;
 	v = faceData[x][y + 1][z + 1];
 	if (v.id != AIR) ++bottomRight;
 	v = faceData[x + 1][y + 1][z + 1];
 	if (v.id != AIR) ++bottomRight;
 	v = faceData[x + 1][y + 1][z];
 	if (v.id != AIR) ++bottomRight;
-	cf.lvTop_BottomRight-= bottomRight * AOFactor;
+	cf.lvTop_BottomRight-= min<float>(2.0, bottomRight) * AOFactor;
 
-	char topRight = 0;
+	float topRight = 0;
 	v = faceData[x + 1][y + 1][z];
 	if (v.id != AIR) ++topRight;
 	v = faceData[x + 1][y + 1][z - 1];
 	if (v.id != AIR) ++topRight;
 	v = faceData[x][y + 1][z - 1];
 	if (v.id != AIR) ++topRight;
-	cf.lvTop_TopRight -= topRight * AOFactor;
+	cf.lvTop_TopRight -= min<float>(2.0, topRight) * AOFactor;
 
-	char topLeft = 0;
+	float topLeft = 0;
 	v = faceData[x][y + 1][z - 1];
 	if (v.id != AIR) ++topLeft;
 	v = faceData[x - 1][y + 1][z -1];
 	if ( v.id != AIR) ++topLeft;
 	v = faceData[x - 1][y + 1][z];
 	if (v.id != AIR) ++topLeft;
-	cf.lvTop_TopLeft -= topLeft * AOFactor;
+	cf.lvTop_TopLeft -= min<float>(2.0, topLeft) * AOFactor;
 }
 
 void GraphicalChunk::doAOBottom(CubeFaceData &cf, int x, int y, int z,
 		std::vector<std::vector<std::vector<CubeFaceData>>> &faceData) {
 
-	char bottomLeft = 0;
+	float bottomLeft = 0;
 	CubeFaceData v = faceData[x - 1][y - 1][z];
 	if (v.id != AIR) ++bottomLeft;
 	v = faceData[x - 1][y - 1][z - 1];
 	if (v.id != AIR) ++bottomLeft;
 	v = faceData[x][y - 1][z - 1];
 	if (v.id != AIR) ++bottomLeft;
-	cf.lvBottom_BottomLeft -= bottomLeft * AOFactor;
+	cf.lvBottom_BottomLeft -= min<float>(2.0, bottomLeft) * AOFactor;
 
-	char bottomRight = 0;
+	float bottomRight = 0;
 	v = faceData[x][y - 1][z - 1];
 	if (v.id != AIR) ++bottomRight;
 	v = faceData[x + 1][y - 1][z - 1];
 	if (v.id != AIR) ++bottomRight;
 	v = faceData[x + 1][y - 1][z];
 	if (v.id != AIR) ++bottomRight;
-	cf.lvBottom_BottomRight-= bottomRight * AOFactor;
+	cf.lvBottom_BottomRight-= min<float>(2.0, bottomRight) * AOFactor;
 
-	char topRight = 0;
+	float topRight = 0;
 	v = faceData[x + 1][y - 1][z];
 	if (v.id != AIR) ++topRight;
 	v = faceData[x + 1][y - 1][z + 1];
 	if (v.id != AIR) ++topRight;
 	v = faceData[x][y - 1][z + 1];
 	if (v.id != AIR) ++topRight;
-	cf.lvBottom_TopRight -= topRight * AOFactor;
+	cf.lvBottom_TopRight -= min<float>(2.0, topRight) * AOFactor;
 
-	char topLeft = 0;
+	float topLeft = 0;
 	v = faceData[x][y - 1][z + 1];
 	if (v.id != AIR) ++topLeft;
 	v = faceData[x - 1][y - 1][z + 1];
 	if (v.id != AIR) ++topLeft;
 	v = faceData[x - 1][y - 1][z];
 	if (v.id != AIR) ++topLeft;
-	cf.lvBottom_TopLeft -= topLeft * AOFactor;
+	cf.lvBottom_TopLeft -= min<float>(2.0, topLeft) * AOFactor;
 }
 
 inline void GraphicalChunk::computeAverageHelper(
@@ -879,7 +878,9 @@ inline void GraphicalChunk::computeAverageHelper(
 		acc += cLeftLeft_Opposite.lightValue;
 		++counter;
 	}
-	if (cBottomLeft.id != AIR && cBottomLeft_Opposite.id == AIR) {
+	if (cBottomLeft.id != AIR && cBottomLeft_Opposite.id == AIR &&
+			(cLeftLeft_Opposite.id == AIR ||
+					cBottomMiddle_Opposite.id == AIR)) {
 		acc += cBottomLeft_Opposite.lightValue;
 		++counter;
 	}
@@ -897,7 +898,9 @@ inline void GraphicalChunk::computeAverageHelper(
 		acc += cBottomMiddle_Opposite.lightValue;
 		++counter;
 	}
-	if (cBottomRight.id != AIR && cBottomRight_Opposite.id == AIR) {
+	if (cBottomRight.id != AIR && cBottomRight_Opposite.id == AIR &&
+			(cBottomMiddle_Opposite.id == AIR ||
+					cRightRight_Opposite.id == AIR)) {
 		acc += cBottomRight_Opposite.lightValue;
 		++counter;
 	}
@@ -915,12 +918,14 @@ inline void GraphicalChunk::computeAverageHelper(
 		acc += cRightRight_Opposite.lightValue;
 		++counter;
 	}
-	if (cTopRight.id != AIR && cTopRight_Opposite.id == AIR) {
+	if (cTopRight.id != AIR && cTopRight_Opposite.id == AIR &&
+			(cRightRight_Opposite.id == AIR ||
+					cTopMiddle.id == AIR)) {
 		acc += cTopRight_Opposite.lightValue;
 		++counter;
 	}
-	if (cTopMiddle.id != AIR && cTopMiddle.id == AIR) {
-		acc += cTopMiddle.lightValue;
+	if (cTopMiddle.id != AIR && cTopMiddle_Opposite.id == AIR) {
+		acc += cTopMiddle_Opposite.lightValue;
 		++counter;
 	}
 	topRight = acc / counter;
@@ -933,7 +938,9 @@ inline void GraphicalChunk::computeAverageHelper(
 		acc += cTopMiddle_Opposite.lightValue;
 		++counter;
 	}
-	if (cTopLeft.id != AIR && cTopLeft_Opposite.id == AIR) {
+	if (cTopLeft.id != AIR && cTopLeft_Opposite.id == AIR &&
+			(cTopMiddle_Opposite.id == AIR ||
+					cLeftLeft_Opposite.id == AIR)) {
 		acc += cTopLeft_Opposite.lightValue;
 		++counter;
 	}

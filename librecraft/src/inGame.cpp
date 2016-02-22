@@ -42,7 +42,7 @@ InGame::InGame(Game *game, string name)
 //			static_cast<float>(config::graphics_data::windowHeight), -1.0f, 1.0f) * matrix;
 //	graphics::SpriteBatcher::getInstance().setProjection(m_virtualProjection);
 
-	m_player.setLocation(80.1, 20.1, 80.1);
+	m_player.setLocation(80.1, 25.1, 80.1);
 
 	std::function<void(int)> observer = [&, game](int id)
 	{

@@ -251,7 +251,6 @@ bool ChunkManager::intersectWithSolidCube(vec3 origin, vec3 direction,
 	}
 
 	return false;
-
 }
 
 }

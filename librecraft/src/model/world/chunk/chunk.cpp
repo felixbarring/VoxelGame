@@ -56,11 +56,11 @@ Chunk::Chunk(int _x, int _z)
 		}
 	}
 
-	vector<vec3> lightPropagate;
-	doSunLightning(lightPropagate);
-
-	for (vec3 vec : lightPropagate)
-		propagateLight(vec.x, vec.y, vec.z);
+//	vector<vec3> lightPropagate;
+//	doSunLightning(lightPropagate);
+//
+//	for (vec3 vec : lightPropagate)
+//		propagateLight(vec.x, vec.y, vec.z);
 
 }
 
@@ -736,6 +736,7 @@ bool Chunk::isInDirectSunlight(int x, int y, int z) {
 //			return false;
 //
 //	return true;
+
 }
 
 // ############################################################################

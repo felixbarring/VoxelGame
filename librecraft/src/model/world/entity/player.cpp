@@ -98,17 +98,17 @@ void Player::updateSpeed(float timePassed) {
 			&& ++m_cubeUsedForBuilding > config::cube_data::LAST_CUBE)
 		m_cubeUsedForBuilding = 0;
 
-	/*
-	 if (input->jumpActive || input->goDownActive) {
-	 int direction = 1;
-	 if (input->goDownActive)
-	 direction = -1;
-
-	 speed.y = direction * movementSpeed;
-	 } else {
-	 //speed.y = 0;
-	 }
-	 */
+//	 if (input->jumpActive || input->goDownActive) {
+//		 int direction = 1;
+//		 if (input->goDownActive)
+//		 direction = -1;
+//
+//		 m_speed.y = direction * m_movementSpeed * timePassed;
+//	 } else {
+//		 m_speed.y = 0;
+//	 }
+//
+//	m_location += m_speed;
 
 }
 
@@ -155,7 +155,6 @@ void Player::updateCameraAndTargetCube() {
 			m_viewDirection.getViewDirection(), selectedCube, previous,
 			m_selectCubeDistance)) {
 
-//		cout << selectedCube.x << ", " << selectedCube.y << ", " << selectedCube.z << "\n";
 		m_lastSelecteCube = selectedCube;
 
 		if (input->action1Pressed) {
@@ -226,8 +225,12 @@ void Player::setLocation(float x, float y, float z) {
 }
 
 
-vec3 Player::getViewingDirection() { return m_viewDirection.getViewDirection(); };
+vec3 Player::getViewingDirection() {
+	return m_viewDirection.getViewDirection();
+};
 
-glm::vec3 Player::getLastSelectedCube() { return m_lastSelecteCube; };
+glm::vec3 Player::getLastSelectedCube() {
+	return m_lastSelecteCube;
+};
 
 } /* namespace entity */
