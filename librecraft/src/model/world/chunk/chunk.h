@@ -11,6 +11,8 @@
 #include "../../../util/voxel.h"
 #include "../../../graphics/graphicalChunk.h"
 
+using std::vector;
+
 namespace chunk {
 
 class Chunk {
@@ -30,19 +32,11 @@ public:
 // Member Functions########################################
 // ########################################################
 
-	// Some kind of update method here
-
 	Voxel getVoxel(int x, int y, int z);
-
-	Voxel* getVoxel2(int x, int y, int z);
 
 	char getCubeId(int x, int y, int z);
 
 	void setCube(int x, int y, int z, char id);
-
-	void updateLightningCubeRemoved(Voxel& voxel, int x, int y, int z);
-
-	void updateLightningCubeAdded(int x, int y, int z);
 
 	void setLeftNeighbor(std::shared_ptr<Chunk> chunk);
 
@@ -52,13 +46,29 @@ public:
 
 	void setBackNeighbor(std::shared_ptr<Chunk> chunk);
 
-	void removeAllNeighbores();
+	void removeAllNeighbors();
+
+	void updateLightning();
 
 	void updateGraphics();
 
-	void updateNeighborGraphics();
+	// Loading/Storing
 
-// Private shit here
+	void storeChunk(std::string worldName, int x, int z);
+
+// ########################################################
+// Implementation #########################################
+// ########################################################
+
+private:
+
+	Voxel* getVoxel2(int x, int y, int z);
+
+	void updateLightningCubeRemoved(Voxel& voxel, int x, int y, int z);
+
+	void updateLightningCubeAdded(int x, int y, int z);
+
+	void updateNeighborGraphics();
 
 	void doSunLightning(std::vector<glm::vec3> &lightPropagate);
 
@@ -73,8 +83,6 @@ public:
 	void doSunLightning(std::vector<glm::vec3> &lightPropagate, int x, int y,
 			int z);
 
-	void updateLightning();
-
 	// Much Optimized version of updateLightning
 	void updateLightning2();
 
@@ -88,22 +96,11 @@ public:
 
 	void propagateLight(int x, int y, int z);
 
-	// Removed light that has been propagated from the voxel at x y z
 	void dePropagateLight(int x, int y, int z);
 
 	int highestLightValueFromNeighbors(int x, int y, int z);
 
 	bool isInDirectSunlight(int x, int y, int z);
-
-	// Loading/Storing
-
-	void storeChunk(std::string worldName, int x, int z);
-
-// ########################################################
-// Implementation #########################################
-// ########################################################
-
-private:
 
 	int m_xLocation, m_zLocation;
 	bool m_isDirty;
@@ -119,13 +116,13 @@ private:
 
 	std::shared_ptr<graphics::GraphicalChunk> m_graphicalChunk;
 
+	std::vector<std::shared_ptr<graphics::GraphicalChunk>> m_graphicalChunks;
+
 	std::shared_ptr<Chunk> m_rightNeighbor;
 	std::shared_ptr<Chunk> m_leftNeighbor;
 
-	// TODO Can not refactor, fix this !?!
-	std::shared_ptr<Chunk> frontNeighbor;
-	std::shared_ptr<Chunk> backNeighbor;
-
+	std::shared_ptr<Chunk> m_frontNeighbor;
+	std::shared_ptr<Chunk> m_backNeighbor;
 };
 
 }

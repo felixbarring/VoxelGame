@@ -71,7 +71,7 @@ void ChunkManager::loadWorld(std::string& worldName) {
 	for (int x = 0; x < xMax; x++) {
 		for (int z = 0; z < zMax; z++) {
 			if (chunks[x][0][z])
-				chunks[x][0][z]->removeAllNeighbores();
+				chunks[x][0][z]->removeAllNeighbors();
 			chunks[x][0][z].reset(
 					new Chunk {worldName, x * CHUNK_WIDTH, z * CHUNK_DEPTH});
 		}

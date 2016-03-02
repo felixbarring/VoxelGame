@@ -160,13 +160,15 @@ private:
 			float& topLeft);
 
 	std::unique_ptr<mesh::MeshElement> mesh;
-	float xLocation;
-	float yLocation;
-	float zLocation;
+	float m_xLocation;
+	float m_yLocation;
+	float m_zLocation;
 
-	int width = config::chunk_data::GRAPHICAL_CHUNK_WIDTH;
-	int height = config::chunk_data::GRAPHICAL_CHUNK_HEIGHT;
-	int depth = config::chunk_data::GRAPHICAL_CHUNK_DEPTH;
+//	int m_deltaY;
+
+	int m_width = config::chunk_data::GRAPHICAL_CHUNK_WIDTH;
+	int m_height = config::chunk_data::GRAPHICAL_CHUNK_HEIGHT;
+	int m_depth = config::chunk_data::GRAPHICAL_CHUNK_DEPTH;
 
 	Transform transform;
 };
