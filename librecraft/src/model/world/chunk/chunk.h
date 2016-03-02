@@ -114,8 +114,6 @@ private:
 
 	std::vector<std::vector<std::vector<Voxel>>> m_vec;
 
-	std::shared_ptr<graphics::GraphicalChunk> m_graphicalChunk;
-
 	std::vector<std::shared_ptr<graphics::GraphicalChunk>> m_graphicalChunks;
 
 	std::shared_ptr<Chunk> m_rightNeighbor;

@@ -109,9 +109,11 @@ Chunk::Chunk(std::string name, int x, int z)
 }
 
 Chunk::~Chunk() {
+
 	cout << "Removing chunk " << m_xLocation << " " << m_zLocation << "\n";
-//	for (auto graphicalChunk : m_graphicalChunks)
-		ChunkBatcher::getInstance().removeBatch(m_graphicalChunk);
+
+	for (auto graphicalChunk : m_graphicalChunks)
+		ChunkBatcher::getInstance().removeBatch(graphicalChunk);
 }
 
 // ########################################################
@@ -316,21 +318,12 @@ void Chunk::updateGraphics() {
 	if (m_backNeighbor.get())
 	back = &(m_backNeighbor->m_vec);
 
-//	for (int i = 0; i < 1; ++i) {
-//		ChunkBatcher::getInstance().removeBatch(m_graphicalChunks[i]);
-//
-//		m_graphicalChunk.reset(new GraphicalChunk(m_xLocation, i * 16,
-//				m_zLocation, (i + 1) * 16,
-//				m_vec, right, left, back, front));
-//		ChunkBatcher::getInstance().addBatch(m_graphicalChunks[i]);
-//	}
-
-	ChunkBatcher::getInstance().removeBatch(m_graphicalChunk);
-
-	m_graphicalChunk.reset(new GraphicalChunk(m_xLocation, 0,
-			m_zLocation,
-			m_vec, right, left, back, front));
-	ChunkBatcher::getInstance().addBatch(m_graphicalChunk);
+	for (int i = 0; i < 15; ++i) {
+		ChunkBatcher::getInstance().removeBatch(m_graphicalChunks[i]);
+		m_graphicalChunks[i].reset(new GraphicalChunk(m_xLocation, i * 16,
+				m_zLocation, m_vec, right, left, back, front));
+		ChunkBatcher::getInstance().addBatch(m_graphicalChunks[i]);
+	}
 
 }
 

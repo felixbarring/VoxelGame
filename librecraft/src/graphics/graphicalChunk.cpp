@@ -48,8 +48,8 @@ transform {
 			for (int z = 0; z < m_depth + 2; z++) {
 				CubeFaceData cube;
 
-				auto *voxel = getVoxel(x - 1, y - 1, z - 1, data, right, left,
-						back, front);
+				auto *voxel = getVoxel(x - 1, y - 1 + m_yLocation, z - 1, data,
+						right, left, back, front);
 				if (voxel) {
 					cube.id = voxel->id;
 					cube.lightValue = voxel->lightValue;
@@ -258,7 +258,7 @@ Voxel* GraphicalChunk::getVoxel(int x, int y, int z,
 	vector<vector<vector<Voxel>>> *back,
 	vector<vector<vector<Voxel>>> *front) {
 
-	if (y >= m_height || y < 0)
+	if (y >= config::chunk_data::CHUNK_HEIGHT || y < 0)
 		return nullptr;
 
 	if (x < m_width && x >= 0 && z < m_depth && z >= 0) {

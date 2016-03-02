@@ -164,8 +164,6 @@ private:
 	float m_yLocation;
 	float m_zLocation;
 
-//	int m_deltaY;
-
 	int m_width = config::chunk_data::GRAPHICAL_CHUNK_WIDTH;
 	int m_height = config::chunk_data::GRAPHICAL_CHUNK_HEIGHT;
 	int m_depth = config::chunk_data::GRAPHICAL_CHUNK_DEPTH;
