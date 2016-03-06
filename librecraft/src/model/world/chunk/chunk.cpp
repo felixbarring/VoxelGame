@@ -352,7 +352,6 @@ void Chunk::storeChunk(string worldName, int x, int z) {
 // ############################################################################
 
 
-
 Voxel* Chunk::getVoxel2(int x, int y, int z) {
 	if (x < m_width && x >= 0 && y < m_height &&
 			y >= 0 && z < m_depth && z >= 0) {
@@ -454,20 +453,18 @@ void Chunk::updateNeighborGraphics() {
 }
 
 void Chunk::doSunLightning(vector<vec3> &lightPropagate) {
-
-	// TODO Not correct k/j problem
 	// Sun lightning, only air gets light
-	for (int i = 0; i < CHUNK_WIDTH; i++) {
-		for (int j = 0; j < CHUNK_DEPTH; j++) {
+	for (int x = 0; x < CHUNK_WIDTH; x++) {
+		for (int z = 0; z < CHUNK_DEPTH; z++) {
 			bool foundSolid = false;
-			for (int k = CHUNK_HEIGHT - 1; k >= 0; k--) {
-				if (m_vec[i][k][j].id == AIR) {
+			for (int y = CHUNK_HEIGHT - 1; y >= 0; y--) {
+				if (m_vec[x][y][z].id == AIR) {
 
 					if (foundSolid) {
-						m_vec[i][k][j].lightValue = 0;
+						m_vec[x][y][z].lightValue = 0;
 					} else {
-						m_vec[i][k][j].lightValue = m_directSunlight;
-						lightPropagate.push_back(vec3(i, k, j));
+						m_vec[x][y][z].lightValue = m_directSunlight;
+						lightPropagate.push_back(vec3(x, y, z));
 					}
 				} else {
 					foundSolid = true;
@@ -475,7 +472,6 @@ void Chunk::doSunLightning(vector<vec3> &lightPropagate) {
 			}
 		}
 	}
-
 }
 
 void Chunk::doSunLightning(vector<vec3> &lightPropagate, int x, int y, int z) {
@@ -733,7 +729,6 @@ void Chunk::dePropagateLight(int x, int y, int z)
 	Voxel &voxel = m_vec[x][y][z];
 	int lvInitial = voxel.lightValue - 1;
 	vector<vec3> newPropagates;
-
 }
 
 int Chunk::highestLightValueFromNeighbors(int x, int y, int z) {
@@ -771,14 +766,6 @@ bool Chunk::isInDirectSunlight(int x, int y, int z) {
 		return getVoxel(x, y + 1, z).lightValue == m_directSunlight;
 
 	return false;
-
-//	for (int i = m_height - 1; i > y; i--)
-//		if (m_vec[x][i][z].id != AIR)
-//			return false;
-//
-//	return true;
-
 }
-
 
 }
