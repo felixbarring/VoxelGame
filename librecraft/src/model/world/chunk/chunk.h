@@ -6,6 +6,8 @@
 #include <vector>
 #include <array>
 #include <glm/glm.hpp>
+#include <map>
+#include <set>
 
 #include "../../../config/data.h"
 #include "../../../util/voxel.h"
@@ -96,6 +98,8 @@ private:
 
 	void propagateLight(int x, int y, int z);
 
+	void updateDirtyRegions(int y);
+
 	void dePropagateLight(int x, int y, int z);
 
 	int highestLightValueFromNeighbors(int x, int y, int z);
@@ -121,6 +125,10 @@ private:
 
 	std::shared_ptr<Chunk> m_frontNeighbor;
 	std::shared_ptr<Chunk> m_backNeighbor;
+
+	std::set<int> dirtyRegions{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,
+		14, 15,};
+
 };
 
 }

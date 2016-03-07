@@ -14,16 +14,16 @@ namespace config {
 
 	namespace chunk_data {
 		static constexpr int GRAPHICAL_CHUNK_WIDTH = 16;
-		static constexpr int GRAPHICAL_CHUNK_HEIGHT = 16;
+		static constexpr int GRAPHICAL_CHUNK_HEIGHT = 128;
 		static constexpr int GRAPHICAL_CHUNK_DEPTH = 16;
 
 		static constexpr int CHUNK_WIDTH = 16;
 		static constexpr int CHUNK_HEIGHT = 128;
 		static constexpr int CHUNK_DEPTH = 16;
 
-		static constexpr const int NUMBER_OF_CHUNKS_X = 10;
+		static constexpr const int NUMBER_OF_CHUNKS_X = 3;
 		static constexpr const int NUMBER_OF_CHUNKS_Y = 1;
-		static constexpr const int NUMBER_OF_CHUNKS_Z = 10;
+		static constexpr const int NUMBER_OF_CHUNKS_Z = 3;
 	}
 
 	namespace cube_data {

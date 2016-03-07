@@ -98,17 +98,17 @@ void Player::updateSpeed(float timePassed) {
 			&& ++m_cubeUsedForBuilding > config::cube_data::LAST_CUBE)
 		m_cubeUsedForBuilding = 0;
 
-//	 if (input->jumpActive || input->goDownActive) {
-//		 int direction = 1;
-//		 if (input->goDownActive)
-//		 direction = -1;
-//
-//		 m_speed.y = direction * m_movementSpeed * timePassed;
-//	 } else {
-//		 m_speed.y = 0;
-//	 }
-//
-//	m_location += m_speed;
+	 if (input->jumpActive || input->goDownActive) {
+		 int direction = 1;
+		 if (input->goDownActive)
+		 direction = -1;
+
+		 m_speed.y = direction * m_movementSpeed * timePassed;
+	 } else {
+		 m_speed.y = 0;
+	 }
+
+	m_location += m_speed;
 
 }
 

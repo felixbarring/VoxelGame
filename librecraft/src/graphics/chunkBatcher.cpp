@@ -1,6 +1,7 @@
 #include "chunkBatcher.h"
 
 #include <map>
+#include <iostream>
 
 #include "resources.h"
 #include "shaderProgram.h"
@@ -102,15 +103,28 @@ void ChunkBatcher::draw() {
 
 	Camera &camera = Camera::getInstance();
 
+	float totalTime = 0;
+
 	for (auto b : batches) {
+
+		// TODO Do frustrum culling here
+
+//		auto t = glfwGetTime();
+
 		glm::mat4 modelView = camera.getViewMatrix()
 				* b->getTransform().getMatrix();
 		glm::mat4 modelViewProjection = camera.getProjectionMatrix()
 				* modelView;
+
+//		totalTime += (glfwGetTime() - t);
+
 		program->setUniformMatrix4f("modelViewProjection", modelViewProjection);
 		program->setUniformMatrix4f("modelView", modelView);
 		b->draw();
 	}
+
+//	std::cout << "Total matrix time: " << totalTime << "\n";
+
 	program->unbind();
 
 }
