@@ -31,32 +31,32 @@ void ChunkManager::createNewWorld() {
 	const int zMax = NUMBER_OF_CHUNKS_Z;
 
 	// Create the Chunks
-	for (int x = 0; x < xMax; x++) {
-		for (int z = 0; z < zMax; z++) {
+	for (int x = 0; x < xMax; ++x) {
+		for (int z = 0; z < zMax; ++z) {
 			chunks[x][0][z].reset(new Chunk {x * CHUNK_WIDTH, z * CHUNK_DEPTH});
 		}
 	}
 
 	// Connect the Chunks
-	for (int x = 0; x < xMax - 1; x++) {
-		for (int z = 0; z < zMax - 1; z++) {
-			shared_ptr<Chunk> right = chunks[x + 1][0][z];
-			shared_ptr<Chunk> back = chunks[x][0][z + 1];
-
+	for (int x = 0; x < xMax; ++x) {
+		for (int z = 0; z < zMax; ++z) {
 			shared_ptr<Chunk> current = chunks[x][0][z];
-
-			current->setRightNeighbor(right);
-			right->setLeftNeighbor(current);
-
-			current->setBackNeighbor(back);
-			back->setFrontNeighbor(current);
-
+			if (x != xMax - 1) {
+				shared_ptr<Chunk> right = chunks[x + 1][0][z];
+				current->setRightNeighbor(right);
+				right->setLeftNeighbor(current);
+			}
+			if (z != zMax - 1) {
+				shared_ptr<Chunk> back = chunks[x][0][z + 1];
+				current->setBackNeighbor(back);
+				back->setFrontNeighbor(current);
+			}
 			current->updateGraphics();
 		}
 	}
 
-	for (int x = 0; x < xMax; x++) {
-		for (int z = 0; z < zMax; z++)
+	for (int x = 0; x < xMax; ++x) {
+		for (int z = 0; z < zMax; ++z)
 			chunks[x][0][z]->updateGraphics();
 	}
 
@@ -78,18 +78,20 @@ void ChunkManager::loadWorld(std::string& worldName) {
 	}
 
 	// Connect the Chunks
-	for (int x = 0; x < xMax - 1; x++) {
-		for (int z = 0; z < zMax - 1; z++) {
-			shared_ptr<Chunk> right = chunks[x + 1][0][z];
-			shared_ptr<Chunk> back = chunks[x][0][z + 1];
-
+	for (int x = 0; x < xMax; ++x) {
+		for (int z = 0; z < zMax; ++z) {
 			shared_ptr<Chunk> current = chunks[x][0][z];
-
-			current->setRightNeighbor(right);
-			right->setLeftNeighbor(current);
-
-			current->setBackNeighbor(back);
-			back->setFrontNeighbor(current);
+			if (x != xMax - 1) {
+				shared_ptr<Chunk> right = chunks[x + 1][0][z];
+				current->setRightNeighbor(right);
+				right->setLeftNeighbor(current);
+			}
+			if (z != zMax - 1) {
+				shared_ptr<Chunk> back = chunks[x][0][z + 1];
+				current->setBackNeighbor(back);
+				back->setFrontNeighbor(current);
+			}
+			current->updateGraphics();
 		}
 	}
 

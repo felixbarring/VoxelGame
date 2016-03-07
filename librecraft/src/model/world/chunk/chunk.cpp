@@ -26,6 +26,7 @@ Chunk::Chunk(int _x, int _z)
 
 	for (int i = 0; i < CHUNK_HEIGHT / GRAPHICAL_CHUNK_HEIGHT; ++i) {
 		m_graphicalChunks.push_back(shared_ptr<GraphicalChunk>());
+		dirtyRegions.emplace(i);
 	}
 
 	counter++;
@@ -64,8 +65,9 @@ Chunk::Chunk(int _x, int _z)
 Chunk::Chunk(std::string name, int x, int z)
 		: m_xLocation {x}, m_zLocation {z}, m_isDirty {false} {
 
-	for (int i = 0; i < 16; ++i) {
+	for (int i = 0; i < CHUNK_HEIGHT / GRAPHICAL_CHUNK_HEIGHT; ++i) {
 		m_graphicalChunks.push_back(shared_ptr<GraphicalChunk>());
+		dirtyRegions.emplace(i);
 	}
 
 	vector<string> list;
