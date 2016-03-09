@@ -319,9 +319,9 @@ void Chunk::updateGraphics() {
 	if (m_backNeighbor.get())
 	back = &(m_backNeighbor->m_vec);
 
-	int counter = 0;
+//	int counter = 0;
 	for (auto i : dirtyRegions) {
-		++counter;
+//		++counter;
 		ChunkBatcher::getInstance().removeBatch(m_graphicalChunks[i]);
 		m_graphicalChunks[i].reset(new GraphicalChunk(m_xLocation,
 						i * GRAPHICAL_CHUNK_HEIGHT,
@@ -329,7 +329,7 @@ void Chunk::updateGraphics() {
 		ChunkBatcher::getInstance().addBatch(m_graphicalChunks[i]);
 	}
 
-	std::cout << " --- " << counter << "\n";
+//	std::cout << " --- " << counter << "\n";
 
 	dirtyRegions.clear();
 }
@@ -396,6 +396,20 @@ void Chunk::updateLightningCubeRemoved(Voxel& voxel, int x, int y, int z) {
 
 	updateDirtyRegions(y);
 
+	// If the cube is adjacent to a neighbor, the neighbor needs to be update.
+	if (x == m_width - 1 && m_rightNeighbor)
+		m_rightNeighbor->updateDirtyRegions(y);
+
+	if (x == 0 && m_leftNeighbor)
+		m_leftNeighbor->updateDirtyRegions(y);
+
+	if (z == m_depth - 1 && m_backNeighbor)
+		m_backNeighbor->updateDirtyRegions(y);
+
+	if (z == 0 && m_frontNeighbor)
+		m_frontNeighbor->updateDirtyRegions(y);
+
+
 	if (isInDirectSunlight(x, y, z)) {
 		vector<vec3> lightPropagate;
 		doSunLightning(lightPropagate, x, y, z);
@@ -413,17 +427,14 @@ void Chunk::updateLightningCubeRemoved(Voxel& voxel, int x, int y, int z) {
 	}
 
 	updateGraphics();
-	// TODO Do more accurate check of which neighbors (if any) that needs to be updated
 	updateNeighborGraphics();
 }
 
 void Chunk::updateLightningCubeAdded(int x, int y, int z) {
-
 	updateDirtyRegions(y);
 
 	updateLightning();
 	updateGraphics();
-	// TODO Do more accurate check of which neighbors (if any) that needs to be updated
 	updateNeighborGraphics();
 }
 
