@@ -14,7 +14,7 @@ namespace config {
 
 	namespace chunk_data {
 		static constexpr int GRAPHICAL_CHUNK_WIDTH = 16;
-		static constexpr int GRAPHICAL_CHUNK_HEIGHT = 32;
+		static constexpr int GRAPHICAL_CHUNK_HEIGHT = 64;
 		static constexpr int GRAPHICAL_CHUNK_DEPTH = 16;
 
 		static constexpr int CHUNK_WIDTH = 16;
@@ -55,10 +55,23 @@ namespace config {
 		static constexpr int TEXTURE_HEIGHT = 32;
 
 		static const std::vector<std::string> textures {
-				"../resources/cubes/grass_side.png", "../resources/cubes/grass_top.png",
-				"../resources/cubes/dirt.png", "../resources/cubes/rock.png",
-				"../resources/cubes/brick.png", "../resources/cubes/bedrock.png",
-				"../resources/cubes/selected.png", };
+			"../resources/cubes/grass_side.png",
+			"../resources/cubes/grass_top.png",
+			"../resources/cubes/dirt.png",
+			"../resources/cubes/rock.png",
+			"../resources/cubes/brick.png",
+			"../resources/cubes/bedrock.png",
+			"../resources/cubes/selected.png",
+		};
+
+		// TODO Fix better thumbnails
+		static const std::vector<std::string> thumbnails {
+			"../resources/cubes/grass_side.png",
+			"../resources/cubes/dirt.png",
+			"../resources/cubes/rock.png",
+			"../resources/cubes/brick.png",
+		};
+
 	}
 
 	namespace graphics_data {

@@ -393,7 +393,6 @@ Voxel* Chunk::getVoxel2(int x, int y, int z) {
 }
 
 void Chunk::updateLightningCubeRemoved(Voxel& voxel, int x, int y, int z) {
-
 	updateDirtyRegions(y);
 
 	// If the cube is adjacent to a neighbor, the neighbor needs to be update.
@@ -408,7 +407,6 @@ void Chunk::updateLightningCubeRemoved(Voxel& voxel, int x, int y, int z) {
 
 	if (z == 0 && m_frontNeighbor)
 		m_frontNeighbor->updateDirtyRegions(y);
-
 
 	if (isInDirectSunlight(x, y, z)) {
 		vector<vec3> lightPropagate;

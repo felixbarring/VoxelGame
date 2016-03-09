@@ -61,6 +61,8 @@ private:
 	std::shared_ptr<graphics::Sprite> m_fps;
 	std::shared_ptr<graphics::Sprite> m_lastSelecteCube;
 
+	std::vector<std::shared_ptr<graphics::Sprite>> m_selectedCubeThumbnails;
+
 	graphics::CubeMap skybox;
 
 };

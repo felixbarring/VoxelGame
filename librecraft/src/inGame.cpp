@@ -75,6 +75,13 @@ InGame::InGame(Game *game, string name)
 					Resources::getInstance().getTexture(
 							config::gui_data::crossHair)));
 
+	for (int i = 0; i <= config::cube_data::LAST_CUBE; ++i) {
+		m_selectedCubeThumbnails.push_back(make_shared<Sprite>(
+				Sprite(380, 5, 2, 40, 40,
+						Resources::getInstance().getTexture(
+								config::cube_data::thumbnails[i]))));
+	}
+
 }
 
 // ########################################################
@@ -134,8 +141,11 @@ void InGame::update(float timePassed) {
 		SpriteBatcher::getInstance().addBatch(m_fps);
 		SpriteBatcher::getInstance().addBatch(m_lastSelecteCube);
 
-	}
-	else {
+		SpriteBatcher::getInstance().addBatch(
+				m_selectedCubeThumbnails[m_player.getSelectedCube()]);
+
+
+	} else {
 		mouse.unlock();
 		input->updateValues();
 		mouse.update();

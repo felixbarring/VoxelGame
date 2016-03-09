@@ -49,6 +49,8 @@ public:
 
 	glm::vec3 getLastSelectedCube();
 
+	int getSelectedCube() { return m_cubeUsedForBuilding; }
+
 // ########################################################
 // Implementation #########################################
 // ########################################################
