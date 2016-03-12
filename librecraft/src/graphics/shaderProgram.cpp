@@ -34,8 +34,8 @@ ShaderProgram::ShaderProgram(const char *vertexSource,
 	// Create locations for all the attributes
 	for (auto attribute : attributes) {
 
-		//std::cout << "Size is najs" << attributes.size() << "\n";
-		//std::cout << "Attribute = " << attribute.second << " " << attribute.first.c_str() << " \n";
+//		std::cout << "Attributes: " << attributes.size() << "\n";
+//		std::cout << "Attribute = " << attribute.second << " " << attribute.first.c_str() << " \n";
 
 		glBindAttribLocation(programID, attribute.second,
 				attribute.first.c_str());
@@ -44,23 +44,21 @@ ShaderProgram::ShaderProgram(const char *vertexSource,
 		case GL_NO_ERROR:
 			break; // All is well
 		case GL_INVALID_VALUE:
-			std::cout << " ################################################\n";
+			std::cout << " ################################################\n\n";
 			std::cout
 					<< "Error, glBindAttribLocation gave a GL_INVALID_VALUE error \n";
 			std::cout << vertexSource;
 			std::cout << fragmentSource;
-			std::cout << " ################################################\n";
+			std::cout << " \n################################################\n";
 			break;
-			//return;
 		case GL_INVALID_OPERATION:
-			std::cout << " ################################################\n";
+			std::cout << " ################################################\n\n";
 			std::cout
 					<< "Error, glBindAttribLocation gave a GL_INVALID_OPERATION error. \n";
 			std::cout << vertexSource;
 			std::cout << fragmentSource;
-			std::cout << " ################################################\n";
+			std::cout << " \n################################################\n";
 			break;
-			//return;
 		}
 	}
 

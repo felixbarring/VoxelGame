@@ -142,7 +142,7 @@ void InGame::update(float timePassed) {
 		SpriteBatcher::getInstance().addBatch(m_lastSelecteCube);
 
 		SpriteBatcher::getInstance().addBatch(
-				m_selectedCubeThumbnails[m_player.getSelectedCube()]);
+				m_selectedCubeThumbnails[m_player.getBuildingCube()]);
 
 
 	} else {
