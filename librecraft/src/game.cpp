@@ -26,6 +26,8 @@
 
 #include <SFML/Audio.hpp>
 
+#include "util/soundPlayer.h"
+
 using namespace std;
 
 // ########################################################
@@ -37,15 +39,8 @@ using namespace std;
 // ########################################################
 
 void Game::run() {
-	// Load a music to play
-	sf::Music music;
-	if (!music.openFromFile("random shit.wav")) {
-		cout << "Could not load the music :( \n";
-		return;
-	}
 
-	// Play the music
-	music.play();
+	util::SoundPlayer::getInstance().playMusic(config::music::menuMusic);
 
 	util::FPSManager fpsManager(config::graphics_data::fps);
 

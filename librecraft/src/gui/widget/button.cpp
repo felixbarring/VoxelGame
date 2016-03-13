@@ -7,6 +7,7 @@
 #include "../../graphics/resources.h"
 
 #include "../../util/input.h"
+#include "../../util/soundPlayer.h"
 
 using namespace std;
 using namespace graphics;
@@ -69,8 +70,10 @@ void Button::update(float timePassed) {
 	m_pointerInsideBorders = isInsideBorders(input->mouseVirtualAdjustedX,
 			input->mouseVirtualAdjustedY);
 
-	if (m_pointerInsideBorders && input->action1Pressed)
+	if (m_pointerInsideBorders && input->action1Pressed) {
+		util::SoundPlayer::getInstance().playSound(config::souds::buttonPressed);
 		m_observer.operator ()(m_id);
+	}
 }
 
 } /* namespace widget */
