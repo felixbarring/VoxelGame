@@ -102,7 +102,7 @@ private:
 
 	void dePropagateLight(int x, int y, int z, int _lightValue = -1);
 
-	int highestLightValueFromNeighbors(int x, int y, int z);
+	int highestLVFromNeighbors(int x, int y, int z);
 
 	bool isInDirectSunlight(int x, int y, int z);
 
