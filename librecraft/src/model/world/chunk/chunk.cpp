@@ -774,13 +774,12 @@ void Chunk::dePropagateLight(int x, int y, int z, int _lightValue) {
 
 	} else if (x == m_width - 1) {
 
-		cout << "Depropagating in neighobr chunk \n";
-
 		if (m_rightNeighbor &&
 				m_rightNeighbor->m_vec[0][y][z].id == AIR &&
 				m_rightNeighbor->m_vec[0][y][z].lightValue < lightValue &&
 				m_rightNeighbor->highestLVFromNeighbors(0, y, z)
-				<= lightValue) {
+				<= lightValue
+				) {
 
 			m_rightNeighbor->dePropagateLight(0, y, z);
 			cout << "Depropagating in neighobr chunk \n";
@@ -802,20 +801,19 @@ void Chunk::dePropagateLight(int x, int y, int z, int _lightValue) {
 
 	} else if (x == 0) {
 
-		cout << "Depropagating in neighobr chunk \n";
-
-		if (m_rightNeighbor &&
-				m_rightNeighbor->m_vec[m_width - 1][y][z].id == AIR	&&
-				m_rightNeighbor->m_vec[m_width - 1][y][z].lightValue <
+		if (m_leftNeighbor &&
+				m_leftNeighbor->m_vec[m_width - 1][y][z].id == AIR	&&
+				m_leftNeighbor->m_vec[m_width - 1][y][z].lightValue <
 					lightValue &&
-				m_rightNeighbor->highestLVFromNeighbors(m_width - 1, y, z)
-					<= lightValue) {
+					m_leftNeighbor->highestLVFromNeighbors(m_width - 1, y, z)
+					<= lightValue
+					) {
 
-			m_rightNeighbor->dePropagateLight(m_width - 1, y, z);
+			m_leftNeighbor->dePropagateLight(m_width - 1, y, z);
 			cout << "Depropagating in neighobr chunk \n";
 		}
 		else
-			m_rightNeighbor->propagateLight(m_width - 1, y, z);
+			m_leftNeighbor->propagateLight(m_width - 1, y, z);
 	}
 
 	// ########################################################################
@@ -861,15 +859,14 @@ void Chunk::dePropagateLight(int x, int y, int z, int _lightValue) {
 
 	} else if (z == m_depth - 1) {
 
-		cout << "Depropagating in neighobr chunk \n";
-
 		if (m_backNeighbor &&
-				m_rightNeighbor->m_vec[x][y][0].id == AIR &&
-				m_rightNeighbor->m_vec[x][y][0].lightValue < lightValue &&
-				m_rightNeighbor->highestLVFromNeighbors(x, y, 0)
-					<= lightValue) {
+				m_backNeighbor->m_vec[x][y][0].id == AIR &&
+				m_backNeighbor->m_vec[x][y][0].lightValue < lightValue &&
+				m_backNeighbor->highestLVFromNeighbors(x, y, 0)
+					<= lightValue
+					) {
 
-			m_rightNeighbor->dePropagateLight(x, y, 0);
+			m_backNeighbor->dePropagateLight(x, y, 0);
 			cout << "Depropagating in neighobr chunk \n";
 		}
 		else
@@ -888,21 +885,19 @@ void Chunk::dePropagateLight(int x, int y, int z, int _lightValue) {
 			propagateLight(x, y, z - 1);
 
 	} else if (z == 0) {
-
-		cout << "Depropagating in neighobr chunk \n";
-
-		if (m_rightNeighbor &&
-				m_rightNeighbor->m_vec[x][y][m_depth - 1].id == AIR &&
-				m_rightNeighbor->m_vec[x][y][m_depth - 1].lightValue
+		if (m_frontNeighbor &&
+				m_frontNeighbor->m_vec[x][y][m_depth - 1].id == AIR &&
+				m_frontNeighbor->m_vec[x][y][m_depth - 1].lightValue
 					< lightValue &&
-				m_rightNeighbor->highestLVFromNeighbors(x, y, m_depth - 1)
-					<= lightValue) {
+				m_frontNeighbor->highestLVFromNeighbors(x, y, m_depth - 1)
+					<= lightValue
+					) {
 
-			m_rightNeighbor->dePropagateLight(x, y, m_depth - 1);
+			m_frontNeighbor->dePropagateLight(x, y, m_depth - 1);
 			cout << "Depropagating in neighobr chunk \n";
 		}
 		else
-			m_rightNeighbor->propagateLight(x, y, m_depth - 1);
+			m_frontNeighbor->propagateLight(x, y, m_depth - 1);
 	}
 
 }
