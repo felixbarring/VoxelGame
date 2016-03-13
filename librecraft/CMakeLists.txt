@@ -45,8 +45,14 @@ add_executable(${PROJECT_NAME}
 
 # Link GLFW and GLEW to main executable
 # assimp - alut -  tinyobjloader
+# target_link_libraries(${PROJECT_NAME} libglew_static glfw ${GLFW_LIBRARIES} SOIL )
 
-target_link_libraries(${PROJECT_NAME} libglew_static glfw ${GLFW_LIBRARIES} SOIL )
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules" ${CMAKE_MODULE_PATH})
+find_package(SFML 2 REQUIRED system window graphics network audio)
+if(SFML_FOUND)
+  include_directories(${SFML_INCLUDE_DIR})
+  target_link_libraries(${PROJECT_NAME} libglew_static glfw ${GLFW_LIBRARIES} SOIL ${SFML_LIBRARIES})
+endif()
 
 #INSTALL(TARGETS VoxelGame DESTINATION derp)
 #SET(CPACK_GENERATOR "DEB")

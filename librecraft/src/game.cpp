@@ -24,6 +24,8 @@
 
 #include "gui/guiUtil.h"
 
+#include <SFML/Audio.hpp>
+
 using namespace std;
 
 // ########################################################
@@ -35,6 +37,15 @@ using namespace std;
 // ########################################################
 
 void Game::run() {
+	// Load a music to play
+	sf::Music music;
+	if (!music.openFromFile("random shit.wav")) {
+		cout << "Could not load the music :( \n";
+		return;
+	}
+
+	// Play the music
+	music.play();
 
 	util::FPSManager fpsManager(config::graphics_data::fps);
 
@@ -109,7 +120,6 @@ void Game::run() {
 		fpsManager.sync();
 		glfwSwapBuffers(window);
 	}
-
 	glfwTerminate();
 
 }
