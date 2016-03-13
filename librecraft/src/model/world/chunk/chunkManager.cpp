@@ -56,8 +56,10 @@ void ChunkManager::createNewWorld() {
 	}
 
 	for (int x = 0; x < xMax; ++x) {
-		for (int z = 0; z < zMax; ++z)
+		for (int z = 0; z < zMax; ++z) {
+			chunks[x][0][z]->updateLightning();
 			chunks[x][0][z]->updateGraphics();
+		}
 	}
 
 }
