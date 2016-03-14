@@ -28,6 +28,10 @@
 
 #include "util/soundPlayer.h"
 
+#include <SFML/Window.hpp>
+#include <SFML/OpenGL.hpp>
+#include <SFML/Graphics.hpp>
+
 using namespace std;
 
 // ########################################################
@@ -41,81 +45,48 @@ using namespace std;
 void Game::run() {
 
 	util::SoundPlayer::getInstance().playMusic(config::music::menuMusic);
-
 	util::FPSManager fpsManager(config::graphics_data::fps);
-
-	if (!glfwInit()) {
-		cout << "Failed to initialize GLFW\n";
-	}
-
-	glfwWindowHint(GLFW_SAMPLES, 8);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-
-	GLFWmonitor *primaryMonitor = glfwGetPrimaryMonitor();
-	const GLFWvidmode *viewMode = glfwGetVideoMode(primaryMonitor);
-
-	int width = viewMode->width;
-	int height = viewMode->height;
-	int refreshRate = viewMode->refreshRate;
-
-	cout << "Width: " << width << "\n";
-	cout << "Height: " << height << "\n";
-	cout << "Refresh Rate: " << refreshRate << "\n";
-
-	//int WIDTH = width;
-	//int HEIGHT = height;
 
 	int WIDTH = 800;
 	int HEIGHT = 600;
 
+	util::Input::createInstance(nullptr, WIDTH / 2.0, HEIGHT / 2.0);
+
 	config::graphics_data::windowWidth = WIDTH;
 	config::graphics_data::windowHeight = HEIGHT;
 
-	//GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "Voxel Game", glfwGetPrimaryMonitor(), nullptr);
-	GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "Voxel Game", nullptr,
-			nullptr);
+    // create the window
+	sf::ContextSettings settings;
+	settings.depthBits = 24;
+	settings.stencilBits = 8;
+	settings.antialiasingLevel = 4;
+	settings.majorVersion = 3;
+	settings.minorVersion = 1;
 
-	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+	sf::Window window(sf::VideoMode(800, 600), "OpenGL", sf::Style::Default, settings);
+	window.setVerticalSyncEnabled(true);
 
-	if (window == nullptr) {
-		cout << "Failed to open GLFW window.\n";
-		glfwTerminate();
-	}
-	glfwMakeContextCurrent(window);
-	glfwSwapInterval(-1);
+    // load resources, initialize the OpenGL states, ...
 
 	glewExperimental = true;
 	if (glewInit() != GLEW_OK)
 		cout << "Failed to initialize GLEW\n";
 
-	glViewport(0, 0, WIDTH, HEIGHT);
-	glClearColor(0.47f, 0.76f, 0.93f, 1.0f);
-
-	config::graphics_data::windowWidth = WIDTH;
-	config::graphics_data::windowHeight = HEIGHT;
-
-	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
-	//glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
-
-	util::Input::createInstance(window, WIDTH / 2.0, HEIGHT / 2.0);
-
 	m_mainMenu.reset(new MainMenu(this));
 	m_currentState = m_mainMenu;
 
-	while (!m_quit && glfwWindowShouldClose(window) == 0) {
+    // run the main loop
+    bool running = true;
+    while (running)
+    {
 		fpsManager.frameStart();
-		glfwPollEvents();
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		m_currentState->update(fpsManager.frameTime());
 
-		fpsManager.sync();
-		glfwSwapBuffers(window);
-	}
-	glfwTerminate();
+//		fpsManager.sync();
+        window.display();
+    }
 
 }
 
@@ -138,4 +109,3 @@ void Game::changeStateToMainMenu() {
 void Game::quitGame() {
 	m_quit = true;
 }
-

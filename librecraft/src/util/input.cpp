@@ -29,10 +29,10 @@ static void character_callback(GLFWwindow* window, unsigned int codepoint) {
 // Constructor/Destructor #################################
 // ########################################################
 
-Input::Input(GLFWwindow* w, float centerX, float centerY)
-		: window {w}, screenCenterX {centerX}, screenCenterY {centerY} {
-	glfwSetCursorPosCallback(window, cursor_position_callback);
-	glfwSetCharCallback(window, character_callback);
+Input::Input(GLFWwindow* w, float centerX, float centerY) {
+//		: window {w}, screenCenterX {centerX}, screenCenterY {centerY} {
+//	glfwSetCursorPosCallback(window, cursor_position_callback);
+//	glfwSetCharCallback(window, character_callback);
 }
 
 // ########################################################
@@ -53,45 +53,36 @@ void Input::updateValues() {
 	mouseYMovement = 0.0;
 
 	// Keyboard
-	moveForwardPressed = glfwGetKey(window, moveForwardButton) == GLFW_PRESS
-			&& !moveForwardActive;
-	moveLeftPressed = glfwGetKey(window, moveLeftButton) == GLFW_PRESS
-			&& !moveLeftActive;
-	moveRightPressed = glfwGetKey(window, moveRightButton) == GLFW_PRESS
-			&& !moveRightActive;
-	moveBackwardPressed = glfwGetKey(window, moveBackwardButton) == GLFW_PRESS
-			&& !moveBackwardActive;
-	jumpPressed = glfwGetKey(window, jumpButton) == GLFW_PRESS && !jumpActive;
-	goDownPressed = glfwGetKey(window, goDownButton) == GLFW_PRESS
-			&& !goDownActive;
+	moveForwardPressed = sf::Keyboard::isKeyPressed(moveForwardButton) && !moveForwardActive;
+	moveLeftPressed = sf::Keyboard::isKeyPressed(moveLeftButton) && !moveLeftActive;
+	moveRightPressed = sf::Keyboard::isKeyPressed(moveRightButton) && !moveRightActive;
+	moveBackwardPressed = sf::Keyboard::isKeyPressed(moveBackwardButton) && !moveBackwardActive;
+	jumpPressed = sf::Keyboard::isKeyPressed(jumpButton) && !jumpActive;
+	goDownPressed = sf::Keyboard::isKeyPressed(goDownButton) && !goDownActive;
 
-	eraseTextPressed = glfwGetKey(window, eraseTextButton) == GLFW_PRESS
-			&& !eraseTextActive;
-	switchCubePressed = glfwGetKey(window, switchBuildingCube) == GLFW_PRESS
-			&& !switchCubeActive;
+	eraseTextPressed = sf::Keyboard::isKeyPressed(eraseTextButton) && !eraseTextActive;
+	switchCubePressed = sf::Keyboard::isKeyPressed(switchBuildingCube) && !switchCubeActive;
 
 	// Mouse
-	action1Pressed = glfwGetMouseButton(window, action1Button) == GLFW_PRESS
-			&& !action1Active;
-	action2Pressed = glfwGetMouseButton(window, action2Button) == GLFW_PRESS
-			&& !action2Active;
+	action1Pressed = sf::Mouse::isButtonPressed(action1Button) && !action1Active;
+	action2Pressed = sf::Mouse::isButtonPressed(action2Button) && !action2Active;
 
 	// Keyboard
-	moveForwardActive = glfwGetKey(window, moveForwardButton) == GLFW_PRESS;
-	moveLeftActive = glfwGetKey(window, moveLeftButton) == GLFW_PRESS;
-	moveRightActive = glfwGetKey(window, moveRightButton) == GLFW_PRESS;
-	moveBackwardActive = glfwGetKey(window, moveBackwardButton) == GLFW_PRESS;
-	jumpActive = glfwGetKey(window, jumpButton) == GLFW_PRESS;
-	goDownActive = glfwGetKey(window, goDownButton) == GLFW_PRESS;
+	moveForwardActive = sf::Keyboard::isKeyPressed(moveForwardButton);
+	moveLeftActive = sf::Keyboard::isKeyPressed(moveLeftButton);
+	moveRightActive = sf::Keyboard::isKeyPressed(moveRightButton);
+	moveBackwardActive = sf::Keyboard::isKeyPressed(moveBackwardButton);
+	jumpActive = sf::Keyboard::isKeyPressed(jumpButton);
+	goDownActive = sf::Keyboard::isKeyPressed(goDownButton);
 
-	eraseTextActive = glfwGetKey(window, eraseTextButton) == GLFW_PRESS;
-	switchCubeActive = glfwGetKey(window, switchBuildingCube) == GLFW_PRESS;
+	eraseTextActive = sf::Keyboard::isKeyPressed(eraseTextButton);
+	switchCubeActive = sf::Keyboard::isKeyPressed(switchBuildingCube);
 
 	// Mouse
-	action1Active = glfwGetMouseButton(window, action1Button) == GLFW_PRESS;
-	action2Active = glfwGetMouseButton(window, action2Button) == GLFW_PRESS;
+	action1Active = sf::Mouse::isButtonPressed(action1Button);
+	action2Active = sf::Mouse::isButtonPressed(action2Button);
 
-	escapeKeyPressed = glfwGetKey(window, GLFW_KEY_ESCAPE);
+	escapeKeyPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Escape);
 
 	if (mouseLocked) {
 		mouseXMovement = screenCenterX - mouseXOffset;
@@ -99,7 +90,9 @@ void Input::updateValues() {
 		centerMouse();
 	}
 	else {
-		glfwGetCursorPos(window, &mouseXPosition, &mouseYPosition);
+		auto vec = sf::Mouse::getPosition();
+		mouseXPosition = vec.x;
+		mouseYPosition = vec.y;
 	}
 
 	keyWasTyped = wasTyped;
@@ -109,9 +102,11 @@ void Input::updateValues() {
 }
 
 void Input::centerMouse() {
-	mouseXOffset = screenCenterX;
-	mouseYOffset = screenCenterY;
-	glfwSetCursorPos(window, screenCenterX, screenCenterY);
+	auto ve = sf::Mouse::getPosition();
+	mouseXOffset = ve.x;
+	mouseYOffset = ve.y;
+	sf::Vector2<int> vec(screenCenterX, screenCenterY);
+	sf::Mouse::setPosition(vec);
 }
 
 void Input::lockMouse() {

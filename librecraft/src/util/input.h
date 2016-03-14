@@ -18,9 +18,7 @@ class Input {
 
 public:
 
-	virtual ~Input() {
-	}
-	;
+	virtual ~Input() { };
 
 	static void createInstance(GLFWwindow* w, float centerX, float centerY);
 

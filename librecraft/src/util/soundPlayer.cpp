@@ -9,10 +9,8 @@ namespace util {
 void SoundPlayer::playSound(const std::string &soundPath) {
 
 	for (auto sound = playingSounds.begin(); sound < playingSounds.end(); ++sound) {
-		if ((*sound)->getStatus() == sf::SoundSource::Status::Stopped) {
+		if ((*sound)->getStatus() == sf::SoundSource::Status::Stopped)
 			playingSounds.erase(sound);
-			std::cout << "Removing sound :D \n";
-		}
 	}
 
 	if (m_buffers.find(soundPath) == m_buffers.end()) {
