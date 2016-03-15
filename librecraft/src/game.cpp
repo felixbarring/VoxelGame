@@ -26,6 +26,7 @@
 
 #include <SFML/Audio.hpp>
 
+
 #include "util/soundPlayer.h"
 
 #include <SFML/Window.hpp>
@@ -65,6 +66,8 @@ void Game::run() {
 
 	sf::Window window(sf::VideoMode(800, 600), "OpenGL", sf::Style::Default, settings);
 	window.setVerticalSyncEnabled(true);
+
+	util::Input::getInstance()->setWindow(&window);
 
     // load resources, initialize the OpenGL states, ...
 

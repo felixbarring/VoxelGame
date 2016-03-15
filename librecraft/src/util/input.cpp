@@ -30,9 +30,6 @@ static void character_callback(GLFWwindow* window, unsigned int codepoint) {
 // ########################################################
 
 Input::Input(GLFWwindow* w, float centerX, float centerY) {
-//		: window {w}, screenCenterX {centerX}, screenCenterY {centerY} {
-//	glfwSetCursorPosCallback(window, cursor_position_callback);
-//	glfwSetCharCallback(window, character_callback);
 }
 
 // ########################################################
@@ -90,7 +87,7 @@ void Input::updateValues() {
 		centerMouse();
 	}
 	else {
-		auto vec = sf::Mouse::getPosition();
+		auto vec = sf::Mouse::getPosition(*m_window);
 		mouseXPosition = vec.x;
 		mouseYPosition = vec.y;
 	}
@@ -98,15 +95,14 @@ void Input::updateValues() {
 	keyWasTyped = wasTyped;
 	wasTyped = false;
 	keyTyped = typed;
-
 }
 
 void Input::centerMouse() {
-	auto ve = sf::Mouse::getPosition();
+	auto ve = sf::Mouse::getPosition(*m_window);
 	mouseXOffset = ve.x;
 	mouseYOffset = ve.y;
 	sf::Vector2<int> vec(screenCenterX, screenCenterY);
-	sf::Mouse::setPosition(vec);
+	sf::Mouse::setPosition(vec, *m_window);
 }
 
 void Input::lockMouse() {
@@ -115,6 +111,10 @@ void Input::lockMouse() {
 
 void Input::unlockMouse() {
 	mouseLocked = false;
+}
+
+void Input::setWindow(const sf::Window *window) {
+	m_window = window;
 }
 
 } /* namespace util */
