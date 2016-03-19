@@ -2,9 +2,9 @@
 #include "cubeDemo.h"
 
 #include <GL/glew.h>
-#include <GLFW/glfw3.h>
 
 #include <map>
+#include <iostream>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -17,7 +17,12 @@
 #include "../graphics/camera.h"
 #include "../graphics/viewDirection.h"
 #include "../util/fpsManager.h"
+#include "../util/input.h"
 #include "../config/data.h"
+
+#include <SFML/Window.hpp>
+#include <SFML/OpenGL.hpp>
+#include <SFML/Graphics.hpp>
 
 namespace demo
 {
@@ -34,29 +39,28 @@ void CubeDemo::runDemo()
 {
 
 	util::FPSManager fpsManager(100);
-	const GLuint WIDTH = 800, HEIGHT = 600;
+	int WIDTH = 800;
+	int HEIGHT = 600;
 
-	if (!glfwInit()) {
-		fprintf(stderr, "Failed to initialize GLFW\n");
-	}
-	glfwWindowHint(GLFW_SAMPLES, 8);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+	util::Input::createInstance(nullptr, WIDTH / 2.0, HEIGHT / 2.0);
 
-	GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "Cube Demo", nullptr, nullptr);
-	if (window == nullptr) {
-		fprintf(stderr, "Failed to open GLFW window.\n");
-		glfwTerminate();
-	}
-	glfwMakeContextCurrent(window);
-	glfwSwapInterval(-1);
+    // create the window
+	sf::ContextSettings settings;
+	settings.depthBits = 24;
+	settings.stencilBits = 8;
+	settings.antialiasingLevel = 4;
+	settings.majorVersion = 3;
+	settings.minorVersion = 1;
+
+	sf::Window window(sf::VideoMode(800, 600), "Cube Demo",
+			sf::Style::Default, settings);
+	window.setMouseCursorVisible(false);
+
+	util::Input::getInstance()->setWindow(&window);
 
 	glewExperimental = true;
-	if (glewInit() != GLEW_OK) {
-		fprintf(stderr, "Failed to initialize GLEW\n");
-	}
+	if (glewInit() != GLEW_OK)
+		std::cout << "Failed to initialize GLEW\n";
 
 	glViewport(0, 0, WIDTH, HEIGHT);
 	glClearColor(0.2f, 0.22f, 0.2f, 1.0f);
@@ -83,7 +87,7 @@ void CubeDemo::runDemo()
 
 	float xAmount = 0;
 
-	while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0)	{
+	while (window.isOpen())	{
 
 		fpsManager.frameStart();
 
@@ -105,11 +109,16 @@ void CubeDemo::runDemo()
 		graphics::CubeBatcher::getInstance().draw();
 
 		fpsManager.sync();
-		glfwSwapBuffers(window);
+		window.display();
+
+		sf::Event event;
+		while (window.pollEvent(event))
+			if (event.type == sf::Event::Closed)
+				window.close();
+
 	}
 	glfwTerminate();
 
 }
 
 }
-

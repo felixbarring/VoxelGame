@@ -19,15 +19,11 @@
 
 #include "inGame.h"
 #include "mainMenu.h"
-
 #include "model/world/chunk/chunkManager.h"
-
 #include "gui/guiUtil.h"
+#include "util/soundPlayer.h"
 
 #include <SFML/Audio.hpp>
-
-
-#include "util/soundPlayer.h"
 
 #include <SFML/Window.hpp>
 #include <SFML/OpenGL.hpp>
@@ -64,7 +60,8 @@ void Game::run() {
 	settings.majorVersion = 3;
 	settings.minorVersion = 1;
 
-	sf::Window window(sf::VideoMode(800, 600), "OpenGL", sf::Style::Default, settings);
+	sf::Window window(sf::VideoMode(800, 600), "Voxel Game",
+			sf::Style::Default, settings);
 	window.setMouseCursorVisible(false);
 
 //	window.setVerticalSyncEnabled(true);
@@ -76,7 +73,6 @@ void Game::run() {
 	if (glewInit() != GLEW_OK)
 		cout << "Failed to initialize GLEW\n";
 
-//	glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
 	glClearColor(0.47f, 0.76f, 0.93f, 1.0f);
 	glViewport(0, 0, WIDTH, HEIGHT);
 
@@ -84,9 +80,8 @@ void Game::run() {
 	m_currentState = m_mainMenu;
 
     // run the main loop
-    bool running = true;
-    while (!m_quit)
-    {
+    while (!m_quit && window.isOpen()) {
+
 		fpsManager.frameStart();
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -96,6 +91,11 @@ void Game::run() {
 
 		fpsManager.sync();
         window.display();
+
+        sf::Event event;
+		while (window.pollEvent(event))
+			if (event.type == sf::Event::Closed)
+				window.close();
     }
 
 }
