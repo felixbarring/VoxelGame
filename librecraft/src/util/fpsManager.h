@@ -4,6 +4,8 @@
 #include <chrono>
 #include <thread>
 
+#include <SFML/System/Clock.hpp>
+
 namespace util {
 
 /**
@@ -47,6 +49,8 @@ private:
 	double timePerFrame;
 	double timeForLatestFrame {1.0};
 	const double mili {0.001};
+
+	sf::Clock m_clock;
 };
 
 }

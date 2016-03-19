@@ -27,7 +27,7 @@ namespace entity {
 // ########################################################
 
 Player::Player()
-		: m_location {0, 0, 0}, m_speed {0, 0, 0}, m_transform {0, 0, 0} {
+	: m_location {0, 0, 0}, m_speed {0, 0, 0}, m_transform {0, 0, 0} {
 }
 
 // ########################################################
@@ -90,7 +90,7 @@ void Player::updateSpeed(float timePassed) {
 
 		// Only jump if the player stands on solid ground.
 		if (collisions.size())
-			m_speed.y = m_jumpSpeed;
+			m_speed.y = m_jumpSpeed * timePassed;
 
 	}
 

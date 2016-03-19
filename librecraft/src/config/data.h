@@ -35,13 +35,15 @@ namespace config {
 		static constexpr char GRASS = 0;
 		static constexpr char DIRT = 1;
 		static constexpr char ROCK = 2;
-		static constexpr char BRICK_WALL = 3;
+		static constexpr char MORE_ROCK = 3;
+		static constexpr char BRICK_WALL = 4;
+		static constexpr char SAND = 5;
 
-		static constexpr char LAST_CUBE = BRICK_WALL; // Better name needed
 
-		static constexpr char BED_ROCK = 4;
+		static constexpr char LAST_CUBE = SAND; // Better name needed
 
-		static constexpr char SELECTED = 5;
+		static constexpr char BED_ROCK = 6;
+		static constexpr char SELECTED = 7;
 
 		// Used for looping over all types, except for air.
 		static constexpr char LAST_BLOCK = SELECTED;
@@ -51,8 +53,9 @@ namespace config {
 		static constexpr int BOTTOM_TEXTURE = 2;
 
 		// 0 = Side, 1 = Top, 2 = Bottom
-		static constexpr char BLOCK_TEXTURES[6][3] { { 0, 1, 2 }, { 2, 2, 2 },
-				{ 3, 3, 3 }, { 4, 4, 4 }, { 5, 5, 5 }, { 6, 6, 6 } };
+		static constexpr char BLOCK_TEXTURES[8][3] { { 0, 1, 2 }, { 2, 2, 2 },
+				{ 3, 3, 3 }, { 4, 4, 4 }, { 5, 5, 5 }, { 6, 6, 6 },
+				{ 7, 7, 7 }, { 8, 8, 8 } };
 
 		static constexpr int TEXTURE_WIDTH = 32;
 		static constexpr int TEXTURE_HEIGHT = 32;
@@ -62,7 +65,10 @@ namespace config {
 			"../resources/cubes/grass_top.png",
 			"../resources/cubes/dirt.png",
 			"../resources/cubes/rock.png",
+			"../resources/cubes/more_rock.png",
 			"../resources/cubes/brick.png",
+			"../resources/cubes/sand.png",
+
 			"../resources/cubes/bedrock.png",
 			"../resources/cubes/selected.png",
 		};
@@ -72,7 +78,9 @@ namespace config {
 			"../resources/cubes/grass_side.png",
 			"../resources/cubes/dirt.png",
 			"../resources/cubes/rock.png",
+			"../resources/cubes/more_rock.png",
 			"../resources/cubes/brick.png",
+			"../resources/cubes/sand.png",
 		};
 
 	}

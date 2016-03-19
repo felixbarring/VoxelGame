@@ -29,7 +29,10 @@ static void character_callback(GLFWwindow* window, unsigned int codepoint) {
 // Constructor/Destructor #################################
 // ########################################################
 
-Input::Input(GLFWwindow* w, float centerX, float centerY) {
+Input::Input(GLFWwindow* w, float centerX, float centerY)
+	: screenCenterX(centerX),
+	  screenCenterY(centerY)
+		{
 }
 
 // ########################################################

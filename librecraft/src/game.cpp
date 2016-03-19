@@ -45,8 +45,8 @@ using namespace std;
 
 void Game::run() {
 
-	util::SoundPlayer::getInstance().playMusic(config::music::menuMusic);
-	util::FPSManager fpsManager(config::graphics_data::fps);
+//	util::SoundPlayer::getInstance().playMusic(config::music::menuMusic);
+	util::FPSManager fpsManager(1000); // config::graphics_data::fps);
 
 	int WIDTH = 800;
 	int HEIGHT = 600;
@@ -65,29 +65,34 @@ void Game::run() {
 	settings.minorVersion = 1;
 
 	sf::Window window(sf::VideoMode(800, 600), "OpenGL", sf::Style::Default, settings);
-	window.setVerticalSyncEnabled(true);
+	window.setMouseCursorVisible(false);
+
+//	window.setVerticalSyncEnabled(true);
+//	window.setFramerateLimit(300);
 
 	util::Input::getInstance()->setWindow(&window);
-
-    // load resources, initialize the OpenGL states, ...
 
 	glewExperimental = true;
 	if (glewInit() != GLEW_OK)
 		cout << "Failed to initialize GLEW\n";
+
+	glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
 
 	m_mainMenu.reset(new MainMenu(this));
 	m_currentState = m_mainMenu;
 
     // run the main loop
     bool running = true;
-    while (running)
+    while (!m_quit)
     {
 		fpsManager.frameStart();
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		m_currentState->update(fpsManager.frameTime());
 
-//		fpsManager.sync();
+		cout << fpsManager.getFps() << "\n";
+
+		fpsManager.sync();
         window.display();
     }
 

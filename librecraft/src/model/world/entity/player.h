@@ -61,7 +61,7 @@ private:
 	float m_height {1};
 	float m_depth {1};
 	float m_gravity {0.3};
-	float m_jumpSpeed {0.09};
+	float m_jumpSpeed {7};
 	int m_selectCubeDistance {5};
 	glm::vec3 m_speed;
 	glm::vec3 m_lastSelecteCube;
