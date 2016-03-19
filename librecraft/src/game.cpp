@@ -76,7 +76,9 @@ void Game::run() {
 	if (glewInit() != GLEW_OK)
 		cout << "Failed to initialize GLEW\n";
 
-	glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+//	glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+	glClearColor(0.47f, 0.76f, 0.93f, 1.0f);
+	glViewport(0, 0, WIDTH, HEIGHT);
 
 	m_mainMenu.reset(new MainMenu(this));
 	m_currentState = m_mainMenu;

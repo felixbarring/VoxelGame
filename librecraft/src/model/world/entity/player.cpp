@@ -10,6 +10,8 @@
 #include "../../../graphics/cubeBatcher.h"
 #include "../../../util/voxel.h"
 
+#include "../../../util/soundPlayer.h"
+
 #include "aabb.h"
 
 using namespace std;
@@ -160,13 +162,19 @@ void Player::updateCameraAndTargetCube() {
 		m_lastSelecteCube = selectedCube;
 
 		if (input->action1Pressed) {
-			chunkManager.removeCube(selectedCube.x, selectedCube.y,
-					selectedCube.z);
+			if (chunkManager.getCubeId(selectedCube.x, selectedCube.y,
+					selectedCube.z) != config::cube_data::BED_ROCK) {
+				chunkManager.removeCube(selectedCube.x, selectedCube.y,
+						selectedCube.z);
+				SoundPlayer::getInstance().playSound(
+						config::souds::cubeRemoved);
+			}
 			return;
 		}
 		else if (input->action2Pressed) {
 			chunkManager.setCube(previous.x, previous.y, previous.z,
 					m_cubeUsedForBuilding);
+			SoundPlayer::getInstance().playSound(config::souds::cubeAdded);
 			return;
 		}
 

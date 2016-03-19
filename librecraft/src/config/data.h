@@ -170,11 +170,15 @@ namespace config {
 	namespace souds {
 		static const std::string buttonPressed =
 				"../resources/sound/button.wav";
+		static const std::string cubeAdded =
+				"../resources/sound/cube_place.wav";
+		static const std::string cubeRemoved =
+				"../resources/sound/cube_remove.wav";
 	}
 
 	namespace music {
-	static const std::string menuMusic =
-			"../resources/music/menuMusic.ogg";
+		static const std::string menuMusic =
+				"../resources/music/menuMusic.ogg";
 	}
 
 }
