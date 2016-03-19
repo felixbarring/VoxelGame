@@ -26,7 +26,7 @@ Texture::Texture(const char *path) {
 		std::cout << "Coulnd not load image" << path << "\n";
 		return;
 	}
-//	image->flipVertically();
+	image->flipVertically();
 
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA,
 			image->getSize().x,

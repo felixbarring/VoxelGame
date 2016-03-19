@@ -111,37 +111,24 @@ std::shared_ptr<mesh::MeshElement> FontMeshBuilder::buldMeshForString(
 		vertices.push_back(yOrigin + height);
 		vertices.push_back(0);
 
-		/*
-		 uvCoordinates.push_back(cd.xPosition / static_cast<float>(ATLAS_WIDTH));
-		 uvCoordinates.push_back(cd.yPosition / static_cast<float>(ATLAS_HEIGHT));
-
-		 uvCoordinates.push_back((cd.xPosition + cd.width) / static_cast<float>(ATLAS_WIDTH));
-		 uvCoordinates.push_back(cd.yPosition / static_cast<float>(ATLAS_HEIGHT));
-
-		 uvCoordinates.push_back((cd.xPosition + cd.width) / static_cast<float>(ATLAS_WIDTH));
-		 uvCoordinates.push_back((cd.yPosition + cd.height) / static_cast<float>(ATLAS_HEIGHT));
-
-		 uvCoordinates.push_back(cd.xPosition / static_cast<float>(ATLAS_WIDTH));
-		 uvCoordinates.push_back((cd.yPosition + cd.height) / static_cast<float>(ATLAS_HEIGHT));
-		 */
-
 		uvCoordinates.push_back(cd.xPosition / static_cast<float>(ATLAS_WIDTH));
-		uvCoordinates.push_back(
-				(cd.yPosition + cd.height) / static_cast<float>(ATLAS_HEIGHT));
+		uvCoordinates.push_back(((ATLAS_HEIGHT - cd.yPosition) - cd.height) /
+				static_cast<float>(ATLAS_HEIGHT));
 
 		uvCoordinates.push_back(
 				(cd.xPosition + cd.width) / static_cast<float>(ATLAS_WIDTH));
-		uvCoordinates.push_back(
-				(cd.yPosition + cd.height) / static_cast<float>(ATLAS_HEIGHT));
+		uvCoordinates.push_back(((ATLAS_HEIGHT - cd.yPosition) - cd.height) /
+				static_cast<float>(ATLAS_HEIGHT));
 
-		uvCoordinates.push_back(
-				(cd.xPosition + cd.width) / static_cast<float>(ATLAS_WIDTH));
-		uvCoordinates.push_back(
-				cd.yPosition / static_cast<float>(ATLAS_HEIGHT));
+		uvCoordinates.push_back((cd.xPosition + cd.width) /
+				static_cast<float>(ATLAS_WIDTH));
+		uvCoordinates.push_back((ATLAS_HEIGHT - cd.yPosition) /
+				static_cast<float>(ATLAS_HEIGHT));
 
-		uvCoordinates.push_back(cd.xPosition / static_cast<float>(ATLAS_WIDTH));
-		uvCoordinates.push_back(
-				cd.yPosition / static_cast<float>(ATLAS_HEIGHT));
+		uvCoordinates.push_back(cd.xPosition /
+				static_cast<float>(ATLAS_WIDTH));
+		uvCoordinates.push_back((ATLAS_HEIGHT - cd.yPosition) /
+				static_cast<float>(ATLAS_HEIGHT));
 
 		elements.push_back((short) (0 + loopCounter * 4));
 		elements.push_back((short) (1 + loopCounter * 4));
@@ -152,7 +139,6 @@ std::shared_ptr<mesh::MeshElement> FontMeshBuilder::buldMeshForString(
 
 		loopCounter++;
 		xOffset += width;
-
 	}
 
 	return std::shared_ptr<mesh::MeshElement>(

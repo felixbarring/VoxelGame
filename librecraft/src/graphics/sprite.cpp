@@ -20,10 +20,10 @@ Sprite::Sprite(float x, float y, float layer, float width, float height,
 	};
 
 	std::vector<GLfloat> texCoords = {
-		0.0f, 1.0f,
-		1.0f, 1.0f,
-		1.0f, 0.0f,
 		0.0f, 0.0f,
+		1.0f, 0.0f,
+		1.0f, 1.0f,
+		0.0f, 1.0f,
 	};
 
 	std::vector<GLshort> indices = {
