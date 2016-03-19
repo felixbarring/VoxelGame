@@ -157,9 +157,8 @@ float FontMeshBuilder::lenghtOfString(const std::string &str, int height) {
 
 int FontMeshBuilder::splitStringAt(const std::string &str, int height,
 		float maxLength) {
-	if (lenghtOfString(str, height) < maxLength) {
+	if (lenghtOfString(str, height) < maxLength)
 		return -1;
-	}
 
 	int index = 0;
 	float accumulatedLenght = 0;
