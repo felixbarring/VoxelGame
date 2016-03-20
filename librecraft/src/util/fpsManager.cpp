@@ -2,7 +2,6 @@
 
 #include <iostream>
 
-#include <glfw3.h>
 #include <chrono>
 #include <thread>
 
@@ -15,7 +14,7 @@ std::chrono::milliseconds oneMilliSecond(1);
 // ########################################################
 
 FPSManager::FPSManager(int maxFPS)
-		: maxFPS {maxFPS}, timePerFrame {1.0 / maxFPS} {
+	: maxFPS {maxFPS}, timePerFrame {1.0 / maxFPS} {
 }
 
 // ########################################################
@@ -23,7 +22,7 @@ FPSManager::FPSManager(int maxFPS)
 // ########################################################
 
 void FPSManager::frameStart() {
-	frameStartTime = glfwGetTime();
+	m_clock.restart();
 }
 
 int currentFPS {0};
@@ -37,7 +36,7 @@ void FPSManager::sync() {
 	// wait until it is time to proceed with the next frame.
 	// The busy waiting is used to increase the timing accuracy, we do not
 	// want to start the next frame to late.
-	double totalFrameTime = glfwGetTime() - frameStartTime;
+	double totalFrameTime = m_clock.getElapsedTime().asSeconds();
 	while (totalFrameTime < timePerFrame) {
 		double timeRemainingInMilis = (timePerFrame - totalFrameTime) / mili;
 		if (timeRemainingInMilis > 2) {
@@ -47,7 +46,7 @@ void FPSManager::sync() {
 		else if (timeRemainingInMilis > 1) {
 			std::this_thread::sleep_for(oneMilliSecond);
 		}
-		totalFrameTime = glfwGetTime() - frameStartTime;
+		totalFrameTime = m_clock.getElapsedTime().asSeconds() - frameStartTime;
 	}
 
 	currentFPS = 1.0 / totalFrameTime;

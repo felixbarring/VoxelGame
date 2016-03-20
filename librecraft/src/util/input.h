@@ -6,6 +6,8 @@
 
 #include <memory>
 
+#include <SFML/Window.hpp>
+
 namespace util {
 
 class Input {
@@ -18,9 +20,7 @@ class Input {
 
 public:
 
-	virtual ~Input() {
-	}
-	;
+	virtual ~Input() { };
 
 	static void createInstance(GLFWwindow* w, float centerX, float centerY);
 
@@ -37,6 +37,8 @@ public:
 	void lockMouse();
 
 	void unlockMouse();
+
+	void setWindow(const sf::Window *window);
 
 // ########################################################
 // Implementation #########################################
@@ -96,6 +98,8 @@ private:
 	float screenCenterY;
 
 	bool mouseLocked {true};
+
+	const sf::Window *m_window;
 };
 
 static std::shared_ptr<Input> input;

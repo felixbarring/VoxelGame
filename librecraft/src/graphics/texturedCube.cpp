@@ -27,43 +27,40 @@ TexturedCube::TexturedCube(float xOffset, float yOffset, float zOffset, int id):
 
 	vector<GLfloat> vertexData {
 		// Front
-		-size, size, -size, // 3
-		size, size, -size, // 2
-		size, -size, -size, // 1
-		-size, -size, -size, // 0
+		-size, -size, size, // 0
+		size, -size, size, // 1
+		size, size, size, // 2
+		-size, size, size, // 3
 
 		// Back
-		size, size, size, // 3
-		-size, size, size, // 2
-		-size, -size, size, // 1
-		size, -size, size, // 0
-
-		// Left
-		-size, size, size, // 3
-		-size, size, -size, // 2
+		size, -size, -size, // 0
 		-size, -size, -size, // 1
-		-size, -size, size, // 0
+		-size, size, -size, // 2
+		size, size, -size, // 3
 
 		// Right
-		size, size, -size, // 3
-		size, size, size, // 2
-		size, -size, size, // 1
-		size, -size, -size, // 0
+		size, -size, size, // 0
+		size, -size, -size, // 1
+		size, size, -size, // 2
+		size, size, size, // 3
 
+		// Left
+		-size, -size, -size, // 0
+		-size, -size, size, // 1
+		-size, size, size, // 2
+		-size, size,-size, // 3
 
 		// Top
-		-size, size, size, // 3
-		size, size, size, // 2
-		size, size, -size, // 1
-		-size, size, -size, // 0
-
+		-size, size, size, // 0
+		size, size, size, // 1
+		size, size, -size, // 2
+		-size, size, -size, // 3
 
 		// Bottom
-		-size, -size, -size, // 3
-		size, -size, -size, // 2
-		size, -size, size, // 1
-		-size, -size, size, // 0
-
+		-size, -size, -size, // 0
+		size, -size, -size, // 1
+		size, -size, size, // 2
+		-size, -size, size, // 3
 
 	};
 
@@ -105,7 +102,6 @@ TexturedCube::TexturedCube(float xOffset, float yOffset, float zOffset, int id):
 	GLfloat bottomTexture = BLOCK_TEXTURES[id][BOTTOM_TEXTURE];
 
 	vector<GLfloat> UV {
-
 		// Front
 		0.0f, 0.0f, sideTexture,
 		1.0f, 0.0f, sideTexture,
@@ -118,13 +114,13 @@ TexturedCube::TexturedCube(float xOffset, float yOffset, float zOffset, int id):
 		1.0f, 1.0f, sideTexture,
 		0.0f, 1.0f, sideTexture,
 
-		// Left
+		// Right
 		0.0f, 0.0f, sideTexture,
 		1.0f, 0.0f, sideTexture,
 		1.0f, 1.0f, sideTexture,
 		0.0f, 1.0f, sideTexture,
 
-		// Right
+		// Left
 		0.0f, 0.0f, sideTexture,
 		1.0f, 0.0f, sideTexture,
 		1.0f, 1.0f, sideTexture,

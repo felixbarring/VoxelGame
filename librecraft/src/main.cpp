@@ -3,7 +3,6 @@
 #include "game.h"
 #include "demo/textureDemo.h"
 #include "demo/cubeDemo.h"
-#include "demo/chunkDemo.h"
 #include "demo/arrayTextureDemo.h"
 #include "demo/cubeMapDemo.h"
 #include "demo/spriteDemo.h"
@@ -34,10 +33,6 @@ int main(int argc, char *argv[]) {
 			else if (str == "cubeDemo") {
 				demo::CubeDemo cubeDemo;
 				cubeDemo.runDemo();
-			}
-			else if (str == "chunkDemo") {
-				demo::ChunkDemo chunkDemo;
-				chunkDemo.runDemo();
 			}
 			else if (str == "textureArrayDemo") {
 				demo::ArrayTextureDemo arrayTextureDemo;

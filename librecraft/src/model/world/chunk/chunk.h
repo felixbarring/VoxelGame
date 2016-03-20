@@ -106,6 +106,8 @@ private:
 
 	bool isInDirectSunlight(int x, int y, int z);
 
+	bool containsOnlyAir(int region);
+
 	int m_xLocation, m_zLocation;
 	bool m_isDirty;
 

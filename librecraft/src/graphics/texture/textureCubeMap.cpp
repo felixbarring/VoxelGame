@@ -1,6 +1,9 @@
 #include "textureCubeMap.h"
 
-#include <SOIL.h>
+#include <iostream>
+#include <SFML/Graphics/Image.hpp>
+
+using namespace sf;
 
 namespace texture {
 
@@ -32,18 +35,21 @@ TextureCubeMap::TextureCubeMap(const char* right, const char* left,
 
 	std::vector<const char*> paths { right, left, top, bottom, back, front };
 
+	static Image *image = new Image;
+
 	int i = 0;
 	for (auto path : paths) {
-		unsigned char* image = SOIL_load_image(path, &width, &height, 0,
-				SOIL_LOAD_RGB);
-		glTexImage2D(targets[i++], 0, GL_RGB, width, height, 0, GL_RGB,
-				GL_UNSIGNED_BYTE, image);
+
+		if(!image->loadFromFile(path)) {
+			std::cout << "Coulnd not load image" << path << "\n";
+			return;
+		}
+
+		glTexImage2D(targets[i++], 0, GL_RGB,
+				image->getSize().x, image->getSize().y, 0, GL_RGBA,
+				GL_UNSIGNED_BYTE, image->getPixelsPtr());
 	}
 	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
-}
-
-// TODO Delete the texture from OpenGL ?
-TextureCubeMap::~TextureCubeMap() {
 }
 
 // ########################################################

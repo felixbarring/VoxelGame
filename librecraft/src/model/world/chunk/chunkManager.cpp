@@ -62,6 +62,8 @@ void ChunkManager::createNewWorld() {
 		}
 	}
 
+	//
+
 }
 
 void ChunkManager::loadWorld(std::string& worldName) {

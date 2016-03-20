@@ -1,6 +1,9 @@
 #include "textureArray.h"
 
-#include <SOIL.h>
+#include <iostream>
+#include <SFML/Graphics/Image.hpp>
+
+using namespace sf;
 
 namespace texture {
 
@@ -28,29 +31,28 @@ TextureArray::TextureArray(std::vector<std::string> paths, int width,
 	glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
 	glTexImage3D(GL_TEXTURE_2D_ARRAY, 0, GL_RGBA8, width, height, layerCount, 0,
-			GL_RGB, GL_UNSIGNED_BYTE, nullptr);
+			GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+
+	static Image *image = new Image;
 
 	int i = 0;
 	for (auto path : paths) {
-
-		int w;
-		int h;
-		unsigned char* image = SOIL_load_image(path.c_str(), &w, &h, 0,
-				SOIL_LOAD_RGB);
-
-		if (w != width || h != height) {
-			// ERROR HERE :(
+		if (!image->loadFromFile(path)) {
+			std::cout << "Coulnd not load image" << path << "\n";
+			return;
 		}
-		glTexSubImage3D(GL_TEXTURE_2D_ARRAY, 0, 0, 0, i++, w, h, 1, GL_RGB,
-				GL_UNSIGNED_BYTE, image);
-		SOIL_free_image_data(image);
+		if (image->getSize().x != width || image->getSize().y != height) {
+			std::cout << "Wrong size of the image" << path << "\n";
+			return;
+		}
+
+		image->flipVertically();
+
+		glTexSubImage3D(GL_TEXTURE_2D_ARRAY, 0, 0, 0, i++, width, height, 1,
+				GL_RGBA, GL_UNSIGNED_BYTE, image->getPixelsPtr());
 	}
 
 	glGenerateMipmap(GL_TEXTURE_2D_ARRAY);
-}
-
-// TODO Delete the texture from OpenGL ?
-TextureArray::~TextureArray() {
 }
 
 // ########################################################

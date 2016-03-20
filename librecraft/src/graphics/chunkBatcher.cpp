@@ -31,14 +31,15 @@ ChunkBatcher::ChunkBatcher()
 			"uniform mat4 modelViewProjection; \n"
 			"uniform mat4 modelView; \n"
 
-			"out vec3 faceNormal; \n"
 			"out vec3 texCoord; \n"
 			"out float lightValue; \n"
-			"out float fogFactor; \n "
+			"out float fogFactor; \n"
+			"out vec3 faceNormal; \n"
 
 			"void main(){ \n"
 			"  texCoord = vec3(texCoordIn.x, texCoordIn.y, texCoordIn.z); \n"
 			"  lightValue = positionIn.w / 16; \n"
+			"  faceNormal = normalIn; \n"
 
 			"  vec4 positionView = modelView * vec4(positionIn.xyz, 1); \n"
 			"  float distance = length(positionView.xyz); \n"
@@ -56,14 +57,32 @@ ChunkBatcher::ChunkBatcher()
 			"in float lightValue; \n"
 			"in float fogFactor; \n"
 
+			"in vec3 faceNormal; \n"
+
 			"uniform sampler2DArray texture1; \n"
 
 			"out vec4 color; \n"
 
+			"uniform vec3 lightDirection; \n"
+
+            "uniform vec3 diffuseLight = vec3(0.5, 0.5, 0.5); \n"
+            "uniform vec3 materialDiffuse = vec3(0.5, 0.5, 0.5); \n"
+
+			"vec3 calculateDiffuse() \n "
+			"{ \n "
+			"  return diffuseLight * materialDiffuse * max(0, dot(faceNormal, "
+			"		normalize(lightDirection))); \n "
+			"} \n "
+
 			"void main(){ \n"
 
+			"  vec3 diffuse = calculateDiffuse() / 2; \n"
+//			"  color = vec4(diffuse, 1.0f) * texture(texture1, texCoord); \n"
+
+			"  vec4 light = vec4(lightValue, lightValue, lightValue, 1) + vec4(diffuse, 0); \n"
+
 			"  color = mix(vec4(fogColor, 1.0), "
-			"    vec4(lightValue, lightValue, lightValue, 1) * texture(texture1, texCoord), "
+			"    light* texture(texture1, texCoord), "
 			"    fogFactor);"
 
 			"} \n";
@@ -94,6 +113,9 @@ void ChunkBatcher::removeBatch(std::shared_ptr<GraphicalChunk> batch) {
 	}
 }
 
+float x = 1.0;
+int direction = 1;
+
 void ChunkBatcher::draw() {
 	program->bind();
 
@@ -101,29 +123,30 @@ void ChunkBatcher::draw() {
 	program->setUniformli("texture1", 0);
 	texture.bind();
 
-	Camera &camera = Camera::getInstance();
+//	if (x > 5 || x < - 5)
+//		direction = -direction;
+//
+//	x += 0.1 * direction;
 
-	float totalTime = 0;
+	program->setUniform3f("lightDirection", x, 3.0, 0.3);
+
+	Camera &camera = Camera::getInstance();
 
 	for (auto b : batches) {
 
 		// TODO Do frustrum culling here
-
-//		auto t = glfwGetTime();
 
 		glm::mat4 modelView = camera.getViewMatrix()
 				* b->getTransform().getMatrix();
 		glm::mat4 modelViewProjection = camera.getProjectionMatrix()
 				* modelView;
 
-//		totalTime += (glfwGetTime() - t);
-
 		program->setUniformMatrix4f("modelViewProjection", modelViewProjection);
 		program->setUniformMatrix4f("modelView", modelView);
+
+
 		b->draw();
 	}
-
-//	std::cout << "Total matrix time: " << totalTime << "\n";
 
 	program->unbind();
 

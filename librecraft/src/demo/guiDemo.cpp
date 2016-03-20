@@ -5,7 +5,6 @@
 #include <memory>
 
 #include <GL/glew.h>
-#include <GLFW/glfw3.h>
 
 #include <glm/glm.hpp>
 
@@ -24,11 +23,15 @@
 #include "../gui/widget/widgetGroup.h"
 #include "../gui/widget/iWidget.h"
 #include "../gui/guiUtil.h"
+#include "../gui/mouse.h"
 
 #include "../config/data.h"
 
+#include <SFML/Window.hpp>
+
 using namespace std;
 using namespace widget;
+using namespace sf;
 
 namespace demo {
 
@@ -43,32 +46,28 @@ namespace demo {
 void GuiDemo::runDemo()
 {
 	util::FPSManager fpsManager(60);
-	const GLuint WIDTH = 800, HEIGHT = 600;
+	const GLuint WIDTH = 1200, HEIGHT = 600;
 
-	if (!glfwInit()) {
-		cout << "Failed to initialize GLFW\n";
-	}
-	glfwWindowHint(GLFW_SAMPLES, 8);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+	config::graphics_data::windowWidth = WIDTH;
+	config::graphics_data::windowHeight = HEIGHT;
 
-	GLFWwindow *window = glfwCreateWindow(WIDTH + 400, HEIGHT, ""
-			"GUI Demo", nullptr, nullptr);
-	if (window == nullptr) {
-		cout << "Failed to open GLFW window.\n";
-		glfwTerminate();
-	}
-	glfwMakeContextCurrent(window);
-	glfwSwapInterval(-1);
+
+	// create the window
+	ContextSettings settings;
+	settings.depthBits = 24;
+	settings.stencilBits = 8;
+	settings.antialiasingLevel = 4;
+	settings.majorVersion = 3;
+	settings.minorVersion = 1;
+
+	Window window(VideoMode(WIDTH, HEIGHT), "Voxel Game", Style::Default,
+			settings);
 
 	glewExperimental = true;
-	if (glewInit() != GLEW_OK) {
+	if (glewInit() != GLEW_OK)
 		cout << "Failed to initialize GLEW\n";
-	}
 
-	glViewport(0, 0, WIDTH+400, HEIGHT);
+	glViewport(0, 0, WIDTH, HEIGHT);
 	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
 	shared_ptr<TextInput> textInput;
@@ -79,7 +78,6 @@ void GuiDemo::runDemo()
 	shared_ptr<WidgetGroup> playWidgetGroup;
 	shared_ptr<WidgetGroup> settingsWidgetGroup;
 	shared_ptr<WidgetGroup> listWidgetGroup;
-
 
 	bool quit = false;
 	function<void(int)> observer = [&](int id)
@@ -184,7 +182,9 @@ void GuiDemo::runDemo()
 
 	currentWidgetGroup = mainWidgetGroup;
 
-	util::Input::createInstance(window, WIDTH / 2.0, HEIGHT / 2.0);
+	util::Input::createInstance(nullptr, WIDTH / 2.0, HEIGHT / 2.0);
+	util::Input::getInstance()->setWindow(&window);
+
 	shared_ptr<util::Input> input = util::Input::getInstance();
 	input->unlockMouse();
 
@@ -192,42 +192,33 @@ void GuiDemo::runDemo()
 	glm:: mat4 matrix2 = glm::ortho(0.0f, 1200.0f, 0.0f, 600.0f, -1.0f, 1.0f) * matrix;
 	graphics::SpriteBatcher::getInstance().setProjection(matrix2);
 
-	while (!quit && glfwGetKey(window, GLFW_KEY_ESCAPE) !=
-			GLFW_PRESS && glfwWindowShouldClose(window) == 0) {
+	while (!quit && window.isOpen()) {
 
 		fpsManager.frameStart();
-		glfwPollEvents();
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		input->updateValues();
 
-		double y = input->mouseYPosition - HEIGHT;
-		if (y < 0) {
-			y = -y;
-		} else {
-			y = -1;
-		}
+		widget::Mouse::getInstance().update();
+		widget::Mouse::getInstance().draw();
 
-		glm::vec2 mouse = gui::adjustMouse(800, 600, 1200, 600, input->mouseXPosition, y);
+		if (input->escapeKeyPressed)
+			window.close();
 
-//		currentWidgetGroup->mouseMoved(mouse.x, mouse.y);
-//		currentWidgetGroup->update();
-//
-//		if (input->action1Pressed)
-//			currentWidgetGroup->mouseClicked(0, mouse.x, mouse.y);
-//
-//		if (input->keyWasTyped)
-//			currentWidgetGroup->keyTyped(input->keyTyped);
-
+		currentWidgetGroup->update(0.01);
 		currentWidgetGroup->draw();
 
 		graphics::SpriteBatcher::getInstance().draw();
 
 		fpsManager.sync();
-		glfwSwapBuffers(window);
-	}
+		window.display();
 
-	glfwTerminate();
+        sf::Event event;
+		while (window.pollEvent(event))
+			if (event.type == sf::Event::Closed)
+				window.close();
+
+	}
 
 }
 

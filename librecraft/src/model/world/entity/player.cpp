@@ -10,6 +10,8 @@
 #include "../../../graphics/cubeBatcher.h"
 #include "../../../util/voxel.h"
 
+#include "../../../util/soundPlayer.h"
+
 #include "aabb.h"
 
 using namespace std;
@@ -27,7 +29,7 @@ namespace entity {
 // ########################################################
 
 Player::Player()
-		: m_location {0, 0, 0}, m_speed {0, 0, 0}, m_transform {0, 0, 0} {
+	: m_location {0, 0, 0}, m_speed {0, 0, 0}, m_transform {0, 0, 0} {
 }
 
 // ########################################################
@@ -90,7 +92,7 @@ void Player::updateSpeed(float timePassed) {
 
 		// Only jump if the player stands on solid ground.
 		if (collisions.size())
-			m_speed.y = m_jumpSpeed;
+			m_speed.y = m_jumpSpeed * timePassed;
 
 	}
 
@@ -160,13 +162,19 @@ void Player::updateCameraAndTargetCube() {
 		m_lastSelecteCube = selectedCube;
 
 		if (input->action1Pressed) {
-			chunkManager.removeCube(selectedCube.x, selectedCube.y,
-					selectedCube.z);
+			if (chunkManager.getCubeId(selectedCube.x, selectedCube.y,
+					selectedCube.z) != config::cube_data::BED_ROCK) {
+				chunkManager.removeCube(selectedCube.x, selectedCube.y,
+						selectedCube.z);
+				SoundPlayer::getInstance().playSound(
+						config::souds::cubeRemoved);
+			}
 			return;
 		}
 		else if (input->action2Pressed) {
 			chunkManager.setCube(previous.x, previous.y, previous.z,
 					m_cubeUsedForBuilding);
+			SoundPlayer::getInstance().playSound(config::souds::cubeAdded);
 			return;
 		}
 

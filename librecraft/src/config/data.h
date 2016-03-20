@@ -7,6 +7,9 @@
 #include <vector>
 #include <string>
 
+#include <SFML/Window/Keyboard.hpp>
+#include <SFML/Window/Mouse.hpp>
+
 namespace config {
 
 	static std::string dataFolder = "data/";
@@ -32,13 +35,15 @@ namespace config {
 		static constexpr char GRASS = 0;
 		static constexpr char DIRT = 1;
 		static constexpr char ROCK = 2;
-		static constexpr char BRICK_WALL = 3;
+		static constexpr char MORE_ROCK = 3;
+		static constexpr char BRICK_WALL = 4;
+		static constexpr char SAND = 5;
 
-		static constexpr char LAST_CUBE = BRICK_WALL; // Better name needed
 
-		static constexpr char BED_ROCK = 4;
+		static constexpr char LAST_CUBE = SAND; // Better name needed
 
-		static constexpr char SELECTED = 5;
+		static constexpr char BED_ROCK = 6;
+		static constexpr char SELECTED = 7;
 
 		// Used for looping over all types, except for air.
 		static constexpr char LAST_BLOCK = SELECTED;
@@ -48,8 +53,9 @@ namespace config {
 		static constexpr int BOTTOM_TEXTURE = 2;
 
 		// 0 = Side, 1 = Top, 2 = Bottom
-		static constexpr char BLOCK_TEXTURES[6][3] { { 0, 1, 2 }, { 2, 2, 2 },
-				{ 3, 3, 3 }, { 4, 4, 4 }, { 5, 5, 5 }, { 6, 6, 6 } };
+		static constexpr char BLOCK_TEXTURES[8][3] { { 0, 1, 2 }, { 2, 2, 2 },
+				{ 3, 3, 3 }, { 4, 4, 4 }, { 5, 5, 5 }, { 6, 6, 6 },
+				{ 7, 7, 7 }, { 8, 8, 8 } };
 
 		static constexpr int TEXTURE_WIDTH = 32;
 		static constexpr int TEXTURE_HEIGHT = 32;
@@ -59,7 +65,10 @@ namespace config {
 			"../resources/cubes/grass_top.png",
 			"../resources/cubes/dirt.png",
 			"../resources/cubes/rock.png",
+			"../resources/cubes/more_rock.png",
 			"../resources/cubes/brick.png",
+			"../resources/cubes/sand.png",
+
 			"../resources/cubes/bedrock.png",
 			"../resources/cubes/selected.png",
 		};
@@ -69,7 +78,9 @@ namespace config {
 			"../resources/cubes/grass_side.png",
 			"../resources/cubes/dirt.png",
 			"../resources/cubes/rock.png",
+			"../resources/cubes/more_rock.png",
 			"../resources/cubes/brick.png",
+			"../resources/cubes/sand.png",
 		};
 
 	}
@@ -89,22 +100,21 @@ namespace config {
 	namespace input_data {
 		// Keyboard #####################################################
 
-		static int moveForwardButton = GLFW_KEY_W;
-		static int moveLeftButton = GLFW_KEY_A;
-		static int moveRightButton = GLFW_KEY_D;
-		static int moveBackwardButton = GLFW_KEY_S;
+		static sf::Keyboard::Key moveForwardButton = sf::Keyboard::W;
+		static sf::Keyboard::Key moveLeftButton = sf::Keyboard::A;
+		static sf::Keyboard::Key moveRightButton = sf::Keyboard::D;
+		static sf::Keyboard::Key moveBackwardButton = sf::Keyboard::S;
 
-		static int jumpButton = GLFW_KEY_SPACE;
-		static int goDownButton = GLFW_KEY_LEFT_SHIFT;
+		static sf::Keyboard::Key jumpButton = sf::Keyboard::Space;
+		static sf::Keyboard::Key goDownButton = sf::Keyboard::LShift;
 
-		static int eraseTextButton = GLFW_KEY_BACKSPACE;
+		static sf::Keyboard::Key eraseTextButton = sf::Keyboard::BackSpace;
 
-		static int switchBuildingCube = GLFW_KEY_E;
+		static sf::Keyboard::Key switchBuildingCube = sf::Keyboard::E;
 
 		// Mouse ########################################################
-
-		static int action1Button = GLFW_MOUSE_BUTTON_LEFT;
-		static int action2Button = GLFW_MOUSE_BUTTON_RIGHT;
+		static sf::Mouse::Button action1Button = sf::Mouse::Left;
+		static sf::Mouse::Button action2Button = sf::Mouse::Right;
 
 		extern float mouseSensitivityX;
 		extern float mouseSensitivityY;
@@ -144,13 +154,31 @@ namespace config {
 	}
 
 	namespace cube_map_data {
-		static std::vector<std::string> cubeMap1 { "../resources/skybox/right.jpg",
-				"../resources/skybox/left.jpg", "../resources/skybox/top.jpg",
-				"../resources/skybox/bottom.jpg", "../resources/skybox/back.jpg",
-				"../resources/skybox/front.jpg" };
+		static std::vector<std::string> cubeMap1 {
+			"../resources/skybox/right.jpg",
+			"../resources/skybox/left.jpg",
+			"../resources/skybox/top.jpg",
+			"../resources/skybox/bottom.jpg",
+			"../resources/skybox/back.jpg",
+			"../resources/skybox/front.jpg"
+		};
 
 		static constexpr int cubeMap1Width = 2048;
 		static constexpr int cubeMap1Height = 2048;
+	}
+
+	namespace souds {
+		static const std::string buttonPressed =
+				"../resources/sound/button.wav";
+		static const std::string cubeAdded =
+				"../resources/sound/cube_place.wav";
+		static const std::string cubeRemoved =
+				"../resources/sound/cube_remove.wav";
+	}
+
+	namespace music {
+		static const std::string menuMusic =
+				"../resources/music/menuMusic.ogg";
 	}
 
 }

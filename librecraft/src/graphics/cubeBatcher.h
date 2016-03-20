@@ -22,9 +22,7 @@ private:
 
 	CubeBatcher();
 
-	virtual ~CubeBatcher() {
-	}
-	;
+	virtual ~CubeBatcher() { };
 
 	CubeBatcher(CubeBatcher const&) = delete;
 

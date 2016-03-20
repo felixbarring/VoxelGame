@@ -2,8 +2,6 @@
 #include "arrayTextureDemo.h"
 
 #include <GL/glew.h>
-#include <GLFW/glfw3.h>
-#include <SOIL.h>
 
 #include <map>
 #include <iostream>
@@ -17,6 +15,11 @@
 #include "../graphics/texture/textureArray.h"
 
 #include "../util/fpsManager.h"
+#include "../util/input.h"
+
+#include <SFML/Window.hpp>
+#include <SFML/OpenGL.hpp>
+#include <SFML/Graphics.hpp>
 
 namespace demo
 {
@@ -31,31 +34,32 @@ namespace demo
 
 void ArrayTextureDemo::runDemo()
 {
-
 	util::FPSManager fpsManager(60);
-	const GLuint WIDTH = 800, HEIGHT = 600;
 
-	if (!glfwInit()) {
-		std::cout << "Failed to initialize GLFW\n";
-	}
-	glfwWindowHint(GLFW_SAMPLES, 8);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+	int WIDTH = 800;
+	int HEIGHT = 600;
 
-	GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "Array Texture Demo", nullptr, nullptr);
-	if (window == nullptr) {
-		std::cout << "Failed to open GLFW window.\n";
-		glfwTerminate();
-	}
-	glfwMakeContextCurrent(window);
-	glfwSwapInterval(-1);
+	util::Input::createInstance(nullptr, WIDTH / 2.0, HEIGHT / 2.0);
+
+	config::graphics_data::windowWidth = WIDTH;
+	config::graphics_data::windowHeight = HEIGHT;
+
+    // create the window
+	sf::ContextSettings settings;
+	settings.depthBits = 24;
+	settings.stencilBits = 8;
+	settings.antialiasingLevel = 4;
+	settings.majorVersion = 3;
+	settings.minorVersion = 1;
+
+	sf::Window window(sf::VideoMode(800, 600), "Array Texture Demo",
+			sf::Style::Default, settings);
+
+	util::Input::getInstance()->setWindow(&window);
 
 	glewExperimental = true;
-	if (glewInit() != GLEW_OK) {
+	if (glewInit() != GLEW_OK)
 		std::cout << "Failed to initialize GLEW\n";
-	}
 
 	glViewport(0, 0, WIDTH, HEIGHT);
 	glClearColor(0.2f, 0.22f, 0.2f, 1.0f);
@@ -94,7 +98,6 @@ void ArrayTextureDemo::runDemo()
 	graphics::ShaderProgram program(vertex, frag, attributesMap);
 
 	std::vector<GLfloat> vertices = {
-
 		-0.3f, 0.0f, 0.0f,
 		-0.1f, 0.0f, 0.0f,
 		-0.1f, 0.2f, 0.0f,
@@ -109,7 +112,6 @@ void ArrayTextureDemo::runDemo()
 		0.5f, 0.0f, 0.0f,
 		0.5f, 0.2f, 0.0f,
 		0.3f, 0.2f, 0.0f
-
 	};
 
 	std::vector<GLfloat> texCoords = {
@@ -143,13 +145,15 @@ void ArrayTextureDemo::runDemo()
 
 	mesh::MeshElement mesh{vertices, 3, texCoords, 3, indices};
 
-	texture::TextureArray texture{config::cube_data::textures, config::cube_data::TEXTURE_WIDTH, config::cube_data::TEXTURE_HEIGHT};
+	texture::TextureArray texture{
+		config::cube_data::textures,
+		config::cube_data::TEXTURE_WIDTH,
+		config::cube_data::TEXTURE_HEIGHT};
 
-	while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0)	{
+	while (window.isOpen()) {
 
 		fpsManager.frameStart();
 
-		glfwPollEvents();
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		program.bind();
@@ -161,9 +165,14 @@ void ArrayTextureDemo::runDemo()
 		mesh.draw();
 
 		fpsManager.sync();
-		glfwSwapBuffers(window);
+		window.display();
+
+        sf::Event event;
+		while (window.pollEvent(event))
+			if (event.type == sf::Event::Closed)
+				window.close();
+
 	}
-	glfwTerminate();
 
 }
 

@@ -782,7 +782,6 @@ void Chunk::dePropagateLight(int x, int y, int z, int _lightValue) {
 				) {
 
 			m_rightNeighbor->dePropagateLight(0, y, z);
-			cout << "Depropagating in neighobr chunk \n";
 		}
 		else
 			m_rightNeighbor->propagateLight(0, y, z);
@@ -810,7 +809,6 @@ void Chunk::dePropagateLight(int x, int y, int z, int _lightValue) {
 					) {
 
 			m_leftNeighbor->dePropagateLight(m_width - 1, y, z);
-			cout << "Depropagating in neighobr chunk \n";
 		}
 		else
 			m_leftNeighbor->propagateLight(m_width - 1, y, z);
@@ -867,7 +865,6 @@ void Chunk::dePropagateLight(int x, int y, int z, int _lightValue) {
 					) {
 
 			m_backNeighbor->dePropagateLight(x, y, 0);
-			cout << "Depropagating in neighobr chunk \n";
 		}
 		else
 			m_rightNeighbor->propagateLight(x, y, 0);
@@ -894,7 +891,6 @@ void Chunk::dePropagateLight(int x, int y, int z, int _lightValue) {
 					) {
 
 			m_frontNeighbor->dePropagateLight(x, y, m_depth - 1);
-			cout << "Depropagating in neighobr chunk \n";
 		}
 		else
 			m_frontNeighbor->propagateLight(x, y, m_depth - 1);
@@ -937,6 +933,12 @@ bool Chunk::isInDirectSunlight(int x, int y, int z) {
 		return getVoxel(x, y + 1, z).lightValue == m_directSunlight;
 
 	return false;
+}
+
+bool Chunk::containsOnlyAir(int region)
+{
+//	for (int i = region * )
+	return true;
 }
 
 }

@@ -2,8 +2,6 @@
 #include "textureDemo.h"
 
 #include <GL/glew.h>
-#include <GLFW/glfw3.h>
-#include <SOIL.h>
 
 #include <map>
 
@@ -20,6 +18,10 @@
 #include "../config/data.h"
 
 #include "../util/fpsManager.h"
+
+#include <SFML/Window.hpp>
+
+using namespace sf;
 
 namespace demo
 {
@@ -38,41 +40,37 @@ void TextureDemo::runDemo()
 	util::FPSManager fpsManager(60);
 	const GLuint WIDTH = 800, HEIGHT = 600;
 
-	if (!glfwInit()) {
-		std::cout << "Failed to initialize GLFW\n";
-	}
-	glfwWindowHint(GLFW_SAMPLES, 8);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+	config::graphics_data::windowWidth = WIDTH;
+	config::graphics_data::windowHeight = HEIGHT;
 
-	GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "Texture Demo", nullptr, nullptr);
-	if (window == nullptr) {
-		std::cout << "Failed to open GLFW window.\n";
-		glfwTerminate();
-	}
-	glfwMakeContextCurrent(window);
-	glfwSwapInterval(-1);
+	// create the window
+	ContextSettings settings;
+	settings.depthBits = 24;
+	settings.stencilBits = 8;
+	settings.antialiasingLevel = 4;
+	settings.majorVersion = 3;
+	settings.minorVersion = 1;
+
+	Window window(VideoMode(800, 600), "Voxel Game", Style::Default,
+			settings);
 
 	glewExperimental = true;
-	if (glewInit() != GLEW_OK) {
+	if (glewInit() != GLEW_OK)
 		std::cout << "Failed to initialize GLEW\n";
-	}
 
 	glViewport(0, 0, WIDTH, HEIGHT);
 	glClearColor(0.2f, 0.22f, 0.2f, 1.0f);
 
 	const char *vertex =
 		"#version 330 core \n"
-		"in vec3 positionIn; \n"
+		"in vec2 positionIn; \n"
 		"in vec2 texCoordIn; \n"
 
 		"out vec2 texCoord; \n"
 
 		"void main() \n"
 		"{ \n"
-		"  gl_Position = vec4(positionIn, 1.0f); \n"
+		"  gl_Position = vec4(positionIn, 0.0f, 1.0f); \n"
 		"  texCoord = vec2(texCoordIn.x, 1.0 - texCoordIn.y); \n"
 		"} \n";
 
@@ -97,16 +95,16 @@ void TextureDemo::runDemo()
 	graphics::ShaderProgram program(vertex, frag, attributesMap);
 
 	std::vector<GLfloat> vertices = {
-		0.4f, 0.4f, 0.0f,
-		0.4f, -0.4f, 0.0f,
-		-0.4f, -0.4f, 0.0f,
-		-0.4f, 0.4f, 0.0f
+		-0.4f, -0.4f,
+		0.4f, -0.4f,
+		0.4f, 0.4f,
+		-0.4f, 0.4f,
 	};
 
 	std::vector<GLfloat> texCoords = {
-		1.0f, 1.0f,
-		1.0f, 0.0f,
 		0.0f, 0.0f,
+		1.0f, 0.0f,
+		1.0f, 1.0f,
 		0.0f, 1.0f
 	};
 
@@ -115,14 +113,13 @@ void TextureDemo::runDemo()
 		1, 2, 3
 	};
 
-	mesh::MeshElement mesh{vertices, 3, texCoords, 2, indices};
+	mesh::MeshElement mesh{vertices, 2, texCoords, 2, indices};
 	texture::Texture texture(config::texture_paths::scout.c_str());
 
-	while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0)	{
+	while (window.isOpen())	{
 
 		fpsManager.frameStart();
 
-		glfwPollEvents();
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		program.bind();
@@ -134,9 +131,14 @@ void TextureDemo::runDemo()
 		mesh.draw();
 
 		fpsManager.sync();
-		glfwSwapBuffers(window);
+		window.display();
+
+        sf::Event event;
+		while (window.pollEvent(event))
+			if (event.type == sf::Event::Closed)
+				window.close();
+
 	}
-	glfwTerminate();
 
 }
 
