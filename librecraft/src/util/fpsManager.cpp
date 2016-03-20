@@ -2,7 +2,6 @@
 
 #include <iostream>
 
-#include <glfw3.h>
 #include <chrono>
 #include <thread>
 

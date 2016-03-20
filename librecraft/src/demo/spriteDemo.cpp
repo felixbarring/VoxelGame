@@ -6,7 +6,6 @@
 #include <memory>
 
 #include <GL/glew.h>
-#include <GLFW/glfw3.h>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -26,6 +25,10 @@
 #include "../config/data.h"
 #include "../graphics/resources.h"
 
+#include <SFML/Window.hpp>
+
+using namespace sf;
+
 namespace demo {
 
 // ########################################################
@@ -42,22 +45,19 @@ void SpriteDemo::runDemo()
 	util::FPSManager fpsManager(60);
 	const GLuint WIDTH = 800, HEIGHT = 600;
 
-	if (!glfwInit()) {
-		std::cout << "Failed to initialize GLFW\n";
-	}
-	glfwWindowHint(GLFW_SAMPLES, 8);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+	config::graphics_data::windowWidth = WIDTH;
+	config::graphics_data::windowHeight = HEIGHT;
 
-	GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "Sprite Demo", nullptr, nullptr);
-	if (window == nullptr) {
-		std::cout << "Failed to open GLFW window.\n";
-		glfwTerminate();
-	}
-	glfwMakeContextCurrent(window);
-	glfwSwapInterval(-1);
+	// create the window
+	ContextSettings settings;
+	settings.depthBits = 24;
+	settings.stencilBits = 8;
+	settings.antialiasingLevel = 4;
+	settings.majorVersion = 3;
+	settings.minorVersion = 1;
+
+	Window window(VideoMode(800, 600), "Voxel Game", Style::Default,
+			settings);
 
 	glewExperimental = true;
 	if (glewInit() != GLEW_OK) {
@@ -67,15 +67,20 @@ void SpriteDemo::runDemo()
 	glViewport(0, 0, WIDTH, HEIGHT);
 	glClearColor(0.2f, 0.22f, 0.2f, 1.0f);
 
-	std::shared_ptr<graphics::Sprite> sprite(new graphics::Sprite{200, 200, 0, 200, 200, graphics::Resources::getInstance().getTexture(config::texture_paths::scout)});
-	std::shared_ptr<graphics::Sprite> sprite2(new graphics::Sprite{300, 300, 0, 200, 200, graphics::Resources::getInstance().getTexture(config::texture_paths::scout)});
-	std::shared_ptr<graphics::Sprite> sprite3(new graphics::Sprite{600, 200, 0, 200, 200, graphics::Resources::getInstance().getTexture(config::texture_paths::scout)});
+	std::shared_ptr<graphics::Sprite> sprite(new graphics::Sprite{
+		200, 200, 0, 200, 200, graphics::Resources::getInstance().getTexture(
+				config::texture_paths::scout)});
+	std::shared_ptr<graphics::Sprite> sprite2(new graphics::Sprite{
+		300, 300, 0, 200, 200, graphics::Resources::getInstance().getTexture(
+				config::texture_paths::scout)});
+	std::shared_ptr<graphics::Sprite> sprite3(new graphics::Sprite{
+		600, 200, 0, 200, 200, graphics::Resources::getInstance().getTexture(
+				config::texture_paths::scout)});
 
-	while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(window) == 0)	{
+	while (window.isOpen())	{
 
 		fpsManager.frameStart();
 
-		glfwPollEvents();
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		graphics::SpriteBatcher::getInstance().addBatch(sprite);
@@ -85,9 +90,13 @@ void SpriteDemo::runDemo()
 		graphics::SpriteBatcher::getInstance().draw();
 
 		fpsManager.sync();
-		glfwSwapBuffers(window);
+		window.display();
+
+        sf::Event event;
+		while (window.pollEvent(event))
+			if (event.type == sf::Event::Closed)
+				window.close();
 	}
-	glfwTerminate();
 
 }
 

@@ -54,7 +54,6 @@ void CubeDemo::runDemo()
 
 	sf::Window window(sf::VideoMode(800, 600), "Cube Demo",
 			sf::Style::Default, settings);
-	window.setMouseCursorVisible(false);
 
 	util::Input::getInstance()->setWindow(&window);
 
@@ -91,7 +90,6 @@ void CubeDemo::runDemo()
 
 		fpsManager.frameStart();
 
-		glfwPollEvents();
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		transform1.rotateX(0.1);
@@ -117,7 +115,6 @@ void CubeDemo::runDemo()
 				window.close();
 
 	}
-	glfwTerminate();
 
 }
 

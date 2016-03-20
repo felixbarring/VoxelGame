@@ -54,7 +54,6 @@ void ArrayTextureDemo::runDemo()
 
 	sf::Window window(sf::VideoMode(800, 600), "Array Texture Demo",
 			sf::Style::Default, settings);
-	window.setMouseCursorVisible(false);
 
 	util::Input::getInstance()->setWindow(&window);
 

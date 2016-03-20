@@ -24,10 +24,7 @@
 #include "util/soundPlayer.h"
 
 #include <SFML/Audio.hpp>
-
 #include <SFML/Window.hpp>
-#include <SFML/OpenGL.hpp>
-#include <SFML/Graphics.hpp>
 
 using namespace std;
 

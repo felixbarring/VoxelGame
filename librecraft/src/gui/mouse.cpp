@@ -1,6 +1,7 @@
 #include "mouse.h"
 
 #include <glm.hpp>
+#include <iostream>
 
 #include "../graphics/resources.h"
 #include "../util/input.h"
@@ -9,6 +10,8 @@
 
 using namespace std;
 using namespace graphics;
+
+// TODO Change namespace to gui
 
 namespace widget {
 
@@ -36,13 +39,18 @@ void Mouse::update() {
 	else
 		y = -1;
 
-	glm::vec2 mouse = gui::adjustMouse(config::graphics_data::virtualWidth,
+	glm::vec2 mouse = gui::adjustMouse(
+			config::graphics_data::virtualWidth,
 			config::graphics_data::virtualHeight,
 			config::graphics_data::windowWidth,
 			config::graphics_data::windowHeight, m_input->mouseXPosition, y);
 
 	m_input->mouseVirtualAdjustedX = mouse.x;
 	m_input->mouseVirtualAdjustedY = mouse.y;
+
+	std::cout << m_input->mouseVirtualAdjustedX << "\n";
+	std::cout << m_input->mouseVirtualAdjustedY << "\n";
+
 
 	m_sprite->setLocation(mouse.x + m_width / 2, mouse.y - m_height / 2, 0);
 }
