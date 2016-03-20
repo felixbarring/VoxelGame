@@ -83,11 +83,9 @@ void CubeDemo::runDemo()
 
 	graphics::Camera::getInstance().setViewMatrix(camera);
 
-
 	float xAmount = 0;
 
 	while (window.isOpen())	{
-
 		fpsManager.frameStart();
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -113,7 +111,6 @@ void CubeDemo::runDemo()
 		while (window.pollEvent(event))
 			if (event.type == sf::Event::Closed)
 				window.close();
-
 	}
 
 }

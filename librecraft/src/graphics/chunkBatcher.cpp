@@ -64,7 +64,6 @@ ChunkBatcher::ChunkBatcher()
 			"out vec4 color; \n"
 
 			"uniform vec3 lightDirection; \n"
-			//"uniform vec3 lightDirection = vec3(1.0, 3.0, 0.3); \n"
 
             "uniform vec3 diffuseLight = vec3(0.5, 0.5, 0.5); \n"
             "uniform vec3 materialDiffuse = vec3(0.5, 0.5, 0.5); \n"
@@ -124,11 +123,10 @@ void ChunkBatcher::draw() {
 	program->setUniformli("texture1", 0);
 	texture.bind();
 
-
-	if (x > 5 || x < - 5)
-		direction = -direction;
-
-	x += 0.1 * direction;
+//	if (x > 5 || x < - 5)
+//		direction = -direction;
+//
+//	x += 0.1 * direction;
 
 	program->setUniform3f("lightDirection", x, 3.0, 0.3);
 

@@ -84,7 +84,7 @@ void Game::run() {
 
 		m_currentState->update(fpsManager.frameTime());
 
-		cout << fpsManager.getFps() << "\n";
+//		cout << fpsManager.getFps() << "\n";
 
 		fpsManager.sync();
         window.display();

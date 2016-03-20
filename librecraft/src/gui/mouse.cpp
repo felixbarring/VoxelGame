@@ -48,10 +48,6 @@ void Mouse::update() {
 	m_input->mouseVirtualAdjustedX = mouse.x;
 	m_input->mouseVirtualAdjustedY = mouse.y;
 
-	std::cout << m_input->mouseVirtualAdjustedX << "\n";
-	std::cout << m_input->mouseVirtualAdjustedY << "\n";
-
-
 	m_sprite->setLocation(mouse.x + m_width / 2, mouse.y - m_height / 2, 0);
 }
 
