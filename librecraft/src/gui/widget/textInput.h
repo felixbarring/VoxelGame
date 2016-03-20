@@ -20,9 +20,7 @@ public:
 
 	TextInput(int id, int x, int y, unsigned width, int height, int layer = 0);
 
-	virtual ~TextInput() {
-	}
-	;
+	virtual ~TextInput() { };
 
 // ########################################################
 // Member Functions########################################
@@ -47,7 +45,7 @@ private:
 	std::string m_input {""};
 	unsigned m_maxInputLength;
 
-	float m_eraseDelay {0.2f};
+	float m_eraseDelay {0.1f};
 	float m_accumulatedEraseTime {0.0f};
 
 	std::shared_ptr<graphics::Sprite> m_sprite;

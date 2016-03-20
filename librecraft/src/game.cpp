@@ -39,7 +39,7 @@ using namespace std;
 void Game::run() {
 
 //	util::SoundPlayer::getInstance().playMusic(config::music::menuMusic);
-	util::FPSManager fpsManager(1000); // config::graphics_data::fps);
+	util::FPSManager fpsManager(config::graphics_data::fps);
 
 	int WIDTH = 800;
 	int HEIGHT = 600;
@@ -84,15 +84,9 @@ void Game::run() {
 
 		m_currentState->update(fpsManager.frameTime());
 
-//		cout << fpsManager.getFps() << "\n";
-
 		fpsManager.sync();
         window.display();
 
-        sf::Event event;
-		while (window.pollEvent(event))
-			if (event.type == sf::Event::Closed)
-				window.close();
     }
 
 }

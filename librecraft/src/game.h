@@ -46,13 +46,11 @@ public:
 // ########################################################
 
 private:
-
 	std::shared_ptr<IGameState> m_mainMenu;
 	std::shared_ptr<IGameState> m_inGame;
 	std::shared_ptr<IGameState> m_currentState;
 
 	bool m_quit = false;
-
 };
 
 #endif /* SRC_GAME_H_ */

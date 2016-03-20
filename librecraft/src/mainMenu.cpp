@@ -6,6 +6,7 @@
 
 #include "config/data.h"
 #include "gui/mouse.h"
+#include "gui/terminal.h"
 #include "util/worldMeta.h"
 
 using namespace std;
@@ -317,6 +318,11 @@ void MainMenu::update(float timePassed) {
 
 	m_title->draw();
 	m_activeWidgetGroup->draw();
+
+	vector<string> lol;
+	gui::Terminal terminal{lol};
+//	terminal.update(timePassed);
+//	terminal.draw();
 
 	graphics::SpriteBatcher::getInstance().draw();
 }

@@ -1,5 +1,7 @@
+
 #include "input.h"
 
+#include <SFML/Window.hpp>
 #include <iostream>
 
 #include "../config/data.h"
@@ -10,20 +12,6 @@ namespace util {
 
 static double mouseXOffset;
 static double mouseYOffset;
-
-static bool wasTyped = false;
-static double typed = ' ';
-
-static void cursor_position_callback(GLFWwindow* window, double xpos,
-		double ypos) {
-	mouseXOffset = xpos;
-	mouseYOffset = ypos;
-}
-
-static void character_callback(GLFWwindow* window, unsigned int codepoint) {
-	wasTyped = true;
-	typed = codepoint;
-}
 
 // ########################################################
 // Constructor/Destructor #################################
@@ -95,9 +83,19 @@ void Input::updateValues() {
 		mouseYPosition = vec.y;
 	}
 
-	keyWasTyped = wasTyped;
-	wasTyped = false;
-	keyTyped = typed;
+	keyWasTyped = false;
+
+    sf::Event event;
+	while (m_window->pollEvent(event))
+		if (event.type == sf::Event::Closed)
+			m_window->close();
+		else if (event.type == sf::Event::TextEntered) {
+			char c = static_cast<char>(event.text.unicode);
+			if (('a' <= c && c <= 'z') || ('0' <= c && c <= '9')) {
+				keyWasTyped = true;
+				keyTyped = static_cast<char>(event.text.unicode);
+			}
+		}
 }
 
 void Input::centerMouse() {
@@ -116,7 +114,7 @@ void Input::unlockMouse() {
 	mouseLocked = false;
 }
 
-void Input::setWindow(const sf::Window *window) {
+void Input::setWindow(sf::Window *window) {
 	m_window = window;
 }
 

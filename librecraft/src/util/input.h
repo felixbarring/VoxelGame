@@ -38,7 +38,7 @@ public:
 
 	void unlockMouse();
 
-	void setWindow(const sf::Window *window);
+	void setWindow(sf::Window *window);
 
 // ########################################################
 // Implementation #########################################
@@ -99,7 +99,7 @@ private:
 
 	bool mouseLocked {true};
 
-	const sf::Window *m_window;
+	sf::Window *m_window;
 };
 
 static std::shared_ptr<Input> input;

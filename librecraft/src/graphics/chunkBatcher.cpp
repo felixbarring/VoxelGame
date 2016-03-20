@@ -144,7 +144,6 @@ void ChunkBatcher::draw() {
 		program->setUniformMatrix4f("modelViewProjection", modelViewProjection);
 		program->setUniformMatrix4f("modelView", modelView);
 
-
 		b->draw();
 	}
 
