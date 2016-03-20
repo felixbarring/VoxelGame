@@ -25,17 +25,17 @@ TextInput::TextInput(int id, int x, int y, unsigned width, int height,
 
 	Resources &res = Resources::getInstance();
 
-	m_sprite.reset(
-			new Sprite {x, y, 0, width, height, res.getTexture(
+	m_sprite.reset(new Sprite {x, y, 0, width, height, res.getTexture(
 					config::gui_data::solidBlack)});
 
 	FontMeshBuilder &fontMeshBuilder = res.getFontMeshBuilder(
-			config::font_data::fontLayout, config::font_data::fontAtlasWidth,
+			config::font_data::fontLayout,
+			config::font_data::fontAtlasWidth,
 			config::font_data::fontAtlasHeight);
 
-	m_text.reset(
-			new Sprite {x, y + 5, 1, fontMeshBuilder.buldMeshForString(m_input,
-					height - 5), res.getTexture(config::font_data::font)});
+	m_text.reset(new Sprite {x, y + 5, 1,
+		fontMeshBuilder.buldMeshForString(m_input, height - 5),
+		res.getTexture(config::font_data::font)});
 
 }
 
@@ -70,19 +70,25 @@ void TextInput::draw() {
 
 void TextInput::update(float timePassed) {
 	shared_ptr<Input> input = Input::getInstance();
-	m_hasFocus = isInsideBorders(input->mouseVirtualAdjustedX,
-			input->mouseVirtualAdjustedY);
+
+	// TODO Assumes that action1Pressed is mouse 1, maybe fix dis?
+	if (input->action1Pressed)
+		m_hasFocus = isInsideBorders(
+				input->mouseVirtualAdjustedX,
+				input->mouseVirtualAdjustedY);
 
 	Resources &res = Resources::getInstance();
 	// Need a better way to handle resources
 	FontMeshBuilder &fontMeshBuilder = res.getFontMeshBuilder(
-			config::font_data::fontLayout, config::font_data::fontAtlasWidth,
+			config::font_data::fontLayout,
+			config::font_data::fontAtlasWidth,
 			config::font_data::fontAtlasHeight);
 
 	if (input->keyWasTyped && m_hasFocus) {
 		m_input.push_back(input->keyTyped);
-		if (fontMeshBuilder.lenghtOfString(m_input, m_height)
-				> m_maxInputLength) {
+
+		if (fontMeshBuilder.lenghtOfString(m_input, m_height) >
+				m_maxInputLength) {
 			m_input.pop_back();
 			return;
 		}
@@ -104,8 +110,7 @@ void TextInput::update(float timePassed) {
 			m_accumulatedEraseTime = 0.0;
 
 			m_input.pop_back();
-			m_text.reset(
-					new Sprite(m_xCoordinate, m_yCoordinate + 5, 1,
+			m_text.reset(new Sprite(m_xCoordinate, m_yCoordinate + 5, 1,
 							fontMeshBuilder.buldMeshForString(m_input,
 									m_height - 5),
 							res.getTexture(config::font_data::font)));
