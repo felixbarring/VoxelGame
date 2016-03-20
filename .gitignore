@@ -28,7 +28,6 @@
 *.app
 
 # Directories
-resources/
 doxygen/
 Eclipse/
 librecraft/resources
