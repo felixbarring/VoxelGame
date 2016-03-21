@@ -1,0 +1,6 @@
+{
+  "name": "Voxelgame",
+  "tagline": "",
+  "body": "\r\n#Voxel Game\r\n\r\nA project about creating a voxel based game.\r\nThe game currently uses the working title \"Librecraft\".\r\n\r\n## Building\r\n\r\nCurrently only tested on my Ubuntu machine.\r\nInstructions for Windows and Fedora will likely come sometime in the future.\r\n\r\nCmake and SFML needs to be installed.\r\n\r\nInstructions on how to build on Ubuntu:\r\n\r\n```\r\nsudo apt-get install cmake make g++ libsfml-dev\r\ngit clone --recursive https://github.com/felixbarring/VoxelGame\r\ncd VoxelGame/scripts\r\nbash setupBuild.sh\t\r\nbash build.sh\r\n```",
+  "note": "Don't delete this file! It's used internally to help with page regeneration."
+}
