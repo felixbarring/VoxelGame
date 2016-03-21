@@ -1,6 +1,11 @@
 #ifndef SRC_GUI_WIDGET_TEXTAREA_H_
 #define SRC_GUI_WIDGET_TEXTAREA_H_
 
+#include <memory>
+#include <string>
+#include <vector>
+
+#include "../../graphics/sprite.h"
 #include "abstractWidget.h"
 
 namespace widget {
@@ -14,9 +19,7 @@ public:
 
 	TextArea(int id, int x, int y, int width, int height);
 
-	virtual ~TextArea() {
-	}
-	;
+	virtual ~TextArea() { };
 
 // ########################################################
 // Member Functions########################################
@@ -26,9 +29,16 @@ public:
 
 	void update(float timePassed) override;
 
+	void add(std::string str);
+
 // ########################################################
 // Implementation #########################################
 // ########################################################
+
+private:
+
+	std::vector<std::string> m_rows;
+	std::vector<std::shared_ptr<graphics::Sprite>> m_sprites;
 
 };
 

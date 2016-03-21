@@ -91,7 +91,7 @@ void Input::updateValues() {
 			m_window->close();
 		else if (event.type == sf::Event::TextEntered) {
 			char c = static_cast<char>(event.text.unicode);
-			if (('a' <= c && c <= 'z') || ('0' <= c && c <= '9')) {
+			if (('a' <= c && c <= 'z') || ('0' <= c && c <= '9') || c == ' ') {
 				keyWasTyped = true;
 				keyTyped = static_cast<char>(event.text.unicode);
 			}

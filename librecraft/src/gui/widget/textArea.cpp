@@ -15,6 +15,7 @@ TextArea::TextArea(int id, int x, int y, int width, int height)
 // ########################################################
 
 void TextArea::draw() {
+
 }
 
 void TextArea::update(float timePassed) {
