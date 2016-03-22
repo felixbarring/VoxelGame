@@ -32,6 +32,10 @@ public:
 
 	/**
 	 *  \brief Makes the Widget draw itself
+	 *
+	 *  To actually render the sprite batcher's draw function
+	 *  should be called.
+	 *
 	 */
 	virtual void draw() = 0;
 
@@ -41,12 +45,13 @@ public:
 	virtual int getId() = 0;
 
 	/**
-	 * \brief If the Widget needs to be updated each frame, it should implement this method
+	 * \brief If the Widget needs to be updated each frame, it should implement
+	 * 	this method
 	 */
 	virtual void update(float timePassed) = 0;
 
 	/**
-	 * Set the position of the widget, relative to the container it's inside.
+	 * \brief Set the absolute position of the widget
 	 *
 	 * \param[in] x The new horizontal location
 	 * \param[in] y The new vertical location

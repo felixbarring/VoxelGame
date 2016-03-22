@@ -320,7 +320,7 @@ void MainMenu::update(float timePassed) {
 	m_activeWidgetGroup->draw();
 
 	vector<string> lol;
-	static gui::Terminal terminal{lol};
+	static gui::Terminal terminal{lol, [this](string command) {}};
 	terminal.update(timePassed);
 	terminal.draw();
 
