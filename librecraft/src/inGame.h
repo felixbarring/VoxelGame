@@ -17,6 +17,7 @@
 #include "graphics/cubeMap.h"
 #include "graphics/resources.h"
 #include "graphics/sprite.h"
+#include "gui/terminal.h"
 
 class InGame: public IGameState {
 public:
@@ -27,9 +28,7 @@ public:
 
 	InGame(Game *game, std::string name);
 
-	virtual ~InGame() {
-	}
-	;
+	virtual ~InGame() { };
 
 // ########################################################
 // Member Functions########################################
@@ -44,10 +43,14 @@ public:
 private:
 
 	enum class GameState {
-		NoOverlay, OverlayMenu,
+		NoOverlay,
+		OverlayMenu,
+		Terminal
 	};
 
 	GameState m_state = GameState::NoOverlay;
+
+	std::shared_ptr<gui::Terminal> m_terminal;
 
 	glm::mat4 m_virtualProjection;
 

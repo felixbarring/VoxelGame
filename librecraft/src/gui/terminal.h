@@ -14,7 +14,6 @@ namespace gui {
 
 class Terminal {
 public:
-
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
@@ -22,7 +21,7 @@ public:
 	Terminal(std::vector<std::string> commands,
 			std::function<void(std::string)> commandListener);
 
-	virtual ~Terminal() {};
+	virtual ~Terminal() {}
 
 // ########################################################
 // Member Functions########################################
@@ -45,7 +44,6 @@ private:
 
 	std::vector<std::string> m_commands;
 	std::shared_ptr<widget::WidgetGroup> m_widgets;
-
 };
 
 } /* namespace widget */

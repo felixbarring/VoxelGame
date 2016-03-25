@@ -81,6 +81,8 @@ public:
 
 	bool escapeKeyPressed {false};
 
+	bool openTerminalPressed {false};
+
 	bool eraseTextPressed {false};
 	bool eraseTextActive {false};
 

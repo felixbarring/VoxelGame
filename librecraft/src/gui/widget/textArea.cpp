@@ -14,7 +14,8 @@ namespace widget {
 
 TextArea::TextArea(int id, int x, int y, int width, int height,
 		std::function<void(int)> observer, int layer)
-		: AbstractWidget(id, x, y, width, height) {
+		: AbstractWidget(id, x, y, width, height),
+		  m_layer{layer}{
 	this->m_observer = observer;
 	auto &res = Resources::getInstance();
 
@@ -46,9 +47,13 @@ void TextArea::add(string str) {
 }
 
 void TextArea::addLine(string str) {
+	if (str.empty())
+		return;
+
 	auto &res = Resources::getInstance();
 	FontMeshBuilder &fontMeshBuilder = res.getFontMeshBuilder(
-				config::font_data::fontLayout, config::font_data::fontAtlasWidth,
+				config::font_data::fontLayout,
+				config::font_data::fontAtlasWidth,
 				config::font_data::fontAtlasHeight);
 
 	m_rows.push_back(str);
@@ -60,7 +65,8 @@ void TextArea::addLine(string str) {
 	}
 
 	m_sprites.push_back(make_shared<Sprite>(m_xCoordinate,
-			m_yCoordinate + m_height - (m_rows.size()) * m_fontHeight, 5 + 1,
+			m_yCoordinate + m_height - (m_rows.size()) * m_fontHeight,
+			m_layer + 1,
 			fontMeshBuilder.buldMeshForString(str, m_fontHeight),
 			res.getTexture(config::font_data::font)));
 }

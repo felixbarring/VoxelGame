@@ -17,6 +17,7 @@
 #include "gui/widget/widgetGroup.h"
 #include "gui/widget/selectableList.h"
 #include "gui/guiUtil.h"
+#include "gui/terminal.h"
 
 class MainMenu: public IGameState {
 public:
@@ -27,9 +28,7 @@ public:
 
 	MainMenu(Game *game);
 
-	virtual ~MainMenu() {
-	}
-	;
+	virtual ~MainMenu() { };
 
 // ########################################################
 // Member Functions########################################
@@ -46,6 +45,9 @@ private:
 	std::string randomName();
 
 	Game *m_game;
+
+	bool m_terminalOpen {false};
+	std::shared_ptr<gui::Terminal> m_terminal;
 
 	glm::mat4 m_virtualProjection;
 

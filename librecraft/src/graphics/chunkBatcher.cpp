@@ -119,6 +119,9 @@ int direction = 1;
 void ChunkBatcher::draw() {
 	program->bind();
 
+	glEnable (GL_CULL_FACE);
+	glEnable(GL_DEPTH_TEST);
+
 	glActiveTexture(GL_TEXTURE0);
 	program->setUniformli("texture1", 0);
 	texture.bind();

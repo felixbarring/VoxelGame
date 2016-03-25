@@ -112,6 +112,8 @@ namespace config {
 
 		static sf::Keyboard::Key switchBuildingCube = sf::Keyboard::E;
 
+		static sf::Keyboard::Key openTerminal = sf::Keyboard::T;
+
 		// Mouse ########################################################
 		static sf::Mouse::Button action1Button = sf::Mouse::Left;
 		static sf::Mouse::Button action2Button = sf::Mouse::Right;

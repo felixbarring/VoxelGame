@@ -26,24 +26,28 @@ Terminal::Terminal(vector<string> commands,
 	{
 		switch (id)
 		{
-		case 0:
+		case 2: {
 			m_textArea->addLine(m_textInput->getString());
 			m_commandListener.operator ()(m_textInput->getString());
 			m_textInput->setString("");
-		case 1:
+			break;
+		}
+		case 3: {
 			m_commandListener.operator ()("CLOSE");
+			break;
+		}
 		}
 	};
 
 	m_widgets = make_shared<WidgetGroup>(0, 100, 100, 600, 400, observer, 5);
-	m_textInput = make_shared<TextInput>(1, 110, 110, 430, 30);
+	m_textInput = make_shared<TextInput>(1, 110, 110, 430, 30, 6);
 	m_widgets->addWidget(m_textInput);
 	m_widgets->addWidget(make_shared<Button>(
-			0, 545, 110, 70, 30, observer, "Enter", 6));
+			2, 545, 110, 70, 30, observer, "Enter", 6));
 	m_widgets->addWidget(make_shared<Button>(
-			1, 545 + 75, 110, 70, 30, observer, "Close", 6));
+			3, 545 + 75, 110, 70, 30, observer, "Close", 6));
 
-	m_textArea = make_shared<TextArea>(0, 110, 150, 580, 340, observer, 6);
+	m_textArea = make_shared<TextArea>(0, 110, 150, 580, 340, observer, 7);
 	m_textArea->addLine("Hello World");
 	m_widgets->addWidget(m_textArea);
 }

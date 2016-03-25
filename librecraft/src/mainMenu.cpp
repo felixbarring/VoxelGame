@@ -35,7 +35,6 @@ MainMenu::MainMenu(Game *game)
 
 	// TODO Use constants for each ID.
 	// TODO use better names for the widgets variables.
-
 	bool quit = false;
 	function<void(int)> observer = [&, game](int id)
 	{
@@ -300,6 +299,16 @@ MainMenu::MainMenu(Game *game)
 	// ########################################################################
 
 	m_activeWidgetGroup = m_mainWidgetGroup;
+
+	vector<string> lol;
+	auto func = [this](string command)
+				{
+					cout << command << "\n";
+					if (command == "CLOSE")
+						m_terminalOpen = false;
+				};
+
+	m_terminal = make_shared<gui::Terminal>(lol, func);
 }
 
 // ########################################################
@@ -309,6 +318,9 @@ MainMenu::MainMenu(Game *game)
 void MainMenu::update(float timePassed) {
 	shared_ptr<util::Input> input = util::Input::getInstance();
 
+	if (input->openTerminalPressed)
+		m_terminalOpen = true;
+
 	Mouse::getInstance().unlock();
 	input->updateValues();
 	Mouse::getInstance().update();
@@ -316,13 +328,14 @@ void MainMenu::update(float timePassed) {
 
 	m_activeWidgetGroup->update(timePassed);
 
-	m_title->draw();
-	m_activeWidgetGroup->draw();
 
-	vector<string> lol;
-	static gui::Terminal terminal{lol, [this](string command) {}};
-	terminal.update(timePassed);
-	terminal.draw();
+	if (m_terminalOpen) {
+		m_terminal->update(timePassed);
+		m_terminal->draw();
+	} else {
+		m_title->draw();
+		m_activeWidgetGroup->draw();
+	}
 
 	graphics::SpriteBatcher::getInstance().draw();
 }

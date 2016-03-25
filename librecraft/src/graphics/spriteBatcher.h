@@ -14,7 +14,6 @@
 namespace graphics {
 
 class SpriteBatcher {
-public:
 
 // ########################################################
 // Constructor/Destructor #################################
@@ -22,9 +21,7 @@ public:
 
 	SpriteBatcher();
 
-	virtual ~SpriteBatcher() {
-	}
-	;
+	virtual ~SpriteBatcher() { };
 
 	SpriteBatcher(SpriteBatcher const&) = delete;
 
@@ -48,7 +45,7 @@ public:
 	void setProjection(glm::mat4 projection);
 
 // ########################################################
-// Instance Variables #####################################
+// Implementation #########################################
 // ########################################################
 
 private:

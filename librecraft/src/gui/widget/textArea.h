@@ -57,6 +57,8 @@ private:
 
 	const unsigned m_fontHeight {20};
 
+	int m_layer;
+
 	std::function<void(int)> m_observer;
 
 	std::shared_ptr<graphics::Sprite> m_textArea;

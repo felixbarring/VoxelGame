@@ -7,6 +7,7 @@
 
 #include "config/data.h"
 #include "gui/mouse.h"
+#include "gui/terminal.h"
 #include "util/fpsManager.h"
 
 using namespace std;
@@ -44,7 +45,7 @@ InGame::InGame(Game *game, string name)
 
 	m_player.setLocation(80.1, 25.1, 80.1);
 
-	std::function<void(int)> observer = [&, game](int id)
+	auto observer = [this, game](int id)
 	{
 		switch(id) {
 			case 0: {
@@ -82,6 +83,15 @@ InGame::InGame(Game *game, string name)
 								config::cube_data::thumbnails[i]))));
 	}
 
+	vector<string> lol;
+	std::function<void(string)> func = [this](string command)
+				{
+					if (command == "CLOSE")
+						m_state = GameState::NoOverlay;
+ 				};
+
+	m_terminal = make_shared<gui::Terminal>(lol, func);
+
 }
 
 // ########################################################
@@ -92,6 +102,9 @@ void InGame::update(float timePassed) {
 
 	auto input = Input::getInstance();
 	auto &mouse = Mouse::getInstance();
+
+	if (input->openTerminalPressed)
+		m_state = GameState::Terminal;
 
 	if (input->escapeKeyPressed)
 		m_state = GameState::OverlayMenu;
@@ -144,7 +157,6 @@ void InGame::update(float timePassed) {
 		SpriteBatcher::getInstance().addBatch(
 				m_selectedCubeThumbnails[m_player.getBuildingCube()]);
 
-
 	} else {
 		mouse.unlock();
 		input->updateValues();
@@ -152,18 +164,16 @@ void InGame::update(float timePassed) {
 		mouse.draw();
 	}
 
-	glDisable (GL_DEPTH_TEST);
+//	glDisable (GL_DEPTH_TEST);
+//	skybox.render();
 
-	//skybox.render();
-
-	if (m_state == GameState::OverlayMenu) {
+	if (m_state == GameState::Terminal) {
+		m_terminal->update(timePassed);
+		m_terminal->draw();
+	} else 	if (m_state == GameState::OverlayMenu) {
 		m_widgetGroup1->update(timePassed);
 		m_widgetGroup1->draw();
 	}
-
-	// TODO Should be in the batchers?!?
-	glEnable (GL_CULL_FACE);
-	glEnable(GL_DEPTH_TEST);
 
 	ChunkBatcher::getInstance().draw();
 	CubeBatcher::getInstance().draw();
