@@ -60,8 +60,8 @@ void TextArea::addLine(string str) {
 
 	int y = m_yCoordinate + m_height - (m_rows.size()) * m_fontHeight;
 	if (y < m_yCoordinate) {
-		// TODO Scroll Down :-)
-		return;
+		for (auto sprite : m_sprites)
+			sprite->move(0, m_fontHeight);
 	}
 
 	m_sprites.push_back(make_shared<Sprite>(m_xCoordinate,

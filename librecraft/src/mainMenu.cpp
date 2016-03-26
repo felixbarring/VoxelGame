@@ -303,7 +303,6 @@ MainMenu::MainMenu(Game *game)
 	vector<string> lol;
 	auto func = [this](string command)
 				{
-					cout << command << "\n";
 					if (command == "CLOSE")
 						m_terminalOpen = false;
 				};

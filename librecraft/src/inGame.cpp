@@ -86,8 +86,10 @@ InGame::InGame(Game *game, string name)
 	vector<string> lol;
 	std::function<void(string)> func = [this](string command)
 				{
-					if (command == "CLOSE")
+					if (command == "CLOSE") {
+						Input::getInstance()->centerMouse();
 						m_state = GameState::NoOverlay;
+					}
  				};
 
 	m_terminal = make_shared<gui::Terminal>(lol, func);

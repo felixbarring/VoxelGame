@@ -10,9 +10,6 @@ using namespace config::input_data;
 
 namespace util {
 
-static double mouseXOffset;
-static double mouseYOffset;
-
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
@@ -41,19 +38,27 @@ void Input::updateValues() {
 	mouseYMovement = 0.0;
 
 	// Keyboard
-	moveForwardPressed = sf::Keyboard::isKeyPressed(moveForwardButton) && !moveForwardActive;
-	moveLeftPressed = sf::Keyboard::isKeyPressed(moveLeftButton) && !moveLeftActive;
-	moveRightPressed = sf::Keyboard::isKeyPressed(moveRightButton) && !moveRightActive;
-	moveBackwardPressed = sf::Keyboard::isKeyPressed(moveBackwardButton) && !moveBackwardActive;
+	moveForwardPressed = sf::Keyboard::isKeyPressed(moveForwardButton)
+		&& !moveForwardActive;
+	moveLeftPressed = sf::Keyboard::isKeyPressed(moveLeftButton)
+		&& !moveLeftActive;
+	moveRightPressed = sf::Keyboard::isKeyPressed(moveRightButton)
+		&& !moveRightActive;
+	moveBackwardPressed = sf::Keyboard::isKeyPressed(moveBackwardButton)
+		&& !moveBackwardActive;
 	jumpPressed = sf::Keyboard::isKeyPressed(jumpButton) && !jumpActive;
 	goDownPressed = sf::Keyboard::isKeyPressed(goDownButton) && !goDownActive;
 
-	eraseTextPressed = sf::Keyboard::isKeyPressed(eraseTextButton) && !eraseTextActive;
-	switchCubePressed = sf::Keyboard::isKeyPressed(switchBuildingCube) && !switchCubeActive;
+	eraseTextPressed = sf::Keyboard::isKeyPressed(eraseTextButton)
+		&& !eraseTextActive;
+	switchCubePressed = sf::Keyboard::isKeyPressed(switchBuildingCube)
+		&& !switchCubeActive;
 
 	// Mouse
-	action1Pressed = sf::Mouse::isButtonPressed(action1Button) && !action1Active;
-	action2Pressed = sf::Mouse::isButtonPressed(action2Button) && !action2Active;
+	action1Pressed = sf::Mouse::isButtonPressed(action1Button)
+		&& !action1Active;
+	action2Pressed = sf::Mouse::isButtonPressed(action2Button)
+		&& !action2Active;
 
 	// Keyboard
 	moveForwardActive = sf::Keyboard::isKeyPressed(moveForwardButton);
@@ -75,6 +80,10 @@ void Input::updateValues() {
 	escapeKeyPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Escape);
 
 	if (mouseLocked) {
+		auto ve = sf::Mouse::getPosition(*m_window);
+		double mouseXOffset = ve.x;
+		double mouseYOffset = ve.y;
+
 		mouseXMovement = screenCenterX - mouseXOffset;
 		mouseYMovement = screenCenterY - mouseYOffset;
 		centerMouse();
@@ -88,7 +97,7 @@ void Input::updateValues() {
 	keyWasTyped = false;
 
     sf::Event event;
-	while (m_window->pollEvent(event))
+	while (m_window->pollEvent(event)) {
 		if (event.type == sf::Event::Closed)
 			m_window->close();
 		else if (event.type == sf::Event::TextEntered) {
@@ -100,12 +109,10 @@ void Input::updateValues() {
 				keyTyped = static_cast<char>(event.text.unicode);
 			}
 		}
+	}
 }
 
 void Input::centerMouse() {
-	auto ve = sf::Mouse::getPosition(*m_window);
-	mouseXOffset = ve.x;
-	mouseYOffset = ve.y;
 	sf::Vector2<int> vec(screenCenterX, screenCenterY);
 	sf::Mouse::setPosition(vec, *m_window);
 }
