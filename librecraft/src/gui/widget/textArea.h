@@ -3,7 +3,7 @@
 
 #include <memory>
 #include <string>
-#include <vector>
+#include <list>
 
 #include "../../graphics/sprite.h"
 #include "abstractWidget.h"
@@ -54,7 +54,6 @@ public:
 // ########################################################
 
 private:
-
 	const unsigned m_fontHeight {20};
 
 	int m_layer;
@@ -62,8 +61,7 @@ private:
 	std::function<void(int)> m_observer;
 
 	std::shared_ptr<graphics::Sprite> m_textArea;
-	std::vector<std::string> m_rows;
-	std::vector<std::shared_ptr<graphics::Sprite>> m_sprites;
+	std::list<std::pair<std::string, std::shared_ptr<graphics::Sprite>>> m_rows;
 
 };
 

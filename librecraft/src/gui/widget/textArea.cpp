@@ -30,11 +30,10 @@ TextArea::TextArea(int id, int x, int y, int width, int height,
 
 void TextArea::draw() {
 	SpriteBatcher &spriteBatcher(SpriteBatcher::getInstance());
-
 	spriteBatcher.addBatch(m_textArea);
 
-	for (auto s : m_sprites)
-		spriteBatcher.addBatch(s);
+	for (auto &s : m_rows)
+		spriteBatcher.addBatch(s.second);
 
 }
 
@@ -56,19 +55,20 @@ void TextArea::addLine(string str) {
 				config::font_data::fontAtlasWidth,
 				config::font_data::fontAtlasHeight);
 
-	m_rows.push_back(str);
+	int y = m_yCoordinate + m_height - (m_rows.size() + 1) * m_fontHeight;
 
-	int y = m_yCoordinate + m_height - (m_rows.size()) * m_fontHeight;
-	if (y < m_yCoordinate) {
-		for (auto sprite : m_sprites)
-			sprite->move(0, m_fontHeight);
-	}
-
-	m_sprites.push_back(make_shared<Sprite>(m_xCoordinate,
-			m_yCoordinate + m_height - (m_rows.size()) * m_fontHeight,
-			m_layer + 1,
+	m_rows.push_back(std::pair<string, shared_ptr<Sprite>>(
+			str,
+			make_shared<Sprite>(m_xCoordinate,
+			y, m_layer + 1,
 			fontMeshBuilder.buldMeshForString(str, m_fontHeight),
-			res.getTexture(config::font_data::font)));
+			res.getTexture(config::font_data::font))));
+
+	if (y < m_yCoordinate) {
+		m_rows.pop_front();
+		for (auto sprite : m_rows)
+			sprite.second->move(0, m_fontHeight);
+	}
 }
 
 } /* namespace widget */
