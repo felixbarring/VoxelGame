@@ -270,14 +270,14 @@ MainMenu::MainMenu(Game *game)
 
 	shared_ptr<IWidget> label17(
 			new Label {270, 390, 150, 50, " - Load World - "});
-	shared_ptr<IWidget> button19(new Button {18, 225, 70, 80, 30, observer,
+	shared_ptr<IWidget> button19(new Button {18, 225, 60, 80, 30, observer,
 			"Rename", 1});
-	shared_ptr<IWidget> button20(new Button {19, 315, 70, 80, 30, observer,
+	shared_ptr<IWidget> button20(new Button {19, 315, 60, 80, 30, observer,
 			"Delete", 1});
 
-	shared_ptr<IWidget> button21(new Button {20, 405, 70, 80, 30, observer,
+	shared_ptr<IWidget> button21(new Button {20, 405, 60, 80, 30, observer,
 			"Load", 1});
-	shared_ptr<IWidget> button22(new Button {21, 495, 70, 80, 30, observer,
+	shared_ptr<IWidget> button22(new Button {21, 495, 60, 80, 30, observer,
 			"Cancel", 1});
 
 	m_loadWorldWidgetGroup.reset(

@@ -52,7 +52,15 @@ public:
 	float lenghtOfString(const std::string &str, int height);
 
 	/**
+	 * \brief
 	 *
+	 * @param str The string that will be checked onW
+	 * @param height The height of the string's char's. Used to compute the
+	 *        lenght
+	 * @param maxLength The lenght that the string should not be bigger than
+	 * @return The position in the string at where the string should be
+	 * 	       split in order to not go outside maxLength. Returns -1 if
+	 * 	       no split is necessary
 	 */
 	int splitStringAt(const std::string &str, int height, float maxLength);
 

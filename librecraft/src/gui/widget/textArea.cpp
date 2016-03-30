@@ -42,6 +42,17 @@ void TextArea::update(float timePassed) {
 }
 
 void TextArea::add(string str) {
+	auto &res = Resources::getInstance();
+	FontMeshBuilder &fontMeshBuilder = res.getFontMeshBuilder(
+				config::font_data::fontLayout,
+				config::font_data::fontAtlasWidth,
+				config::font_data::fontAtlasHeight);
+
+	if (m_rows.size()) {
+		str = m_rows.back().first + str;
+		m_rows.pop_back();
+	}
+	addLine(str);
 
 }
 
@@ -57,6 +68,14 @@ void TextArea::addLine(string str) {
 
 	int y = m_yCoordinate + m_height - (m_rows.size() + 1) * m_fontHeight;
 
+
+	int split = fontMeshBuilder.splitStringAt(str, m_fontHeight, m_width);
+	string cutOff;
+	if (split != -1) {
+		cutOff = str.substr(split, str.size() - 1);
+		str = str.substr(0, split);
+	}
+
 	m_rows.push_back(std::pair<string, shared_ptr<Sprite>>(
 			str,
 			make_shared<Sprite>(m_xCoordinate,
@@ -69,6 +88,10 @@ void TextArea::addLine(string str) {
 		for (auto sprite : m_rows)
 			sprite.second->move(0, m_fontHeight);
 	}
+
+	if (!cutOff.empty())
+		addLine(cutOff);
+
 }
 
 } /* namespace widget */

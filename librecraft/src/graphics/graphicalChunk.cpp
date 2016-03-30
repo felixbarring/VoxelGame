@@ -597,7 +597,7 @@ void GraphicalChunk::createMeshData(
 	}
 }
 
-int AOFactor = 1.5;
+int AOFactor = 1;
 
 void GraphicalChunk::doAORight(CubeFaceData &cf, int x, int y, int z,
 		std::vector<std::vector<std::vector<CubeFaceData>>> &faceData) {

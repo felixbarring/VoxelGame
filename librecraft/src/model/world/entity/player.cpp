@@ -92,7 +92,7 @@ void Player::updateSpeed(float timePassed) {
 
 		// Only jump if the player stands on solid ground.
 		if (collisions.size())
-			m_speed.y = m_jumpSpeed * timePassed;
+			m_speed.y = m_jumpSpeed;
 
 	}
 

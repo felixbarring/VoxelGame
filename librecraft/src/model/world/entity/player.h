@@ -24,9 +24,7 @@ public:
 
 	Player();
 
-	virtual ~Player() {
-	}
-	;
+	virtual ~Player() {};
 
 // ########################################################
 // Member Functions########################################
@@ -60,8 +58,8 @@ private:
 	float m_width {1};
 	float m_height {1};
 	float m_depth {1};
-	float m_gravity {0.3};
-	float m_jumpSpeed {7};
+	float m_gravity {0.2};
+	float m_jumpSpeed {0.1};
 	int m_selectCubeDistance {5};
 	glm::vec3 m_speed;
 	glm::vec3 m_lastSelecteCube;

@@ -27,7 +27,7 @@ Terminal::Terminal(vector<string> commands,
 		switch (id)
 		{
 		case 2: {
-			m_textArea->addLine(m_textInput->getString());
+			m_textArea->add(m_textInput->getString());
 			m_commandListener.operator ()(m_textInput->getString());
 			m_textInput->setString("");
 			break;
