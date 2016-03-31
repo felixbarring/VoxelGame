@@ -38,7 +38,7 @@ void TextArea::draw() {
 }
 
 void TextArea::update(float timePassed) {
-
+	// Nothing to do yet
 }
 
 void TextArea::add(string str) {
@@ -53,7 +53,6 @@ void TextArea::add(string str) {
 		m_rows.pop_back();
 	}
 	addLine(str);
-
 }
 
 void TextArea::addLine(string str) {

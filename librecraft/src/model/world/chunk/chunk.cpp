@@ -5,6 +5,8 @@
 
 #include "../../../graphics/chunkBatcher.h"
 
+#include <glm/gtc/noise.hpp>
+
 using namespace std;
 using namespace glm;
 
@@ -31,35 +33,46 @@ Chunk::Chunk(int _x, int _z)
 
 	counter++;
 
+	// TODO z and y are used incorrectly
 	for (int x = 0; x < m_width; ++x) {
 		m_vec.push_back(vector<vector<Voxel>>());
-
-		if (counter > maxCount)
-			counter = 0;
-
-		for (int z = 0; z < m_height; ++z) {
+		for (int y = 0; y < m_height; ++y) {
 			m_vec[x].push_back(vector<Voxel>());
-
-			for (int y = 0; y < m_depth; ++y) {
+			for (int z = 0; z < m_depth; ++z) {
 				Voxel v;
 				v.lightValue = 0;
+				v.id = AIR;
+				m_vec[x][y].push_back(v);
+			}
+		}
+	}
 
-				if (z == 0) {
+	for (int x = 0; x < m_width; ++x) {
+		for (int z = 0; z < m_depth; ++z) {
+
+			int lol = 20 + 10 * glm::simplex(glm::vec3(
+					(m_xLocation + x) / 30.f,
+					(m_zLocation + z) / 30.f, 0.5f));
+
+			for (int y = 0; y < m_height; ++y) {
+				if (counter > maxCount)
+					counter = 0;
+
+				Voxel &v = m_vec[x][y][z];
+
+				if (y == 0) {
 					v.id = BED_ROCK;
-					m_vec[x][z].push_back(v);
 					continue;
 				}
-
-				if (z < 20) {
+				if (y < lol) {
 					v.id = counter;
-					m_vec[x][z].push_back(v);
-				} else {
-					v.id = AIR;
-					m_vec[x][z].push_back(v);
 				}
 			}
 		}
 	}
+
+
+
 }
 
 Chunk::Chunk(std::string name, int x, int z)
