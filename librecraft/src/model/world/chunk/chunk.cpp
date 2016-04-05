@@ -33,7 +33,6 @@ Chunk::Chunk(int _x, int _z)
 
 	counter++;
 
-	// TODO z and y are used incorrectly
 	for (int x = 0; x < m_width; ++x) {
 		m_vec.push_back(vector<vector<Voxel>>());
 		for (int y = 0; y < m_height; ++y) {
@@ -50,9 +49,16 @@ Chunk::Chunk(int _x, int _z)
 	for (int x = 0; x < m_width; ++x) {
 		for (int z = 0; z < m_depth; ++z) {
 
-			int lol = 20 + 10 * glm::simplex(glm::vec3(
-					(m_xLocation + x) / 30.f,
-					(m_zLocation + z) / 30.f, 0.5f));
+			int lol = 20 + 20 * glm::simplex(glm::vec3(
+					(m_xLocation + x) / 100.f,
+					(m_zLocation + z) / 100.f, 0.5f));
+
+			int lol2 = 20 + 3 * glm::simplex(glm::vec3(
+								(m_xLocation + x) / 20.f,
+								(m_zLocation + z) / 20.f, 0.5f));
+
+			lol += lol2;
+			lol /= 2;
 
 			for (int y = 0; y < m_height; ++y) {
 				if (counter > maxCount)
@@ -65,7 +71,8 @@ Chunk::Chunk(int _x, int _z)
 					continue;
 				}
 				if (y < lol) {
-					v.id = counter;
+//					v.id = counter;
+					v.id = ROCK;
 				}
 			}
 		}

@@ -29,7 +29,7 @@ namespace entity {
 // ########################################################
 
 Player::Player()
-	: m_location {0, 0, 0}, m_speed {0, 0, 0}, m_transform {0, 0, 0} {
+	: m_location {0, 0, 0}, m_frameSpeed {0, 0, 0}, m_transform {0, 0, 0} {
 }
 
 // ########################################################
@@ -48,8 +48,8 @@ void Player::updateSpeed(float timePassed) {
 	m_viewDirection.changeViewDirection(input->mouseXMovement,
 			input->mouseYMovement);
 
-	m_speed.x = 0;
-	m_speed.z = 0;
+	m_frameSpeed.x = 0;
+	m_frameSpeed.z = 0;
 
 	vec3 movementDirection {0.0f, 0.0f, 0.0f};
 
@@ -78,12 +78,12 @@ void Player::updateSpeed(float timePassed) {
 
 	// Normalize will give nan if the length is 0
 	if (length(movementDirection)) {
-		m_speed.x = normalizedMD.x;
-		m_speed.z = normalizedMD.z;
+		m_frameSpeed.x = normalizedMD.x;
+		m_frameSpeed.z = normalizedMD.z;
 	}
 
 	// Gravity
-	m_speed.y -= m_gravity * timePassed;
+	m_frameSpeed.y -= m_gravity * timePassed;
 
 	// Jump
 	if (input->jumpPressed) {
@@ -92,7 +92,7 @@ void Player::updateSpeed(float timePassed) {
 
 		// Only jump if the player stands on solid ground.
 		if (collisions.size())
-			m_speed.y = m_jumpSpeed;
+			m_frameSpeed.y = m_jumpSpeed;
 
 	}
 
@@ -112,13 +112,11 @@ void Player::updateSpeed(float timePassed) {
 //
 //	m_location += m_speed;
 
-	handlePhysics();
-
 }
 
 void Player::handlePhysics() {
 	vector<pair<float, vec3>> collisions;
-	intersected(m_speed, collisions);
+	intersected(m_frameSpeed, collisions);
 
 	while (collisions.size()) {
 		sort(collisions.begin(), collisions.end(),
@@ -129,14 +127,14 @@ void Player::handlePhysics() {
 
 		if (collisions.size()) {
 			auto c = collisions[0];
-			m_speed += vec3(-c.second.x * m_speed.x, -c.second.y * m_speed.y,
-					-c.second.z * m_speed.z);
+			m_frameSpeed += vec3(-c.second.x * m_frameSpeed.x, -c.second.y * m_frameSpeed.y,
+					-c.second.z * m_frameSpeed.z);
 		}
 		collisions.clear();
-		intersected(m_speed, collisions);
+		intersected(m_frameSpeed, collisions);
 	}
 
-	m_location += m_speed;
+	m_location += m_frameSpeed;
 
 }
 
@@ -234,13 +232,12 @@ void Player::setLocation(float x, float y, float z) {
 	m_location = vec3(x, y, z);
 }
 
-
 vec3 Player::getViewingDirection() {
 	return m_viewDirection.getViewDirection();
-};
+}
 
 glm::vec3 Player::getLastSelectedCube() {
 	return m_lastSelecteCube;
-};
+}
 
 } /* namespace entity */

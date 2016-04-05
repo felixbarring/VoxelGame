@@ -58,13 +58,14 @@ private:
 	float m_width {1};
 	float m_height {1};
 	float m_depth {1};
-	float m_gravity {0.2};
-	float m_jumpSpeed {0.1};
+	float m_gravity {0.4};
+	float m_jumpSpeed {0.15};
 	int m_selectCubeDistance {5};
-	glm::vec3 m_speed;
+	float m_movementSpeed {7};
+
+	glm::vec3 m_frameSpeed;
 	glm::vec3 m_lastSelecteCube;
 	graphics::ViewDirection m_viewDirection;
-	float m_movementSpeed {7};
 	graphics::Transform m_transform;
 	int m_cubeUsedForBuilding {0};
 };
