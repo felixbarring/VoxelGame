@@ -127,7 +127,8 @@ void Player::handlePhysics() {
 
 		if (collisions.size()) {
 			auto c = collisions[0];
-			m_frameSpeed += vec3(-c.second.x * m_frameSpeed.x, -c.second.y * m_frameSpeed.y,
+			m_frameSpeed += vec3(-c.second.x * m_frameSpeed.x,
+					-c.second.y * m_frameSpeed.y,
 					-c.second.z * m_frameSpeed.z);
 		}
 		collisions.clear();

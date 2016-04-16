@@ -24,8 +24,21 @@ public:
 // Constructor/Destructor #################################
 // ########################################################
 
+	/**
+	 * Creates a new chunk
+	 *
+	 * @param x The x coordinate of the chunk
+	 * @param z The z coordinate of the chunk
+	 */
 	Chunk(int x, int z);
 
+	/**
+	 * Creates the chunk from file
+	 *
+	 * @param name The name of the world that the chunk is in
+	 * @param x The x coordinate of the chunk
+	 * @param z The z coordinate of the chunk
+	 */
 	Chunk(std::string name, int x, int z);
 
 	virtual ~Chunk();

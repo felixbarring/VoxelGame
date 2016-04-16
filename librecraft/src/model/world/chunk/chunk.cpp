@@ -5,7 +5,7 @@
 
 #include "../../../graphics/chunkBatcher.h"
 
-#include <glm/gtc/noise.hpp>
+#include "../terrainGen/noiseMixer.h"
 
 using namespace std;
 using namespace glm;
@@ -13,6 +13,8 @@ using namespace glm;
 using namespace graphics;
 using namespace config::cube_data;
 using namespace config::chunk_data;
+using namespace terrainGen;
+
 
 namespace chunk {
 
@@ -46,19 +48,28 @@ Chunk::Chunk(int _x, int _z)
 		}
 	}
 
+	NoiseMixer mixer;
+	mixer.addNoise(100.f, 50.f);
+	mixer.addNoise(50, 10);
+	mixer.addNoise(15, 5);
+
+//	mixer.addNoise(5, 2);
+
 	for (int x = 0; x < m_width; ++x) {
 		for (int z = 0; z < m_depth; ++z) {
 
-			int lol = 20 + 20 * glm::simplex(glm::vec3(
-					(m_xLocation + x) / 100.f,
-					(m_zLocation + z) / 100.f, 0.5f));
-
-			int lol2 = 20 + 3 * glm::simplex(glm::vec3(
-								(m_xLocation + x) / 20.f,
-								(m_zLocation + z) / 20.f, 0.5f));
-
-			lol += lol2;
-			lol /= 2;
+//			int lol = 20 + 20 * glm::simplex(glm::vec3(
+//					(m_xLocation + x) / 100.f,
+//					(m_zLocation + z) / 100.f, 0.5f));
+//
+//			int lol2 = 20 + 3 * glm::simplex(glm::vec3(
+//								(m_xLocation + x) / 20.f,
+//								(m_zLocation + z) / 20.f, 0.5f));
+//
+//			lol += lol2;
+//			lol /= 2;
+			int lol = mixer.computeNoise(m_xLocation + x, m_zLocation + z);
+			cout << lol << "\n";
 
 			for (int y = 0; y < m_height; ++y) {
 				if (counter > maxCount)
@@ -105,13 +116,13 @@ Chunk::Chunk(std::string name, int x, int z)
 	inStream.close();
 
 	int counter = 0;
-	for (int i = 0; i < m_width; i++) {
+	for (int i = 0; i < m_width; ++i) {
 		m_vec.push_back(vector<vector<Voxel>>());
 
-		for (int j = 0; j < m_height; j++) {
+		for (int j = 0; j < m_height; ++j) {
 			m_vec[i].push_back(vector<Voxel>());
 
-			for (int k = 0; k < m_depth; k++) {
+			for (int k = 0; k < m_depth; ++k) {
 				char voxelId = std::stoi(list[counter]);
 				counter++;
 				m_vec[i][j].push_back(Voxel {voxelId, 0});
