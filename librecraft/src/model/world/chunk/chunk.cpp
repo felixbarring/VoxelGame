@@ -49,9 +49,9 @@ Chunk::Chunk(int _x, int _z)
 	}
 
 	NoiseMixer mixer;
-	mixer.addNoise(100.f, 50.f);
-	mixer.addNoise(50, 10);
-	mixer.addNoise(15, 5);
+	mixer.addNoise(100.f, 15.f);
+	mixer.addNoise(50, 5);
+	mixer.addNoise(15, 3);
 
 //	mixer.addNoise(5, 2);
 

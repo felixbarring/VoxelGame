@@ -13,6 +13,7 @@ set (INCLUDE_DIRS
 	include/glm
 	include/glm/gtc
 	include/glm/gtx
+	include/ThreadPool
 )
 
 include_directories(${INCLUDE_DIRS})
@@ -28,7 +29,7 @@ aux_source_directory(src/util SRC_LIST7)
 aux_source_directory(src/config SRC_LIST8)
 aux_source_directory(src/model SRC_LIST9)
 aux_source_directory(src/model/world/chunk SRC_LIST10)
-aux_source_directory(src/model/world/terrainGeneration SRC_LIST11)
+aux_source_directory(src/model/world/terrainGen SRC_LIST11)
 aux_source_directory(src/model/world/entity SRC_LIST12)
 aux_source_directory(src/gui SRC_LIST13)
 aux_source_directory(src/gui/widget SRC_LIST14)
