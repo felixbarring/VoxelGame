@@ -17,11 +17,9 @@ private:
 // Constructor/Destructor #################################
 // ########################################################
 
-	ChunkManager();
+	ChunkManager() {};
 
-	virtual ~ChunkManager() {
-	}
-	;
+	virtual ~ChunkManager() {};
 
 // ########################################################
 // Member Functions########################################
@@ -62,12 +60,15 @@ public:
 
 private:
 
-	std::shared_ptr<Chunk> chunks[config::chunk_data::NUMBER_OF_CHUNKS_X]
-								  [config::chunk_data::NUMBER_OF_CHUNKS_Y]
-								   [config::chunk_data::NUMBER_OF_CHUNKS_Z];
+	std::shared_ptr<Chunk> chunks
+		[config::chunk_data::NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * 2 + 1]
+		[config::chunk_data::NUMBER_OF_CHUNKS_Y]
+		[config::chunk_data::NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * 2 + 1];
 
-	glm::vec3 intersectedCube;
-	glm::vec3 previousCube;
+	glm::vec3 m_center{0, 0, 0};
+
+	glm::vec3 m_intersectedCube;
+	glm::vec3 m_previousCube;
 
 };
 

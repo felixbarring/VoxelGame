@@ -15,7 +15,6 @@ using namespace config::cube_data;
 using namespace config::chunk_data;
 using namespace terrainGen;
 
-
 namespace chunk {
 
 // ########################################################
@@ -33,7 +32,7 @@ Chunk::Chunk(int _x, int _z)
 		dirtyRegions.emplace(i);
 	}
 
-	counter++;
+	++counter;
 
 	for (int x = 0; x < m_width; ++x) {
 		m_vec.push_back(vector<vector<Voxel>>());
@@ -53,23 +52,10 @@ Chunk::Chunk(int _x, int _z)
 	mixer.addNoise(50, 5);
 	mixer.addNoise(15, 3);
 
-//	mixer.addNoise(5, 2);
-
 	for (int x = 0; x < m_width; ++x) {
 		for (int z = 0; z < m_depth; ++z) {
 
-//			int lol = 20 + 20 * glm::simplex(glm::vec3(
-//					(m_xLocation + x) / 100.f,
-//					(m_zLocation + z) / 100.f, 0.5f));
-//
-//			int lol2 = 20 + 3 * glm::simplex(glm::vec3(
-//								(m_xLocation + x) / 20.f,
-//								(m_zLocation + z) / 20.f, 0.5f));
-//
-//			lol += lol2;
-//			lol /= 2;
 			int lol = mixer.computeNoise(m_xLocation + x, m_zLocation + z);
-			cout << lol << "\n";
 
 			for (int y = 0; y < m_height; ++y) {
 				if (counter > maxCount)
@@ -468,7 +454,6 @@ void Chunk::updateLightningCubeAdded(int x, int y, int z) {
 	dePropagateLight(x, y ,z);
 
 	updateDirtyRegions(y);
-//	updateLightning();
 	updateGraphics();
 	updateNeighborGraphics();
 }

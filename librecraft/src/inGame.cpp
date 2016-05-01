@@ -136,8 +136,7 @@ void InGame::update(float timePassed) {
 						fontMeshBuilder.buldMeshForString(derp, 20),
 						res.getTexture(config::font_data::font)));
 
-		m_fps.reset(
-			new Sprite(0, 45, 10,
+		m_fps.reset(new Sprite(0, 45, 10,
 					fontMeshBuilder.buldMeshForString(
 							"FPS: " + to_string(util::FPSManager::getFps()), 20),
 					res.getTexture(config::font_data::font)));

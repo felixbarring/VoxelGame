@@ -17,18 +17,16 @@ namespace chunk {
 // Constructor/Destructor #################################
 // ########################################################
 
-ChunkManager::ChunkManager() {
-
-}
-
 // ########################################################
 // Member Functions########################################
 // ########################################################
 
 void ChunkManager::createNewWorld() {
-	const int xMax = NUMBER_OF_CHUNKS_X;
+	const int xMax = NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER;
+
 	const int yMax = NUMBER_OF_CHUNKS_Y;
-	const int zMax = NUMBER_OF_CHUNKS_Z;
+
+	const int zMax = NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER;
 
 	// Create the Chunks
 	for (int x = 0; x < xMax; ++x) {
@@ -62,15 +60,13 @@ void ChunkManager::createNewWorld() {
 		}
 	}
 
-	//
-
 }
 
 void ChunkManager::loadWorld(std::string& worldName) {
 
-	const int xMax = NUMBER_OF_CHUNKS_X;
+	const int xMax = NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER;
 	const int yMax = NUMBER_OF_CHUNKS_Y;
-	const int zMax = NUMBER_OF_CHUNKS_Z;
+	const int zMax = NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER;
 
 	for (int x = 0; x < xMax; x++) {
 		for (int z = 0; z < zMax; z++) {
@@ -110,9 +106,9 @@ void ChunkManager::loadWorld(std::string& worldName) {
 
 void ChunkManager::saveWorld(std::string& worldName) {
 
-	const int xMax = NUMBER_OF_CHUNKS_X;
+	const int xMax = NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER;
 	const int yMax = NUMBER_OF_CHUNKS_Y;
-	const int zMax = NUMBER_OF_CHUNKS_Z;
+	const int zMax = NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER;
 
 	for (int x = 0; x < xMax; x++) {
 		for (int z = 0; z < zMax; z++) {
@@ -188,23 +184,20 @@ bool ChunkManager::intersectWithSolidCube(vec3 origin, vec3 direction,
 	float yL;
 	float zL;
 
-	if (direction.x == 0) {
+	if (direction.x == 0)
 		xL = 100000000; //signXDirection * std::numeric_limits<float>::infinity();
-	} else {
+	else
 		xL = 1.0 / direction.x;
-	}
 
-	if (direction.y == 0) {
+	if (direction.y == 0)
 		yL = 1000000000; //signYDirection * std::numeric_limits<float>::infinity();
-	} else {
+	else
 		yL = 1.0 / direction.y;
-	}
 
-	if (direction.z == 0) {
+	if (direction.z == 0)
 		zL = 1000000000; //signZDirection * std::numeric_limits<float>::infinity();
-	} else {
+	else
 		zL = 1.0 / direction.z;
-	}
 
 	int currentCubeX = floor(origin.x);
 	int currentCubeY = floor(origin.y);
