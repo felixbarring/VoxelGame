@@ -51,7 +51,7 @@ public:
 
 private:
 
-	util::FPSManager fpsManager{config::graphics_data::fps};
+	util::FPSManager m_fpsManager{config::graphics_data::fps};
 
 	sf::Window *window{};
 

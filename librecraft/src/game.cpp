@@ -28,18 +28,84 @@
 #include "graphics/fontMeshBuilder.h"
 #include "graphics/sprite.h"
 #include "graphics/resources.h"
+#include "util/fpsManager.h"
 
 using graphics::ChunkBatcher;
 using graphics::CubeBatcher;
 using graphics::FontMeshBuilder;
 using graphics::Resources;
 using graphics::Sprite;
+using util::FPSManager;
 
 using namespace std;
 
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
+
+// ########################################################
+// Helper Class ###########################################
+// ########################################################
+
+class LoadingScreen {
+public:
+
+	LoadingScreen(FPSManager &fpsManager, sf::Window *window)
+		: m_fpsManager(fpsManager),
+		  window(window)
+	{
+		auto &res = Resources::getInstance();
+		FontMeshBuilder &fontMeshBuilder = res.getFontMeshBuilder(
+				config::font_data::fontLayout, config::font_data::fontAtlasWidth,
+				config::font_data::fontAtlasHeight);
+
+		sprites.push_back(shared_ptr<Sprite> {new Sprite(300, 300, 10,
+							fontMeshBuilder.buldMeshForString("Loading", 80),
+							res.getTexture(config::font_data::font))});
+		sprites.push_back(shared_ptr<Sprite> {new Sprite(300, 300, 10,
+							fontMeshBuilder.buldMeshForString("Loading.", 80),
+							res.getTexture(config::font_data::font))});
+		sprites.push_back(shared_ptr<Sprite> {new Sprite(300, 300, 10,
+							fontMeshBuilder.buldMeshForString("Loading..", 80),
+							res.getTexture(config::font_data::font))});
+		sprites.push_back(shared_ptr<Sprite> {new Sprite(300, 300, 10,
+							fontMeshBuilder.buldMeshForString("Loading...", 80),
+							res.getTexture(config::font_data::font))});
+	}
+
+	void update()
+	{
+		m_fpsManager.frameStart();
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		if (frameTime > timePerFrame) {
+			frameTime = 0.0;
+			++spriteCounter;
+
+			if (spriteCounter >= sprites.size())
+				spriteCounter = 0;
+		}
+
+		graphics::SpriteBatcher::getInstance().addBatch(sprites[spriteCounter]);
+		graphics::SpriteBatcher::getInstance().draw();
+
+		m_fpsManager.sync();
+		frameTime += m_fpsManager.frameTime();
+		window->display();
+	}
+
+private:
+
+	vector<shared_ptr<Sprite>> sprites {};
+	FPSManager &m_fpsManager;
+	sf::Window *window;
+
+	unsigned spriteCounter{0};
+	double timePerFrame{0.3};
+	double frameTime{0.0};
+
+};
+
 
 // ########################################################
 // Member Functions########################################
@@ -91,12 +157,12 @@ void Game::run() {
     // run the main loop
     while (!m_quit && window->isOpen()) {
 
-		fpsManager.frameStart();
+		m_fpsManager.frameStart();
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		m_currentState->update(fpsManager.frameTime());
+		m_currentState->update(m_fpsManager.frameTime());
 
-		fpsManager.sync();
+		m_fpsManager.sync();
         window->display();
     }
 
@@ -110,56 +176,30 @@ void Game::createNewWorld(string name) {
 			}
 		);
 
-	auto &res = Resources::getInstance();
-	FontMeshBuilder &fontMeshBuilder = res.getFontMeshBuilder(
-			config::font_data::fontLayout, config::font_data::fontAtlasWidth,
-			config::font_data::fontAtlasHeight);
-
-	vector<shared_ptr<Sprite>> sprites {};
-	sprites.push_back(shared_ptr<Sprite> {new Sprite(300, 300, 10,
-						fontMeshBuilder.buldMeshForString("Loading", 80),
-						res.getTexture(config::font_data::font))});
-	sprites.push_back(shared_ptr<Sprite> {new Sprite(300, 300, 10,
-						fontMeshBuilder.buldMeshForString("Loading.", 80),
-						res.getTexture(config::font_data::font))});
-	sprites.push_back(shared_ptr<Sprite> {new Sprite(300, 300, 10,
-						fontMeshBuilder.buldMeshForString("Loading..", 80),
-						res.getTexture(config::font_data::font))});
-	sprites.push_back(shared_ptr<Sprite> {new Sprite(300, 300, 10,
-						fontMeshBuilder.buldMeshForString("Loading...", 80),
-						res.getTexture(config::font_data::font))});
-	unsigned spriteCounter{0};
-	double timePerFrame{0.3};
-	double frameTime{0.0};
+	LoadingScreen loadingScreen(m_fpsManager, window);
 
 	std::chrono::milliseconds span{0};
-	while (future.wait_for(span) != future_status::ready)	{
-		fpsManager.frameStart();
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-		// Draw some loading screen thing here...
-		if (frameTime > timePerFrame) {
-			frameTime = 0.0;
-			++spriteCounter;
-
-			if (spriteCounter >= sprites.size())
-				spriteCounter = 0;
-		}
-
-		graphics::SpriteBatcher::getInstance().addBatch(sprites[spriteCounter]);
-		graphics::SpriteBatcher::getInstance().draw();
-
-		fpsManager.sync();
-		frameTime += fpsManager.frameTime();
-		window->display();
-	}
+	while (future.wait_for(span) != future_status::ready)
+		loadingScreen.update();
 
 	m_currentState = m_inGame;
 }
 
 void Game::loadExistingWorld(string name) {
 	m_inGame.reset(new InGame(this, name));
-	chunk::ChunkManager::getInstance().loadWorld(name);
+
+	auto future = threadPool.enqueue([&name]
+			{
+				chunk::ChunkManager::getInstance().loadWorld(name);
+			}
+		);
+
+	LoadingScreen loadingScreen(m_fpsManager, window);
+
+	std::chrono::milliseconds span{0};
+	while (future.wait_for(span) != future_status::ready)
+		loadingScreen.update();
+
 	m_currentState = m_inGame;
 }
 
