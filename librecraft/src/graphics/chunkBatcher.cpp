@@ -104,7 +104,9 @@ void ChunkBatcher::addBatch(std::shared_ptr<GraphicalChunk> batch) {
 }
 
 void ChunkBatcher::removeBatch(std::shared_ptr<GraphicalChunk> batch) {
-
+	// TODO If this is not done in the main thread -> errors
+	// If it will e done in a nother thread, queue it up
+	// and let the main thread do it when drawing or something
 	for (unsigned i = 0; i < batches.size(); ++i) {
 		if (batches.at(i).get() == batch.get()) {
 			batches.erase(batches.begin() + i);

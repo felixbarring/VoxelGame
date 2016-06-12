@@ -27,11 +27,14 @@
 
 #include "graphics/fontMeshBuilder.h"
 #include "graphics/sprite.h"
+#include "graphics/resources.h"
+
+using graphics::ChunkBatcher;
+using graphics::CubeBatcher;
 using graphics::FontMeshBuilder;
 using graphics::Resources;
 using graphics::Sprite;
 
-#include "graphics/resources.h"
 using namespace std;
 
 // ########################################################
@@ -81,6 +84,9 @@ void Game::run() {
 
 	m_mainMenu.reset(new MainMenu(this));
 	m_currentState = m_mainMenu;
+
+	// Load all graphics batchers some where else !1!
+	ChunkBatcher::getInstance();
 
     // run the main loop
     while (!m_quit && window->isOpen()) {

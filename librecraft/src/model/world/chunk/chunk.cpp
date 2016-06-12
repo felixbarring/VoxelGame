@@ -76,7 +76,6 @@ Chunk::Chunk(int _x, int _z)
 	}
 
 
-
 }
 
 Chunk::Chunk(std::string name, int x, int z)

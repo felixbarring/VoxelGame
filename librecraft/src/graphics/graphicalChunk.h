@@ -159,7 +159,9 @@ private:
 			float& topRight,
 			float& topLeft);
 
+	std::vector<std::vector<std::vector<CubeFaceData>>> m_faceData;
 	std::unique_ptr<mesh::MeshElement> mesh;
+
 	float m_xLocation;
 	float m_yLocation;
 	float m_zLocation;

@@ -52,14 +52,14 @@ void ChunkManager::createNewWorld() {
 				current->setBackNeighbor(back);
 				back->setFrontNeighbor(current);
 			}
-//			current->updateGraphics();
+			current->updateGraphics();
 		}
 	}
 
 	for (int x = 0; x < xMax; ++x) {
 		for (int z = 0; z < zMax; ++z) {
 			chunks[x][0][z]->updateLightning();
-//			chunks[x][0][z]->updateGraphics();
+			chunks[x][0][z]->updateGraphics();
 		}
 	}
 
