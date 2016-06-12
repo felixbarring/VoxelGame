@@ -50,6 +50,20 @@ public:
 
 	void setCube(int x, int y, int z, char id);
 
+	/**
+	 * Sets the center chunk
+	 * If the new center is different from the previous,
+	 * chunks that are no longer in the distance bounds from
+	 * the center chunk will be unloaded and chunks that entered the
+	 * bounds will be loaded.
+	 *
+	 * @param x The x coordinate that will be used to determine the
+	 *          center chunks x location
+	 * @param z The z coordinate that will be used to determine the
+	 *          center chunks z location
+	 */
+	void setCenter(float x, float z);
+
 	// Return all the data instead of querying
 	bool intersectWithSolidCube(glm::vec3 origin, glm::vec3 direction,
 			glm::vec3 &intersected, glm::vec3 &previous, float searchLength);
@@ -60,12 +74,14 @@ public:
 
 private:
 
+	int derp = config::chunk_data::NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * 2 + 1;
+
 	std::shared_ptr<Chunk> chunks
 		[config::chunk_data::NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * 2 + 1]
 		[config::chunk_data::NUMBER_OF_CHUNKS_Y]
 		[config::chunk_data::NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * 2 + 1];
 
-	glm::vec3 m_center{0, 0, 0};
+	glm::vec3 m_center{4, 0, 4};
 
 	glm::vec3 m_intersectedCube;
 	glm::vec3 m_previousCube;

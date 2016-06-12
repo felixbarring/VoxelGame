@@ -24,7 +24,7 @@ namespace config {
 		static constexpr int CHUNK_HEIGHT = 128;
 		static constexpr int CHUNK_DEPTH = 16;
 
-		static constexpr const int NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER = 10;
+		static constexpr const int NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER = 4;
 		static constexpr const int NUMBER_OF_CHUNKS_Y = 1;
 	}
 

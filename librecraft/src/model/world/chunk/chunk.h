@@ -47,6 +47,9 @@ public:
 // Member Functions########################################
 // ########################################################
 
+	int getXLocation() { return m_xLocation; }
+	int getZLocation() { return m_zLocation; }
+
 	Voxel getVoxel(int x, int y, int z);
 
 	char getCubeId(int x, int y, int z);

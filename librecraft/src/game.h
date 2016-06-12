@@ -15,6 +15,10 @@
 #include <memory>
 
 #include "iGameState.h"
+#include "ThreadPool.h"
+
+#include "config/data.h"
+#include "util/fpsManager.h"
 
 class Game {
 public:
@@ -46,11 +50,20 @@ public:
 // ########################################################
 
 private:
-	std::shared_ptr<IGameState> m_mainMenu;
-	std::shared_ptr<IGameState> m_inGame;
-	std::shared_ptr<IGameState> m_currentState;
 
-	bool m_quit = false;
+	util::FPSManager fpsManager{config::graphics_data::fps};
+
+	sf::Window *window{};
+
+	std::shared_ptr<IGameState> m_mainMenu{};
+	std::shared_ptr<IGameState> m_inGame{};
+	std::shared_ptr<IGameState> m_currentState{};
+
+	bool m_changeStateToIngame{false};
+
+	ThreadPool threadPool{8};
+
+	bool m_quit{false};
 };
 
 #endif /* SRC_GAME_H_ */

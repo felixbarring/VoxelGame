@@ -22,16 +22,19 @@ namespace chunk {
 // ########################################################
 
 void ChunkManager::createNewWorld() {
-	const int xMax = NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER;
-
+	const int xMax = NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * 2;
 	const int yMax = NUMBER_OF_CHUNKS_Y;
+	const int zMax = NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * 2;
 
-	const int zMax = NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER;
+	const int xStart = m_center.x -NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER;
+	const int zStart = m_center.z -NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER;
 
 	// Create the Chunks
 	for (int x = 0; x < xMax; ++x) {
 		for (int z = 0; z < zMax; ++z) {
-			chunks[x][0][z].reset(new Chunk {x * CHUNK_WIDTH, z * CHUNK_DEPTH});
+			chunks[x][0][z].reset(new Chunk {
+				(xStart + x) * CHUNK_WIDTH,
+				(zStart + z) * CHUNK_DEPTH});
 		}
 	}
 
@@ -43,27 +46,26 @@ void ChunkManager::createNewWorld() {
 				shared_ptr<Chunk> right = chunks[x + 1][0][z];
 				current->setRightNeighbor(right);
 				right->setLeftNeighbor(current);
-			}
+	 		}
 			if (z != zMax - 1) {
 				shared_ptr<Chunk> back = chunks[x][0][z + 1];
 				current->setBackNeighbor(back);
 				back->setFrontNeighbor(current);
 			}
-			current->updateGraphics();
+//			current->updateGraphics();
 		}
 	}
 
 	for (int x = 0; x < xMax; ++x) {
 		for (int z = 0; z < zMax; ++z) {
 			chunks[x][0][z]->updateLightning();
-			chunks[x][0][z]->updateGraphics();
+//			chunks[x][0][z]->updateGraphics();
 		}
 	}
 
 }
 
 void ChunkManager::loadWorld(std::string& worldName) {
-
 	const int xMax = NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER;
 	const int yMax = NUMBER_OF_CHUNKS_Y;
 	const int zMax = NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER;
@@ -105,7 +107,6 @@ void ChunkManager::loadWorld(std::string& worldName) {
 }
 
 void ChunkManager::saveWorld(std::string& worldName) {
-
 	const int xMax = NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER;
 	const int yMax = NUMBER_OF_CHUNKS_Y;
 	const int zMax = NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER;
@@ -124,15 +125,15 @@ Voxel ChunkManager::getVoxel(int x, int y, int z) {
 	static float yD = 1.0 / CHUNK_HEIGHT;
 	static float zD = 1.0 / CHUNK_DEPTH;
 
-	int chunkX = x * xD;
+	int chunkX = x * xD; // - m_center.x;
 	int chunkY = y * yD;
-	int chunkZ = z * zD;
+	int chunkZ = z * zD; // - m_center.z;
 
 	int localX = x % CHUNK_WIDTH;
 	int localY = y % CHUNK_HEIGHT;
 	int localZ = z % CHUNK_DEPTH;
 
-	return chunks[chunkX][chunkY][chunkZ]->getVoxel(localX, localY, localZ);
+ 	return chunks[chunkX][chunkY][chunkZ]->getVoxel(localX, localY, localZ);
 }
 
 char ChunkManager::getCubeId(int x, int y, int z) {
@@ -157,15 +158,56 @@ void ChunkManager::setCube(int x, int y, int z, char id) {
 	static float yD = 1.0 / CHUNK_HEIGHT;
 	static float zD = 1.0 / CHUNK_DEPTH;
 
-	int chunkX = x * xD;
+	int chunkX = x * xD; // - m_center.x;
 	int chunkY = y * yD;
-	int chunkZ = z * zD;
+	int chunkZ = z * zD; // - m_center.z;
 
 	int localX = x % CHUNK_WIDTH;
 	int localY = y % CHUNK_HEIGHT;
 	int localZ = z % CHUNK_DEPTH;
 
 	chunks[chunkX][chunkY][chunkZ]->setCube(localX, localY, localZ, id);
+}
+
+void ChunkManager::setCenter(float x, float z)
+{
+	float previousX = m_center.x;
+	float previousY = m_center.z;
+
+	// TODO
+	// The assumption is that the difference should not be bigger than one
+	int differenceX = x - previousX;
+	int differencez = z - previousY;
+
+	if (differenceX != 0) {
+
+		int sign = -(differenceX < 0);
+
+		// If the center has moved to the right, then all chunks should
+		// be moved to the left
+		if (differenceX > 0) {
+			// First disconnect all the leftmost chunks
+			for (int i = 0; i < derp; ++i)
+//				chunks[0][0][i]->removeAllNeighbors();
+
+			// Then move all chunks one step to the left
+			for (int i = 0; i < derp - 1; ++i) {
+				for (int j = 0; j < derp; ++j) {
+					chunks[i][0][j] = chunks[i][0][j + 1];
+				}
+			}
+
+			// Create / load new chunks for the right row
+//			for (int i = 0; i < derp; ++i) {
+//				auto chunk = chunks[derp - 1][0][i];
+//				// TODO Check if the chunk exists in file
+//				chunk.reset(new Chunk(chunk->getXLocation() + 1,
+//						chunk->getZLocation()));
+//			}
+		}
+	}
+	m_center.x = x;
+	m_center.z = z;
 }
 
 // Requires that direction is normalized!

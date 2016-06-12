@@ -40,6 +40,9 @@ void Player::update(float timePassed) {
 
 	updateSpeed(timePassed);
 	handlePhysics();
+
+//	chunk::ChunkManager::getInstance().setCenter(m_location.x, m_location.z);
+
 	updateCameraAndTargetCube(); // Updates the camera aswell
 }
 

@@ -11,8 +11,6 @@
 #include <glm/glm.hpp>
 
 #include "util/input.h"
-#include "util/fpsManager.h"
-#include "config/data.h"
 
 #include "graphics/chunkBatcher.h"
 #include "graphics/cubeBatcher.h"
@@ -25,7 +23,15 @@
 
 #include <SFML/Audio.hpp>
 #include <SFML/Window.hpp>
+#include <future>
 
+#include "graphics/fontMeshBuilder.h"
+#include "graphics/sprite.h"
+using graphics::FontMeshBuilder;
+using graphics::Resources;
+using graphics::Sprite;
+
+#include "graphics/resources.h"
 using namespace std;
 
 // ########################################################
@@ -39,7 +45,6 @@ using namespace std;
 void Game::run() {
 
 //	util::SoundPlayer::getInstance().playMusic(config::music::menuMusic);
-	util::FPSManager fpsManager(config::graphics_data::fps);
 
 	int WIDTH = 800;
 	int HEIGHT = 600;
@@ -57,14 +62,15 @@ void Game::run() {
 	settings.majorVersion = 3;
 	settings.minorVersion = 1;
 
-	sf::Window window(sf::VideoMode(800, 600), "Voxel Game",
-			sf::Style::Default, settings);
-	window.setMouseCursorVisible(false);
+	window = new sf::Window{sf::VideoMode(800, 600), "Voxel Game",
+				sf::Style::Default, settings};
+
+	window->setMouseCursorVisible(false);
 
 //	window.setVerticalSyncEnabled(true);
 //	window.setFramerateLimit(300);
 
-	util::Input::getInstance()->setWindow(&window);
+	util::Input::getInstance()->setWindow(window);
 
 	glewExperimental = true;
 	if (glewInit() != GLEW_OK)
@@ -77,7 +83,7 @@ void Game::run() {
 	m_currentState = m_mainMenu;
 
     // run the main loop
-    while (!m_quit && window.isOpen()) {
+    while (!m_quit && window->isOpen()) {
 
 		fpsManager.frameStart();
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -85,15 +91,63 @@ void Game::run() {
 		m_currentState->update(fpsManager.frameTime());
 
 		fpsManager.sync();
-        window.display();
-
+        window->display();
     }
 
 }
 
 void Game::createNewWorld(string name) {
 	m_inGame.reset(new InGame(this, name));
-	chunk::ChunkManager::getInstance().createNewWorld();
+	auto future = threadPool.enqueue([]
+			{
+				chunk::ChunkManager::getInstance().createNewWorld();
+			}
+		);
+
+	auto &res = Resources::getInstance();
+	FontMeshBuilder &fontMeshBuilder = res.getFontMeshBuilder(
+			config::font_data::fontLayout, config::font_data::fontAtlasWidth,
+			config::font_data::fontAtlasHeight);
+
+	vector<shared_ptr<Sprite>> sprites {};
+	sprites.push_back(shared_ptr<Sprite> {new Sprite(300, 300, 10,
+						fontMeshBuilder.buldMeshForString("Loading", 80),
+						res.getTexture(config::font_data::font))});
+	sprites.push_back(shared_ptr<Sprite> {new Sprite(300, 300, 10,
+						fontMeshBuilder.buldMeshForString("Loading.", 80),
+						res.getTexture(config::font_data::font))});
+	sprites.push_back(shared_ptr<Sprite> {new Sprite(300, 300, 10,
+						fontMeshBuilder.buldMeshForString("Loading..", 80),
+						res.getTexture(config::font_data::font))});
+	sprites.push_back(shared_ptr<Sprite> {new Sprite(300, 300, 10,
+						fontMeshBuilder.buldMeshForString("Loading...", 80),
+						res.getTexture(config::font_data::font))});
+	unsigned spriteCounter{0};
+	double timePerFrame{0.3};
+	double frameTime{0.0};
+
+	std::chrono::milliseconds span{0};
+	while (future.wait_for(span) != future_status::ready)	{
+		fpsManager.frameStart();
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		// Draw some loading screen thing here...
+		if (frameTime > timePerFrame) {
+			frameTime = 0.0;
+			++spriteCounter;
+
+			if (spriteCounter >= sprites.size())
+				spriteCounter = 0;
+		}
+
+		graphics::SpriteBatcher::getInstance().addBatch(sprites[spriteCounter]);
+		graphics::SpriteBatcher::getInstance().draw();
+
+		fpsManager.sync();
+		frameTime += fpsManager.frameTime();
+		window->display();
+	}
+
 	m_currentState = m_inGame;
 }
 

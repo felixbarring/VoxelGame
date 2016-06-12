@@ -327,7 +327,6 @@ void MainMenu::update(float timePassed) {
 
 	m_activeWidgetGroup->update(timePassed);
 
-
 	if (m_terminalOpen) {
 		m_terminal->update(timePassed);
 		m_terminal->draw();
