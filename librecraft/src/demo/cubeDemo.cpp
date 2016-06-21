@@ -42,7 +42,7 @@ void CubeDemo::runDemo()
 	int WIDTH = 800;
 	int HEIGHT = 600;
 
-	util::Input::createInstance(nullptr, WIDTH / 2.0, HEIGHT / 2.0);
+	util::Input::createInstance(WIDTH / 2.0, HEIGHT / 2.0);
 
     // create the window
 	sf::ContextSettings settings;

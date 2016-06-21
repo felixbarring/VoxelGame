@@ -48,7 +48,7 @@ void CubeMapDemo::runDemo() {
 	Window window(VideoMode(800, 600), "Voxel Game", Style::Default,
 			settings);
 
-	Input::createInstance(nullptr, WIDTH / 2.0, HEIGHT / 2.0);
+	Input::createInstance(WIDTH / 2.0, HEIGHT / 2.0);
 	Input::getInstance()->setWindow(&window);
 
 	glewExperimental = true;

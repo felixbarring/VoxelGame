@@ -7,7 +7,6 @@
 #include <thread>
 
 #include <GL/glew.h>
-#include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 
 #include "util/input.h"
@@ -118,7 +117,7 @@ void Game::run() {
 	int WIDTH = 800;
 	int HEIGHT = 600;
 
-	util::Input::createInstance(nullptr, WIDTH / 2.0, HEIGHT / 2.0);
+	util::Input::createInstance(WIDTH / 2.0, HEIGHT / 2.0);
 
 	config::graphics_data::windowWidth = WIDTH;
 	config::graphics_data::windowHeight = HEIGHT;

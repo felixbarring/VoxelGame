@@ -2,7 +2,6 @@
 #define SRC_CONFIG_DATA_H_
 
 #include <GL/glew.h>
-#include <GLFW/glfw3.h>
 
 #include <vector>
 #include <string>

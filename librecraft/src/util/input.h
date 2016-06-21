@@ -2,7 +2,6 @@
 #define SRC_UTIL_INPUT_H_
 
 #include <GL/glew.h>
-#include <GLFW/glfw3.h>
 
 #include <memory>
 
@@ -16,13 +15,13 @@ class Input {
 // Constructor/Destructor #################################
 // ########################################################
 
-	Input(GLFWwindow* w, float centerX, float centerY);
+	Input(float centerX, float centerY);
 
 public:
 
 	virtual ~Input() { };
 
-	static void createInstance(GLFWwindow* w, float centerX, float centerY);
+	static void createInstance(float centerX, float centerY);
 
 	static std::shared_ptr<Input> getInstance();
 
@@ -93,8 +92,6 @@ public:
 	char keyTyped {' '};
 
 private:
-
-	GLFWwindow* window;
 
 	float screenCenterX;
 	float screenCenterY;

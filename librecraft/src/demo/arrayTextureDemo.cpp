@@ -39,7 +39,7 @@ void ArrayTextureDemo::runDemo()
 	int WIDTH = 800;
 	int HEIGHT = 600;
 
-	util::Input::createInstance(nullptr, WIDTH / 2.0, HEIGHT / 2.0);
+	util::Input::createInstance(WIDTH / 2.0, HEIGHT / 2.0);
 
 	config::graphics_data::windowWidth = WIDTH;
 	config::graphics_data::windowHeight = HEIGHT;

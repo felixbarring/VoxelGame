@@ -182,7 +182,7 @@ void GuiDemo::runDemo()
 
 	currentWidgetGroup = mainWidgetGroup;
 
-	util::Input::createInstance(nullptr, WIDTH / 2.0, HEIGHT / 2.0);
+	util::Input::createInstance(WIDTH / 2.0, HEIGHT / 2.0);
 	util::Input::getInstance()->setWindow(&window);
 
 	shared_ptr<util::Input> input = util::Input::getInstance();

@@ -14,7 +14,7 @@ namespace util {
 // Constructor/Destructor #################################
 // ########################################################
 
-Input::Input(GLFWwindow* w, float centerX, float centerY)
+Input::Input(float centerX, float centerY)
 	: screenCenterX(centerX),
 	  screenCenterY(centerY)
 		{
@@ -24,8 +24,8 @@ Input::Input(GLFWwindow* w, float centerX, float centerY)
 // Member Functions########################################
 // ########################################################
 
-void Input::createInstance(GLFWwindow* w, float centerX, float centerY) {
-	input.reset(new Input {w, centerX, centerY});
+void Input::createInstance(float centerX, float centerY) {
+	input.reset(new Input {centerX, centerY});
 }
 
 std::shared_ptr<Input> Input::getInstance() {
