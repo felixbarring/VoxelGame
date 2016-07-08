@@ -111,7 +111,6 @@ void Player::updateSpeed(float timePassed) {
 //
 //	m_location += m_speed;
 
-
 	m_frameSpeed.x = m_speed.x * timePassed;
 	m_frameSpeed.y = m_speed.y * timePassed;
 	m_frameSpeed.z = m_speed.z * timePassed;
