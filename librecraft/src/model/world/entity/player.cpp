@@ -28,9 +28,7 @@ namespace entity {
 // Constructor/Destructor #################################
 // ########################################################
 
-Player::Player()
-	: m_location {0, 0, 0}, m_frameSpeed {0, 0, 0}, m_transform {0, 0, 0} {
-}
+Player::Player(){}
 
 // ########################################################
 // Member Functions########################################
@@ -51,19 +49,19 @@ void Player::updateSpeed(float timePassed) {
 	m_viewDirection.changeViewDirection(input->mouseXMovement,
 			input->mouseYMovement);
 
-	m_frameSpeed.x = 0;
-	m_frameSpeed.z = 0;
+	m_speed.x = 0;
+	m_speed.z = 0;
 
 	vec3 movementDirection {0.0f, 0.0f, 0.0f};
 
 	if (input->moveForwardActive || input->moveBackwardActive) {
-		float direction = 1.0f;
+		float directionSign = 1.0f;
 		if (input->moveBackwardActive)
-			direction = -1.0f;
+			directionSign = -1.0f;
 
-		vec3 dummy = m_viewDirection.getViewDirection();
-		dummy.y = 0;
-		movementDirection += direction * dummy;
+		vec3 direction = m_viewDirection.getViewDirection();
+		direction.y = 0;
+		movementDirection += directionSign * direction;
 	}
 
 	if (input->moveRightActive || input->moveLeftActive) {
@@ -76,17 +74,15 @@ void Player::updateSpeed(float timePassed) {
 		movementDirection += direction * dummy;
 	}
 
-	vec3 normalizedMD = m_movementSpeed * timePassed
-			* normalize(movementDirection);
+	vec3 normalizedMD = m_movementSpeed * normalize(movementDirection);
 
 	// Normalize will give nan if the length is 0
 	if (length(movementDirection)) {
-		m_frameSpeed.x = normalizedMD.x;
-		m_frameSpeed.z = normalizedMD.z;
+		m_speed.x = normalizedMD.x;
+		m_speed.z = normalizedMD.z;
 	}
-
 	// Gravity
-	m_frameSpeed.y -= m_gravity * timePassed;
+	m_speed.y -= m_gravity * timePassed;
 
 	// Jump
 	if (input->jumpPressed) {
@@ -95,14 +91,14 @@ void Player::updateSpeed(float timePassed) {
 
 		// Only jump if the player stands on solid ground.
 		if (collisions.size())
-			m_frameSpeed.y = m_jumpSpeed;
-
+			m_speed.y = m_jumpSpeed;
 	}
 
 	if (input->switchCubePressed
 			&& ++m_cubeUsedForBuilding > config::cube_data::LAST_CUBE)
 		m_cubeUsedForBuilding = 0;
 
+	// Gravity off...
 //	 if (input->jumpActive || input->goDownActive) {
 //		 int direction = 1;
 //		 if (input->goDownActive)
@@ -114,6 +110,11 @@ void Player::updateSpeed(float timePassed) {
 //	 }
 //
 //	m_location += m_speed;
+
+
+	m_frameSpeed.x = m_speed.x * timePassed;
+	m_frameSpeed.y = m_speed.y * timePassed;
+	m_frameSpeed.z = m_speed.z * timePassed;
 
 }
 
@@ -130,9 +131,14 @@ void Player::handlePhysics() {
 
 		if (collisions.size()) {
 			auto c = collisions[0];
-			m_frameSpeed += vec3(-c.second.x * m_frameSpeed.x,
+			m_frameSpeed += vec3(
+					-c.second.x * m_frameSpeed.x,
 					-c.second.y * m_frameSpeed.y,
 					-c.second.z * m_frameSpeed.z);
+			m_speed += vec3(
+					-c.second.x * m_speed.x,
+					-c.second.y * m_speed.y,
+					-c.second.z * m_speed.z);
 		}
 		collisions.clear();
 		intersected(m_frameSpeed, collisions);

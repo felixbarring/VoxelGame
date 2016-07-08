@@ -22,14 +22,14 @@ namespace config
 		int windowWidth = 1920;
 		int windowHeight = 1080;
 
-		float fov = 80 * (3.14 /180); // degree to radians
+		float fov = 80 * (3.14 / 180); // degree to radians
 
 	}
 
 	namespace input_data
 	{
-		float mouseSensitivityX {0.001};
-		float mouseSensitivityY {0.001};
+		float mouseSensitivityX{0.001};
+		float mouseSensitivityY{0.001};
 	}
 
 	namespace texture_paths

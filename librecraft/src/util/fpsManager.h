@@ -44,13 +44,13 @@ public:
 // Implementation #########################################
 // ########################################################
 private:
-	int maxFPS;
-	double frameStartTime {0};
-	double timePerFrame;
-	double timeForLatestFrame {1.0};
-	const double mili {0.001};
+	int m_maxFPS{};
+	double m_frameStartTime{0};
+	double m_timePerFrame{};
+	double m_timeForLatestFrame{1.0};
+	const double m_mili{0.001};
 
-	sf::Clock m_clock;
+	sf::Clock m_clock{};
 };
 
 }

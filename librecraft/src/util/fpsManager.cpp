@@ -14,7 +14,7 @@ std::chrono::milliseconds oneMilliSecond(1);
 // ########################################################
 
 FPSManager::FPSManager(int maxFPS)
-	: maxFPS {maxFPS}, timePerFrame {1.0 / maxFPS} {
+	: m_maxFPS {maxFPS}, m_timePerFrame {1.0 / maxFPS} {
 }
 
 // ########################################################
@@ -25,7 +25,7 @@ void FPSManager::frameStart() {
 	m_clock.restart();
 }
 
-int currentFPS {0};
+int currentFPS{0};
 
 void FPSManager::sync() {
 
@@ -37,8 +37,8 @@ void FPSManager::sync() {
 	// The busy waiting is used to increase the timing accuracy, we do not
 	// want to start the next frame to late.
 	double totalFrameTime = m_clock.getElapsedTime().asSeconds();
-	while (totalFrameTime < timePerFrame) {
-		double timeRemainingInMilis = (timePerFrame - totalFrameTime) / mili;
+	while (totalFrameTime < m_timePerFrame) {
+		double timeRemainingInMilis = (m_timePerFrame - totalFrameTime) / m_mili;
 		if (timeRemainingInMilis > 2) {
 			std::this_thread::sleep_for(
 					(timeRemainingInMilis - 1) * oneMilliSecond);
@@ -46,17 +46,17 @@ void FPSManager::sync() {
 		else if (timeRemainingInMilis > 1) {
 			std::this_thread::sleep_for(oneMilliSecond);
 		}
-		totalFrameTime = m_clock.getElapsedTime().asSeconds() - frameStartTime;
+		totalFrameTime = m_clock.getElapsedTime().asSeconds() - m_frameStartTime;
 	}
 
 	currentFPS = 1.0 / totalFrameTime;
-	timeForLatestFrame = totalFrameTime;
+	m_timeForLatestFrame = totalFrameTime;
 
 //	std::cout << currentFPS << "\n";
 }
 
 double FPSManager::frameTime() {
-	return timeForLatestFrame;
+	return m_timeForLatestFrame;
 }
 
 int FPSManager::getFps() {

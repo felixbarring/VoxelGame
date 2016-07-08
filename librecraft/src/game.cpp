@@ -161,6 +161,8 @@ void Game::run() {
 
 		m_currentState->update(m_fpsManager.frameTime());
 
+//		cout << "Frame Time = " << m_fpsManager.frameTime() << "\n";
+
 		m_fpsManager.sync();
         window->display();
     }
