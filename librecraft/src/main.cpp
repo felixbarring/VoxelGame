@@ -17,10 +17,6 @@
 
 int main(int argc, char *argv[]) {
 
-	ThreadPool threadPool{8};
-	auto result = threadPool.enqueue([](int answer) { return answer; }, 42);
-	std::cout << result.get() << std::endl;
-
 	try {
 
 		std::cout << "argc =" << argc << "\n";

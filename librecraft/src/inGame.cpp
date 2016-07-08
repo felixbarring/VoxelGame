@@ -43,7 +43,7 @@ InGame::InGame(Game *game, string name)
 //			static_cast<float>(config::graphics_data::windowHeight), -1.0f, 1.0f) * matrix;
 //	graphics::SpriteBatcher::getInstance().setProjection(m_virtualProjection);
 
-	m_player.setLocation(80.1, 120.1, 80.1);
+	m_player.setLocation(20.1, 40.1, 20.1);
 
 	auto observer = [this, game](int id)
 	{
