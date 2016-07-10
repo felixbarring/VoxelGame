@@ -29,10 +29,8 @@ public:
 				node = node->getChild(c);
 				continue;
 			}
-
-			auto newNode = new TrieNode(c, i == value.size() - 1, node);
-			node->addChild(newNode);
-			node = newNode;
+			node->addChild(TrieNode(c, i == value.size() - 1, node));
+			node = node->getChild(c); // The node we just added lol
 		}
 	}
 
@@ -93,23 +91,21 @@ private:
 		{
 		}
 
-		void addChild(TrieNode *node) {
+		void addChild(TrieNode node) {
 			m_children.push_back(node);
 		}
 
 		TrieNode* getChild(char c) {
-			for (auto child : m_children) {
-				if (child->m_ch == c)
-					return child;
+			for (auto &child : m_children) {
+				if (child.m_ch == c)
+					return &child;
 			}
 			return nullptr;
 		}
 
-
-
 		TrieNode* getSingleChild() {
 			if (m_children.size() == 1)
-				return m_children[0];
+				return &m_children[0];
 
 			return nullptr;
 		}
@@ -132,7 +128,7 @@ private:
 		const char m_ch{};
 		const bool m_isEnd{};
 		const TrieNode *m_previous{};
-		std::vector<TrieNode*> m_children{};
+		std::vector<TrieNode> m_children{};
 	};
 
 	TrieNode m_root{'-', false, nullptr};
