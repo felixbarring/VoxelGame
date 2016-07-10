@@ -7,13 +7,20 @@
 
 using namespace std;
 
+/**
+ * Trie class that supports adding strings and giving the best auto complete
+ * on those string for a given sequence
+ */
 class Trie {
 public:
 
-	Trie() {}
-
 	virtual ~Trie() {};
 
+	/**
+	 * Adds a string that can be used to auto completed on
+	 *
+	 * @param value The string that will be added
+	 */
 	void addString(std::string value) {
 		TrieNode *node = &m_root;
 		for (int i = 0; i < value.size(); ++i) {
@@ -29,6 +36,12 @@ public:
 		}
 	}
 
+	/**
+	 * Checks if the string exists
+	 *
+	 * @param value The string that will be check if it exists
+	 * @return True if the string exists, else false
+	 */
 	bool stringExists(const std::string &value) {
 		TrieNode *node = &m_root;
 		for (auto c : value) {
@@ -39,19 +52,33 @@ public:
 		return true;
 	}
 
+	/**
+	 * Auto completes a string from the given value.
+	 *
+	 * If there is no string added that starts with the value, an empty
+	 * string will be returned. If there are more than one string that starts
+	 * with the value, the longest common substring will be returned.
+	 *
+ 	 * @param value The value that will be auto completed on
+	 * @return The best auto complete match, empty if there is no string that
+	 *         starts with the value. The longest common substring if there are
+	 *         more than one string that contains the value.
+	 */
 	std::string getFirstWordWithSequence(const std::string &value) {
 		TrieNode *node = &m_root;
 		for (auto c : value) {
-			if (node->getChild(c))
-				continue;
+			if (!node->getChild(c))
+				return string();
 
-			return string();
+			node = node->getChild(c);
 		}
 
 		while (auto child = node->getSingleChild())
 			node = child;
 
-		return node->buildString();
+		auto result = node->buildString();
+
+		return string(result.rbegin(), result.rend());
 	}
 
 private:
@@ -78,6 +105,8 @@ private:
 			return nullptr;
 		}
 
+
+
 		TrieNode* getSingleChild() {
 			if (m_children.size() == 1)
 				return m_children[0];
@@ -86,20 +115,19 @@ private:
 		}
 
 		std::string buildString() {
-			auto func = [](TrieNode *node, std::string &str) -> std::string
-						{
-							str.push_back(node->m_ch);
-							if (node->m_previous)
-								return func(node->m_previous, str);
-
-							return str;
-						};
-
 			std::string str;
-			return func(this, str);
+			return buildStringHelper(this, str);
 		}
 
 	private:
+
+		std::string buildStringHelper(const TrieNode *node, std::string &str) {
+			if (node->m_previous) {
+				str.push_back(node->m_ch);
+				return buildStringHelper(node->m_previous, str);
+			}
+			return str;
+		}
 
 		const char m_ch{};
 		const bool m_isEnd{};
@@ -108,7 +136,6 @@ private:
 	};
 
 	TrieNode m_root{'-', false, nullptr};
-
 };
 
 #endif /* SRC_UTIL_TRIE_H_ */
