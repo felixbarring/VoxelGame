@@ -26,8 +26,8 @@ void ChunkManager::createNewWorld() {
 	const int yMax = NUMBER_OF_CHUNKS_Y;
 	const int zMax = NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * 2;
 
-	const int xStart = m_center.x -NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER;
-	const int zStart = m_center.z -NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER;
+	const int xStart = 0;
+	const int zStart = 0;
 
 	// Create the Chunks
 	for (int x = 0; x < xMax; ++x) {
