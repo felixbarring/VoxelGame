@@ -39,9 +39,10 @@ void Player::update(float timePassed) {
 	updateSpeed(timePassed);
 	handlePhysics();
 
-//	chunk::ChunkManager::getInstance().setCenter(m_location.x, m_location.z);
+	chunk::ChunkManager::getInstance().setCenter(m_location.x, m_location.z);
 
 	updateCameraAndTargetCube(); // Updates the camera aswell
+
 }
 
 void Player::updateSpeed(float timePassed) {
@@ -108,8 +109,6 @@ void Player::updateSpeed(float timePassed) {
 	 } else {
 		 m_speed.y = 0;
 	 }
-
-//	m_location += m_speed;
 
 	m_frameSpeed.x = m_speed.x * timePassed;
 	m_frameSpeed.y = m_speed.y * timePassed;

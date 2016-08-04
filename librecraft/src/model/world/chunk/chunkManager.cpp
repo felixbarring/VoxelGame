@@ -126,12 +126,12 @@ Voxel ChunkManager::getVoxel(int x, int y, int z) {
 	static float yD = 1.0 / CHUNK_HEIGHT;
 	static float zD = 1.0 / CHUNK_DEPTH;
 
-	x = x + m_xOffset;
-	z = z + m_zOffset;
+	x += m_xOffset;
+	z += m_zOffset;
 
-	int chunkX = x * xD; // - m_center.x;
+	int chunkX = x * xD;
 	int chunkY = y * yD;
-	int chunkZ = z * zD; // - m_center.z;
+	int chunkZ = z * zD;
 
 	int localX = x % CHUNK_WIDTH;
 	int localY = y % CHUNK_HEIGHT;
@@ -157,7 +157,7 @@ void ChunkManager::removeCube(int x, int y, int z) {
 	setCube(x, y, z, AIR);
 
 //	moveChunksLeft();
-//	moveChunksRight();
+	moveChunksRight();
 }
 
 void ChunkManager::setCube(int x, int y, int z, char id) {
@@ -165,12 +165,12 @@ void ChunkManager::setCube(int x, int y, int z, char id) {
 	static float yD = 1.0 / CHUNK_HEIGHT;
 	static float zD = 1.0 / CHUNK_DEPTH;
 
-	x = x + m_xOffset;
-	z = z + m_zOffset;
+	x += m_xOffset;
+	z += m_zOffset;
 
-	int chunkX = x * xD; // - m_center.x;
+	int chunkX = x * xD;
 	int chunkY = y * yD;
-	int chunkZ = z * zD; // - m_center.z;
+	int chunkZ = z * zD;
 
 	int localX = x % CHUNK_WIDTH;
 	int localY = y % CHUNK_HEIGHT;
@@ -181,25 +181,18 @@ void ChunkManager::setCube(int x, int y, int z, char id) {
 
 void ChunkManager::setCenter(float x, float z)
 {
-	float previousX = m_center.x;
-	float previousY = m_center.z;
+	if (x < config::chunk_data::NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * 16 - m_xOffset)
+		moveChunksRight();
 
-	// TODO
-	// The assumption is that the difference should not be bigger than one
-	int differenceX = x - previousX;
-	int differencez = z - previousY;
+	if (x > config::chunk_data::NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * 16 - m_xOffset + 16)
+		moveChunksLeft();
 
-	if (differenceX != 0) {
+//	if (z < config::chunk_data::NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * 16 - m_zOffset)
+//		moveChunksUp();
 
-		int sign = -(differenceX < 0);
+//	if (z < config::chunk_data::NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * 16 - m_zOffset + 16)
+//		moveChunksDown();
 
-		// If the center has moved to the right, then all chunks should
-		// be moved to the left
-		if (differenceX > 0) {
-		}
-	}
-	m_center.x = x;
-	m_center.z = z;
 }
 
 // Requires that direction is normalized!
@@ -307,10 +300,8 @@ void ChunkManager::moveChunksRight() {
 
 	// Create / load new chunks for the left row
 	for (int i = 0; i < m_derp; ++i) {
-
 		auto ch = chunks[0 + 1][0][i];
-
-		auto chunk = std::make_shared<Chunk>(ch->getXLocation() + 16, ch->getZLocation());
+		auto chunk = std::make_shared<Chunk>(ch->getXLocation() - 16, ch->getZLocation());
 		chunks[0][0][i] = chunk;
 
 		chunk->updateLightning();
@@ -339,9 +330,7 @@ void ChunkManager::moveChunksLeft() {
 
 	// Create / load new chunks for the right row
 	for (int i = 0; i < m_derp; ++i) {
-
 		auto ch = chunks[m_derp - 2][0][i];
-
 		auto chunk = std::make_shared<Chunk>(ch->getXLocation() + 16, ch->getZLocation());
 		chunks[m_derp - 1][0][i] = chunk;
 
@@ -351,11 +340,63 @@ void ChunkManager::moveChunksLeft() {
 }
 
 void ChunkManager::moveChunksUp() {
+	//TODO Remove hardcode 16 values
+	m_zOffset += 16;
 
+	// First disconnect all the top chunks
+	// and store them to disk
+	for (int i = 0; i < m_derp; ++i) {
+		auto chunk = chunks[i][0][m_derp - 1];
+		chunk->removeAllNeighbors();
+		chunk->storeChunk(m_worldName);
+	}
+
+	// Then move all chunks one step up
+	for (int i = 0; i < m_derp; ++i) {
+		for (int j = m_derp; j > 0; --j) {
+			chunks[i][0][j] = chunks[i][0][j - 1];
+		}
+	}
+
+	// Create / load new chunks for the bottom row
+	for (int i = 0; i < m_derp; ++i) {
+		auto ch = chunks[i][0][0 + 1];
+		auto chunk = std::make_shared<Chunk>(ch->getXLocation(), ch->getZLocation() - 16);
+		chunks[i][0][0] = chunk;
+
+		chunk->updateLightning();
+		chunk->updateGraphics();
+	}
 }
 
 void ChunkManager::moveChunksDown() {
+	//TODO Remove hardcode 16 values
+	m_zOffset += 16;
 
+	// First disconnect all the bottom chunks
+	// and store them to disk
+	for (int i = 0; i < m_derp; ++i) {
+		auto chunk = chunks[i][0][0];
+		chunk->removeAllNeighbors();
+		chunk->storeChunk(m_worldName);
+	}
+
+	// Then move all chunks one step down
+	for (int i = 0; i < m_derp; ++i) {
+		for (int j = 0; j < m_derp; ++j) {
+			chunks[i][0][j] = chunks[i][0][j + 1];
+		}
+	}
+
+	// Create / load new chunks for the top row
+	for (int i = 0; i < m_derp; ++i) {
+		auto ch = chunks[i][0][m_derp - 2];
+		auto chunk = std::make_shared<Chunk>(ch->getXLocation(), ch->getZLocation() + 16);
+		chunks[i][0][m_derp - 1] = chunk;
+
+		chunk->updateLightning();
+		chunk->updateGraphics();
+	}
 }
 
 }
