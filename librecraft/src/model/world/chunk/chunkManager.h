@@ -90,6 +90,9 @@ private:
 		[config::chunk_data::NUMBER_OF_CHUNKS_Y]
 		[m_derp];
 
+	int m_xOffset{0};
+	int m_zOffset{0};
+
 	glm::vec3 m_center{4, 0, 4};
 
 	std::string m_worldName;

@@ -15,15 +15,18 @@ namespace config {
 	static std::string worldMetaFile = "data/meta";
 
 	namespace chunk_data {
+
+		// TODO there should be one var for width/depth since they should always be the same.
+
 		static constexpr int GRAPHICAL_CHUNK_WIDTH = 16;
 		static constexpr int GRAPHICAL_CHUNK_HEIGHT = 64;
 		static constexpr int GRAPHICAL_CHUNK_DEPTH = 16;
 
 		static constexpr int CHUNK_WIDTH = 16;
 		static constexpr int CHUNK_HEIGHT = 128;
-		static constexpr int CHUNK_DEPTH = 15;
+		static constexpr int CHUNK_DEPTH = 16;
 
-		static constexpr const int NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER = 5;
+		static constexpr const int NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER = 4;
 		static constexpr const int NUMBER_OF_CHUNKS_Y = 1;
 	}
 

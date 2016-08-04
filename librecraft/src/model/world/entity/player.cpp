@@ -81,18 +81,18 @@ void Player::updateSpeed(float timePassed) {
 		m_speed.x = normalizedMD.x;
 		m_speed.z = normalizedMD.z;
 	}
-	// Gravity
-	m_speed.y -= m_gravity * timePassed;
+//	// Gravity
+//	m_speed.y -= m_gravity * timePassed;
 
 	// Jump
-	if (input->jumpPressed) {
-		vector<pair<float, vec3>> collisions;
-		intersected(vec3(0, -0.1, 0), collisions);
-
-		// Only jump if the player stands on solid ground.
-		if (collisions.size())
-			m_speed.y = m_jumpSpeed;
-	}
+//	if (input->jumpPressed) {
+//		vector<pair<float, vec3>> collisions;
+//		intersected(vec3(0, -0.1, 0), collisions);
+//
+//		// Only jump if the player stands on solid ground.
+//		if (collisions.size())
+//			m_speed.y = m_jumpSpeed;
+//	}
 
 	if (input->switchCubePressed
 			&& ++m_cubeUsedForBuilding > config::cube_data::LAST_CUBE)
@@ -102,9 +102,9 @@ void Player::updateSpeed(float timePassed) {
 	 if (input->jumpActive || input->goDownActive) {
 		 int direction = 1;
 		 if (input->goDownActive)
-		 direction = -1;
+			 direction = -1;
 
-		 m_frameSpeed.y = direction * m_movementSpeed * timePassed;
+		 m_speed.y = 4 * direction; // TODO Remove hardcoded value
 	 } else {
 		 m_speed.y = 0;
 	 }

@@ -126,6 +126,9 @@ Voxel ChunkManager::getVoxel(int x, int y, int z) {
 	static float yD = 1.0 / CHUNK_HEIGHT;
 	static float zD = 1.0 / CHUNK_DEPTH;
 
+	x = x + m_xOffset;
+	z = z + m_zOffset;
+
 	int chunkX = x * xD; // - m_center.x;
 	int chunkY = y * yD;
 	int chunkZ = z * zD; // - m_center.z;
@@ -154,12 +157,16 @@ void ChunkManager::removeCube(int x, int y, int z) {
 	setCube(x, y, z, AIR);
 
 //	moveChunksLeft();
+//	moveChunksRight();
 }
 
 void ChunkManager::setCube(int x, int y, int z, char id) {
 	static float xD = 1.0 / CHUNK_WIDTH;
 	static float yD = 1.0 / CHUNK_HEIGHT;
 	static float zD = 1.0 / CHUNK_DEPTH;
+
+	x = x + m_xOffset;
+	z = z + m_zOffset;
 
 	int chunkX = x * xD; // - m_center.x;
 	int chunkY = y * yD;
@@ -280,16 +287,47 @@ bool ChunkManager::intersectWithSolidCube(vec3 origin, vec3 direction,
 }
 
 void ChunkManager::moveChunksRight() {
+	//TODO Remove hardcode 16 values
+	m_xOffset += 16;
 
+	// First disconnect all the rightmost chunks
+	// and store them to disk
+	for (int i = 0; i < m_derp; ++i) {
+		auto chunk = chunks[m_derp - 1][0][i];
+		chunk->removeAllNeighbors();
+		chunk->storeChunk(m_worldName);
+	}
+
+	// Then move all chunks one step to the right
+	for (int i = m_derp - 1; i > 0; --i) {
+		for (int j = 0; j < m_derp; ++j) {
+			chunks[i][0][j] = chunks[i - 1][0][j];
+		}
+	}
+
+	// Create / load new chunks for the left row
+	for (int i = 0; i < m_derp; ++i) {
+
+		auto ch = chunks[0 + 1][0][i];
+
+		auto chunk = std::make_shared<Chunk>(ch->getXLocation() + 16, ch->getZLocation());
+		chunks[0][0][i] = chunk;
+
+		chunk->updateLightning();
+		chunk->updateGraphics();
+	}
 }
 
 void ChunkManager::moveChunksLeft() {
+	//TODO Remove hardcode 16 values
+	m_xOffset -= 16;
+
 	// First disconnect all the leftmost chunks
 	// and store them to disk
 	for (int i = 0; i < m_derp; ++i) {
 		auto chunk = chunks[0][0][i];
 		chunk->removeAllNeighbors();
-//		chunk->storeChunk(m_worldName);
+		chunk->storeChunk(m_worldName);
 	}
 
 	// Then move all chunks one step to the left
@@ -301,10 +339,11 @@ void ChunkManager::moveChunksLeft() {
 
 	// Create / load new chunks for the right row
 	for (int i = 0; i < m_derp; ++i) {
-		auto chunk = chunks[m_derp - 1][0][i];
-		// TODO Check if the chunk exists in file
-		chunk.reset(new Chunk(chunk->getXLocation() + 1,
-				chunk->getZLocation()));
+
+		auto ch = chunks[m_derp - 2][0][i];
+
+		auto chunk = std::make_shared<Chunk>(ch->getXLocation() + 16, ch->getZLocation());
+		chunks[m_derp - 1][0][i] = chunk;
 
 		chunk->updateLightning();
 		chunk->updateGraphics();
