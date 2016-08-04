@@ -114,8 +114,8 @@ void Game::run() {
 
 //	util::SoundPlayer::getInstance().playMusic(config::music::menuMusic);
 
-	int WIDTH = 1700;
-	int HEIGHT = 900;
+	int WIDTH = 1800;
+	int HEIGHT = 1000;
 
 	util::Input::createInstance(WIDTH / 2.0, HEIGHT / 2.0);
 

@@ -308,6 +308,7 @@ MainMenu::MainMenu(Game *game)
 				};
 
 	m_terminal = make_shared<gui::Terminal>(lol, func);
+
 }
 
 // ########################################################

@@ -21,9 +21,9 @@ namespace config {
 
 		static constexpr int CHUNK_WIDTH = 16;
 		static constexpr int CHUNK_HEIGHT = 128;
-		static constexpr int CHUNK_DEPTH = 16;
+		static constexpr int CHUNK_DEPTH = 15;
 
-		static constexpr const int NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER = 4;
+		static constexpr const int NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER = 5;
 		static constexpr const int NUMBER_OF_CHUNKS_Y = 1;
 	}
 
@@ -51,9 +51,11 @@ namespace config {
 		static constexpr int BOTTOM_TEXTURE = 2;
 
 		// 0 = Side, 1 = Top, 2 = Bottom
-		static constexpr char BLOCK_TEXTURES[8][3] { { 0, 1, 2 }, { 2, 2, 2 },
-				{ 3, 3, 3 }, { 4, 4, 4 }, { 5, 5, 5 }, { 6, 6, 6 },
-				{ 7, 7, 7 }, { 8, 8, 8 } };
+		static constexpr char BLOCK_TEXTURES[8][3] {
+			{ 0, 1, 2 }, { 2, 2, 2 },
+			{ 3, 3, 3 }, { 4, 4, 4 },
+			{ 5, 5, 5 }, { 6, 6, 6 },
+			{ 7, 7, 7 }, { 8, 8, 8 } };
 
 		static constexpr int TEXTURE_WIDTH = 32;
 		static constexpr int TEXTURE_HEIGHT = 32;
