@@ -114,8 +114,8 @@ void Game::run() {
 
 //	util::SoundPlayer::getInstance().playMusic(config::music::menuMusic);
 
-	int WIDTH = 800;
-	int HEIGHT = 600;
+	int WIDTH = 1700;
+	int HEIGHT = 900;
 
 	util::Input::createInstance(WIDTH / 2.0, HEIGHT / 2.0);
 
@@ -130,7 +130,7 @@ void Game::run() {
 	settings.majorVersion = 3;
 	settings.minorVersion = 1;
 
-	window = new sf::Window{sf::VideoMode(800, 600), "Voxel Game",
+	window = new sf::Window{sf::VideoMode(WIDTH, HEIGHT), "Voxel Game",
 				sf::Style::Default, settings};
 
 	window->setMouseCursorVisible(false);
@@ -168,10 +168,11 @@ void Game::run() {
 }
 
 void Game::createNewWorld(string name) {
+	// TODO Do ingame really need the world name?!?
 	m_inGame.reset(new InGame(this, name));
-	auto future = threadPool.enqueue([]
+	auto future = threadPool.enqueue([name]
 			{
-				chunk::ChunkManager::getInstance().createNewWorld();
+				chunk::ChunkManager::getInstance().createNewWorld(name);
 			}
 		);
 

@@ -99,16 +99,16 @@ void Player::updateSpeed(float timePassed) {
 		m_cubeUsedForBuilding = 0;
 
 	// Gravity off...
-//	 if (input->jumpActive || input->goDownActive) {
-//		 int direction = 1;
-//		 if (input->goDownActive)
-//		 direction = -1;
-//
-//		 m_speed.y = direction * m_movementSpeed * timePassed;
-//	 } else {
-//		 m_speed.y = 0;
-//	 }
-//
+	 if (input->jumpActive || input->goDownActive) {
+		 int direction = 1;
+		 if (input->goDownActive)
+		 direction = -1;
+
+		 m_frameSpeed.y = direction * m_movementSpeed * timePassed;
+	 } else {
+		 m_speed.y = 0;
+	 }
+
 //	m_location += m_speed;
 
 	m_frameSpeed.x = m_speed.x * timePassed;

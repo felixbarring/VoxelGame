@@ -21,20 +21,20 @@ namespace chunk {
 // Member Functions########################################
 // ########################################################
 
-void ChunkManager::createNewWorld() {
-	const int xMax = NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * 2;
-	const int yMax = NUMBER_OF_CHUNKS_Y;
-	const int zMax = NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * 2;
+void ChunkManager::createNewWorld(string worldName) {
 
-	const int xStart = m_center.x -NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER;
-	const int zStart = m_center.z -NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER;
+	m_worldName = worldName;
+
+	const int xMax = NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * 2 + 1;
+	const int yMax = NUMBER_OF_CHUNKS_Y;
+	const int zMax = NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * 2 + 1;
 
 	// Create the Chunks
 	for (int x = 0; x < xMax; ++x) {
 		for (int z = 0; z < zMax; ++z) {
 			chunks[x][0][z].reset(new Chunk {
-				(xStart + x) * CHUNK_WIDTH,
-				(zStart + z) * CHUNK_DEPTH});
+				x * CHUNK_WIDTH,
+				z * CHUNK_DEPTH});
 		}
 	}
 
@@ -52,7 +52,6 @@ void ChunkManager::createNewWorld() {
 				current->setBackNeighbor(back);
 				back->setFrontNeighbor(current);
 			}
-			current->updateGraphics();
 		}
 	}
 
@@ -65,7 +64,10 @@ void ChunkManager::createNewWorld() {
 
 }
 
-void ChunkManager::loadWorld(std::string& worldName) {
+void ChunkManager::loadWorld(string worldName) {
+
+	m_worldName = worldName;
+
 	const int xMax = NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER;
 	const int yMax = NUMBER_OF_CHUNKS_Y;
 	const int zMax = NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER;
@@ -106,15 +108,14 @@ void ChunkManager::loadWorld(std::string& worldName) {
 
 }
 
-void ChunkManager::saveWorld(std::string& worldName) {
+void ChunkManager::saveWorld() {
 	const int xMax = NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER;
 	const int yMax = NUMBER_OF_CHUNKS_Y;
 	const int zMax = NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER;
 
 	for (int x = 0; x < xMax; x++) {
 		for (int z = 0; z < zMax; z++) {
-			chunks[x][0][z]->storeChunk(worldName, x * CHUNK_WIDTH,
-					z * CHUNK_DEPTH);
+			chunks[x][0][z]->storeChunk(m_worldName);
 		}
 	}
 }
@@ -151,6 +152,8 @@ bool ChunkManager::isAir(int x, int y, int z) {
 
 void ChunkManager::removeCube(int x, int y, int z) {
 	setCube(x, y, z, AIR);
+
+//	moveChunksLeft();
 }
 
 void ChunkManager::setCube(int x, int y, int z, char id) {
@@ -186,24 +189,6 @@ void ChunkManager::setCenter(float x, float z)
 		// If the center has moved to the right, then all chunks should
 		// be moved to the left
 		if (differenceX > 0) {
-			// First disconnect all the leftmost chunks
-			for (int i = 0; i < derp; ++i)
-//				chunks[0][0][i]->removeAllNeighbors();
-
-			// Then move all chunks one step to the left
-			for (int i = 0; i < derp - 1; ++i) {
-				for (int j = 0; j < derp; ++j) {
-					chunks[i][0][j] = chunks[i][0][j + 1];
-				}
-			}
-
-			// Create / load new chunks for the right row
-//			for (int i = 0; i < derp; ++i) {
-//				auto chunk = chunks[derp - 1][0][i];
-//				// TODO Check if the chunk exists in file
-//				chunk.reset(new Chunk(chunk->getXLocation() + 1,
-//						chunk->getZLocation()));
-//			}
 		}
 	}
 	m_center.x = x;
@@ -292,6 +277,46 @@ bool ChunkManager::intersectWithSolidCube(vec3 origin, vec3 direction,
 	}
 
 	return false;
+}
+
+void ChunkManager::moveChunksRight() {
+
+}
+
+void ChunkManager::moveChunksLeft() {
+	// First disconnect all the leftmost chunks
+	// and store them to disk
+	for (int i = 0; i < m_derp; ++i) {
+		auto chunk = chunks[0][0][i];
+		chunk->removeAllNeighbors();
+//		chunk->storeChunk(m_worldName);
+	}
+
+	// Then move all chunks one step to the left
+	for (int i = 0; i < m_derp - 1; ++i) {
+		for (int j = 0; j < m_derp; ++j) {
+			chunks[i][0][j] = chunks[i + 1][0][j];
+		}
+	}
+
+	// Create / load new chunks for the right row
+	for (int i = 0; i < m_derp; ++i) {
+		auto chunk = chunks[m_derp - 1][0][i];
+		// TODO Check if the chunk exists in file
+		chunk.reset(new Chunk(chunk->getXLocation() + 1,
+				chunk->getZLocation()));
+
+		chunk->updateLightning();
+		chunk->updateGraphics();
+	}
+}
+
+void ChunkManager::moveChunksUp() {
+
+}
+
+void ChunkManager::moveChunksDown() {
+
 }
 
 }

@@ -68,8 +68,8 @@ Chunk::Chunk(int _x, int _z)
 					continue;
 				}
 				if (y < lol) {
-//					v.id = counter;
-					v.id = ROCK;
+					v.id = counter;
+//					v.id = ROCK;
 				}
 			}
 		}
@@ -93,6 +93,11 @@ Chunk::Chunk(std::string name, int x, int z)
 	string file = config::dataFolder + name + "_" + std::to_string(x) + "_"
 			+ std::to_string(z) + ".chunk";
 	inStream.open(file);
+
+	if (inStream.fail()) {
+		for (int i = 0; i < 10; ++i)
+			cout << "Failed to load chunk file: " << file << "\n";
+	}
 
 	// Add all lines to the vector
 	while (getline(inStream, line))
@@ -176,10 +181,14 @@ void Chunk::setBackNeighbor(shared_ptr<Chunk> chunk) {
 }
 
 void Chunk::removeAllNeighbors() {
-	m_leftNeighbor.reset();
-	m_rightNeighbor.reset();
-	m_frontNeighbor.reset();
-	m_backNeighbor.reset();
+	if (m_leftNeighbor)
+		m_leftNeighbor.reset();
+	if (m_rightNeighbor)
+		m_rightNeighbor.reset();
+	if (m_frontNeighbor)
+		m_frontNeighbor.reset();
+	if (m_backNeighbor)
+		m_backNeighbor.reset();
 }
 
 void Chunk::updateLightning() {
@@ -347,12 +356,12 @@ void Chunk::updateGraphics() {
 	dirtyRegions.clear();
 }
 
-void Chunk::storeChunk(string worldName, int x, int z) {
+void Chunk::storeChunk(string worldName) {
 	if (!m_isDirty)
 		return;
 
-	string fileName = config::dataFolder + worldName + "_" + to_string(x) + "_"
-			+ to_string(z) + ".chunk";
+	string fileName = config::dataFolder + worldName + "_" + to_string(m_xLocation) + "_"
+			+ to_string(m_zLocation) + ".chunk";
 
 	ofstream outStream(fileName);
 	for (int x = 0; x < m_width; x++) {

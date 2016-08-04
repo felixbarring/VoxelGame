@@ -72,7 +72,7 @@ public:
 
 	// Loading/Storing
 
-	void storeChunk(std::string worldName, int x, int z);
+	void storeChunk(std::string worldName);
 
 // ########################################################
 // Implementation #########################################

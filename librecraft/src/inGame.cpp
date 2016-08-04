@@ -43,7 +43,8 @@ InGame::InGame(Game *game, string name)
 //			static_cast<float>(config::graphics_data::windowHeight), -1.0f, 1.0f) * matrix;
 //	graphics::SpriteBatcher::getInstance().setProjection(m_virtualProjection);
 
-	m_player.setLocation(20.1, 40.1, 20.1);
+	m_player.setLocation(chunk_data::NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * chunk_data::CHUNK_WIDTH, 40.1,
+						 chunk_data::NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * chunk_data::CHUNK_DEPTH);
 
 	auto observer = [this, game](int id)
 	{
@@ -51,7 +52,7 @@ InGame::InGame(Game *game, string name)
 			case 0: {
 				game->changeStateToMainMenu();
 				m_state = GameState::NoOverlay;
-				chunk::ChunkManager::getInstance().saveWorld(m_name);
+				chunk::ChunkManager::getInstance().saveWorld();
 				break;
 			}
 			case 1: {

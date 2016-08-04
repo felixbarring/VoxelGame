@@ -32,11 +32,11 @@ public:
 		return INSTANCE;
 	}
 
-	void createNewWorld();
+	void createNewWorld(std::string worldName);
 
-	void loadWorld(std::string& worldName);
+	void loadWorld(std::string worldName);
 
-	void saveWorld(std::string& worldName);
+	void saveWorld();
 
 	Voxel getVoxel(int x, int y, int z);
 
@@ -74,14 +74,25 @@ public:
 
 private:
 
-	int derp = config::chunk_data::NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * 2 + 1;
+	void moveChunksRight();
+
+	void moveChunksLeft();
+
+	void moveChunksUp();
+
+	void moveChunksDown();
+
+	// TODO Figure out a good name...
+	static constexpr int m_derp = config::chunk_data::NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * 2 + 1;
 
 	std::shared_ptr<Chunk> chunks
-		[config::chunk_data::NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * 2 + 1]
+		[m_derp]
 		[config::chunk_data::NUMBER_OF_CHUNKS_Y]
-		[config::chunk_data::NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * 2 + 1];
+		[m_derp];
 
 	glm::vec3 m_center{4, 0, 4};
+
+	std::string m_worldName;
 
 	glm::vec3 m_intersectedCube;
 	glm::vec3 m_previousCube;
