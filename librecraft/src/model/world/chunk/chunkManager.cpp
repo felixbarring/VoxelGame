@@ -187,11 +187,11 @@ void ChunkManager::setCenter(float x, float z)
 	if (x > config::chunk_data::NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * 16 - m_xOffset + 16)
 		moveChunksLeft();
 
-//	if (z < config::chunk_data::NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * 16 - m_zOffset)
-//		moveChunksUp();
+	if (z < config::chunk_data::NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * 16 - m_zOffset)
+		moveChunksUp();
 
-//	if (z < config::chunk_data::NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * 16 - m_zOffset + 16)
-//		moveChunksDown();
+	if (z > config::chunk_data::NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * 16 - m_zOffset + 16)
+		moveChunksDown();
 
 }
 
@@ -280,6 +280,9 @@ bool ChunkManager::intersectWithSolidCube(vec3 origin, vec3 direction,
 }
 
 void ChunkManager::moveChunksRight() {
+
+	cout << "Moving chunks right \n";
+
 	//TODO Remove hardcode 16 values
 	m_xOffset += 16;
 
@@ -310,6 +313,9 @@ void ChunkManager::moveChunksRight() {
 }
 
 void ChunkManager::moveChunksLeft() {
+
+	cout << "Moving chunks left \n";
+
 	//TODO Remove hardcode 16 values
 	m_xOffset -= 16;
 
@@ -340,6 +346,9 @@ void ChunkManager::moveChunksLeft() {
 }
 
 void ChunkManager::moveChunksUp() {
+
+	cout << "Moving chunks up \n";
+
 	//TODO Remove hardcode 16 values
 	m_zOffset += 16;
 
@@ -347,13 +356,13 @@ void ChunkManager::moveChunksUp() {
 	// and store them to disk
 	for (int i = 0; i < m_derp; ++i) {
 		auto chunk = chunks[i][0][m_derp - 1];
-		chunk->removeAllNeighbors();
+		chunk->removeAllNeighbors(); // TODO pointers from neighbors to this chunk also needs to be removed...
 		chunk->storeChunk(m_worldName);
 	}
 
 	// Then move all chunks one step up
 	for (int i = 0; i < m_derp; ++i) {
-		for (int j = m_derp; j > 0; --j) {
+		for (int j = m_derp - 1; j > 0; --j) {
 			chunks[i][0][j] = chunks[i][0][j - 1];
 		}
 	}
@@ -370,8 +379,11 @@ void ChunkManager::moveChunksUp() {
 }
 
 void ChunkManager::moveChunksDown() {
+
+	cout << "Moving chunk down \n";
+
 	//TODO Remove hardcode 16 values
-	m_zOffset += 16;
+	m_zOffset -= 16;
 
 	// First disconnect all the bottom chunks
 	// and store them to disk
@@ -383,7 +395,7 @@ void ChunkManager::moveChunksDown() {
 
 	// Then move all chunks one step down
 	for (int i = 0; i < m_derp; ++i) {
-		for (int j = 0; j < m_derp; ++j) {
+		for (int j = 0; j < m_derp - 1; ++j) {
 			chunks[i][0][j] = chunks[i][0][j + 1];
 		}
 	}
