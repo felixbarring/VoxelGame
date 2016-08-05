@@ -69,7 +69,6 @@ Chunk::Chunk(int _x, int _z)
 				}
 				if (y < lol) {
 					v.id = counter;
-//					v.id = ROCK;
 				}
 			}
 		}
@@ -181,14 +180,22 @@ void Chunk::setBackNeighbor(shared_ptr<Chunk> chunk) {
 }
 
 void Chunk::removeAllNeighbors() {
-	if (m_leftNeighbor)
+	if (m_leftNeighbor) {
+		m_leftNeighbor->m_rightNeighbor.reset();
 		m_leftNeighbor.reset();
-	if (m_rightNeighbor)
+	}
+	if (m_rightNeighbor) {
+		m_rightNeighbor->m_leftNeighbor.reset();
 		m_rightNeighbor.reset();
-	if (m_frontNeighbor)
+	}
+	if (m_frontNeighbor) {
+		m_frontNeighbor->m_backNeighbor.reset();
 		m_frontNeighbor.reset();
-	if (m_backNeighbor)
+	}
+	if (m_backNeighbor) {
+		m_backNeighbor->m_frontNeighbor.reset();
 		m_backNeighbor.reset();
+	}
 }
 
 void Chunk::updateLightning() {

@@ -280,9 +280,6 @@ bool ChunkManager::intersectWithSolidCube(vec3 origin, vec3 direction,
 }
 
 void ChunkManager::moveChunksRight() {
-
-	cout << "Moving chunks right \n";
-
 	//TODO Remove hardcode 16 values
 	m_xOffset += 16;
 
@@ -313,9 +310,6 @@ void ChunkManager::moveChunksRight() {
 }
 
 void ChunkManager::moveChunksLeft() {
-
-	cout << "Moving chunks left \n";
-
 	//TODO Remove hardcode 16 values
 	m_xOffset -= 16;
 
@@ -346,9 +340,6 @@ void ChunkManager::moveChunksLeft() {
 }
 
 void ChunkManager::moveChunksUp() {
-
-	cout << "Moving chunks up \n";
-
 	//TODO Remove hardcode 16 values
 	m_zOffset += 16;
 

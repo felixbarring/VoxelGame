@@ -21,9 +21,7 @@ private:
 
 	ChunkBatcher();
 
-	virtual ~ChunkBatcher() {
-	}
-	;
+	virtual ~ChunkBatcher() { };
 
 private:
 
@@ -52,11 +50,10 @@ public:
 	// Instance Variables #####################################
 	// ########################################################
 
-	std::vector<std::shared_ptr<GraphicalChunk>> batches;
+	std::vector<std::shared_ptr<GraphicalChunk>> m_batches;
 
-	std::shared_ptr<ShaderProgram> program;
-	texture::TextureArray &texture;
-
+	std::shared_ptr<ShaderProgram> m_program;
+	texture::TextureArray &m_texture;
 };
 
 }

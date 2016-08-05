@@ -13,7 +13,7 @@ namespace graphics {
 // ########################################################
 
 ChunkBatcher::ChunkBatcher()
-		: texture(
+		: m_texture(
 				Resources::getInstance().getTextureArray(
 						config::cube_data::textures,
 						config::cube_data::TEXTURE_WIDTH,
@@ -91,7 +91,7 @@ ChunkBatcher::ChunkBatcher()
 			"positionIn", 0), std::pair<std::string, int>("normalIn", 1),
 			std::pair<std::string, int>("texCoordIn", 2)};
 
-	program.reset(new ShaderProgram(vertex, fragment, attributesMap));
+	m_program.reset(new ShaderProgram(vertex, fragment, attributesMap));
 
 }
 
@@ -100,16 +100,16 @@ ChunkBatcher::ChunkBatcher()
 // ########################################################
 
 void ChunkBatcher::addBatch(std::shared_ptr<GraphicalChunk> batch) {
-	batches.push_back(batch);
+	m_batches.push_back(batch);
 }
 
 void ChunkBatcher::removeBatch(std::shared_ptr<GraphicalChunk> batch) {
 	// TODO If this is not done in the main thread -> errors
 	// If it will e done in a nother thread, queue it up
 	// and let the main thread do it when drawing or something
-	for (unsigned i = 0; i < batches.size(); ++i) {
-		if (batches.at(i).get() == batch.get()) {
-			batches.erase(batches.begin() + i);
+	for (unsigned i = 0; i < m_batches.size(); ++i) {
+		if (m_batches.at(i).get() == batch.get()) {
+			m_batches.erase(m_batches.begin() + i);
 			return;
 		}
 	}
@@ -119,25 +119,28 @@ float x = 1.0;
 int direction = 1;
 
 void ChunkBatcher::draw() {
-	program->bind();
+
+	std::cout << "Number of batches: " << m_batches.size() << "\n",
+
+	m_program->bind();
 
 	glEnable (GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
 
 	glActiveTexture(GL_TEXTURE0);
-	program->setUniformli("texture1", 0);
-	texture.bind();
+	m_program->setUniformli("texture1", 0);
+	m_texture.bind();
 
 //	if (x > 5 || x < - 5)
 //		direction = -direction;
 //
 //	x += 0.1 * direction;
 
-	program->setUniform3f("lightDirection", x, 3.0, 0.3);
+	m_program->setUniform3f("lightDirection", x, 3.0, 0.3);
 
 	Camera &camera = Camera::getInstance();
 
-	for (auto b : batches) {
+	for (auto b : m_batches) {
 
 		// TODO Do frustrum culling here
 
@@ -146,13 +149,13 @@ void ChunkBatcher::draw() {
 		glm::mat4 modelViewProjection = camera.getProjectionMatrix()
 				* modelView;
 
-		program->setUniformMatrix4f("modelViewProjection", modelViewProjection);
-		program->setUniformMatrix4f("modelView", modelView);
+		m_program->setUniformMatrix4f("modelViewProjection", modelViewProjection);
+		m_program->setUniformMatrix4f("modelView", modelView);
 
 		b->draw();
 	}
 
-	program->unbind();
+	m_program->unbind();
 
 }
 

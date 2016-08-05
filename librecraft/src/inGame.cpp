@@ -95,6 +95,16 @@ InGame::InGame(Game *game, string name)
 
 	m_terminal = make_shared<gui::Terminal>(lol, func);
 
+	auto &res = Resources::getInstance();
+	FontMeshBuilder &fontMeshBuilder = res.getFontMeshBuilder(
+			font_data::fontLayout, font_data::fontAtlasWidth,
+			font_data::fontAtlasHeight);
+
+	m_fps.reset(new Sprite(0, 45, 10,
+							fontMeshBuilder.buldMeshForString(
+									"FPS: " + 0, 20),
+							res.getTexture(config::font_data::font)));
+
 }
 
 // ########################################################
@@ -122,8 +132,8 @@ void InGame::update(float timePassed) {
 
 		auto &res = Resources::getInstance();
 		FontMeshBuilder &fontMeshBuilder = res.getFontMeshBuilder(
-				config::font_data::fontLayout, config::font_data::fontAtlasWidth,
-				config::font_data::fontAtlasHeight);
+				font_data::fontLayout, font_data::fontAtlasWidth,
+				font_data::fontAtlasHeight);
 
 		vec3 dir = m_player.getViewingDirection();
 		string derp =
@@ -137,10 +147,16 @@ void InGame::update(float timePassed) {
 						fontMeshBuilder.buldMeshForString(derp, 20),
 						res.getTexture(config::font_data::font)));
 
-		m_fps.reset(new Sprite(0, 45, 10,
-					fontMeshBuilder.buldMeshForString(
-							"FPS: " + to_string(util::FPSManager::getFps()), 20),
-					res.getTexture(config::font_data::font)));
+		// Updating the fps every frame makes it unreadable
+		m_fpsDisplayCounter += timePassed;
+		if (m_fpsDisplayCounter > m_fpsDisplayDelay) {
+			m_fps.reset(new Sprite(0, 45, 10,
+						fontMeshBuilder.buldMeshForString(
+								"FPS: " + to_string(util::FPSManager::getFps()), 20),
+						res.getTexture(config::font_data::font)));
+
+			m_fpsDisplayCounter = 0;
+		}
 
 
 		vec3 ses = m_player.getLastSelectedCube();

@@ -64,6 +64,12 @@ public:
 
 	void setBackNeighbor(std::shared_ptr<Chunk> chunk);
 
+	/**
+	 * \brief Used when a chunk should be removed from memory
+	 *
+	 * Clears all pointers from this chunk to it's neighbors
+	 * and also all the pointer in the neighbors pointing to this chunk
+	 */
 	void removeAllNeighbors();
 
 	void updateLightning();
