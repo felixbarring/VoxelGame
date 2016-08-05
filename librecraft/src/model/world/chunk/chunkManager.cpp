@@ -33,8 +33,8 @@ void ChunkManager::createNewWorld(string worldName) {
 	for (int x = 0; x < xMax; ++x) {
 		for (int z = 0; z < zMax; ++z) {
 			chunks[x][0][z].reset(new Chunk {
-				x * CHUNK_WIDTH,
-				z * CHUNK_DEPTH});
+				x * CHUNK_WIDTH_AND_DEPTH,
+				z * CHUNK_WIDTH_AND_DEPTH});
 		}
 	}
 
@@ -77,7 +77,7 @@ void ChunkManager::loadWorld(string worldName) {
 			if (chunks[x][0][z])
 				chunks[x][0][z]->removeAllNeighbors();
 			chunks[x][0][z].reset(
-					new Chunk {worldName, x * CHUNK_WIDTH, z * CHUNK_DEPTH});
+					new Chunk {worldName, x * CHUNK_WIDTH_AND_DEPTH, z * CHUNK_WIDTH_AND_DEPTH});
 		}
 	}
 
@@ -122,9 +122,9 @@ void ChunkManager::saveWorld() {
 
 Voxel ChunkManager::getVoxel(int x, int y, int z) {
 	// Used to avoid Division every time the function is called.
-	static float xD = 1.0 / CHUNK_WIDTH;
+	static float xD = 1.0 / CHUNK_WIDTH_AND_DEPTH;
 	static float yD = 1.0 / CHUNK_HEIGHT;
-	static float zD = 1.0 / CHUNK_DEPTH;
+	static float zD = 1.0 / CHUNK_WIDTH_AND_DEPTH;
 
 	x += m_xOffset;
 	z += m_zOffset;
@@ -133,9 +133,9 @@ Voxel ChunkManager::getVoxel(int x, int y, int z) {
 	int chunkY = y * yD;
 	int chunkZ = z * zD;
 
-	int localX = x % CHUNK_WIDTH;
+	int localX = x % CHUNK_WIDTH_AND_DEPTH;
 	int localY = y % CHUNK_HEIGHT;
-	int localZ = z % CHUNK_DEPTH;
+	int localZ = z % CHUNK_WIDTH_AND_DEPTH;
 
  	return chunks[chunkX][chunkY][chunkZ]->getVoxel(localX, localY, localZ);
 }
@@ -161,9 +161,9 @@ void ChunkManager::removeCube(int x, int y, int z) {
 }
 
 void ChunkManager::setCube(int x, int y, int z, char id) {
-	static float xD = 1.0 / CHUNK_WIDTH;
+	static float xD = 1.0 / CHUNK_WIDTH_AND_DEPTH;
 	static float yD = 1.0 / CHUNK_HEIGHT;
-	static float zD = 1.0 / CHUNK_DEPTH;
+	static float zD = 1.0 / CHUNK_WIDTH_AND_DEPTH;
 
 	x += m_xOffset;
 	z += m_zOffset;
@@ -172,25 +172,25 @@ void ChunkManager::setCube(int x, int y, int z, char id) {
 	int chunkY = y * yD;
 	int chunkZ = z * zD;
 
-	int localX = x % CHUNK_WIDTH;
+	int localX = x % CHUNK_WIDTH_AND_DEPTH;
 	int localY = y % CHUNK_HEIGHT;
-	int localZ = z % CHUNK_DEPTH;
+	int localZ = z % CHUNK_WIDTH_AND_DEPTH;
 
 	chunks[chunkX][chunkY][chunkZ]->setCube(localX, localY, localZ, id);
 }
 
 void ChunkManager::setCenter(float x, float z)
 {
-	if (x < config::chunk_data::NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * 16 - m_xOffset)
+	if (x < NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * 16 - m_xOffset)
 		moveChunksRight();
 
-	if (x > config::chunk_data::NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * 16 - m_xOffset + 16)
+	if (x > NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * 16 - m_xOffset + 16)
 		moveChunksLeft();
 
-	if (z < config::chunk_data::NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * 16 - m_zOffset)
+	if (z < NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * 16 - m_zOffset)
 		moveChunksUp();
 
-	if (z > config::chunk_data::NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * 16 - m_zOffset + 16)
+	if (z > NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * 16 - m_zOffset + 16)
 		moveChunksDown();
 
 }
@@ -280,8 +280,7 @@ bool ChunkManager::intersectWithSolidCube(vec3 origin, vec3 direction,
 }
 
 void ChunkManager::moveChunksRight() {
-	//TODO Remove hardcode 16 values
-	m_xOffset += 16;
+	m_xOffset += CHUNK_WIDTH_AND_DEPTH;
 
 	// First disconnect all the rightmost chunks
 	// and store them to disk
@@ -301,7 +300,7 @@ void ChunkManager::moveChunksRight() {
 	// Create / load new chunks for the left row
 	for (int i = 0; i < m_derp; ++i) {
 		auto ch = chunks[0 + 1][0][i];
-		auto chunk = std::make_shared<Chunk>(ch->getXLocation() - 16, ch->getZLocation());
+		auto chunk = std::make_shared<Chunk>(ch->getXLocation() - CHUNK_WIDTH_AND_DEPTH, ch->getZLocation());
 		chunks[0][0][i] = chunk;
 
 		chunk->updateLightning();
@@ -310,8 +309,7 @@ void ChunkManager::moveChunksRight() {
 }
 
 void ChunkManager::moveChunksLeft() {
-	//TODO Remove hardcode 16 values
-	m_xOffset -= 16;
+	m_xOffset -= CHUNK_WIDTH_AND_DEPTH;
 
 	// First disconnect all the leftmost chunks
 	// and store them to disk
@@ -331,7 +329,7 @@ void ChunkManager::moveChunksLeft() {
 	// Create / load new chunks for the right row
 	for (int i = 0; i < m_derp; ++i) {
 		auto ch = chunks[m_derp - 2][0][i];
-		auto chunk = std::make_shared<Chunk>(ch->getXLocation() + 16, ch->getZLocation());
+		auto chunk = std::make_shared<Chunk>(ch->getXLocation() + CHUNK_WIDTH_AND_DEPTH, ch->getZLocation());
 		chunks[m_derp - 1][0][i] = chunk;
 
 		chunk->updateLightning();
@@ -340,14 +338,13 @@ void ChunkManager::moveChunksLeft() {
 }
 
 void ChunkManager::moveChunksUp() {
-	//TODO Remove hardcode 16 values
-	m_zOffset += 16;
+	m_zOffset += CHUNK_WIDTH_AND_DEPTH;
 
 	// First disconnect all the top chunks
 	// and store them to disk
 	for (int i = 0; i < m_derp; ++i) {
 		auto chunk = chunks[i][0][m_derp - 1];
-		chunk->removeAllNeighbors(); // TODO pointers from neighbors to this chunk also needs to be removed...
+		chunk->removeAllNeighbors();
 		chunk->storeChunk(m_worldName);
 	}
 
@@ -361,7 +358,7 @@ void ChunkManager::moveChunksUp() {
 	// Create / load new chunks for the bottom row
 	for (int i = 0; i < m_derp; ++i) {
 		auto ch = chunks[i][0][0 + 1];
-		auto chunk = std::make_shared<Chunk>(ch->getXLocation(), ch->getZLocation() - 16);
+		auto chunk = std::make_shared<Chunk>(ch->getXLocation(), ch->getZLocation() - CHUNK_WIDTH_AND_DEPTH);
 		chunks[i][0][0] = chunk;
 
 		chunk->updateLightning();
@@ -370,11 +367,7 @@ void ChunkManager::moveChunksUp() {
 }
 
 void ChunkManager::moveChunksDown() {
-
-	cout << "Moving chunk down \n";
-
-	//TODO Remove hardcode 16 values
-	m_zOffset -= 16;
+	m_zOffset -= CHUNK_WIDTH_AND_DEPTH;
 
 	// First disconnect all the bottom chunks
 	// and store them to disk
@@ -394,7 +387,7 @@ void ChunkManager::moveChunksDown() {
 	// Create / load new chunks for the top row
 	for (int i = 0; i < m_derp; ++i) {
 		auto ch = chunks[i][0][m_derp - 2];
-		auto chunk = std::make_shared<Chunk>(ch->getXLocation(), ch->getZLocation() + 16);
+		auto chunk = std::make_shared<Chunk>(ch->getXLocation(), ch->getZLocation() + CHUNK_WIDTH_AND_DEPTH);
 		chunks[i][0][m_derp - 1] = chunk;
 
 		chunk->updateLightning();

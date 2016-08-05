@@ -136,9 +136,9 @@ private:
 	// Should be somewhere else?
 	const int m_directSunlight = 15;
 
-	int m_width = config::chunk_data::CHUNK_WIDTH;
+	int m_width = config::chunk_data::CHUNK_WIDTH_AND_DEPTH;
 	int m_height = config::chunk_data::CHUNK_HEIGHT;
-	int m_depth = config::chunk_data::CHUNK_DEPTH;
+	int m_depth = config::chunk_data::CHUNK_WIDTH_AND_DEPTH;
 
 	std::vector<std::vector<std::vector<Voxel>>> m_vec;
 

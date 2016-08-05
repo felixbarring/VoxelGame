@@ -43,8 +43,8 @@ InGame::InGame(Game *game, string name)
 //			static_cast<float>(config::graphics_data::windowHeight), -1.0f, 1.0f) * matrix;
 //	graphics::SpriteBatcher::getInstance().setProjection(m_virtualProjection);
 
-	m_player.setLocation(chunk_data::NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * chunk_data::CHUNK_WIDTH, 40.1,
-						 chunk_data::NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * chunk_data::CHUNK_DEPTH);
+	m_player.setLocation(chunk_data::NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * chunk_data::CHUNK_WIDTH_AND_DEPTH, 40.1,
+						 chunk_data::NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * chunk_data::CHUNK_WIDTH_AND_DEPTH);
 
 	auto observer = [this, game](int id)
 	{

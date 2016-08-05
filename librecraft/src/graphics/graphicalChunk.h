@@ -168,7 +168,7 @@ private:
 
 	int m_width = config::chunk_data::GRAPHICAL_CHUNK_WIDTH;
 	int m_height = config::chunk_data::GRAPHICAL_CHUNK_HEIGHT;
-	int m_depth = config::chunk_data::GRAPHICAL_CHUNK_DEPTH;
+	int m_depth = config::chunk_data::GRAPHICAL_CHUNK_WIDTH;
 
 	Transform transform;
 };

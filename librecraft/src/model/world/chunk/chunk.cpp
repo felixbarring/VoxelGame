@@ -505,8 +505,8 @@ void Chunk::updateNeighborGraphics() {
 
 void Chunk::doSunLightning(vector<vec3> &lightPropagate) {
 	// Sun lightning, only air gets light
-	for (int x = 0; x < CHUNK_WIDTH; ++x) {
-		for (int z = 0; z < CHUNK_DEPTH; ++z) {
+	for (int x = 0; x < CHUNK_WIDTH_AND_DEPTH; ++x) {
+		for (int z = 0; z < CHUNK_WIDTH_AND_DEPTH; ++z) {
 			bool foundSolid = false;
 			for (int y = CHUNK_HEIGHT - 1; y >= 0; --y) {
 				if (m_vec[x][y][z].id == AIR) {
@@ -559,7 +559,7 @@ void Chunk::updateLightning2() {
 void Chunk::collectLightFromRightNeighbor(vector<vec3> &lightPropagate) {
 	if (m_rightNeighbor.get()) {
 		for (int j = 0; j < CHUNK_HEIGHT; j++) {
-			for (int k = 0; k < CHUNK_DEPTH; k++) {
+			for (int k = 0; k < CHUNK_WIDTH_AND_DEPTH; k++) {
 				char lv = m_rightNeighbor->m_vec[0][j][k].lightValue - 1;
 
 				if (m_rightNeighbor->m_vec[0][j][k].id == AIR
@@ -576,7 +576,7 @@ void Chunk::collectLightFromRightNeighbor(vector<vec3> &lightPropagate) {
 void Chunk::collectLightFromLeftNeighbor(vector<vec3> &lightPropagate) {
 	if (m_leftNeighbor.get()) {
 		for (int j = 0; j < CHUNK_HEIGHT; j++) {
-			for (int k = 0; k < CHUNK_DEPTH; k++) {
+			for (int k = 0; k < CHUNK_WIDTH_AND_DEPTH; k++) {
 				char lv = m_leftNeighbor->m_vec[15][j][k].lightValue - 1;
 
 				if (m_leftNeighbor->m_vec[15][j][k].id == AIR
@@ -594,7 +594,7 @@ void Chunk::collectLightFromBackNeighbor(vector<vec3> &lightPropagate) {
 
 	if (m_backNeighbor.get()) {
 
-		for (int i = 0; i < CHUNK_WIDTH; i++) {
+		for (int i = 0; i < CHUNK_WIDTH_AND_DEPTH; i++) {
 			for (int j = 0; j < CHUNK_HEIGHT; j++) {
 				char lv = m_backNeighbor->m_vec[i][j][0].lightValue - 1;
 
@@ -612,7 +612,7 @@ void Chunk::collectLightFromBackNeighbor(vector<vec3> &lightPropagate) {
 
 void Chunk::collectLightFromFrontNeighbor(vector<vec3> &lightPropagate) {
 	if (m_frontNeighbor.get()) {
-		for (int i = 0; i < CHUNK_WIDTH; i++) {
+		for (int i = 0; i < CHUNK_WIDTH_AND_DEPTH; i++) {
 			for (int j = 0; j < CHUNK_HEIGHT; j++) {
 				char lv = m_frontNeighbor->m_vec[i][j][15].lightValue - 1;
 
