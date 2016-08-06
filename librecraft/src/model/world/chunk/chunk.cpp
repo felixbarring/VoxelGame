@@ -4,7 +4,6 @@
 #include <fstream>
 
 #include "../../../graphics/chunkBatcher.h"
-
 #include "../terrainGen/noiseMixer.h"
 
 using namespace std;
@@ -23,6 +22,8 @@ namespace chunk {
 
 static int counter = 1;
 static const int maxCount = LAST_CUBE;
+static ThreadPool s_threadPool{8};
+static std::mutex s_mutex;
 
 Chunk::Chunk(string worldName, int x, int z)
 		: m_xLocation{x},
@@ -48,12 +49,18 @@ Chunk::~Chunk() {
 // ########################################################
 
 void Chunk::create() {
+	m_mutex.lock();
+
 	ifstream stream;
 	stream.open(m_name);
 	if (stream.fail())
-		generateChunk();
+		s_threadPool.enqueue([this]{generateChunk();});
 	else
-		loadChunk(stream);
+		s_threadPool.enqueue([this]{loadChunk();});
+}
+
+void Chunk::waitUntilCreated() {
+	unique_lock<mutex> lock(m_mutex);
 }
 
 Voxel Chunk::getVoxel(int x, int y, int z) {
@@ -119,6 +126,10 @@ void Chunk::removeAllNeighbors() {
 
 void Chunk::updateLightning() {
 
+	unique_lock<mutex> lock(m_mutex);
+
+	m_condition.wait(lock, [this]{ return !m_isCreated; });
+
 	vector<vec3> lightPropagate;
 
 	vector<vec3> lightPropagateRight;
@@ -137,6 +148,7 @@ void Chunk::updateLightning() {
 	// Sun light ####################################################
 
 	if (m_rightNeighbor) {
+
 		m_rightNeighbor->doSunLightning(lightPropagateRight);
 
 		if (m_rightNeighbor->m_backNeighbor)
@@ -250,6 +262,9 @@ void Chunk::updateLightning() {
 }
 
 void Chunk::updateGraphics() {
+
+	lock_guard<mutex> lock(m_mutex);
+
 	vector<vector<vector<Voxel>>>*right = nullptr;
 	vector<vector<vector<Voxel>>> *left = nullptr;
 	vector<vector<vector<Voxel>>> *front = nullptr;
@@ -310,12 +325,13 @@ std::string Chunk::createChunkName(std::string worldName) {
 			std::to_string(m_zLocation) + ".chunk";
 }
 
-void Chunk::loadChunk(std::ifstream &inStream) {
-
+void Chunk::loadChunk() {
 	m_isDirty = false;
 
 	vector<string> list;
 	string line;
+	ifstream inStream;
+	inStream.open(m_name);
 
 	// Add all lines to the vector
 	while (getline(inStream, line))
@@ -344,11 +360,20 @@ void Chunk::loadChunk(std::ifstream &inStream) {
 	for (vec3 vec : lightPropagate)
 		propagateLight(vec.x, vec.y, vec.z);
 
+	m_mutex.unlock();
 
 }
 
 void Chunk::generateChunk() {
-	++counter;
+
+	int counterValue;
+	{
+		lock_guard<mutex> lock(s_mutex);
+		++counter;
+		if (counter > maxCount)
+			counter = 0;
+		counterValue = counter;
+	}
 
 	m_isDirty = true;
 
@@ -376,9 +401,6 @@ void Chunk::generateChunk() {
 			int lol = mixer.computeNoise(m_xLocation + x, m_zLocation + z);
 
 			for (int y = 0; y < m_height; ++y) {
-				if (counter > maxCount)
-					counter = 0;
-
 				Voxel &v = m_vec[x][y][z];
 
 				if (y == 0) {
@@ -386,12 +408,13 @@ void Chunk::generateChunk() {
 					continue;
 				}
 				if (y < lol) {
-					v.id = counter;
+					v.id = counterValue;
 				}
 			}
 		}
 	}
 
+	m_mutex.unlock();
 }
 
 Voxel* Chunk::getVoxel2(int x, int y, int z) {

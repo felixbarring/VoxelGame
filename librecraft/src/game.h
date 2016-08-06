@@ -61,7 +61,7 @@ private:
 
 	bool m_changeStateToIngame{false};
 
-	ThreadPool threadPool{8};
+	ThreadPool m_threadPool{1};
 
 	bool m_quit{false};
 };

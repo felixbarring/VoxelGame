@@ -8,10 +8,13 @@
 #include <glm/glm.hpp>
 #include <map>
 #include <set>
+#include <thread>
+#include <mutex>
 
 #include "../../../config/data.h"
 #include "../../../util/voxel.h"
 #include "../../../graphics/graphicalChunk.h"
+#include "ThreadPool.h"
 
 using std::vector;
 
@@ -48,6 +51,8 @@ public:
 // ########################################################
 
 	void create();
+
+	void waitUntilCreated();
 
 	int getXLocation() { return m_xLocation; }
 	int getZLocation() { return m_zLocation; }
@@ -90,7 +95,7 @@ private:
 
 	std::string createChunkName(std::string worldName);
 
-	void loadChunk(std::ifstream &stream);
+	void loadChunk();
 
 	void generateChunk();
 
@@ -161,6 +166,11 @@ private:
 	std::shared_ptr<Chunk> m_backNeighbor;
 
 	std::set<int> dirtyRegions{};
+
+	std::mutex m_mutex;
+	std::condition_variable m_condition;
+	bool m_isCreated{false};
+
 };
 
 }

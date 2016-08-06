@@ -170,7 +170,7 @@ void Game::run() {
 void Game::createNewWorld(string name) {
 	// TODO Do ingame really need the world name?!?
 	m_inGame.reset(new InGame(this, name));
-	auto future = threadPool.enqueue([name]
+	auto future = m_threadPool.enqueue([name]
 			{
 				chunk::ChunkManager::getInstance().createWorld(name);
 			}

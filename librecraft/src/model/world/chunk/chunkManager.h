@@ -63,8 +63,8 @@ public:
 	void setCenter(float x, float z);
 
 	// Return all the data instead of querying
-	bool intersectWithSolidCube(glm::vec3 origin, glm::vec3 direction,
-			glm::vec3 &intersected, glm::vec3 &previous, float searchLength);
+	bool intersectWithSolidCube(glm::vec3 origin, glm::vec3 direction, glm::vec3 &intersected,
+			glm::vec3 &previous, float searchLength);
 
 // ########################################################
 // Implementation #########################################
@@ -80,13 +80,12 @@ private:
 
 	void moveChunksDown();
 
-	// TODO Figure out a good name...
-	static constexpr int m_derp = config::chunk_data::NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * 2 + 1;
+	static constexpr int m_lenghtAcrossMatrix = config::chunk_data::NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * 2 + 1;
 
 	std::shared_ptr<Chunk> chunks
-		[m_derp]
+		[m_lenghtAcrossMatrix]
 		[config::chunk_data::NUMBER_OF_CHUNKS_Y]
-		[m_derp];
+		[m_lenghtAcrossMatrix];
 
 	int m_xOffset{0};
 	int m_zOffset{0};

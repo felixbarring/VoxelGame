@@ -1,8 +1,11 @@
 #include "chunkManager.h"
 
 #include <math.h>
+#include <chrono>
 #include <limits>
 #include <iostream>
+#include <thread>
+
 #include "../../../util/voxel.h"
 
 using namespace std;
@@ -52,6 +55,12 @@ void ChunkManager::createWorld(string worldName) {
 				current->setBackNeighbor(back);
 				back->setFrontNeighbor(current);
 			}
+		}
+	}
+
+	for (int x = 0; x < xMax; ++x) {
+		for (int z = 0; z < zMax; ++z) {
+			chunks[x][0][z]->waitUntilCreated();
 		}
 	}
 
@@ -238,21 +247,21 @@ void ChunkManager::moveChunksRight() {
 
 	// First disconnect all the rightmost chunks
 	// and store them to disk
-	for (int i = 0; i < m_derp; ++i) {
-		auto chunk = chunks[m_derp - 1][0][i];
+	for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
+		auto chunk = chunks[m_lenghtAcrossMatrix - 1][0][i];
 		chunk->removeAllNeighbors();
 		chunk->storeChunk(m_worldName);
 	}
 
 	// Then move all chunks one step to the right
-	for (int i = m_derp - 1; i > 0; --i) {
-		for (int j = 0; j < m_derp; ++j) {
+	for (int i = m_lenghtAcrossMatrix - 1; i > 0; --i) {
+		for (int j = 0; j < m_lenghtAcrossMatrix; ++j) {
 			chunks[i][0][j] = chunks[i - 1][0][j];
 		}
 	}
 
 	// Create / load new chunks for the left row
-	for (int i = 0; i < m_derp; ++i) {
+	for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
 		auto ch = chunks[0 + 1][0][i];
 		auto chunk = std::make_shared<Chunk>(m_worldName, ch->getXLocation() - CHUNK_WIDTH_AND_DEPTH,
 				ch->getZLocation());
@@ -269,26 +278,26 @@ void ChunkManager::moveChunksLeft() {
 
 	// First disconnect all the leftmost chunks
 	// and store them to disk
-	for (int i = 0; i < m_derp; ++i) {
+	for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
 		auto chunk = chunks[0][0][i];
 		chunk->removeAllNeighbors();
 		chunk->storeChunk(m_worldName);
 	}
 
 	// Then move all chunks one step to the left
-	for (int i = 0; i < m_derp - 1; ++i) {
-		for (int j = 0; j < m_derp; ++j) {
+	for (int i = 0; i < m_lenghtAcrossMatrix - 1; ++i) {
+		for (int j = 0; j < m_lenghtAcrossMatrix; ++j) {
 			chunks[i][0][j] = chunks[i + 1][0][j];
 		}
 	}
 
 	// Create / load new chunks for the right row
-	for (int i = 0; i < m_derp; ++i) {
-		auto ch = chunks[m_derp - 2][0][i];
+	for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
+		auto ch = chunks[m_lenghtAcrossMatrix - 2][0][i];
 		auto chunk = std::make_shared<Chunk>(m_worldName, ch->getXLocation() +
 				CHUNK_WIDTH_AND_DEPTH, ch->getZLocation());
 		chunk->create();
-		chunks[m_derp - 1][0][i] = chunk;
+		chunks[m_lenghtAcrossMatrix - 1][0][i] = chunk;
 
 		chunk->updateLightning();
 		chunk->updateGraphics();
@@ -300,21 +309,21 @@ void ChunkManager::moveChunksUp() {
 
 	// First disconnect all the top chunks
 	// and store them to disk
-	for (int i = 0; i < m_derp; ++i) {
-		auto chunk = chunks[i][0][m_derp - 1];
+	for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
+		auto chunk = chunks[i][0][m_lenghtAcrossMatrix - 1];
 		chunk->removeAllNeighbors();
 		chunk->storeChunk(m_worldName);
 	}
 
 	// Then move all chunks one step up
-	for (int i = 0; i < m_derp; ++i) {
-		for (int j = m_derp - 1; j > 0; --j) {
+	for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
+		for (int j = m_lenghtAcrossMatrix - 1; j > 0; --j) {
 			chunks[i][0][j] = chunks[i][0][j - 1];
 		}
 	}
 
 	// Create / load new chunks for the bottom row
-	for (int i = 0; i < m_derp; ++i) {
+	for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
 		auto ch = chunks[i][0][0 + 1];
 		auto chunk = std::make_shared<Chunk>(m_worldName, ch->getXLocation(), ch->getZLocation() -
 				CHUNK_WIDTH_AND_DEPTH);
@@ -331,26 +340,26 @@ void ChunkManager::moveChunksDown() {
 
 	// First disconnect all the bottom chunks
 	// and store them to disk
-	for (int i = 0; i < m_derp; ++i) {
+	for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
 		auto chunk = chunks[i][0][0];
 		chunk->removeAllNeighbors();
 		chunk->storeChunk(m_worldName);
 	}
 
 	// Then move all chunks one step down
-	for (int i = 0; i < m_derp; ++i) {
-		for (int j = 0; j < m_derp - 1; ++j) {
+	for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
+		for (int j = 0; j < m_lenghtAcrossMatrix - 1; ++j) {
 			chunks[i][0][j] = chunks[i][0][j + 1];
 		}
 	}
 
 	// Create / load new chunks for the top row
-	for (int i = 0; i < m_derp; ++i) {
-		auto ch = chunks[i][0][m_derp - 2];
+	for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
+		auto ch = chunks[i][0][m_lenghtAcrossMatrix - 2];
 		auto chunk = std::make_shared<Chunk>(m_worldName, ch->getXLocation(), ch->getZLocation() +
 				CHUNK_WIDTH_AND_DEPTH);
 		chunk->create();
-		chunks[i][0][m_derp - 1] = chunk;
+		chunks[i][0][m_lenghtAcrossMatrix - 1] = chunk;
 
 		chunk->updateLightning();
 		chunk->updateGraphics();
