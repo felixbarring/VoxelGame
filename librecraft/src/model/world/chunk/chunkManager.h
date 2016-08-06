@@ -32,9 +32,7 @@ public:
 		return INSTANCE;
 	}
 
-	void createNewWorld(std::string worldName);
-
-	void loadWorld(std::string worldName);
+	void createWorld(std::string worldName);
 
 	void saveWorld();
 
@@ -93,10 +91,9 @@ private:
 	int m_xOffset{0};
 	int m_zOffset{0};
 
-	glm::vec3 m_center{4, 0, 4};
-
 	std::string m_worldName;
 
+	glm::vec3 m_center{4, 0, 4};
 	glm::vec3 m_intersectedCube;
 	glm::vec3 m_previousCube;
 

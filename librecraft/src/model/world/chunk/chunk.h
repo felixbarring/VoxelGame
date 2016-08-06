@@ -47,7 +47,7 @@ public:
 // Member Functions########################################
 // ########################################################
 
-	void generate();
+	void create();
 
 	int getXLocation() { return m_xLocation; }
 	int getZLocation() { return m_zLocation; }
@@ -89,6 +89,10 @@ public:
 private:
 
 	std::string createChunkName(std::string worldName);
+
+	void loadChunk(std::ifstream &stream);
+
+	void generateChunk();
 
 	Voxel* getVoxel2(int x, int y, int z);
 

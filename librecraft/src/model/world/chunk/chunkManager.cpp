@@ -21,7 +21,7 @@ namespace chunk {
 // Member Functions########################################
 // ########################################################
 
-void ChunkManager::createNewWorld(string worldName) {
+void ChunkManager::createWorld(string worldName) {
 
 	m_worldName = worldName;
 
@@ -32,9 +32,9 @@ void ChunkManager::createNewWorld(string worldName) {
 	// Create the Chunks
 	for (int x = 0; x < xMax; ++x) {
 		for (int z = 0; z < zMax; ++z) {
-			chunks[x][0][z].reset(new Chunk {
-				x * CHUNK_WIDTH_AND_DEPTH,
-				z * CHUNK_WIDTH_AND_DEPTH});
+			auto chunk = new Chunk{worldName, x * CHUNK_WIDTH_AND_DEPTH, z * CHUNK_WIDTH_AND_DEPTH};
+			chunk->create();
+			chunks[x][0][z].reset(chunk);
 		}
 	}
 
@@ -57,50 +57,6 @@ void ChunkManager::createNewWorld(string worldName) {
 
 	for (int x = 0; x < xMax; ++x) {
 		for (int z = 0; z < zMax; ++z) {
-			chunks[x][0][z]->updateLightning();
-			chunks[x][0][z]->updateGraphics();
-		}
-	}
-
-}
-
-void ChunkManager::loadWorld(string worldName) {
-
-	m_worldName = worldName;
-
-	const int xMax = NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER;
-	const int yMax = NUMBER_OF_CHUNKS_Y;
-	const int zMax = NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER;
-
-	for (int x = 0; x < xMax; x++) {
-		for (int z = 0; z < zMax; z++) {
-			if (chunks[x][0][z])
-				chunks[x][0][z]->removeAllNeighbors();
-			chunks[x][0][z].reset(
-					new Chunk {worldName, x * CHUNK_WIDTH_AND_DEPTH, z * CHUNK_WIDTH_AND_DEPTH});
-		}
-	}
-
-	// Connect the Chunks
-	for (int x = 0; x < xMax; ++x) {
-		for (int z = 0; z < zMax; ++z) {
-			shared_ptr<Chunk> current = chunks[x][0][z];
-			if (x != xMax - 1) {
-				shared_ptr<Chunk> right = chunks[x + 1][0][z];
-				current->setRightNeighbor(right);
-				right->setLeftNeighbor(current);
-			}
-			if (z != zMax - 1) {
-				shared_ptr<Chunk> back = chunks[x][0][z + 1];
-				current->setBackNeighbor(back);
-				back->setFrontNeighbor(current);
-			}
-			current->updateGraphics();
-		}
-	}
-
-	for (int x = 0; x < xMax; x++) {
-		for (int z = 0; z < zMax; z++) {
 			chunks[x][0][z]->updateLightning();
 			chunks[x][0][z]->updateGraphics();
 		}
@@ -155,9 +111,6 @@ bool ChunkManager::isAir(int x, int y, int z) {
 
 void ChunkManager::removeCube(int x, int y, int z) {
 	setCube(x, y, z, AIR);
-
-//	moveChunksLeft();
-	moveChunksRight();
 }
 
 void ChunkManager::setCube(int x, int y, int z, char id) {
@@ -181,6 +134,7 @@ void ChunkManager::setCube(int x, int y, int z, char id) {
 
 void ChunkManager::setCenter(float x, float z)
 {
+
 	if (x < NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * 16 - m_xOffset)
 		moveChunksRight();
 
@@ -300,7 +254,9 @@ void ChunkManager::moveChunksRight() {
 	// Create / load new chunks for the left row
 	for (int i = 0; i < m_derp; ++i) {
 		auto ch = chunks[0 + 1][0][i];
-		auto chunk = std::make_shared<Chunk>(ch->getXLocation() - CHUNK_WIDTH_AND_DEPTH, ch->getZLocation());
+		auto chunk = std::make_shared<Chunk>(m_worldName, ch->getXLocation() - CHUNK_WIDTH_AND_DEPTH,
+				ch->getZLocation());
+		chunk->create();
 		chunks[0][0][i] = chunk;
 
 		chunk->updateLightning();
@@ -329,7 +285,9 @@ void ChunkManager::moveChunksLeft() {
 	// Create / load new chunks for the right row
 	for (int i = 0; i < m_derp; ++i) {
 		auto ch = chunks[m_derp - 2][0][i];
-		auto chunk = std::make_shared<Chunk>(ch->getXLocation() + CHUNK_WIDTH_AND_DEPTH, ch->getZLocation());
+		auto chunk = std::make_shared<Chunk>(m_worldName, ch->getXLocation() +
+				CHUNK_WIDTH_AND_DEPTH, ch->getZLocation());
+		chunk->create();
 		chunks[m_derp - 1][0][i] = chunk;
 
 		chunk->updateLightning();
@@ -358,7 +316,9 @@ void ChunkManager::moveChunksUp() {
 	// Create / load new chunks for the bottom row
 	for (int i = 0; i < m_derp; ++i) {
 		auto ch = chunks[i][0][0 + 1];
-		auto chunk = std::make_shared<Chunk>(ch->getXLocation(), ch->getZLocation() - CHUNK_WIDTH_AND_DEPTH);
+		auto chunk = std::make_shared<Chunk>(m_worldName, ch->getXLocation(), ch->getZLocation() -
+				CHUNK_WIDTH_AND_DEPTH);
+		chunk->create();
 		chunks[i][0][0] = chunk;
 
 		chunk->updateLightning();
@@ -387,7 +347,9 @@ void ChunkManager::moveChunksDown() {
 	// Create / load new chunks for the top row
 	for (int i = 0; i < m_derp; ++i) {
 		auto ch = chunks[i][0][m_derp - 2];
-		auto chunk = std::make_shared<Chunk>(ch->getXLocation(), ch->getZLocation() + CHUNK_WIDTH_AND_DEPTH);
+		auto chunk = std::make_shared<Chunk>(m_worldName, ch->getXLocation(), ch->getZLocation() +
+				CHUNK_WIDTH_AND_DEPTH);
+		chunk->create();
 		chunks[i][0][m_derp - 1] = chunk;
 
 		chunk->updateLightning();

@@ -24,107 +24,17 @@ namespace chunk {
 static int counter = 1;
 static const int maxCount = LAST_CUBE;
 
-Chunk::Chunk(int _x, int _z)
-		: m_xLocation {_x}, m_zLocation {_z}, m_isDirty {true} {
+Chunk::Chunk(string worldName, int x, int z)
+		: m_xLocation{x},
+		  m_zLocation{z},
+		  m_isDirty{true},
+		  m_name{createChunkName(worldName)}
+{
 
 	for (int i = 0; i < CHUNK_HEIGHT / GRAPHICAL_CHUNK_HEIGHT; ++i) {
 		m_graphicalChunks.push_back(shared_ptr<GraphicalChunk>());
 		dirtyRegions.emplace(i);
 	}
-
-	++counter;
-
-	for (int x = 0; x < m_width; ++x) {
-		m_vec.push_back(vector<vector<Voxel>>());
-		for (int y = 0; y < m_height; ++y) {
-			m_vec[x].push_back(vector<Voxel>());
-			for (int z = 0; z < m_depth; ++z) {
-				Voxel v;
-				v.lightValue = 0;
-				v.id = AIR;
-				m_vec[x][y].push_back(v);
-			}
-		}
-	}
-
-	NoiseMixer mixer;
-	mixer.addNoise(100.f, 15.f);
-	mixer.addNoise(50, 5);
-	mixer.addNoise(15, 3);
-
-	for (int x = 0; x < m_width; ++x) {
-		for (int z = 0; z < m_depth; ++z) {
-
-			int lol = mixer.computeNoise(m_xLocation + x, m_zLocation + z);
-
-			for (int y = 0; y < m_height; ++y) {
-				if (counter > maxCount)
-					counter = 0;
-
-				Voxel &v = m_vec[x][y][z];
-
-				if (y == 0) {
-					v.id = BED_ROCK;
-					continue;
-				}
-				if (y < lol) {
-					v.id = counter;
-				}
-			}
-		}
-	}
-
-
-}
-
-Chunk::Chunk(std::string name, int x, int z)
-		: m_xLocation {x}, m_zLocation {z}, m_isDirty {false} {
-
-	for (int i = 0; i < CHUNK_HEIGHT / GRAPHICAL_CHUNK_HEIGHT; ++i) {
-		m_graphicalChunks.push_back(shared_ptr<GraphicalChunk>());
-		dirtyRegions.emplace(i);
-	}
-
-	vector<string> list;
-	ifstream inStream;
-	string line;
-
-	string file = config::dataFolder + name + "_" + std::to_string(x) + "_"
-			+ std::to_string(z) + ".chunk";
-	inStream.open(file);
-
-	if (inStream.fail()) {
-		for (int i = 0; i < 10; ++i)
-			cout << "Failed to load chunk file: " << file << "\n";
-	}
-
-	// Add all lines to the vector
-	while (getline(inStream, line))
-		list.push_back(line);
-
-	inStream.close();
-
-	int counter = 0;
-	for (int i = 0; i < m_width; ++i) {
-		m_vec.push_back(vector<vector<Voxel>>());
-
-		for (int j = 0; j < m_height; ++j) {
-			m_vec[i].push_back(vector<Voxel>());
-
-			for (int k = 0; k < m_depth; ++k) {
-				char voxelId = std::stoi(list[counter]);
-				counter++;
-				m_vec[i][j].push_back(Voxel {voxelId, 0});
-			}
-		}
-	}
-
-	vector<vec3> lightPropagate;
-	doSunLightning(lightPropagate);
-
-	for (vec3 vec : lightPropagate)
-		propagateLight(vec.x, vec.y, vec.z);
-
 }
 
 Chunk::~Chunk() {
@@ -137,8 +47,13 @@ Chunk::~Chunk() {
 // Member Functions########################################
 // ########################################################
 
-void Chunk::generate() {
-
+void Chunk::create() {
+	ifstream stream;
+	stream.open(m_name);
+	if (stream.fail())
+		generateChunk();
+	else
+		loadChunk(stream);
 }
 
 Voxel Chunk::getVoxel(int x, int y, int z) {
@@ -393,6 +308,90 @@ std::string Chunk::createChunkName(std::string worldName) {
 	return config::dataFolder + worldName + "_" +
 			std::to_string(m_xLocation) + "_" +
 			std::to_string(m_zLocation) + ".chunk";
+}
+
+void Chunk::loadChunk(std::ifstream &inStream) {
+
+	m_isDirty = false;
+
+	vector<string> list;
+	string line;
+
+	// Add all lines to the vector
+	while (getline(inStream, line))
+		list.push_back(line);
+
+	inStream.close();
+
+	int counter = 0;
+	for (int i = 0; i < m_width; ++i) {
+		m_vec.push_back(vector<vector<Voxel>>());
+
+		for (int j = 0; j < m_height; ++j) {
+			m_vec[i].push_back(vector<Voxel>());
+
+			for (int k = 0; k < m_depth; ++k) {
+				char voxelId = std::stoi(list[counter]);
+				counter++;
+				m_vec[i][j].push_back(Voxel {voxelId, 0});
+			}
+		}
+	}
+
+	vector<vec3> lightPropagate;
+	doSunLightning(lightPropagate);
+
+	for (vec3 vec : lightPropagate)
+		propagateLight(vec.x, vec.y, vec.z);
+
+
+}
+
+void Chunk::generateChunk() {
+	++counter;
+
+	m_isDirty = true;
+
+	for (int x = 0; x < m_width; ++x) {
+		m_vec.push_back(vector<vector<Voxel>>());
+		for (int y = 0; y < m_height; ++y) {
+			m_vec[x].push_back(vector<Voxel>());
+			for (int z = 0; z < m_depth; ++z) {
+				Voxel v;
+				v.lightValue = 0;
+				v.id = AIR;
+				m_vec[x][y].push_back(v);
+			}
+		}
+	}
+
+	NoiseMixer mixer;
+	mixer.addNoise(100.f, 15.f);
+	mixer.addNoise(50, 5);
+	mixer.addNoise(15, 3);
+
+	for (int x = 0; x < m_width; ++x) {
+		for (int z = 0; z < m_depth; ++z) {
+
+			int lol = mixer.computeNoise(m_xLocation + x, m_zLocation + z);
+
+			for (int y = 0; y < m_height; ++y) {
+				if (counter > maxCount)
+					counter = 0;
+
+				Voxel &v = m_vec[x][y][z];
+
+				if (y == 0) {
+					v.id = BED_ROCK;
+					continue;
+				}
+				if (y < lol) {
+					v.id = counter;
+				}
+			}
+		}
+	}
+
 }
 
 Voxel* Chunk::getVoxel2(int x, int y, int z) {
