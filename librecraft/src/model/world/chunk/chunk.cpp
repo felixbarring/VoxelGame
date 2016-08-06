@@ -137,6 +137,10 @@ Chunk::~Chunk() {
 // Member Functions########################################
 // ########################################################
 
+void Chunk::generate() {
+
+}
+
 Voxel Chunk::getVoxel(int x, int y, int z) {
 	return m_vec[x][y][z];
 }
@@ -384,6 +388,12 @@ void Chunk::storeChunk(string worldName) {
 // ############################################################################
 // Private Methods -------------------------------------------------------------
 // ############################################################################
+
+std::string Chunk::createChunkName(std::string worldName) {
+	return config::dataFolder + worldName + "_" +
+			std::to_string(m_xLocation) + "_" +
+			std::to_string(m_zLocation) + ".chunk";
+}
 
 Voxel* Chunk::getVoxel2(int x, int y, int z) {
 	if (x < m_width && x >= 0 && y < m_height && y >= 0 && z < m_depth

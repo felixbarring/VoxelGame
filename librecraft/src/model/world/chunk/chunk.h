@@ -47,6 +47,8 @@ public:
 // Member Functions########################################
 // ########################################################
 
+	void generate();
+
 	int getXLocation() { return m_xLocation; }
 	int getZLocation() { return m_zLocation; }
 
@@ -85,6 +87,8 @@ public:
 // ########################################################
 
 private:
+
+	std::string createChunkName(std::string worldName);
 
 	Voxel* getVoxel2(int x, int y, int z);
 
@@ -132,6 +136,8 @@ private:
 
 	int m_xLocation, m_zLocation;
 	bool m_isDirty;
+
+	std::string m_name;
 
 	// Should be somewhere else?
 	const int m_directSunlight = 15;
