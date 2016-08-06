@@ -96,6 +96,8 @@ private:
 	glm::vec3 m_intersectedCube;
 	glm::vec3 m_previousCube;
 
+	ThreadPool m_threadPool{8};
+
 };
 
 } /* namespace chunk */

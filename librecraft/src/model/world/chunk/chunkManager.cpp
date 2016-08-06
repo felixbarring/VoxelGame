@@ -260,17 +260,29 @@ void ChunkManager::moveChunksRight() {
 		}
 	}
 
-	// Create / load new chunks for the left row
-	for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
-		auto ch = chunks[0 + 1][0][i];
-		auto chunk = std::make_shared<Chunk>(m_worldName, ch->getXLocation() - CHUNK_WIDTH_AND_DEPTH,
-				ch->getZLocation());
-		chunk->create();
-		chunks[0][0][i] = chunk;
+	m_threadPool.enqueue([this]{
+		// Create / load new chunks for the left row
+		for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
+			auto ch = chunks[0 + 1][0][i];
+			auto chunk = std::make_shared<Chunk>(m_worldName, ch->getXLocation() - CHUNK_WIDTH_AND_DEPTH,
+					ch->getZLocation());
+			chunk->create();
+			chunks[0][0][i] = chunk;
 
-		chunk->updateLightning();
-		chunk->updateGraphics();
-	}
+			chunk->updateLightning();
+			chunk->updateGraphics();
+		}
+
+		for (int i = 0; i < m_lenghtAcrossMatrix; ++i)
+			chunks[0][0][i]->waitUntilCreated();
+
+		for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
+			auto chunk = chunks[0][0][i];
+			chunk->removeAllNeighbors();
+			chunk->storeChunk(m_worldName);
+		}
+
+	});
 }
 
 void ChunkManager::moveChunksLeft() {
@@ -291,17 +303,26 @@ void ChunkManager::moveChunksLeft() {
 		}
 	}
 
-	// Create / load new chunks for the right row
-	for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
-		auto ch = chunks[m_lenghtAcrossMatrix - 2][0][i];
-		auto chunk = std::make_shared<Chunk>(m_worldName, ch->getXLocation() +
-				CHUNK_WIDTH_AND_DEPTH, ch->getZLocation());
-		chunk->create();
-		chunks[m_lenghtAcrossMatrix - 1][0][i] = chunk;
+	m_threadPool.enqueue([this]{
+		// Create / load new chunks for the right row
+		for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
+			auto ch = chunks[m_lenghtAcrossMatrix - 2][0][i];
+			auto chunk = std::make_shared<Chunk>(m_worldName, ch->getXLocation() +
+					CHUNK_WIDTH_AND_DEPTH, ch->getZLocation());
+			chunk->create();
+			chunks[m_lenghtAcrossMatrix - 1][0][i] = chunk;
+		}
 
-		chunk->updateLightning();
-		chunk->updateGraphics();
-	}
+		for (int i = 0; i < m_lenghtAcrossMatrix; ++i)
+			chunks[m_lenghtAcrossMatrix - 1][0][i]->waitUntilCreated();
+
+		for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
+			auto chunk = chunks[m_lenghtAcrossMatrix - 1][0][i];
+			chunk->updateLightning();
+			chunk->updateGraphics();
+		}
+
+	});
 }
 
 void ChunkManager::moveChunksUp() {
@@ -322,17 +343,25 @@ void ChunkManager::moveChunksUp() {
 		}
 	}
 
-	// Create / load new chunks for the bottom row
-	for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
-		auto ch = chunks[i][0][0 + 1];
-		auto chunk = std::make_shared<Chunk>(m_worldName, ch->getXLocation(), ch->getZLocation() -
-				CHUNK_WIDTH_AND_DEPTH);
-		chunk->create();
-		chunks[i][0][0] = chunk;
+	m_threadPool.enqueue([this] {
+		// Create / load new chunks for the bottom row
+		for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
+			auto ch = chunks[i][0][0 + 1];
+			auto chunk = std::make_shared<Chunk>(m_worldName, ch->getXLocation(), ch->getZLocation() -
+					CHUNK_WIDTH_AND_DEPTH);
+			chunk->create();
+			chunks[i][0][0] = chunk;
+		}
 
-		chunk->updateLightning();
-		chunk->updateGraphics();
-	}
+		for (int i = 0; i < m_lenghtAcrossMatrix; ++i)
+			chunks[i][0][0]->waitUntilCreated();
+
+		for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
+			auto chunk = chunks[i][0][0];
+			chunk->updateLightning();
+			chunk->updateGraphics();
+		}
+	});
 }
 
 void ChunkManager::moveChunksDown() {
@@ -353,17 +382,29 @@ void ChunkManager::moveChunksDown() {
 		}
 	}
 
-	// Create / load new chunks for the top row
-	for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
-		auto ch = chunks[i][0][m_lenghtAcrossMatrix - 2];
-		auto chunk = std::make_shared<Chunk>(m_worldName, ch->getXLocation(), ch->getZLocation() +
-				CHUNK_WIDTH_AND_DEPTH);
-		chunk->create();
-		chunks[i][0][m_lenghtAcrossMatrix - 1] = chunk;
+	m_threadPool.enqueue([this]{
+		// Create / load new chunks for the top row
+		for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
+			auto ch = chunks[i][0][m_lenghtAcrossMatrix - 2];
+			auto chunk = std::make_shared<Chunk>(m_worldName, ch->getXLocation(), ch->getZLocation() +
+					CHUNK_WIDTH_AND_DEPTH);
+			chunk->create();
+			chunks[i][0][m_lenghtAcrossMatrix - 1] = chunk;
 
-		chunk->updateLightning();
-		chunk->updateGraphics();
-	}
+			chunk->updateLightning();
+			chunk->updateGraphics();
+		}
+
+		for (int i = 0; i < m_lenghtAcrossMatrix; ++i)
+			chunks[i][0][m_lenghtAcrossMatrix - 1]->waitUntilCreated();
+
+		for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
+			auto chunk = chunks[i][0][m_lenghtAcrossMatrix - 1];
+			chunk->updateLightning();
+			chunk->updateGraphics();
+		}
+	});
+
 }
 
 }
