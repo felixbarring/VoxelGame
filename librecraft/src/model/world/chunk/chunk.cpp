@@ -22,7 +22,6 @@ namespace chunk {
 
 static int counter = 1;
 static const int maxCount = LAST_CUBE;
-static ThreadPool s_threadPool{8};
 static std::mutex s_mutex;
 
 Chunk::Chunk(string worldName, int x, int z)
@@ -259,16 +258,16 @@ void Chunk::updateGraphics() {
 	vector<vector<vector<Voxel>>> *back = nullptr;
 
 	if (m_rightNeighbor.get())
-	right = &(m_rightNeighbor->m_vec);
+		right = &(m_rightNeighbor->m_vec);
 
 	if (m_leftNeighbor.get())
-	left = &(m_leftNeighbor->m_vec);
+		left = &(m_leftNeighbor->m_vec);
 
 	if (m_frontNeighbor.get())
-	front = &(m_frontNeighbor->m_vec);
+		front = &(m_frontNeighbor->m_vec);
 
 	if (m_backNeighbor.get())
-	back = &(m_backNeighbor->m_vec);
+		back = &(m_backNeighbor->m_vec);
 
 //	int counter = 0;
 	for (auto i : m_dirtyRegions) {
