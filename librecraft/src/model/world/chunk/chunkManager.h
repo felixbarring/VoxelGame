@@ -72,6 +72,8 @@ public:
 
 private:
 
+	void connectChunks();
+
 	void moveChunksRight();
 
 	void moveChunksLeft();
@@ -90,13 +92,15 @@ private:
 	int m_xOffset{0};
 	int m_zOffset{0};
 
-	std::string m_worldName;
+	std::string m_worldName{};
 
 	glm::vec3 m_center{4, 0, 4};
-	glm::vec3 m_intersectedCube;
-	glm::vec3 m_previousCube;
+	glm::vec3 m_intersectedCube{};
+	glm::vec3 m_previousCube{};
 
+	// TODO Figure out better names
 	ThreadPool m_threadPool{8};
+	ThreadPool m_threadPool2{1};
 
 };
 

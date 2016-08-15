@@ -52,9 +52,8 @@ public:
 
 	void create();
 
-	void waitUntilCreated();
-
 	int getXLocation() { return m_xLocation; }
+
 	int getZLocation() { return m_zLocation; }
 
 	Voxel getVoxel(int x, int y, int z);
@@ -99,6 +98,11 @@ private:
 
 	void generateChunk();
 
+	/**
+	 * Gets the voxel at the given x, y, z location.
+	 * Will work if the voxel is in a neighbor chunk and adjacent to the chunk.
+	 *
+	 */
 	Voxel* getVoxel2(int x, int y, int z);
 
 	void updateLightningCubeRemoved(Voxel& voxel, int x, int y, int z);
@@ -117,11 +121,7 @@ private:
 	 * @param y
 	 * @param z
 	 */
-	void doSunLightning(std::vector<glm::vec3> &lightPropagate, int x, int y,
-			int z);
-
-	// Much Optimized version of updateLightning
-	void updateLightning2();
+	void doSunLightning(std::vector<glm::vec3> &lightPropagate, int x, int y, int z);
 
 	void collectLightFromRightNeighbor(std::vector<glm::vec3> &lightPropagate);
 
@@ -143,10 +143,11 @@ private:
 
 	bool containsOnlyAir(int region);
 
-	int m_xLocation, m_zLocation;
+	int m_xLocation;
+	int m_zLocation;
 	bool m_isDirty;
 
-	std::string m_name;
+	std::string m_name{};
 
 	// Should be somewhere else?
 	const int m_directSunlight = 15;
@@ -155,22 +156,19 @@ private:
 	int m_height = config::chunk_data::CHUNK_HEIGHT;
 	int m_depth = config::chunk_data::CHUNK_WIDTH_AND_DEPTH;
 
-	std::vector<std::vector<std::vector<Voxel>>> m_vec;
+	std::vector<std::vector<std::vector<Voxel>>> m_vec{};
 
-	std::vector<std::shared_ptr<graphics::GraphicalChunk>> m_graphicalChunks;
+	std::vector<std::shared_ptr<graphics::GraphicalChunk>> m_graphicalChunks{};
 
-	std::shared_ptr<Chunk> m_rightNeighbor;
-	std::shared_ptr<Chunk> m_leftNeighbor;
+	std::shared_ptr<Chunk> m_rightNeighbor{};
+	std::shared_ptr<Chunk> m_leftNeighbor{};
 
-	std::shared_ptr<Chunk> m_frontNeighbor;
-	std::shared_ptr<Chunk> m_backNeighbor;
+	std::shared_ptr<Chunk> m_frontNeighbor{};
+	std::shared_ptr<Chunk> m_backNeighbor{};
 
-	std::set<int> dirtyRegions{};
+	std::set<int> m_dirtyRegions{};
 
-	std::mutex m_mutex;
-	std::condition_variable m_condition;
-	bool m_isCreated{false};
-
+	std::condition_variable m_condition{};
 };
 
 }

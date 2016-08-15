@@ -137,7 +137,7 @@ void InGame::update(float timePassed) {
 
 		vec3 dir = m_player.getViewingDirection();
 		string derp =
-				"Vied direction: " +
+				"View direction: " +
 				to_string(dir.x) + ", " +
 				to_string(dir.y) + ", "	+
 				to_string(dir.z);

@@ -204,6 +204,7 @@ void Game::loadExistingWorld(string name) {
 //		loadingScreen.update();
 //
 //	m_currentState = m_inGame;
+
 }
 
 void Game::changeStateToMainMenu() {

@@ -120,7 +120,7 @@ int direction = 1;
 
 void ChunkBatcher::draw() {
 
-	std::cout << "Number of batches: " << m_batches.size() << "\n",
+//	std::cout << "Number of batches: " << m_batches.size() << "\n",
 
 	m_program->bind();
 

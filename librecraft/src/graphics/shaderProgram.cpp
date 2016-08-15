@@ -24,9 +24,8 @@ ShaderProgram::ShaderProgram(const char *vertexSource,
 
 	programID = glCreateProgram();
 
-	if (programID == 0) {
+	if (programID == 0)
 		std::cout << "Error, could not create a program";
-	}
 
 	glAttachShader(programID, vertexID);
 	glAttachShader(programID, fragmentID);

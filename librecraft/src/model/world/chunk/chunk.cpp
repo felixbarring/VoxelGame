@@ -34,7 +34,7 @@ Chunk::Chunk(string worldName, int x, int z)
 
 	for (int i = 0; i < CHUNK_HEIGHT / GRAPHICAL_CHUNK_HEIGHT; ++i) {
 		m_graphicalChunks.push_back(shared_ptr<GraphicalChunk>());
-		dirtyRegions.emplace(i);
+		m_dirtyRegions.emplace(i);
 	}
 }
 
@@ -49,18 +49,12 @@ Chunk::~Chunk() {
 // ########################################################
 
 void Chunk::create() {
-	m_mutex.lock();
-
 	ifstream stream;
 	stream.open(m_name);
 	if (stream.fail())
-		s_threadPool.enqueue([this]{generateChunk();});
+		generateChunk();
 	else
-		s_threadPool.enqueue([this]{loadChunk();});
-}
-
-void Chunk::waitUntilCreated() {
-	unique_lock<mutex> lock(m_mutex);
+		loadChunk();
 }
 
 Voxel Chunk::getVoxel(int x, int y, int z) {
@@ -125,10 +119,6 @@ void Chunk::removeAllNeighbors() {
 }
 
 void Chunk::updateLightning() {
-
-	unique_lock<mutex> lock(m_mutex);
-
-	m_condition.wait(lock, [this]{ return !m_isCreated; });
 
 	vector<vec3> lightPropagate;
 
@@ -263,8 +253,6 @@ void Chunk::updateLightning() {
 
 void Chunk::updateGraphics() {
 
-	lock_guard<mutex> lock(m_mutex);
-
 	vector<vector<vector<Voxel>>>*right = nullptr;
 	vector<vector<vector<Voxel>>> *left = nullptr;
 	vector<vector<vector<Voxel>>> *front = nullptr;
@@ -283,7 +271,7 @@ void Chunk::updateGraphics() {
 	back = &(m_backNeighbor->m_vec);
 
 //	int counter = 0;
-	for (auto i : dirtyRegions) {
+	for (auto i : m_dirtyRegions) {
 //		++counter;
 		ChunkBatcher::getInstance().removeBatch(m_graphicalChunks[i]);
 		m_graphicalChunks[i].reset(new GraphicalChunk(m_xLocation,
@@ -294,7 +282,7 @@ void Chunk::updateGraphics() {
 
 //	std::cout << " --- " << counter << "\n";
 
-	dirtyRegions.clear();
+	m_dirtyRegions.clear();
 }
 
 void Chunk::storeChunk(string worldName) {
@@ -354,14 +342,6 @@ void Chunk::loadChunk() {
 		}
 	}
 
-	vector<vec3> lightPropagate;
-	doSunLightning(lightPropagate);
-
-	for (vec3 vec : lightPropagate)
-		propagateLight(vec.x, vec.y, vec.z);
-
-	m_mutex.unlock();
-
 }
 
 void Chunk::generateChunk() {
@@ -413,8 +393,6 @@ void Chunk::generateChunk() {
 			}
 		}
 	}
-
-	m_mutex.unlock();
 }
 
 Voxel* Chunk::getVoxel2(int x, int y, int z) {
@@ -565,27 +543,6 @@ void Chunk::doSunLightning(vector<vec3> &lightPropagate, int x, int y, int z) {
 			break;
 		}
 	}
-}
-
-void Chunk::updateLightning2() {
-	vector<vec3> lightPropagate;
-	doSunLightning(lightPropagate);
-
-	if (m_rightNeighbor.get())
-		collectLightFromRightNeighbor(lightPropagate);
-
-	if (m_leftNeighbor.get())
-		collectLightFromLeftNeighbor(lightPropagate);
-
-	if (m_backNeighbor.get())
-		collectLightFromBackNeighbor(lightPropagate);
-
-	if (m_frontNeighbor.get())
-		collectLightFromFrontNeighbor(lightPropagate);
-
-	for (glm::vec3 vec : lightPropagate)
-		propagateLight(vec.x, vec.y, vec.z);
-
 }
 
 void Chunk::collectLightFromRightNeighbor(vector<vec3> &lightPropagate) {
@@ -809,7 +766,7 @@ void Chunk::propagateLight(int x, int y, int z) {
 
 void Chunk::updateDirtyRegions(int y) {
 	int lol = y / GRAPHICAL_CHUNK_HEIGHT;
-	dirtyRegions.emplace(lol);
+	m_dirtyRegions.emplace(lol);
 }
 
 void Chunk::dePropagateLight(int x, int y, int z, int _lightValue) {

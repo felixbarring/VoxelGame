@@ -1,6 +1,7 @@
 #include "chunkManager.h"
 
 #include <math.h>
+#include <algorithm>
 #include <chrono>
 #include <limits>
 #include <iostream>
@@ -32,40 +33,42 @@ void ChunkManager::createWorld(string worldName) {
 	const int yMax = NUMBER_OF_CHUNKS_Y;
 	const int zMax = NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * 2 + 1;
 
+	vector<future<void>> chunkCreationFutures;
+
 	// Create the Chunks
 	for (int x = 0; x < xMax; ++x) {
 		for (int z = 0; z < zMax; ++z) {
 			auto chunk = new Chunk{worldName, x * CHUNK_WIDTH_AND_DEPTH, z * CHUNK_WIDTH_AND_DEPTH};
-			chunk->create();
+			chunkCreationFutures.push_back(m_threadPool.enqueue([chunk] { chunk->create(); }));
 			chunks[x][0][z].reset(chunk);
 		}
 	}
 
-	// Connect the Chunks
-	for (int x = 0; x < xMax; ++x) {
-		for (int z = 0; z < zMax; ++z) {
-			shared_ptr<Chunk> current = chunks[x][0][z];
-			if (x != xMax - 1) {
-				shared_ptr<Chunk> right = chunks[x + 1][0][z];
-				current->setRightNeighbor(right);
-				right->setLeftNeighbor(current);
-	 		}
-			if (z != zMax - 1) {
-				shared_ptr<Chunk> back = chunks[x][0][z + 1];
-				current->setBackNeighbor(back);
-				back->setFrontNeighbor(current);
-			}
-		}
-	}
+	connectChunks();
+
+//	// Connect the Chunks
+//	for (int x = 0; x < xMax; ++x) {
+//		for (int z = 0; z < zMax; ++z) {
+//			shared_ptr<Chunk> current = chunks[x][0][z];
+//			if (x != xMax - 1) {
+//				shared_ptr<Chunk> right = chunks[x + 1][0][z];
+//				current->setRightNeighbor(right);
+//				right->setLeftNeighbor(current);
+//	 		}
+//			if (z != zMax - 1) {
+//				shared_ptr<Chunk> back = chunks[x][0][z + 1];
+//				current->setBackNeighbor(back);
+//				back->setFrontNeighbor(current);
+//			}
+//		}
+//	}
+
+	// Wait for all the chunks to be generated
+	for_each(chunkCreationFutures.begin(), chunkCreationFutures.end(), [](future<void> &f){ f.get(); });
 
 	for (int x = 0; x < xMax; ++x) {
 		for (int z = 0; z < zMax; ++z) {
-			chunks[x][0][z]->waitUntilCreated();
-		}
-	}
-
-	for (int x = 0; x < xMax; ++x) {
-		for (int z = 0; z < zMax; ++z) {
+			// This could also be done in parallel if we are clever
 			chunks[x][0][z]->updateLightning();
 			chunks[x][0][z]->updateGraphics();
 		}
@@ -242,11 +245,36 @@ bool ChunkManager::intersectWithSolidCube(vec3 origin, vec3 direction,
 	return false;
 }
 
+
+void ChunkManager::connectChunks() {
+
+	const int xMax = m_lenghtAcrossMatrix;
+	const int yMax = m_lenghtAcrossMatrix;
+	const int zMax = m_lenghtAcrossMatrix;
+
+	for (int x = 0; x < xMax; ++x) {
+		for (int z = 0; z < zMax; ++z) {
+			shared_ptr<Chunk> current = chunks[x][0][z];
+			if (x != xMax - 1) {
+				shared_ptr<Chunk> right = chunks[x + 1][0][z];
+				current->setRightNeighbor(right);
+				right->setLeftNeighbor(current);
+			}
+			if (z != zMax - 1) {
+				shared_ptr<Chunk> back = chunks[x][0][z + 1];
+				current->setBackNeighbor(back);
+				back->setFrontNeighbor(current);
+			}
+		}
+	}
+}
+
+// TODO Connect the chunks when they have been loaded
+
 void ChunkManager::moveChunksRight() {
 	m_xOffset += CHUNK_WIDTH_AND_DEPTH;
 
-	// First disconnect all the rightmost chunks
-	// and store them to disk
+	// First disconnect all the rightmost chunks and store them to disk
 	for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
 		auto chunk = chunks[m_lenghtAcrossMatrix - 1][0][i];
 		chunk->removeAllNeighbors();
@@ -255,31 +283,34 @@ void ChunkManager::moveChunksRight() {
 
 	// Then move all chunks one step to the right
 	for (int i = m_lenghtAcrossMatrix - 1; i > 0; --i) {
-		for (int j = 0; j < m_lenghtAcrossMatrix; ++j) {
+		for (int j = 0; j < m_lenghtAcrossMatrix; ++j)
 			chunks[i][0][j] = chunks[i - 1][0][j];
-		}
 	}
 
-	m_threadPool.enqueue([this]{
-		// Create / load new chunks for the left row
+	m_threadPool2.enqueue([this]{
+
+		vector<future<void>> chunkCreationFutures;
+
+		// Create new chunks for the left row
 		for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
 			auto ch = chunks[0 + 1][0][i];
 			auto chunk = std::make_shared<Chunk>(m_worldName, ch->getXLocation() - CHUNK_WIDTH_AND_DEPTH,
 					ch->getZLocation());
-			chunk->create();
-			chunks[0][0][i] = chunk;
 
-			chunk->updateLightning();
-			chunk->updateGraphics();
+			// Do this in another Thread Pool
+			chunkCreationFutures.push_back(m_threadPool.enqueue([chunk] { chunk->create(); }));
+			chunks[0][0][i] = chunk;
 		}
 
-		for (int i = 0; i < m_lenghtAcrossMatrix; ++i)
-			chunks[0][0][i]->waitUntilCreated();
+		connectChunks();
+
+		for_each(chunkCreationFutures.begin(), chunkCreationFutures.end(), [](future<void> &f) { f.get(); });
 
 		for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
+			// TODO Do this in threadpools...
 			auto chunk = chunks[0][0][i];
-			chunk->removeAllNeighbors();
-			chunk->storeChunk(m_worldName);
+			chunk->updateLightning();
+			chunk->updateGraphics();
 		}
 
 	});
@@ -298,23 +329,26 @@ void ChunkManager::moveChunksLeft() {
 
 	// Then move all chunks one step to the left
 	for (int i = 0; i < m_lenghtAcrossMatrix - 1; ++i) {
-		for (int j = 0; j < m_lenghtAcrossMatrix; ++j) {
+		for (int j = 0; j < m_lenghtAcrossMatrix; ++j)
 			chunks[i][0][j] = chunks[i + 1][0][j];
-		}
 	}
 
 	m_threadPool.enqueue([this]{
-		// Create / load new chunks for the right row
+
+		vector<future<void>> chunkCreationFutures;
+
+		// Create new chunks for the right row
 		for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
 			auto ch = chunks[m_lenghtAcrossMatrix - 2][0][i];
-			auto chunk = std::make_shared<Chunk>(m_worldName, ch->getXLocation() +
-					CHUNK_WIDTH_AND_DEPTH, ch->getZLocation());
-			chunk->create();
+			auto chunk = std::make_shared<Chunk>(m_worldName, ch->getXLocation() + CHUNK_WIDTH_AND_DEPTH,
+					ch->getZLocation());
+			chunkCreationFutures.push_back(m_threadPool.enqueue([chunk] { chunk->create(); } ));
 			chunks[m_lenghtAcrossMatrix - 1][0][i] = chunk;
 		}
 
-		for (int i = 0; i < m_lenghtAcrossMatrix; ++i)
-			chunks[m_lenghtAcrossMatrix - 1][0][i]->waitUntilCreated();
+		connectChunks();
+
+		for_each(chunkCreationFutures.begin(), chunkCreationFutures.end(), [] (future<void> &f) { f.get(); });
 
 		for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
 			auto chunk = chunks[m_lenghtAcrossMatrix - 1][0][i];
@@ -344,17 +378,21 @@ void ChunkManager::moveChunksUp() {
 	}
 
 	m_threadPool.enqueue([this] {
+
+		vector<future<void>> chunkCreationFutures;
+
 		// Create / load new chunks for the bottom row
 		for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
 			auto ch = chunks[i][0][0 + 1];
 			auto chunk = std::make_shared<Chunk>(m_worldName, ch->getXLocation(), ch->getZLocation() -
 					CHUNK_WIDTH_AND_DEPTH);
-			chunk->create();
+			chunkCreationFutures.push_back(m_threadPool.enqueue([chunk] { chunk->create(); } ));
 			chunks[i][0][0] = chunk;
 		}
 
-		for (int i = 0; i < m_lenghtAcrossMatrix; ++i)
-			chunks[i][0][0]->waitUntilCreated();
+		connectChunks();
+
+		for_each(chunkCreationFutures.begin(), chunkCreationFutures.end(), [] (future<void> &f) { f.get(); });
 
 		for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
 			auto chunk = chunks[i][0][0];
@@ -377,26 +415,26 @@ void ChunkManager::moveChunksDown() {
 
 	// Then move all chunks one step down
 	for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
-		for (int j = 0; j < m_lenghtAcrossMatrix - 1; ++j) {
+		for (int j = 0; j < m_lenghtAcrossMatrix - 1; ++j)
 			chunks[i][0][j] = chunks[i][0][j + 1];
-		}
 	}
 
-	m_threadPool.enqueue([this]{
+	m_threadPool.enqueue([this] {
+
+		vector<future<void>> chunkCreationFutures;
+
 		// Create / load new chunks for the top row
 		for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
 			auto ch = chunks[i][0][m_lenghtAcrossMatrix - 2];
 			auto chunk = std::make_shared<Chunk>(m_worldName, ch->getXLocation(), ch->getZLocation() +
 					CHUNK_WIDTH_AND_DEPTH);
-			chunk->create();
+			chunkCreationFutures.push_back(m_threadPool.enqueue([chunk] { chunk->create(); } ));
 			chunks[i][0][m_lenghtAcrossMatrix - 1] = chunk;
-
-			chunk->updateLightning();
-			chunk->updateGraphics();
 		}
 
-		for (int i = 0; i < m_lenghtAcrossMatrix; ++i)
-			chunks[i][0][m_lenghtAcrossMatrix - 1]->waitUntilCreated();
+		connectChunks();
+
+		for_each(chunkCreationFutures.begin(), chunkCreationFutures.end(), [] (future<void> &f) { f.get(); });
 
 		for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
 			auto chunk = chunks[i][0][m_lenghtAcrossMatrix - 1];
