@@ -146,7 +146,7 @@ private:
 	const int m_xLocation;
 	const int m_zLocation;
 	bool m_isDirty;
-	bool m_
+//	bool m_
 
 	std::string m_name{};
 
