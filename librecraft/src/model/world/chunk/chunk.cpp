@@ -117,6 +117,7 @@ void Chunk::removeAllNeighbors() {
 	}
 }
 
+//TODO Redo the implementation of this
 void Chunk::updateLightning() {
 
 	vector<vec3> lightPropagate;
@@ -132,9 +133,9 @@ void Chunk::updateLightning() {
 	vector<vec3> lightPropagateBack;
 	vector<vec3> lightPropagateFront;
 
-	doSunLightning(lightPropagate);
-
 	// Sun light ####################################################
+
+	doSunLightning(lightPropagate);
 
 	if (m_rightNeighbor) {
 

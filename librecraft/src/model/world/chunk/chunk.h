@@ -28,21 +28,13 @@ public:
 // ########################################################
 
 	/**
-	 * Creates a new chunk
-	 *
-	 * @param x The x coordinate of the chunk
-	 * @param z The z coordinate of the chunk
-	 */
-	Chunk(int x, int z);
-
-	/**
-	 * Creates the chunk from file
+	 * Creates a chunk. The function create needs to be called to complete the creation.
 	 *
 	 * @param name The name of the world that the chunk is in
 	 * @param x The x coordinate of the chunk
 	 * @param z The z coordinate of the chunk
 	 */
-	Chunk(std::string name, int x, int z);
+	Chunk(std::string worldName, int x, int z);
 
 	virtual ~Chunk();
 
@@ -50,10 +42,22 @@ public:
 // Member Functions########################################
 // ########################################################
 
+	/**
+	 * This function should be called in order to finish the creation of the chunk. Forgetting to call this function is
+	 * an error. If there exists a file that corresponds to the location and worldName, the data will be loaded from
+	 * file. Otherwise it will be generated using noice algorithms. This function can be run in parallel, it will not
+	 * try to access data from neighbor chunks or any other data that is not read only.
+	 */
 	void create();
 
+	/**
+	 * @return The x location of the chunk
+	 */
 	int getXLocation() { return m_xLocation; }
 
+	/**
+	 * @return The z location of the chunk
+	 */
 	int getZLocation() { return m_zLocation; }
 
 	Voxel getVoxel(int x, int y, int z);
@@ -71,18 +75,14 @@ public:
 	void setBackNeighbor(std::shared_ptr<Chunk> chunk);
 
 	/**
-	 * \brief Used when a chunk should be removed from memory
-	 *
-	 * Clears all pointers from this chunk to it's neighbors
-	 * and also all the pointer in the neighbors pointing to this chunk
+	 * Used when a chunk should be removed from memory. Clears all pointers from this chunk to its neighbors and also
+	 * all the pointers in the neighbors pointing to this chunk
 	 */
 	void removeAllNeighbors();
 
 	void updateLightning();
 
 	void updateGraphics();
-
-	// Loading/Storing
 
 	void storeChunk(std::string worldName);
 
@@ -143,18 +143,19 @@ private:
 
 	bool containsOnlyAir(int region);
 
-	int m_xLocation;
-	int m_zLocation;
+	const int m_xLocation;
+	const int m_zLocation;
 	bool m_isDirty;
+	bool m_
 
 	std::string m_name{};
 
 	// Should be somewhere else?
 	const int m_directSunlight = 15;
 
-	int m_width = config::chunk_data::CHUNK_WIDTH_AND_DEPTH;
-	int m_height = config::chunk_data::CHUNK_HEIGHT;
-	int m_depth = config::chunk_data::CHUNK_WIDTH_AND_DEPTH;
+	const int m_width = config::chunk_data::CHUNK_WIDTH_AND_DEPTH;
+	const int m_height = config::chunk_data::CHUNK_HEIGHT;
+	const int m_depth = config::chunk_data::CHUNK_WIDTH_AND_DEPTH;
 
 	std::vector<std::vector<std::vector<Voxel>>> m_vec{};
 
