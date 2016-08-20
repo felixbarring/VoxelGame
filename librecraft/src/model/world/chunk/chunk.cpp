@@ -56,7 +56,7 @@ void Chunk::create() {
 		loadChunk();
 }
 
-void Chunk::doSunLightning(vector<vec3> &lightPropagate) {
+void Chunk::doSunLightning() {
 	// Sun lightning, only air gets light
 	for (int x = 0; x < CHUNK_WIDTH_AND_DEPTH; ++x) {
 		for (int z = 0; z < CHUNK_WIDTH_AND_DEPTH; ++z) {
@@ -67,7 +67,7 @@ void Chunk::doSunLightning(vector<vec3> &lightPropagate) {
 						m_cubes[x][y][z].lightValue = 0;
 					} else {
 						m_cubes[x][y][z].lightValue = m_directSunlight;
-						lightPropagate.push_back(vec3(x, y, z));
+						m_lightsToPropagate.push_back(vec3(x, y, z));
 					}
 				} else {
 					foundSolid = true;
@@ -77,7 +77,14 @@ void Chunk::doSunLightning(vector<vec3> &lightPropagate) {
 	}
 }
 
-void Chunk::collectLightFromRightNeighbor(vector<vec3> &lightPropagate) {
+void Chunk::collectLightFromAllNeighbors() {
+	collectLightFromRightNeighbor();
+	collectLightFromLeftNeighbor();
+	collectLightFromBackNeighbor();
+	collectLightFromFrontNeighbor();
+}
+
+void Chunk::collectLightFromRightNeighbor() {
 	if (m_rightNeighbor.get()) {
 		for (int j = 0; j < CHUNK_HEIGHT; j++) {
 			for (int k = 0; k < CHUNK_WIDTH_AND_DEPTH; k++) {
@@ -87,14 +94,14 @@ void Chunk::collectLightFromRightNeighbor(vector<vec3> &lightPropagate) {
 						&& m_cubes[15][j][k].id == AIR
 						&& lv > m_cubes[15][j][k].lightValue) {
 					m_cubes[15][j][k].lightValue = lv;
-					lightPropagate.push_back(vec3(15, j, k));
+					m_lightsToPropagate.push_back(vec3(15, j, k));
 				}
 			}
 		}
 	}
 }
 
-void Chunk::collectLightFromLeftNeighbor(vector<vec3> &lightPropagate) {
+void Chunk::collectLightFromLeftNeighbor() {
 	if (m_leftNeighbor.get()) {
 		for (int j = 0; j < CHUNK_HEIGHT; j++) {
 			for (int k = 0; k < CHUNK_WIDTH_AND_DEPTH; k++) {
@@ -104,17 +111,15 @@ void Chunk::collectLightFromLeftNeighbor(vector<vec3> &lightPropagate) {
 						&& m_cubes[0][j][k].id == AIR
 						&& lv > m_cubes[0][j][k].lightValue) {
 					m_cubes[0][j][k].lightValue = lv;
-					lightPropagate.push_back(vec3(0, j, k));
+					m_lightsToPropagate.push_back(vec3(0, j, k));
 				}
 			}
 		}
 	}
 }
 
-void Chunk::collectLightFromBackNeighbor(vector<vec3> &lightPropagate) {
-
+void Chunk::collectLightFromBackNeighbor() {
 	if (m_backNeighbor.get()) {
-
 		for (int i = 0; i < CHUNK_WIDTH_AND_DEPTH; i++) {
 			for (int j = 0; j < CHUNK_HEIGHT; j++) {
 				char lv = m_backNeighbor->m_cubes[i][j][0].lightValue - 1;
@@ -124,14 +129,14 @@ void Chunk::collectLightFromBackNeighbor(vector<vec3> &lightPropagate) {
 						&& lv > m_cubes[i][j][15].lightValue) {
 
 					m_cubes[i][j][15].lightValue = lv;
-					lightPropagate.push_back(vec3(i, j, 15));
+					m_lightsToPropagate.push_back(vec3(i, j, 15));
 				}
 			}
 		}
 	}
 }
 
-void Chunk::collectLightFromFrontNeighbor(vector<vec3> &lightPropagate) {
+void Chunk::collectLightFromFrontNeighbor() {
 	if (m_frontNeighbor.get()) {
 		for (int i = 0; i < CHUNK_WIDTH_AND_DEPTH; i++) {
 			for (int j = 0; j < CHUNK_HEIGHT; j++) {
@@ -142,12 +147,16 @@ void Chunk::collectLightFromFrontNeighbor(vector<vec3> &lightPropagate) {
 						&& lv > m_cubes[i][j][0].lightValue) {
 
 					m_cubes[i][j][0].lightValue = lv;
-					propagateLight(i, j, 0);
-
+					m_lightsToPropagate.push_back(vec3(i, j, 0));
 				}
 			}
 		}
 	}
+}
+
+void Chunk::propagateLights() {
+	for (auto l : m_lightsToPropagate)
+		propagateLight(l.x, l.y, l.z);
 }
 
 //TODO Redo the implementation of this
@@ -155,138 +164,138 @@ void Chunk::collectLightFromFrontNeighbor(vector<vec3> &lightPropagate) {
 // First all new loaded chunks should do sunlightning
 // Then all new chunks should propagate.
 // And then all new chunks should collect light from neighbors that are not new and propagate that light.
-void Chunk::updateLightning() {
-
-	vector<vec3> lightPropagate;
-
-	vector<vec3> lightPropagateRight;
-	vector<vec3> lightPropagateRightBack;
-	vector<vec3> lightPropagateRightFront;
-
-	vector<vec3> lightPropagateLeft;
-	vector<vec3> lightPropagateLeftBack;
-	vector<vec3> lightPropagateLeftFront;
-
-	vector<vec3> lightPropagateBack;
-	vector<vec3> lightPropagateFront;
-
-	// Sun light ####################################################
-
-	doSunLightning(lightPropagate);
-
-	if (m_rightNeighbor) {
-
-		m_rightNeighbor->doSunLightning(lightPropagateRight);
-
-		if (m_rightNeighbor->m_backNeighbor)
-			m_rightNeighbor->m_backNeighbor->doSunLightning(
-					lightPropagateRightBack);
-
-		if (m_rightNeighbor->m_frontNeighbor)
-			m_rightNeighbor->m_frontNeighbor->doSunLightning(
-					lightPropagateRightFront);
-
-	}
-
-	if (m_leftNeighbor) {
-		m_leftNeighbor->doSunLightning(lightPropagateLeft);
-
-		if (m_leftNeighbor->m_backNeighbor)
-			m_leftNeighbor->m_backNeighbor->doSunLightning(
-					lightPropagateLeftBack);
-
-		if (m_leftNeighbor->m_frontNeighbor)
-			m_leftNeighbor->m_frontNeighbor->doSunLightning(
-					lightPropagateLeftFront);
-
-	}
-
-	if (m_backNeighbor)
-		m_backNeighbor->doSunLightning(lightPropagateBack);
-
-	if (m_frontNeighbor)
-		m_frontNeighbor->doSunLightning(lightPropagateFront);
-
-	// Propagate light ##############################################
-
-	for (vec3 vec : lightPropagate)
-		propagateLight(vec.x, vec.y, vec.z);
-
-	if (m_rightNeighbor) {
-		m_rightNeighbor->collectLightFromRightNeighbor(lightPropagateRight);
-		for (vec3 vec : lightPropagateRight)
-			m_rightNeighbor->propagateLight(vec.x, vec.y, vec.z);
-
-		if (m_rightNeighbor->m_backNeighbor.get()) {
-			m_rightNeighbor->m_backNeighbor->collectLightFromRightNeighbor(
-					lightPropagateRightBack);
-			m_rightNeighbor->m_backNeighbor->collectLightFromBackNeighbor(
-					lightPropagateRightBack);
-
-			for (vec3 vec : lightPropagateRightBack)
-				m_rightNeighbor->m_backNeighbor->propagateLight(vec.x, vec.y,
-						vec.z);
-
-		}
-
-		if (m_rightNeighbor->m_frontNeighbor) {
-			m_rightNeighbor->m_frontNeighbor->collectLightFromRightNeighbor(
-					lightPropagateRightFront);
-			m_rightNeighbor->m_frontNeighbor->collectLightFromFrontNeighbor(
-					lightPropagateRightFront);
-
-			for (vec3 vec : lightPropagateRightFront)
-				m_rightNeighbor->m_frontNeighbor->propagateLight(vec.x, vec.y,
-						vec.z);
-
-		}
-	}
-
-	if (m_leftNeighbor) {
-		m_leftNeighbor->collectLightFromLeftNeighbor(lightPropagateLeft);
-		for (vec3 vec : lightPropagateLeft)
-			m_leftNeighbor->propagateLight(vec.x, vec.y, vec.z);
-
-		if (m_leftNeighbor->m_backNeighbor.get()) {
-			m_leftNeighbor->m_backNeighbor->collectLightFromLeftNeighbor(
-					lightPropagateLeftBack);
-			m_leftNeighbor->m_backNeighbor->collectLightFromBackNeighbor(
-					lightPropagateLeftBack);
-
-			for (vec3 vec : lightPropagateLeftBack)
-				m_leftNeighbor->m_backNeighbor->propagateLight(vec.x, vec.y,
-						vec.z);
-
-		}
-
-		if (m_leftNeighbor->m_frontNeighbor) {
-			m_leftNeighbor->m_frontNeighbor->collectLightFromLeftNeighbor(
-					lightPropagateLeftFront);
-			m_leftNeighbor->m_frontNeighbor->collectLightFromFrontNeighbor(
-					lightPropagateLeftFront);
-
-			for (vec3 vec : lightPropagateLeftFront)
-				m_leftNeighbor->m_frontNeighbor->propagateLight(vec.x, vec.y,
-						vec.z);
-
-		}
-	}
-
-	if (m_backNeighbor) {
-		m_backNeighbor->collectLightFromBackNeighbor(lightPropagateBack);
-		for (vec3 vec : lightPropagateBack)
-			m_backNeighbor->propagateLight(vec.x, vec.y, vec.z);
-
-	}
-
-	if (m_frontNeighbor) {
-		m_frontNeighbor->collectLightFromFrontNeighbor(lightPropagateFront);
-		for (vec3 vec : lightPropagateFront)
-			m_frontNeighbor->propagateLight(vec.x, vec.y, vec.z);
-
-	}
-
-}
+//void Chunk::updateLightning() {
+//
+//	vector<vec3> lightPropagate;
+//
+//	vector<vec3> lightPropagateRight;
+//	vector<vec3> lightPropagateRightBack;
+//	vector<vec3> lightPropagateRightFront;
+//
+//	vector<vec3> lightPropagateLeft;
+//	vector<vec3> lightPropagateLeftBack;
+//	vector<vec3> lightPropagateLeftFront;
+//
+//	vector<vec3> lightPropagateBack;
+//	vector<vec3> lightPropagateFront;
+//
+//	// Sun light ####################################################
+//
+//	doSunLightning(lightPropagate);
+//
+//	if (m_rightNeighbor) {
+//
+//		m_rightNeighbor->doSunLightning(lightPropagateRight);
+//
+//		if (m_rightNeighbor->m_backNeighbor)
+//			m_rightNeighbor->m_backNeighbor->doSunLightning(
+//					lightPropagateRightBack);
+//
+//		if (m_rightNeighbor->m_frontNeighbor)
+//			m_rightNeighbor->m_frontNeighbor->doSunLightning(
+//					lightPropagateRightFront);
+//
+//	}
+//
+//	if (m_leftNeighbor) {
+//		m_leftNeighbor->doSunLightning(lightPropagateLeft);
+//
+//		if (m_leftNeighbor->m_backNeighbor)
+//			m_leftNeighbor->m_backNeighbor->doSunLightning(
+//					lightPropagateLeftBack);
+//
+//		if (m_leftNeighbor->m_frontNeighbor)
+//			m_leftNeighbor->m_frontNeighbor->doSunLightning(
+//					lightPropagateLeftFront);
+//
+//	}
+//
+//	if (m_backNeighbor)
+//		m_backNeighbor->doSunLightning(lightPropagateBack);
+//
+//	if (m_frontNeighbor)
+//		m_frontNeighbor->doSunLightning(lightPropagateFront);
+//
+//	// Propagate light ##############################################
+//
+//	for (vec3 vec : lightPropagate)
+//		propagateLight(vec.x, vec.y, vec.z);
+//
+//	if (m_rightNeighbor) {
+//		m_rightNeighbor->collectLightFromRightNeighbor(lightPropagateRight);
+//		for (vec3 vec : lightPropagateRight)
+//			m_rightNeighbor->propagateLight(vec.x, vec.y, vec.z);
+//
+//		if (m_rightNeighbor->m_backNeighbor.get()) {
+//			m_rightNeighbor->m_backNeighbor->collectLightFromRightNeighbor(
+//					lightPropagateRightBack);
+//			m_rightNeighbor->m_backNeighbor->collectLightFromBackNeighbor(
+//					lightPropagateRightBack);
+//
+//			for (vec3 vec : lightPropagateRightBack)
+//				m_rightNeighbor->m_backNeighbor->propagateLight(vec.x, vec.y,
+//						vec.z);
+//
+//		}
+//
+//		if (m_rightNeighbor->m_frontNeighbor) {
+//			m_rightNeighbor->m_frontNeighbor->collectLightFromRightNeighbor(
+//					lightPropagateRightFront);
+//			m_rightNeighbor->m_frontNeighbor->collectLightFromFrontNeighbor(
+//					lightPropagateRightFront);
+//
+//			for (vec3 vec : lightPropagateRightFront)
+//				m_rightNeighbor->m_frontNeighbor->propagateLight(vec.x, vec.y,
+//						vec.z);
+//
+//		}
+//	}
+//
+//	if (m_leftNeighbor) {
+//		m_leftNeighbor->collectLightFromLeftNeighbor(lightPropagateLeft);
+//		for (vec3 vec : lightPropagateLeft)
+//			m_leftNeighbor->propagateLight(vec.x, vec.y, vec.z);
+//
+//		if (m_leftNeighbor->m_backNeighbor.get()) {
+//			m_leftNeighbor->m_backNeighbor->collectLightFromLeftNeighbor(
+//					lightPropagateLeftBack);
+//			m_leftNeighbor->m_backNeighbor->collectLightFromBackNeighbor(
+//					lightPropagateLeftBack);
+//
+//			for (vec3 vec : lightPropagateLeftBack)
+//				m_leftNeighbor->m_backNeighbor->propagateLight(vec.x, vec.y,
+//						vec.z);
+//
+//		}
+//
+//		if (m_leftNeighbor->m_frontNeighbor) {
+//			m_leftNeighbor->m_frontNeighbor->collectLightFromLeftNeighbor(
+//					lightPropagateLeftFront);
+//			m_leftNeighbor->m_frontNeighbor->collectLightFromFrontNeighbor(
+//					lightPropagateLeftFront);
+//
+//			for (vec3 vec : lightPropagateLeftFront)
+//				m_leftNeighbor->m_frontNeighbor->propagateLight(vec.x, vec.y,
+//						vec.z);
+//
+//		}
+//	}
+//
+//	if (m_backNeighbor) {
+//		m_backNeighbor->collectLightFromBackNeighbor(lightPropagateBack);
+//		for (vec3 vec : lightPropagateBack)
+//			m_backNeighbor->propagateLight(vec.x, vec.y, vec.z);
+//
+//	}
+//
+//	if (m_frontNeighbor) {
+//		m_frontNeighbor->collectLightFromFrontNeighbor(lightPropagateFront);
+//		for (vec3 vec : lightPropagateFront)
+//			m_frontNeighbor->propagateLight(vec.x, vec.y, vec.z);
+//
+//	}
+//
+//}
 
 void Chunk::updateGraphics() {
 
@@ -316,7 +325,6 @@ void Chunk::updateGraphics() {
 
 	m_dirtyRegions.clear();
 }
-
 
 Voxel Chunk::getVoxel(int x, int y, int z) {
 	return m_cubes[x][y][z];
@@ -616,7 +624,6 @@ void Chunk::doSunLightning(vector<vec3> &lightPropagate, int x, int y, int z) {
 		}
 	}
 }
-
 
 void Chunk::propagateLight(int x, int y, int z) {
 	Voxel &voxel = m_cubes[x][y][z];

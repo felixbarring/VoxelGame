@@ -39,7 +39,12 @@ void ChunkManager::createWorld(string worldName) {
 	for (int x = 0; x < xMax; ++x) {
 		for (int z = 0; z < zMax; ++z) {
 			auto chunk = new Chunk{worldName, x * CHUNK_WIDTH_AND_DEPTH, z * CHUNK_WIDTH_AND_DEPTH};
-			chunkCreationFutures.push_back(m_threadPool.enqueue([chunk] { chunk->create(); }));
+
+			chunkCreationFutures.push_back(m_threadPool.enqueue([chunk]
+			{
+				chunk->create();
+				chunk->doSunLightning();
+			} ));
 			chunks[x][0][z].reset(chunk);
 		}
 	}
@@ -50,9 +55,14 @@ void ChunkManager::createWorld(string worldName) {
 	for_each(chunkCreationFutures.begin(), chunkCreationFutures.end(), [](future<void> &f){ f.get(); });
 
 	for (int x = 0; x < xMax; ++x) {
+		for (int z = 0; z < zMax; ++z)
+			chunks[x][0][z]->collectLightFromAllNeighbors();
+	}
+
+	for (int x = 0; x < xMax; ++x) {
 		for (int z = 0; z < zMax; ++z) {
 			// This could also be done in parallel if we are clever
-			chunks[x][0][z]->updateLightning();
+			chunks[x][0][z]->propagateLights();
 			chunks[x][0][z]->updateGraphics();
 		}
 	}
@@ -280,8 +290,11 @@ void ChunkManager::moveChunksRight() {
 			auto chunk = std::make_shared<Chunk>(m_worldName, ch->getXLocation() - CHUNK_WIDTH_AND_DEPTH,
 					ch->getZLocation());
 
-			// Do this in another Thread Pool
-			chunkCreationFutures.push_back(m_threadPool.enqueue([chunk] { chunk->create(); }));
+			chunkCreationFutures.push_back(m_threadPool.enqueue([chunk]
+			{
+				chunk->create();
+				chunk->doSunLightning();
+			} ));
 			chunks[0][0][i] = chunk;
 		}
 
@@ -289,10 +302,13 @@ void ChunkManager::moveChunksRight() {
 
 		for_each(chunkCreationFutures.begin(), chunkCreationFutures.end(), [](future<void> &f) { f.get(); });
 
+		for (int i = 0; i < m_lenghtAcrossMatrix; ++i)
+			chunks[0][0][i]->collectLightFromRightNeighbor();
+
 		for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
 			// TODO Do this in threadpools...
 			auto chunk = chunks[0][0][i];
-			chunk->updateLightning();
+			chunk->propagateLights();
 			chunk->updateGraphics();
 		}
 
@@ -325,7 +341,11 @@ void ChunkManager::moveChunksLeft() {
 			auto ch = chunks[m_lenghtAcrossMatrix - 2][0][i];
 			auto chunk = std::make_shared<Chunk>(m_worldName, ch->getXLocation() + CHUNK_WIDTH_AND_DEPTH,
 					ch->getZLocation());
-			chunkCreationFutures.push_back(m_threadPool.enqueue([chunk] { chunk->create(); } ));
+			chunkCreationFutures.push_back(m_threadPool.enqueue([chunk]
+			{
+				chunk->create();
+				chunk->doSunLightning();
+			} ));
 			chunks[m_lenghtAcrossMatrix - 1][0][i] = chunk;
 		}
 
@@ -333,9 +353,12 @@ void ChunkManager::moveChunksLeft() {
 
 		for_each(chunkCreationFutures.begin(), chunkCreationFutures.end(), [] (future<void> &f) { f.get(); });
 
+		for (int i = 0; i < m_lenghtAcrossMatrix; ++i)
+			chunks[m_lenghtAcrossMatrix - 1][0][i]->collectLightFromLeftNeighbor();
+
 		for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
 			auto chunk = chunks[m_lenghtAcrossMatrix - 1][0][i];
-			chunk->updateLightning();
+			chunk->propagateLights();
 			chunk->updateGraphics();
 		}
 
@@ -369,7 +392,11 @@ void ChunkManager::moveChunksUp() {
 			auto ch = chunks[i][0][0 + 1];
 			auto chunk = std::make_shared<Chunk>(m_worldName, ch->getXLocation(), ch->getZLocation() -
 					CHUNK_WIDTH_AND_DEPTH);
-			chunkCreationFutures.push_back(m_threadPool.enqueue([chunk] { chunk->create(); } ));
+			chunkCreationFutures.push_back(m_threadPool.enqueue([chunk]
+			{
+				chunk->create();
+				chunk->doSunLightning();
+			} ));
 			chunks[i][0][0] = chunk;
 		}
 
@@ -377,9 +404,12 @@ void ChunkManager::moveChunksUp() {
 
 		for_each(chunkCreationFutures.begin(), chunkCreationFutures.end(), [] (future<void> &f) { f.get(); });
 
+		for (int i = 0; i < m_lenghtAcrossMatrix; ++i)
+			chunks[i][0][0]->collectLightFromBackNeighbor();
+
 		for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
 			auto chunk = chunks[i][0][0];
-			chunk->updateLightning();
+			chunk->propagateLights();
 			chunk->updateGraphics();
 		}
 	});
@@ -411,7 +441,11 @@ void ChunkManager::moveChunksDown() {
 			auto ch = chunks[i][0][m_lenghtAcrossMatrix - 2];
 			auto chunk = std::make_shared<Chunk>(m_worldName, ch->getXLocation(), ch->getZLocation() +
 					CHUNK_WIDTH_AND_DEPTH);
-			chunkCreationFutures.push_back(m_threadPool.enqueue([chunk] { chunk->create(); } ));
+			chunkCreationFutures.push_back(m_threadPool.enqueue([chunk]
+			{
+				chunk->create();
+				chunk->doSunLightning();
+			} ));
 			chunks[i][0][m_lenghtAcrossMatrix - 1] = chunk;
 		}
 
@@ -419,9 +453,12 @@ void ChunkManager::moveChunksDown() {
 
 		for_each(chunkCreationFutures.begin(), chunkCreationFutures.end(), [] (future<void> &f) { f.get(); });
 
+		for (int i = 0; i < m_lenghtAcrossMatrix; ++i)
+			chunks[i][0][m_lenghtAcrossMatrix - 1]->collectLightFromFrontNeighbor();
+
 		for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
 			auto chunk = chunks[i][0][m_lenghtAcrossMatrix - 1];
-			chunk->updateLightning();
+			chunk->propagateLights();
 			chunk->updateGraphics();
 		}
 	});

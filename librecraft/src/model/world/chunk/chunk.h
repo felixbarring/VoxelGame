@@ -65,35 +65,42 @@ public:
 	 * propagateLights to do the lightning computations. This function can be run in parallel with other instances of
 	 * chunk, it will not access data from neighbor chunks or any other data that is not read only.
 	 */
-	void doSunLightning(std::vector<glm::vec3> &lightPropagate);
+	void doSunLightning();
+
+	/**
+	 * This function calls all of the four functions:
+	 * collectLightFromRightNeighbor, collectLightFromLeftNeighbor,
+	 * collectLightFromBackNeighbor, collectLightFromFrontNeighbor
+	 */
+	void collectLightFromAllNeighbors();
 
 	/**
 	 * This function checks if the light in the right neighbor should light up cubes in this chunk, and if so adds
 	 * light to the cubes that will be used in propagateLights. It is not safe to run this in parallel with a
 	 * neighbor. It is however safe to run in parallel with other chunk instances that are not a neighbor.
 	 */
-	void collectLightFromRightNeighbor(std::vector<glm::vec3> &lightPropagate);
+	void collectLightFromRightNeighbor();
 
 	/**
 	 * This function checks if the light in the left neighbor should light up cubes in this chunk, and if so adds
 	 * light to the cubes that will be used in propagateLights. It is not safe to run this in parallel with a
 	 * neighbor. It is however safe to run in parallel with other chunk instances that are not a neighbor.
 	 */
-	void collectLightFromLeftNeighbor(std::vector<glm::vec3> &lightPropagate);
+	void collectLightFromLeftNeighbor();
 
 	/**
 	 * This function checks if the light in the back neighbor should light up cubes in this chunk, and if so adds
 	 * light to the cubes that will be used in propagateLights. It is not safe to run this in parallel with a
 	 * neighbor. It is however safe to run in parallel with other chunk instances that are not a neighbor.
 	 */
-	void collectLightFromBackNeighbor(std::vector<glm::vec3> &lightPropagate);
+	void collectLightFromBackNeighbor();
 
 	/**
 	 * This function checks if the light in the front neighbor should light up cubes in this chunk, and if so adds
 	 * light to the cubes that will be used in propagateLights. It is not safe to run this in parallel with a
 	 * neighbor. It is however safe to run in parallel with other chunk instances that are not a neighbor.
 	 */
-	void collectLightFromFrontNeighbor(std::vector<glm::vec3> &lightPropagate);
+	void collectLightFromFrontNeighbor();
 
 	/**
 	 * This function uses the results from doSunLightning and collecLightFrom* to calculate the lightning of the chunk.
@@ -112,7 +119,7 @@ public:
 
 
 	// TODO Deprecate this...
-	void updateLightning();
+//	void updateLightning();
 
 
 	/**
@@ -205,7 +212,7 @@ private:
 	const int m_height = config::chunk_data::CHUNK_HEIGHT;
 	const int m_depth = config::chunk_data::CHUNK_WIDTH_AND_DEPTH;
 
-	std::vector<glm::vec3> m_lightsTopPropagate{};
+	std::vector<glm::vec3> m_lightsToPropagate{};
 
 	std::vector<std::vector<std::vector<Voxel>>> m_cubes{};
 
