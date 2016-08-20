@@ -109,19 +109,25 @@ public:
 	 */
 	void propagateLights();
 
-	/**
-	 * Updates the graphical chunks in the chunkBatcher.
-	 * Not thread safe currently
-	 */
-	void updateGraphics();
-
 	///@}
 
 	/**
-	 * Updates all the graphical chunks even if they are not dirty.
+	 * Does the work on updating the graphicalChunks that is safe to do in parallel with another instance of chunk.
+	 * updateGraphics needs to be called after this function for it to have effect.
 	 */
-	void forceUpdateGraphics();
+	void prepareUpdateGraphics();
 
+	/**
+	 * Forces all the graphical sections to update even if they are not dirty. updateGraphics should be called after
+	 * for it to have effect.
+	 */
+	void forcePrepareUpdateGraphics();
+
+	/**
+	 * Updates the graphical chunks in the chunkBatcher. prepareUpdateGraphics should have been called before.
+	 * Not thread safe.
+	 */
+	void updateGraphics();
 
 	/**
 	 * @return The x location of the chunk
@@ -218,6 +224,9 @@ private:
 	std::vector<std::vector<std::vector<Voxel>>> m_cubes{};
 
 	std::vector<std::shared_ptr<graphics::GraphicalChunk>> m_graphicalChunks{};
+	std::vector<std::shared_ptr<graphics::GraphicalChunk>> m_graphicalChunksToBeRemoved{};
+	std::vector<std::shared_ptr<graphics::GraphicalChunk>> m_graphicalChunksToBeAdded{};
+
 
 	std::shared_ptr<Chunk> m_rightNeighbor{};
 	std::shared_ptr<Chunk> m_leftNeighbor{};
@@ -226,7 +235,6 @@ private:
 	std::shared_ptr<Chunk> m_backNeighbor{};
 
 	std::set<int> m_dirtyRegions{};
-
 };
 
 }

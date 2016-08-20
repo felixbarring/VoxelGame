@@ -36,6 +36,11 @@ public:
 
 	void saveWorld();
 
+	/**
+	 * Should be called each frame.
+	 */
+	void update();
+
 	Voxel getVoxel(int x, int y, int z);
 
 	char getCubeId(int x, int y, int z);
@@ -101,6 +106,9 @@ private:
 	// TODO Figure out better names
 	ThreadPool m_threadPool{8};
 	ThreadPool m_threadPool2{1};
+
+	std::mutex m_chunkGraphicUpdateMutex{};
+	std::vector<std::shared_ptr<Chunk>> m_chunksThatNeedGraphicsUpdate{};
 
 };
 

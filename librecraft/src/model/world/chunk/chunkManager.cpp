@@ -63,6 +63,7 @@ void ChunkManager::createWorld(string worldName) {
 		for (int z = 0; z < zMax; ++z) {
 			// This could also be done in parallel if we are clever
 			chunks[x][0][z]->propagateLights();
+			chunks[x][0][z]->prepareUpdateGraphics();
 			chunks[x][0][z]->updateGraphics();
 		}
 	}
@@ -80,6 +81,13 @@ void ChunkManager::saveWorld() {
 		}
 	}
 }
+
+void ChunkManager::update() {
+	lock_guard<mutex> lock(m_chunkGraphicUpdateMutex);
+	for (auto ch : m_chunksThatNeedGraphicsUpdate)
+		ch->updateGraphics();
+}
+
 
 Voxel ChunkManager::getVoxel(int x, int y, int z) {
 	// Used to avoid Division every time the function is called.
@@ -309,8 +317,12 @@ void ChunkManager::moveChunksRight() {
 			// TODO Do this in threadpools...
 			auto chunk = chunks[0][0][i];
 			chunk->propagateLights();
-			chunk->updateGraphics();
-			chunks[0 + 1][0][i]->forceUpdateGraphics();
+			chunk->prepareUpdateGraphics();
+			chunks[0 + 1][0][i]->forcePrepareUpdateGraphics();
+
+			lock_guard<mutex> lock(m_chunkGraphicUpdateMutex);
+			m_chunksThatNeedGraphicsUpdate.push_back(chunk);
+			m_chunksThatNeedGraphicsUpdate.push_back(chunks[0 + 1][0][i]);
 		}
 
 	});
@@ -333,7 +345,7 @@ void ChunkManager::moveChunksLeft() {
 			chunks[i][0][j] = chunks[i + 1][0][j];
 	}
 
-	m_threadPool.enqueue([this]{
+	m_threadPool2.enqueue([this]{
 
 		vector<future<void>> chunkCreationFutures;
 
@@ -360,8 +372,12 @@ void ChunkManager::moveChunksLeft() {
 		for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
 			auto chunk = chunks[m_lenghtAcrossMatrix - 1][0][i];
 			chunk->propagateLights();
-			chunk->updateGraphics();
-			chunks[m_lenghtAcrossMatrix - 2][0][i]->forceUpdateGraphics();
+			chunk->prepareUpdateGraphics();
+			chunks[m_lenghtAcrossMatrix - 2][0][i]->forcePrepareUpdateGraphics();
+
+			lock_guard<mutex> lock(m_chunkGraphicUpdateMutex);
+			m_chunksThatNeedGraphicsUpdate.push_back(chunk);
+			m_chunksThatNeedGraphicsUpdate.push_back(chunks[m_lenghtAcrossMatrix - 2][0][i]);
 		}
 
 	});
@@ -385,7 +401,7 @@ void ChunkManager::moveChunksUp() {
 		}
 	}
 
-	m_threadPool.enqueue([this] {
+	m_threadPool2.enqueue([this] {
 
 		vector<future<void>> chunkCreationFutures;
 
@@ -412,8 +428,12 @@ void ChunkManager::moveChunksUp() {
 		for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
 			auto chunk = chunks[i][0][0];
 			chunk->propagateLights();
-			chunk->updateGraphics();
-			chunks[i + 1 ][0][0]->forceUpdateGraphics();
+			chunk->prepareUpdateGraphics();
+			chunks[i][0][0 + 1]->forcePrepareUpdateGraphics();
+
+			lock_guard<mutex> lock(m_chunkGraphicUpdateMutex);
+			m_chunksThatNeedGraphicsUpdate.push_back(chunk);
+			m_chunksThatNeedGraphicsUpdate.push_back(chunks[i + 1][0][0]);
 		}
 	});
 }
@@ -435,7 +455,7 @@ void ChunkManager::moveChunksDown() {
 			chunks[i][0][j] = chunks[i][0][j + 1];
 	}
 
-	m_threadPool.enqueue([this] {
+	m_threadPool2.enqueue([this] {
 
 		vector<future<void>> chunkCreationFutures;
 
@@ -462,8 +482,12 @@ void ChunkManager::moveChunksDown() {
 		for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
 			auto chunk = chunks[i][0][m_lenghtAcrossMatrix - 1];
 			chunk->propagateLights();
-			chunk->updateGraphics();
-			chunks[i][0][m_lenghtAcrossMatrix - 2]->forceUpdateGraphics();
+			chunk->prepareUpdateGraphics();
+			chunks[i][0][m_lenghtAcrossMatrix - 2]->forcePrepareUpdateGraphics();
+
+			lock_guard<mutex> lock(m_chunkGraphicUpdateMutex);
+			m_chunksThatNeedGraphicsUpdate.push_back(chunk);
+			m_chunksThatNeedGraphicsUpdate.push_back(chunks[i][0][m_lenghtAcrossMatrix - 2]);
 		}
 	});
 

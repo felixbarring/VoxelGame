@@ -297,8 +297,14 @@ void Chunk::propagateLights() {
 //
 //}
 
-void Chunk::updateGraphics() {
+void Chunk::forcePrepareUpdateGraphics() {
+	for (int i = 0; i < CHUNK_HEIGHT / GRAPHICAL_CHUNK_HEIGHT; ++i)
+		m_dirtyRegions.emplace(i);
 
+	prepareUpdateGraphics();
+}
+
+void Chunk::prepareUpdateGraphics() {
 	vector<vector<vector<Voxel>>> *right = nullptr;
 	vector<vector<vector<Voxel>>> *left = nullptr;
 	vector<vector<vector<Voxel>>> *front = nullptr;
@@ -317,21 +323,24 @@ void Chunk::updateGraphics() {
 		back = &(m_backNeighbor->m_cubes);
 
 	for (auto i : m_dirtyRegions) {
-		ChunkBatcher::getInstance().removeBatch(m_graphicalChunks[i]);
+		m_graphicalChunksToBeRemoved.push_back(m_graphicalChunks[i]);
 		m_graphicalChunks[i].reset(new GraphicalChunk(m_xLocation, i * GRAPHICAL_CHUNK_HEIGHT, m_zLocation, m_cubes,
 				right, left, back, front));
-		ChunkBatcher::getInstance().addBatch(m_graphicalChunks[i]);
+		m_graphicalChunksToBeAdded.push_back(m_graphicalChunks[i]);
 	}
 
 	m_dirtyRegions.clear();
 }
 
+void Chunk::updateGraphics() {
+	for (auto remove : m_graphicalChunksToBeRemoved)
+		graphics::ChunkBatcher::getInstance().removeBatch(remove);
 
-void Chunk::forceUpdateGraphics() {
-	for (int i = 0; i < CHUNK_HEIGHT / GRAPHICAL_CHUNK_HEIGHT; ++i)
-		m_dirtyRegions.emplace(i);
+	for (auto add : m_graphicalChunksToBeAdded)
+		graphics::ChunkBatcher::getInstance().addBatch(add);
 
-	updateGraphics();
+	m_graphicalChunksToBeRemoved.clear();
+	m_graphicalChunksToBeAdded.clear();
 }
 
 Voxel Chunk::getVoxel(int x, int y, int z) {

@@ -193,6 +193,8 @@ void InGame::update(float timePassed) {
 		m_widgetGroup1->draw();
 	}
 
+	chunk::ChunkManager::getInstance().update();
+
 	ChunkBatcher::getInstance().draw();
 	CubeBatcher::getInstance().draw();
 	SpriteBatcher::getInstance().draw();
