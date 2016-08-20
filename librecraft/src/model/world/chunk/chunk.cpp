@@ -326,6 +326,14 @@ void Chunk::updateGraphics() {
 	m_dirtyRegions.clear();
 }
 
+
+void Chunk::forceUpdateGraphics() {
+	for (int i = 0; i < CHUNK_HEIGHT / GRAPHICAL_CHUNK_HEIGHT; ++i)
+		m_dirtyRegions.emplace(i);
+
+	updateGraphics();
+}
+
 Voxel Chunk::getVoxel(int x, int y, int z) {
 	return m_cubes[x][y][z];
 }

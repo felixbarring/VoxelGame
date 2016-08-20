@@ -310,6 +310,7 @@ void ChunkManager::moveChunksRight() {
 			auto chunk = chunks[0][0][i];
 			chunk->propagateLights();
 			chunk->updateGraphics();
+			chunks[0 + 1][0][i]->forceUpdateGraphics();
 		}
 
 	});
@@ -360,6 +361,7 @@ void ChunkManager::moveChunksLeft() {
 			auto chunk = chunks[m_lenghtAcrossMatrix - 1][0][i];
 			chunk->propagateLights();
 			chunk->updateGraphics();
+			chunks[m_lenghtAcrossMatrix - 2][0][i]->forceUpdateGraphics();
 		}
 
 	});
@@ -411,6 +413,7 @@ void ChunkManager::moveChunksUp() {
 			auto chunk = chunks[i][0][0];
 			chunk->propagateLights();
 			chunk->updateGraphics();
+			chunks[i + 1 ][0][0]->forceUpdateGraphics();
 		}
 	});
 }
@@ -460,6 +463,7 @@ void ChunkManager::moveChunksDown() {
 			auto chunk = chunks[i][0][m_lenghtAcrossMatrix - 1];
 			chunk->propagateLights();
 			chunk->updateGraphics();
+			chunks[i][0][m_lenghtAcrossMatrix - 2]->forceUpdateGraphics();
 		}
 	});
 

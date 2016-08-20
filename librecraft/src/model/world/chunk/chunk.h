@@ -117,9 +117,10 @@ public:
 
 	///@}
 
-
-	// TODO Deprecate this...
-//	void updateLightning();
+	/**
+	 * Updates all the graphical chunks even if they are not dirty.
+	 */
+	void forceUpdateGraphics();
 
 
 	/**
