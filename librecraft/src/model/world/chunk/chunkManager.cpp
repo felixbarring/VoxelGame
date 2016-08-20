@@ -46,23 +46,6 @@ void ChunkManager::createWorld(string worldName) {
 
 	connectChunks();
 
-//	// Connect the Chunks
-//	for (int x = 0; x < xMax; ++x) {
-//		for (int z = 0; z < zMax; ++z) {
-//			shared_ptr<Chunk> current = chunks[x][0][z];
-//			if (x != xMax - 1) {
-//				shared_ptr<Chunk> right = chunks[x + 1][0][z];
-//				current->setRightNeighbor(right);
-//				right->setLeftNeighbor(current);
-//	 		}
-//			if (z != zMax - 1) {
-//				shared_ptr<Chunk> back = chunks[x][0][z + 1];
-//				current->setBackNeighbor(back);
-//				back->setFrontNeighbor(current);
-//			}
-//		}
-//	}
-
 	// Wait for all the chunks to be generated
 	for_each(chunkCreationFutures.begin(), chunkCreationFutures.end(), [](future<void> &f){ f.get(); });
 

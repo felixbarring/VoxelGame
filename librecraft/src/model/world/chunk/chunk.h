@@ -43,12 +43,77 @@ public:
 // ########################################################
 
 	/**
-	 * This function should be called in order to finish the creation of the chunk. Forgetting to call this function is
-	 * an error. If there exists a file that corresponds to the location and worldName, the data will be loaded from
-	 * file. Otherwise it will be generated using noice algorithms. This function can be run in parallel, it will not
-	 * try to access data from neighbor chunks or any other data that is not read only.
+	 * @name Creation Group
+	 * These functions needs to be called in order to finish the creation of the chunk. When loading a group of
+	 * chunks, first call create. Then doSunLightning followed by collecting the light with from the neighbors that
+	 * are old/not in the new group of created/loaded chunks. Then call propagateLights to complete the lightning
+	 * work that is prepared by doSunLightning and collecLightFrom* functions. The reason why these are not a single
+	 * function is to make it possible to run the code in parallel.
+	 */
+	///@{
+
+	/**
+	 * This function fills the chunk with data for the cubes. If there exists a file that corresponds to the location
+	 * and worldName, the data will be loaded from file. Otherwise it will be generated using noice algorithms. This
+	 * function can be run in parallel with other instances of chunk, it will not access data from neighbor chunks or
+	 * any other data that is not read only.
 	 */
 	void create();
+
+	/**
+	 * This function spreads light from the sky downwards. The result is stored in the chunk and will be used by
+	 * propagateLights to do the lightning computations. This function can be run in parallel with other instances of
+	 * chunk, it will not access data from neighbor chunks or any other data that is not read only.
+	 */
+	void doSunLightning(std::vector<glm::vec3> &lightPropagate);
+
+	/**
+	 * This function checks if the light in the right neighbor should light up cubes in this chunk, and if so adds
+	 * light to the cubes that will be used in propagateLights. It is not safe to run this in parallel with a
+	 * neighbor. It is however safe to run in parallel with other chunk instances that are not a neighbor.
+	 */
+	void collectLightFromRightNeighbor(std::vector<glm::vec3> &lightPropagate);
+
+	/**
+	 * This function checks if the light in the left neighbor should light up cubes in this chunk, and if so adds
+	 * light to the cubes that will be used in propagateLights. It is not safe to run this in parallel with a
+	 * neighbor. It is however safe to run in parallel with other chunk instances that are not a neighbor.
+	 */
+	void collectLightFromLeftNeighbor(std::vector<glm::vec3> &lightPropagate);
+
+	/**
+	 * This function checks if the light in the back neighbor should light up cubes in this chunk, and if so adds
+	 * light to the cubes that will be used in propagateLights. It is not safe to run this in parallel with a
+	 * neighbor. It is however safe to run in parallel with other chunk instances that are not a neighbor.
+	 */
+	void collectLightFromBackNeighbor(std::vector<glm::vec3> &lightPropagate);
+
+	/**
+	 * This function checks if the light in the front neighbor should light up cubes in this chunk, and if so adds
+	 * light to the cubes that will be used in propagateLights. It is not safe to run this in parallel with a
+	 * neighbor. It is however safe to run in parallel with other chunk instances that are not a neighbor.
+	 */
+	void collectLightFromFrontNeighbor(std::vector<glm::vec3> &lightPropagate);
+
+	/**
+	 * This function uses the results from doSunLightning and collecLightFrom* to calculate the lightning of the chunk.
+	 * It is not safe to run this in parallel with a neighbor or a neighbors neighbor. That is, there must be a
+	 * distance of two chunks between to chunks for it to be safe to run them in parallel.
+	 */
+	void propagateLights();
+
+	/**
+	 * Updates the graphical chunks in the chunkBatcher.
+	 * Not thread safe currently
+	 */
+	void updateGraphics();
+
+	///@}
+
+
+	// TODO Deprecate this...
+	void updateLightning();
+
 
 	/**
 	 * @return The x location of the chunk
@@ -61,8 +126,6 @@ public:
 	int getZLocation() { return m_zLocation; }
 
 	Voxel getVoxel(int x, int y, int z);
-
-	char getCubeId(int x, int y, int z);
 
 	void setCube(int x, int y, int z, char id);
 
@@ -79,10 +142,6 @@ public:
 	 * all the pointers in the neighbors pointing to this chunk
 	 */
 	void removeAllNeighbors();
-
-	void updateLightning();
-
-	void updateGraphics();
 
 	void storeChunk(std::string worldName);
 
@@ -111,8 +170,6 @@ private:
 
 	void updateNeighborGraphics();
 
-	void doSunLightning(std::vector<glm::vec3> &lightPropagate);
-
 	/**
 	 * Only does the lightning for one row.
 	 *
@@ -122,14 +179,6 @@ private:
 	 * @param z
 	 */
 	void doSunLightning(std::vector<glm::vec3> &lightPropagate, int x, int y, int z);
-
-	void collectLightFromRightNeighbor(std::vector<glm::vec3> &lightPropagate);
-
-	void collectLightFromLeftNeighbor(std::vector<glm::vec3> &lightPropagate);
-
-	void collectLightFromBackNeighbor(std::vector<glm::vec3> &lightPropagate);
-
-	void collectLightFromFrontNeighbor(std::vector<glm::vec3> &lightPropagate);
 
 	void propagateLight(int x, int y, int z);
 
@@ -146,18 +195,19 @@ private:
 	const int m_xLocation;
 	const int m_zLocation;
 	bool m_isDirty;
-//	bool m_
 
 	std::string m_name{};
 
-	// Should be somewhere else?
+	// TODO Should be somewhere else?
 	const int m_directSunlight = 15;
 
 	const int m_width = config::chunk_data::CHUNK_WIDTH_AND_DEPTH;
 	const int m_height = config::chunk_data::CHUNK_HEIGHT;
 	const int m_depth = config::chunk_data::CHUNK_WIDTH_AND_DEPTH;
 
-	std::vector<std::vector<std::vector<Voxel>>> m_vec{};
+	std::vector<glm::vec3> m_lightsTopPropagate{};
+
+	std::vector<std::vector<std::vector<Voxel>>> m_cubes{};
 
 	std::vector<std::shared_ptr<graphics::GraphicalChunk>> m_graphicalChunks{};
 
@@ -169,7 +219,6 @@ private:
 
 	std::set<int> m_dirtyRegions{};
 
-	std::condition_variable m_condition{};
 };
 
 }
