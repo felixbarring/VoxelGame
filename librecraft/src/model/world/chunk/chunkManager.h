@@ -7,6 +7,7 @@
 #include "chunk.h"
 #include "../../../config/data.h"
 #include "../../../util/voxel.h"
+#include "ThreadPool.h"
 
 namespace chunk {
 
@@ -107,8 +108,8 @@ private:
 	ThreadPool m_threadPool{8};
 	ThreadPool m_threadPool2{1};
 
-	std::mutex m_chunkGraphicUpdateMutex{};
-	std::vector<std::shared_ptr<Chunk>> m_chunksThatNeedGraphicsUpdate{};
+	std::mutex m_graphicUpdateMutex{};
+	std::vector<std::shared_ptr<Chunk>> m_graphicUpdate{};
 
 };
 

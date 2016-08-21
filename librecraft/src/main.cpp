@@ -1,5 +1,3 @@
-#include "ThreadPool.h"
-
 #define GLM_FORCE_RADIANS
 
 #include "game.h"

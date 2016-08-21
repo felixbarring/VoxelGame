@@ -189,22 +189,6 @@ void Game::loadExistingWorld(string name) {
 
 	// TODO Implement this correctly
 
-//	m_inGame.reset(new InGame(this, name));
-//
-//	auto future = threadPool.enqueue([&name]
-//			{
-//				chunk::ChunkManager::getInstance().createWorld(name);
-//			}
-//		);
-//
-//	LoadingScreen loadingScreen(m_fpsManager, window);
-//
-//	std::chrono::milliseconds span{0};
-//	while (future.wait_for(span) != future_status::ready)
-//		loadingScreen.update();
-//
-//	m_currentState = m_inGame;
-
 }
 
 void Game::changeStateToMainMenu() {

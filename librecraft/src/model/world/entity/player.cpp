@@ -105,7 +105,7 @@ void Player::updateSpeed(float timePassed) {
 		 if (input->goDownActive)
 			 direction = -1;
 
-		 m_speed.y = 4 * direction; // TODO Remove hardcoded value
+		 m_speed.y = 8 * direction; // TODO Remove hardcoded value
 	 } else {
 		 m_speed.y = 0;
 	 }

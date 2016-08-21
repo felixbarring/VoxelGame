@@ -581,6 +581,7 @@ void Chunk::updateLightningCubeRemoved(Voxel& voxel, int x, int y, int z) {
 		propagateLight(x, y, z);
 	}
 
+	prepareUpdateGraphics();
 	updateGraphics();
 	updateNeighborGraphics();
 }
@@ -597,6 +598,7 @@ void Chunk::updateLightningCubeAdded(int x, int y, int z) {
 	dePropagateLight(x, y ,z);
 
 	updateDirtyRegions(y);
+	prepareUpdateGraphics();
 	updateGraphics();
 	updateNeighborGraphics();
 }
@@ -610,7 +612,6 @@ void Chunk::updateNeighborGraphics() {
 
 		if (m_rightNeighbor->m_frontNeighbor)
 			m_rightNeighbor->m_frontNeighbor->updateGraphics();
-
 	}
 
 	if (m_leftNeighbor) {
@@ -621,7 +622,6 @@ void Chunk::updateNeighborGraphics() {
 
 		if (m_leftNeighbor->m_frontNeighbor)
 			m_leftNeighbor->m_frontNeighbor->updateGraphics();
-
 	}
 
 	if (m_backNeighbor)

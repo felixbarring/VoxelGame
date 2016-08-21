@@ -61,7 +61,7 @@ private:
 	float m_gravity{30};
 	float m_jumpSpeed{20};
 	int m_selectCubeDistance{5};
-	float m_movementSpeed {7};
+	float m_movementSpeed{14};
 
 	glm::vec3 m_speed{0, 0, 0};
 	glm::vec3 m_frameSpeed{};
