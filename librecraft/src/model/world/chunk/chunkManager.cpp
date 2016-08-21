@@ -262,11 +262,10 @@ void ChunkManager::connectChunks() {
 void ChunkManager::moveChunksRight() {
 	m_xOffset += CHUNK_WIDTH_AND_DEPTH;
 
-	// Store and delete the chunks that go out of scope
+	vector<shared_ptr<Chunk>> chunksToDelete;
+
 	for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
-		auto chunk = chunks[m_lenghtAcrossMatrix - 1][0][i];
-		chunk->removeAllNeighbors();
-		chunk->storeChunk(m_worldName);
+		chunksToDelete.push_back(chunks[m_lenghtAcrossMatrix - 1][0][i]);
 	}
 
 	// Move all chunks
@@ -275,7 +274,13 @@ void ChunkManager::moveChunksRight() {
 			chunks[i][0][j] = chunks[i - 1][0][j];
 	}
 
-	m_threadPool2.enqueue([this]{
+	m_threadPool2.enqueue([this, chunksToDelete]{
+
+		for (auto chunk : chunksToDelete) {
+			chunk->removeAllNeighbors();
+			chunk->storeChunk(m_worldName);
+			chunk.reset();
+		}
 
 		vector<future<void>> chunkCreationFutures;
 
@@ -319,10 +324,10 @@ void ChunkManager::moveChunksRight() {
 void ChunkManager::moveChunksLeft() {
 	m_xOffset -= CHUNK_WIDTH_AND_DEPTH;
 
+	vector<shared_ptr<Chunk>> chunksToDelete;
+
 	for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
-		auto chunk = chunks[0][0][i];
-		chunk->removeAllNeighbors();
-		chunk->storeChunk(m_worldName);
+		chunksToDelete.push_back(chunks[0][0][i]);
 	}
 
 	for (int i = 0; i < m_lenghtAcrossMatrix - 1; ++i) {
@@ -330,7 +335,12 @@ void ChunkManager::moveChunksLeft() {
 			chunks[i][0][j] = chunks[i + 1][0][j];
 	}
 
-	m_threadPool2.enqueue([this]{
+	m_threadPool2.enqueue([this, chunksToDelete]{
+
+		for (auto chunk : chunksToDelete) {
+			chunk->removeAllNeighbors();
+			chunk->storeChunk(m_worldName);
+		}
 
 		vector<future<void>> chunkCreationFutures;
 
@@ -370,10 +380,10 @@ void ChunkManager::moveChunksLeft() {
 void ChunkManager::moveChunksUp() {
 	m_zOffset += CHUNK_WIDTH_AND_DEPTH;
 
+	vector<shared_ptr<Chunk>> chunksToDelete;
+
 	for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
-		auto chunk = chunks[i][0][m_lenghtAcrossMatrix - 1];
-		chunk->removeAllNeighbors();
-		chunk->storeChunk(m_worldName);
+		chunksToDelete.push_back(chunks[i][0][m_lenghtAcrossMatrix - 1]);
 	}
 
 	for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
@@ -381,7 +391,12 @@ void ChunkManager::moveChunksUp() {
 			chunks[i][0][j] = chunks[i][0][j - 1];
 	}
 
-	m_threadPool2.enqueue([this] {
+	m_threadPool2.enqueue([this, chunksToDelete] {
+
+		for (auto chunk : chunksToDelete) {
+			chunk->removeAllNeighbors();
+			chunk->storeChunk(m_worldName);
+		}
 
 		vector<future<void>> chunkCreationFutures;
 
@@ -422,10 +437,10 @@ void ChunkManager::moveChunksUp() {
 void ChunkManager::moveChunksDown() {
 	m_zOffset -= CHUNK_WIDTH_AND_DEPTH;
 
+	vector<shared_ptr<Chunk>> chunksToDelete;
+
 	for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
-		auto chunk = chunks[i][0][0];
-		chunk->removeAllNeighbors();
-		chunk->storeChunk(m_worldName);
+		chunksToDelete.push_back(chunks[i][0][0]);
 	}
 
 	for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
@@ -433,7 +448,12 @@ void ChunkManager::moveChunksDown() {
 			chunks[i][0][j] = chunks[i][0][j + 1];
 	}
 
-	m_threadPool2.enqueue([this] {
+	m_threadPool2.enqueue([this, chunksToDelete] {
+
+		for (auto chunk : chunksToDelete) {
+			chunk->removeAllNeighbors();
+			chunk->storeChunk(m_worldName);
+		}
 
 		vector<future<void>> chunkCreationFutures;
 

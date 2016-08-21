@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <memory>
+#include <mutex>
 
 #include "graphicalChunk.h"
 #include "camera.h"
@@ -54,6 +55,9 @@ public:
 
 	std::shared_ptr<ShaderProgram> m_program;
 	texture::TextureArray &m_texture;
+
+	std::mutex m_mutex{};
+
 };
 
 }

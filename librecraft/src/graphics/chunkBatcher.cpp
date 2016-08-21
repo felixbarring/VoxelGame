@@ -6,6 +6,8 @@
 #include "resources.h"
 #include "shaderProgram.h"
 
+using namespace std;
+
 namespace graphics {
 
 // ########################################################
@@ -104,9 +106,11 @@ void ChunkBatcher::addBatch(std::shared_ptr<GraphicalChunk> batch) {
 }
 
 void ChunkBatcher::removeBatch(std::shared_ptr<GraphicalChunk> batch) {
-	// TODO If this is not done in the main thread -> errors
-	// If it will e done in a nother thread, queue it up
-	// and let the main thread do it when drawing or something
+
+	// TODO Maybe error, when the batches gets detructed, and opengl call will be made from another thread that dose
+	// not have an opengl context
+
+	lock_guard<mutex> lock(m_mutex);
 	for (unsigned i = 0; i < m_batches.size(); ++i) {
 		if (m_batches.at(i).get() == batch.get()) {
 			m_batches.erase(m_batches.begin() + i);
@@ -120,7 +124,7 @@ int direction = 1;
 
 void ChunkBatcher::draw() {
 
-//	std::cout << "Number of batches: " << m_batches.size() << "\n",
+	lock_guard<mutex> lock(m_mutex);
 
 	m_program->bind();
 
@@ -160,4 +164,3 @@ void ChunkBatcher::draw() {
 }
 
 }
-
