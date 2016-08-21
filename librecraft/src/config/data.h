@@ -179,7 +179,7 @@ namespace config {
 
 	namespace music {
 		static const std::string menuMusic =
-				"../resources/music/menuMusic.ogg";
+				"../resources/music/Continue Life.ogg";
 	}
 
 }

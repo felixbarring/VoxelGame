@@ -112,7 +112,7 @@ private:
 
 void Game::run() {
 
-//	util::SoundPlayer::getInstance().playMusic(config::music::menuMusic);
+	util::SoundPlayer::getInstance().playMusic(config::music::menuMusic);
 
 	int WIDTH = config::graphics_data::windowWidth;
 	int HEIGHT = config::graphics_data::windowHeight;
@@ -168,6 +168,9 @@ void Game::run() {
 }
 
 void Game::createNewWorld(string name) {
+
+	util::SoundPlayer::getInstance().stopMusic();
+
 	// TODO Do ingame really need the world name?!?
 	m_inGame.reset(new InGame(this, name));
 	auto future = m_threadPool.enqueue([name]

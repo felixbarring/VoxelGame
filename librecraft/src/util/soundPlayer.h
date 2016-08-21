@@ -38,13 +38,15 @@ public:
 
 	void playMusic(const std::string &musicPath);
 
+	void stopMusic();
+
 // ########################################################
 // Implementation #########################################
 // ########################################################
 
 	std::map<std::string, sf::SoundBuffer> m_buffers;
-	std::vector<std::shared_ptr<sf::Sound>> playingSounds;
-	std::vector<std::shared_ptr<sf::Music>> playingMusic;
+	std::vector<std::shared_ptr<sf::Sound>> m_playingSounds;
+	std::shared_ptr<sf::Music> m_playingMusic;
 
 };
 

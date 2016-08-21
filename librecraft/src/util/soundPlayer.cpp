@@ -8,9 +8,9 @@ namespace util {
 
 void SoundPlayer::playSound(const std::string &soundPath) {
 
-	for (auto sound = playingSounds.begin(); sound < playingSounds.end(); ++sound) {
+	for (auto sound = m_playingSounds.begin(); sound < m_playingSounds.end(); ++sound) {
 		if ((*sound)->getStatus() == sf::SoundSource::Status::Stopped)
-			playingSounds.erase(sound);
+			m_playingSounds.erase(sound);
 	}
 
 	if (m_buffers.find(soundPath) == m_buffers.end()) {
@@ -23,7 +23,7 @@ void SoundPlayer::playSound(const std::string &soundPath) {
 	auto sound = std::make_shared<sf::Sound>();
 	sound->setBuffer((*m_buffers.find(soundPath)).second);
 	sound->play();
-	playingSounds.push_back(sound);
+	m_playingSounds.push_back(sound);
 }
 
 void SoundPlayer::playMusic(const std::string &musicPath) {
@@ -31,7 +31,12 @@ void SoundPlayer::playMusic(const std::string &musicPath) {
 	if (!music->openFromFile(musicPath))
 		std::cout << "Could not play music :( - " << musicPath << "\n";
 	music->play();
-	playingMusic.push_back(music);
+	m_playingMusic = music;
 }
+
+void SoundPlayer::stopMusic() {
+	m_playingMusic->stop();
+}
+
 
 } /* namespace util */
