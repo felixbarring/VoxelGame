@@ -232,8 +232,8 @@ void GraphicalChunk::draw() {
 		vector<short> elementData;
 
 		createMeshData(m_faceData, vertexData, normals, UV, elementData);
-		mesh.reset(new mesh::MeshElement(
-				vertexData, 4, normals, 3, UV, 3, elementData));
+		mesh.reset(new mesh::MeshElement(vertexData, 4, normals, 3, UV, 3, elementData));
+		m_faceData.clear();
 	}
 	mesh->draw();
 }

@@ -22,7 +22,7 @@ namespace config {
 		static constexpr int CHUNK_WIDTH_AND_DEPTH = 16;
 		static constexpr int CHUNK_HEIGHT = 128;
 
-		static constexpr const int NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER = 6;
+		static constexpr const int NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER = 8;
 		static constexpr const int NUMBER_OF_CHUNKS_Y = 1;
 	}
 
@@ -92,8 +92,8 @@ namespace config {
 
 		extern float fov; // degree to radians
 
-		static float virtualWidth {800};
-		static float virtualHeight {600};
+		static float virtualWidth{800};
+		static float virtualHeight{600};
 	}
 
 	namespace input_data {

@@ -19,8 +19,8 @@ namespace config
 
 		int fps = 300;
 
-		int windowWidth = 1920;
-		int windowHeight = 1080;
+		int windowWidth = 1500;
+		int windowHeight = 800;
 
 		float fov = 80 * (3.14 / 180); // degree to radians
 

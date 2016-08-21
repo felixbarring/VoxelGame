@@ -143,6 +143,11 @@ void ChunkManager::setCube(int x, int y, int z, char id) {
 
 void ChunkManager::setCenter(float x, float z) {
 
+	if (!m_bussyMovingChunksMutex.try_lock())
+		return;
+
+	m_bussyMovingChunksMutex.unlock();
+
 	if (x < NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * 16 - m_xOffset)
 		moveChunksRight();
 	else if (x > NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * 16 - m_xOffset + 16)
@@ -264,9 +269,8 @@ void ChunkManager::moveChunksRight() {
 
 	vector<shared_ptr<Chunk>> chunksToDelete;
 
-	for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
+	for (int i = 0; i < m_lenghtAcrossMatrix; ++i)
 		chunksToDelete.push_back(chunks[m_lenghtAcrossMatrix - 1][0][i]);
-	}
 
 	// Move all chunks
 	for (int i = m_lenghtAcrossMatrix - 1; i > 0; --i) {
@@ -275,6 +279,8 @@ void ChunkManager::moveChunksRight() {
 	}
 
 	m_threadPool2.enqueue([this, chunksToDelete]{
+
+		lock_guard<mutex> lock(m_bussyMovingChunksMutex);
 
 		for (auto chunk : chunksToDelete) {
 			chunk->removeAllNeighbors();
@@ -326,9 +332,8 @@ void ChunkManager::moveChunksLeft() {
 
 	vector<shared_ptr<Chunk>> chunksToDelete;
 
-	for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
+	for (int i = 0; i < m_lenghtAcrossMatrix; ++i)
 		chunksToDelete.push_back(chunks[0][0][i]);
-	}
 
 	for (int i = 0; i < m_lenghtAcrossMatrix - 1; ++i) {
 		for (int j = 0; j < m_lenghtAcrossMatrix; ++j)
@@ -336,6 +341,8 @@ void ChunkManager::moveChunksLeft() {
 	}
 
 	m_threadPool2.enqueue([this, chunksToDelete]{
+
+		lock_guard<mutex> lock(m_bussyMovingChunksMutex);
 
 		for (auto chunk : chunksToDelete) {
 			chunk->removeAllNeighbors();
@@ -382,9 +389,8 @@ void ChunkManager::moveChunksUp() {
 
 	vector<shared_ptr<Chunk>> chunksToDelete;
 
-	for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
+	for (int i = 0; i < m_lenghtAcrossMatrix; ++i)
 		chunksToDelete.push_back(chunks[i][0][m_lenghtAcrossMatrix - 1]);
-	}
 
 	for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
 		for (int j = m_lenghtAcrossMatrix - 1; j > 0; --j)
@@ -392,6 +398,8 @@ void ChunkManager::moveChunksUp() {
 	}
 
 	m_threadPool2.enqueue([this, chunksToDelete] {
+
+		lock_guard<mutex> lock(m_bussyMovingChunksMutex);
 
 		for (auto chunk : chunksToDelete) {
 			chunk->removeAllNeighbors();
@@ -439,9 +447,8 @@ void ChunkManager::moveChunksDown() {
 
 	vector<shared_ptr<Chunk>> chunksToDelete;
 
-	for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
+	for (int i = 0; i < m_lenghtAcrossMatrix; ++i)
 		chunksToDelete.push_back(chunks[i][0][0]);
-	}
 
 	for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
 		for (int j = 0; j < m_lenghtAcrossMatrix - 1; ++j)
@@ -449,6 +456,8 @@ void ChunkManager::moveChunksDown() {
 	}
 
 	m_threadPool2.enqueue([this, chunksToDelete] {
+
+		lock_guard<mutex> lock(m_bussyMovingChunksMutex);
 
 		for (auto chunk : chunksToDelete) {
 			chunk->removeAllNeighbors();

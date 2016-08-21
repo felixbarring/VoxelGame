@@ -403,7 +403,6 @@ void Chunk::removeAllNeighbors() {
 void Chunk::storeChunk(string worldName) {
 	if (!m_isDirty)
 		return;
-
 	string fileName = config::dataFolder + worldName + "_" + to_string(m_xLocation) + "_"
 			+ to_string(m_zLocation) + ".chunk";
 

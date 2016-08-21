@@ -26,7 +26,7 @@ public:
 			std::vector<std::vector<std::vector<Voxel>>> *back,
 			std::vector<std::vector<std::vector<Voxel>>> *front);
 
-	virtual ~GraphicalChunk() {};
+	virtual ~GraphicalChunk() { };
 
 // ########################################################
 // Member Functions########################################
