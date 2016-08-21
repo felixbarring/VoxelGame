@@ -347,6 +347,7 @@ void ChunkManager::moveChunksLeft() {
 		for (auto chunk : chunksToDelete) {
 			chunk->removeAllNeighbors();
 			chunk->storeChunk(m_worldName);
+			chunk.reset();
 		}
 
 		vector<future<void>> chunkCreationFutures;
@@ -404,6 +405,7 @@ void ChunkManager::moveChunksUp() {
 		for (auto chunk : chunksToDelete) {
 			chunk->removeAllNeighbors();
 			chunk->storeChunk(m_worldName);
+			chunk.reset();
 		}
 
 		vector<future<void>> chunkCreationFutures;
@@ -462,6 +464,7 @@ void ChunkManager::moveChunksDown() {
 		for (auto chunk : chunksToDelete) {
 			chunk->removeAllNeighbors();
 			chunk->storeChunk(m_worldName);
+			chunk.reset();
 		}
 
 		vector<future<void>> chunkCreationFutures;

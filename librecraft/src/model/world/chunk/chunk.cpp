@@ -38,7 +38,7 @@ Chunk::Chunk(string worldName, int x, int z)
 }
 
 Chunk::~Chunk() {
-	cout << "Removing chunk " << m_xLocation << " " << m_zLocation << "\n";
+//	cout << "Removing chunk " << m_xLocation << " " << m_zLocation << "\n";
 	for (auto graphicalChunk : m_graphicalChunks)
 		ChunkBatcher::getInstance().removeBatch(graphicalChunk);
 }
@@ -604,30 +604,44 @@ void Chunk::updateLightningCubeAdded(int x, int y, int z) {
 
 void Chunk::updateNeighborGraphics() {
 	if (m_rightNeighbor) {
+		m_rightNeighbor->prepareUpdateGraphics();
 		m_rightNeighbor->updateGraphics();
 
-		if (m_rightNeighbor->m_backNeighbor)
+		if (m_rightNeighbor->m_backNeighbor) {
+			m_rightNeighbor->m_backNeighbor->prepareUpdateGraphics();
 			m_rightNeighbor->m_backNeighbor->updateGraphics();
+		}
 
-		if (m_rightNeighbor->m_frontNeighbor)
+		if (m_rightNeighbor->m_frontNeighbor) {
+			m_rightNeighbor->m_frontNeighbor->prepareUpdateGraphics();
 			m_rightNeighbor->m_frontNeighbor->updateGraphics();
+		}
 	}
 
 	if (m_leftNeighbor) {
+		m_leftNeighbor->prepareUpdateGraphics();
 		m_leftNeighbor->updateGraphics();
 
-		if (m_leftNeighbor->m_backNeighbor)
+		if (m_leftNeighbor->m_backNeighbor) {
+			m_leftNeighbor->m_backNeighbor->prepareUpdateGraphics();
 			m_leftNeighbor->m_backNeighbor->updateGraphics();
+		}
 
-		if (m_leftNeighbor->m_frontNeighbor)
+		if (m_leftNeighbor->m_frontNeighbor) {
+			m_leftNeighbor->m_frontNeighbor->prepareUpdateGraphics();
 			m_leftNeighbor->m_frontNeighbor->updateGraphics();
+		}
 	}
 
-	if (m_backNeighbor)
+	if (m_backNeighbor) {
+		m_backNeighbor->prepareUpdateGraphics();
 		m_backNeighbor->updateGraphics();
+	}
 
-	if (m_frontNeighbor)
+	if (m_frontNeighbor) {
+		m_frontNeighbor->prepareUpdateGraphics();
 		m_frontNeighbor->updateGraphics();
+	}
 }
 
 void Chunk::doSunLightning(vector<vec3> &lightPropagate, int x, int y, int z) {

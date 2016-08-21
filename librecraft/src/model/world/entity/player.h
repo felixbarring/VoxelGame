@@ -59,7 +59,7 @@ private:
 	float m_height{1};
 	float m_depth{1};
 	float m_gravity{30};
-	float m_jumpSpeed{20};
+	float m_jumpSpeed{12};
 	int m_selectCubeDistance{5};
 	float m_movementSpeed{8};
 
