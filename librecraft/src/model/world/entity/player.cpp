@@ -82,33 +82,37 @@ void Player::updateSpeed(float timePassed) {
 		m_speed.x = normalizedMD.x;
 		m_speed.z = normalizedMD.z;
 	}
-//	// Gravity
-//	m_speed.y -= m_gravity * timePassed;
 
-	// Jump
-//	if (input->jumpPressed) {
-//		vector<pair<float, vec3>> collisions;
-//		intersected(vec3(0, -0.1, 0), collisions);
-//
-//		// Only jump if the player stands on solid ground.
-//		if (collisions.size())
-//			m_speed.y = m_jumpSpeed;
-//	}
-
-	if (input->switchCubePressed
-			&& ++m_cubeUsedForBuilding > config::cube_data::LAST_CUBE)
+	if (input->switchCubePressed && ++m_cubeUsedForBuilding > config::cube_data::LAST_CUBE)
 		m_cubeUsedForBuilding = 0;
 
-	// Gravity off...
-	 if (input->jumpActive || input->goDownActive) {
-		 int direction = 1;
-		 if (input->goDownActive)
-			 direction = -1;
+	if (true) {
+		// Gravity
+		m_speed.y -= m_gravity * timePassed;
 
-		 m_speed.y = 8 * direction; // TODO Remove hardcoded value
-	 } else {
-		 m_speed.y = 0;
-	 }
+		// Jump
+		if (input->jumpPressed) {
+			vector<pair<float, vec3>> collisions;
+			intersected(vec3(0, -0.1, 0), collisions);
+
+			// Only jump if the player stands on solid ground.
+			if (collisions.size())
+				m_speed.y = m_jumpSpeed;
+		}
+
+	} else {
+
+		// Gravity off...
+		if (input->jumpActive || input->goDownActive) {
+			int direction = 1;
+			if (input->goDownActive)
+				direction = -1;
+
+			m_speed.y = 8 * direction; // TODO Remove hardcoded value
+		} else {
+			m_speed.y = 0;
+		}
+	}
 
 	m_frameSpeed.x = m_speed.x * timePassed;
 	m_frameSpeed.y = m_speed.y * timePassed;
@@ -168,25 +172,20 @@ void Player::updateCameraAndTargetCube() {
 		m_lastSelecteCube = selectedCube;
 
 		if (input->action1Pressed) {
-			if (chunkManager.getCubeId(selectedCube.x, selectedCube.y,
-					selectedCube.z) != config::cube_data::BED_ROCK) {
-				chunkManager.removeCube(selectedCube.x, selectedCube.y,
-						selectedCube.z);
-				SoundPlayer::getInstance().playSound(
-						config::souds::cubeRemoved);
+			if (chunkManager.getCubeId(selectedCube.x, selectedCube.y, selectedCube.z) != config::cube_data::BED_ROCK) {
+				chunkManager.removeCube(selectedCube.x, selectedCube.y, selectedCube.z);
+				SoundPlayer::getInstance().playSound(config::souds::cubeRemoved);
 			}
 			return;
 		}
 		else if (input->action2Pressed) {
-			chunkManager.setCube(previous.x, previous.y, previous.z,
-					m_cubeUsedForBuilding);
+			chunkManager.setCube(previous.x, previous.y, previous.z, m_cubeUsedForBuilding);
 			SoundPlayer::getInstance().playSound(config::souds::cubeAdded);
 			return;
 		}
 
 		// TODO Remove hardcoded values
-		m_transform.setLocation(selectedCube.x + 0.5, selectedCube.y + 0.5,
-				selectedCube.z + 0.5);
+		m_transform.setLocation(selectedCube.x + 0.5, selectedCube.y + 0.5,	selectedCube.z + 0.5);
 
 		char voxelID = chunkManager.getCubeId(selectedCube.x, selectedCube.y,
 				selectedCube.z);
