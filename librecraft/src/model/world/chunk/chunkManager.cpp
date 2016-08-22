@@ -29,6 +29,9 @@ void ChunkManager::createWorld(string worldName) {
 
 	m_worldName = worldName;
 
+	m_xOffset = 0;
+	m_zOffset = 0;
+
 	const int lam = m_lenghtAcrossMatrix;
 
 	vector<future<void>> chunkCreationFutures;
