@@ -53,6 +53,7 @@ InGame::InGame(Game *game, string name)
 				game->changeStateToMainMenu();
 				m_state = GameState::NoOverlay;
 				chunk::ChunkManager::getInstance().saveWorld();
+				chunk::ChunkManager::getInstance().clearWorld();
 				break;
 			}
 			case 1: {
@@ -63,10 +64,8 @@ InGame::InGame(Game *game, string name)
 		}
 	};
 
-	shared_ptr < IWidget > button1(new Button {0, 325, 350, 150, 30, observer,
-			"Main Menu"});
-	shared_ptr < IWidget > button2(new Button {1, 325, 310, 150, 30, observer,
-			"Back To Game"});
+	shared_ptr < IWidget > button1(new Button {0, 325, 350, 150, 30, observer, "Main Menu"});
+	shared_ptr < IWidget > button2(new Button {1, 325, 310, 150, 30, observer, "Back To Game"});
 	m_widgetGroup1.reset(new WidgetGroup {0, 300, 300, 200, 90, observer});
 
 	m_widgetGroup1->addWidget(button1);

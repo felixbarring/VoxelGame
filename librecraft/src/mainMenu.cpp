@@ -67,7 +67,7 @@ MainMenu::MainMenu(Game *game)
 			if (name.size()) {
 				if (!world_meta::worldNameExists(name)) {
 					world_meta::addName(name);
-					game->createNewWorld(name);
+					game->createWorld(name);
 					m_activeWidgetGroup = m_mainWidgetGroup;
 					m_worldList->addListItem(name);
 				} else {
@@ -88,8 +88,7 @@ MainMenu::MainMenu(Game *game)
 		case 20: {
 			if (m_worldList->getSelectedListItem().size()) {
 				string name = m_worldList->getSelectedListItem();
-				game->loadExistingWorld(
-						m_worldList->getSelectedListItem());
+				game->createWorld(m_worldList->getSelectedListItem());
 				m_activeWidgetGroup = m_mainWidgetGroup;
 				m_worldList->reset();
 			}

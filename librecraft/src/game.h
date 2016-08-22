@@ -37,9 +37,7 @@ public:
 
 	void run();
 
-	void createNewWorld(std::string name);
-
-	void loadExistingWorld(std::string name);
+	void createWorld(std::string name);
 
 	void changeStateToMainMenu();
 

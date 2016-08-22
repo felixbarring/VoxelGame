@@ -29,15 +29,13 @@ void ChunkManager::createWorld(string worldName) {
 
 	m_worldName = worldName;
 
-	const int xMax = NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * 2 + 1;
-	const int yMax = NUMBER_OF_CHUNKS_Y;
-	const int zMax = NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * 2 + 1;
+	const int lam = m_lenghtAcrossMatrix;
 
 	vector<future<void>> chunkCreationFutures;
 
 	// Create the Chunks
-	for (int x = 0; x < xMax; ++x) {
-		for (int z = 0; z < zMax; ++z) {
+	for (int x = 0; x < lam; ++x) {
+		for (int z = 0; z < lam; ++z) {
 			auto chunk = make_shared<Chunk>(worldName, x * CHUNK_WIDTH_AND_DEPTH, z * CHUNK_WIDTH_AND_DEPTH);
 
 			chunkCreationFutures.push_back(m_threadPool.enqueue([chunk]
@@ -54,8 +52,8 @@ void ChunkManager::createWorld(string worldName) {
 	// Wait for all the chunks to be generated
 	for_each(chunkCreationFutures.begin(), chunkCreationFutures.end(), [](future<void> &f){ f.get(); });
 
-	for (int x = 0; x < xMax; ++x) {
-		for (int z = 0; z < zMax; ++z) {
+	for (int x = 0; x < lam; ++x) {
+		for (int z = 0; z < lam; ++z) {
 			// This could also be done in parallel if we are clever
 			chunks[x][0][z]->propagateLights();
 			chunks[x][0][z]->prepareUpdateGraphics();
@@ -66,13 +64,20 @@ void ChunkManager::createWorld(string worldName) {
 }
 
 void ChunkManager::saveWorld() {
-	const int xMax = NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER;
-	const int yMax = NUMBER_OF_CHUNKS_Y;
-	const int zMax = NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER;
-
-	for (int x = 0; x < xMax; x++) {
-		for (int z = 0; z < zMax; z++) {
+	const int lam = m_lenghtAcrossMatrix;
+	for (int x = 0; x < lam; x++) {
+		for (int z = 0; z < lam; z++) {
 			chunks[x][0][z]->storeChunk(m_worldName);
+		}
+	}
+}
+
+void ChunkManager::clearWorld() {
+	const int lam = m_lenghtAcrossMatrix;
+	for (int x = 0; x < lam; x++) {
+		for (int z = 0; z < lam; z++) {
+			chunks[x][0][z]->removeAllNeighbors();
+			chunks[x][0][z].reset();
 		}
 	}
 }

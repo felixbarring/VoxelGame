@@ -167,7 +167,7 @@ void Game::run() {
 
 }
 
-void Game::createNewWorld(string name) {
+void Game::createWorld(string name) {
 
 	util::SoundPlayer::getInstance().stopMusic();
 
@@ -186,12 +186,6 @@ void Game::createNewWorld(string name) {
 		loadingScreen.update();
 
 	m_currentState = m_inGame;
-}
-
-void Game::loadExistingWorld(string name) {
-
-	// TODO Implement this correctly
-
 }
 
 void Game::changeStateToMainMenu() {

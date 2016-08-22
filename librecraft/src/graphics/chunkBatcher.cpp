@@ -148,10 +148,8 @@ void ChunkBatcher::draw() {
 
 		// TODO Do frustrum culling here
 
-		glm::mat4 modelView = camera.getViewMatrix()
-				* b->getTransform().getMatrix();
-		glm::mat4 modelViewProjection = camera.getProjectionMatrix()
-				* modelView;
+		glm::mat4 modelView = camera.getViewMatrix() * b->getTransform().getMatrix();
+		glm::mat4 modelViewProjection = camera.getProjectionMatrix() * modelView;
 
 		m_program->setUniformMatrix4f("modelViewProjection", modelViewProjection);
 		m_program->setUniformMatrix4f("modelView", modelView);

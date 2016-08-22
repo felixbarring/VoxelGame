@@ -37,6 +37,8 @@ public:
 
 	void saveWorld();
 
+	void clearWorld();
+
 	/**
 	 * Should be called each frame.
 	 */
