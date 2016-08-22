@@ -32,17 +32,6 @@ InGame::InGame(Game *game, string name)
 						cube_map_data::cubeMap1Width,
 						cube_map_data::cubeMap1Height)} {
 
-//	glm::mat4 matrix = gui::createVirtualToScreen(
-//			1920,
-//			1080,
-//			static_cast<float>(config::graphics_data::windowWidth),
-//			static_cast<float>(config::graphics_data::windowHeight));
-//
-//	m_virtualProjection = glm::ortho(0.0f,
-//			static_cast<float>(config::graphics_data::windowWidth), 0.0f,
-//			static_cast<float>(config::graphics_data::windowHeight), -1.0f, 1.0f) * matrix;
-//	graphics::SpriteBatcher::getInstance().setProjection(m_virtualProjection);
-
 	m_player.setLocation(chunk_data::NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * chunk_data::CHUNK_WIDTH_AND_DEPTH, 40.1,
 						 chunk_data::NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * chunk_data::CHUNK_WIDTH_AND_DEPTH);
 

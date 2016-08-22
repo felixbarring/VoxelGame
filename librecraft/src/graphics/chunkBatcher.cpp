@@ -106,17 +106,8 @@ void ChunkBatcher::addBatch(std::shared_ptr<GraphicalChunk> batch) {
 }
 
 void ChunkBatcher::removeBatch(std::shared_ptr<GraphicalChunk> batch) {
-
-	// TODO Maybe error, when the batches gets detructed, and opengl call will be made from another thread that dose
-	// not have an opengl context
-
 	lock_guard<mutex> lock(m_mutex);
-	for (unsigned i = 0; i < m_batches.size(); ++i) {
-		if (m_batches.at(i).get() == batch.get()) {
-			m_batches.erase(m_batches.begin() + i);
-			return;
-		}
-	}
+	m_batchesToBeRemoved.push_back(batch);
 }
 
 float x = 1.0;
@@ -124,7 +115,19 @@ int direction = 1;
 
 void ChunkBatcher::draw() {
 
+	// Remove all the batches that has been requested to be removed
+	// Done on the main thread because the thread doing opengl calls needs an opengl context, which the main
+	// thread does.
 	lock_guard<mutex> lock(m_mutex);
+	for (auto batch : m_batchesToBeRemoved) {
+		for (unsigned i = 0; i < m_batches.size(); ++i) {
+			if (m_batches.at(i).get() == batch.get()) {
+				m_batches.erase(m_batches.begin() + i);
+				break;
+			}
+		}
+	}
+	m_batchesToBeRemoved.clear();
 
 	m_program->bind();
 

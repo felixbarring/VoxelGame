@@ -92,7 +92,7 @@ private:
 
 	static constexpr int m_lenghtAcrossMatrix = config::chunk_data::NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * 2 + 1;
 
-	std::shared_ptr<Chunk> chunks
+	std::shared_ptr<Chunk> m_chunks
 		[m_lenghtAcrossMatrix]
 		[config::chunk_data::NUMBER_OF_CHUNKS_Y]
 		[m_lenghtAcrossMatrix];
