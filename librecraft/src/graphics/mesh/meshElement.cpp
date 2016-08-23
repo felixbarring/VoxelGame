@@ -20,8 +20,7 @@ MeshElement::MeshElement(const std::vector<float> &vbd1, int vbd1Format,
 	GLuint vbo1;
 	glGenBuffers(1, &vbo1);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo1);
-	glBufferData(GL_ARRAY_BUFFER, vbd1.size() * FLOAT_SIZE, &vbd1[0],
-			GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, vbd1.size() * FLOAT_SIZE, &vbd1[0], GL_STATIC_DRAW);
 	vboHandels.push_back(vbo1);
 
 	glEnableVertexAttribArray(0);
@@ -30,8 +29,7 @@ MeshElement::MeshElement(const std::vector<float> &vbd1, int vbd1Format,
 
 	glGenBuffers(1, &EBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, elementData.size() * 2,
-			&elementData[0], GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, elementData.size() * 2, &elementData[0], GL_STATIC_DRAW);
 
 	glBindVertexArray(0);
 }
@@ -48,8 +46,7 @@ MeshElement::MeshElement(const std::vector<float> &vbd1, int vbd1Format,
 	GLuint vbo1;
 	glGenBuffers(1, &vbo1);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo1);
-	glBufferData(GL_ARRAY_BUFFER, vbd1.size() * FLOAT_SIZE, &vbd1[0],
-			GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, vbd1.size() * FLOAT_SIZE, &vbd1[0], GL_STATIC_DRAW);
 	vboHandels.push_back(vbo1);
 
 	glEnableVertexAttribArray(0);
@@ -59,8 +56,7 @@ MeshElement::MeshElement(const std::vector<float> &vbd1, int vbd1Format,
 	GLuint vbo2;
 	glGenBuffers(1, &vbo2);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo2);
-	glBufferData(GL_ARRAY_BUFFER, vbd2.size() * FLOAT_SIZE, &vbd2[0],
-			GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, vbd2.size() * FLOAT_SIZE, &vbd2[0], GL_STATIC_DRAW);
 	vboHandels.push_back(vbo2);
 
 	glEnableVertexAttribArray(1);
@@ -69,8 +65,7 @@ MeshElement::MeshElement(const std::vector<float> &vbd1, int vbd1Format,
 
 	glGenBuffers(1, &EBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, elementData.size() * 2,
-			&elementData[0], GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, elementData.size() * 2, &elementData[0], GL_STATIC_DRAW);
 
 	glBindVertexArray(0);
 }
@@ -88,8 +83,7 @@ MeshElement::MeshElement(const std::vector<float> &vbd1, int vbd1Format,
 	GLuint vbo1;
 	glGenBuffers(1, &vbo1);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo1);
-	glBufferData(GL_ARRAY_BUFFER, vbd1.size() * FLOAT_SIZE, &vbd1[0],
-			GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, vbd1.size() * FLOAT_SIZE, &vbd1[0], GL_STATIC_DRAW);
 	vboHandels.push_back(vbo1);
 
 	glEnableVertexAttribArray(0);
@@ -99,8 +93,7 @@ MeshElement::MeshElement(const std::vector<float> &vbd1, int vbd1Format,
 	GLuint vbo2;
 	glGenBuffers(1, &vbo2);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo2);
-	glBufferData(GL_ARRAY_BUFFER, vbd2.size() * FLOAT_SIZE, &vbd2[0],
-			GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, vbd2.size() * FLOAT_SIZE, &vbd2[0], GL_STATIC_DRAW);
 	vboHandels.push_back(vbo2);
 
 	glEnableVertexAttribArray(1);
@@ -110,8 +103,7 @@ MeshElement::MeshElement(const std::vector<float> &vbd1, int vbd1Format,
 	GLuint vbo3;
 	glGenBuffers(1, &vbo3);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo3);
-	glBufferData(GL_ARRAY_BUFFER, vbd3.size() * FLOAT_SIZE, &vbd3[0],
-			GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, vbd3.size() * FLOAT_SIZE, &vbd3[0], GL_STATIC_DRAW);
 	vboHandels.push_back(vbo3);
 
 	glEnableVertexAttribArray(2);
@@ -120,8 +112,7 @@ MeshElement::MeshElement(const std::vector<float> &vbd1, int vbd1Format,
 
 	glGenBuffers(1, &EBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, elementData.size() * 2,
-			&elementData[0], GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, elementData.size() * 2, &elementData[0], GL_STATIC_DRAW);
 
 	glBindVertexArray(0);
 }
@@ -140,8 +131,7 @@ MeshElement::MeshElement(const std::vector<float> &vbd1, int vbd1Format,
 	GLuint vbo1;
 	glGenBuffers(1, &vbo1);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo1);
-	glBufferData(GL_ARRAY_BUFFER, vbd1.size() * FLOAT_SIZE, &vbd1[0],
-			GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, vbd1.size() * FLOAT_SIZE, &vbd1[0], GL_STATIC_DRAW);
 	vboHandels.push_back(vbo1);
 
 	glEnableVertexAttribArray(0);
@@ -151,8 +141,7 @@ MeshElement::MeshElement(const std::vector<float> &vbd1, int vbd1Format,
 	GLuint vbo2;
 	glGenBuffers(1, &vbo2);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo2);
-	glBufferData(GL_ARRAY_BUFFER, vbd2.size() * FLOAT_SIZE, &vbd2[0],
-			GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, vbd2.size() * FLOAT_SIZE, &vbd2[0], GL_STATIC_DRAW);
 	vboHandels.push_back(vbo2);
 
 	glEnableVertexAttribArray(1);
@@ -162,8 +151,7 @@ MeshElement::MeshElement(const std::vector<float> &vbd1, int vbd1Format,
 	GLuint vbo3;
 	glGenBuffers(1, &vbo3);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo3);
-	glBufferData(GL_ARRAY_BUFFER, vbd3.size() * FLOAT_SIZE, &vbd3[0],
-			GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, vbd3.size() * FLOAT_SIZE, &vbd3[0], GL_STATIC_DRAW);
 	vboHandels.push_back(vbo3);
 
 	glEnableVertexAttribArray(2);
@@ -173,8 +161,7 @@ MeshElement::MeshElement(const std::vector<float> &vbd1, int vbd1Format,
 	GLuint vbo4;
 	glGenBuffers(1, &vbo4);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo4);
-	glBufferData(GL_ARRAY_BUFFER, vbd4.size() * FLOAT_SIZE, &vbd4[0],
-			GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, vbd4.size() * FLOAT_SIZE, &vbd4[0], GL_STATIC_DRAW);
 	vboHandels.push_back(vbo4);
 
 	glEnableVertexAttribArray(3);
@@ -183,8 +170,7 @@ MeshElement::MeshElement(const std::vector<float> &vbd1, int vbd1Format,
 
 	glGenBuffers(1, &EBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, elementData.size() * 2,
-			&elementData[0], GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, elementData.size() * 2, &elementData[0], GL_STATIC_DRAW);
 
 	glBindVertexArray(0);
 }

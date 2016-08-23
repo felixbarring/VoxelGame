@@ -46,9 +46,6 @@ private:
 
 	Game *m_game;
 
-	bool m_terminalOpen {false};
-	std::shared_ptr<gui::Terminal> m_terminal;
-
 	glm::mat4 m_virtualProjection;
 
 	std::unique_ptr<gui::Image> m_title;

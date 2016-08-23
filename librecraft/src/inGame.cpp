@@ -72,7 +72,8 @@ InGame::InGame(Game *game, string name)
 								config::cube_data::thumbnails[i]))));
 	}
 
-	vector<string> lol;
+	vector<string> lol = {"AAA", "AAABBB", "AAACCC", "CCCCCCCC"};
+
 	std::function<void(string)> func = [this](string command)
 				{
 					if (command == "CLOSE") {
@@ -160,8 +161,7 @@ void InGame::update(float timePassed) {
 		SpriteBatcher::getInstance().addBatch(m_fps);
 		SpriteBatcher::getInstance().addBatch(m_lastSelecteCube);
 
-		SpriteBatcher::getInstance().addBatch(
-				m_selectedCubeThumbnails[m_player.getBuildingCube()]);
+		SpriteBatcher::getInstance().addBatch(m_selectedCubeThumbnails[m_player.getBuildingCube()]);
 
 	} else {
 		mouse.unlock();

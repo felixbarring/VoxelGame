@@ -9,6 +9,7 @@
 #include "../gui/widget/textInput.h"
 #include "../gui/widget/widgetGroup.h"
 #include "widget/textArea.h"
+#include "../util/trie.h"
 
 namespace gui {
 
@@ -18,8 +19,7 @@ public:
 // Constructor/Destructor #################################
 // ########################################################
 
-	Terminal(std::vector<std::string> commands,
-			std::function<void(std::string)> commandListener);
+	Terminal(std::vector<std::string> commands,	std::function<void(std::string)> commandListener);
 
 	virtual ~Terminal() {}
 
@@ -39,11 +39,13 @@ private:
 
 	std::function<void(std::string)> m_commandListener;
 
-	std::shared_ptr<widget::TextArea> m_textArea;
-	std::shared_ptr<widget::TextInput> m_textInput;
+	std::shared_ptr<widget::TextArea> m_textArea{};
+	std::shared_ptr<widget::TextInput> m_textInput{};
 
-	std::vector<std::string> m_commands;
-	std::shared_ptr<widget::WidgetGroup> m_widgets;
+	util::Trie m_trie{};
+
+	std::vector<std::string> m_commands{};
+	std::shared_ptr<widget::WidgetGroup> m_widgets{};
 };
 
 } /* namespace widget */

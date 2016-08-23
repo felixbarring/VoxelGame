@@ -38,27 +38,20 @@ void Input::updateValues() {
 	mouseYMovement = 0.0;
 
 	// Keyboard
-	moveForwardPressed = sf::Keyboard::isKeyPressed(moveForwardButton)
-		&& !moveForwardActive;
-	moveLeftPressed = sf::Keyboard::isKeyPressed(moveLeftButton)
-		&& !moveLeftActive;
-	moveRightPressed = sf::Keyboard::isKeyPressed(moveRightButton)
-		&& !moveRightActive;
-	moveBackwardPressed = sf::Keyboard::isKeyPressed(moveBackwardButton)
-		&& !moveBackwardActive;
+	moveForwardPressed = sf::Keyboard::isKeyPressed(moveForwardButton) && !moveForwardActive;
+	moveLeftPressed = sf::Keyboard::isKeyPressed(moveLeftButton) && !moveLeftActive;
+	moveRightPressed = sf::Keyboard::isKeyPressed(moveRightButton) && !moveRightActive;
+	moveBackwardPressed = sf::Keyboard::isKeyPressed(moveBackwardButton) && !moveBackwardActive;
 	jumpPressed = sf::Keyboard::isKeyPressed(jumpButton) && !jumpActive;
 	goDownPressed = sf::Keyboard::isKeyPressed(goDownButton) && !goDownActive;
 
-	eraseTextPressed = sf::Keyboard::isKeyPressed(eraseTextButton)
-		&& !eraseTextActive;
-	switchCubePressed = sf::Keyboard::isKeyPressed(switchBuildingCube)
-		&& !switchCubeActive;
+	eraseTextPressed = sf::Keyboard::isKeyPressed(eraseTextButton) && !eraseTextActive;
+	switchCubePressed = sf::Keyboard::isKeyPressed(switchBuildingCube) && !switchCubeActive;
 
 	// Mouse
-	action1Pressed = sf::Mouse::isButtonPressed(action1Button)
-		&& !action1Active;
-	action2Pressed = sf::Mouse::isButtonPressed(action2Button)
-		&& !action2Active;
+	action1Pressed = sf::Mouse::isButtonPressed(action1Button) && !action1Active;
+	action2Pressed = sf::Mouse::isButtonPressed(action2Button) && !action2Active;
+
 
 	// Keyboard
 	moveForwardActive = sf::Keyboard::isKeyPressed(moveForwardButton);
@@ -72,6 +65,7 @@ void Input::updateValues() {
 	switchCubeActive = sf::Keyboard::isKeyPressed(switchBuildingCube);
 
 	openTerminalPressed = sf::Keyboard::isKeyPressed(openTerminal);
+	tabPressed = sf::Keyboard::isKeyPressed(tab);
 
 	// Mouse
 	action1Active = sf::Mouse::isButtonPressed(action1Button);

@@ -5,14 +5,19 @@
 #include <vector>
 #include <string>
 
+namespace util {
+
 using namespace std;
 
 /**
- * Trie class that supports adding strings and giving the best auto complete
- * on those string for a given sequence
+ * Trie class that supports adding strings and giving the best auto complete on those string for a given sequence
  */
 class Trie {
 public:
+
+	Trie() {
+		m_root = new TrieNode('-', false);
+	}
 
 	virtual ~Trie() {};
 
@@ -22,32 +27,22 @@ public:
 	 * @param value The string that will be added
 	 */
 	void addString(std::string value) {
-		TrieNode *node = &m_root;
-		for (int i = 0; i < value.size(); ++i) {
+
+		if (value.empty())
+			return;
+
+		TrieNode *node = m_root;
+		for (unsigned i = 0; i < value.size(); ++i) {
 			auto c = value[i];
-			if (node->getChild(c)) {
-				node = node->getChild(c);
+			TrieNode *child = node->getChild(c);
+			if (child) {
+				node = child;
 				continue;
 			}
-			node->addChild(TrieNode(c, i == value.size() - 1, node));
-			node = node->getChild(c); // The node we just added lol
+			TrieNode *newNode = new TrieNode(c, i == value.size() - 1);
+			node->addChild(newNode);
+			node = newNode;
 		}
-	}
-
-	/**
-	 * Checks if the string exists
-	 *
-	 * @param value The string that will be check if it exists
-	 * @return True if the string exists, else false
-	 */
-	bool stringExists(const std::string &value) {
-		TrieNode *node = &m_root;
-		for (auto c : value) {
-			if (node->getChild(c))
-				continue;
-			return false;
-		}
-		return true;
 	}
 
 	/**
@@ -63,20 +58,23 @@ public:
 	 *         more than one string that contains the value.
 	 */
 	std::string getFirstWordWithSequence(const std::string &value) {
-		TrieNode *node = &m_root;
+
+		TrieNode *node = m_root;
 		for (auto c : value) {
-			if (!node->getChild(c))
+			TrieNode *child = node->getChild(c);
+			if (!child)
 				return string();
 
-			node = node->getChild(c);
+			node = child;
 		}
 
-		while (auto child = node->getSingleChild())
+		std::string result = value;
+		while (auto child = node->getSingleChild()) {
+			result += child->getValue();
 			node = child;
+		}
 
-		auto result = node->buildString();
-
-		return string(result.rbegin(), result.rend());
+		return result;
 	}
 
 private:
@@ -84,54 +82,48 @@ private:
 	class TrieNode {
 	public:
 
-		TrieNode(char ch, bool isEnd, const TrieNode *previous)
+		TrieNode(char ch, bool isEnd)
 			: m_ch(ch),
-			  m_isEnd(isEnd),
-			  m_previous(previous)
+			  m_isEnd(isEnd)
 		{
 		}
 
-		void addChild(TrieNode node) {
+		char getValue() {
+			return m_ch;
+		}
+
+		void addChild(TrieNode *node) {
 			m_children.push_back(node);
 		}
 
 		TrieNode* getChild(char c) {
-			for (auto &child : m_children) {
-				if (child.m_ch == c)
-					return &child;
+			for (auto child : m_children) {
+				if (child->m_ch == c)
+					return child;
 			}
 			return nullptr;
 		}
 
 		TrieNode* getSingleChild() {
 			if (m_children.size() == 1)
-				return &m_children[0];
+				return m_children[0];
 
 			return nullptr;
 		}
 
-		std::string buildString() {
-			std::string str;
-			return buildStringHelper(this, str);
+		unsigned getNumberOfChildren() {
+			return m_children.size();
 		}
 
 	private:
 
-		std::string buildStringHelper(const TrieNode *node, std::string &str) {
-			if (node->m_previous) {
-				str.push_back(node->m_ch);
-				return buildStringHelper(node->m_previous, str);
-			}
-			return str;
-		}
-
 		const char m_ch{};
 		const bool m_isEnd{};
-		const TrieNode *m_previous{};
-		std::vector<TrieNode> m_children{};
+		std::vector<TrieNode*> m_children{};
 	};
 
-	TrieNode m_root{'-', false, nullptr};
+	TrieNode *m_root;
 };
 
+} /* namespace util */
 #endif /* SRC_UTIL_TRIE_H_ */
