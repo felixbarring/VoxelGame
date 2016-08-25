@@ -47,8 +47,7 @@ GraphicalChunk::GraphicalChunk(float _x, float _y, float _z,
 			for (int z = 0; z < m_depth + 2; z++) {
 				CubeFaceData cube;
 
-				auto *voxel = getVoxel(x - 1, y - 1 + m_yLocation, z - 1, data,
-						right, left, back, front);
+				auto *voxel = getVoxel(x - 1, y - 1 + m_yLocation, z - 1, data, right, left, back, front);
 				if (voxel) {
 					cube.id = voxel->id;
 					cube.lightValue = voxel->lightValue;
@@ -85,11 +84,28 @@ GraphicalChunk::GraphicalChunk(float _x, float _y, float _z,
 					continue;
 				}
 
+				if (current.id == WATER) {
+					current.front = false;
+					current.back = false;
+					current.left = false;
+					current.right = false;
+					current.top = false;
+					if (m_faceData[x + 1][y + 2][k + 1].id == AIR) {
+						current.top = true;
+						current.lvTop_BottomLeft = 15;
+						current.lvTop_BottomRight = 15;
+						current.lvTop_TopRight = 15;
+						current.lvTop_TopLeft = 15;
+					}
+					current.bottom = false;
+					continue;
+				}
+
 // X ##########################################################################
 				CubeFaceData cd;
 
 				cd = m_faceData[x + 2][y + 1][k + 1];
-				if (cd.id != AIR) {
+				if (cd.id != AIR && cd.id != WATER) {
 					current.right = false;
 				} else {
 
@@ -109,7 +125,7 @@ GraphicalChunk::GraphicalChunk(float _x, float _y, float _z,
 				}
 
 				cd = m_faceData[x][y + 1][k + 1];
-				if (cd.id != AIR) {
+				if (cd.id != AIR && cd.id != WATER) {
 					current.left = false;
 				} else {
 
@@ -131,7 +147,7 @@ GraphicalChunk::GraphicalChunk(float _x, float _y, float _z,
 // Z ##########################################################################
 
 				cd = m_faceData[x + 1][y + 1][k + 2];
-				if (cd.id != AIR) {
+				if (cd.id != AIR && cd.id != WATER) {
 					current.front = false;
 				} else {
 
@@ -150,7 +166,7 @@ GraphicalChunk::GraphicalChunk(float _x, float _y, float _z,
 				}
 
 				cd = m_faceData[x + 1][y + 1][k];
-				if (cd.id != AIR) {
+				if (cd.id != AIR && cd.id != WATER) {
 					current.back = false;
 				} else {
 
@@ -171,7 +187,7 @@ GraphicalChunk::GraphicalChunk(float _x, float _y, float _z,
 // Y ##########################################################################
 
 				cd = m_faceData[x + 1][y + 2][k + 1];
-				if (cd.id != AIR) {
+				if (cd.id != AIR && cd.id != WATER) {
 					current.top = false;
 				} else {
 
@@ -190,7 +206,7 @@ GraphicalChunk::GraphicalChunk(float _x, float _y, float _z,
 				}
 
 				cd = m_faceData[x + 1][y][k + 1];
-				if (cd.id != AIR) {
+				if (cd.id != AIR && cd.id != WATER) {
 					current.bottom = false;
 				} else {
 

@@ -49,9 +49,7 @@ private:
 	};
 
 	GameState m_state = GameState::NoOverlay;
-
 	std::shared_ptr<gui::Terminal> m_terminal;
-
 	glm::mat4 m_virtualProjection;
 
 	Game *m_game;

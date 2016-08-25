@@ -62,7 +62,7 @@ void Chunk::doSunLightning() {
 		for (int z = 0; z < CHUNK_WIDTH_AND_DEPTH; ++z) {
 			bool foundSolid = false;
 			for (int y = CHUNK_HEIGHT - 1; y >= 0; --y) {
-				if (m_cubes[x][y][z].id == AIR) {
+				if (m_cubes[x][y][z].id == AIR || m_cubes[x][y][z].id == WATER) {
 					if (foundSolid) {
 						m_cubes[x][y][z].lightValue = 0;
 					} else {
@@ -503,6 +503,9 @@ void Chunk::generateChunk() {
 				if (y == 0) {
 					v.id = BED_ROCK;
 					continue;
+				}
+				if (y > 5 && y < 25) {
+					v.id = config::cube_data::WATER;
 				}
 				if (y < lol) {
 					v.id = counterValue;
