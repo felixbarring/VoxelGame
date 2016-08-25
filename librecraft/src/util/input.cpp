@@ -66,6 +66,7 @@ void Input::updateValues() {
 
 	openTerminalPressed = sf::Keyboard::isKeyPressed(openTerminal);
 	tabPressed = sf::Keyboard::isKeyPressed(tab);
+	enterPressed = sf::Keyboard::isKeyPressed(enter),
 
 	// Mouse
 	action1Active = sf::Mouse::isButtonPressed(action1Button);

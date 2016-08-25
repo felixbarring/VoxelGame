@@ -38,7 +38,7 @@ Terminal::Terminal(vector<string> commands,	function<void(string)> commandListen
 			break;
 		}
 		case 3: {
-			m_commandListener.operator ()("CLOSE");
+			m_commandListener("close");
 			break;
 		}
 		}
@@ -67,6 +67,10 @@ void Terminal::update(float timePassed) {
 		auto autoComplete = m_trie.getFirstWordWithSequence(str);
 		if (!autoComplete.empty())
 			m_textInput->setString(autoComplete);
+	}
+	if (util::Input::getInstance()->enterPressed) {
+		m_commandListener(m_textInput->getString());
+		m_commandListener("close");
 	}
 }
 

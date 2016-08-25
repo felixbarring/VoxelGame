@@ -60,38 +60,36 @@ InGame::InGame(Game *game, string name)
 	m_widgetGroup1->addWidget(button1);
 	m_widgetGroup1->addWidget(button2);
 
-	m_crossHair.reset(
-			new Sprite(390, 290, 0, 20, 20,
-					Resources::getInstance().getTexture(
-							config::gui_data::crossHair)));
+	m_crossHair.reset(new Sprite(390, 290, 0, 20, 20, Resources::getInstance().getTexture(
+			config::gui_data::crossHair)));
 
 	for (int i = 0; i <= config::cube_data::LAST_CUBE; ++i) {
 		m_selectedCubeThumbnails.push_back(make_shared<Sprite>(
-				Sprite(380, 5, 2, 40, 40,
-						Resources::getInstance().getTexture(
-								config::cube_data::thumbnails[i]))));
+				Sprite(380, 5, 2, 40, 40, Resources::getInstance().getTexture(config::cube_data::thumbnails[i]))));
 	}
 
-	vector<string> lol = {"AAA", "AAABBB", "AAACCC", "CCCCCCCC"};
-
+	vector<string> lol = {"close", "flyMode", "gravityMode"};
 	std::function<void(string)> func = [this](string command)
 				{
-					if (command == "CLOSE") {
+					if (command == "close") {
 						Input::getInstance()->centerMouse();
 						m_state = GameState::NoOverlay;
+					}
+					if (command == "flyMode") {
+						m_player.turnGravityOff();
+					}
+					if (command == "gravityMode") {
+						m_player.turnGravityOff(false);
 					}
  				};
 
 	m_terminal = make_shared<gui::Terminal>(lol, func);
 
 	auto &res = Resources::getInstance();
-	FontMeshBuilder &fontMeshBuilder = res.getFontMeshBuilder(
-			font_data::fontLayout, font_data::fontAtlasWidth,
+	FontMeshBuilder &fontMeshBuilder = res.getFontMeshBuilder(font_data::fontLayout, font_data::fontAtlasWidth,
 			font_data::fontAtlasHeight);
 
-	m_fps.reset(new Sprite(0, 45, 10,
-							fontMeshBuilder.buldMeshForString(
-									"FPS: " + 0, 20),
+	m_fps.reset(new Sprite(0, 45, 10, fontMeshBuilder.buldMeshForString("FPS: " + 0, 20),
 							res.getTexture(config::font_data::font)));
 
 }
@@ -149,12 +147,8 @@ void InGame::update(float timePassed) {
 
 
 		vec3 ses = m_player.getLastSelectedCube();
-		string soos = "Last Selected: " + to_string(ses.x) +
-				", " + to_string(ses.y) + ", " + to_string(ses.z);
-		m_lastSelecteCube.reset(
-			new Sprite(0, 70, 10,
-					fontMeshBuilder.buldMeshForString(
-							soos, 20),
+		string soos = "Last Selected: " + to_string(ses.x) + ", " + to_string(ses.y) + ", " + to_string(ses.z);
+		m_lastSelecteCube.reset(new Sprite(0, 70, 10, fontMeshBuilder.buldMeshForString(soos, 20),
 					res.getTexture(config::font_data::font)));
 
 		SpriteBatcher::getInstance().addBatch(m_direction);
@@ -170,7 +164,7 @@ void InGame::update(float timePassed) {
 		mouse.draw();
 	}
 
-//	glDisable (GL_DEPTH_TEST);
+//	glDisable(GL_DEPTH_TEST);
 //	skybox.render();
 
 	if (m_state == GameState::Terminal) {

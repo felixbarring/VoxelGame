@@ -86,7 +86,7 @@ void Player::updateSpeed(float timePassed) {
 	if (input->switchCubePressed && ++m_cubeUsedForBuilding > config::cube_data::LAST_CUBE)
 		m_cubeUsedForBuilding = 0;
 
-	if (true) {
+	if (m_gravitiyOn) {
 		// Gravity
 		m_speed.y -= m_gravity * timePassed;
 
@@ -237,6 +237,10 @@ void Player::intersected(vec3 movement, vector<pair<float, vec3>> &collisions) {
 
 void Player::setLocation(float x, float y, float z) {
 	m_location = vec3(x, y, z);
+}
+
+void Player::turnGravityOff(bool value) {
+	m_gravitiyOn = !value;
 }
 
 vec3 Player::getViewingDirection() {

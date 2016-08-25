@@ -10,7 +10,7 @@ Cmake and SFML needs to be installed.
 Currently only tested on my Ubuntu machine and a Fedora.
 Instructions for Windows will likely come sometime in the future.
 
-Instructions on how to build on Ubuntu:
+Instructions on how to get going.
 
 ```
 Installing dependencies on Ubuntu:

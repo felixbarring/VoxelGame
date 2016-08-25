@@ -89,6 +89,7 @@ public:
 	bool switchCubePressed{false};
 
 	bool tabPressed{false};
+	bool enterPressed{false};
 
 	bool keyWasTyped{false};
 	char keyTyped{' '};

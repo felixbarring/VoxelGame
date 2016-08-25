@@ -34,14 +34,7 @@ public:
 
 	void setLocation(float x, float y, float z);
 
-	void updateSpeed(float timePassed);
-
-	void handlePhysics();
-
-	void updateCameraAndTargetCube();
-
-	void intersected(glm::vec3 movement,
-			std::vector<std::pair<float, glm::vec3>> &collisions);
+	void turnGravityOff(bool value = true);
 
 	glm::vec3 getViewingDirection();
 
@@ -54,6 +47,15 @@ public:
 // ########################################################
 
 private:
+
+	void updateSpeed(float timePassed);
+
+	void handlePhysics();
+
+	void updateCameraAndTargetCube();
+
+	void intersected(glm::vec3 movement, std::vector<std::pair<float, glm::vec3>> &collisions);
+
 	glm::vec3 m_location{0, 0, 0};
 	float m_width{1};
 	float m_height{1};
@@ -62,6 +64,8 @@ private:
 	float m_jumpSpeed{12};
 	int m_selectCubeDistance{5};
 	float m_movementSpeed{8};
+
+	bool m_gravitiyOn{true};
 
 	glm::vec3 m_speed{0, 0, 0};
 	glm::vec3 m_frameSpeed{};
