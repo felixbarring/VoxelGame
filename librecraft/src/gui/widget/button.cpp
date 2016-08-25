@@ -67,13 +67,15 @@ void Button::draw() {
 void Button::update(float timePassed) {
 	shared_ptr<Input> input {Input::getInstance()};
 
-	m_pointerInsideBorders = isInsideBorders(input->mouseVirtualAdjustedX,
-			input->mouseVirtualAdjustedY);
-
+	m_pointerInsideBorders = isInsideBorders(input->mouseVirtualAdjustedX, input->mouseVirtualAdjustedY);
 	if (m_pointerInsideBorders && input->action1Pressed) {
-		util::SoundPlayer::getInstance().playSound(config::souds::buttonPressed);
-		m_observer.operator ()(m_id);
+		trigger();
 	}
+}
+
+void Button::trigger() {
+	util::SoundPlayer::getInstance().playSound(config::souds::buttonPressed);
+	m_observer(m_id);
 }
 
 } /* namespace widget */

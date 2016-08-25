@@ -6,6 +6,7 @@
 #include <string>
 #include <memory>
 
+#include "../gui/widget/button.h"
 #include "../gui/widget/textInput.h"
 #include "../gui/widget/widgetGroup.h"
 #include "widget/textArea.h"
@@ -45,6 +46,8 @@ private:
 	util::Trie m_trie{};
 
 	std::vector<std::string> m_commands{};
+
+	std::shared_ptr<widget::Button> m_enterButton;
 	std::shared_ptr<widget::WidgetGroup> m_widgets{};
 };
 

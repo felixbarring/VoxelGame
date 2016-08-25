@@ -59,7 +59,7 @@ private:
 	entity::Player m_player;
 
 	double m_fpsDisplayCounter{0};
-	double m_fpsDisplayDelay{0.2}; // The fps should only be drawn 5 times/second
+	double m_fpsDisplayDelay{1 / 5}; // The fps should only be drawn 5 times/second
 
 	std::shared_ptr<widget::WidgetGroup> m_widgetGroup1;
 	std::shared_ptr<graphics::Sprite> m_crossHair;

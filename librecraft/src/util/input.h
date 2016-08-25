@@ -81,6 +81,7 @@ public:
 	bool escapeKeyPressed{false};
 
 	bool openTerminalPressed{false};
+	bool openTerminalActive{false};
 
 	bool eraseTextPressed{false};
 	bool eraseTextActive{false};
@@ -89,7 +90,10 @@ public:
 	bool switchCubePressed{false};
 
 	bool tabPressed{false};
+	bool tabActive{false};
+
 	bool enterPressed{false};
+	bool enterActive{false};
 
 	bool keyWasTyped{false};
 	char keyTyped{' '};

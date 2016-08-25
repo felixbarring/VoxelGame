@@ -48,6 +48,10 @@ void Input::updateValues() {
 	eraseTextPressed = sf::Keyboard::isKeyPressed(eraseTextButton) && !eraseTextActive;
 	switchCubePressed = sf::Keyboard::isKeyPressed(switchBuildingCube) && !switchCubeActive;
 
+	openTerminalPressed = sf::Keyboard::isKeyPressed(openTerminal) && !openTerminalActive;
+	tabPressed = sf::Keyboard::isKeyPressed(tab) && !tabActive;
+	enterPressed = sf::Keyboard::isKeyPressed(enter) && !enterActive;
+
 	// Mouse
 	action1Pressed = sf::Mouse::isButtonPressed(action1Button) && !action1Active;
 	action2Pressed = sf::Mouse::isButtonPressed(action2Button) && !action2Active;
@@ -64,9 +68,9 @@ void Input::updateValues() {
 	eraseTextActive = sf::Keyboard::isKeyPressed(eraseTextButton);
 	switchCubeActive = sf::Keyboard::isKeyPressed(switchBuildingCube);
 
-	openTerminalPressed = sf::Keyboard::isKeyPressed(openTerminal);
-	tabPressed = sf::Keyboard::isKeyPressed(tab);
-	enterPressed = sf::Keyboard::isKeyPressed(enter),
+	openTerminalActive = sf::Keyboard::isKeyPressed(openTerminal);
+	tabActive = sf::Keyboard::isKeyPressed(tab);
+	enterActive = sf::Keyboard::isKeyPressed(enter);
 
 	// Mouse
 	action1Active = sf::Mouse::isButtonPressed(action1Button);

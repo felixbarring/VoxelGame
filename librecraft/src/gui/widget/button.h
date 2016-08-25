@@ -40,9 +40,7 @@ public:
 	Button(int id, int x, int y, int width, int height,
 			std::function<void(int)> observer, std::string name, int layer = 0);
 
-	virtual ~Button() {
-	}
-	;
+	virtual ~Button() {};
 
 // ########################################################
 // Member Functions########################################
@@ -53,6 +51,11 @@ public:
 	void draw() override;
 
 	void update(float timePassed) override;
+
+	/**
+	 * Makes the button behave as if had been clicked.
+	 */
+	void trigger();
 
 // ########################################################
 // Implementation #########################################
@@ -68,7 +71,6 @@ protected:
 	std::shared_ptr<graphics::Sprite> m_sprite;
 	std::shared_ptr<graphics::Sprite> m_highlight;
 	std::shared_ptr<graphics::Sprite> m_text;
-
 };
 
 } /* namespace widget */

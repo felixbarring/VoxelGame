@@ -4,7 +4,6 @@
 #include <memory>
 
 #include "../gui/widget/textInput.h"
-#include "../gui/widget/button.h"
 #include "../util/input.h"
 
 using namespace std;
@@ -47,11 +46,13 @@ Terminal::Terminal(vector<string> commands,	function<void(string)> commandListen
 	m_widgets = make_shared<WidgetGroup>(0, 100, 100, 600, 400, observer, 5);
 	m_textInput = make_shared<TextInput>(1, 110, 110, 430, 30, 6);
 	m_widgets->addWidget(m_textInput);
-	m_widgets->addWidget(make_shared<Button>(2, 545, 110, 70, 30, observer, "Enter", 6));
+
+	m_enterButton = make_shared<Button>(2, 545, 110, 70, 30, observer, "Enter", 6);
+
+	m_widgets->addWidget(m_enterButton);
 	m_widgets->addWidget(make_shared<Button>(3, 545 + 75, 110, 70, 30, observer, "Close", 6));
 
 	m_textArea = make_shared<TextArea>(0, 110, 150, 580, 340, observer, 7);
-	m_textArea->addLine("Hello World");
 	m_widgets->addWidget(m_textArea);
 }
 
@@ -69,8 +70,7 @@ void Terminal::update(float timePassed) {
 			m_textInput->setString(autoComplete);
 	}
 	if (util::Input::getInstance()->enterPressed) {
-		m_commandListener(m_textInput->getString());
-		m_commandListener("close");
+		m_enterButton->trigger();
 	}
 }
 
