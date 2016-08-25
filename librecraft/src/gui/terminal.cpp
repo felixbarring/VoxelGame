@@ -30,9 +30,8 @@ Terminal::Terminal(vector<string> commands,	function<void(string)> commandListen
 		{
 		case 2: {
 			auto str =  m_textInput->getString();
-			m_textArea->add(str);
+			m_textArea->addLine(str);
 			m_commandListener(str);
-			m_commandListener(m_textInput->getString());
 			m_textInput->setString("");
 			break;
 		}
@@ -76,6 +75,10 @@ void Terminal::update(float timePassed) {
 
 void Terminal::draw() {
 	m_widgets->draw();
+}
+
+void Terminal::addLine(std::string str) {
+	m_textArea->addLine(move(str));
 }
 
 } /* namespace widget */

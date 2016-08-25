@@ -68,22 +68,22 @@ InGame::InGame(Game *game, string name)
 				Sprite(380, 5, 2, 40, 40, Resources::getInstance().getTexture(config::cube_data::thumbnails[i]))));
 	}
 
-	vector<string> lol = {"close", "flyMode", "gravityMode"};
+	vector<string> commands = {"close", "flyMode", "gravityMode"};
 	std::function<void(string)> func = [this](string command)
 				{
 					if (command == "close") {
 						Input::getInstance()->centerMouse();
 						m_state = GameState::NoOverlay;
-					}
-					if (command == "flyMode") {
+					} else if (command == "flyMode") {
 						m_player.turnGravityOff();
-					}
-					if (command == "gravityMode") {
+					} else if (command == "gravityMode") {
 						m_player.turnGravityOff(false);
+					} else {
+						m_terminal->addLine("Unknown command: " + command);
 					}
  				};
 
-	m_terminal = make_shared<gui::Terminal>(lol, func);
+	m_terminal = make_shared<gui::Terminal>(move(commands), func);
 
 	auto &res = Resources::getInstance();
 	FontMeshBuilder &fontMeshBuilder = res.getFontMeshBuilder(font_data::fontLayout, font_data::fontAtlasWidth,
