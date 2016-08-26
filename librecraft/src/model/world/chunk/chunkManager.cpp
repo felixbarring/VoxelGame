@@ -59,7 +59,6 @@ void ChunkManager::createWorld(string worldName) {
 		for (int z = 0; z < lam; ++z) {
 			// This could also be done in parallel if we are clever
 			m_chunks[x][0][z]->propagateLights();
-			m_chunks[x][0][z]->prepareUpdateGraphics();
 			m_chunks[x][0][z]->updateGraphics();
 		}
 	}
@@ -86,11 +85,7 @@ void ChunkManager::clearWorld() {
 }
 
 void ChunkManager::update() {
-	lock_guard<mutex> lock(m_graphicUpdateMutex);
-	for (auto ch : m_graphicUpdate)
-		ch->updateGraphics();
-
-	m_graphicUpdate.clear(); // Much important to clear, caused the chunks not to get destructed :s
+	// Todo was used before, maybe could find use later?!?
 }
 
 Voxel ChunkManager::getVoxel(int x, int y, int z) {
@@ -322,14 +317,12 @@ void ChunkManager::moveChunksRight() {
 		for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
 			auto chunk = m_chunks[0][0][i];
 			chunk->propagateLights();
-			chunk->prepareUpdateGraphics();
+			chunk->updateGraphics();
 			m_chunks[0 + 1][0][i]->forcePrepareUpdateGraphics();
 
-			{
-				lock_guard<mutex> lock(m_graphicUpdateMutex);
-				m_graphicUpdate.push_back(chunk);
-				m_graphicUpdate.push_back(m_chunks[0 + 1][0][i]);
-			}
+//			lock_guard<mutex> lock(m_graphicUpdateMutex);
+//			m_graphicUpdate.push_back(chunk);
+//			m_graphicUpdate.push_back(m_chunks[0 + 1][0][i]);
 		}
 
 	});
@@ -382,12 +375,12 @@ void ChunkManager::moveChunksLeft() {
 		for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
 			auto chunk = m_chunks[m_lenghtAcrossMatrix - 1][0][i];
 			chunk->propagateLights();
-			chunk->prepareUpdateGraphics();
+			chunk->updateGraphics();
 			m_chunks[m_lenghtAcrossMatrix - 2][0][i]->forcePrepareUpdateGraphics();
 
-			lock_guard<mutex> lock(m_graphicUpdateMutex);
-			m_graphicUpdate.push_back(chunk);
-			m_graphicUpdate.push_back(m_chunks[m_lenghtAcrossMatrix - 2][0][i]);
+//			lock_guard<mutex> lock(m_graphicUpdateMutex);
+//			m_graphicUpdate.push_back(chunk);
+//			m_graphicUpdate.push_back(m_chunks[m_lenghtAcrossMatrix - 2][0][i]);
 		}
 
 	});
@@ -441,12 +434,12 @@ void ChunkManager::moveChunksUp() {
 		for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
 			auto chunk = m_chunks[i][0][0];
 			chunk->propagateLights();
-			chunk->prepareUpdateGraphics();
+			chunk->updateGraphics();
 			m_chunks[i][0][0 + 1]->forcePrepareUpdateGraphics();
 
-			lock_guard<mutex> lock(m_graphicUpdateMutex);
-			m_graphicUpdate.push_back(chunk);
-			m_graphicUpdate.push_back(m_chunks[i][0][0 + 1]);
+//			lock_guard<mutex> lock(m_graphicUpdateMutex);
+//			m_graphicUpdate.push_back(chunk);
+//			m_graphicUpdate.push_back(m_chunks[i][0][0 + 1]);
 		}
 
 	});
@@ -500,12 +493,12 @@ void ChunkManager::moveChunksDown() {
 		for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
 			auto chunk = m_chunks[i][0][m_lenghtAcrossMatrix - 1];
 			chunk->propagateLights();
-			chunk->prepareUpdateGraphics();
+			chunk->updateGraphics();
 			m_chunks[i][0][m_lenghtAcrossMatrix - 2]->forcePrepareUpdateGraphics();
 
-			lock_guard<mutex> lock(m_graphicUpdateMutex);
-			m_graphicUpdate.push_back(chunk);
-			m_graphicUpdate.push_back(m_chunks[i][0][m_lenghtAcrossMatrix - 2]);
+//			lock_guard<mutex> lock(m_graphicUpdateMutex);
+//			m_graphicUpdate.push_back(chunk);
+//			m_graphicUpdate.push_back(m_chunks[i][0][m_lenghtAcrossMatrix - 2]);
 		}
 
 	});

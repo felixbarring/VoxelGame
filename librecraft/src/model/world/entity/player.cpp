@@ -189,12 +189,9 @@ void Player::updateCameraAndTargetCube() {
 		// TODO Remove hardcoded values
 		m_transform.setLocation(selectedCube.x + 0.5, selectedCube.y + 0.5,	selectedCube.z + 0.5);
 
-		char voxelID = chunkManager.getCubeId(selectedCube.x, selectedCube.y,
-				selectedCube.z);
-		char voxelLightValue = chunkManager.getVoxel(previous.x, previous.y,
-				previous.z).lightValue;
-		CubeBatcher::getInstance().addBatch(voxelID, m_transform,
-				voxelLightValue + 5);
+		char voxelID = chunkManager.getCubeId(selectedCube.x, selectedCube.y, selectedCube.z);
+		char voxelLightValue = chunkManager.getVoxel(previous.x, previous.y, previous.z).lightValue;
+		CubeBatcher::getInstance().addBatch(voxelID, m_transform, voxelLightValue + 5);
 	}
 
 }
@@ -218,7 +215,7 @@ void Player::intersected(vec3 movement, vector<pair<float, vec3>> &collisions) {
 		for (int j = yStart; j <= yEnd; j++) {
 			for (int k = zStart; k <= zEnd; k++) {
 
-				AABB cube {i, i + 1, j, j + 1, k, k + 1};
+				AABB cube{i, i + 1, j, j + 1, k, k + 1};
 				vec3 normal;
 
 				if (ChunkManager::getInstance().getCubeId(i, j, k)

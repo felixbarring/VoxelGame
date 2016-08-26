@@ -214,31 +214,32 @@ GraphicalChunk::GraphicalChunk(float _x, float _y, float _z,
 // Member Functions########################################
 // ########################################################
 
+void GraphicalChunk::uploadData() {
+	vector<GLfloat> vertexData;
+	vector<GLfloat> normals;
+	vector<GLfloat> UV;
+	vector<short> elementData;
+
+	createMeshData(false, m_faceData, vertexData, normals, UV, elementData);
+	m_mesh.reset(new mesh::MeshElement(vertexData, 4, normals, 3, UV, 3, elementData));
+
+	vertexData.clear();
+	normals.clear();
+	UV.clear();
+	elementData.clear();
+
+	createMeshData(true, m_faceData, vertexData, normals, UV, elementData);
+	m_waterMesh.reset(new mesh::MeshElement(vertexData, 4, normals, 3, UV, 3, elementData));
+
+	m_faceData.clear();
+}
+
 void GraphicalChunk::draw() {
 
 	// This should be run by the main thread
 	// If there was another thread creating the data, we lazily
 	// upload the data to opengl since only 1 thread is allowed to
 	// do that.
-	if (!m_mesh) {
-		vector<GLfloat> vertexData;
-		vector<GLfloat> normals;
-		vector<GLfloat> UV;
-		vector<short> elementData;
-
-		createMeshData(false, m_faceData, vertexData, normals, UV, elementData);
-		m_mesh.reset(new mesh::MeshElement(vertexData, 4, normals, 3, UV, 3, elementData));
-
-		vertexData.clear();
-		normals.clear();
-		UV.clear();
-		elementData.clear();
-
-		createMeshData(true, m_faceData, vertexData, normals, UV, elementData);
-		m_waterMesh.reset(new mesh::MeshElement(vertexData, 4, normals, 3, UV, 3, elementData));
-
-		m_faceData.clear();
-	}
 	m_mesh->draw();
 	m_waterMesh->draw();
 }

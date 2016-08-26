@@ -98,13 +98,23 @@ ChunkBatcher::ChunkBatcher()
 // Member Functions########################################
 // ########################################################
 
-void ChunkBatcher::addBatch(std::shared_ptr<GraphicalChunk> batch) {
-	m_batches.push_back(batch);
+int ChunkBatcher::createBatch(float x, float y, float z,
+			vector<vector<vector<Voxel>>> &data,
+			vector<vector<vector<Voxel>>> *right,
+			vector<vector<vector<Voxel>>> *left,
+			vector<vector<vector<Voxel>>> *back,
+			vector<vector<vector<Voxel>>> *front) {
+
+	auto batch = make_shared<GraphicalChunk>(x, y, z, data, right, left, back, front);
+
+	lock_guard<mutex> lock(m_mutex);
+	m_batchesToBeAdded.push_back({++m_idCounter, batch});
+	return m_idCounter;
 }
 
-void ChunkBatcher::removeBatch(std::shared_ptr<GraphicalChunk> batch) {
+void ChunkBatcher::removeBatch(int id) {
 	lock_guard<mutex> lock(m_mutex);
-	m_batchesToBeRemoved.push_back(batch);
+	m_batchesToBeRemoved.push_back(id);
 }
 
 float x = 1.0;
@@ -112,18 +122,23 @@ int direction = 1;
 
 void ChunkBatcher::draw() {
 
-	// Remove all the batches that has been requested to be removed
 	// Done on the main thread because the thread doing opengl calls needs an opengl context, which the main
 	// thread does.
 	lock_guard<mutex> lock(m_mutex);
-	for (auto batch : m_batchesToBeRemoved) {
-		for (unsigned i = 0; i < m_batches.size(); ++i) {
-			if (m_batches.at(i).get() == batch.get()) {
-				m_batches.erase(m_batches.begin() + i);
-				break;
-			}
-		}
+
+	// Add all the batches that has been requested to be added.
+	for (auto batch : m_batchesToBeAdded) {
+		batch.second->uploadData();
+		m_batches.emplace(batch.first, batch.second);
 	}
+
+	// Remove all the batches that has been requested to be removed.
+	for (auto batchId : m_batchesToBeRemoved) {
+		auto lol = m_batches.find(batchId);
+		if (lol != m_batches.end())
+			m_batches.erase(lol);
+	}
+	m_batchesToBeAdded.clear();
 	m_batchesToBeRemoved.clear();
 
 	m_program->bind();
@@ -137,28 +152,26 @@ void ChunkBatcher::draw() {
 
 //	if (x > 5 || x < - 5)
 //		direction = -direction;
-//
 //	x += 0.1 * direction;
 
 	m_program->setUniform3f("lightDirection", x, 3.0, 0.3);
 
 	Camera &camera = Camera::getInstance();
 
-	for (auto b : m_batches) {
+	for (auto batch : m_batches) {
 
 		// TODO Do frustrum culling here
 
-		glm::mat4 modelView = camera.getViewMatrix() * b->getTransform().getMatrix();
+		glm::mat4 modelView = camera.getViewMatrix() * batch.second->getTransform().getMatrix();
 		glm::mat4 modelViewProjection = camera.getProjectionMatrix() * modelView;
 
 		m_program->setUniformMatrix4f("modelViewProjection", modelViewProjection);
 		m_program->setUniformMatrix4f("modelView", modelView);
 
-		b->draw();
+		batch.second->draw();
 	}
 
 	m_program->unbind();
-
 }
 
 }

@@ -111,20 +111,13 @@ public:
 	///@}
 
 	/**
-	 * Does the work on updating the graphicalChunks that is safe to do in parallel with another instance of chunk.
-	 * updateGraphics needs to be called after this function for it to have effect.
-	 */
-	void prepareUpdateGraphics();
-
-	/**
 	 * Forces all the graphical sections to update even if they are not dirty. updateGraphics should be called after
 	 * for it to have effect.
 	 */
 	void forcePrepareUpdateGraphics();
 
 	/**
-	 * Updates the graphical chunks in the chunkBatcher. prepareUpdateGraphics should have been called before.
-	 * Not thread safe.
+	 *
 	 */
 	void updateGraphics();
 
@@ -222,10 +215,7 @@ private:
 
 	std::vector<std::vector<std::vector<Voxel>>> m_cubes{};
 
-	std::vector<std::shared_ptr<graphics::GraphicalChunk>> m_graphicalChunks{};
-	std::vector<std::shared_ptr<graphics::GraphicalChunk>> m_graphicalChunksToBeRemoved{};
-	std::vector<std::shared_ptr<graphics::GraphicalChunk>> m_graphicalChunksToBeAdded{};
-
+	std::vector<int> m_graphicalChunks{};
 
 	std::shared_ptr<Chunk> m_rightNeighbor{};
 	std::shared_ptr<Chunk> m_leftNeighbor{};

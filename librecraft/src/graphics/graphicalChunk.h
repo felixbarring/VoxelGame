@@ -20,7 +20,7 @@ public:
 // ########################################################
 
 	GraphicalChunk(float x, float y, float z,
-			std::vector<std::vector<std::vector<Voxel>>>&data,
+			std::vector<std::vector<std::vector<Voxel>>> &data,
 			std::vector<std::vector<std::vector<Voxel>>> *right,
 			std::vector<std::vector<std::vector<Voxel>>> *left,
 			std::vector<std::vector<std::vector<Voxel>>> *back,
@@ -31,6 +31,12 @@ public:
 // ########################################################
 // Member Functions########################################
 // ########################################################
+
+	/**
+	 * Creates the meshes that will be used for rendering. This function must be called from the main thread
+	 * that has the opengl context. Forgetting to call this function before draw is an error. Should only be done once.
+	 */
+	void uploadData();
 
 	void draw();
 
