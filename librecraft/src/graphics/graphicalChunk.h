@@ -52,23 +52,17 @@ private:
 		char lightValue;
 
 		// lv means lightValue
-		float lvFront_BottomLeft, lvFront_BottomRight,
-				lvFront_TopRight, lvFront_TopLeft;
+		float lvFront_BottomLeft, lvFront_BottomRight, lvFront_TopRight, lvFront_TopLeft;
 
-		float lvBack_BottomLeft, lvBack_BottomRight,
-				lvBack_TopRight, lvBack_TopLeft;
+		float lvBack_BottomLeft, lvBack_BottomRight, lvBack_TopRight, lvBack_TopLeft;
 
-		float lvLeft_BottomLeft, lvLeft_BottomRight,
-				lvLeft_TopRight, lvLeft_TopLeft;
+		float lvLeft_BottomLeft, lvLeft_BottomRight, lvLeft_TopRight, lvLeft_TopLeft;
 
-		float lvRight_BottomLeft, lvRight_BottomRight,
-				lvRight_TopRight, lvRight_TopLeft;
+		float lvRight_BottomLeft, lvRight_BottomRight, lvRight_TopRight, lvRight_TopLeft;
 
-		float lvTop_BottomLeft, lvTop_BottomRight,
-				lvTop_TopRight, lvTop_TopLeft;
+		float lvTop_BottomLeft, lvTop_BottomRight, lvTop_TopRight, lvTop_TopLeft;
 
-		float lvBottom_BottomLeft, lvBottom_BottomRight,
-				lvBottom_TopRight, lvBottom_TopLeft;
+		float lvBottom_BottomLeft, lvBottom_BottomRight, lvBottom_TopRight, lvBottom_TopLeft;
 	};
 
 	Voxel* getVoxel(int x, int y, int z,
@@ -77,10 +71,10 @@ private:
 	void createMeshData(
 			bool transparent,
 			const std::vector<std::vector<std::vector<CubeFaceData>>> &faceData,
-			std::vector<GLfloat>& vertexData,
-			std::vector<GLfloat>& normals,
-			std::vector<GLfloat>& UV,
-			std::vector<short >& elementData);
+			std::vector<GLfloat> &vertexData,
+			std::vector<GLfloat> &normals,
+			std::vector<GLfloat> &UV,
+			std::vector<short> &elementData);
 
 	void doAORight(CubeFaceData &cf, int x, int y, int z,
 		std::vector<std::vector<std::vector<CubeFaceData>>> &faceData);
@@ -100,7 +94,6 @@ private:
 	void doAOBottom(CubeFaceData &cf, int x, int y, int z,
 		std::vector<std::vector<std::vector<CubeFaceData>>> &faceData);
 
-
 	Voxel* getVoxel(int x, int y, int z,
 		std::vector<std::vector<std::vector<Voxel>>> &data,
 		std::vector<std::vector<std::vector<Voxel>>> *right,
@@ -108,30 +101,20 @@ private:
 		std::vector<std::vector<std::vector<Voxel>>> *back,
 		std::vector<std::vector<std::vector<Voxel>>> *front);
 
-	void computeAverageRight(int lightValue, int x, int y, int z,
-			float &bottomLeft, float &bottomRight,
-			float &topRight, float &topLeft,
-			std::vector<std::vector<std::vector<CubeFaceData>>> &faceData);
+	void computeAverageRight(int lightValue, int x, int y, int z, float &bottomLeft, float &bottomRight,
+			float &topRight, float &topLeft, std::vector<std::vector<std::vector<CubeFaceData>>> &faceData);
 
-	void computeAverageLeft(int lightValue, int x, int y, int z,
-			float &bottomLeft, float &bottomRight,
-			float &topRight, float &topLeft,
-			std::vector<std::vector<std::vector<CubeFaceData>>> &faceData);
+	void computeAverageLeft(int lightValue, int x, int y, int z, float &bottomLeft, float &bottomRight,
+			float &topRight, float &topLeft, std::vector<std::vector<std::vector<CubeFaceData>>> &faceData);
 
-	void computeAverageTop(int lightValue, int x, int y, int z,
-			float &bottomLeft, float &bottomRight,
-			float &topRight, float &topLeft,
-			std::vector<std::vector<std::vector<CubeFaceData>>> &faceData);
+	void computeAverageTop(int lightValue, int x, int y, int z, float &bottomLeft, float &bottomRight,
+			float &topRight, float &topLeft, std::vector<std::vector<std::vector<CubeFaceData>>> &faceData);
 
-	void computeAverageBottom(int lightValue, int x, int y, int z,
-			float &bottomLeft, float &bottomRight,
-			float &topRight, float &topLeft,
-			std::vector<std::vector<std::vector<CubeFaceData>>> &faceData);
+	void computeAverageBottom(int lightValue, int x, int y, int z, float &bottomLeft, float &bottomRight,
+			float &topRight, float &topLeft, std::vector<std::vector<std::vector<CubeFaceData>>> &faceData);
 
-	void computeAverageBack(int lightValue, int x, int y, int z,
-			float &bottomLeft, float &bottomRight,
-			float &topRight, float &topLeft,
-			std::vector<std::vector<std::vector<CubeFaceData>>> &faceData);
+	void computeAverageBack(int lightValue, int x, int y, int z, float &bottomLeft, float &bottomRight,
+			float &topRight, float &topLeft, std::vector<std::vector<std::vector<CubeFaceData>>> &faceData);
 
 	void computeAverageFront(int lightValue, int x, int y, int z,
 			float &bottomLeft, float &bottomRight,

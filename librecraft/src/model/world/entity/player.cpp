@@ -21,6 +21,7 @@ using namespace util;
 using namespace graphics;
 using namespace chunk;
 using namespace config;
+using namespace cube_data;
 
 namespace entity {
 
@@ -172,7 +173,8 @@ void Player::updateCameraAndTargetCube() {
 		m_lastSelecteCube = selectedCube;
 
 		if (input->action1Pressed) {
-			if (chunkManager.getCubeId(selectedCube.x, selectedCube.y, selectedCube.z) != config::cube_data::BED_ROCK) {
+			auto voxel = chunkManager.getCubeId(selectedCube.x, selectedCube.y, selectedCube.z);
+			if (voxel != BED_ROCK && voxel != WATER) {
 				chunkManager.removeCube(selectedCube.x, selectedCube.y, selectedCube.z);
 				SoundPlayer::getInstance().playSound(config::souds::cubeRemoved);
 			}

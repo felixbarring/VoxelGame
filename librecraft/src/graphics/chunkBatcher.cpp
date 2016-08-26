@@ -82,10 +82,7 @@ ChunkBatcher::ChunkBatcher()
 //			"  color = vec4(diffuse, 1.0f) * texture(texture1, texCoord); \n"
 
 			"  vec4 light = vec4(lightValue, lightValue, lightValue, 1) + vec4(diffuse, 0); \n"
-
-			"  color = mix(vec4(fogColor, 1.0), "
-			"    light* texture(texture1, texCoord), "
-			"    fogFactor);"
+			"  color = mix(vec4(fogColor, 1.0), light* texture(texture1, texCoord), fogFactor);"
 
 			"} \n";
 
