@@ -143,7 +143,7 @@ void ChunkBatcher::draw() {
 
 	m_program->bind();
 
-	glEnable (GL_CULL_FACE);
+	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
 
 	glActiveTexture(GL_TEXTURE0);
@@ -172,6 +172,8 @@ void ChunkBatcher::draw() {
 	}
 
 	// TODO Very bad to do twice the matrix multiplications, needs to be fixed...
+
+	glDisable(GL_CULL_FACE);
 
 	for (auto batch : m_batches) {
 
