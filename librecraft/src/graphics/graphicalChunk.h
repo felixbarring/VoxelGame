@@ -38,7 +38,9 @@ public:
 	 */
 	void uploadData();
 
-	void draw();
+	void drawNoneTransparent();
+
+	void drawTransparent();
 
 	Transform& getTransform();
 

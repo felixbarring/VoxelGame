@@ -168,7 +168,20 @@ void ChunkBatcher::draw() {
 		m_program->setUniformMatrix4f("modelViewProjection", modelViewProjection);
 		m_program->setUniformMatrix4f("modelView", modelView);
 
-		batch.second->draw();
+		batch.second->drawNoneTransparent();
+	}
+
+	for (auto batch : m_batches) {
+
+		// TODO Do frustrum culling here
+
+		glm::mat4 modelView = camera.getViewMatrix() * batch.second->getTransform().getMatrix();
+		glm::mat4 modelViewProjection = camera.getProjectionMatrix() * modelView;
+
+		m_program->setUniformMatrix4f("modelViewProjection", modelViewProjection);
+		m_program->setUniformMatrix4f("modelView", modelView);
+
+		batch.second->drawTransparent();
 	}
 
 	m_program->unbind();

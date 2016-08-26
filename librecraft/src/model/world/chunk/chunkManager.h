@@ -50,7 +50,7 @@ public:
 
 	bool isSolid(int x, int y, int z);
 
-	bool isAir(int x, int y, int z);
+	bool isAirOrWater(int x, int y, int z);
 
 	void removeCube(int x, int y, int z);
 

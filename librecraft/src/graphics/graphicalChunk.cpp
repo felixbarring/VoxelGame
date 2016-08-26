@@ -234,15 +234,14 @@ void GraphicalChunk::uploadData() {
 	m_faceData.clear();
 }
 
-void GraphicalChunk::draw() {
-
-	// This should be run by the main thread
-	// If there was another thread creating the data, we lazily
-	// upload the data to opengl since only 1 thread is allowed to
-	// do that.
+void GraphicalChunk::drawNoneTransparent() {
 	m_mesh->draw();
+}
+
+void GraphicalChunk::drawTransparent() {
 	m_waterMesh->draw();
 }
+
 
 Transform& GraphicalChunk::getTransform() {
 	return transform;

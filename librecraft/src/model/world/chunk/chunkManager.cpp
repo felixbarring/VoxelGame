@@ -117,8 +117,9 @@ bool ChunkManager::isSolid(int x, int y, int z) {
 	return false;
 }
 
-bool ChunkManager::isAir(int x, int y, int z) {
-	return getCubeId(x, y, z) == AIR;
+bool ChunkManager::isAirOrWater(int x, int y, int z) {
+	auto cubeId = getCubeId(x, y, z);
+	return cubeId == AIR || cubeId == WATER;
 }
 
 void ChunkManager::removeCube(int x, int y, int z) {
@@ -237,7 +238,7 @@ bool ChunkManager::intersectWithSolidCube(vec3 origin, vec3 direction,
 
 		}
 
-		if (!isAir(currentCubeX, currentCubeY, currentCubeZ)) {
+		if (!isAirOrWater(currentCubeX, currentCubeY, currentCubeZ)) {
 			intersected = vec3(currentCubeX, currentCubeY, currentCubeZ);
 			return true;
 		}
