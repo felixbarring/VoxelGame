@@ -320,10 +320,6 @@ void ChunkManager::moveChunksRight() {
 			chunk->propagateLights();
 			chunk->updateGraphics();
 			m_chunks[0 + 1][0][i]->forcePrepareUpdateGraphics();
-
-//			lock_guard<mutex> lock(m_graphicUpdateMutex);
-//			m_graphicUpdate.push_back(chunk);
-//			m_graphicUpdate.push_back(m_chunks[0 + 1][0][i]);
 		}
 
 	});
@@ -378,10 +374,6 @@ void ChunkManager::moveChunksLeft() {
 			chunk->propagateLights();
 			chunk->updateGraphics();
 			m_chunks[m_lenghtAcrossMatrix - 2][0][i]->forcePrepareUpdateGraphics();
-
-//			lock_guard<mutex> lock(m_graphicUpdateMutex);
-//			m_graphicUpdate.push_back(chunk);
-//			m_graphicUpdate.push_back(m_chunks[m_lenghtAcrossMatrix - 2][0][i]);
 		}
 
 	});
@@ -437,10 +429,6 @@ void ChunkManager::moveChunksUp() {
 			chunk->propagateLights();
 			chunk->updateGraphics();
 			m_chunks[i][0][0 + 1]->forcePrepareUpdateGraphics();
-
-//			lock_guard<mutex> lock(m_graphicUpdateMutex);
-//			m_graphicUpdate.push_back(chunk);
-//			m_graphicUpdate.push_back(m_chunks[i][0][0 + 1]);
 		}
 
 	});
@@ -496,10 +484,6 @@ void ChunkManager::moveChunksDown() {
 			chunk->propagateLights();
 			chunk->updateGraphics();
 			m_chunks[i][0][m_lenghtAcrossMatrix - 2]->forcePrepareUpdateGraphics();
-
-//			lock_guard<mutex> lock(m_graphicUpdateMutex);
-//			m_graphicUpdate.push_back(chunk);
-//			m_graphicUpdate.push_back(m_chunks[i][0][m_lenghtAcrossMatrix - 2]);
 		}
 
 	});

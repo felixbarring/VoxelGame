@@ -218,8 +218,8 @@ void Player::intersected(vec3 movement, vector<pair<float, vec3>> &collisions) {
 				AABB cube{i, i + 1, j, j + 1, k, k + 1};
 				vec3 normal;
 
-				if (ChunkManager::getInstance().getCubeId(i, j, k)
-						!= cube_data::AIR) {
+				auto cubeId = ChunkManager::getInstance().getCubeId(i, j, k);
+				if (!(cubeId == cube_data::AIR || cubeId == cube_data::WATER)) {
 					vec3 vec;
 					float time = AABB::collisionTime(start, cube, vec,
 							movement);

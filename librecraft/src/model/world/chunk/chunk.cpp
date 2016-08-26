@@ -57,16 +57,24 @@ void Chunk::create() {
 }
 
 void Chunk::doSunLightning() {
-	// Sun lightning, only air gets light
+
+	// Sun lightning, only air and water gets light
+	// Each step in water reduces the light strength
 	for (int x = 0; x < CHUNK_WIDTH_AND_DEPTH; ++x) {
 		for (int z = 0; z < CHUNK_WIDTH_AND_DEPTH; ++z) {
 			bool foundSolid = false;
 			for (int y = CHUNK_HEIGHT - 1; y >= 0; --y) {
-				if (m_cubes[x][y][z].id == AIR || m_cubes[x][y][z].id == WATER) {
+				auto &cube = m_cubes[x][y][z];
+				int lightValue{m_directSunlight};
+				if (cube.id == AIR || cube.id == WATER) {
+					// TODO Does this work?!?
+					if (cube.id == WATER && lightValue > 2)
+						--lightValue;
+
 					if (foundSolid) {
-						m_cubes[x][y][z].lightValue = 0;
+						cube.lightValue = 0;
 					} else {
-						m_cubes[x][y][z].lightValue = m_directSunlight;
+						cube.lightValue = lightValue;
 						m_lightsToPropagate.push_back(vec3(x, y, z));
 					}
 				} else {

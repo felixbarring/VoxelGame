@@ -171,6 +171,8 @@ void ChunkBatcher::draw() {
 		batch.second->drawNoneTransparent();
 	}
 
+	// TODO Very bad to do twice the matrix multiplications, needs to be fixed...
+
 	for (auto batch : m_batches) {
 
 		// TODO Do frustrum culling here
