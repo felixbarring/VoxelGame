@@ -56,12 +56,12 @@ GraphicalChunk::GraphicalChunk(float _x, float _y, float _z,
 					cube.lightValue = 0;
 				}
 
-				cube.front = true;
-				cube.back = true;
-				cube.left = true;
-				cube.right = true;
-				cube.top = true;
-				cube.bottom = true;
+				cube.front = false;
+				cube.back = false;
+				cube.left = false;
+				cube.right = false;
+				cube.top = false;
+				cube.bottom = false;
 
 				m_faceData[x][y].push_back(cube);
 			}
@@ -74,40 +74,26 @@ GraphicalChunk::GraphicalChunk(float _x, float _y, float _z,
 			for (int k = 0; k < m_depth; k++) {
 
 				CubeFaceData &current = m_faceData[x + 1][y + 1][k + 1];
-				if (current.id == AIR) {
-					current.front = false;
-					current.back = false;
-					current.left = false;
-					current.right = false;
-					current.top = false;
-					current.bottom = false;
+				if (current.id == AIR)
 					continue;
-				}
 
 				if (current.id == WATER) {
-					current.front = false;
-					current.back = false;
-					current.left = false;
-					current.right = false;
-					current.top = false;
 					if (m_faceData[x + 1][y + 2][k + 1].id == AIR) {
 						current.top = true;
-						current.lvTop_BottomLeft = 15;
-						current.lvTop_BottomRight = 15;
-						current.lvTop_TopRight = 15;
-						current.lvTop_TopLeft = 15;
+						current.lvTop_BottomLeft = 5;
+						current.lvTop_BottomRight = 5;
+						current.lvTop_TopRight = 5;
+						current.lvTop_TopLeft = 5;
 					}
-					current.bottom = false;
 					continue;
 				}
 
 // X ##########################################################################
 				CubeFaceData cd;
-
 				cd = m_faceData[x + 2][y + 1][k + 1];
-				if (cd.id != AIR && cd.id != WATER) {
-					current.right = false;
-				} else {
+				if (cd.id == AIR || cd.id == WATER) {
+
+					current.right = true;
 
 //					current.lvRight_BottomLeft = cd.lightValue;
 //					current.lvRight_BottomRight = cd.lightValue;
@@ -125,9 +111,8 @@ GraphicalChunk::GraphicalChunk(float _x, float _y, float _z,
 				}
 
 				cd = m_faceData[x][y + 1][k + 1];
-				if (cd.id != AIR && cd.id != WATER) {
-					current.left = false;
-				} else {
+				if (cd.id == AIR || cd.id == WATER) {
+					current.left = true;
 
 //					current.lvLeft_BottomLeft = cd.lightValue;
 //					current.lvLeft_BottomRight = cd.lightValue;
@@ -147,9 +132,8 @@ GraphicalChunk::GraphicalChunk(float _x, float _y, float _z,
 // Z ##########################################################################
 
 				cd = m_faceData[x + 1][y + 1][k + 2];
-				if (cd.id != AIR && cd.id != WATER) {
-					current.front = false;
-				} else {
+				if (cd.id == AIR || cd.id == WATER) {
+					current.front = true;
 
 //					current.lvFront_BottomLeft = cd.lightValue;
 //					current.lvFront_BottomRight = cd.lightValue;
@@ -166,9 +150,8 @@ GraphicalChunk::GraphicalChunk(float _x, float _y, float _z,
 				}
 
 				cd = m_faceData[x + 1][y + 1][k];
-				if (cd.id != AIR && cd.id != WATER) {
-					current.back = false;
-				} else {
+				if (cd.id == AIR || cd.id == WATER) {
+					current.back = true;
 
 //					current.lvBack_BottomLeft = cd.lightValue;
 //					current.lvBack_BottomRight = cd.lightValue;
@@ -183,13 +166,11 @@ GraphicalChunk::GraphicalChunk(float _x, float _y, float _z,
 
 					doAOBack(current, x + 1, y + 1, k + 1, m_faceData);
 				}
-
 // Y ##########################################################################
 
 				cd = m_faceData[x + 1][y + 2][k + 1];
-				if (cd.id != AIR && cd.id != WATER) {
-					current.top = false;
-				} else {
+				if (cd.id == AIR || cd.id == WATER) {
+					current.top = true;
 
 //					current.lvTop_BottomLeft = cd.lightValue;
 //					current.lvTop_BottomRight = cd.lightValue;
@@ -206,9 +187,8 @@ GraphicalChunk::GraphicalChunk(float _x, float _y, float _z,
 				}
 
 				cd = m_faceData[x + 1][y][k + 1];
-				if (cd.id != AIR && cd.id != WATER) {
-					current.bottom = false;
-				} else {
+				if (cd.id == AIR || cd.id == WATER) {
+					current.bottom = true;
 
 //					current.lvBottom_BottomLeft = cd.lightValue;
 //					current.lvBottom_BottomRight = cd.lightValue;
@@ -240,18 +220,27 @@ void GraphicalChunk::draw() {
 	// If there was another thread creating the data, we lazily
 	// upload the data to opengl since only 1 thread is allowed to
 	// do that.
-
-	if (!mesh) {
+	if (!m_mesh) {
 		vector<GLfloat> vertexData;
 		vector<GLfloat> normals;
 		vector<GLfloat> UV;
 		vector<short> elementData;
 
-		createMeshData(m_faceData, vertexData, normals, UV, elementData);
-		mesh.reset(new mesh::MeshElement(vertexData, 4, normals, 3, UV, 3, elementData));
+		createMeshData(false, m_faceData, vertexData, normals, UV, elementData);
+		m_mesh.reset(new mesh::MeshElement(vertexData, 4, normals, 3, UV, 3, elementData));
+
+		vertexData.clear();
+		normals.clear();
+		UV.clear();
+		elementData.clear();
+
+		createMeshData(true, m_faceData, vertexData, normals, UV, elementData);
+		m_waterMesh.reset(new mesh::MeshElement(vertexData, 4, normals, 3, UV, 3, elementData));
+
 		m_faceData.clear();
 	}
-	mesh->draw();
+	m_mesh->draw();
+	m_waterMesh->draw();
 }
 
 Transform& GraphicalChunk::getTransform() {
@@ -310,6 +299,7 @@ Voxel* GraphicalChunk::getVoxel(int x, int y, int z,
 }
 
 void GraphicalChunk::createMeshData(
+		bool transparent,
 		const vector<vector<vector<CubeFaceData>>> &faceData,
 		vector<GLfloat> &vertexData,
 		vector<GLfloat> &normals,
@@ -330,7 +320,7 @@ void GraphicalChunk::createMeshData(
 				CubeFaceData fd = faceData[i + 1][j + 1][k + 1];
 
 				int id = fd.id;
-				if (id == AIR)
+				if (id == AIR || (id == WATER && !transparent) || (id != WATER && transparent))
 					continue;
 
 				GLfloat sideTexture = BLOCK_TEXTURES[id][SIDE_TEXTURE];
@@ -360,7 +350,6 @@ void GraphicalChunk::createMeshData(
 						1.0f, 0.0f, 0.0f,
 					};
 
-					// REDO THESE
 					vector<GLfloat> uv {
 						0.0f, 0.0f, static_cast<GLfloat>(sideTexture),
 						1.0f, 0.0f, static_cast<GLfloat>(sideTexture),

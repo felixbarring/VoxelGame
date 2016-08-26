@@ -75,6 +75,7 @@ private:
 		std::vector<std::vector<std::vector<CubeFaceData>>> &faceData);
 
 	void createMeshData(
+			bool transparent,
 			const std::vector<std::vector<std::vector<CubeFaceData>>> &faceData,
 			std::vector<GLfloat>& vertexData,
 			std::vector<GLfloat>& normals,
@@ -160,7 +161,9 @@ private:
 			float& topLeft);
 
 	std::vector<std::vector<std::vector<CubeFaceData>>> m_faceData;
-	std::unique_ptr<mesh::MeshElement> mesh;
+
+	std::unique_ptr<mesh::MeshElement> m_mesh;
+	std::unique_ptr<mesh::MeshElement> m_waterMesh;
 
 	float m_xLocation;
 	float m_yLocation;
