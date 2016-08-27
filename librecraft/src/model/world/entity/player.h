@@ -54,7 +54,9 @@ private:
 
 	void updateCameraAndTargetCube();
 
-	void intersected(glm::vec3 movement, std::vector<std::pair<float, glm::vec3>> &collisions);
+	void intersected(glm::vec3 movement, std::vector<std::tuple<float, int, glm::vec3>> &collisions);
+
+	bool isInWater();
 
 	glm::vec3 m_location{0, 0, 0};
 	float m_width{1};

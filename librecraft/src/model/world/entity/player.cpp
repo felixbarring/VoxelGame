@@ -46,6 +46,22 @@ void Player::update(float timePassed) {
 
 }
 
+void Player::setLocation(float x, float y, float z) {
+	m_location = vec3(x, y, z);
+}
+
+void Player::turnGravityOff(bool value) {
+	m_gravitiyOn = !value;
+}
+
+vec3 Player::getViewingDirection() {
+	return m_viewDirection.getViewDirection();
+}
+
+glm::vec3 Player::getLastSelectedCube() {
+	return m_lastSelecteCube;
+}
+
 void Player::updateSpeed(float timePassed) {
 	shared_ptr<Input> input = Input::getInstance();
 	m_viewDirection.changeViewDirection(input->mouseXMovement,
@@ -87,19 +103,33 @@ void Player::updateSpeed(float timePassed) {
 	if (input->switchCubePressed && ++m_cubeUsedForBuilding > config::cube_data::LAST_CUBE)
 		m_cubeUsedForBuilding = 0;
 
+	double waterFactor = 1.0;
+
 	if (m_gravitiyOn) {
 		// Gravity
 		m_speed.y -= m_gravity * timePassed;
 
 		// Jump
 		if (input->jumpPressed) {
-			vector<pair<float, vec3>> collisions;
+			vector<tuple<float, int, vec3>> collisions;
 			intersected(vec3(0, -0.1, 0), collisions);
 
 			// Only jump if the player stands on solid ground.
 			if (collisions.size())
 				m_speed.y = m_jumpSpeed;
 		}
+
+		if (isInWater()) {
+			waterFactor = 0.1;
+			if (input->jumpActive || input->goDownActive) {
+				int direction = 1;
+				if (input->goDownActive)
+					direction = -1;
+
+				m_speed.y = 8 * direction;
+			}
+		}
+
 
 	} else {
 
@@ -115,33 +145,37 @@ void Player::updateSpeed(float timePassed) {
 		}
 	}
 
-	m_frameSpeed.x = m_speed.x * timePassed;
-	m_frameSpeed.y = m_speed.y * timePassed;
-	m_frameSpeed.z = m_speed.z * timePassed;
+	vector<tuple<float, int, vec3>> collisions;
+	intersected(vec3(0, 0, 0), collisions);
+
+	m_frameSpeed.x = m_speed.x * waterFactor * timePassed;
+	m_frameSpeed.y = m_speed.y * waterFactor * timePassed;
+	m_frameSpeed.z = m_speed.z * waterFactor * timePassed;
 
 }
 
 void Player::handlePhysics() {
-	vector<pair<float, vec3>> collisions;
+	vector<tuple<float, int, vec3>> collisions;
 	intersected(m_frameSpeed, collisions);
 
 	while (collisions.size()) {
 		sort(collisions.begin(), collisions.end(),
-				[](pair<float, vec3> a, pair<float, vec3> b)
+				[](tuple<float, int, vec3> a, tuple<float, int, vec3> b)
 				{
-					return a.first < b.first;
+					return get<0>(a) < get<0>(b);
 				});
 
 		if (collisions.size()) {
 			auto c = collisions[0];
+
 			m_frameSpeed += vec3(
-					-c.second.x * m_frameSpeed.x,
-					-c.second.y * m_frameSpeed.y,
-					-c.second.z * m_frameSpeed.z);
+					-std::get<2>(c).x * m_frameSpeed.x,
+					-std::get<2>(c).y * m_frameSpeed.y,
+					-std::get<2>(c).z * m_frameSpeed.z);
 			m_speed += vec3(
-					-c.second.x * m_speed.x,
-					-c.second.y * m_speed.y,
-					-c.second.z * m_speed.z);
+					-std::get<2>(c).x * m_speed.x,
+					-std::get<2>(c).y * m_speed.y,
+					-std::get<2>(c).z * m_speed.z);
 		}
 		collisions.clear();
 		intersected(m_frameSpeed, collisions);
@@ -189,10 +223,10 @@ void Player::updateCameraAndTargetCube() {
 
 }
 
-void Player::intersected(vec3 movement, vector<pair<float, vec3>> &collisions) {
+void Player::intersected(vec3 movement, vector<tuple<float, int, vec3>> &collisions) {
 
 	// TODO Remove the hardcoded shit
-	AABB start {m_location.x - 0.4, m_location.x + 0.4, m_location.y - 1.5, m_location.y + 0.1, m_location.z - 0.4,
+	AABB start{m_location.x - 0.4, m_location.x + 0.4, m_location.y - 1.5, m_location.y + 0.1, m_location.z - 0.4,
 		m_location.z + 0.4};
 	AABB box = AABB::getSweptBroadPhaseBox(start, movement);
 
@@ -214,11 +248,10 @@ void Player::intersected(vec3 movement, vector<pair<float, vec3>> &collisions) {
 				auto cubeId = ChunkManager::getInstance().getCubeId(i, j, k);
 				if (!(cubeId == cube_data::AIR || cubeId == cube_data::WATER)) {
 					vec3 vec;
-					float time = AABB::collisionTime(start, cube, vec,
-							movement);
+					float time = AABB::collisionTime(start, cube, vec, movement);
 
 					if (time <= 1 && time >= 0)
-						collisions.push_back( {time, vec});
+						collisions.push_back(std::make_tuple(time, cubeId, vec));
 
 				}
 			}
@@ -227,20 +260,30 @@ void Player::intersected(vec3 movement, vector<pair<float, vec3>> &collisions) {
 
 }
 
-void Player::setLocation(float x, float y, float z) {
-	m_location = vec3(x, y, z);
+bool Player::isInWater() {
+
+	AABB box{m_location.x - 0.4, m_location.x + 0.4, m_location.y - 1.5, m_location.y + 0.1, m_location.z - 0.4,
+		m_location.z + 0.4};
+
+	int xStart = floor(box.xMin);
+	int yStart = floor(box.yMin);
+	int zStart = floor(box.zMin);
+
+	int xEnd = floor(box.xMax);
+	int yEnd = floor(box.yMax);
+	int zEnd = floor(box.zMax);
+
+	for (int i = xStart; i <= xEnd; i++) {
+		for (int j = yStart; j <= yEnd; j++) {
+			for (int k = zStart; k <= zEnd; k++) {
+				auto cubeId = ChunkManager::getInstance().getCubeId(i, j, k);
+				if (cubeId != WATER)
+					return false;
+			}
+		}
+	}
+	return true;
 }
 
-void Player::turnGravityOff(bool value) {
-	m_gravitiyOn = !value;
-}
-
-vec3 Player::getViewingDirection() {
-	return m_viewDirection.getViewDirection();
-}
-
-glm::vec3 Player::getLastSelectedCube() {
-	return m_lastSelecteCube;
-}
 
 } /* namespace entity */
