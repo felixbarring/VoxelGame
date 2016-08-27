@@ -114,7 +114,7 @@ public:
 	 * Forces all the graphical sections to update even if they are not dirty. updateGraphics should be called after
 	 * for it to have effect.
 	 */
-	void forcePrepareUpdateGraphics();
+	void forceUpdateGraphics();
 
 	/**
 	 *

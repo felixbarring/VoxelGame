@@ -70,7 +70,6 @@ public:
 	 */
 	void setCenter(float x, float z);
 
-	// Return all the data instead of querying
 	bool intersectWithSolidCube(glm::vec3 origin, glm::vec3 direction, glm::vec3 &intersected,
 			glm::vec3 &previous, float searchLength);
 
@@ -79,6 +78,11 @@ public:
 // ########################################################
 
 private:
+
+	/*
+	 * Checks if there is water above or on the sides, not bellow.
+	 */
+	bool hasWaterNeighbour(int x, int y, int z);
 
 	void connectChunks();
 

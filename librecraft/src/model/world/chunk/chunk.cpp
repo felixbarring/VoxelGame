@@ -68,8 +68,9 @@ void Chunk::doSunLightning() {
 				int lightValue{m_directSunlight};
 				if (cube.id == AIR || cube.id == WATER) {
 					// TODO Does this work?!?
-					if (cube.id == WATER && lightValue > 2)
+					if (cube.id == WATER && lightValue > 0) {
 						--lightValue;
+					}
 
 					if (foundSolid) {
 						cube.lightValue = 0;
@@ -167,11 +168,7 @@ void Chunk::propagateLights() {
 		propagateLight(l.x, l.y, l.z);
 }
 
-//TODO Redo the implementation of this
-// Should be done in smaller separate steps.
-// First all new loaded chunks should do sunlightning
-// Then all new chunks should propagate.
-// And then all new chunks should collect light from neighbors that are not new and propagate that light.
+// Old function, could be usefull somtime :p
 //void Chunk::updateLightning() {
 //
 //	vector<vec3> lightPropagate;
@@ -305,7 +302,7 @@ void Chunk::propagateLights() {
 //
 //}
 
-void Chunk::forcePrepareUpdateGraphics() {
+void Chunk::forceUpdateGraphics() {
 	for (int i = 0; i < CHUNK_HEIGHT / GRAPHICAL_CHUNK_HEIGHT; ++i)
 		m_dirtyRegions.emplace(i);
 
@@ -353,7 +350,7 @@ void Chunk::setCube(int x, int y, int z, char id) {
 	voxel.id = id;
 
 	// If we removed a cube
-	if (id == AIR) {
+	if (id == AIR || id == WATER) {
 		updateLightningCubeRemoved(voxel, x, y, z);
 	} else { // We added a cube
 		updateLightningCubeAdded(x, y, z);
@@ -636,9 +633,18 @@ void Chunk::updateNeighborGraphics() {
 
 void Chunk::doSunLightning(vector<vec3> &lightPropagate, int x, int y, int z) {
 	for (int i = y; y >= 0; i--) {
-		if (m_cubes[x][i][z].id == AIR) {
-			m_cubes[x][i][z].lightValue = m_directSunlight;
+		auto &cube = m_cubes[x][i][z];
+		int lightValue{m_directSunlight};
+		if (cube.id == AIR || cube.id == WATER) {
+			cube.lightValue = m_directSunlight;
 			lightPropagate.push_back(vec3(x, i, z));
+
+			if (cube.id == WATER && lightValue > 2) {
+				--lightValue;
+			}
+
+			cube.lightValue = lightValue;
+			m_lightsToPropagate.push_back(vec3(x, y, z));
 		} else {
 			break;
 		}

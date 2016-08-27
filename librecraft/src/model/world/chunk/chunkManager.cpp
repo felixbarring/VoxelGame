@@ -7,7 +7,10 @@
 #include <iostream>
 #include <thread>
 
+#include "../../../util/soundPlayer.h"
 #include "../../../util/voxel.h"
+
+using util::SoundPlayer;
 
 using namespace std;
 using namespace glm;
@@ -105,6 +108,8 @@ Voxel ChunkManager::getVoxel(int x, int y, int z) {
 	int localY = y % CHUNK_HEIGHT;
 	int localZ = z % CHUNK_WIDTH_AND_DEPTH;
 
+	// TODO Handle if the values are out of range
+
  	return m_chunks[chunkX][chunkY][chunkZ]->getVoxel(localX, localY, localZ);
 }
 
@@ -123,7 +128,15 @@ bool ChunkManager::isAirOrWater(int x, int y, int z) {
 }
 
 void ChunkManager::removeCube(int x, int y, int z) {
-	setCube(x, y, z, AIR);
+	auto voxel = getCubeId(x, y, z);
+	if (voxel != BED_ROCK && voxel != WATER) {
+		if (hasWaterNeighbour(x, y, z))
+			setCube(x, y, z, WATER);
+		else
+			setCube(x, y, z, AIR);
+
+		SoundPlayer::getInstance().playSound(config::souds::cubeRemoved);
+	}
 }
 
 void ChunkManager::setCube(int x, int y, int z, char id) {
@@ -143,6 +156,7 @@ void ChunkManager::setCube(int x, int y, int z, char id) {
 	int localZ = z % CHUNK_WIDTH_AND_DEPTH;
 
 	m_chunks[chunkX][chunkY][chunkZ]->setCube(localX, localY, localZ, id);
+	SoundPlayer::getInstance().playSound(config::souds::cubeAdded);
 }
 
 void ChunkManager::setCenter(float x, float z) {
@@ -247,6 +261,12 @@ bool ChunkManager::intersectWithSolidCube(vec3 origin, vec3 direction,
 	return false;
 }
 
+bool ChunkManager::hasWaterNeighbour(int x, int y, int z) {
+	return getCubeId(x + 1, y, z) == WATER || getCubeId(x - 1, y, z) == WATER ||
+			getCubeId(x, y, z + 1) == WATER|| getCubeId(x, y, z - 1) == WATER ||
+			getCubeId(x, y + 1, z) == WATER;
+}
+
 void ChunkManager::connectChunks() {
 
 	const int lam = m_lenghtAcrossMatrix;
@@ -319,7 +339,7 @@ void ChunkManager::moveChunksRight() {
 			auto chunk = m_chunks[0][0][i];
 			chunk->propagateLights();
 			chunk->updateGraphics();
-			m_chunks[0 + 1][0][i]->forcePrepareUpdateGraphics();
+			m_chunks[0 + 1][0][i]->forceUpdateGraphics();
 		}
 
 	});
@@ -373,7 +393,7 @@ void ChunkManager::moveChunksLeft() {
 			auto chunk = m_chunks[m_lenghtAcrossMatrix - 1][0][i];
 			chunk->propagateLights();
 			chunk->updateGraphics();
-			m_chunks[m_lenghtAcrossMatrix - 2][0][i]->forcePrepareUpdateGraphics();
+			m_chunks[m_lenghtAcrossMatrix - 2][0][i]->forceUpdateGraphics();
 		}
 
 	});
@@ -428,7 +448,7 @@ void ChunkManager::moveChunksUp() {
 			auto chunk = m_chunks[i][0][0];
 			chunk->propagateLights();
 			chunk->updateGraphics();
-			m_chunks[i][0][0 + 1]->forcePrepareUpdateGraphics();
+			m_chunks[i][0][0 + 1]->forceUpdateGraphics();
 		}
 
 	});
@@ -483,7 +503,7 @@ void ChunkManager::moveChunksDown() {
 			auto chunk = m_chunks[i][0][m_lenghtAcrossMatrix - 1];
 			chunk->propagateLights();
 			chunk->updateGraphics();
-			m_chunks[i][0][m_lenghtAcrossMatrix - 2]->forcePrepareUpdateGraphics();
+			m_chunks[i][0][m_lenghtAcrossMatrix - 2]->forceUpdateGraphics();
 		}
 
 	});

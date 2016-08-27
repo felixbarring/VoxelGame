@@ -166,23 +166,16 @@ void Player::updateCameraAndTargetCube() {
 	vec3 selectedCube;
 	vec3 previous;
 
-	if (chunkManager.intersectWithSolidCube(m_location,
-			m_viewDirection.getViewDirection(), selectedCube, previous,
+	if (chunkManager.intersectWithSolidCube(m_location, m_viewDirection.getViewDirection(), selectedCube, previous,
 			m_selectCubeDistance)) {
 
 		m_lastSelecteCube = selectedCube;
 
 		if (input->action1Pressed) {
-			auto voxel = chunkManager.getCubeId(selectedCube.x, selectedCube.y, selectedCube.z);
-			if (voxel != BED_ROCK && voxel != WATER) {
-				chunkManager.removeCube(selectedCube.x, selectedCube.y, selectedCube.z);
-				SoundPlayer::getInstance().playSound(config::souds::cubeRemoved);
-			}
+			chunkManager.removeCube(selectedCube.x, selectedCube.y, selectedCube.z);
 			return;
-		}
-		else if (input->action2Pressed) {
+		} else if (input->action2Pressed) {
 			chunkManager.setCube(previous.x, previous.y, previous.z, m_cubeUsedForBuilding);
-			SoundPlayer::getInstance().playSound(config::souds::cubeAdded);
 			return;
 		}
 
@@ -199,8 +192,8 @@ void Player::updateCameraAndTargetCube() {
 void Player::intersected(vec3 movement, vector<pair<float, vec3>> &collisions) {
 
 	// TODO Remove the hardcoded shit
-	AABB start {m_location.x - 0.4, m_location.x + 0.4, m_location.y - 1.5,
-			m_location.y + 0.1, m_location.z - 0.4, m_location.z + 0.4};
+	AABB start {m_location.x - 0.4, m_location.x + 0.4, m_location.y - 1.5, m_location.y + 0.1, m_location.z - 0.4,
+		m_location.z + 0.4};
 	AABB box = AABB::getSweptBroadPhaseBox(start, movement);
 
 	int xStart = floor(box.xMin);
