@@ -42,15 +42,15 @@ public:
 
 private:
 
-	glm::vec3 direction;
-	glm::vec3 up;
-	glm::vec3 right;
-	glm::vec3 worldUp { 0.0f, 1.0f, 0.0f };
-	float horizontalAngle = 0.1f;
-	float verticalAngle = 0.0f;
+	glm::vec3 m_direction;
+	glm::vec3 m_up;
+	glm::vec3 m_right;
+	glm::vec3 m_worldUp { 0.0f, 1.0f, 0.0f };
+	float m_horizontalAngle = 0.1f;
+	float m_verticalAngle = 0.0f;
 
-	float maxVerticalAngle = 3.14 / 2;
-	float minVerticalAngle = -3.14 / 2;
+	float m_maxVerticalAngle = 3.14 / 2;
+	float m_minVerticalAngle = -3.14 / 2;
 
 };
 

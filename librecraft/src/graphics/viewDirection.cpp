@@ -15,39 +15,39 @@ namespace graphics {
 // ########################################################
 
 void ViewDirection::changeViewDirection(float horizontal, float vertical) {
-	ViewDirection::setViewDirection(horizontalAngle + horizontal * config::input_data::mouseSensitivityX,
-			verticalAngle + vertical * config::input_data::mouseSensitivityY);
+	ViewDirection::setViewDirection(m_horizontalAngle + horizontal * config::input_data::mouseSensitivityX,
+			m_verticalAngle + vertical * config::input_data::mouseSensitivityY);
 }
 
 void ViewDirection::setViewDirection(float horizontal, float vertical) {
-	horizontalAngle = horizontal;
-	verticalAngle = vertical;
+	m_horizontalAngle = horizontal;
+	m_verticalAngle = vertical;
 
-	if (verticalAngle > maxVerticalAngle) {
-		verticalAngle = maxVerticalAngle;
-	} else if (verticalAngle < minVerticalAngle) {
-		verticalAngle = minVerticalAngle;
+	if (m_verticalAngle > m_maxVerticalAngle) {
+		m_verticalAngle = m_maxVerticalAngle;
+	} else if (m_verticalAngle < m_minVerticalAngle) {
+		m_verticalAngle = m_minVerticalAngle;
 	}
 
-	direction = glm::vec3 { cos(verticalAngle) * sin(horizontalAngle),
-							sin(verticalAngle),
-							cos(verticalAngle) * cos(horizontalAngle) };
+	m_direction = glm::vec3 { cos(m_verticalAngle) * sin(m_horizontalAngle),
+							sin(m_verticalAngle),
+							cos(m_verticalAngle) * cos(m_horizontalAngle) };
 
-	right = glm::normalize(glm::cross(direction, worldUp));
+	m_right = glm::normalize(glm::cross(m_direction, m_worldUp));
 	// Hack :o
-	up = -glm::normalize(glm::cross(direction, right));
+	m_up = -glm::normalize(glm::cross(m_direction, m_right));
 }
 
 glm::vec3 ViewDirection::getViewDirection() {
-	return direction;
+	return m_direction;
 }
 
 glm::vec3 ViewDirection::getUpDirection() {
-	return up;
+	return m_up;
 }
 
 glm::vec3 ViewDirection::getRightDirection() {
-	return right;
+	return m_right;
 }
 
 } /* namespace graphics */
