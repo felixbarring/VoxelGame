@@ -21,9 +21,6 @@ namespace graphics {
 
 /**
  * \class FontMeshBuilder
- *
- *
- *
  */
 class FontMeshBuilder {
 public:
@@ -50,6 +47,12 @@ public:
 	 *
 	 */
 	float lenghtOfString(const std::string &str, int height);
+
+	// Returns -1 if num is greater than the string's length
+	/**
+	 *
+	 */
+	float lenghtOfStringAtChar(const std::string &str, int height, int num);
 
 	/**
 	 * \brief

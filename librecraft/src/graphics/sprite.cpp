@@ -7,10 +7,12 @@ namespace graphics {
 // Constructor/Destructor #################################
 // ########################################################
 
-Sprite::Sprite(float x, float y, float layer, float width, float height,
-		texture::Texture &texture)
-		: m_transform { x + width / 2, y + height / 2, 0 },
-		  m_texture(texture), m_layer {layer} {
+Sprite::Sprite(float x, float y, float layer, float width, float height, texture::Texture &texture)
+		: m_transform{x + width / 2, y + height / 2, 0},
+		  m_width{width},
+		  m_height{height},
+		  m_texture(texture),
+		  m_layer {layer} {
 
 	std::vector<GLfloat> vertices = {
 		-width/2, -height/2, 0.0f,
@@ -35,8 +37,7 @@ Sprite::Sprite(float x, float y, float layer, float width, float height,
 
 }
 
-Sprite::Sprite(float x, float y, float layer,
-		std::shared_ptr<mesh::MeshElement> mesh, texture::Texture &texture) :
+Sprite::Sprite(float x, float y, float layer, std::shared_ptr<mesh::MeshElement> mesh, texture::Texture &texture) :
 	m_transform{x, y, 0},
 	m_texture(texture),
 	m_layer{layer}
@@ -70,7 +71,7 @@ void Sprite::move(float x, float y)
 
 void Sprite::setLocation(float x, float y, float z)
 {
-	m_transform.setLocation(x, y, z);
+	m_transform.setLocation(x + m_width / 2, y + m_height / 2, 0);
 }
 
 int Sprite::getLayer()

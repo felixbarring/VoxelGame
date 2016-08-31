@@ -12,8 +12,7 @@ namespace graphics {
 // Constructor/Destructor #################################
 // ########################################################
 
-FontMeshBuilder::FontMeshBuilder(std::string &pathToLayout, int atlasWidth,
-		int atlasHeight)
+FontMeshBuilder::FontMeshBuilder(std::string &pathToLayout, int atlasWidth,	int atlasHeight)
 		: ATLAS_WIDTH(atlasWidth), ATLAS_HEIGHT(atlasHeight) {
 
 	std::vector<std::string> list;
@@ -73,8 +72,7 @@ FontMeshBuilder::~FontMeshBuilder() {
 // Member Functions########################################
 // ########################################################
 
-std::shared_ptr<mesh::MeshElement> FontMeshBuilder::buldMeshForString(
-		const std::string &str, float height) {
+std::shared_ptr<mesh::MeshElement> FontMeshBuilder::buldMeshForString(const std::string &str, float height) {
 
 	const int NUMBER_OF_CHARS = str.length();
 
@@ -112,23 +110,16 @@ std::shared_ptr<mesh::MeshElement> FontMeshBuilder::buldMeshForString(
 		vertices.push_back(0);
 
 		uvCoordinates.push_back(cd.xPosition / static_cast<float>(ATLAS_WIDTH));
-		uvCoordinates.push_back(((ATLAS_HEIGHT - cd.yPosition) - cd.height) /
-				static_cast<float>(ATLAS_HEIGHT));
+		uvCoordinates.push_back(((ATLAS_HEIGHT - cd.yPosition) - cd.height) / static_cast<float>(ATLAS_HEIGHT));
 
-		uvCoordinates.push_back(
-				(cd.xPosition + cd.width) / static_cast<float>(ATLAS_WIDTH));
-		uvCoordinates.push_back(((ATLAS_HEIGHT - cd.yPosition) - cd.height) /
-				static_cast<float>(ATLAS_HEIGHT));
+		uvCoordinates.push_back((cd.xPosition + cd.width) / static_cast<float>(ATLAS_WIDTH));
+		uvCoordinates.push_back(((ATLAS_HEIGHT - cd.yPosition) - cd.height) / static_cast<float>(ATLAS_HEIGHT));
 
-		uvCoordinates.push_back((cd.xPosition + cd.width) /
-				static_cast<float>(ATLAS_WIDTH));
-		uvCoordinates.push_back((ATLAS_HEIGHT - cd.yPosition) /
-				static_cast<float>(ATLAS_HEIGHT));
+		uvCoordinates.push_back((cd.xPosition + cd.width) / static_cast<float>(ATLAS_WIDTH));
+		uvCoordinates.push_back((ATLAS_HEIGHT - cd.yPosition) / static_cast<float>(ATLAS_HEIGHT));
 
-		uvCoordinates.push_back(cd.xPosition /
-				static_cast<float>(ATLAS_WIDTH));
-		uvCoordinates.push_back((ATLAS_HEIGHT - cd.yPosition) /
-				static_cast<float>(ATLAS_HEIGHT));
+		uvCoordinates.push_back(cd.xPosition / static_cast<float>(ATLAS_WIDTH));
+		uvCoordinates.push_back((ATLAS_HEIGHT - cd.yPosition) / static_cast<float>(ATLAS_HEIGHT));
 
 		elements.push_back((short) (0 + loopCounter * 4));
 		elements.push_back((short) (1 + loopCounter * 4));
@@ -146,17 +137,21 @@ std::shared_ptr<mesh::MeshElement> FontMeshBuilder::buldMeshForString(
 }
 
 float FontMeshBuilder::lenghtOfString(const std::string &str, int height) {
+	return lenghtOfStringAtChar(str, height, str.length());
+}
+
+float FontMeshBuilder::lenghtOfStringAtChar(const std::string &str, int height, int num) {
 	int stringSize = 0;
-	for (char c : str) {
-		const CharData cd = charData[c];
+	for (int i = 0; i < num; ++i) {
+		const CharData cd = charData[str[i]];
 		const float width = height * (cd.width / static_cast<float>(cd.height));
 		stringSize += width;
 	}
 	return stringSize;
 }
 
-int FontMeshBuilder::splitStringAt(const std::string &str, int height,
-		float maxLength) {
+
+int FontMeshBuilder::splitStringAt(const std::string &str, int height, float maxLength) {
 	if (lenghtOfString(str, height) < maxLength)
 		return -1;
 
@@ -174,8 +169,7 @@ int FontMeshBuilder::splitStringAt(const std::string &str, int height,
 void FontMeshBuilder::printCharData() {
 	for (CharData cd : charData) {
 		std::cout << "Width: " << cd.width << ", Height: " << cd.height
-				<< ", xPosition: " << cd.xPosition << ", yPosition: "
-				<< cd.yPosition << " \n";
+				<< ", xPosition: " << cd.xPosition << ", yPosition: " << cd.yPosition << " \n";
 	}
 }
 

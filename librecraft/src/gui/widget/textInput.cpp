@@ -47,7 +47,8 @@ void TextInput::setString(string str) {
 	m_input = str;
 
 	FontMeshBuilder &fontMeshBuilder = res.getFontMeshBuilder(
-			config::font_data::fontLayout, config::font_data::fontAtlasWidth,
+			config::font_data::fontLayout,
+			config::font_data::fontAtlasWidth,
 			config::font_data::fontAtlasHeight);
 
 	m_text.reset(new Sprite(m_xCoordinate, m_yCoordinate + 5, 1,
@@ -65,8 +66,6 @@ void TextInput::draw() {
 
 	if (m_cursorVissible)
 		SpriteBatcher::getInstance().addBatch(m_cursor);
-
-	// TODO Draw a blinking marker
 
 	SpriteBatcher::getInstance().addBatch(m_text);
 }
@@ -94,13 +93,18 @@ void TextInput::update(float timePassed) {
 	if (input->keyWasTyped && m_hasFocus) {
 		m_input.push_back(input->keyTyped);
 
-		if (fontMeshBuilder.lenghtOfString(m_input, m_height) >	m_maxInputLength) {
+		auto strLenght = fontMeshBuilder.lenghtOfString(m_input, m_height);
+		if (strLenght >	m_maxInputLength) {
 			m_input.pop_back();
 			return;
 		}
-		m_text.reset(new Sprite(m_xCoordinate, m_yCoordinate + 5, 1,
+		m_text = make_shared<Sprite>(m_xCoordinate, m_yCoordinate + 5, 1,
 						fontMeshBuilder.buldMeshForString(m_input, m_height - 5),
-						res.getTexture(config::font_data::font)));
+						res.getTexture(config::font_data::font));
+
+		// TODO Remove hardecoded shit
+		m_cursor->setLocation(m_xCoordinate + strLenght, m_yCoordinate + 4, 0);
+
 	} else {
 		if (m_hasFocus && Input::getInstance()->eraseTextActive && m_input.size() > 0) {
 
@@ -110,11 +114,14 @@ void TextInput::update(float timePassed) {
 			}
 
 			m_accumulatedEraseTime = 0.0;
-
 			m_input.pop_back();
-			m_text.reset(new Sprite(m_xCoordinate, m_yCoordinate + 5, 1,
+
+			m_text = make_shared<Sprite>(m_xCoordinate, m_yCoordinate + 5, 1,
 							fontMeshBuilder.buldMeshForString(m_input, m_height - 5),
-							res.getTexture(config::font_data::font)));
+							res.getTexture(config::font_data::font));
+
+			auto strLenght = fontMeshBuilder.lenghtOfString(m_input, m_height);
+			m_cursor->setLocation(m_xCoordinate + strLenght, m_yCoordinate + 4, 0);
 		}
 	}
 

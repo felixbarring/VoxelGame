@@ -19,32 +19,28 @@ Texture& Resources::getTexture(const string &path) {
 	auto it = textures.find(path);
 
 	if (it == textures.end())
-		textures.insert(make_pair(path, Texture { path.c_str() }));
+		textures.insert(make_pair(path, Texture{path.c_str()}));
 
 	return textures.at(path);
 }
 
-TextureArray& Resources::getTextureArray(const vector<string> &textures,
-		int width, int height) {
+TextureArray& Resources::getTextureArray(const vector<string> &textures, int width, int height) {
 	auto it = textureArraysMap.find(textures.at(0));
 
 	if (it == textureArraysMap.end())
-		textureArraysMap.insert(make_pair(textures.at(0), TextureArray {
-				textures, width, height }));
+		textureArraysMap.insert(make_pair(textures.at(0), TextureArray{textures, width, height}));
 
 	return textureArraysMap.at(textures.at(0));
 }
 
 TextureCubeMap& Resources::getTextureCubeMap(string &right, string &left,
-		string &top, string &bottom, string &back, string &front, int width,
-		int height) {
+		string &top, string &bottom, string &back, string &front, int width, int height) {
+
 	auto it = textureCubeMaps.find(right);
 
 	if (it == textureCubeMaps.end())
-		textureCubeMaps.insert(
-				make_pair(right, TextureCubeMap { right.c_str(), left.c_str(),
-						top.c_str(), bottom.c_str(), back.c_str(),
-						front.c_str(), width, height }));
+		textureCubeMaps.insert(make_pair(right, TextureCubeMap { right.c_str(), left.c_str(),
+						top.c_str(), bottom.c_str(), back.c_str(), front.c_str(), width, height }));
 
 	return textureCubeMaps.at(right);
 }

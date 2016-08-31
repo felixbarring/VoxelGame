@@ -40,12 +40,12 @@ public:
 
 private:
 
-	bool m_hasFocus {false};
-	std::string m_input {""};
+	bool m_hasFocus{false};
+	std::string m_input{""};
 	unsigned m_maxInputLength;
 
-	float m_eraseDelay {0.1f};
-	float m_accumulatedEraseTime {0.0f};
+	float m_eraseDelay{0.1f};
+	float m_accumulatedEraseTime{0.0f};
 
 	float m_blinkIntervall{1.0 / 3.0}; // Blink three times / second
 	float m_blinkTime{0.0};
