@@ -46,13 +46,13 @@ public:
 	/**
 	 *
 	 */
-	float lenghtOfString(const std::string &str, int height);
+	float lenghtOfString(const std::string &str, float height);
 
 	// Returns -1 if num is greater than the string's length
 	/**
 	 *
 	 */
-	float lenghtOfStringAtChar(const std::string &str, int height, int num);
+	float lenghtOfStringAtChar(const std::string &str, float height, int num);
 
 	/**
 	 * \brief

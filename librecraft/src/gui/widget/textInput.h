@@ -53,6 +53,8 @@ private:
 	float m_blinkTime{0.0};
 	bool m_cursorVissible{true};
 
+	int m_textHeight{};
+
 	std::shared_ptr<graphics::Sprite> m_background;
 	std::shared_ptr<graphics::Sprite> m_cursor;
 	std::shared_ptr<graphics::Sprite> m_text;

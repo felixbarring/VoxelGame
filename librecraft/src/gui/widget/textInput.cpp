@@ -21,7 +21,9 @@ namespace widget {
 
 TextInput::TextInput(int id, int x, int y, unsigned width, int height, int layer)
 		: AbstractWidget(id, x, y, width, height),
-		  m_maxInputLength{width} {
+		  m_maxInputLength{width},
+		  m_textHeight{height - 5}
+		  {
 
 	auto &res = Resources::getInstance();
 
@@ -33,7 +35,7 @@ TextInput::TextInput(int id, int x, int y, unsigned width, int height, int layer
 			config::font_data::fontAtlasWidth,
 			config::font_data::fontAtlasHeight);
 
-	m_text = make_shared<Sprite>(x, y + 5, 1, fontMeshBuilder.buldMeshForString(m_input, height - 5),
+	m_text = make_shared<Sprite>(x, y + 5, 1, fontMeshBuilder.buldMeshForString(m_input, m_textHeight),
 		res.getTexture(config::font_data::font));
 
 }
@@ -51,9 +53,13 @@ void TextInput::setString(string str) {
 			config::font_data::fontAtlasWidth,
 			config::font_data::fontAtlasHeight);
 
-	m_text.reset(new Sprite(m_xCoordinate, m_yCoordinate + 5, 1,
-					fontMeshBuilder.buldMeshForString(m_input, m_height - 5),
-					res.getTexture(config::font_data::font)));
+	m_text = make_shared<Sprite>(m_xCoordinate, m_yCoordinate + 5, 1,
+			fontMeshBuilder.buldMeshForString(m_input, m_textHeight), res.getTexture(config::font_data::font));
+
+	// TODO Fix the cursor...
+	auto strLenght = fontMeshBuilder.lenghtOfString(m_input, m_textHeight);
+	m_cursor->setLocation(m_xCoordinate + strLenght, m_yCoordinate + 4, 0);
+
 
 }
 
@@ -93,7 +99,7 @@ void TextInput::update(float timePassed) {
 	if (input->keyWasTyped && m_hasFocus) {
 		m_input.push_back(input->keyTyped);
 
-		auto strLenght = fontMeshBuilder.lenghtOfString(m_input, m_height);
+		auto strLenght = fontMeshBuilder.lenghtOfString(m_input, m_textHeight);
 		if (strLenght >	m_maxInputLength) {
 			m_input.pop_back();
 			return;
@@ -120,7 +126,7 @@ void TextInput::update(float timePassed) {
 							fontMeshBuilder.buldMeshForString(m_input, m_height - 5),
 							res.getTexture(config::font_data::font));
 
-			auto strLenght = fontMeshBuilder.lenghtOfString(m_input, m_height);
+			auto strLenght = fontMeshBuilder.lenghtOfString(m_input, m_textHeight);
 			m_cursor->setLocation(m_xCoordinate + strLenght, m_yCoordinate + 4, 0);
 		}
 	}

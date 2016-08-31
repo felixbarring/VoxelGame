@@ -128,18 +128,18 @@ std::shared_ptr<mesh::MeshElement> FontMeshBuilder::buldMeshForString(const std:
 		elements.push_back((short) (2 + loopCounter * 4));
 		elements.push_back((short) (3 + loopCounter * 4));
 
-		loopCounter++;
+		++loopCounter;
 		xOffset += width;
 	}
 
 	return std::shared_ptr<mesh::MeshElement>(new mesh::MeshElement(vertices, 3, uvCoordinates, 2, elements));
 }
 
-float FontMeshBuilder::lenghtOfString(const std::string &str, int height) {
+float FontMeshBuilder::lenghtOfString(const std::string &str, float height) {
 	return lenghtOfStringAtChar(str, height, str.length());
 }
 
-float FontMeshBuilder::lenghtOfStringAtChar(const std::string &str, int height, int num) {
+float FontMeshBuilder::lenghtOfStringAtChar(const std::string &str, float height, int num) {
 	float stringSize = 0;
 	for (int i = 0; i < num; ++i) {
 		const CharData cd = charData[str[i]];
