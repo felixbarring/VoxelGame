@@ -64,7 +64,7 @@ string TextInput::getString() {
 void TextInput::draw() {
 	SpriteBatcher::getInstance().addBatch(m_background);
 
-	if (m_cursorVissible)
+	if (m_cursorVissible && m_hasFocus)
 		SpriteBatcher::getInstance().addBatch(m_cursor);
 
 	SpriteBatcher::getInstance().addBatch(m_text);
@@ -125,6 +125,10 @@ void TextInput::update(float timePassed) {
 		}
 	}
 
+}
+
+void TextInput::setFocus(bool value){
+	m_hasFocus = value;
 }
 
 } /* namespace widget */

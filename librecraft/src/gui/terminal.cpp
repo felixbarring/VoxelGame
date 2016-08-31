@@ -37,6 +37,8 @@ Terminal::Terminal(vector<string> commands,	function<void(string)> commandListen
 		}
 		case 3: {
 			m_commandListener("close");
+			m_textInput->setFocus(); // Hack, we lose focus when clicking on close. Next time terminal is opened there
+									// is no focus. Fixed by this hack :p
 			break;
 		}
 		}
@@ -44,6 +46,7 @@ Terminal::Terminal(vector<string> commands,	function<void(string)> commandListen
 
 	m_widgets = make_shared<WidgetGroup>(0, 100, 100, 600, 400, observer, 5);
 	m_textInput = make_shared<TextInput>(1, 110, 110, 430, 30, 6);
+	m_textInput->setFocus();
 	m_widgets->addWidget(m_textInput);
 
 	m_enterButton = make_shared<Button>(2, 545, 110, 70, 30, observer, "Enter", 6);

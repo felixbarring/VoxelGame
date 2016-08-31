@@ -91,7 +91,7 @@ std::shared_ptr<mesh::MeshElement> FontMeshBuilder::buldMeshForString(const std:
 
 		CharData cd = charData[c];
 
-		width = height * (cd.width / (float) cd.height);
+		width = height * (cd.width / static_cast<float>(cd.height));
 
 		vertices.push_back(xOrigin + xOffset);
 		vertices.push_back(yOrigin);
@@ -132,8 +132,7 @@ std::shared_ptr<mesh::MeshElement> FontMeshBuilder::buldMeshForString(const std:
 		xOffset += width;
 	}
 
-	return std::shared_ptr<mesh::MeshElement>(
-			new mesh::MeshElement(vertices, 3, uvCoordinates, 2, elements));
+	return std::shared_ptr<mesh::MeshElement>(new mesh::MeshElement(vertices, 3, uvCoordinates, 2, elements));
 }
 
 float FontMeshBuilder::lenghtOfString(const std::string &str, int height) {
@@ -141,7 +140,7 @@ float FontMeshBuilder::lenghtOfString(const std::string &str, int height) {
 }
 
 float FontMeshBuilder::lenghtOfStringAtChar(const std::string &str, int height, int num) {
-	int stringSize = 0;
+	float stringSize = 0;
 	for (int i = 0; i < num; ++i) {
 		const CharData cd = charData[str[i]];
 		const float width = height * (cd.width / static_cast<float>(cd.height));
