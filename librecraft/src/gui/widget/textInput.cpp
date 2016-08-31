@@ -19,23 +19,22 @@ namespace widget {
 // Constructor/Destructor #################################
 // ########################################################
 
-TextInput::TextInput(int id, int x, int y, unsigned width, int height,
-		int layer)
-		: AbstractWidget(id, x, y, width, height), m_maxInputLength {width} {
+TextInput::TextInput(int id, int x, int y, unsigned width, int height, int layer)
+		: AbstractWidget(id, x, y, width, height),
+		  m_maxInputLength{width} {
 
-	Resources &res = Resources::getInstance();
+	auto &res = Resources::getInstance();
 
-	m_sprite.reset(new Sprite {x, y, 0, width, height, res.getTexture(
-					config::gui_data::solidBlack)});
+	m_background = make_shared<Sprite>(x, y, 0, width, height, res.getTexture(config::gui_data::solidBlack));
+	m_cursor = make_shared<Sprite>(x, y + 4, 0, 1, height - 8, res.getTexture(config::gui_data::solidWhite));
 
-	FontMeshBuilder &fontMeshBuilder = res.getFontMeshBuilder(
+	auto &fontMeshBuilder = res.getFontMeshBuilder(
 			config::font_data::fontLayout,
 			config::font_data::fontAtlasWidth,
 			config::font_data::fontAtlasHeight);
 
-	m_text.reset(new Sprite {x, y + 5, 1,
-		fontMeshBuilder.buldMeshForString(m_input, height - 5),
-		res.getTexture(config::font_data::font)});
+	m_text = make_shared<Sprite>(x, y + 5, 1, fontMeshBuilder.buldMeshForString(m_input, height - 5),
+		res.getTexture(config::font_data::font));
 
 }
 
@@ -62,7 +61,10 @@ string TextInput::getString() {
 }
 
 void TextInput::draw() {
-	SpriteBatcher::getInstance().addBatch(m_sprite);
+	SpriteBatcher::getInstance().addBatch(m_background);
+
+	if (m_cursorVissible)
+		SpriteBatcher::getInstance().addBatch(m_cursor);
 
 	// TODO Draw a blinking marker
 
@@ -71,6 +73,13 @@ void TextInput::draw() {
 
 void TextInput::update(float timePassed) {
 	shared_ptr<Input> input = Input::getInstance();
+
+	// Blinking cursor
+	m_blinkTime += timePassed;
+	if (m_blinkTime > m_blinkIntervall) {
+		m_cursorVissible = !m_cursorVissible;
+		m_blinkTime = 0;
+	}
 
 	if (input->action1Pressed)
 		m_hasFocus = isInsideBorders(input->mouseVirtualAdjustedX, input->mouseVirtualAdjustedY);
