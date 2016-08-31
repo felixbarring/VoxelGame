@@ -49,33 +49,27 @@ Sprite::Sprite(float x, float y, float layer, std::shared_ptr<mesh::MeshElement>
 // Member Functions########################################
 // ########################################################
 
-void Sprite::draw()
-{
+void Sprite::draw() {
 	m_mesh->draw();
 }
 
-Transform& Sprite::getTransform()
-{
+Transform& Sprite::getTransform() {
 	return m_transform;
 }
 
-texture::Texture& Sprite::getTexture()
-{
+texture::Texture& Sprite::getTexture() {
 	return m_texture;
 }
 
-void Sprite::move(float x, float y)
-{
+void Sprite::move(float x, float y) {
 	m_transform.translate(x, y, 0);
 }
 
-void Sprite::setLocation(float x, float y, float z)
-{
+void Sprite::setLocation(float x, float y, float z) {
 	m_transform.setLocation(x + m_width / 2, y + m_height / 2, 0);
 }
 
-int Sprite::getLayer()
-{
+int Sprite::getLayer() {
 	return m_layer;
 }
 
