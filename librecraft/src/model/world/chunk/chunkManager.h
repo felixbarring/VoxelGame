@@ -94,6 +94,10 @@ private:
 
 	void moveChunksDown();
 
+	enum class Direction{Right, Left, Up, Down};
+
+	void moveChunks(Direction direction);
+
 	static constexpr int m_lenghtAcrossMatrix = config::chunk_data::NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * 2 + 1;
 
 	std::shared_ptr<Chunk> m_chunks
@@ -116,7 +120,6 @@ private:
 	ThreadPool m_threadPool2{1};
 
 	std::mutex m_bussyMovingChunksMutex{};
-
 };
 
 } /* namespace chunk */
