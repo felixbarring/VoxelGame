@@ -290,226 +290,22 @@ void ChunkManager::connectChunks() {
 
 void ChunkManager::moveChunksRight() {
 	m_xOffset += CHUNK_WIDTH_AND_DEPTH;
-
-	vector<shared_ptr<Chunk>> chunksToDelete;
-
-	for (int i = 0; i < m_lenghtAcrossMatrix; ++i)
-		chunksToDelete.push_back(m_chunks[m_lenghtAcrossMatrix - 1][0][i]);
-
-	// Move all chunks
-	for (int i = m_lenghtAcrossMatrix - 1; i > 0; --i) {
-		for (int j = 0; j < m_lenghtAcrossMatrix; ++j)
-			m_chunks[i][0][j] = m_chunks[i - 1][0][j];
-	}
-
-	m_threadPool2.enqueue([this, chunksToDelete]{
-
-		for (auto chunk : chunksToDelete) {
-			chunk->removeAllNeighbors();
-			chunk->storeChunk(m_worldName);
-			chunk.reset();
-		}
-
-		vector<future<void>> chunkCreationFutures;
-
-		// Create new chunks for the left row
-		for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
-			auto ch = m_chunks[0 + 1][0][i];
-			auto chunk = std::make_shared<Chunk>(m_worldName, ch->getXLocation() - CHUNK_WIDTH_AND_DEPTH,
-					ch->getZLocation());
-
-			chunkCreationFutures.push_back(m_threadPool.enqueue([chunk]
-			{
-				chunk->create();
-				chunk->doSunLightning();
-			} ));
-			m_chunks[0][0][i] = chunk;
-		}
-
-		for_each(chunkCreationFutures.begin(), chunkCreationFutures.end(), [](future<void> &f) { f.get(); });
-
-		connectChunks();
-
-		for (int i = 0; i < m_lenghtAcrossMatrix; ++i)
-			m_chunks[0][0][i]->collectLightFromRightNeighbor();
-
-		for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
-			auto chunk = m_chunks[0][0][i];
-			chunk->propagateLights();
-			chunk->updateGraphics();
-			m_chunks[0 + 1][0][i]->forceUpdateGraphics();
-		}
-
-		m_bussyMovingChunksMutex.unlock();
-
-	});
+	moveChunks(Direction::Right);
 }
 
 void ChunkManager::moveChunksLeft() {
 	m_xOffset -= CHUNK_WIDTH_AND_DEPTH;
-
-	vector<shared_ptr<Chunk>> chunksToDelete;
-
-	for (int i = 0; i < m_lenghtAcrossMatrix; ++i)
-		chunksToDelete.push_back(m_chunks[0][0][i]);
-
-	for (int i = 0; i < m_lenghtAcrossMatrix - 1; ++i) {
-		for (int j = 0; j < m_lenghtAcrossMatrix; ++j)
-			m_chunks[i][0][j] = m_chunks[i + 1][0][j];
-	}
-
-	m_threadPool2.enqueue([this, chunksToDelete]{
-
-		lock_guard<mutex> lock(m_bussyMovingChunksMutex);
-
-		for (auto chunk : chunksToDelete) {
-			chunk->removeAllNeighbors();
-			chunk->storeChunk(m_worldName);
-			chunk.reset();
-		}
-
-		vector<future<void>> chunkCreationFutures;
-
-		for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
-			auto ch = m_chunks[m_lenghtAcrossMatrix - 2][0][i];
-			auto chunk = std::make_shared<Chunk>(m_worldName, ch->getXLocation() + CHUNK_WIDTH_AND_DEPTH,
-					ch->getZLocation());
-			chunkCreationFutures.push_back(m_threadPool.enqueue([chunk]
-			{
-				chunk->create();
-				chunk->doSunLightning();
-			} ));
-			m_chunks[m_lenghtAcrossMatrix - 1][0][i] = chunk;
-		}
-
-		for_each(chunkCreationFutures.begin(), chunkCreationFutures.end(), [] (future<void> &f) { f.get(); });
-
-		connectChunks();
-
-		for (int i = 0; i < m_lenghtAcrossMatrix; ++i)
-			m_chunks[m_lenghtAcrossMatrix - 1][0][i]->collectLightFromLeftNeighbor();
-
-		for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
-			auto chunk = m_chunks[m_lenghtAcrossMatrix - 1][0][i];
-			chunk->propagateLights();
-			chunk->updateGraphics();
-			m_chunks[m_lenghtAcrossMatrix - 2][0][i]->forceUpdateGraphics();
-		}
-
-		m_bussyMovingChunksMutex.unlock();
-
-	});
+	moveChunks(Direction::Left);
 }
 
 void ChunkManager::moveChunksUp() {
 	m_zOffset += CHUNK_WIDTH_AND_DEPTH;
-
-	vector<shared_ptr<Chunk>> chunksToDelete;
-
-	for (int i = 0; i < m_lenghtAcrossMatrix; ++i)
-		chunksToDelete.push_back(m_chunks[i][0][m_lenghtAcrossMatrix - 1]);
-
-	for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
-		for (int j = m_lenghtAcrossMatrix - 1; j > 0; --j)
-			m_chunks[i][0][j] = m_chunks[i][0][j - 1];
-	}
-
-	m_threadPool2.enqueue([this, chunksToDelete] {
-
-		for (auto chunk : chunksToDelete) {
-			chunk->removeAllNeighbors();
-			chunk->storeChunk(m_worldName);
-			chunk.reset();
-		}
-
-		vector<future<void>> chunkCreationFutures;
-
-		// Create / load new chunks for the bottom row
-		for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
-			auto ch = m_chunks[i][0][0 + 1];
-			auto chunk = std::make_shared<Chunk>(m_worldName, ch->getXLocation(), ch->getZLocation() -
-					CHUNK_WIDTH_AND_DEPTH);
-			chunkCreationFutures.push_back(m_threadPool.enqueue([chunk]
-			{
-				chunk->create();
-				chunk->doSunLightning();
-			} ));
-			m_chunks[i][0][0] = chunk;
-		}
-
-		for_each(chunkCreationFutures.begin(), chunkCreationFutures.end(), [] (future<void> &f) { f.get(); });
-
-		connectChunks();
-
-		for (int i = 0; i < m_lenghtAcrossMatrix; ++i)
-			m_chunks[i][0][0]->collectLightFromBackNeighbor();
-
-		for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
-			auto chunk = m_chunks[i][0][0];
-			chunk->propagateLights();
-			chunk->updateGraphics();
-			m_chunks[i][0][0 + 1]->forceUpdateGraphics();
-		}
-
-		m_bussyMovingChunksMutex.unlock();
-
-	});
+	moveChunks(Direction::Up);
 }
 
 void ChunkManager::moveChunksDown() {
 	m_zOffset -= CHUNK_WIDTH_AND_DEPTH;
-
-	vector<shared_ptr<Chunk>> chunksToDelete;
-
-	for (int i = 0; i < m_lenghtAcrossMatrix; ++i)
-		chunksToDelete.push_back(m_chunks[i][0][0]);
-
-	for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
-		for (int j = 0; j < m_lenghtAcrossMatrix - 1; ++j)
-			m_chunks[i][0][j] = m_chunks[i][0][j + 1];
-	}
-
-	m_threadPool2.enqueue([this, chunksToDelete] {
-
-		for (auto chunk : chunksToDelete) {
-			chunk->removeAllNeighbors();
-			chunk->storeChunk(m_worldName);
-			chunk.reset();
-		}
-
-		vector<future<void>> chunkCreationFutures;
-
-		// Create / load new chunks for the top row
-		for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
-			auto ch = m_chunks[i][0][m_lenghtAcrossMatrix - 2];
-			auto chunk = std::make_shared<Chunk>(m_worldName, ch->getXLocation(), ch->getZLocation() +
-					CHUNK_WIDTH_AND_DEPTH);
-			chunkCreationFutures.push_back(m_threadPool.enqueue([chunk]
-			{
-				chunk->create();
-				chunk->doSunLightning();
-			} ));
-			m_chunks[i][0][m_lenghtAcrossMatrix - 1] = chunk;
-		}
-
-		for_each(chunkCreationFutures.begin(), chunkCreationFutures.end(), [] (future<void> &f) { f.get(); });
-
-		connectChunks();
-
-		for (int i = 0; i < m_lenghtAcrossMatrix; ++i)
-			m_chunks[i][0][m_lenghtAcrossMatrix - 1]->collectLightFromFrontNeighbor();
-
-		for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
-			auto chunk = m_chunks[i][0][m_lenghtAcrossMatrix - 1];
-			chunk->propagateLights();
-			chunk->updateGraphics();
-			m_chunks[i][0][m_lenghtAcrossMatrix - 2]->forceUpdateGraphics();
-		}
-
-		m_bussyMovingChunksMutex.unlock();
-
-	});
-
+	moveChunks(Direction::Down);
 }
 
 void ChunkManager::moveChunks(Direction direction) {
@@ -523,8 +319,7 @@ void ChunkManager::moveChunks(Direction direction) {
 			for (int j = 0; j < m_lenghtAcrossMatrix; ++j)
 				m_chunks[i][0][j] = m_chunks[i - 1][0][j];
 		}
-	}
-	else if (direction == Direction::Left) {
+	} else if (direction == Direction::Left) {
 		for (int i = 0; i < m_lenghtAcrossMatrix; ++i)
 			chunksToDelete.push_back(m_chunks[0][0][i]);
 
@@ -532,8 +327,7 @@ void ChunkManager::moveChunks(Direction direction) {
 			for (int j = 0; j < m_lenghtAcrossMatrix; ++j)
 				m_chunks[i][0][j] = m_chunks[i + 1][0][j];
 		}
-	}
-	else if (direction == Direction::Up) {
+	} else if (direction == Direction::Up) {
 		for (int i = 0; i < m_lenghtAcrossMatrix; ++i)
 			chunksToDelete.push_back(m_chunks[i][0][m_lenghtAcrossMatrix - 1]);
 
@@ -541,8 +335,7 @@ void ChunkManager::moveChunks(Direction direction) {
 			for (int j = m_lenghtAcrossMatrix - 1; j > 0; --j)
 				m_chunks[i][0][j] = m_chunks[i][0][j - 1];
 		}
-	}
-	else if (direction == Direction::Down) {
+	} else if (direction == Direction::Down) {
 		for (int i = 0; i < m_lenghtAcrossMatrix; ++i)
 			chunksToDelete.push_back(m_chunks[i][0][0]);
 
@@ -552,7 +345,7 @@ void ChunkManager::moveChunks(Direction direction) {
 		}
 	}
 
-	m_threadPool2.enqueue([this, chunksToDelete] {
+	m_threadPool2.enqueue([this, direction, chunksToDelete] {
 
 		for (auto chunk : chunksToDelete) {
 			chunk->removeAllNeighbors();
@@ -560,33 +353,96 @@ void ChunkManager::moveChunks(Direction direction) {
 			chunk.reset();
 		}
 
-		vector<future<void>> chunkCreationFutures;
+		vector<shared_ptr<Chunk>> newChunks{};
 
-		// Create / load new chunks for the top row
-		for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
-			auto ch = m_chunks[i][0][m_lenghtAcrossMatrix - 2];
-			auto chunk = std::make_shared<Chunk>(m_worldName, ch->getXLocation(), ch->getZLocation() +
-					CHUNK_WIDTH_AND_DEPTH);
+		if (direction == Direction::Right) {
+			for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
+				auto ch = m_chunks[0 + 1][0][i];
+				auto chunk = std::make_shared<Chunk>(m_worldName, ch->getXLocation() - CHUNK_WIDTH_AND_DEPTH,
+						ch->getZLocation());
+				m_chunks[0][0][i] = chunk;
+				newChunks.push_back(chunk);
+			}
+		} else if (direction == Direction::Left) {
+			for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
+				auto ch = m_chunks[m_lenghtAcrossMatrix - 2][0][i];
+				auto chunk = std::make_shared<Chunk>(m_worldName, ch->getXLocation() + CHUNK_WIDTH_AND_DEPTH,
+						ch->getZLocation());
+				m_chunks[m_lenghtAcrossMatrix - 1][0][i] = chunk;
+				newChunks.push_back(chunk);
+			}
+		} else if (direction == Direction::Up) {
+			for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
+				auto ch = m_chunks[i][0][0 + 1];
+				auto chunk = std::make_shared<Chunk>(m_worldName, ch->getXLocation(), ch->getZLocation() -
+						CHUNK_WIDTH_AND_DEPTH);
+				m_chunks[i][0][0] = chunk;
+				newChunks.push_back(chunk);
+			}
+		} else if (direction == Direction::Down) {
+			// Create / load new chunks for the top row
+			for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
+				auto ch = m_chunks[i][0][m_lenghtAcrossMatrix - 2];
+				auto chunk = std::make_shared<Chunk>(m_worldName, ch->getXLocation(), ch->getZLocation() +
+						CHUNK_WIDTH_AND_DEPTH);
+
+				m_chunks[i][0][m_lenghtAcrossMatrix - 1] = chunk;
+				newChunks.push_back(chunk);
+			}
+		}
+
+		vector<future<void>> chunkCreationFutures;
+		for (auto chunk : newChunks) {
 			chunkCreationFutures.push_back(m_threadPool.enqueue([chunk]
 			{
 				chunk->create();
 				chunk->doSunLightning();
 			} ));
-			m_chunks[i][0][m_lenghtAcrossMatrix - 1] = chunk;
 		}
-
 		for_each(chunkCreationFutures.begin(), chunkCreationFutures.end(), [] (future<void> &f) { f.get(); });
 
 		connectChunks();
 
-		for (int i = 0; i < m_lenghtAcrossMatrix; ++i)
-			m_chunks[i][0][m_lenghtAcrossMatrix - 1]->collectLightFromFrontNeighbor();
+		if (direction == Direction::Right) {
+			for (int i = 0; i < m_lenghtAcrossMatrix; ++i)
+				m_chunks[0][0][i]->collectLightFromRightNeighbor();
 
-		for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
-			auto chunk = m_chunks[i][0][m_lenghtAcrossMatrix - 1];
-			chunk->propagateLights();
-			chunk->updateGraphics();
-			m_chunks[i][0][m_lenghtAcrossMatrix - 2]->forceUpdateGraphics();
+			for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
+				auto chunk = m_chunks[0][0][i];
+				chunk->propagateLights();
+				chunk->updateGraphics();
+				m_chunks[0 + 1][0][i]->forceUpdateGraphics();
+			}
+		} else if (direction == Direction::Left) {
+			for (int i = 0; i < m_lenghtAcrossMatrix; ++i)
+				m_chunks[m_lenghtAcrossMatrix - 1][0][i]->collectLightFromLeftNeighbor();
+
+			for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
+				auto chunk = m_chunks[m_lenghtAcrossMatrix - 1][0][i];
+				chunk->propagateLights();
+				chunk->updateGraphics();
+				m_chunks[m_lenghtAcrossMatrix - 2][0][i]->forceUpdateGraphics();
+			}
+		} else if (direction == Direction::Up) {
+			for (int i = 0; i < m_lenghtAcrossMatrix; ++i)
+				m_chunks[i][0][0]->collectLightFromBackNeighbor();
+
+			for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
+				auto chunk = m_chunks[i][0][0];
+				chunk->propagateLights();
+				chunk->updateGraphics();
+				m_chunks[i][0][0 + 1]->forceUpdateGraphics();
+			}
+		} else if (direction == Direction::Down) {
+			for (int i = 0; i < m_lenghtAcrossMatrix; ++i)
+				m_chunks[i][0][m_lenghtAcrossMatrix - 1]->collectLightFromFrontNeighbor();
+
+			for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
+				auto chunk = m_chunks[i][0][m_lenghtAcrossMatrix - 1];
+				chunk->propagateLights();
+				chunk->updateGraphics();
+				m_chunks[i][0][m_lenghtAcrossMatrix - 2]->forceUpdateGraphics();
+			}
 		}
 
 		m_bussyMovingChunksMutex.unlock();

@@ -25,20 +25,14 @@ Button::Button(int id, int x, int y, int width, int height,
 	this->m_observer = observer;
 	auto &res = Resources::getInstance();
 
-	m_sprite.reset(
-			new Sprite(x, y, layer, width, height,
-					res.getTexture(config::gui_data::button)));
-	m_highlight.reset(
-			new Sprite(x, y, layer + 1, width, height,
-					res.getTexture(config::gui_data::highlight)));
+	m_sprite.reset(new Sprite(x, y, layer, width, height, res.getTexture(config::gui_data::button)));
+	m_highlight.reset(new Sprite(x, y, layer + 1, width, height, res.getTexture(config::gui_data::highlight)));
 
 	FontMeshBuilder &fontMeshBuilder = res.getFontMeshBuilder(
 			config::font_data::fontLayout, config::font_data::fontAtlasWidth,
 			config::font_data::fontAtlasHeight);
 
-	m_text.reset(
-			new Sprite(x, y + 5, layer + 1,
-					fontMeshBuilder.buldMeshForString(name, height - 5),
+	m_text.reset(new Sprite(x, y + 5, layer + 1, fontMeshBuilder.buldMeshForString(name, height - 5),
 					res.getTexture(config::font_data::font)));
 
 }
@@ -65,7 +59,7 @@ void Button::draw() {
 }
 
 void Button::update(float timePassed) {
-	shared_ptr<Input> input {Input::getInstance()};
+	shared_ptr<Input> input{Input::getInstance()};
 
 	m_pointerInsideBorders = isInsideBorders(input->mouseVirtualAdjustedX, input->mouseVirtualAdjustedY);
 	if (m_pointerInsideBorders && input->action1Pressed) {
