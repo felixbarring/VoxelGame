@@ -229,6 +229,9 @@ void GraphicalChunk::uploadData() {
 	elementData.clear();
 
 	createMeshData(true, m_faceData, vertexData, normals, UV, elementData);
+
+	if (vertexData.empty())
+  		m_hasTransparent = false;
 	m_waterMesh.reset(new mesh::MeshElement(vertexData, 4, normals, 3, UV, 3, elementData));
 
 	m_faceData.clear();
@@ -242,6 +245,9 @@ void GraphicalChunk::drawTransparent() {
 	m_waterMesh->draw();
 }
 
+bool GraphicalChunk::hasTransparent() {
+	return m_hasTransparent;
+}
 
 Transform& GraphicalChunk::getTransform() {
 	return transform;
@@ -330,17 +336,10 @@ void GraphicalChunk::createMeshData(
 				if (fd.right) {
 
 					vector<GLfloat> vertex {
-						0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz,
-							fd.lvRight_BottomLeft,
-
-						0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz,
-							fd.lvRight_BottomRight,
-
-						0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz,
-							fd.lvRight_TopRight,
-
-						0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz,
-							fd.lvRight_TopLeft,
+						0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz, fd.lvRight_BottomLeft,
+						0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz, fd.lvRight_BottomRight,
+						0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz, fd.lvRight_TopRight,
+						0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz, fd.lvRight_TopLeft,
 					};
 
 					vector<GLfloat> nor {
@@ -378,14 +377,10 @@ void GraphicalChunk::createMeshData(
 				if (fd.left) {
 
 					vector<GLfloat> vertex {
-						-0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz,
-							fd.lvLeft_BottomLeft,
-						-0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz,
-							fd.lvLeft_BottomRight,
-						-0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz,
-							fd.lvLeft_TopRight ,
-						-0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz,
-							fd.lvLeft_TopLeft,
+						-0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz, fd.lvLeft_BottomLeft,
+						-0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz, fd.lvLeft_BottomRight,
+						-0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz, fd.lvLeft_TopRight ,
+						-0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz, fd.lvLeft_TopLeft,
 					};
 
 					vector<GLfloat> nor {
@@ -423,14 +418,10 @@ void GraphicalChunk::createMeshData(
 				if (fd.back) {
 
 					vector<GLfloat> vertex {
-						0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz,
-							fd.lvBack_BottomLeft,
-						-0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz,
-							fd.lvBack_BottomRight,
-						-0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz,
-							fd.lvBack_TopRight,
-						0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz,
-							fd.lvBack_TopLeft,
+						0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz, fd.lvBack_BottomLeft,
+						-0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz, fd.lvBack_BottomRight,
+						-0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz, fd.lvBack_TopRight,
+						0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz, fd.lvBack_TopLeft,
 					};
 
 					vector<GLfloat> nor {
@@ -468,14 +459,10 @@ void GraphicalChunk::createMeshData(
 				if (fd.front) {
 
 					vector<GLfloat> vertex {
-						-0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz,
-							fd.lvFront_BottomLeft,
-						0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz,
-							fd.lvFront_BottomRight,
-						0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz,
-							fd.lvFront_TopRight,
-						-0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz,
-							fd.lvFront_TopLeft,
+						-0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz, fd.lvFront_BottomLeft,
+						0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz, fd.lvFront_BottomRight,
+						0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz, fd.lvFront_TopRight,
+						-0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz, fd.lvFront_TopLeft,
 					};
 
 					vector<GLfloat> nor {
@@ -513,14 +500,10 @@ void GraphicalChunk::createMeshData(
 				if (fd.top) {
 
 					vector<GLfloat> vertex {
-						-0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz,
-							fd.lvTop_BottomLeft,
-						0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz,
-							fd.lvTop_BottomRight,
-						0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz,
-							fd.lvTop_TopRight,
-						-0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz,
-							fd.lvTop_TopLeft,
+						-0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz, fd.lvTop_BottomLeft,
+						0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz, fd.lvTop_BottomRight,
+						0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz, fd.lvTop_TopRight,
+						-0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz, fd.lvTop_TopLeft,
 					};
 
 					vector<GLfloat> nor {
@@ -558,14 +541,10 @@ void GraphicalChunk::createMeshData(
 				if (fd.bottom) {
 
 					vector<GLfloat> vertex {
-						-0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz,
-							fd.lvBottom_BottomLeft,
-						0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz,
-							fd.lvBottom_BottomRight,
-						0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz,
-							fd.lvBottom_TopRight,
-						-0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz,
-							fd.lvBottom_TopLeft,
+						-0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz, fd.lvBottom_BottomLeft,
+						0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz, fd.lvBottom_BottomRight,
+						0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz, fd.lvBottom_TopRight,
+						-0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz, fd.lvBottom_TopLeft,
 					};
 
 					vector<GLfloat> nor {

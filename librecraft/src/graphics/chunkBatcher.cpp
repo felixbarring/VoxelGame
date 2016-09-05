@@ -176,6 +176,9 @@ void ChunkBatcher::draw() {
 
 	for (auto batch : m_batches) {
 
+		if (!batch.second->hasTransparent())
+			continue;
+
 		// TODO Do frustrum culling here
 
 		glm::mat4 modelView = camera.getViewMatrix() * batch.second->getTransform().getMatrix();

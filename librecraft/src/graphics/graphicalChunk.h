@@ -42,6 +42,8 @@ public:
 
 	void drawTransparent();
 
+	bool hasTransparent();
+
 	Transform& getTransform();
 
 	float getxLocation();
@@ -155,6 +157,8 @@ private:
 
 	std::unique_ptr<mesh::MeshElement> m_mesh;
 	std::unique_ptr<mesh::MeshElement> m_waterMesh;
+
+	bool m_hasTransparent{true};
 
 	float m_xLocation;
 	float m_yLocation;
