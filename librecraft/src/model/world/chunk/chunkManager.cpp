@@ -180,8 +180,8 @@ void ChunkManager::setCenter(float x, float z) {
 // Requires that direction is normalized!
 // Has one bugg, when the player is exactly located at an integer position
 // the selection will be wrong!
-bool ChunkManager::intersectWithSolidCube(vec3 origin, vec3 direction,
-		vec3 &intersected, vec3 &previous, float searchLength) {
+bool ChunkManager::intersectWithSolidCube(vec3 origin, vec3 direction, vec3 &intersected, vec3 &previous,
+		float searchLength) {
 
 	// Get the sign of the directions
 	int signXDirection = (direction.x > 0) - (direction.x < 0);
@@ -391,7 +391,7 @@ void ChunkManager::moveChunks(Direction direction) {
 			}
 		}
 
-		vector<future<void>> chunkCreationFutures;
+		vector<future<void>> chunkCreationFutures{};
 		for (auto chunk : newChunks) {
 			chunkCreationFutures.push_back(m_threadPool.enqueue([chunk]
 			{
@@ -403,52 +403,63 @@ void ChunkManager::moveChunks(Direction direction) {
 
 		connectChunks();
 
+		vector<future<void>> collectLightFutures{};
+
 		if (direction == Direction::Right) {
-			for (int i = 0; i < m_lenghtAcrossMatrix; ++i)
-				m_chunks[0][0][i]->collectLightFromRightNeighbor();
-
-			for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
-				auto chunk = m_chunks[0][0][i];
-				chunk->propagateLights();
-				chunk->updateGraphics();
-				m_chunks[0 + 1][0][i]->forceUpdateGraphics();
-			}
-		} else if (direction == Direction::Left) {
-			for (int i = 0; i < m_lenghtAcrossMatrix; ++i)
-				m_chunks[m_lenghtAcrossMatrix - 1][0][i]->collectLightFromLeftNeighbor();
-
-			for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
-				auto chunk = m_chunks[m_lenghtAcrossMatrix - 1][0][i];
-				chunk->propagateLights();
-				chunk->updateGraphics();
-				m_chunks[m_lenghtAcrossMatrix - 2][0][i]->forceUpdateGraphics();
-			}
-		} else if (direction == Direction::Up) {
-			for (int i = 0; i < m_lenghtAcrossMatrix; ++i)
-				m_chunks[i][0][0]->collectLightFromBackNeighbor();
-
-			for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
-				auto chunk = m_chunks[i][0][0];
-				chunk->propagateLights();
-				chunk->updateGraphics();
-				m_chunks[i][0][0 + 1]->forceUpdateGraphics();
-			}
-		} else if (direction == Direction::Down) {
-			for (int i = 0; i < m_lenghtAcrossMatrix; ++i)
-				m_chunks[i][0][m_lenghtAcrossMatrix - 1]->collectLightFromFrontNeighbor();
-
-			for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
-				auto chunk = m_chunks[i][0][m_lenghtAcrossMatrix - 1];
-				chunk->propagateLights();
-				chunk->updateGraphics();
-				m_chunks[i][0][m_lenghtAcrossMatrix - 2]->forceUpdateGraphics();
-			}
+			for (auto chunk : newChunks)
+				collectLightFutures.push_back(m_threadPool.enqueue([chunk] {chunk->collectLightFromRightNeighbor();}));
+		}
+		else if (direction == Direction::Left) {
+			for (auto chunk : newChunks)
+				collectLightFutures.push_back(m_threadPool.enqueue([chunk] {chunk->collectLightFromLeftNeighbor();}));
+		}
+		else if (direction == Direction::Up) {
+			for (auto chunk : newChunks)
+				collectLightFutures.push_back(m_threadPool.enqueue([chunk] {chunk->collectLightFromBackNeighbor();}));
+		}
+		else if (direction == Direction::Down) {
+			for (auto chunk : newChunks)
+				collectLightFutures.push_back(m_threadPool.enqueue([chunk] {chunk->collectLightFromFrontNeighbor();}));
 		}
 
-		m_bussyMovingChunksMutex.unlock();
+		for_each(collectLightFutures.begin(), collectLightFutures.end(), [] (future<void> &f) { f.get(); });
 
+		vector<future<void>> updateGrapicsFutures;
+
+		for (unsigned i = 0; i < newChunks.size(); i += 2) {
+			auto chunk = newChunks[i];
+			chunk->propagateLights();
+			chunk->updateGraphics();
+			if (direction == Direction::Right)
+				chunk->getRightNeighbor()->forceUpdateGraphics();
+			if (direction == Direction::Left)
+				chunk->getLeftNeighbor()->forceUpdateGraphics();
+			if (direction == Direction::Up)
+				chunk->getBackNeighbor()->forceUpdateGraphics();
+			if (direction == Direction::Down)
+				chunk->getFrontNeighbor()->forceUpdateGraphics();
+		}
+		for_each(updateGrapicsFutures.begin(), updateGrapicsFutures.end(), [] (future<void> &f) { f.get(); });
+		updateGrapicsFutures.clear();
+
+		for (unsigned i = 1; i < newChunks.size(); i += 2) {
+			auto chunk = newChunks[i];
+			chunk->propagateLights();
+			chunk->updateGraphics();
+			if (direction == Direction::Right)
+				chunk->getRightNeighbor()->forceUpdateGraphics();
+			if (direction == Direction::Left)
+				chunk->getLeftNeighbor()->forceUpdateGraphics();
+			if (direction == Direction::Up)
+				chunk->getBackNeighbor()->forceUpdateGraphics();
+			if (direction == Direction::Down)
+				chunk->getFrontNeighbor()->forceUpdateGraphics();
+		}
+
+		for_each(updateGrapicsFutures.begin(), updateGrapicsFutures.end(), [] (future<void> &f) { f.get(); });
+
+		m_bussyMovingChunksMutex.unlock();
 	});
 }
-
 
 }

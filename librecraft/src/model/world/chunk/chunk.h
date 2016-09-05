@@ -135,13 +135,21 @@ public:
 
 	void setCube(int x, int y, int z, char id);
 
-	void setLeftNeighbor(std::shared_ptr<Chunk> chunk);
-
 	void setRightNeighbor(std::shared_ptr<Chunk> chunk);
+
+	void setLeftNeighbor(std::shared_ptr<Chunk> chunk);
 
 	void setFrontNeighbor(std::shared_ptr<Chunk> chunk);
 
 	void setBackNeighbor(std::shared_ptr<Chunk> chunk);
+
+	std::shared_ptr<Chunk> getRightNeighbor() { return m_rightNeighbor; }
+
+	std::shared_ptr<Chunk> getLeftNeighbor() { return m_leftNeighbor; }
+
+	std::shared_ptr<Chunk> getFrontNeighbor() { return m_frontNeighbor; }
+
+	std::shared_ptr<Chunk> getBackNeighbor() { return m_backNeighbor; }
 
 	/**
 	 * Used when a chunk should be removed from memory. Clears all pointers from this chunk to its neighbors and also
