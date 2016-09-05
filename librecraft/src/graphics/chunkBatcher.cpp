@@ -15,8 +15,7 @@ namespace graphics {
 // ########################################################
 
 ChunkBatcher::ChunkBatcher()
-		: m_texture(
-				Resources::getInstance().getTextureArray(
+		: m_texture(Resources::getInstance().getTextureArray(
 						config::cube_data::textures,
 						config::cube_data::TEXTURE_WIDTH,
 						config::cube_data::TEXTURE_HEIGHT)) {
