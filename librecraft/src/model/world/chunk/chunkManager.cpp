@@ -428,32 +428,38 @@ void ChunkManager::moveChunks(Direction direction) {
 
 		for (unsigned i = 0; i < newChunks.size(); i += 2) {
 			auto chunk = newChunks[i];
-			chunk->propagateLights();
-			chunk->updateGraphics();
-			if (direction == Direction::Right)
-				chunk->getRightNeighbor()->forceUpdateGraphics();
-			if (direction == Direction::Left)
-				chunk->getLeftNeighbor()->forceUpdateGraphics();
-			if (direction == Direction::Up)
-				chunk->getBackNeighbor()->forceUpdateGraphics();
-			if (direction == Direction::Down)
-				chunk->getFrontNeighbor()->forceUpdateGraphics();
+			updateGrapicsFutures.push_back(m_threadPool.enqueue([chunk, direction]
+			{
+				chunk->propagateLights();
+				chunk->updateGraphics();
+				if (direction == Direction::Right)
+					chunk->getRightNeighbor()->forceUpdateGraphics();
+				if (direction == Direction::Left)
+					chunk->getLeftNeighbor()->forceUpdateGraphics();
+				if (direction == Direction::Up)
+					chunk->getBackNeighbor()->forceUpdateGraphics();
+				if (direction == Direction::Down)
+					chunk->getFrontNeighbor()->forceUpdateGraphics();
+			}));
 		}
 		for_each(updateGrapicsFutures.begin(), updateGrapicsFutures.end(), [] (future<void> &f) { f.get(); });
 		updateGrapicsFutures.clear();
 
 		for (unsigned i = 1; i < newChunks.size(); i += 2) {
 			auto chunk = newChunks[i];
-			chunk->propagateLights();
-			chunk->updateGraphics();
-			if (direction == Direction::Right)
-				chunk->getRightNeighbor()->forceUpdateGraphics();
-			if (direction == Direction::Left)
-				chunk->getLeftNeighbor()->forceUpdateGraphics();
-			if (direction == Direction::Up)
-				chunk->getBackNeighbor()->forceUpdateGraphics();
-			if (direction == Direction::Down)
-				chunk->getFrontNeighbor()->forceUpdateGraphics();
+			updateGrapicsFutures.push_back(m_threadPool.enqueue([chunk, direction]
+			{
+				chunk->propagateLights();
+				chunk->updateGraphics();
+				if (direction == Direction::Right)
+					chunk->getRightNeighbor()->forceUpdateGraphics();
+				if (direction == Direction::Left)
+					chunk->getLeftNeighbor()->forceUpdateGraphics();
+				if (direction == Direction::Up)
+					chunk->getBackNeighbor()->forceUpdateGraphics();
+				if (direction == Direction::Down)
+					chunk->getFrontNeighbor()->forceUpdateGraphics();
+			}));
 		}
 
 		for_each(updateGrapicsFutures.begin(), updateGrapicsFutures.end(), [] (future<void> &f) { f.get(); });
