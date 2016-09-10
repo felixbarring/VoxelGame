@@ -6,8 +6,18 @@
 
 /**
  * A frustum that can be used to determine if an object is inside its border's.
- * Based on the libgdx implementation
- * 	see: https://github.com/libgdx/libgdx/blob/master/gdx/src/com/badlogic/gdx/math/Frustum.java
+ *
+ * See Real-Time Rendering Third Edition page 774 for explanation on how the plane magic is implemented
+ *
+ *	Plane equation is: a(x - x0) + b(y - y0) + c(z - z0) = 0
+ *	ax + by + cz + d = 0
+ *	where d = -(ax0 + cy0 + cz0)
+ *
+ *	Distance d from a point p(x1, y1, z1) to a plane is
+ *	d = |ax1 + by1 + cz1 + d| / sqrt(a^2 + b^2 + c^2)
+ *
+ *	The division with sqrt(a^2 + b^2 + c^2) can be avoided by normalizing a b and c
+ *
  */
 class Frustum {
 public:
@@ -16,21 +26,34 @@ public:
 // Constructor/Destructor #################################
 // ########################################################
 
-	Frustum();
+	Frustum(glm::mat4 mvp);
 
-	virtual ~Frustum();
+	virtual ~Frustum() {};
 
 // ########################################################
 // Member Functions########################################
 // ########################################################
 
-	void update(glm::mat4 inverseProjectionView);
-
-	bool pointInFrustum(glm::vec3 point);
-
 	bool sphereInFrustum(glm::vec3 center, float radius);
 
+// ########################################################
+// Implementation #########################################
+// ########################################################
 
+private:
+
+	struct Plane {
+		glm::vec3 m_normal;
+	};
+
+
+
+	std::vector<int> rightPlane{};
+	std::vector<int> leftPlane{};
+	std::vector<int> topPlane{};
+	std::vector<int> bottomPlane{};
+	std::vector<int> nearPlane{};
+	std::vector<int> fatPlane{};
 
 };
 

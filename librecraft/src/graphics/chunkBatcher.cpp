@@ -170,10 +170,9 @@ void ChunkBatcher::draw() {
 		batch.second->drawNoneTransparent();
 	}
 
-	// TODO Very bad to do twice the matrix multiplications, needs to be fixed...
-
 	glDisable(GL_CULL_FACE);
 
+	// A second pass to draw the water/transparent stuffs
 	for (auto batch : m_batches) {
 
 		if (!batch.second->hasTransparent())

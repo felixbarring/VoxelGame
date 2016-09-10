@@ -1,12 +1,10 @@
 
 #include "frustum.h"
 
-Frustum::Frustum() {
-	// TODO Auto-generated constructor stub
+Frustum::Frustum(glm::mat4 mvp) {
 
 }
 
-Frustum::~Frustum() {
-	// TODO Auto-generated destructor stub
+bool Frustum::sphereInFrustum(glm::vec3 center, float radius) {
+	return true;
 }
-
