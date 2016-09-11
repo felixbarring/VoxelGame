@@ -63,23 +63,20 @@ void Chunk::doSunLightning() {
 	for (int x = 0; x < CHUNK_WIDTH_AND_DEPTH; ++x) {
 		for (int z = 0; z < CHUNK_WIDTH_AND_DEPTH; ++z) {
 			bool foundSolid = false;
+			int lightValue{m_directSunlight};
 			for (int y = CHUNK_HEIGHT - 1; y >= 0; --y) {
 				auto &cube = m_cubes[x][y][z];
-				int lightValue{m_directSunlight};
 				if (cube.id == AIR || cube.id == WATER) {
-					// TODO Does this work?!?
-					if (cube.id == WATER && lightValue > 0) {
+					if (cube.id == WATER) {
 						--lightValue;
+						if (lightValue < 0)
+							lightValue = 0;
 					}
-
-					if (foundSolid) {
-						cube.lightValue = 0;
-					} else {
-						cube.lightValue = lightValue;
+					cube.lightValue = lightValue;
+					if (cube.lightValue > 0)
 						m_lightsToPropagate.push_back(vec3(x, y, z));
-					}
 				} else {
-					foundSolid = true;
+					cube.lightValue = 0;
 				}
 			}
 		}
@@ -636,14 +633,12 @@ void Chunk::doSunLightning(vector<vec3> &lightPropagate, int x, int y, int z) {
 		auto &cube = m_cubes[x][i][z];
 		int lightValue{m_directSunlight};
 		if (cube.id == AIR || cube.id == WATER) {
-			cube.lightValue = m_directSunlight;
-			lightPropagate.push_back(vec3(x, i, z));
-
-			if (cube.id == WATER && lightValue > 2) {
+			if (cube.id == WATER && lightValue > 0)
 				--lightValue;
-			}
 
 			cube.lightValue = lightValue;
+			lightPropagate.push_back(vec3(x, i, z));
+
 			m_lightsToPropagate.push_back(vec3(x, y, z));
 		} else {
 			break;
