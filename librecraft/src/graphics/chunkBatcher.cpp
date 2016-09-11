@@ -3,6 +3,7 @@
 #include <map>
 #include <iostream>
 
+#include "frustum.h"
 #include "resources.h"
 #include "shaderProgram.h"
 
@@ -157,18 +158,29 @@ void ChunkBatcher::draw() {
 
 	Camera &camera = Camera::getInstance();
 
-	for (auto batch : m_batches) {
+	int skippedChunks = 0;
 
-		// TODO Do frustrum culling here
+	for (auto batch : m_batches) {
 
 		glm::mat4 modelView = camera.getViewMatrix() * batch.second->getTransform().getMatrix();
 		glm::mat4 modelViewProjection = camera.getProjectionMatrix() * modelView;
+
+		Frustum frustum{modelViewProjection};
+		bool result = frustum.isCubeInFrustum(batch.second->getxLocation() + 8, 0, batch.second->getzLocation() + 8, 16, 128, 16);
+//		bool result = frustum.sphereInFrustum(glm::vec3(batch.second->getxLocation() + 8, 64, batch.second->getzLocation() + 8), 100);
+
+		if (!result) {
+			++skippedChunks;
+			continue;
+		}
 
 		m_program->setUniformMatrix4f("modelViewProjection", modelViewProjection);
 		m_program->setUniformMatrix4f("modelView", modelView);
 
 		batch.second->drawNoneTransparent();
 	}
+
+	cout << "Number of skipped chunks = " << skippedChunks << "\n";
 
 	glDisable(GL_CULL_FACE);
 
@@ -177,8 +189,6 @@ void ChunkBatcher::draw() {
 
 		if (!batch.second->hasTransparent())
 			continue;
-
-		// TODO Do frustrum culling here
 
 		glm::mat4 modelView = camera.getViewMatrix() * batch.second->getTransform().getMatrix();
 		glm::mat4 modelViewProjection = camera.getProjectionMatrix() * modelView;

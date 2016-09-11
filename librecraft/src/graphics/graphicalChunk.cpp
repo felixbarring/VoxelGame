@@ -261,6 +261,10 @@ float GraphicalChunk::getyLocation() {
 	return m_yLocation;
 }
 
+float GraphicalChunk::getzLocation() {
+	return m_zLocation;
+}
+
 // Function for getting voxels, can collect from neighbor chunks data
 // If there is no neighbor, nullptr will be returned
 // Trying to get a voxel that is not adjacent to this chunk is an error

@@ -46,7 +46,7 @@ public:
 	void updateView(glm::vec3 position, glm::vec3 direction, glm::vec3 up);
 
 // ########################################################
-// Instance Variables #####################################
+// Implementation #########################################
 // ########################################################
 
 private:
@@ -56,12 +56,9 @@ private:
 	glm::vec3 up {0.0f, 1.0f, 0.0f};
 
 	// TODO Update this in an intelligent way
-	float aspectRatio = config::graphics_data::windowWidth
-			/ static_cast<float>(config::graphics_data::windowHeight);
+	float aspectRatio = config::graphics_data::windowWidth / static_cast<float>(config::graphics_data::windowHeight);
 
-	glm::mat4 projection = glm::perspective(config::graphics_data::fov,
-
-			aspectRatio, 0.1f, 1000.0f);
+	glm::mat4 projection = glm::perspective(config::graphics_data::fov,	aspectRatio, 0.1f, 1000.0f);
 
 	glm::mat4 view;
 };
