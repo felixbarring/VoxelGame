@@ -23,7 +23,7 @@ ChunkBatcher::ChunkBatcher()
 	const char *vertex =
 			"#version 330 core \n"
 
-			"const float density = 0.001; \n"
+			"const float density = 0.01; \n"
 			"const float gradient = 6; \n"
 
 			"in vec4 positionIn; \n"
@@ -53,7 +53,7 @@ ChunkBatcher::ChunkBatcher()
 	const char *fragment =
 			"#version 330 core \n"
 
-			"const vec3 fogColor = vec3(0.2, 0.22, 0.2); \n"
+			"const vec3 fogColor = vec3(0.47f, 0.76f, 0.93f); \n"
 
 			"in vec3 texCoord; \n"
 			"in float lightValue; \n"
@@ -79,10 +79,10 @@ ChunkBatcher::ChunkBatcher()
 			"void main(){ \n"
 
 			"  vec3 diffuse = calculateDiffuse() / 2; \n"
-//			"  color = vec4(diffuse, 1.0f) * texture(texture1, texCoord); \n"
+			"  color = vec4(diffuse, 1.0f) * texture(texture1, texCoord); \n"
 
 			"  vec4 light = vec4(lightValue, lightValue, lightValue, 1) + vec4(diffuse, 0); \n"
-			"  color = mix(vec4(fogColor, 1.0), light* texture(texture1, texCoord), fogFactor);"
+			"  color = mix(vec4(fogColor, 1.0), light * texture(texture1, texCoord), fogFactor);"
 
 			"} \n";
 
@@ -165,14 +165,15 @@ void ChunkBatcher::draw() {
 		glm::mat4 modelView = camera.getViewMatrix() * batch.second->getTransform().getMatrix();
 		glm::mat4 modelViewProjection = camera.getProjectionMatrix() * modelView;
 
-		Frustum frustum{modelViewProjection};
-		bool result = frustum.isCubeInFrustum(batch.second->getxLocation() + 8, 0, batch.second->getzLocation() + 8, 16, 128, 16);
-//		bool result = frustum.sphereInFrustum(glm::vec3(batch.second->getxLocation() + 8, 64, batch.second->getzLocation() + 8), 100);
-
-		if (!result) {
-			++skippedChunks;
-			continue;
-		}
+		// TODO Fix this so that no chunks get culled when they are actually vissible
+//		Frustum frustum{modelViewProjection};
+//		bool result = frustum.isCubeInFrustum(batch.second->getxLocation() + 8, 0, batch.second->getzLocation() + 8, 16, 128, 16);
+////		bool result = frustum.sphereInFrustum(glm::vec3(batch.second->getxLocation() + 8, 64, batch.second->getzLocation() + 8), 100);
+//
+//		if (!result) {
+//			++skippedChunks;
+//			continue;
+//		}
 
 		m_program->setUniformMatrix4f("modelViewProjection", modelViewProjection);
 		m_program->setUniformMatrix4f("modelView", modelView);
