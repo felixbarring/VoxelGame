@@ -28,12 +28,9 @@ public:
 // Constructor/Destructor #################################
 // ########################################################
 
-	Slider(int id, int x, int y, int width, int height,
-			std::function<void(int)> observer, int layer = 0);
+	Slider(int id, int x, int y, int width, int height, std::function<void(int)> observer, int layer = 0);
 
-	virtual ~Slider() {
-	}
-	;
+	virtual ~Slider() {};
 
 // ########################################################
 // Member Functions########################################

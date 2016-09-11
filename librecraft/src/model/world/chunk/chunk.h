@@ -212,8 +212,7 @@ private:
 
 	std::string m_name{};
 
-	// TODO Should be somewhere else?
-	const int m_directSunlight = 15;
+	const int m_directSunlight = 15; // TODO Should be somewhere else?
 
 	const int m_width = config::chunk_data::CHUNK_WIDTH_AND_DEPTH;
 	const int m_height = config::chunk_data::CHUNK_HEIGHT;
