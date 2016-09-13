@@ -17,7 +17,7 @@ using namespace widget;
 // ########################################################
 
 MainMenu::MainMenu(Game *game)
-		: m_game(game) {
+	: m_game(game) {
 
 	glm::mat4 matrix = gui::createVirtualToScreen(
 			config::graphics_data::virtualWidth,
@@ -29,12 +29,14 @@ MainMenu::MainMenu(Game *game)
 			static_cast<float>(config::graphics_data::windowWidth), 0.0f,
 			static_cast<float>(config::graphics_data::windowHeight), -1.0f,
 			1.0f) * matrix;
+
 	graphics::SpriteBatcher::getInstance().setProjection(m_virtualProjection);
 
-	m_title.reset(new gui::Image {200, 450, 400, 100, config::gui_data::title});
+	m_title = make_shared<gui::Image>(200, 450, 400, 100, config::gui_data::title);
 
 	// TODO Use constants for each ID.
 	// TODO use better names for the widgets variables.
+
 	bool quit = false;
 	function<void(int)> observer = [&, game](int id)
 	{
@@ -54,6 +56,7 @@ MainMenu::MainMenu(Game *game)
 		case 11: {
 			config::input_data::mouseSensitivityX =
 					(m_mouseSensitivitySlider->getValue() / 100);
+
 			config::input_data::mouseSensitivityY =
 					(m_mouseSensitivitySlider->getValue() / 100);
 
@@ -116,12 +119,9 @@ MainMenu::MainMenu(Game *game)
 	// ########################################################################
 
 	shared_ptr<IWidget> label1(new Label {325, 390, 150, 30, " - Main - "});
-	shared_ptr<IWidget> button1(new Button {0, 325, 350, 150, 30, observer,
-			"Play"});
-	shared_ptr<IWidget> button2(new Button {1, 325, 310, 150, 30, observer,
-			"Settings"});
-	shared_ptr<IWidget> button3(new Button {2, 325, 270, 150, 30, observer,
-			"Quit"});
+	shared_ptr<IWidget> button1(new Button {0, 325, 350, 150, 30, observer,	"Play"});
+	shared_ptr<IWidget> button2(new Button {1, 325, 310, 150, 30, observer, "Settings"});
+	shared_ptr<IWidget> button3(new Button {2, 325, 270, 150, 30, observer, "Quit"});
 
 	m_mainWidgetGroup.reset(new WidgetGroup {0, 300, 260, 200, 130, observer});
 
@@ -133,12 +133,9 @@ MainMenu::MainMenu(Game *game)
 	// ########################################################################
 
 	shared_ptr<IWidget> label2(new Label {325, 390, 150, 30, " - Play - "});
-	shared_ptr<IWidget> button4(new Button {3, 325, 350, 150, 30, observer,
-			"New World"});
-	shared_ptr<IWidget> button5(new Button {4, 325, 310, 150, 30, observer,
-			"Load World"});
-	shared_ptr<IWidget> button6(new Button {5, 325, 270, 150, 30, observer,
-			"Back"});
+	shared_ptr<IWidget> button4(new Button {3, 325, 350, 150, 30, observer, "New World"});
+	shared_ptr<IWidget> button5(new Button {4, 325, 310, 150, 30, observer, "Load World"});
+	shared_ptr<IWidget> button6(new Button {5, 325, 270, 150, 30, observer, "Back"});
 
 	m_playWidgetGroup.reset(new WidgetGroup {0, 300, 260, 200, 130, observer});
 
@@ -150,17 +147,12 @@ MainMenu::MainMenu(Game *game)
 	// ########################################################################
 
 	shared_ptr<IWidget> label3(new Label {325, 390, 150, 30, " - Settings - "});
-	shared_ptr<IWidget> button7(new Button {6, 325, 350, 150, 30, observer,
-			"Game"});
-	shared_ptr<IWidget> button8(new Button {7, 325, 310, 150, 30, observer,
-			"Input"});
-	shared_ptr<IWidget> button9(new Button {8, 325, 270, 150, 30, observer,
-			"Graphics"});
-	shared_ptr<IWidget> button10(new Button {9, 325, 230, 150, 30, observer,
-			"Back"});
+	shared_ptr<IWidget> button7(new Button {6, 325, 350, 150, 30, observer, "Game"});
+	shared_ptr<IWidget> button8(new Button {7, 325, 310, 150, 30, observer, "Input"});
+	shared_ptr<IWidget> button9(new Button {8, 325, 270, 150, 30, observer, "Graphics"});
+	shared_ptr<IWidget> button10(new Button {9, 325, 230, 150, 30, observer, "Back"});
 
-	m_settingsWidgetGroup.reset(
-			new WidgetGroup {0, 300, 220, 200, 170, observer});
+	m_settingsWidgetGroup.reset(new WidgetGroup {0, 300, 220, 200, 170, observer});
 
 	m_settingsWidgetGroup->addWidget(label3);
 	m_settingsWidgetGroup->addWidget(button7);
@@ -273,15 +265,6 @@ MainMenu::MainMenu(Game *game)
 	// ########################################################################
 
 	m_activeWidgetGroup = m_mainWidgetGroup;
-
-//	vector<string> lol;
-//	auto func = [this](string command)
-//				{
-//					if (command == "CLOSE")
-//						m_terminalOpen = false;
-//				};
-//
-//	m_terminal = make_shared<gui::Terminal>(lol, func);
 
 }
 

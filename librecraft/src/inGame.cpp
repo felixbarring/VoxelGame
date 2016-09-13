@@ -24,13 +24,8 @@ using namespace gui;
 // ########################################################
 
 InGame::InGame(Game *game, string name)
-		: m_game {game}, m_name {name}, skybox {
-				graphics::Resources::getInstance().getTextureCubeMap(
-						cube_map_data::cubeMap1[0], cube_map_data::cubeMap1[1],
-						cube_map_data::cubeMap1[2], cube_map_data::cubeMap1[3],
-						cube_map_data::cubeMap1[4], cube_map_data::cubeMap1[5],
-						cube_map_data::cubeMap1Width,
-						cube_map_data::cubeMap1Height)} {
+	: m_game{game},
+	  m_name{name} {
 
 	m_player.setLocation(chunk_data::NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * chunk_data::CHUNK_WIDTH_AND_DEPTH, 40.1,
 						 chunk_data::NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * chunk_data::CHUNK_WIDTH_AND_DEPTH);
@@ -65,7 +60,7 @@ InGame::InGame(Game *game, string name)
 
 	for (int i = 0; i <= config::cube_data::LAST_CUBE; ++i) {
 		m_selectedCubeThumbnails.push_back(make_shared<Sprite>(
-				Sprite(380, 5, 2, 40, 40, Resources::getInstance().getTexture(config::cube_data::thumbnails[i]))));
+				380, 5, 2, 40, 40, Resources::getInstance().getTexture(config::cube_data::thumbnails[i])));
 	}
 
 	vector<string> commands = {"close", "flyMode", "gravityMode"};
@@ -118,29 +113,20 @@ void InGame::update(float timePassed) {
 		SpriteBatcher::getInstance().addBatch(m_crossHair);
 
 		auto &res = Resources::getInstance();
-		FontMeshBuilder &fontMeshBuilder = res.getFontMeshBuilder(
-				font_data::fontLayout, font_data::fontAtlasWidth,
+		FontMeshBuilder &fontMeshBuilder = res.getFontMeshBuilder(font_data::fontLayout, font_data::fontAtlasWidth,
 				font_data::fontAtlasHeight);
 
 		vec3 dir = m_player.getViewingDirection();
-		string derp =
-				"View direction: " +
-				to_string(dir.x) + ", " +
-				to_string(dir.y) + ", "	+
-				to_string(dir.z);
+		string derp = "View direction: " + to_string(dir.x) + ", " + to_string(dir.y) + ", " + to_string(dir.z);
 
-		m_direction.reset(
-				new Sprite(0, 20, 10,
-						fontMeshBuilder.buldMeshForString(derp, 20),
+		m_direction.reset(new Sprite(0, 20, 10, fontMeshBuilder.buldMeshForString(derp, 20),
 						res.getTexture(config::font_data::font)));
 
 		// Updating the fps every frame makes it unreadable
 		m_fpsDisplayCounter += timePassed;
 		if (m_fpsDisplayCounter > m_fpsDisplayDelay) {
-			m_fps.reset(new Sprite(0, 45, 10,
-						fontMeshBuilder.buldMeshForString(
-								"FPS: " + to_string(util::FPSManager::getFps()), 20),
-						res.getTexture(config::font_data::font)));
+			m_fps.reset(new Sprite(0, 45, 10, fontMeshBuilder.buldMeshForString("FPS: " +
+					to_string(util::FPSManager::getFps()), 20), res.getTexture(config::font_data::font)));
 
 			m_fpsDisplayCounter = 0;
 		}
@@ -163,9 +149,6 @@ void InGame::update(float timePassed) {
 		mouse.update();
 		mouse.draw();
 	}
-
-//	glDisable(GL_DEPTH_TEST);
-//	skybox.render();
 
 	if (m_state == GameState::Terminal) {
 		m_terminal->update(timePassed);

@@ -15,7 +15,6 @@ namespace config {
 	static std::string worldMetaFile = "data/meta";
 
 	namespace chunk_data {
-
 		static constexpr int GRAPHICAL_CHUNK_WIDTH = 16;
 		static constexpr int GRAPHICAL_CHUNK_HEIGHT = 64;
 
@@ -37,13 +36,13 @@ namespace config {
 		static constexpr char SAND = 5;
 		static constexpr char WATER = 6;
 
-		static constexpr char LAST_CUBE = SAND; // Better name needed
+		static constexpr char LAST_CUBE_USED_FOR_BUILDING_ = SAND; // Better name needed
 
 		static constexpr char BED_ROCK = 7;
 		static constexpr char SELECTED = 8;
 
 		// Used for looping over all types, except for air.
-		static constexpr char LAST_BLOCK = SELECTED;
+		static constexpr char LAST_CUBE = SELECTED;
 
 		static constexpr int SIDE_TEXTURE = 0;
 		static constexpr int TOP_TEXTURE = 1;

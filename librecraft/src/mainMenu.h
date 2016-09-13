@@ -8,7 +8,6 @@
 
 #include "util/input.h"
 
-// Some can probably
 #include "gui/image.h"
 #include "gui/widget/button.h"
 #include "gui/widget/label.h"
@@ -28,7 +27,7 @@ public:
 
 	MainMenu(Game *game);
 
-	virtual ~MainMenu() { };
+	virtual ~MainMenu() {};
 
 // ########################################################
 // Member Functions########################################

@@ -60,7 +60,7 @@ int main(int argc, char *argv[]) {
 		std::cout << "An error occured \n" << e.what() << "\n";
 	} catch (...) {
 		std::cout
-				<< "An error that is not derived from std::exception occured \n";
+			<< "An error that is not derived from std::exception occured \n";
 	}
 
 }

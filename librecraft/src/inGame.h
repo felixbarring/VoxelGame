@@ -67,8 +67,6 @@ private:
 
 	std::vector<std::shared_ptr<graphics::Sprite>> m_selectedCubeThumbnails;
 
-	graphics::CubeMap skybox;
-
 };
 
 #endif /* SRC_INGAME_H_ */

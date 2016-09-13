@@ -127,7 +127,8 @@ void Game::run() {
 	settings.majorVersion = 3;
 	settings.minorVersion = 1;
 
-	window = new sf::Window{sf::VideoMode(WIDTH, HEIGHT), "Voxel Game", sf::Style::Default, settings};
+	window = new sf::Window{sf::VideoMode(WIDTH, HEIGHT), "Voxel Game",
+		sf::Style::Default, settings};
 
 	window->setMouseCursorVisible(false);
 

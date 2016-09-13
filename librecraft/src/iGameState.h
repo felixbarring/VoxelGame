@@ -4,8 +4,7 @@
 class IGameState {
 public:
 
-	virtual ~IGameState() {
-	}
+	virtual ~IGameState() {}
 
 	virtual void update(float timePassed) = 0;
 
