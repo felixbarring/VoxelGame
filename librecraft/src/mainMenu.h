@@ -47,7 +47,7 @@ private:
 
 	glm::mat4 m_virtualProjection;
 
-	std::unique_ptr<gui::Image> m_title;
+	std::shared_ptr<gui::Image> m_title;
 	std::shared_ptr<widget::SelectableList> m_worldList;
 
 	std::shared_ptr<widget::WidgetGroup> m_activeWidgetGroup;
