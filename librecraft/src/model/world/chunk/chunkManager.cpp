@@ -61,7 +61,6 @@ void ChunkManager::createWorld(string worldName) {
 	vector<future<void>> updateGrapicsFutures;
 
 	// TODO Should be done in parallel..
-
 	for (int x = 0; x < lam; ++x) {
 		for (int z = 1; z < lam; ++z) {
 			m_chunks[x][0][z]->propagateLights();
@@ -112,7 +111,6 @@ Voxel ChunkManager::getVoxel(int x, int y, int z) {
 	int localZ = z % CHUNK_WIDTH_AND_DEPTH;
 
 	// TODO Handle if the values are out of range
-
  	return m_chunks[chunkX][chunkY][chunkZ]->getVoxel(localX, localY, localZ);
 }
 
@@ -121,8 +119,7 @@ char ChunkManager::getCubeId(int x, int y, int z) {
 }
 
 bool ChunkManager::isSolid(int x, int y, int z) {
-	// TODO Implement
-	return false;
+	return !isAirOrWater(x, y, z);
 }
 
 bool ChunkManager::isAirOrWater(int x, int y, int z) {
@@ -180,7 +177,6 @@ void ChunkManager::setCenter(float x, float z) {
 
 }
 
-// Requires that direction is normalized!
 // Has one bugg, when the player is exactly located at an integer position
 // the selection will be wrong!
 bool ChunkManager::intersectWithSolidCube(vec3 origin, vec3 direction, vec3 &intersected, vec3 &previous,
@@ -197,17 +193,17 @@ bool ChunkManager::intersectWithSolidCube(vec3 origin, vec3 direction, vec3 &int
 	float zL;
 
 	if (direction.x == 0)
-		xL = 100000000; //signXDirection * std::numeric_limits<float>::infinity();
+		xL = std::numeric_limits<float>::infinity();
 	else
 		xL = 1.0 / direction.x;
 
 	if (direction.y == 0)
-		yL = 1000000000; //signYDirection * std::numeric_limits<float>::infinity();
+		yL = std::numeric_limits<float>::infinity();
 	else
 		yL = 1.0 / direction.y;
 
 	if (direction.z == 0)
-		zL = 1000000000; //signZDirection * std::numeric_limits<float>::infinity();
+		zL = std::numeric_limits<float>::infinity();
 	else
 		zL = 1.0 / direction.z;
 
