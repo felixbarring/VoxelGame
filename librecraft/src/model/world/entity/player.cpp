@@ -100,7 +100,7 @@ void Player::updateSpeed(float timePassed) {
 		m_speed.z = normalizedMD.z;
 	}
 
-	if (input->switchCubePressed && ++m_cubeUsedForBuilding > config::cube_data::LAST_CUBE)
+	if (input->switchCubePressed && ++m_cubeUsedForBuilding > config::cube_data::LAST_CUBE_USED_FOR_BUILDING_)
 		m_cubeUsedForBuilding = 0;
 
 	double waterFactor = 1.0;

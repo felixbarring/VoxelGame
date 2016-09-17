@@ -34,10 +34,10 @@ namespace config {
 		static constexpr char MORE_ROCK = 3;
 		static constexpr char BRICK_WALL = 4;
 		static constexpr char SAND = 5;
-		static constexpr char WATER = 6;
 
 		static constexpr char LAST_CUBE_USED_FOR_BUILDING_ = SAND; // Better name needed
 
+		static constexpr char WATER = 6;
 		static constexpr char BED_ROCK = 7;
 		static constexpr char SELECTED = 8;
 
@@ -100,6 +100,8 @@ namespace config {
 
 		static float virtualWidth{800};
 		static float virtualHeight{600};
+
+		static int directSunlightValue{15};
 	}
 
 	namespace input_data {

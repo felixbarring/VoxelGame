@@ -48,9 +48,9 @@ InGame::InGame(Game *game, string name)
 		}
 	};
 
-	shared_ptr < IWidget > button1(new Button {0, 325, 350, 150, 30, observer, "Main Menu"});
-	shared_ptr < IWidget > button2(new Button {1, 325, 310, 150, 30, observer, "Back To Game"});
-	m_widgetGroup1.reset(new WidgetGroup {0, 300, 300, 200, 90, observer});
+	shared_ptr<IWidget> button1(new Button{0, 325, 350, 150, 30, observer, "Main Menu"});
+	shared_ptr<IWidget> button2(new Button{1, 325, 310, 150, 30, observer, "Back To Game"});
+	m_widgetGroup1.reset(new WidgetGroup{0, 300, 300, 200, 90, observer});
 
 	m_widgetGroup1->addWidget(button1);
 	m_widgetGroup1->addWidget(button2);
@@ -58,25 +58,25 @@ InGame::InGame(Game *game, string name)
 	m_crossHair.reset(new Sprite(390, 290, 0, 20, 20, Resources::getInstance().getTexture(
 			config::gui_data::crossHair)));
 
-	for (int i = 0; i <= config::cube_data::LAST_CUBE; ++i) {
+	for (int i = 0; i <= config::cube_data::LAST_CUBE_USED_FOR_BUILDING_; ++i) {
 		m_selectedCubeThumbnails.push_back(make_shared<Sprite>(
 				380, 5, 2, 40, 40, Resources::getInstance().getTexture(config::cube_data::thumbnails[i])));
 	}
 
 	vector<string> commands = {"close", "flyMode", "gravityMode"};
 	std::function<void(string)> func = [this](string command)
-				{
-					if (command == "close") {
-						Input::getInstance()->centerMouse();
-						m_state = GameState::NoOverlay;
-					} else if (command == "flyMode") {
-						m_player.turnGravityOff();
-					} else if (command == "gravityMode") {
-						m_player.turnGravityOff(false);
-					} else {
-						m_terminal->addLine("Unknown command: " + command);
-					}
- 				};
+	{
+		if (command == "close") {
+			Input::getInstance()->centerMouse();
+			m_state = GameState::NoOverlay;
+		} else if (command == "flyMode") {
+			m_player.turnGravityOff();
+		} else if (command == "gravityMode") {
+			m_player.turnGravityOff(false);
+		} else {
+			m_terminal->addLine("Unknown command: " + command);
+		}
+	};
 
 	m_terminal = make_shared<gui::Terminal>(move(commands), func);
 

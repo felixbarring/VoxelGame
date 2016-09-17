@@ -14,13 +14,9 @@ public:
 // Constructor/Destructor #################################
 // ########################################################
 
-	ViewDirection() {
-	}
-	;
+	ViewDirection() {};
 
-	virtual ~ViewDirection() {
-	}
-	;
+	virtual ~ViewDirection() {};
 
 	// ########################################################
 	// Member Functions########################################

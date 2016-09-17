@@ -16,13 +16,13 @@ using namespace terrainGen;
 
 namespace chunk {
 
+static int counter = 1;
+static const int maxCount = LAST_CUBE_USED_FOR_BUILDING_;
+static std::mutex s_mutex;
+
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
-
-static int counter = 1;
-static const int maxCount = LAST_CUBE;
-static std::mutex s_mutex;
 
 Chunk::Chunk(string worldName, int x, int z)
 		: m_xLocation{x},
@@ -32,14 +32,14 @@ Chunk::Chunk(string worldName, int x, int z)
 {
 
 	for (int i = 0; i < CHUNK_HEIGHT / GRAPHICAL_CHUNK_HEIGHT; ++i) {
-		m_graphicalChunks.push_back(-1);
+		m_graphicalChunksIds.push_back(-1);
 		m_dirtyRegions.emplace(i);
 	}
 }
 
 Chunk::~Chunk() {
 //	cout << "Removing chunk " << m_xLocation << " " << m_zLocation << "\n";
-	for (auto graphicalChunk : m_graphicalChunks)
+	for (auto graphicalChunk : m_graphicalChunksIds)
 		ChunkBatcher::getInstance().removeBatch(graphicalChunk);
 }
 
@@ -325,10 +325,10 @@ void Chunk::updateGraphics() {
 		back = &(m_backNeighbor->m_cubes);
 
 	for (auto i : m_dirtyRegions) {
-		ChunkBatcher::getInstance().removeBatch((m_graphicalChunks[i]));
+		ChunkBatcher::getInstance().removeBatch((m_graphicalChunksIds[i]));
 		auto derp = ChunkBatcher::getInstance().createBatch(m_xLocation, i * GRAPHICAL_CHUNK_HEIGHT, m_zLocation,
 				m_cubes, right, left, back, front);
-		m_graphicalChunks[i] = derp;
+		m_graphicalChunksIds[i] = derp;
 	}
 
 	m_dirtyRegions.clear();
@@ -486,7 +486,8 @@ void Chunk::generateChunk() {
 	for (int x = 0; x < m_width; ++x) {
 		for (int z = 0; z < m_depth; ++z) {
 
-			int lol = mixer.computeNoise(m_xLocation + x, m_zLocation + z);
+
+			int noiseValue = mixer.computeNoise(m_xLocation + x, m_zLocation + z);
 
 			for (int y = 0; y < m_height; ++y) {
 				Voxel &v = m_cubes[x][y][z];
@@ -495,12 +496,10 @@ void Chunk::generateChunk() {
 					v.id = BED_ROCK;
 					continue;
 				}
-				if (y > 5 && y < 25) {
-					v.id = config::cube_data::WATER;
-				}
-				if (y < lol) {
+//				if (y > 5 && y < 25)
+//					v.id = config::cube_data::WATER;
+				if (y < noiseValue)
 					v.id = counterValue;
-				}
 			}
 		}
 	}

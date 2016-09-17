@@ -222,7 +222,7 @@ private:
 
 	std::vector<std::vector<std::vector<Voxel>>> m_cubes{};
 
-	std::vector<int> m_graphicalChunks{};
+	std::vector<int> m_graphicalChunksIds{};
 
 	std::shared_ptr<Chunk> m_rightNeighbor{};
 	std::shared_ptr<Chunk> m_leftNeighbor{};
