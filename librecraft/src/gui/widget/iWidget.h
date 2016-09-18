@@ -28,7 +28,7 @@ namespace widget {
 class IWidget {
 public:
 
-	virtual ~IWidget() { };
+	virtual ~IWidget() {};
 
 	/**
 	 *  \brief Makes the Widget draw itself

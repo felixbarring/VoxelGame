@@ -12,32 +12,24 @@ public:
 // Constructor/Destructor #################################
 // ########################################################
 
-	AABB(double xMinimum, double xMaximum, double yMinimum, double yMaximum,
-			double zMinimum, double zMaximum);
-
-	virtual ~AABB() {
-	}
-	;
+	AABB(double xMinimum, double xMaximum, double yMinimum, double yMaximum, double zMinimum, double zMaximum);
 
 // ########################################################
 // Member Functions########################################
 // ########################################################
 
-	void setBounds(double xMinimum, double xMaximum, double yMinimum,
-			double yMaximum, double zMinimum, double zMaximum);
+	void setBounds(double xMinimum, double xMaximum, double yMinimum, double yMaximum, double zMinimum,
+			double zMaximum);
 
 	bool intersects(const AABB &that);
 
 	static AABB getSweptBroadPhaseBox(AABB &box, glm::vec3 &velocity);
 
-	static float collisionTime(AABB &box1, AABB &box2,
-			glm::vec3 &collisionNormal, glm::vec3 &velocity);
+	static float collisionTime(AABB &box1, AABB &box2, glm::vec3 &collisionNormal, glm::vec3 &velocity);
 
 // ########################################################
 // Implementation #########################################
 // ########################################################
-
-//private:
 
 	double xMin, xMax, yMin, yMax, zMin, zMax;
 

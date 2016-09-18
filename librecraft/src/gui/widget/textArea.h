@@ -17,10 +17,9 @@ public:
 // Constructor/Destructor #################################
 // ########################################################
 
-	TextArea(int id, int x, int y, int width, int height,
-			std::function<void(int)> observer, int layer);
+	TextArea(int id, int x, int y, int width, int height, std::function<void(int)> observer, int layer);
 
-	virtual ~TextArea() { };
+	virtual ~TextArea() {};
 
 // ########################################################
 // Member Functions########################################

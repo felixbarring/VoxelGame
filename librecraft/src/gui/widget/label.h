@@ -33,9 +33,7 @@ public:
 	Label(int x, int y, int width, int height, const std::string &name,
 			int layer = 0);
 
-	virtual ~Label() {
-	}
-	;
+	virtual ~Label() {};
 
 // ########################################################
 // Member Functions########################################

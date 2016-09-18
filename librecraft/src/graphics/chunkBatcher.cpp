@@ -127,6 +127,8 @@ void ChunkBatcher::draw() {
 	// thread does.
 	lock_guard<mutex> lock(m_mutex);
 
+	// TODO Consider only adding/removing each n frame, to make it smoother/ better fps
+
 	// Add all the batches that has been requested to be added.
 	if (!m_batchesToBeAdded.empty()) {
 		auto batchIt = m_batchesToBeAdded.begin();
@@ -143,21 +145,6 @@ void ChunkBatcher::draw() {
 			m_batches.erase(batchIt);
 		m_batchesToBeRemoved.erase(batch);
 	}
-
-//	// Add all the batches that has been requested to be added.
-//	for (auto batch : m_batchesToBeAdded) {
-//		batch.second->uploadData();
-//		m_batches.emplace(batch.first, batch.second);
-//	}
-//
-//	// Remove all the batches that has been requested to be removed.
-//	for (auto batchId : m_batchesToBeRemoved) {
-//		auto batchIt = m_batches.find(batchId);
-//		if (batchIt != m_batches.end())
-//			m_batches.erase(batchIt);
-//	}
-//	m_batchesToBeAdded.clear();
-//	m_batchesToBeRemoved.clear();
 
 	m_program->bind();
 
@@ -186,7 +173,7 @@ void ChunkBatcher::draw() {
 		// TODO Fix this so that no chunks get culled when they are actually vissible
 //		Frustum frustum{modelViewProjection};
 //		bool result = frustum.isCubeInFrustum(batch.second->getxLocation() + 8, 0, batch.second->getzLocation() + 8, 16, 128, 16);
-//			bool result = frustum.sphereInFrustum(glm::vec3(batch.second->getxLocation() + 8, 64, batch.second->getzLocation() + 8), 100);
+//		bool result = frustum.sphereInFrustum(glm::vec3(batch.second->getxLocation() + 8, 64, batch.second->getzLocation() + 8), 100);
 //
 //		if (!result) {
 //			++skippedChunks;

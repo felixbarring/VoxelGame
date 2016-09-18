@@ -24,6 +24,7 @@
 #include <SFML/Window.hpp>
 #include <future>
 
+#include "detail/type_vec.hpp"
 #include "graphics/fontMeshBuilder.h"
 #include "graphics/sprite.h"
 #include "graphics/resources.h"
@@ -141,7 +142,8 @@ void Game::run() {
 	if (glewInit() != GLEW_OK)
 		cout << "Failed to initialize GLEW\n";
 
-	glClearColor(0.47f, 0.76f, 0.93f, 1.0f); // TODO Should be set somewhere else... needed by fog, and should be changed during the day
+	glm::vec3 skyColor = config::graphics_data::skyColor;
+	glClearColor(skyColor.x, skyColor.y, skyColor.z, 1.0f);
 	glViewport(0, 0, WIDTH, HEIGHT);
 
 	m_mainMenu.reset(new MainMenu(this));

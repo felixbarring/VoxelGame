@@ -1,9 +1,3 @@
-/*
- * worldMeta.h
- *
- *  Created on: Jan 30, 2016
- *      Author: felix
- */
 
 #ifndef SRC_UTIL_WORLDMETA_H_
 #define SRC_UTIL_WORLDMETA_H_

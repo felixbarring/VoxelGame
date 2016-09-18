@@ -22,9 +22,7 @@ public:
 	SelectableList(int id, int x, int y, int width, int height,
 			std::function<void(int)> observer, int layer = 0);
 
-	virtual ~SelectableList() {
-	}
-	;
+	virtual ~SelectableList() {};
 
 // ########################################################
 // Member Functions########################################

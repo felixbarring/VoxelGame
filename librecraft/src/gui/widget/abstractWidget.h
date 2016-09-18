@@ -59,7 +59,7 @@ public:
 	 */
 	AbstractWidget(int id, int x, int y, int width, int height);
 
-	virtual ~AbstractWidget() { };
+	virtual ~AbstractWidget() {};
 
 // ########################################################
 // Member Functions########################################

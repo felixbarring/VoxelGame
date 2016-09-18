@@ -2,6 +2,7 @@
 #define SRC_CONFIG_DATA_H_
 
 #include <GL/glew.h>
+#include <glm/glm.hpp>
 
 #include <vector>
 #include <string>
@@ -102,6 +103,8 @@ namespace config {
 		static float virtualHeight{600};
 
 		static int directSunlightValue{15};
+
+		static glm::vec3 skyColor(0.47f, 0.76f, 0.93f);
 	}
 
 	namespace input_data {

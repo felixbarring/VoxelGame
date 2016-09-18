@@ -17,8 +17,6 @@ class SoundPlayer {
 
 	SoundPlayer() {};
 
-	virtual ~SoundPlayer() { };
-
 	SoundPlayer(SoundPlayer const&) = delete;
 
 	void operator=(SoundPlayer const&) = delete;

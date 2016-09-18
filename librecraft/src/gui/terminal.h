@@ -22,8 +22,6 @@ public:
 
 	Terminal(std::vector<std::string> commands,	std::function<void(std::string)> commandListener);
 
-	virtual ~Terminal() {}
-
 // ########################################################
 // Member Functions########################################
 // ########################################################

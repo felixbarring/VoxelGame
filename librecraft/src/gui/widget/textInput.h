@@ -20,7 +20,7 @@ public:
 
 	TextInput(int id, int x, int y, unsigned width, int height, int layer = 0);
 
-	virtual ~TextInput() { };
+	virtual ~TextInput() {};
 
 // ########################################################
 // Member Functions########################################

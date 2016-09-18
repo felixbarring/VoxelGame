@@ -19,8 +19,6 @@ class Input {
 
 public:
 
-	virtual ~Input() { };
-
 	static void createInstance(float centerX, float centerY);
 
 	static std::shared_ptr<Input> getInstance();

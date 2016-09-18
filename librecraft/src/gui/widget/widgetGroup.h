@@ -37,12 +37,9 @@ public:
 	/**
 	 * \brief Constructs a WidgetGroup
 	 */
-	WidgetGroup(int id, int x, int y, int width, int height,
-			std::function<void(int)> observer, int layer = 0);
+	WidgetGroup(int id, int x, int y, int width, int height, std::function<void(int)> observer, int layer = 0);
 
-	virtual ~WidgetGroup() {
-	}
-	;
+	virtual ~WidgetGroup() {};
 
 // ########################################################
 // Member Functions########################################

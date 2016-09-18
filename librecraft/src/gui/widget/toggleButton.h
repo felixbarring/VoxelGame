@@ -12,13 +12,10 @@ public:
 // Constructor/Destructor #################################
 // ########################################################
 
-	ToggleButton(int id, int x, int y, int width, int height,
-			std::function<void(int)> observer, const std::string &name,
-			int layer = 0);
+	ToggleButton(int id, int x, int y, int width, int height, std::function<void(int)> observer,
+			const std::string &name, int layer = 0);
 
-	virtual ~ToggleButton() {
-	}
-	;
+	virtual ~ToggleButton() {};
 
 // ########################################################
 // Member Functions########################################
