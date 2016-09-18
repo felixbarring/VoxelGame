@@ -20,6 +20,7 @@ ChunkBatcher::ChunkBatcher()
 						config::cube_data::textures,
 						config::cube_data::TEXTURE_WIDTH,
 						config::cube_data::TEXTURE_HEIGHT)) {
+
 	const char *vertex =
 			"#version 330 core \n"
 
@@ -86,9 +87,10 @@ ChunkBatcher::ChunkBatcher()
 
 			"} \n";
 
-	std::map<std::string, int> attributesMap {std::pair<std::string, int>(
-			"positionIn", 0), std::pair<std::string, int>("normalIn", 1),
-			std::pair<std::string, int>("texCoordIn", 2)};
+	std::map<std::string, int> attributesMap{
+		std::pair<std::string, int>("positionIn", 0),
+		std::pair<std::string, int>("normalIn", 1),
+		std::pair<std::string, int>("texCoordIn", 2)};
 
 	m_program.reset(new ShaderProgram(vertex, fragment, attributesMap));
 
@@ -121,25 +123,41 @@ float x = 1.0;
 int direction = 1;
 
 void ChunkBatcher::draw() {
-
 	// Done on the main thread because the thread doing opengl calls needs an opengl context, which the main
 	// thread does.
 	lock_guard<mutex> lock(m_mutex);
 
 	// Add all the batches that has been requested to be added.
-	for (auto batch : m_batchesToBeAdded) {
-		batch.second->uploadData();
-		m_batches.emplace(batch.first, batch.second);
+	if (!m_batchesToBeAdded.empty()) {
+		auto batchIt = m_batchesToBeAdded.begin();
+		batchIt->second->uploadData();
+		m_batches.emplace(batchIt->first, batchIt->second);
+		m_batchesToBeAdded.erase(batchIt);
 	}
 
 	// Remove all the batches that has been requested to be removed.
-	for (auto batchId : m_batchesToBeRemoved) {
-		auto lol = m_batches.find(batchId);
-		if (lol != m_batches.end())
-			m_batches.erase(lol);
+	if (!m_batchesToBeRemoved.empty()) {
+		auto batch = m_batchesToBeRemoved.begin();
+		auto batchIt = m_batches.find(*batch);
+		if (batchIt != m_batches.end())
+			m_batches.erase(batchIt);
+		m_batchesToBeRemoved.erase(batch);
 	}
-	m_batchesToBeAdded.clear();
-	m_batchesToBeRemoved.clear();
+
+//	// Add all the batches that has been requested to be added.
+//	for (auto batch : m_batchesToBeAdded) {
+//		batch.second->uploadData();
+//		m_batches.emplace(batch.first, batch.second);
+//	}
+//
+//	// Remove all the batches that has been requested to be removed.
+//	for (auto batchId : m_batchesToBeRemoved) {
+//		auto batchIt = m_batches.find(batchId);
+//		if (batchIt != m_batches.end())
+//			m_batches.erase(batchIt);
+//	}
+//	m_batchesToBeAdded.clear();
+//	m_batchesToBeRemoved.clear();
 
 	m_program->bind();
 
@@ -168,7 +186,7 @@ void ChunkBatcher::draw() {
 		// TODO Fix this so that no chunks get culled when they are actually vissible
 //		Frustum frustum{modelViewProjection};
 //		bool result = frustum.isCubeInFrustum(batch.second->getxLocation() + 8, 0, batch.second->getzLocation() + 8, 16, 128, 16);
-////		bool result = frustum.sphereInFrustum(glm::vec3(batch.second->getxLocation() + 8, 64, batch.second->getzLocation() + 8), 100);
+//			bool result = frustum.sphereInFrustum(glm::vec3(batch.second->getxLocation() + 8, 64, batch.second->getzLocation() + 8), 100);
 //
 //		if (!result) {
 //			++skippedChunks;

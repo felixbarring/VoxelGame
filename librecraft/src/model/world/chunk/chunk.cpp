@@ -496,8 +496,8 @@ void Chunk::generateChunk() {
 					v.id = BED_ROCK;
 					continue;
 				}
-//				if (y > 5 && y < 25)
-//					v.id = config::cube_data::WATER;
+				if (y > 5 && y < 25)
+					v.id = config::cube_data::WATER;
 				if (y < noiseValue)
 					v.id = counterValue;
 			}

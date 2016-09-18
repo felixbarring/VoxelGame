@@ -89,13 +89,10 @@ void CubeBatcher::draw() {
 	Camera& camera = Camera::getInstance();
 
 	for (auto b : batches) {
-
 		program->setUniform1f("lightValue", b.m_lightValue);
 
-		glm::mat4 modelView = camera.getViewMatrix()
-				* b.m_transform.getMatrix();
-		glm::mat4 modelViewProjection = camera.getProjectionMatrix()
-				* modelView;
+		glm::mat4 modelView = camera.getViewMatrix() * b.m_transform.getMatrix();
+		glm::mat4 modelViewProjection = camera.getProjectionMatrix() * modelView;
 		program->setUniformMatrix4f("modelViewProjection", modelViewProjection);
 		b.m_cube.draw();
 	}

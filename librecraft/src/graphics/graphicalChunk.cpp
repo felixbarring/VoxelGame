@@ -23,9 +23,9 @@ GraphicalChunk::GraphicalChunk(float _x, float _y, float _z,
 	vector<vector<vector<Voxel>>> *back,
 	vector<vector<vector<Voxel>>> *front):
 
-		m_xLocation {_x},
-		m_yLocation {_y},
-		m_zLocation {_z},
+		m_xLocation{_x},
+		m_yLocation{_y},
+		m_zLocation{_z},
 		transform {
 			_x + m_width / 2 + 0.5f,
 			_y + m_height / 2 + 0.5f,
