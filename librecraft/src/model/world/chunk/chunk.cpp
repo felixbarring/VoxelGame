@@ -356,22 +356,6 @@ void Chunk::setCube(int x, int y, int z, char id) {
 	m_isDirty = true;
 }
 
-void Chunk::setLeftNeighbor(shared_ptr<Chunk> chunk) {
-	m_leftNeighbor = chunk;
-}
-
-void Chunk::setRightNeighbor(shared_ptr<Chunk> chunk) {
-	m_rightNeighbor = chunk;
-}
-
-void Chunk::setFrontNeighbor(shared_ptr<Chunk> chunk) {
-	m_frontNeighbor = chunk;
-}
-
-void Chunk::setBackNeighbor(shared_ptr<Chunk> chunk) {
-	m_backNeighbor = chunk;
-}
-
 void Chunk::removeAllNeighbors() {
 	if (m_leftNeighbor) {
 		m_leftNeighbor->m_rightNeighbor.reset();
@@ -792,8 +776,8 @@ void Chunk::propagateLight(int x, int y, int z) {
 }
 
 void Chunk::updateDirtyRegions(int y) {
-	int lol = y / GRAPHICAL_CHUNK_HEIGHT;
-	m_dirtyRegions.emplace(lol);
+	int region = y / GRAPHICAL_CHUNK_HEIGHT;
+	m_dirtyRegions.emplace(region);
 }
 
 void Chunk::dePropagateLight(int x, int y, int z, int _lightValue) {

@@ -35,126 +35,187 @@ public:
 	 */
 	Chunk(std::string worldName, int x, int z);
 
+	/**
+	 * Makes sure that the graphics::GraphicalChunk used by this Chunk is destroyed by the graphics::ChunkBatcher.
+	 */
+	~Chunk();
+
 // ########################################################
 // Member Functions########################################
 // ########################################################
 
 	/**
 	 * @name Creation Group
-	 * These functions needs to be called in order to finish the creation of the chunk. When loading a group of
-	 * chunks, first call create. Then doSunLightning followed by collecting the light with from the neighbors that
-	 * are old/not in the new group of created/loaded chunks. Then call propagateLights to complete the lightning
-	 * work that is prepared by doSunLightning and collecLightFrom* functions. The reason why these are not a single
-	 * function is to make it possible to run the code in parallel.
+	 * These functions needs to be called in order to finish the creation of the Chunk. When loading a group of
+	 * Chunks, first call Chunk::create. Then Chunk::doSunLightning followed by collecting the light from the neighbors
+	 * that are old/not in the new group of created/loaded Chunks. Then call Chunk::pChunkropagateLights to complete the
+	 * lightning work that is prepared by doSunLightning and collecLightFrom* functions. The reason why these are not a
+	 * single function is to make it possible to run the code in parallel.
 	 */
 	///@{
 
 	/**
-	 * This function fills the chunk with data for the cubes. If there exists a file that corresponds to the location
-	 * and worldName, the data will be loaded from file. Otherwise it will be generated using noice algorithms. This
-	 * function can be run in parallel with other instances of chunk, it will not access data from neighbor chunks or
+	 * This function fills the Chunk with data for the cubes. If there exists a file that corresponds to the location
+	 * and worldName, the data will be loaded from file. Otherwise it will be generated using noise algorithms. This
+	 * function can be run in parallel with other instances of Chunk, it will not access data from neighbor Chunks or
 	 * any other data that is not read only.
 	 */
 	void create();
 
 	/**
-	 * This function spreads light from the sky downwards. The result is stored in the chunk and will be used by
-	 * propagateLights to do the lightning computations. This function can be run in parallel with other instances of
-	 * chunk, it will not access data from neighbor chunks or any other data that is not read only.
+	 * This function spreads light from the sky downwards. The result is stored in the Chunk and will be used by
+	 * Chunk::propagateLights to do the lightning computations. This function can be run in parallel with other
+	 * instances of Chunk, it will not access data from neighbor Chunks or any other data that is not read only.
 	 */
 	void doSunLightning();
 
 	/**
 	 * This function calls all of the four functions:
-	 * collectLightFromRightNeighbor, collectLightFromLeftNeighbor,
-	 * collectLightFromBackNeighbor, collectLightFromFrontNeighbor
+	 * Chunk::collectLightFromRightNeighbor, Chunk::collectLightFromLeftNeighbor,
+	 * Chunk::collectLightFromBackNeighbor, Chunk::collectLightFromFrontNeighbor
 	 */
 	void collectLightFromAllNeighbors();
 
 	/**
-	 * This function checks if the light in the right neighbor should light up cubes in this chunk, and if so adds
-	 * light to the cubes that will be used in propagateLights. It is not safe to run this in parallel with a
-	 * neighbor. It is however safe to run in parallel with other chunk instances that are not a neighbor.
+	 * This function checks if the light in the right neighbor should light up cubes in this Chunk, and if so adds
+	 * light to the cubes that will be used in Chunk::propagateLights. It is not safe to run this in parallel with a
+	 * neighbor. It is however safe to run in parallel with other Chunk instances that are not a neighbor.
 	 */
 	void collectLightFromRightNeighbor();
 
 	/**
-	 * This function checks if the light in the left neighbor should light up cubes in this chunk, and if so adds
-	 * light to the cubes that will be used in propagateLights. It is not safe to run this in parallel with a
-	 * neighbor. It is however safe to run in parallel with other chunk instances that are not a neighbor.
+	 * This function checks if the light in the right neighbor should light up cubes in this Chunk, and if so adds
+	 * light to the cubes that will be used in Chunk::propagateLights. It is not safe to run this in parallel with a
+	 * neighbor. It is however safe to run in parallel with other Chunk instances that are not a neighbor.
 	 */
 	void collectLightFromLeftNeighbor();
 
 	/**
-	 * This function checks if the light in the back neighbor should light up cubes in this chunk, and if so adds
-	 * light to the cubes that will be used in propagateLights. It is not safe to run this in parallel with a
-	 * neighbor. It is however safe to run in parallel with other chunk instances that are not a neighbor.
+	 * This function checks if the light in the right neighbor should light up cubes in this Chunk, and if so adds
+	 * light to the cubes that will be used in Chunk::propagateLights. It is not safe to run this in parallel with a
+	 * neighbor. It is however safe to run in parallel with other Chunk instances that are not a neighbor.
 	 */
 	void collectLightFromBackNeighbor();
 
 	/**
-	 * This function checks if the light in the front neighbor should light up cubes in this chunk, and if so adds
-	 * light to the cubes that will be used in propagateLights. It is not safe to run this in parallel with a
-	 * neighbor. It is however safe to run in parallel with other chunk instances that are not a neighbor.
+	 * This function checks if the light in the right neighbor should light up cubes in this Chunk, and if so adds
+	 * light to the cubes that will be used in Chunk::propagateLights. It is not safe to run this in parallel with a
+	 * neighbor. It is however safe to run in parallel with other Chunk instances that are not a neighbor.
 	 */
 	void collectLightFromFrontNeighbor();
 
 	/**
-	 * This function uses the results from doSunLightning and collecLightFrom* to calculate the lightning of the chunk.
+	 * This function uses the results from Chunk::doSunLightning and collecLightFrom* to calculate the lightning of the Chunk.
 	 * It is not safe to run this in parallel with a neighbor or a neighbors neighbor. That is, there must be a
-	 * distance of two chunks between to chunks for it to be safe to run them in parallel.
+	 * distance of two chunks between two Chunks for it to be safe to run them in parallel.
 	 */
 	void propagateLights();
 
 	///@}
 
 	/**
-	 * Forces all the graphical sections to update even if they are not dirty. updateGraphics should be called after
+	 * Forces all the graphical sections to update even if they are not dirty. Chunk::updateGraphics should be called after
 	 * for it to have effect.
 	 */
 	void forceUpdateGraphics();
 
 	/**
-	 *
+	 * Uses the graphics::ChunkBatcher to update all the graphical representations of this Chunk that are dirty.
 	 */
 	void updateGraphics();
 
 	/**
-	 * @return The x location of the chunk
+	 * @return The x location of the Chunk
 	 */
 	int getXLocation() { return m_xLocation; }
 
 	/**
-	 * @return The z location of the chunk
+	 * @return The z location of the Chunk
 	 */
 	int getZLocation() { return m_zLocation; }
 
+	/**
+	 * Returns a Voxel at the specified location.
+	 * It is the callers responsibility to make sure that the arguments are in the correct range.
+	 * The range should be between 0 and the chunk width, height, depth specified in data::chunk_data.
+	 *
+	 * @param x The x location of the Voxel
+	 * @param y The y location of the Voxel
+	 * @param z The z location of the Voxel
+	 * @return The Voxel at the specified location.
+	 */
 	Voxel getVoxel(int x, int y, int z);
 
+	/**
+	 * Changes the cube id for the Voxel at the specified location to the new id.
+	 * It is the callers responsibility to make sure that the arguments are in the correct range.
+	 * The range should be between 0 and the chunk width, height, depth specified in data::chunk_data.
+	 * If the Voxel	id is data::cube_data::BED_ROCK the id will not be changed.
+	 * Else the graphics will be updated and the Chunk will be marked as dirty, meaning that it needs
+	 * to be saved to disk when destroyed.
+	 *
+	 * @param x The x location of the Voxel
+	 * @param y The y location of the Voxel
+	 * @param z The z location of the Voxel
+	 * @param id The new id for the Voxel
+	 */
 	void setCube(int x, int y, int z, char id);
 
-	void setRightNeighbor(std::shared_ptr<Chunk> chunk);
 
-	void setLeftNeighbor(std::shared_ptr<Chunk> chunk);
+	/**
+	 * Sets the right neighbor of this Chunk
+	 * @param chunk The new right Chunk
+	 */
+	void setRightNeighbor(std::shared_ptr<Chunk> chunk) { m_rightNeighbor = chunk; }
 
-	void setFrontNeighbor(std::shared_ptr<Chunk> chunk);
+	/**
+	 * Sets the left neighbor of this Chunk
+	 * @param chunk The new left neighbor
+	 */
+	void setLeftNeighbor(std::shared_ptr<Chunk> chunk) { m_leftNeighbor = chunk; }
 
-	void setBackNeighbor(std::shared_ptr<Chunk> chunk);
+	/**
+	 * Sets the front neighbor of this Chunk
+	 * @param chunk The new front neighbor
+	 */
+	void setFrontNeighbor(std::shared_ptr<Chunk> chunk) { m_frontNeighbor = chunk; }
 
+	/**
+	 * Sets the back neighbor of this Chunk
+	 * @param chunk The new back neighbor
+	 */
+	void setBackNeighbor(std::shared_ptr<Chunk> chunk) { m_backNeighbor = chunk; }
+
+	/**
+	 * @return The right neighbor
+	 */
 	std::shared_ptr<Chunk> getRightNeighbor() { return m_rightNeighbor; }
 
+	/**
+	 * @return The left neighbor
+	 */
 	std::shared_ptr<Chunk> getLeftNeighbor() { return m_leftNeighbor; }
 
+	/**
+	 * @return The front neighbor
+	 */
 	std::shared_ptr<Chunk> getFrontNeighbor() { return m_frontNeighbor; }
 
+	/**
+	 * @return The back neighbor
+	 */
 	std::shared_ptr<Chunk> getBackNeighbor() { return m_backNeighbor; }
 
 	/**
 	 * Used when a chunk should be removed from memory. Clears all pointers from this chunk to its neighbors and also
-	 * all the pointers in the neighbors pointing to this chunk
+	 * all the pointers in the neighbors pointing to this Chunk
 	 */
 	void removeAllNeighbors();
 
+	/**
+	 * Saved the chunk to disk
+	 * @param worldName Used to generate the name of this Chunk
+	 */
 	void storeChunk(std::string worldName);
 
 // ########################################################
