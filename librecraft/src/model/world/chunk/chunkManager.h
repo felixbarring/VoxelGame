@@ -113,7 +113,7 @@ private:
 	glm::vec3 m_previousCube{};
 
 	// TODO Figure out better names
-	// TODO Place somewere where it can be used globally
+	// TODO Place somewhere where it can be used globally
 	ThreadPool m_threadPool{8};
 	ThreadPool m_threadPool2{1};
 

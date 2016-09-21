@@ -21,7 +21,7 @@ TextArea::TextArea(int id, int x, int y, int width, int height,
 
 	m_textArea.reset(
 			new Sprite(x, y, layer, width, height,
-					res.getTexture(config::gui_data::guiBox)));
+					res.getTexture(config::gui_data::transparentGuiBox)));
 }
 
 // ########################################################

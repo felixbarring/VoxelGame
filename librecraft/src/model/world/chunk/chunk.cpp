@@ -25,10 +25,10 @@ static std::mutex s_mutex;
 // ########################################################
 
 Chunk::Chunk(string worldName, int x, int z)
-		: m_xLocation{x},
-		  m_zLocation{z},
-		  m_isDirty{true},
-		  m_name{createChunkName(worldName)}
+	: m_xLocation{x},
+	  m_zLocation{z},
+	  m_isDirty{true},
+	  m_name{createChunkName(worldName)}
 {
 
 	for (int i = 0; i < CHUNK_HEIGHT / GRAPHICAL_CHUNK_HEIGHT; ++i) {
@@ -966,11 +966,5 @@ bool Chunk::isInDirectSunlight(int x, int y, int z) {
 	return false;
 }
 
-// TODO
-bool Chunk::containsOnlyAir(int region)
-{
-//	for (int i = region * )
-	return true;
-}
 
 }

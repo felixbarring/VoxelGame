@@ -147,6 +147,7 @@ namespace config {
 		static const std::string solidBlack = "../resources/gui/solid_black.png";
 		static const std::string solidWhite = "../resources/gui/solid_white.png";
 
+		static const std::string transparentGuiBox = "../resources/gui/transparent_gui_box.png";
 		static const std::string guiBox = "../resources/gui/gui_box.png";
 		static const std::string button = "../resources/gui/button.png";
 		static const std::string highlight = "../resources/gui/highlight.png";
@@ -155,7 +156,6 @@ namespace config {
 		static const std::string sliderKnob = "../resources/gui/slider_knob.png";
 
 		static const std::string crossHair = "../resources/gui/crosshair.png";
-
 		static const std::string mouse = "../resources/gui/mouse.png";
 	}
 
