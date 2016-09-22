@@ -38,7 +38,7 @@ MainMenu::MainMenu(Game *game)
 	// TODO use better names for the widgets variables.
 
 	bool quit = false;
-	function<void(int)> observer = [&, game](int id)
+	function<void(int)> observer = [this, game](int id)
 	{
 		switch(id) {
 
@@ -111,6 +111,7 @@ MainMenu::MainMenu(Game *game)
 	};
 
 	// TODO Give the variables better names
+	// TODO Use unique pointers instead of shared, and move them into the WidgetGroups
 
 	// ########################################################################
 

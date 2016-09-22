@@ -164,6 +164,8 @@ void ChunkManager::setCube(int x, int y, int z, char id) {
 
 void ChunkManager::setCenter(float x, float z) {
 
+	return;
+
 	if (!m_bussyMovingChunksMutex.try_lock())
 		return;
 

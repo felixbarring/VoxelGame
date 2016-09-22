@@ -42,6 +42,8 @@ public:
 
 private:
 
+
+	int m_layer{};
 	bool m_hasFocus{false};
 	std::string m_input{""};
 	unsigned m_maxInputLength;

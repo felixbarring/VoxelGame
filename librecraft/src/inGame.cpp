@@ -9,6 +9,7 @@
 #include "gui/mouse.h"
 #include "gui/terminal.h"
 #include "util/fpsManager.h"
+#include "util/soundPlayer.h"
 
 using namespace std;
 using namespace glm;
@@ -63,16 +64,22 @@ InGame::InGame(Game *game, string name)
 				380, 5, 2, 40, 40, Resources::getInstance().getTexture(config::cube_data::thumbnails[i])));
 	}
 
-	vector<string> commands = {"close", "flyMode", "gravityMode"};
-	std::function<void(string)> func = [this](string command)
+	string close = "close";
+	string flyMode = "flyMode";
+	string gravityMode = "gravityMode";
+	string turnOfMusic = "turnOfMusic";
+	vector<string> commands = {close, flyMode, gravityMode, turnOfMusic};
+	std::function<void(string)> func = [=](string command)
 	{
-		if (command == "close") {
+		if (command == close) {
 			Input::getInstance()->centerMouse();
 			m_state = GameState::NoOverlay;
-		} else if (command == "flyMode") {
+		} else if (command == flyMode) {
 			m_player.turnGravityOff();
-		} else if (command == "gravityMode") {
+		} else if (command == gravityMode) {
 			m_player.turnGravityOff(false);
+		} else if (command == turnOfMusic) {
+			util::SoundPlayer::getInstance().stopMusic();
 		} else {
 			m_terminal->addLine("Unknown command: " + command);
 		}
@@ -81,7 +88,9 @@ InGame::InGame(Game *game, string name)
 	m_terminal = make_shared<gui::Terminal>(move(commands), func);
 
 	auto &res = Resources::getInstance();
-	FontMeshBuilder &fontMeshBuilder = res.getFontMeshBuilder(font_data::fontLayout, font_data::fontAtlasWidth,
+	FontMeshBuilder &fontMeshBuilder = res.getFontMeshBuilder(
+			font_data::fontLayout,
+			font_data::fontAtlasWidth,
 			font_data::fontAtlasHeight);
 
 	m_fps.reset(new Sprite(0, 45, 10, fontMeshBuilder.buldMeshForString("FPS: " + 0, 20),

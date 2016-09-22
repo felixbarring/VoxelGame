@@ -20,22 +20,23 @@ namespace widget {
 // ########################################################
 
 TextInput::TextInput(int id, int x, int y, unsigned width, int height, int layer)
-		: AbstractWidget(id, x, y, width, height),
-		  m_maxInputLength{width},
-		  m_textHeight{height - 5}
-		  {
+	: AbstractWidget(id, x, y, width, height),
+	  m_maxInputLength{width},
+	  m_textHeight{height - 5},
+	  m_layer{layer}
+{
 
 	auto &res = Resources::getInstance();
 
-	m_background = make_shared<Sprite>(x, y, 0, width, height, res.getTexture(config::gui_data::solidBlack));
-	m_cursor = make_shared<Sprite>(x, y + 4, 0, 1, height - 8, res.getTexture(config::gui_data::solidWhite));
+	m_background = make_shared<Sprite>(x, y, layer, width, height, res.getTexture(config::gui_data::solidBlack));
+	m_cursor = make_shared<Sprite>(x, y + 4, layer + 1, 1, height - 8, res.getTexture(config::gui_data::solidWhite));
 
 	auto &fontMeshBuilder = res.getFontMeshBuilder(
 			config::font_data::fontLayout,
 			config::font_data::fontAtlasWidth,
 			config::font_data::fontAtlasHeight);
 
-	m_text = make_shared<Sprite>(x, y + 5, 1, fontMeshBuilder.buldMeshForString(m_input, m_textHeight),
+	m_text = make_shared<Sprite>(x, y + 5, layer + 1, fontMeshBuilder.buldMeshForString(m_input, m_textHeight),
 		res.getTexture(config::font_data::font));
 
 }
@@ -53,14 +54,12 @@ void TextInput::setString(string str) {
 			config::font_data::fontAtlasWidth,
 			config::font_data::fontAtlasHeight);
 
-	m_text = make_shared<Sprite>(m_xCoordinate, m_yCoordinate + 5, 1,
+	m_text = make_shared<Sprite>(m_xCoordinate, m_yCoordinate + 5, m_layer + 1,
 			fontMeshBuilder.buldMeshForString(m_input, m_textHeight), res.getTexture(config::font_data::font));
 
 	// TODO Fix the cursor...
 	auto strLenght = fontMeshBuilder.lenghtOfString(m_input, m_textHeight);
 	m_cursor->setLocation(m_xCoordinate + strLenght, m_yCoordinate + 4, 0);
-
-
 }
 
 string TextInput::getString() {
