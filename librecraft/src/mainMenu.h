@@ -61,7 +61,8 @@ private:
 	std::shared_ptr<widget::WidgetGroup> m_inputSettingsWidgetGroup{};
 	std::shared_ptr<widget::WidgetGroup> m_graphicsSettingsWidgetGroup{};
 
-	std::shared_ptr<widget::WidgetGroup> m_errorPopup{};
+	std::shared_ptr<widget::WidgetGroup> m_errorEmptyName{};
+	std::shared_ptr<widget::WidgetGroup> m_errorUsedName{};
 
 	std::shared_ptr<widget::TextInput> m_textInput{};
 	std::shared_ptr<widget::TextInput> m_textInput2{};
