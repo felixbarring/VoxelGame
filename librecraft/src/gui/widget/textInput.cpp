@@ -13,6 +13,10 @@ using namespace std;
 using namespace graphics;
 using namespace util;
 
+using namespace config;
+using namespace gui_data;
+using namespace font_data;
+
 namespace widget {
 
 // ########################################################
@@ -22,22 +26,20 @@ namespace widget {
 TextInput::TextInput(int id, int x, int y, unsigned width, int height, int layer)
 	: AbstractWidget(id, x, y, width, height),
 	  m_maxInputLength{width},
-	  m_textHeight{height - 5},
+	  m_textHeight{height - s_textHightDifference},
 	  m_layer{layer}
 {
 
 	auto &res = Resources::getInstance();
 
-	m_background = make_shared<Sprite>(x, y, layer, width, height, res.getTexture(config::gui_data::solidBlack));
-	m_cursor = make_shared<Sprite>(x, y + 4, layer + 1, 1, height - 8, res.getTexture(config::gui_data::solidWhite));
+	m_background = make_shared<Sprite>(x, y, m_layer, width, height, res.getTexture(solidBlack));
+	m_cursor = make_shared<Sprite>(x, y + s_cursorSpacing, m_layer + 1, 1, height - 2 * s_cursorSpacing,
+			res.getTexture(solidWhite));
 
-	auto &fontMeshBuilder = res.getFontMeshBuilder(
-			config::font_data::fontLayout,
-			config::font_data::fontAtlasWidth,
-			config::font_data::fontAtlasHeight);
+	auto &fontMeshBuilder = res.getFontMeshBuilder(fontLayout, fontAtlasWidth, fontAtlasHeight);
 
-	m_text = make_shared<Sprite>(x, y + 5, layer + 1, fontMeshBuilder.buldMeshForString(m_input, m_textHeight),
-		res.getTexture(config::font_data::font));
+	auto fontMesh = fontMeshBuilder.buldMeshForString(m_input, m_textHeight);
+	m_text = make_shared<Sprite>(x, y + s_textHightDifference, layer + 1, move(fontMesh), res.getTexture(font));
 
 }
 
@@ -49,17 +51,14 @@ void TextInput::setString(string str) {
 	Resources &res = Resources::getInstance();
 	m_input = str;
 
-	FontMeshBuilder &fontMeshBuilder = res.getFontMeshBuilder(
-			config::font_data::fontLayout,
-			config::font_data::fontAtlasWidth,
-			config::font_data::fontAtlasHeight);
+	auto &fontMeshBuilder = res.getFontMeshBuilder(fontLayout, fontAtlasWidth, fontAtlasHeight);
 
-	m_text = make_shared<Sprite>(m_xCoordinate, m_yCoordinate + 5, m_layer + 1,
-			fontMeshBuilder.buldMeshForString(m_input, m_textHeight), res.getTexture(config::font_data::font));
+	auto fontMesh = fontMeshBuilder.buldMeshForString(m_input, m_textHeight);
+	m_text = make_shared<Sprite>(m_xCoordinate, m_yCoordinate + s_textHightDifference, m_layer + 1, fontMesh,
+			res.getTexture(font));
 
-	// TODO Fix the cursor...
-	auto strLenght = fontMeshBuilder.lenghtOfString(m_input, m_textHeight);
-	m_cursor->setLocation(m_xCoordinate + strLenght, m_yCoordinate + 4, 0);
+	auto strLength = fontMeshBuilder.lenghtOfString(m_input, m_textHeight);
+	m_cursor->setLocation(m_xCoordinate + strLength, m_yCoordinate + s_cursorSpacing, 0);
 }
 
 string TextInput::getString() {
@@ -88,27 +87,24 @@ void TextInput::update(float timePassed) {
 	if (input->action1Pressed)
 		m_hasFocus = isInsideBorders(input->mouseVirtualAdjustedX, input->mouseVirtualAdjustedY);
 
-	Resources &res = Resources::getInstance();
 	// Need a better way to handle resources
-	FontMeshBuilder &fontMeshBuilder = res.getFontMeshBuilder(
-			config::font_data::fontLayout,
-			config::font_data::fontAtlasWidth,
-			config::font_data::fontAtlasHeight);
+	Resources &res = Resources::getInstance();
+	FontMeshBuilder &fontMeshBuilder = res.getFontMeshBuilder(fontLayout, fontAtlasWidth, fontAtlasHeight);
 
 	if (input->keyWasTyped && m_hasFocus) {
 		m_input.push_back(input->keyTyped);
 
-		auto strLenght = fontMeshBuilder.lenghtOfString(m_input, m_textHeight);
-		if (strLenght >	m_maxInputLength) {
+		auto strLength = fontMeshBuilder.lenghtOfString(m_input, m_textHeight);
+		if (strLength >	m_maxInputLength) {
 			m_input.pop_back();
 			return;
 		}
-		m_text = make_shared<Sprite>(m_xCoordinate, m_yCoordinate + 5, 1,
-						fontMeshBuilder.buldMeshForString(m_input, m_height - 5),
-						res.getTexture(config::font_data::font));
 
-		// TODO Remove hardecoded shit
-		m_cursor->setLocation(m_xCoordinate + strLenght, m_yCoordinate + 4, 0);
+		auto fontMesh = fontMeshBuilder.buldMeshForString(m_input, m_height - s_textHightDifference);
+		m_text = make_shared<Sprite>(m_xCoordinate, m_yCoordinate + s_textHightDifference, m_layer + 1, move(fontMesh),
+				res.getTexture(font));
+
+		m_cursor->setLocation(m_xCoordinate + strLength, m_yCoordinate + s_cursorSpacing, 0);
 
 	} else {
 		if (m_hasFocus && Input::getInstance()->eraseTextActive && m_input.size() > 0) {
@@ -121,12 +117,12 @@ void TextInput::update(float timePassed) {
 			m_accumulatedEraseTime = 0.0;
 			m_input.pop_back();
 
-			m_text = make_shared<Sprite>(m_xCoordinate, m_yCoordinate + 5, 1,
-							fontMeshBuilder.buldMeshForString(m_input, m_height - 5),
-							res.getTexture(config::font_data::font));
+			auto fontMesh = fontMeshBuilder.buldMeshForString(m_input, m_height - s_textHightDifference);
+			m_text = make_shared<Sprite>(m_xCoordinate, m_yCoordinate + s_textHightDifference, m_layer + 1, fontMesh,
+							res.getTexture(font));
 
 			auto strLenght = fontMeshBuilder.lenghtOfString(m_input, m_textHeight);
-			m_cursor->setLocation(m_xCoordinate + strLenght, m_yCoordinate + 4, 0);
+			m_cursor->setLocation(m_xCoordinate + strLenght, m_yCoordinate + s_cursorSpacing, 0);
 		}
 	}
 

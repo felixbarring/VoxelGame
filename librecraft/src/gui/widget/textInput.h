@@ -18,22 +18,53 @@ public:
 // Constructor/Destructor #################################
 // ########################################################
 
+	/**
+	 *
+	 * @param id
+	 * @param x
+	 * @param y
+	 * @param width
+	 * @param height
+	 * @param layer
+	 */
 	TextInput(int id, int x, int y, unsigned width, int height, int layer = 0);
 
+	/**
+	 *
+	 */
 	virtual ~TextInput() {};
 
 // ########################################################
 // Member Functions########################################
 // ########################################################
 
+	/**
+	 *
+	 * @param str
+	 */
 	void setString(std::string str);
 
+	/**
+	 *
+	 * @return
+	 */
 	std::string getString();
 
+	/**
+	 *
+	 */
 	void draw() override;
 
+	/**
+	 *
+	 * @param timePassed
+	 */
 	void update(float timePassed) override;
 
+	/**
+	 *
+	 * @param value
+	 */
 	void setFocus(bool value = true);
 
 // ########################################################
@@ -42,6 +73,10 @@ public:
 
 private:
 
+	static constexpr float s_cursorWidth{1.0};
+	static constexpr int s_cursorSpacing{4};
+
+	static constexpr int s_textHightDifference{5}; // The difference between the widgets and text height
 
 	int m_layer{};
 	bool m_hasFocus{false};

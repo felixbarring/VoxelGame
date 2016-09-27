@@ -16,10 +16,10 @@ namespace graphics {
 // ########################################################
 
 ChunkBatcher::ChunkBatcher()
-		: m_texture(Resources::getInstance().getTextureArray(
-						config::cube_data::textures,
-						config::cube_data::TEXTURE_WIDTH,
-						config::cube_data::TEXTURE_HEIGHT)) {
+	: m_texture(Resources::getInstance().getTextureArray(
+					config::cube_data::textures,
+					config::cube_data::TEXTURE_WIDTH,
+					config::cube_data::TEXTURE_HEIGHT)) {
 
 	const char *vertex =
 			"#version 330 core \n"
@@ -173,7 +173,7 @@ void ChunkBatcher::draw() {
 		// TODO Fix this so that no chunks get culled when they are actually vissible
 //		Frustum frustum{modelViewProjection};
 //		bool result = frustum.isCubeInFrustum(batch.second->getxLocation() + 8, 0, batch.second->getzLocation() + 8, 16, 128, 16);
-//		bool result = frustum.sphereInFrustum(glm::vec3(batch.second->getxLocation() + 8, 64, batch.second->getzLocation() + 8), 100);
+////		bool result = frustum.isSphereInFrustum(glm::vec3(batch.second->getxLocation() + 8, 64, batch.second->getzLocation() + 8), 100);
 //
 //		if (!result) {
 //			++skippedChunks;

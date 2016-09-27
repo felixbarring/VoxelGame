@@ -54,15 +54,15 @@ public:
 // Member Functions########################################
 // ########################################################
 
-	bool isSphereInFrustum(glm::vec3 center, float radius) {
-		for (size_t i = 0; i < 6; ++i) {
-			auto poot = m_planes[i];
-			auto d = glm::dot(glm::vec3(poot.x, poot.y, poot.z), center) + m_planes[i].w;
-			if (d < -radius)
-				return false;
-		}
-		return true;
+bool isSphereInFrustum(glm::vec3 center, float radius) {
+	for (size_t i = 0; i < 6; ++i) {
+		auto poot = m_planes[i];
+		auto d = glm::dot(glm::vec3(poot.x, poot.y, poot.z), center) + m_planes[i].w;
+		if (d < -radius)
+			return false;
 	}
+	return true;
+}
 
 bool isCubeInFrustum(float x, float y, float z, int xSize, int ySize, int zSize ) {
 
