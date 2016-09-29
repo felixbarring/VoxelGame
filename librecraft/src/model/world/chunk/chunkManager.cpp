@@ -93,7 +93,7 @@ void ChunkManager::clearWorld() {
 }
 
 void ChunkManager::update() {
-	// Todo was used before, maybe could find use later?!?
+	// TODO was used before, maybe could find use later?!?
 	// When/if AI is added like npc, this could be a good
 	// place to update them
 }

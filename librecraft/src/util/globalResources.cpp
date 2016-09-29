@@ -8,7 +8,7 @@ namespace util
 namespace globalResources
 {
 	ThreadPool g_threadPool{1};
-	ThreadPool g_threadPool2{std::thread::hardware_concurrency()};
+	ThreadPool g_threadPool2{std::thread::hardware_concurrency() > 0 ? std::thread::hardware_concurrency() : 1};
 }
 }
 
