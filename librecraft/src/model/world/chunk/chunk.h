@@ -12,7 +12,7 @@
 #include <mutex>
 
 #include "../../../config/data.h"
-#include "../../../util/voxel.h"
+#include "../../../voxel.h"
 #include "../../../graphics/graphicalChunk.h"
 
 using std::vector;

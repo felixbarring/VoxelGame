@@ -135,7 +135,8 @@ void InGame::update(float timePassed) {
 		m_fpsDisplayCounter += timePassed;
 		if (m_fpsDisplayCounter > m_fpsDisplayDelay) {
 			m_fps.reset(new Sprite(0, 45, 10, fontMeshBuilder.buldMeshForString("FPS: " +
-					to_string(util::FPSManager::getFps()), 20), res.getTexture(config::font_data::font)));
+					to_string(util::FPSManager::getFps()) + " " + to_string(util::FPSManager::frameTime()), 20),
+					res.getTexture(config::font_data::font)));
 
 			m_fpsDisplayCounter = 0;
 		}

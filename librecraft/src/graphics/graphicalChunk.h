@@ -8,7 +8,7 @@
 #include "transform.h"
 
 #include "../config/data.h"
-#include "../util/voxel.h"
+#include "../voxel.h"
 
 namespace graphics {
 
@@ -25,8 +25,6 @@ public:
 			std::vector<std::vector<std::vector<Voxel>>> *left,
 			std::vector<std::vector<std::vector<Voxel>>> *back,
 			std::vector<std::vector<std::vector<Voxel>>> *front);
-
-	virtual ~GraphicalChunk() { };
 
 // ########################################################
 // Member Functions########################################

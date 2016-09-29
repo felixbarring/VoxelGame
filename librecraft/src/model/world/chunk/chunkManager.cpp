@@ -8,7 +8,6 @@
 #include <thread>
 
 #include "../../../util/soundPlayer.h"
-#include "../../../util/voxel.h"
 
 using util::SoundPlayer;
 

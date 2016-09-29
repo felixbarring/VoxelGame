@@ -44,8 +44,8 @@ public:
 	bool m_locked {false};
 
 	std::shared_ptr<graphics::Sprite> m_sprite;
-	int m_width {10};
-	int m_height {10};
+	int m_width{10};
+	int m_height{10};
 };
 
 } /* namespace widget */

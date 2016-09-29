@@ -8,7 +8,7 @@
 #include "../../../graphics/camera.h"
 #include "../chunk/chunkManager.h"
 #include "../../../graphics/cubeBatcher.h"
-#include "../../../util/voxel.h"
+#include "../../../voxel.h"
 
 #include "../../../util/soundPlayer.h"
 

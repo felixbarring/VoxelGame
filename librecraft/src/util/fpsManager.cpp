@@ -26,6 +26,7 @@ void FPSManager::frameStart() {
 }
 
 int currentFPS{0};
+double timeForLatestFrame{0};
 
 void FPSManager::sync() {
 
@@ -50,12 +51,12 @@ void FPSManager::sync() {
 	}
 
 	currentFPS = 1.0 / totalFrameTime;
-	m_timeForLatestFrame = totalFrameTime;
+	timeForLatestFrame = totalFrameTime;
 
 }
 
 double FPSManager::frameTime() {
-	return m_timeForLatestFrame;
+	return timeForLatestFrame;
 }
 
 int FPSManager::getFps() {

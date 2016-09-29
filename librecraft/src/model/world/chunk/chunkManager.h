@@ -6,7 +6,7 @@
 
 #include "chunk.h"
 #include "../../../config/data.h"
-#include "../../../util/voxel.h"
+#include "../../../voxel.h"
 #include "ThreadPool.h"
 
 namespace chunk {

@@ -87,10 +87,10 @@ ChunkBatcher::ChunkBatcher()
 
 			"} \n";
 
-	std::map<std::string, int> attributesMap{
-		std::pair<std::string, int>("positionIn", 0),
-		std::pair<std::string, int>("normalIn", 1),
-		std::pair<std::string, int>("texCoordIn", 2)};
+	map<string, int> attributesMap{
+		pair<string, int>("positionIn", 0),
+		pair<string, int>("normalIn", 1),
+		pair<string, int>("texCoordIn", 2)};
 
 	m_program.reset(new ShaderProgram(vertex, fragment, attributesMap));
 
@@ -166,13 +166,12 @@ void ChunkBatcher::draw() {
 	int skippedChunks = 0;
 
 	for (auto batch : m_batches) {
-
 		glm::mat4 modelView = camera.getViewMatrix() * batch.second->getTransform().getMatrix();
 		glm::mat4 modelViewProjection = camera.getProjectionMatrix() * modelView;
 
 		// TODO Fix this so that no chunks get culled when they are actually vissible
 //		Frustum frustum{modelViewProjection};
-//		bool result = frustum.isCubeInFrustum(batch.second->getxLocation() + 8, 0, batch.second->getzLocation() + 8, 16, 128, 16);
+//		bool result = frustum.isCubeInFrustum(batch.second->getxLocation(), 0, batch.second->getzLocation(), 16, 128, 16);
 ////		bool result = frustum.isSphereInFrustum(glm::vec3(batch.second->getxLocation() + 8, 64, batch.second->getzLocation() + 8), 100);
 //
 //		if (!result) {
@@ -186,6 +185,7 @@ void ChunkBatcher::draw() {
 		batch.second->drawNoneTransparent();
 	}
 
+	cout << "Time spent doing matrix multiplications = " << time << "\n";
 	cout << "Number of skipped chunks = " << skippedChunks << "\n";
 
 	glDisable(GL_CULL_FACE);

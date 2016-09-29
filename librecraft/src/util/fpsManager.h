@@ -19,6 +19,8 @@ namespace util {
  * Copyright (c) 2010, Felix Bärring. All rights reserved.
  */
 
+// TODO Should perhaps be singleton?!?
+
 class FPSManager {
 public:
 // ########################################################
@@ -30,11 +32,12 @@ public:
 // ########################################################
 // Member Functions########################################
 // ########################################################
+
 	void frameStart();
 
 	void sync();
 
-	double frameTime();
+	static double frameTime();
 
 	static int getFps();
 
@@ -45,8 +48,10 @@ private:
 	int m_maxFPS{};
 	double m_frameStartTime{0};
 	double m_timePerFrame{};
-	double m_timeForLatestFrame{1.0};
 	const double m_mili{0.001};
+
+	double m_timer{0};
+	double m_totalTimed{0};
 
 	sf::Clock m_clock{};
 };
