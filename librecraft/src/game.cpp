@@ -28,6 +28,7 @@
 #include "graphics/fontMeshBuilder.h"
 #include "graphics/sprite.h"
 #include "graphics/resources.h"
+#include "util/checkSystem.h"
 #include "util/fpsManager.h"
 
 using graphics::ChunkBatcher;
@@ -112,6 +113,8 @@ private:
 // ########################################################
 
 void Game::run() {
+
+	util::check_system::checkStuff();
 
 	util::SoundPlayer::getInstance().playMusic(config::music::menuMusic);
 

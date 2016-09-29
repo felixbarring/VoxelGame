@@ -6,7 +6,7 @@
 
 #include "chunk.h"
 #include "../../../config/data.h"
-#include "../../../voxel.h"
+#include "../../../util/voxel.h"
 #include "ThreadPool.h"
 
 namespace chunk {
@@ -17,8 +17,6 @@ private:
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
-
-	ChunkManager() {};
 
 // ########################################################
 // Member Functions########################################
@@ -111,11 +109,6 @@ private:
 	glm::vec3 m_center{4, 0, 4};
 	glm::vec3 m_intersectedCube{};
 	glm::vec3 m_previousCube{};
-
-	// TODO Figure out better names
-	// TODO Place somewhere where it can be used globally
-	ThreadPool m_threadPool{8};
-	ThreadPool m_threadPool2{1};
 
 	std::mutex m_bussyMovingChunksMutex{};
 };

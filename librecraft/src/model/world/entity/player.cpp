@@ -8,7 +8,7 @@
 #include "../../../graphics/camera.h"
 #include "../chunk/chunkManager.h"
 #include "../../../graphics/cubeBatcher.h"
-#include "../../../voxel.h"
+#include "../../../util/voxel.h"
 
 #include "../../../util/soundPlayer.h"
 
@@ -28,8 +28,6 @@ namespace entity {
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
-
-Player::Player(){}
 
 // ########################################################
 // Member Functions########################################

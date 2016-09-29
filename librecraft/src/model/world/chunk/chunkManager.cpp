@@ -8,6 +8,7 @@
 #include <thread>
 
 #include "../../../util/soundPlayer.h"
+#include "../../../util/globalResources.h"
 
 using util::SoundPlayer;
 
@@ -16,6 +17,8 @@ using namespace glm;
 
 using namespace config::chunk_data;
 using namespace config::cube_data;
+using namespace util;
+using namespace globalResources;
 
 namespace chunk {
 
@@ -43,7 +46,7 @@ void ChunkManager::createWorld(string worldName) {
 		for (int z = 0; z < lam; ++z) {
 			auto chunk = make_shared<Chunk>(worldName, x * CHUNK_WIDTH_AND_DEPTH, z * CHUNK_WIDTH_AND_DEPTH);
 
-			chunkCreationFutures.push_back(m_threadPool.enqueue([chunk]
+			chunkCreationFutures.push_back(g_threadPool2.enqueue([chunk]
 			{
 				chunk->create();
 				chunk->doSunLightning();
@@ -348,7 +351,7 @@ void ChunkManager::moveChunks(Direction direction) {
 		}
 	}
 
-	m_threadPool2.enqueue([this, direction, chunksToDelete] {
+	g_threadPool.enqueue([this, direction, chunksToDelete] {
 
 		for (auto chunk : chunksToDelete) {
 			chunk->removeAllNeighbors();
@@ -396,7 +399,7 @@ void ChunkManager::moveChunks(Direction direction) {
 
 		vector<future<void>> chunkCreationFutures{};
 		for (auto chunk : newChunks) {
-			chunkCreationFutures.push_back(m_threadPool.enqueue([chunk]
+			chunkCreationFutures.push_back(g_threadPool2.enqueue([chunk]
 			{
 				chunk->create();
 				chunk->doSunLightning();
@@ -410,19 +413,19 @@ void ChunkManager::moveChunks(Direction direction) {
 
 		if (direction == Direction::Right) {
 			for (auto chunk : newChunks)
-				collectLightFutures.push_back(m_threadPool.enqueue([chunk] {chunk->collectLightFromRightNeighbor();}));
+				collectLightFutures.push_back(g_threadPool2.enqueue([chunk] {chunk->collectLightFromRightNeighbor();}));
 		}
 		else if (direction == Direction::Left) {
 			for (auto chunk : newChunks)
-				collectLightFutures.push_back(m_threadPool.enqueue([chunk] {chunk->collectLightFromLeftNeighbor();}));
+				collectLightFutures.push_back(g_threadPool2.enqueue([chunk] {chunk->collectLightFromLeftNeighbor();}));
 		}
 		else if (direction == Direction::Up) {
 			for (auto chunk : newChunks)
-				collectLightFutures.push_back(m_threadPool.enqueue([chunk] {chunk->collectLightFromBackNeighbor();}));
+				collectLightFutures.push_back(g_threadPool2.enqueue([chunk] {chunk->collectLightFromBackNeighbor();}));
 		}
 		else if (direction == Direction::Down) {
 			for (auto chunk : newChunks)
-				collectLightFutures.push_back(m_threadPool.enqueue([chunk] {chunk->collectLightFromFrontNeighbor();}));
+				collectLightFutures.push_back(g_threadPool2.enqueue([chunk] {chunk->collectLightFromFrontNeighbor();}));
 		}
 
 		for_each(collectLightFutures.begin(), collectLightFutures.end(), [] (future<void> &f) { f.get(); });
@@ -431,7 +434,7 @@ void ChunkManager::moveChunks(Direction direction) {
 
 		for (unsigned i = 0; i < newChunks.size(); i += 2) {
 			auto chunk = newChunks[i];
-			updateGrapicsFutures.push_back(m_threadPool.enqueue([chunk, direction]
+			updateGrapicsFutures.push_back(g_threadPool2.enqueue([chunk, direction]
 			{
 				chunk->propagateLights();
 				chunk->updateGraphics();
@@ -450,7 +453,7 @@ void ChunkManager::moveChunks(Direction direction) {
 
 		for (unsigned i = 1; i < newChunks.size(); i += 2) {
 			auto chunk = newChunks[i];
-			updateGrapicsFutures.push_back(m_threadPool.enqueue([chunk, direction]
+			updateGrapicsFutures.push_back(g_threadPool2.enqueue([chunk, direction]
 			{
 				chunk->propagateLights();
 				chunk->updateGraphics();
