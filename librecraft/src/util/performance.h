@@ -2,28 +2,50 @@
 #ifndef SRC_UTIL_PERFORMANCE_H_
 #define SRC_UTIL_PERFORMANCE_H_
 
+#include <SFML/System/Clock.hpp>
+#include <map>
+#include <vector>
+
 namespace util {
 
 class Performance {
-public:
 
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
 
+	Performance();
+
 // ########################################################
 // Member Functions########################################
 // ########################################################
+
+public:
+
+	Performance getInstance() {
+		static Performance INSTANCE;
+		return INSTANCE;
+	}
+
+	unsigned createId(const std::string& value);
 
 	void startTimer(unsigned id);
 
 	void stopTimer(unsigned id);
 
-	// TODO Lots of stuff
+	void clearData();
+
+	void loggData();
 
 // ########################################################
 // Implementation #########################################
 // ########################################################
+
+private:
+
+	std::map<std::string, int> m_map{};
+	std::vector<std::tuple<sf::Clock, double>> m_accumulatedTime{};
+	sf::Clock m_clock{};
 
 };
 
