@@ -1,5 +1,6 @@
 #include "inGame.h"
 
+#include <emmintrin.h>
 #include "graphics/chunkBatcher.h"
 #include "graphics/cubeBatcher.h"
 
@@ -68,8 +69,12 @@ InGame::InGame(Game *game, string name)
 	string flyMode = "flyMode";
 	string gravityMode = "gravityMode";
 	string turnOfMusic = "turnOfMusic";
-	vector<string> commands = {close, flyMode, gravityMode, turnOfMusic};
-	std::function<void(string)> func = [=](string command)
+	string setMouseSensitivity = "setMouseSensitivity";
+	vector<string> commands = {close, flyMode, gravityMode, turnOfMusic, setMouseSensitivity};
+
+	// TODO Use only a vector of strings, not a separate string command.
+	// The first string in the vector should be the command, followed by arguments.
+	auto func = [=](string command, vector<string> arguments)
 	{
 		if (command == close) {
 			Input::getInstance()->centerMouse();
@@ -80,9 +85,18 @@ InGame::InGame(Game *game, string name)
 			m_player.turnGravityOff(false);
 		} else if (command == turnOfMusic) {
 			util::SoundPlayer::getInstance().stopMusic();
-		} else {
+		}else if (command == setMouseSensitivity) {
+
+			std::cout << command.c_str();
+
+			config::input_data::mouseSensitivityX = std::atof(command.c_str());
+			config::input_data::mouseSensitivityY = std::atof(command.c_str());
+		}
+		else {
 			m_terminal->addLine("Unknown command: " + command);
 		}
+
+
 	};
 
 	m_terminal = make_shared<gui::Terminal>(move(commands), func);

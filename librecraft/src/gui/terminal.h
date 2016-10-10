@@ -20,7 +20,7 @@ public:
 // Constructor/Destructor #################################
 // ########################################################
 
-	Terminal(std::vector<std::string> commands,	std::function<void(std::string)> commandListener);
+	Terminal(std::vector<std::string> commands,	std::function<void(std::string, std::vector<std::string>)> commandListener);
 
 // ########################################################
 // Member Functions########################################
@@ -38,7 +38,7 @@ public:
 
 private:
 
-	std::function<void(std::string)> m_commandListener;
+	std::function<void(std::string, std::vector<std::string>)> m_commandListener;
 
 	std::shared_ptr<widget::TextArea> m_textArea{};
 	std::shared_ptr<widget::TextInput> m_textInput{};

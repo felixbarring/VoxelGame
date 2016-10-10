@@ -15,7 +15,7 @@ namespace gui {
 // Constructor/Destructor #################################
 // ########################################################
 
-Terminal::Terminal(vector<string> commands,	function<void(string)> commandListener)
+Terminal::Terminal(vector<string> commands,	function<void(string, vector<string>)> commandListener)
 	: m_commands(commands)
 {
 
@@ -24,19 +24,29 @@ Terminal::Terminal(vector<string> commands,	function<void(string)> commandListen
 
 	m_commandListener = commandListener;
 
+//	string s = "foo bar  baz";
+//	regex e("\\s+");
+//	regex_token_iterator<string::iterator> i(s.begin(), s.end(), e, -1);
+//	regex_token_iterator<string::iterator> end;
+//	while (i != end)
+//	   cout << " [" << *i++ << "]";
+
+
 	auto observer = [this](int id)
 	{
+		auto arg = vector<string>{};
+
 		switch (id)
 		{
 		case 2: {
 			auto str =  m_textInput->getString();
 			m_textArea->addLine(str);
-			m_commandListener(str);
+			m_commandListener(str, arg);
 			m_textInput->setString("");
 			break;
 		}
 		case 3: {
-			m_commandListener("close");
+			m_commandListener("close", arg);
 			m_textInput->setFocus(); // Hack, we lose focus when clicking on close. Next time terminal is opened there
 									// is no focus. Fixed by this hack :p
 			break;

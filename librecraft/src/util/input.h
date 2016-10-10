@@ -103,7 +103,7 @@ private:
 
 	bool mouseLocked {true};
 
-	sf::Window *m_window;
+	sf::Window *m_window{nullptr};
 };
 
 static std::shared_ptr<Input> input;
