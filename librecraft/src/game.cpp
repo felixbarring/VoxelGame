@@ -152,7 +152,7 @@ void Game::run() {
 	m_mainMenu.reset(new MainMenu(this));
 	m_currentState = m_mainMenu;
 
-	// Load all graphics batchers some where else !1!
+	// Load all graphics batchers somewhere else
 	// Done here on the main thread to avoid thread issues.
 	ChunkBatcher::getInstance();
 
@@ -197,3 +197,4 @@ void Game::changeStateToMainMenu() {
 void Game::quitGame() {
 	m_quit = true;
 }
+
