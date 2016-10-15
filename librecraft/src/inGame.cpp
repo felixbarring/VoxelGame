@@ -72,10 +72,14 @@ InGame::InGame(Game *game, string name)
 	string setMouseSensitivity = "setMouseSensitivity";
 	vector<string> commands = {close, flyMode, gravityMode, turnOfMusic, setMouseSensitivity};
 
-	// TODO Use only a vector of strings, not a separate string command.
 	// The first string in the vector should be the command, followed by arguments.
-	auto func = [=](string command, vector<string> arguments)
+	auto func = [=](vector<string> arguments)
 	{
+		if (arguments.empty())
+			return;
+
+		auto command = arguments[0];
+
 		if (command == close) {
 			Input::getInstance()->centerMouse();
 			m_state = GameState::NoOverlay;
@@ -87,10 +91,9 @@ InGame::InGame(Game *game, string name)
 			util::SoundPlayer::getInstance().stopMusic();
 		}else if (command == setMouseSensitivity) {
 
-			std::cout << command.c_str();
-
-			config::input_data::mouseSensitivityX = std::atof(command.c_str());
-			config::input_data::mouseSensitivityY = std::atof(command.c_str());
+			// TODO Error handeling here...
+			config::input_data::mouseSensitivityX = std::atof(arguments[1].c_str());
+			config::input_data::mouseSensitivityY = std::atof(arguments[1].c_str());
 		}
 		else {
 			m_terminal->addLine("Unknown command: " + command);

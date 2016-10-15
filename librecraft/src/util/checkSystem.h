@@ -22,13 +22,13 @@ static void checkStuff() {
 	const GLubyte *version = glGetString(GL_VERSION);
 	const GLubyte *glslVersion = glGetString(GL_SHADING_LANGUAGE_VERSION);
 
-	std::cout << "-------------------------\n";
-	std::cout << "Graphics Card Info \n";
-	std::cout << "Vendor: " << vendor << "\n";
-	std::cout << "Renderer: " << renderer << "\n";
-	std::cout << "Version: " << version << "\n";
-	std::cout << "GLSL Version: " << glslVersion << "\n";
-	std::cout << "-------------------------\n";
+//	std::cout << "-------------------------\n";
+//	std::cout << "Graphics Card Info \n";
+//	std::cout << "Vendor: " << vendor << "\n";
+//	std::cout << "Renderer: " << renderer << "\n";
+//	std::cout << "Version: " << version << "\n";
+//	std::cout << "GLSL Version: " << glslVersion << "\n";
+//	std::cout << "-------------------------\n";
 
 	unsigned int hwThreads = std::thread::hardware_concurrency();
 	std::cout << "Number of hardware threads = " << hwThreads;

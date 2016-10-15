@@ -2,6 +2,7 @@
 #include "terminal.h"
 
 #include <memory>
+#include <regex>
 
 #include "../gui/widget/textInput.h"
 #include "../util/input.h"
@@ -15,7 +16,7 @@ namespace gui {
 // Constructor/Destructor #################################
 // ########################################################
 
-Terminal::Terminal(vector<string> commands,	function<void(string, vector<string>)> commandListener)
+Terminal::Terminal(vector<string> commands,	function<void(vector<string>)> commandListener)
 	: m_commands(commands)
 {
 
@@ -24,29 +25,30 @@ Terminal::Terminal(vector<string> commands,	function<void(string, vector<string>
 
 	m_commandListener = commandListener;
 
-//	string s = "foo bar  baz";
-//	regex e("\\s+");
-//	regex_token_iterator<string::iterator> i(s.begin(), s.end(), e, -1);
-//	regex_token_iterator<string::iterator> end;
-//	while (i != end)
-//	   cout << " [" << *i++ << "]";
-
-
 	auto observer = [this](int id)
 	{
-		auto arg = vector<string>{};
 
-		switch (id)
-		{
+		switch (id)	{
 		case 2: {
 			auto str =  m_textInput->getString();
 			m_textArea->addLine(str);
-			m_commandListener(str, arg);
+
+			std::regex r("\\S+");
+			std::smatch match;
+			std::vector<string> results{};
+			while(regex_search(str, match, r)) {
+				results.push_back(match.str());
+				str = match.suffix();
+			}
+
+			m_commandListener(results);
 			m_textInput->setString("");
 			break;
 		}
 		case 3: {
-			m_commandListener("close", arg);
+			auto arg = vector<string>{};
+			arg.push_back("close");
+			m_commandListener(arg);
 			m_textInput->setFocus(); // Hack, we lose focus when clicking on close. Next time terminal is opened there
 									// is no focus. Fixed by this hack :p
 			break;

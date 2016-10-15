@@ -185,8 +185,8 @@ void ChunkBatcher::draw() {
 		batch.second->drawNoneTransparent();
 	}
 
-	cout << "Time spent doing matrix multiplications = " << time << "\n";
-	cout << "Number of skipped chunks = " << skippedChunks << "\n";
+//	cout << "Time spent doing matrix multiplications = " << time << "\n";
+//	cout << "Number of skipped chunks = " << skippedChunks << "\n";
 
 	glDisable(GL_CULL_FACE);
 
