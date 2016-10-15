@@ -47,6 +47,9 @@ private:
 
 	std::vector<std::string> m_commands{};
 
+    std::vector<std::string> m_history{};
+    unsigned m_historyPointer{};
+
 	std::shared_ptr<widget::Button> m_enterButton;
 	std::shared_ptr<widget::WidgetGroup> m_widgets{};
 };

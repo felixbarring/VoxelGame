@@ -125,6 +125,8 @@ namespace config {
 		static sf::Keyboard::Key openTerminal = sf::Keyboard::T;
 		static sf::Keyboard::Key tab = sf::Keyboard::Tab;
 		static sf::Keyboard::Key enter = sf::Keyboard::Return;
+		static sf::Keyboard::Key up = sf::Keyboard::Up;
+		static sf::Keyboard::Key down = sf::Keyboard::Down;
 
 		// Mouse ########################################################
 		static sf::Mouse::Button action1Button = sf::Mouse::Left;

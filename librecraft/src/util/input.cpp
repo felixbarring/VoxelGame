@@ -51,11 +51,12 @@ void Input::updateValues() {
 	openTerminalPressed = sf::Keyboard::isKeyPressed(openTerminal) && !openTerminalActive;
 	tabPressed = sf::Keyboard::isKeyPressed(tab) && !tabActive;
 	enterPressed = sf::Keyboard::isKeyPressed(enter) && !enterActive;
+	upPressed = sf::Keyboard::isKeyPressed(up) && !upActive;
+	downPressed = sf::Keyboard::isKeyPressed(down) && downActive;
 
 	// Mouse
 	action1Pressed = sf::Mouse::isButtonPressed(action1Button) && !action1Active;
 	action2Pressed = sf::Mouse::isButtonPressed(action2Button) && !action2Active;
-
 
 	// Keyboard
 	moveForwardActive = sf::Keyboard::isKeyPressed(moveForwardButton);
@@ -71,6 +72,8 @@ void Input::updateValues() {
 	openTerminalActive = sf::Keyboard::isKeyPressed(openTerminal);
 	tabActive = sf::Keyboard::isKeyPressed(tab);
 	enterActive = sf::Keyboard::isKeyPressed(enter);
+    upActive = sf::Keyboard::isKeyPressed(up);
+    downActive = sf::Keyboard::isKeyPressed(down);
 
 	// Mouse
 	action1Active = sf::Mouse::isButtonPressed(action1Button);

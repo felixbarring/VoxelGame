@@ -93,6 +93,12 @@ public:
 	bool enterPressed{false};
 	bool enterActive{false};
 
+	bool upPressed{false};
+	bool upActive{false};
+
+	bool downPressed{false};
+	bool downActive{false};
+
 	bool keyWasTyped{false};
 	char keyTyped{' '};
 
