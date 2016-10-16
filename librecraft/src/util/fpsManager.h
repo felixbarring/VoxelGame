@@ -27,33 +27,33 @@ public:
 // Constructor/Destructor #################################
 // ########################################################
 
-	FPSManager(int maxFPS);
+    FPSManager(int maxFPS);
 
 // ########################################################
 // Member Functions########################################
 // ########################################################
 
-	void frameStart();
+    void frameStart();
 
-	void sync();
+    void sync();
 
-	static double frameTime();
+    static double frameTime();
 
-	static int getFps();
+    static int getFps();
 
 // ########################################################
 // Implementation #########################################
 // ########################################################
 private:
-	int m_maxFPS{};
-	double m_frameStartTime{0};
-	double m_timePerFrame{};
-	const double m_mili{0.001};
+    int m_maxFPS{};
+    double m_frameStartTime{0};
+    double m_timePerFrame{};
+    const double m_mili{0.001};
 
-	double m_timer{0};
-	double m_totalTimed{0};
+    double m_timer{0};
+    double m_totalTimed{0};
 
-	sf::Clock m_clock{};
+    sf::Clock m_clock{};
 };
 
 }

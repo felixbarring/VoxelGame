@@ -22,20 +22,20 @@ class Performance {
 
 public:
 
-	Performance getInstance() {
-		static Performance INSTANCE;
-		return INSTANCE;
-	}
+    Performance getInstance() {
+        static Performance INSTANCE;
+        return INSTANCE;
+    }
 
-	unsigned createId(const std::string& value);
+    unsigned createId(const std::string& value);
 
-	void startTimer(unsigned id);
+    void startTimer(unsigned id);
 
-	void stopTimer(unsigned id);
+    void stopTimer(unsigned id);
 
-	void clearData();
+    void clearData();
 
-	void loggData();
+    void loggData();
 
 // ########################################################
 // Implementation #########################################
@@ -43,9 +43,9 @@ public:
 
 private:
 
-	std::map<std::string, int> m_map{};
-	std::vector<std::tuple<sf::Clock, double>> m_accumulatedTime{};
-	sf::Clock m_clock{};
+    std::map<std::string, int> m_map{};
+    std::vector<std::tuple<sf::Clock, double>> m_accumulatedTime{};
+    sf::Clock m_clock{};
 
 };
 

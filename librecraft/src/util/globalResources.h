@@ -8,8 +8,8 @@ namespace util
 {
 namespace globalResources
 {
-	extern ThreadPool g_threadPool;
-	extern ThreadPool g_threadPool2;
+    extern ThreadPool g_threadPool;
+    extern ThreadPool g_threadPool2;
 }
 }
 

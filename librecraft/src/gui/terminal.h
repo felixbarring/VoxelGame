@@ -85,15 +85,15 @@ private:
     std::shared_ptr<widget::TextArea> m_textArea{};
     std::shared_ptr<widget::TextInput> m_textInput{};
 
-	util::Trie m_trie{};
+    util::Trie m_trie{};
 
-	unsigned m_historyLenght{10};
-	History m_history{m_historyLenght};
+    unsigned m_historyLenght{10};
+    History m_history{m_historyLenght};
 
-	std::vector<std::string> m_commands{};
+    std::vector<std::string> m_commands{};
 
-	std::shared_ptr<widget::Button> m_enterButton;
-	std::shared_ptr<widget::WidgetGroup> m_widgets{};
+    std::shared_ptr<widget::Button> m_enterButton;
+    std::shared_ptr<widget::WidgetGroup> m_widgets{};
 };
 
 } /* namespace widget */

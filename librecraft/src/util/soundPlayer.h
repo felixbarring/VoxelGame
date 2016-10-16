@@ -15,11 +15,11 @@ class SoundPlayer {
 // Constructor/Destructor #################################
 // ########################################################
 
-	SoundPlayer() {};
+    SoundPlayer() {};
 
-	SoundPlayer(SoundPlayer const&) = delete;
+    SoundPlayer(SoundPlayer const&) = delete;
 
-	void operator=(SoundPlayer const&) = delete;
+    void operator=(SoundPlayer const&) = delete;
 
 // ########################################################
 // Member Functions########################################
@@ -27,24 +27,24 @@ class SoundPlayer {
 
 public:
 
-	static SoundPlayer& getInstance() {
-		static SoundPlayer INSTANCE;
-		return INSTANCE;
-	}
+    static SoundPlayer& getInstance() {
+        static SoundPlayer INSTANCE;
+        return INSTANCE;
+    }
 
-	void playSound(const std::string &soundPath);
+    void playSound(const std::string &soundPath);
 
-	void playMusic(const std::string &musicPath);
+    void playMusic(const std::string &musicPath);
 
-	void stopMusic();
+    void stopMusic();
 
 // ########################################################
 // Implementation #########################################
 // ########################################################
 
-	std::map<std::string, sf::SoundBuffer> m_buffers;
-	std::vector<std::shared_ptr<sf::Sound>> m_playingSounds;
-	std::shared_ptr<sf::Music> m_playingMusic;
+    std::map<std::string, sf::SoundBuffer> m_buffers;
+    std::vector<std::shared_ptr<sf::Sound>> m_playingSounds;
+    std::shared_ptr<sf::Music> m_playingMusic;
 
 };
 

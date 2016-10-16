@@ -15,114 +15,114 @@ using namespace std;
 class Trie {
 public:
 
-	Trie() {
-		m_root = new TrieNode('-', false);
-	}
+    Trie() {
+        m_root = new TrieNode('-', false);
+    }
 
-	virtual ~Trie() {};
+    virtual ~Trie() {};
 
-	/**
-	 * Adds a string that can be used to auto completed on
-	 *
-	 * @param value The string that will be added
-	 */
-	void addString(std::string value) {
+    /**
+     * Adds a string that can be used to auto completed on
+     *
+     * @param value The string that will be added
+     */
+    void addString(std::string value) {
 
-		if (value.empty())
-			return;
+        if (value.empty())
+            return;
 
-		TrieNode *node = m_root;
-		for (unsigned i = 0; i < value.size(); ++i) {
-			auto c = value[i];
-			TrieNode *child = node->getChild(c);
-			if (child) {
-				node = child;
-				continue;
-			}
-			TrieNode *newNode = new TrieNode(c, i == value.size() - 1);
-			node->addChild(newNode);
-			node = newNode;
-		}
-	}
+        TrieNode *node = m_root;
+        for (unsigned i = 0; i < value.size(); ++i) {
+            auto c = value[i];
+            TrieNode *child = node->getChild(c);
+            if (child) {
+                node = child;
+                continue;
+            }
+            TrieNode *newNode = new TrieNode(c, i == value.size() - 1);
+            node->addChild(newNode);
+            node = newNode;
+        }
+    }
 
-	/**
-	 * Auto completes a string from the given value.
-	 *
-	 * If there is no string added that starts with the value, an empty
-	 * string will be returned. If there are more than one string that starts
-	 * with the value, the longest common substring will be returned.
-	 *
- 	 * @param value The value that will be auto completed on
-	 * @return The best auto complete match, empty if there is no string that
-	 *         starts with the value. The longest common substring if there are
-	 *         more than one string that contains the value.
-	 */
-	std::string getFirstWordWithSequence(const std::string &value) {
+    /**
+     * Auto completes a string from the given value.
+     *
+     * If there is no string added that starts with the value, an empty
+     * string will be returned. If there are more than one string that starts
+     * with the value, the longest common substring will be returned.
+     *
+     * @param value The value that will be auto completed on
+     * @return The best auto complete match, empty if there is no string that
+     *         starts with the value. The longest common substring if there are
+     *         more than one string that contains the value.
+     */
+    std::string getFirstWordWithSequence(const std::string &value) {
 
-		TrieNode *node = m_root;
-		for (auto c : value) {
-			TrieNode *child = node->getChild(c);
-			if (!child)
-				return string();
+        TrieNode *node = m_root;
+        for (auto c : value) {
+            TrieNode *child = node->getChild(c);
+            if (!child)
+                return string();
 
-			node = child;
-		}
+            node = child;
+        }
 
-		std::string result = value;
-		while (auto child = node->getSingleChild()) {
-			result += child->getValue();
-			node = child;
-		}
+        std::string result = value;
+        while (auto child = node->getSingleChild()) {
+            result += child->getValue();
+            node = child;
+        }
 
-		return result;
-	}
+        return result;
+    }
 
 private:
 
-	class TrieNode {
-	public:
+    class TrieNode {
+    public:
 
-		TrieNode(char ch, bool isEnd)
-			: m_ch(ch),
-			  m_isEnd(isEnd)
-		{
-		}
+        TrieNode(char ch, bool isEnd)
+            : m_ch(ch),
+              m_isEnd(isEnd)
+        {
+        }
 
-		char getValue() {
-			return m_ch;
-		}
+        char getValue() {
+            return m_ch;
+        }
 
-		void addChild(TrieNode *node) {
-			m_children.push_back(node);
-		}
+        void addChild(TrieNode *node) {
+            m_children.push_back(node);
+        }
 
-		TrieNode* getChild(char c) {
-			for (auto child : m_children) {
-				if (child->m_ch == c)
-					return child;
-			}
-			return nullptr;
-		}
+        TrieNode* getChild(char c) {
+            for (auto child : m_children) {
+                if (child->m_ch == c)
+                    return child;
+            }
+            return nullptr;
+        }
 
-		TrieNode* getSingleChild() {
-			if (m_children.size() == 1)
-				return m_children[0];
+        TrieNode* getSingleChild() {
+            if (m_children.size() == 1)
+                return m_children[0];
 
-			return nullptr;
-		}
+            return nullptr;
+        }
 
-		unsigned getNumberOfChildren() {
-			return m_children.size();
-		}
+        unsigned getNumberOfChildren() {
+            return m_children.size();
+        }
 
-	private:
+    private:
 
-		const char m_ch{};
-		const bool m_isEnd{};
-		std::vector<TrieNode*> m_children{};
-	};
+        const char m_ch{};
+        const bool m_isEnd{};
+        std::vector<TrieNode*> m_children{};
+    };
 
-	TrieNode *m_root;
+    TrieNode *m_root;
 };
 
 } /* namespace util */

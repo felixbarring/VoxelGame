@@ -12,15 +12,15 @@ namespace check_system {
 
 static void checkStuff() {
 
-	int maxLayers;
-	glGetIntegerv(GL_MAX_ARRAY_TEXTURE_LAYERS, &maxLayers);
+    int maxLayers;
+    glGetIntegerv(GL_MAX_ARRAY_TEXTURE_LAYERS, &maxLayers);
 
-	std::cout << "Number of Array Texture Layers that are supported " << maxLayers << "\n";
+    std::cout << "Number of Array Texture Layers that are supported " << maxLayers << "\n";
 
-	const GLubyte *renderer = glGetString(GL_RENDERER);
-	const GLubyte *vendor = glGetString(GL_VENDOR);
-	const GLubyte *version = glGetString(GL_VERSION);
-	const GLubyte *glslVersion = glGetString(GL_SHADING_LANGUAGE_VERSION);
+    const GLubyte *renderer = glGetString(GL_RENDERER);
+    const GLubyte *vendor = glGetString(GL_VENDOR);
+    const GLubyte *version = glGetString(GL_VERSION);
+    const GLubyte *glslVersion = glGetString(GL_SHADING_LANGUAGE_VERSION);
 
 //	std::cout << "-------------------------\n";
 //	std::cout << "Graphics Card Info \n";
