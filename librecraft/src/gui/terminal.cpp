@@ -32,7 +32,7 @@ Terminal::Terminal(vector<string> commands,	function<void(vector<string>)> comma
         case 2: {
             auto str =  m_textInput->getString();
             m_textArea->addLine(str);
-            m_history.push_back(str);
+            m_history.addToHistory(str);
 
             std::regex r("\\S+");
             std::smatch match;
@@ -88,17 +88,12 @@ void Terminal::update(float timePassed) {
         m_enterButton->trigger();
     }
     if (util::Input::getInstance()->upPressed) {
-
-        m_textInput->setString("KeK");
-
-        if (m_historyPointer + 1 < m_history.size()) {
-            m_textInput->setString(m_history[++m_historyPointer]);
-        }
+        m_history.incrementPointer();
+        m_textInput->setString(m_history.getPointedElement());
     }
     if (util::Input::getInstance()->downPressed) {
-        if (m_historyPointer > 0) {
-            m_textInput->setString(m_history[--m_historyPointer]);
-        }
+        m_history.decrementPointer();
+        m_textInput->setString(m_history.getPointedElement());
     }
 }
 
