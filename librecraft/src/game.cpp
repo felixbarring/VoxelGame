@@ -164,9 +164,8 @@ void Game::run() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         m_currentState->update(m_fpsManager.frameTime());
-
-        m_fpsManager.sync();
         window->display();
+        m_fpsManager.sync();
     }
 
 }
