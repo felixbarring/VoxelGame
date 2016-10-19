@@ -69,6 +69,8 @@ public:
 	bool intersectWithSolidCube(glm::vec3 origin, glm::vec3 direction, glm::vec3 &intersected,
 			glm::vec3 &previous, float searchLength);
 
+	void loadWorldWhenDecentered(bool value = true);
+
 // ########################################################
 // Implementation #########################################
 // ########################################################
@@ -105,6 +107,8 @@ private:
 	int m_zOffset{0};
 
 	std::string m_worldName{};
+
+	bool m_loadStoreWorldWhenPlyayerIsNotInTheCenterChunk{true}; // Good name 10/10
 
 	glm::vec3 m_center{4, 0, 4};
 	glm::vec3 m_intersectedCube{};

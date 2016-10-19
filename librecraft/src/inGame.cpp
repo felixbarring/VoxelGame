@@ -12,6 +12,8 @@
 #include "util/fpsManager.h"
 #include "util/soundPlayer.h"
 
+using chunk::ChunkManager;
+
 using namespace std;
 using namespace glm;
 
@@ -70,7 +72,8 @@ InGame::InGame(Game *game, string name)
     string gravityMode = "gravityMode";
     string turnOfMusic = "turnOfMusic";
     string setMouseSensitivity = "setMouseSensitivity";
-    vector<string> commands = {close, flyMode, gravityMode, turnOfMusic, setMouseSensitivity};
+    string loadChunks = "loadChunks";
+    vector<string> commands = {close, flyMode, gravityMode, turnOfMusic, setMouseSensitivity, loadChunks};
 
     // The first string in the vector should be the command, followed by arguments.
     auto func = [=](vector<string> arguments)
@@ -89,13 +92,25 @@ InGame::InGame(Game *game, string name)
             m_player.turnGravityOff(false);
         } else if (command == turnOfMusic) {
             util::SoundPlayer::getInstance().stopMusic();
-        }else if (command == setMouseSensitivity) {
-
+        } else if (command == setMouseSensitivity) {
+            if (!(arguments.size() >= 3)) {
+                m_terminal->addLine("To few arguments");
+                return;
+            }
             // TODO Error handeling here...
             config::input_data::mouseSensitivityX = std::atof(arguments[1].c_str());
-            config::input_data::mouseSensitivityY = std::atof(arguments[1].c_str());
-        }
-        else {
+            config::input_data::mouseSensitivityY = std::atof(arguments[2].c_str());
+        } else if (command == loadChunks) {
+            // TODO Error handeling here...
+            if (!(arguments.size() >= 2)) {
+                m_terminal->addLine("To few arguments");
+                return;
+            }
+            if (arguments[1] == "0")
+                ChunkManager::getInstance().loadWorldWhenDecentered(false);
+            else
+                ChunkManager::getInstance().loadWorldWhenDecentered();
+        } else {
             m_terminal->addLine("Unknown command: " + command);
         }
 

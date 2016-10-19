@@ -165,8 +165,8 @@ void ChunkManager::setCube(int x, int y, int z, char id) {
 }
 
 void ChunkManager::setCenter(float x, float z) {
-
-	return;
+    if (!m_loadStoreWorldWhenPlyayerIsNotInTheCenterChunk)
+        return;
 
 	if (!m_bussyMovingChunksMutex.try_lock())
 		return;
@@ -266,6 +266,12 @@ bool ChunkManager::intersectWithSolidCube(vec3 origin, vec3 direction, vec3 &int
 
 	return false;
 }
+
+void ChunkManager::loadWorldWhenDecentered(bool value) {
+    m_loadStoreWorldWhenPlyayerIsNotInTheCenterChunk = value;
+}
+
+// Private Methods ####################################################################################################
 
 bool ChunkManager::hasWaterNeighbour(int x, int y, int z) {
 	return getCubeId(x + 1, y, z) == WATER || getCubeId(x - 1, y, z) == WATER ||
