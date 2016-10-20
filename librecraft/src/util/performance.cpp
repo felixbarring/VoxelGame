@@ -34,4 +34,8 @@ void Performance::loggData() {
     // TODO Implement :-)
 }
 
+void Performance::printData() {
+    for_each(m_accumulatedTime.begin(), m_accumulatedTime.end(), [] (tuple<sf::Clock, double> &t) { ;});
+}
+
 } /* namespace util */

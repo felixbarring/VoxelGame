@@ -15,53 +15,53 @@
 
 int main(int argc, char *argv[]) {
 
-	try {
+    try {
 
-		std::cout << "argc =" << argc << "\n";
+        std::cout << "argc =" << argc << "\n";
 
-		if (argc == 1) {
-			Game game;
-			game.run();
-		} else {
+        if (argc == 1) {
+            Game game;
+            game.run();
+        } else {
 
-			std::string str = argv[1];
+            std::string str = argv[1];
 
-			if (str == "textureDemo") {
-				demo::TextureDemo textureDemo;
-				textureDemo.runDemo();
-			}
-			else if (str == "cubeDemo") {
-				demo::CubeDemo cubeDemo;
-				cubeDemo.runDemo();
-			}
-			else if (str == "textureArrayDemo") {
-				demo::ArrayTextureDemo arrayTextureDemo;
-				arrayTextureDemo.runDemo();
-			}
-			else if (str == "cubeMapDemo") {
-				demo::CubeMapDemo cubeMapDemo;
-				cubeMapDemo.runDemo();
-			}
-			else if (str == "spriteDemo") {
-				demo::SpriteDemo spriteDemo;
-				spriteDemo.runDemo();
-			}
-			else if (str == "guiDemo") {
-				demo::GuiDemo guiDemo;
-				guiDemo.runDemo();
-			}
-			else if (str == "fontDemo") {
-				demo::FontDemo fontDemo;
-				fontDemo.runDemo();
-			}
-		}
+            if (str == "textureDemo") {
+                demo::TextureDemo textureDemo;
+                textureDemo.runDemo();
+            }
+            else if (str == "cubeDemo") {
+                demo::CubeDemo cubeDemo;
+                cubeDemo.runDemo();
+            }
+            else if (str == "textureArrayDemo") {
+                demo::ArrayTextureDemo arrayTextureDemo;
+                arrayTextureDemo.runDemo();
+            }
+            else if (str == "cubeMapDemo") {
+                demo::CubeMapDemo cubeMapDemo;
+                cubeMapDemo.runDemo();
+            }
+            else if (str == "spriteDemo") {
+                demo::SpriteDemo spriteDemo;
+                spriteDemo.runDemo();
+            }
+            else if (str == "guiDemo") {
+                demo::GuiDemo guiDemo;
+                guiDemo.runDemo();
+            }
+            else if (str == "fontDemo") {
+                demo::FontDemo fontDemo;
+                fontDemo.runDemo();
+            }
+        }
 
-	} catch (std::exception& e) {
-		std::cout << "An error occured \n" << e.what() << "\n";
-	} catch (...) {
-		std::cout
-			<< "An error that is not derived from std::exception occured \n";
-	}
+    } catch (std::exception& e) {
+        std::cout << "An error occured \n" << e.what() << "\n";
+    } catch (...) {
+        std::cout
+            << "An error that is not derived from std::exception occured \n";
+    }
 
 }
 
