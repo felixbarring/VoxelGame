@@ -54,7 +54,9 @@ private:
 
     bool isInWater();
 
-    glm::vec3 m_location{0, 0, 0};
+    glm::vec3 m_location{0, 0, 0}; // The location of the camera
+
+
     float m_width{1};
     float m_height{1};
     float m_depth{1};
@@ -69,7 +71,7 @@ private:
     glm::vec3 m_frameSpeed{};
     glm::vec3 m_lastSelecteCube{};
     graphics::ViewDirection m_viewDirection{};
-    graphics::Transform m_transform{0, 0, 0};
+    graphics::Transform m_targetedCubeTransform{0, 0, 0};
     int m_cubeUsedForBuilding{0};
     };
 

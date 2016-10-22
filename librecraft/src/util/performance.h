@@ -45,7 +45,7 @@ public:
 
 private:
 
-    std::map<std::string, int> m_map{};
+    std::map<int, std::string> m_map{};
     std::vector<std::tuple<sf::Clock, double>> m_accumulatedTime{};
     sf::Clock m_clock{};
 

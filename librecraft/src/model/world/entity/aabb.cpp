@@ -70,8 +70,7 @@ AABB AABB::getSweptBroadPhaseBox(AABB &box, glm::vec3 &velocity) {
 	return AABB {xMin, xMax, yMin, yMax, zMin, zMax};
 }
 
-float AABB::collisionTime(AABB &box1, AABB &box2, glm::vec3 &collisionNormal,
-		glm::vec3 &velocity) {
+float AABB::collisionTime(AABB &box1, AABB &box2, glm::vec3 &collisionNormal, glm::vec3 &velocity) {
 
 	float xEntryDistance, yEntryDistance, zEntryDistance;
 	float xExitDistance, yExitDistance, zExitDistance;
@@ -139,8 +138,7 @@ float AABB::collisionTime(AABB &box1, AABB &box2, glm::vec3 &collisionNormal,
 	float exitTime = std::min(xExitTime, std::min(yExitTime, zExitTime));
 
 	// No collision
-	if (entryTime > exitTime
-			|| (xEntryTime < 0.0f && yEntryTime < 0.0f && zEntryTime < 0.0f))
+	if (entryTime > exitTime || (xEntryTime < 0.0f && yEntryTime < 0.0f && zEntryTime < 0.0f))
 		return -1.0f;
 
 	// Collision!

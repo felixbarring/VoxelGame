@@ -62,8 +62,7 @@ glm::vec3 Player::getLastSelectedCube() {
 
 void Player::updateSpeed(float timePassed) {
     shared_ptr<Input> input = Input::getInstance();
-    m_viewDirection.changeViewDirection(input->mouseXMovement,
-            input->mouseYMovement);
+    m_viewDirection.changeViewDirection(input->mouseXMovement, input->mouseYMovement);
 
     m_speed.x = 0;
     m_speed.z = 0;
@@ -146,40 +145,46 @@ void Player::updateSpeed(float timePassed) {
     vector<tuple<float, int, vec3>> collisions;
     intersected(vec3(0, 0, 0), collisions);
 
+    // TODO Should be a one liner...
+    // TODO Test that this works...
+    //m_frameSpeed = m_speed * waterFactor * timePassed;
+
     m_frameSpeed.x = m_speed.x * waterFactor * timePassed;
     m_frameSpeed.y = m_speed.y * waterFactor * timePassed;
     m_frameSpeed.z = m_speed.z * waterFactor * timePassed;
-
 }
 
 void Player::handlePhysics() {
     vector<tuple<float, int, vec3>> collisions;
     intersected(m_frameSpeed, collisions);
 
+    auto originalFrameSpeed = m_frameSpeed;
+    auto originalSpeed = m_speed;
+
     while (collisions.size()) {
+
         sort(collisions.begin(), collisions.end(),
-                [](tuple<float, int, vec3> a, tuple<float, int, vec3> b)
-                {
-                    return get<0>(a) < get<0>(b);
-                });
+        [](tuple<float, int, vec3> a, tuple<float, int, vec3> b)
+        {
+            return get<0>(a) < get<0>(b);
+        });
 
-        if (collisions.size()) {
-            auto c = collisions[0];
+        auto c = collisions[0];
+        auto time = get<0>(collisions[0]);
+        auto separationVec = -std::get<2>(collisions[0]);
 
-            m_frameSpeed += vec3(
-                    -std::get<2>(c).x * m_frameSpeed.x,
-                    -std::get<2>(c).y * m_frameSpeed.y,
-                    -std::get<2>(c).z * m_frameSpeed.z);
-            m_speed += vec3(
-                    -std::get<2>(c).x * m_speed.x,
-                    -std::get<2>(c).y * m_speed.y,
-                    -std::get<2>(c).z * m_speed.z);
-        }
+        auto derp = (originalFrameSpeed - originalFrameSpeed * time);
+        auto derp2 = (originalSpeed - originalSpeed * time);
+
+        m_frameSpeed += vec3(separationVec * derp);
+        m_speed += vec3(separationVec * derp2);
+
         collisions.clear();
         intersected(m_frameSpeed, collisions);
     }
 
     m_location += m_frameSpeed;
+    std::cout << m_location.y << "\n";
 
 }
 
@@ -212,11 +217,12 @@ void Player::updateCameraAndTargetCube() {
         }
 
         // TODO Remove hardcoded values
-        m_transform.setLocation(selectedCube.x + 0.5, selectedCube.y + 0.5,	selectedCube.z + 0.5);
+        // 0.5 = half width of cube
+        m_targetedCubeTransform.setLocation(selectedCube.x + 0.5, selectedCube.y + 0.5,	selectedCube.z + 0.5);
 
         char voxelID = chunkManager.getCubeId(selectedCube.x, selectedCube.y, selectedCube.z);
         char voxelLightValue = chunkManager.getVoxel(previous.x, previous.y, previous.z).lightValue;
-        CubeBatcher::getInstance().addBatch(voxelID, m_transform, voxelLightValue + 5);
+        CubeBatcher::getInstance().addBatch(voxelID, m_targetedCubeTransform, voxelLightValue + 5);
     }
 
 }

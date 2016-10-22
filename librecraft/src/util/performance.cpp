@@ -2,6 +2,7 @@
 #include "performance.h"
 
 #include <algorithm>
+#include <iosfwd>
 using namespace std;
 
 namespace util {
@@ -9,11 +10,14 @@ namespace util {
 static unsigned s_idCounter = 0;
 
 unsigned Performance::createId(const string& value) {
-    auto res = m_map.find(value);
-    if (res != m_map.end())
-        return (*res).second;
 
-    m_map.emplace(value, ++s_idCounter);
+
+    // Check if the value in the map equals the string argument value.
+//    auto res = m_map.find(value);
+//    if (res != m_map.end())
+//        return (*res).second;
+
+    m_map.emplace(++s_idCounter, value);
     return s_idCounter;
 }
 
@@ -35,7 +39,11 @@ void Performance::loggData() {
 }
 
 void Performance::printData() {
-    for_each(m_accumulatedTime.begin(), m_accumulatedTime.end(), [] (tuple<sf::Clock, double> &t) { ;});
+    for_each(m_accumulatedTime.begin(), m_accumulatedTime.end(),
+            [] (tuple<sf::Clock, double> &t)
+            {
+//                std::cout << m_map.find(get<1>(t)) << "Blal " << get<0>(t).getElapsedTime() << "bla bla \n";
+            });
 }
 
 } /* namespace util */
