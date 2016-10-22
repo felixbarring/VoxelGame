@@ -100,7 +100,7 @@ void Player::updateSpeed(float timePassed) {
     if (input->switchCubePressed && ++m_cubeUsedForBuilding > config::cube_data::LAST_CUBE_USED_FOR_BUILDING_)
         m_cubeUsedForBuilding = 0;
 
-    double waterFactor = 1.0;
+    float waterFactor = 1.0;
 
     if (m_gravitiyOn) {
         // Gravity
@@ -136,7 +136,7 @@ void Player::updateSpeed(float timePassed) {
             if (input->goDownActive)
                 direction = -1;
 
-            m_speed.y = 8 * direction; // TODO Remove hardcoded value
+            m_speed.y = m_flySpeed * direction;
         } else {
             m_speed.y = 0;
         }
@@ -147,19 +147,16 @@ void Player::updateSpeed(float timePassed) {
 
     // TODO Should be a one liner...
     // TODO Test that this works...
-    //m_frameSpeed = m_speed * waterFactor * timePassed;
+    m_frameSpeed = m_speed * waterFactor * timePassed;
 
-    m_frameSpeed.x = m_speed.x * waterFactor * timePassed;
-    m_frameSpeed.y = m_speed.y * waterFactor * timePassed;
-    m_frameSpeed.z = m_speed.z * waterFactor * timePassed;
+//    m_frameSpeed.x = m_speed.x * waterFactor * timePassed;
+//    m_frameSpeed.y = m_speed.y * waterFactor * timePassed;
+//    m_frameSpeed.z = m_speed.z * waterFactor * timePassed;
 }
 
 void Player::handlePhysics() {
     vector<tuple<float, int, vec3>> collisions;
     intersected(m_frameSpeed, collisions);
-
-    auto originalFrameSpeed = m_frameSpeed;
-    auto originalSpeed = m_speed;
 
     while (collisions.size()) {
 
@@ -171,20 +168,20 @@ void Player::handlePhysics() {
 
         auto c = collisions[0];
         auto time = get<0>(collisions[0]);
+
+//        std::cout << "Time " << time << "\n";
+
         auto separationVec = -std::get<2>(collisions[0]);
 
-        auto derp = (originalFrameSpeed - originalFrameSpeed * time);
-        auto derp2 = (originalSpeed - originalSpeed * time);
-
-        m_frameSpeed += vec3(separationVec * derp);
-        m_speed += vec3(separationVec * derp2);
+        // TODO This is not correct, should be less...
+        m_frameSpeed += vec3(separationVec * m_frameSpeed);
+        m_speed += vec3(separationVec * m_speed);
 
         collisions.clear();
         intersected(m_frameSpeed, collisions);
     }
 
     m_location += m_frameSpeed;
-    std::cout << m_location.y << "\n";
 
 }
 
@@ -229,9 +226,10 @@ void Player::updateCameraAndTargetCube() {
 
 void Player::intersected(vec3 movement, vector<tuple<float, int, vec3>> &collisions) {
 
-    // TODO Remove the hardcoded shit
-    AABB start{m_location.x - 0.4, m_location.x + 0.4, m_location.y - 1.5, m_location.y + 0.1, m_location.z - 0.4,
-        m_location.z + 0.4};
+    AABB start{
+        m_location.x - m_width / 2, m_location.x + m_width / 2,
+        m_location.y - m_cameraHeight, m_location.y + m_height - m_cameraHeight,
+        m_location.z - m_width / 2, m_location.z + m_width / 2};
     AABB box = AABB::getSweptBroadPhaseBox(start, movement);
 
     int xStart = floor(box.xMin);
@@ -254,7 +252,7 @@ void Player::intersected(vec3 movement, vector<tuple<float, int, vec3>> &collisi
                     vec3 vec;
                     float time = AABB::collisionTime(start, cube, vec, movement);
 
-                    if (time <= 1 && time >= 0)
+                    if (time < 1 && time >= 0)
                         collisions.push_back(std::make_tuple(time, cubeId, vec));
 
                 }
@@ -266,6 +264,7 @@ void Player::intersected(vec3 movement, vector<tuple<float, int, vec3>> &collisi
 
 bool Player::isInWater() {
 
+    // Fix hardcoded shit...
     AABB box{m_location.x - 0.4, m_location.x + 0.4, m_location.y - 1.5, m_location.y + 0.1, m_location.z - 0.4,
         m_location.z + 0.4};
 

@@ -17,7 +17,7 @@ namespace config
     namespace graphics_data
     {
 
-        int fps = 10;
+        int fps = 100;
 
         int windowWidth = 1500;
         int windowHeight = 800;

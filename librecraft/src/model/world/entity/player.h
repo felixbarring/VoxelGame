@@ -56,16 +56,19 @@ private:
 
     glm::vec3 m_location{0, 0, 0}; // The location of the camera
 
+    float m_width{0.8};
+    float m_height{1.7};
+    float m_depth{0.8};
+    float m_cameraHeight{1.5};
 
-    float m_width{1};
-    float m_height{1};
-    float m_depth{1};
     float m_gravity{30};
     float m_jumpSpeed{12};
     int m_selectCubeDistance{5};
     float m_movementSpeed{12};
 
     bool m_gravitiyOn{true};
+
+    float m_flySpeed = 8;
 
     glm::vec3 m_speed{0, 0, 0};
     glm::vec3 m_frameSpeed{};
