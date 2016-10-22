@@ -169,18 +169,24 @@ void Player::handlePhysics() {
         auto c = collisions[0];
         auto time = get<0>(collisions[0]);
 
-//        std::cout << "Time " << time << "\n";
+        std::cout << "Time " << time << "\n";
 
-        auto separationVec = -std::get<2>(collisions[0]);
+        float derp = 1.0; // / 5.0;
+        auto separationVec = derp * -std::get<2>(collisions[0]);
 
-        // TODO This is not correct, should be less...
-        m_frameSpeed += vec3(separationVec * m_frameSpeed);
-        m_speed += vec3(separationVec * m_speed);
+        m_frameSpeed += vec3(
+            separationVec.x * m_frameSpeed.x,
+            separationVec.y * m_frameSpeed.y,
+            separationVec.z * m_frameSpeed.z);
+
+        m_speed += vec3(
+            separationVec.x * m_speed.x,
+            separationVec.y * m_speed.y,
+            separationVec.z * m_speed.z);
 
         collisions.clear();
         intersected(m_frameSpeed, collisions);
     }
-
     m_location += m_frameSpeed;
 
 }
