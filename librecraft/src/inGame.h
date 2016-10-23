@@ -18,6 +18,7 @@
 #include "graphics/resources.h"
 #include "graphics/sprite.h"
 #include "gui/terminal.h"
+#include "model/world/timeAndWeather/timeCycle.h"
 
 class InGame: public IGameState {
 public:
@@ -53,6 +54,8 @@ private:
 	Game *m_game;
 	std::string m_name;
 	entity::Player m_player;
+
+	TimeCycle m_timeCycle;
 
 	double m_fpsDisplayCounter{0};
 	double m_fpsDisplayDelay{1.0 / 5.0}; // The fps should only be drawn 5 times/second

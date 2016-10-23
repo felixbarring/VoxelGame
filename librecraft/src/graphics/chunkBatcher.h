@@ -22,8 +22,6 @@ private:
 
     ChunkBatcher();
 
-    virtual ~ChunkBatcher() { };
-
     ChunkBatcher(ChunkBatcher const&) = delete;
 
     void operator=(ChunkBatcher const&) = delete;
@@ -42,7 +40,6 @@ public:
     /**
      * It is important that the batch is created by the batcher because threading errors...
      * returns an id that can be used to remove the batch with in removeBatch
-     *
      */
     int createBatch(float x, float y, float z,
             std::vector<std::vector<std::vector<Voxel>>> &data,
@@ -63,12 +60,16 @@ public:
      */
     void draw();
 
+    void setSunStrenght(float value);
+
 // ########################################################
 // Implementation #########################################
 // ########################################################
 
     int m_idCounter{0};
     std::map<int, std::shared_ptr<GraphicalChunk>> m_batches{};
+
+    float m_sunStrength{1.0 / 64.0};
 
     std::mutex m_mutex{};
     std::vector<std::pair<int, std::shared_ptr<GraphicalChunk>>> m_batchesToBeAdded{};

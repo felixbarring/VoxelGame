@@ -33,7 +33,7 @@ ChunkBatcher::ChunkBatcher()
 
             "uniform mat4 modelViewProjection; \n"
             "uniform mat4 modelView; \n"
-            "uniform float sunStrenght = 1.0 / 32; \n"
+            "uniform float sunStrenght; \n"
 
             "out vec3 texCoord; \n"
             "out float lightValue; \n"
@@ -160,6 +160,7 @@ void ChunkBatcher::draw() {
     //	x += 0.1 * direction;
 
     m_program->setUniform3f("lightDirection", x, 3.0, 0.3);
+    m_program->setUniform1f("sunStrenght", m_sunStrength);
 
     Camera &camera = Camera::getInstance();
 
@@ -206,6 +207,10 @@ void ChunkBatcher::draw() {
     }
 
     m_program->unbind();
+}
+
+void ChunkBatcher::setSunStrenght(float value) {
+    m_sunStrength = value;
 }
 
 }

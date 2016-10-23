@@ -149,6 +149,7 @@ void InGame::update(float timePassed) {
         input->updateValues();
         mouse.update();
         m_player.update(timePassed);
+        m_timeCycle.update(timePassed);
 
         SpriteBatcher::getInstance().addBatch(m_crossHair);
 
