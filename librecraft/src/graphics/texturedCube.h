@@ -15,33 +15,31 @@ public:
 // Constructor/Destructor #################################
 // ########################################################
 
-	TexturedCube(float xOffset, float yOffset, float zOffset, int id);
+    TexturedCube(float xOffset, float yOffset, float zOffset, int id);
 
-	virtual ~TexturedCube() {
-	}
-	;
+    virtual ~TexturedCube() {};
 
 // ########################################################
 // Member Functions########################################
 // ########################################################
 
-	void draw();
+    void draw();
 
-	float getxLocation() { return xLocation; }
+    float getxLocation() { return xLocation; }
 
-	float getyLocation() { return yLocation; }
+    float getyLocation() { return yLocation; }
 
 // ########################################################
 // Instance Variables #####################################
 // ########################################################
 
 private:
-	// unique pointer gives error?!?
-	std::shared_ptr<mesh::MeshElement> mesh;
+    // unique pointer gives error?!?
+    std::shared_ptr<mesh::MeshElement> mesh;
 
-	float xLocation;
-	float yLocation;
-	float zLocation;
+    float xLocation;
+    float yLocation;
+    float zLocation;
 
 };
 

@@ -64,7 +64,7 @@ private:
     float m_gravity{30};
     float m_jumpSpeed{12};
     int m_selectCubeDistance{5};
-    float m_movementSpeed{12};
+    float m_movementSpeed{8};
 
     bool m_gravitiyOn{true};
 

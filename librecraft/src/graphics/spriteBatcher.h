@@ -19,30 +19,30 @@ class SpriteBatcher {
 // Constructor/Destructor #################################
 // ########################################################
 
-	SpriteBatcher();
+    SpriteBatcher();
 
-	virtual ~SpriteBatcher() { };
+    virtual ~SpriteBatcher() { };
 
-	SpriteBatcher(SpriteBatcher const&) = delete;
+    SpriteBatcher(SpriteBatcher const&) = delete;
 
-	void operator=(SpriteBatcher const&) = delete;
+    void operator=(SpriteBatcher const&) = delete;
 
 public:
 
-	static SpriteBatcher& getInstance() {
-		static SpriteBatcher INSTANCE;
-		return INSTANCE;
-	}
+    static SpriteBatcher& getInstance() {
+        static SpriteBatcher INSTANCE;
+        return INSTANCE;
+    }
 
 // ########################################################
 // Member Functions########################################
 // ########################################################
 
-	void addBatch(std::shared_ptr<Sprite> batch);
+    void addBatch(std::shared_ptr<Sprite> batch);
 
-	void draw();
+    void draw();
 
-	void setProjection(glm::mat4 projection);
+    void setProjection(glm::mat4 projection);
 
 // ########################################################
 // Implementation #########################################

@@ -159,9 +159,7 @@ void Game::run() {
 
     // run the main loop
     while (!m_quit && window->isOpen()) {
-
         m_fpsManager.frameStart();
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         m_currentState->update(m_fpsManager.frameTime());
         window->display();

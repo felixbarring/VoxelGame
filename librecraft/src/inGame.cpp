@@ -114,7 +114,6 @@ InGame::InGame(Game *game, string name)
             m_terminal->addLine("Unknown command: " + command);
         }
 
-
     };
 
     m_terminal = make_shared<gui::Terminal>(move(commands), func);
@@ -173,7 +172,6 @@ void InGame::update(float timePassed) {
             m_fpsDisplayCounter = 0;
         }
 
-
         vec3 ses = m_player.getLastSelectedCube();
         string soos = "Last Selected: " + to_string(ses.x) + ", " + to_string(ses.y) + ", " + to_string(ses.z);
         m_lastSelecteCube.reset(new Sprite(0, 70, 10, fontMeshBuilder.buldMeshForString(soos, 20),
@@ -201,6 +199,8 @@ void InGame::update(float timePassed) {
     }
 
     chunk::ChunkManager::getInstance().update();
+
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     ChunkBatcher::getInstance().draw();
     CubeBatcher::getInstance().draw();

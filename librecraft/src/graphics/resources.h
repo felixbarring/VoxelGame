@@ -22,51 +22,47 @@ private:
 // Constructor/Destructor #################################
 // ########################################################
 
-	Resources() {
-	}
-	;
+    Resources() {};
 
-	virtual ~Resources() {
-	}
-	;
+    virtual ~Resources() {}	;
 
-	Resources(Resources const&) = delete;
+    Resources(Resources const&) = delete;
 
-	void operator=(Resources const&) = delete;
+    void operator=(Resources const&) = delete;
 
 public:
 
-	static Resources& getInstance() {
-		static Resources instance;
-		return instance;
-	}
+    static Resources& getInstance() {
+        static Resources instance;
+        return instance;
+    }
 
 // ########################################################
 // Member Functions########################################
 // ########################################################
 
-	texture::Texture& getTexture(const std::string &path);
+    texture::Texture& getTexture(const std::string &path);
 
-	texture::TextureArray& getTextureArray(
-			const std::vector<std::string> &textures, int width, int height);
+    texture::TextureArray& getTextureArray(
+            const std::vector<std::string> &textures, int width, int height);
 
-	texture::TextureCubeMap& getTextureCubeMap(std::string &right,
-			std::string &left, std::string &top, std::string &bottom,
-			std::string &back, std::string &front, int width, int height);
+    texture::TextureCubeMap& getTextureCubeMap(std::string &right,
+            std::string &left, std::string &top, std::string &bottom,
+            std::string &back, std::string &front, int width, int height);
 
-	texture::TextureCubeMap& getTextureCubeMap(int value);
+    texture::TextureCubeMap& getTextureCubeMap(int value);
 
-	FontMeshBuilder& getFontMeshBuilder(std::string &pathToLayout,
-			int atlasWidth, int atlasHeight);
+    FontMeshBuilder& getFontMeshBuilder(std::string &pathToLayout,
+            int atlasWidth, int atlasHeight);
 
 // ########################################################
 // Instance Variables #####################################
 // ########################################################
 
-	std::map<std::string, texture::Texture> textures;
-	std::map<std::string, texture::TextureArray> textureArraysMap;
-	std::map<std::string, texture::TextureCubeMap> textureCubeMaps;
-	std::map<std::string, FontMeshBuilder> fontMeshBuilders;
+    std::map<std::string, texture::Texture> textures;
+    std::map<std::string, texture::TextureArray> textureArraysMap;
+    std::map<std::string, texture::TextureCubeMap> textureCubeMaps;
+    std::map<std::string, FontMeshBuilder> fontMeshBuilders;
 
 };
 

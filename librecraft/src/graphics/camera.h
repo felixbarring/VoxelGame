@@ -16,11 +16,7 @@ private:
 // Constructor/Destructor #################################
 // ########################################################
 
-	Camera(float xPosition, float yPosition, float zPosition);
-
-	virtual ~Camera() {
-	}
-	;
+    Camera(float xPosition, float yPosition, float zPosition);
 
 // ########################################################
 // Member Functions########################################
@@ -28,22 +24,22 @@ private:
 
 public:
 
-	static Camera& getInstance() {
-		static Camera INSTANCE {0, 0, 0};
-		return INSTANCE;
-	}
+    static Camera& getInstance() {
+        static Camera INSTANCE {0, 0, 0};
+        return INSTANCE;
+    }
 
-	void setViewMatrix(glm::mat4 view);
+    void setViewMatrix(glm::mat4 view);
 
-	glm::mat4 getViewMatrix();
+    glm::mat4 getViewMatrix();
 
-	void setProjectionMatrix();
+    void setProjectionMatrix();
 
-	glm::mat4& getProjectionMatrix();
+    glm::mat4& getProjectionMatrix();
 
-	glm::vec3& getPosition();
+    glm::vec3& getPosition();
 
-	void updateView(glm::vec3 position, glm::vec3 direction, glm::vec3 up);
+    void updateView(glm::vec3 position, glm::vec3 direction, glm::vec3 up);
 
 // ########################################################
 // Implementation #########################################
@@ -51,16 +47,16 @@ public:
 
 private:
 
-	glm::vec3 position;
-	glm::vec3 direction;
-	glm::vec3 up {0.0f, 1.0f, 0.0f};
+    glm::vec3 position;
+    glm::vec3 direction;
+    glm::vec3 up {0.0f, 1.0f, 0.0f};
 
-	// TODO Update this in an intelligent way
-	float aspectRatio = config::graphics_data::windowWidth / static_cast<float>(config::graphics_data::windowHeight);
+    // TODO Update this in an intelligent way
+    float aspectRatio = config::graphics_data::windowWidth / static_cast<float>(config::graphics_data::windowHeight);
 
-	glm::mat4 projection = glm::perspective(config::graphics_data::fov,	aspectRatio, 0.1f, 1000.0f);
+    glm::mat4 projection = glm::perspective(config::graphics_data::fov,	aspectRatio, 0.1f, 1000.0f);
 
-	glm::mat4 view;
+    glm::mat4 view;
 };
 
 }

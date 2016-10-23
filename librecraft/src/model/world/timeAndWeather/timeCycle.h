@@ -1,35 +1,33 @@
-#ifndef SRC_GRAPHICS_CUBEMAP_H_
-#define SRC_GRAPHICS_CUBEMAP_H_
 
-#include "texture/textureCubeMap.h"
-#include "camera.h"
+#ifndef SRC_MODEL_WORLD_TIMEANDWEATHER_TIMECYCLE_H_
+#define SRC_MODEL_WORLD_TIMEANDWEATHER_TIMECYCLE_H_
 
-namespace graphics {
-
-class CubeMap {
+class TimeCycle {
 public:
 
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
 
-    CubeMap(texture::TextureCubeMap &texture);
-
+    virtual ~TimeCycle() {};
 
 // ########################################################
 // Member Functions########################################
 // ########################################################
 
-    void render();
+    void update(float timePassed);
+
+    void setTime(float time);
 
 // ########################################################
-// Instance Variables #####################################
+// Implementation #########################################
 // ########################################################
 
-    texture::TextureCubeMap texture;
+private:
+
+    static constexpr float s_dayLength = 500;
+    float m_time;
 
 };
 
-}
-
-#endif /* SRC_GRAPHICS_CUBEMAP_H_ */
+#endif /* SRC_MODEL_WORLD_TIMEANDWEATHER_TIMECYCLE_H_ */

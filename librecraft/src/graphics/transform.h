@@ -12,43 +12,44 @@ public:
 // Constructor/Destructor #################################
 // ########################################################
 
-	Transform(float x, float y, float z);
+    Transform(float x, float y, float z);
 
-	virtual ~Transform() {};
+    virtual ~Transform() {};
 
 // ########################################################
 // Member Functions########################################
 // ########################################################
 
-	void translate(glm::vec3 translation);
+    void translate(glm::vec3 translation);
 
-	void translate(float x, float y, float z);
+    void translate(float x, float y, float z);
 
-	// Make one that takes glm::vec3 ?!?
-	void setLocation(float x, float y, float z);
+    // Make one that takes glm::vec3 ?!?
+    void setLocation(float x, float y, float z);
 
-	void setRotationX(float value);
+    void setRotationX(float value);
 
-	void setRotationY(float value);
+    void setRotationY(float value);
 
-	void setRotationZ(float value);
+    void setRotationZ(float value);
 
-	void rotateX(float value);
+    void rotateX(float value);
 
-	void rotateY(float value);
+    void rotateY(float value);
 
-	void rotateZ(float value);
+    void rotateZ(float value);
 
-	glm::mat4 getMatrix();
+    glm::mat4 getMatrix();
 
 // ########################################################
-// Instance Variables #####################################
+// Implementation #########################################
 // ########################################################
+
 private:
-	glm::mat4 translation;
-	glm::mat4 xRotation;
-	glm::mat4 yRotation;
-	glm::mat4 zRotation;
+    glm::mat4 translation;
+    glm::mat4 xRotation;
+    glm::mat4 yRotation;
+    glm::mat4 zRotation;
 };
 
 }

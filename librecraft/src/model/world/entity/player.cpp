@@ -50,7 +50,7 @@ void Player::setLocation(float x, float y, float z) {
 
 void Player::turnGravityOff(bool value) {
     m_gravitiyOn = !value;
-    }
+}
 
 vec3 Player::getViewingDirection() {
     return m_viewDirection.getViewDirection();
@@ -169,10 +169,14 @@ void Player::handlePhysics() {
         auto c = collisions[0];
         auto time = get<0>(collisions[0]);
 
-        std::cout << "Time " << time << "\n";
+//        std::cout << "Time " << time << "\n";
 
         float derp = 1.0; // / 5.0;
         auto separationVec = derp * -std::get<2>(collisions[0]);
+
+        // TODO Fix the incorrect collision responses...
+        // When colliding, the entire speed in the direction of the collision normal is removed
+        // Should be less.
 
         m_frameSpeed += vec3(
             separationVec.x * m_frameSpeed.x,

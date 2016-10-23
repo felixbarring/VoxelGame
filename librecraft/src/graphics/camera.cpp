@@ -7,7 +7,7 @@ namespace graphics {
 // ########################################################
 
 Camera::Camera(float xPosition, float yPosition, float zPosition)
-		: position {xPosition, yPosition, zPosition} {
+    : position {xPosition, yPosition, zPosition} {
 }
 
 // ########################################################
@@ -15,25 +15,25 @@ Camera::Camera(float xPosition, float yPosition, float zPosition)
 // ########################################################
 
 void Camera::setViewMatrix(glm::mat4 view) {
-	this->view = view;
+    this->view = view;
 }
 
 glm::mat4 Camera::getViewMatrix() {
-	return view;
+    return view;
 }
 
 glm::mat4& Camera::getProjectionMatrix() {
-	return projection;
+    return projection;
 }
 
 glm::vec3& Camera::getPosition() {
-	return position;
+    return position;
 }
 
 void Camera::updateView(glm::vec3 position, glm::vec3 direction, glm::vec3 up) {
-	this->position = position;
-	view = glm::lookAt(position, position + direction, up);
-}
+    this->position = position;
+    view = glm::lookAt(position, position + direction, up);
+    }
 
 }
 

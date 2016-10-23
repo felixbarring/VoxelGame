@@ -316,6 +316,7 @@ void MainMenu::update(float timePassed) {
 	m_title->draw();
 	m_activeWidgetGroup->draw();
 
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	graphics::SpriteBatcher::getInstance().draw();
 }
 
