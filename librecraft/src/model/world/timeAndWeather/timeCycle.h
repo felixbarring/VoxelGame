@@ -24,10 +24,8 @@ public:
 // ########################################################
 
 private:
-
-    static constexpr float s_dayLength = 500;
+    float s_dayLength = 30;
     float m_time;
-
 };
 
 #endif /* SRC_MODEL_WORLD_TIMEANDWEATHER_TIMECYCLE_H_ */
