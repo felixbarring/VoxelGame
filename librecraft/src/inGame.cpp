@@ -101,6 +101,7 @@ InGame::InGame(Game *game, string name)
             config::input_data::mouseSensitivityX = std::atof(arguments[1].c_str());
             config::input_data::mouseSensitivityY = std::atof(arguments[2].c_str());
         } else if (command == loadChunks) {
+
             // TODO Error handeling here...
             if (!(arguments.size() >= 2)) {
                 m_terminal->addLine("To few arguments");
@@ -150,6 +151,8 @@ void InGame::update(float timePassed) {
         mouse.update();
         m_player.update(timePassed);
         m_timeCycle.update(timePassed);
+
+        ChunkBatcher::getInstance().setSunStrenght(m_timeCycle.getSunStrenght());
 
         SpriteBatcher::getInstance().addBatch(m_crossHair);
 
