@@ -296,7 +296,6 @@ MainMenu::MainMenu(Game *game)
 	// ########################################################################
 
 	m_activeWidgetGroup = m_mainWidgetGroup;
-
 }
 
 // ########################################################
@@ -316,6 +315,8 @@ void MainMenu::update(float timePassed) {
 	m_title->draw();
 	m_activeWidgetGroup->draw();
 
+	glm::vec3 skyColor = config::graphics_data::skyColor;
+	glClearColor(skyColor.x, skyColor.y, skyColor.z, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	graphics::SpriteBatcher::getInstance().draw();
 }

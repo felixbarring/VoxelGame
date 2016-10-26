@@ -42,7 +42,7 @@ ChunkBatcher::ChunkBatcher()
 
             "void main(){ \n"
             "  texCoord = vec3(texCoordIn.x, texCoordIn.y, texCoordIn.z); \n"
-            "  lightValue = positionIn.w * sunStrenght; // / 16; \n"
+            "  lightValue = (positionIn.w / 16) * sunStrenght; \n"
             "  faceNormal = normalIn; \n"
 
             "  vec4 positionView = modelView * vec4(positionIn.xyz, 1); \n"
@@ -55,8 +55,6 @@ ChunkBatcher::ChunkBatcher()
     const char *fragment =
             "#version 330 core \n"
 
-            "const vec3 fogColor = vec3(0.47f, 0.76f, 0.93f); \n"
-
             "in vec3 texCoord; \n"
             "in float lightValue; \n"
             "in float fogFactor; \n"
@@ -68,6 +66,7 @@ ChunkBatcher::ChunkBatcher()
             "out vec4 color; \n"
 
             "uniform vec3 lightDirection; \n"
+            "uniform vec3 fogColor; \n"
 
             "uniform vec3 diffuseLight = vec3(0.5, 0.5, 0.5); \n"
             "uniform vec3 materialDiffuse = vec3(0.5, 0.5, 0.5); \n"
@@ -123,8 +122,9 @@ float x = 1.0;
 int direction = 1;
 
 void ChunkBatcher::draw() {
-    // Done on the main thread because the thread doing opengl calls needs an opengl context, which the main
-    // thread does.
+
+    // Done on the main thread because the thread doing opengl
+    // calls needs an opengl context, which the main thread does.
     lock_guard<mutex> lock(m_mutex);
 
     // TODO Consider only adding/removing each n frame, to make it smoother/ better fps
@@ -161,6 +161,12 @@ void ChunkBatcher::draw() {
 
     m_program->setUniform3f("lightDirection", x, 3.0, 0.3);
     m_program->setUniform1f("sunStrenght", m_sunStrength);
+
+    glm::vec3 dark{0,0,0};
+    glm::vec3 skyColor = config::graphics_data::skyColor;
+    skyColor = glm::mix(dark, skyColor, m_sunStrength);
+    glClearColor(skyColor.x, skyColor.y, skyColor.z, 1.0f);
+    m_program->setUniform3f("fogColor", skyColor.x, skyColor.y, skyColor.z);
 
     Camera &camera = Camera::getInstance();
 

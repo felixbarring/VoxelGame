@@ -147,7 +147,6 @@ void Game::run() {
         cout << "Failed to initialize GLEW\n";
 
     glm::vec3 skyColor = config::graphics_data::skyColor;
-    glClearColor(skyColor.x, skyColor.y, skyColor.z, 1.0f);
     glViewport(0, 0, WIDTH, HEIGHT);
 
     m_mainMenu.reset(new MainMenu(this));

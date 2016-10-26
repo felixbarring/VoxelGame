@@ -73,7 +73,8 @@ InGame::InGame(Game *game, string name)
     string turnOfMusic = "turnOfMusic";
     string setMouseSensitivity = "setMouseSensitivity";
     string loadChunks = "loadChunks";
-    vector<string> commands = {close, flyMode, gravityMode, turnOfMusic, setMouseSensitivity, loadChunks};
+    string setTime = "setTime";
+    vector<string> commands{close, flyMode, gravityMode, turnOfMusic, setMouseSensitivity, loadChunks, setTime};
 
     // The first string in the vector should be the command, followed by arguments.
     auto func = [=](vector<string> arguments)
@@ -111,6 +112,11 @@ InGame::InGame(Game *game, string name)
                 ChunkManager::getInstance().loadWorldWhenDecentered(false);
             else
                 ChunkManager::getInstance().loadWorldWhenDecentered();
+        } else if (command == setTime) {
+            float time = std::atof(arguments[1].c_str());
+
+            std::cout << time << "\n";
+            m_timeCycle.setTime(time);
         } else {
             m_terminal->addLine("Unknown command: " + command);
         }
@@ -152,7 +158,8 @@ void InGame::update(float timePassed) {
         m_player.update(timePassed);
         m_timeCycle.update(timePassed);
 
-        ChunkBatcher::getInstance().setSunStrenght(m_timeCycle.getSunStrenght());
+        float sunStrenght{m_timeCycle.getSunStrenght()};
+        ChunkBatcher::getInstance().setSunStrenght(sunStrenght);
 
         SpriteBatcher::getInstance().addBatch(m_crossHair);
 

@@ -60,6 +60,10 @@ public:
      */
     void draw();
 
+    /**
+     *
+     * @param value
+     */
     void setSunStrenght(float value);
 
 // ########################################################
@@ -69,7 +73,7 @@ public:
     int m_idCounter{0};
     std::map<int, std::shared_ptr<GraphicalChunk>> m_batches{};
 
-    float m_sunStrength{1.0 / 64.0};
+    float m_sunStrength{1};
 
     std::mutex m_mutex{};
     std::vector<std::pair<int, std::shared_ptr<GraphicalChunk>>> m_batchesToBeAdded{};
