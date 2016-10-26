@@ -17,18 +17,21 @@ void TimeCycle::update(float timePassed) {
 
     std::cout << m_time << "\n";
     float pi{3.14};
-    float maxLightValue{1.0 / 16.0};
-    float offset{maxLightValue / 5.0};
 
-
-    auto sinVal = glm::sin((2  * 3.14 / s_dayLength) * m_time);
-    m_sunStrength = std::max(sinVal * maxLightValue, 1.0 / (16.0 * 15));
-
-//    graphics::ChunkBatcher::getInstance().setSunStrenght(0.0f);
+    float sinVal = glm::sin((2  * pi / s_dayLength) * m_time);
+    m_sunStrength = std::max(sinVal, 1.0f / (15.0f));
 }
 
 void TimeCycle::setTime(float time) {
     m_time = time;
+}
+
+void TimeCycle::stopCycle() {
+
+}
+
+void TimeCycle::resumeCycle() {
+
 }
 
 float TimeCycle::getSunStrenght() {

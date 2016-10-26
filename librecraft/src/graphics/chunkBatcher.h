@@ -60,6 +60,10 @@ public:
      */
     void draw();
 
+    /**
+     *
+     * @param value
+     */
     void setSunStrenght(float value);
 
 // ########################################################
