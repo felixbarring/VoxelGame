@@ -162,8 +162,8 @@ void ChunkBatcher::draw() {
     m_program->setUniform3f("lightDirection", x, 3.0, 0.3);
     m_program->setUniform1f("sunStrenght", m_sunStrength);
 
-    glm::vec3 dark{0,0,0};
     glm::vec3 skyColor = config::graphics_data::skyColor;
+    glm::vec3 dark{0,0,0};
     skyColor = glm::mix(dark, skyColor, m_sunStrength);
     glClearColor(skyColor.x, skyColor.y, skyColor.z, 1.0f);
     m_program->setUniform3f("fogColor", skyColor.x, skyColor.y, skyColor.z);
