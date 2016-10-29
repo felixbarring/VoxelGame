@@ -77,8 +77,9 @@ InGame::InGame(Game *game, string name)
     string stopTime = "stopTime";
     string resumeTime = "resumeTime";
     string setDayLenght = "setDayLenght";
+    string printDebugInfo = "printDebugInfo";
     vector<string> commands{close, flyMode, gravityMode, turnOfMusic, setMouseSensitivity, loadChunks, setTime,
-                            stopTime, resumeTime, setDayLenght};
+                            stopTime, resumeTime, setDayLenght, printDebugInfo};
 
     // The first string in the vector should be the command, followed by arguments.
     auto func = [=](vector<string> arguments)
@@ -128,6 +129,10 @@ InGame::InGame(Game *game, string name)
             // TODO Error handeling here...
             float dayLenght = std::atof(arguments[1].c_str());
             m_timeCycle.setDayLenght(dayLenght);
+        } else if (command == printDebugInfo) {
+            // TODO Error handeling here...
+            float argumentValue = std::atof(arguments[1].c_str());
+                m_displayDebugInfo = argumentValue > 0;
         } else {
             m_terminal->addLine("Unknown command: " + command);
         }
@@ -175,39 +180,41 @@ void InGame::update(float timePassed) {
 
         float sunStrenght{m_timeCycle.getSunStrenght()};
         ChunkBatcher::getInstance().setSunStrenght(sunStrenght);
-
         SpriteBatcher::getInstance().addBatch(m_crossHair);
 
-        auto &res = Resources::getInstance();
-        FontMeshBuilder &fontMeshBuilder = res.getFontMeshBuilder(font_data::fontLayout, font_data::fontAtlasWidth,
-                font_data::fontAtlasHeight);
+        if (m_displayDebugInfo) {
+            auto &res = Resources::getInstance();
+            FontMeshBuilder &fontMeshBuilder = res.getFontMeshBuilder(font_data::fontLayout, font_data::fontAtlasWidth,
+                    font_data::fontAtlasHeight);
 
-        vec3 dir = m_player.getViewingDirection();
-        string derp = "View direction: " + to_string(dir.x) + ", " + to_string(dir.y) + ", " + to_string(dir.z);
+            vec3 dir = m_player.getViewingDirection();
+            string derp = "View direction: " + to_string(dir.x) + ", " + to_string(dir.y) + ", " + to_string(dir.z);
 
-        m_direction.reset(new Sprite(0, 20, 10, fontMeshBuilder.buldMeshForString(derp, 20),
+            m_direction.reset(new Sprite(0, 20, 10, fontMeshBuilder.buldMeshForString(derp, 20),
+                            res.getTexture(config::font_data::font)));
+
+            // Updating the fps every frame makes it unreadable
+            m_fpsDisplayCounter += timePassed;
+            if (m_fpsDisplayCounter > m_fpsDisplayDelay) {
+                m_fps.reset(new Sprite(0, 45, 10, fontMeshBuilder.buldMeshForString("FPS: " +
+                        to_string(util::FPSManager::getFps()) + " Frame Time = " + to_string(
+                                util::FPSManager::frameTime()), 20),
+                                res.getTexture(config::font_data::font)));
+
+                m_fpsDisplayCounter = 0;
+            }
+
+            vec3 ses = m_player.getLastSelectedCube();
+            string soos = "Last Selected: " + to_string(ses.x) + ", " + to_string(ses.y) + ", " + to_string(ses.z);
+            m_lastSelecteCube.reset(new Sprite(0, 70, 10, fontMeshBuilder.buldMeshForString(soos, 20),
                         res.getTexture(config::font_data::font)));
 
-        // Updating the fps every frame makes it unreadable
-        m_fpsDisplayCounter += timePassed;
-        if (m_fpsDisplayCounter > m_fpsDisplayDelay) {
-            m_fps.reset(new Sprite(0, 45, 10, fontMeshBuilder.buldMeshForString("FPS: " +
-                    to_string(util::FPSManager::getFps()) + " Frame Time = " + to_string(util::FPSManager::frameTime()), 20),
-                    res.getTexture(config::font_data::font)));
+            SpriteBatcher::getInstance().addBatch(m_direction);
+            SpriteBatcher::getInstance().addBatch(m_fps);
+            SpriteBatcher::getInstance().addBatch(m_lastSelecteCube);
 
-            m_fpsDisplayCounter = 0;
+            SpriteBatcher::getInstance().addBatch(m_selectedCubeThumbnails[m_player.getBuildingCube()]);
         }
-
-        vec3 ses = m_player.getLastSelectedCube();
-        string soos = "Last Selected: " + to_string(ses.x) + ", " + to_string(ses.y) + ", " + to_string(ses.z);
-        m_lastSelecteCube.reset(new Sprite(0, 70, 10, fontMeshBuilder.buldMeshForString(soos, 20),
-                    res.getTexture(config::font_data::font)));
-
-        SpriteBatcher::getInstance().addBatch(m_direction);
-        SpriteBatcher::getInstance().addBatch(m_fps);
-        SpriteBatcher::getInstance().addBatch(m_lastSelecteCube);
-
-        SpriteBatcher::getInstance().addBatch(m_selectedCubeThumbnails[m_player.getBuildingCube()]);
 
     } else {
         mouse.unlock();

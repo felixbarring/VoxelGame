@@ -57,6 +57,8 @@ private:
 
 	TimeCycle m_timeCycle;
 
+	bool m_displayDebugInfo{false};
+
 	double m_fpsDisplayCounter{0};
 	double m_fpsDisplayDelay{1.0 / 5.0}; // The fps should only be drawn 5 times/second
 
