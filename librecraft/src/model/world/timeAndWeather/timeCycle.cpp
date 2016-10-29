@@ -19,7 +19,9 @@ void TimeCycle::update(float timePassed) {
         m_time = 0;
 
     static constexpr float pi{3.14};
-    float sinVal = glm::sin((2  * pi / m_dayLength) * m_time);
+    float magicNumber = 0.2; // bigger value makes the day longer and night shorter.
+    float sinVal = magicNumber + glm::sin((2  * pi / m_dayLength) * m_time);
+    if (sinVal > 1) sinVal = 1;
     m_sunStrength = std::max(sinVal, 1.0f / (15.0f));
 }
 
