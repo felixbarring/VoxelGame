@@ -77,6 +77,7 @@ public:
     double mouseVirtualAdjustedY{0.0};
 
     bool escapeKeyPressed{false};
+    bool escapeKeyActive{false};
 
     bool openTerminalPressed{false};
     bool openTerminalActive{false};

@@ -21,6 +21,8 @@ public:
 
     void resumeCycle();
 
+    void setDayLenght(float value);
+
     /**
      *Returns the sunlight strength that was computed in the update function.
      *
@@ -35,7 +37,7 @@ public:
 private:
 
     bool m_paused{false};
-    float s_dayLength{300};
+    float m_dayLength{300};
     float m_time;
 
     float m_sunStrength{};

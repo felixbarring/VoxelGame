@@ -54,6 +54,8 @@ void Input::updateValues() {
     upPressed = sf::Keyboard::isKeyPressed(up) && !upActive;
     downPressed = sf::Keyboard::isKeyPressed(down) && !downActive;
 
+    escapeKeyPressed = sf::Keyboard::isKeyPressed(escape) && !escapeKeyActive;
+
     // Mouse
     action1Pressed = sf::Mouse::isButtonPressed(action1Button) && !action1Active;
     action2Pressed = sf::Mouse::isButtonPressed(action2Button) && !action2Active;
@@ -75,11 +77,11 @@ void Input::updateValues() {
     upActive = sf::Keyboard::isKeyPressed(up);
     downActive = sf::Keyboard::isKeyPressed(down);
 
+    escapeKeyActive = sf::Keyboard::isKeyPressed(escape);
+
 	// Mouse
 	action1Active = sf::Mouse::isButtonPressed(action1Button);
 	action2Active = sf::Mouse::isButtonPressed(action2Button);
-
-	escapeKeyPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Escape);
 
     if (mouseLocked) {
         auto ve = sf::Mouse::getPosition(*m_window);

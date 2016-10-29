@@ -15,11 +15,11 @@ void TimeCycle::update(float timePassed) {
 
     m_time += timePassed;
 
-    if (m_time > s_dayLength)
+    if (m_time > m_dayLength)
         m_time = 0;
 
     static constexpr float pi{3.14};
-    float sinVal = glm::sin((2  * pi / s_dayLength) * m_time);
+    float sinVal = glm::sin((2  * pi / m_dayLength) * m_time);
     m_sunStrength = std::max(sinVal, 1.0f / (15.0f));
 }
 
@@ -34,6 +34,10 @@ void TimeCycle::stopCycle() {
 void TimeCycle::resumeCycle() {
     m_paused = false;
 
+}
+
+void TimeCycle::setDayLenght(float value) {
+    m_dayLength = value;
 }
 
 float TimeCycle::getSunStrenght() {

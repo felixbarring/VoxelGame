@@ -128,6 +128,8 @@ namespace config {
         static sf::Keyboard::Key up = sf::Keyboard::Up;
         static sf::Keyboard::Key down = sf::Keyboard::Down;
 
+        static sf::Keyboard::Key escape = sf::Keyboard::Escape;
+
         // Mouse ########################################################
         static sf::Mouse::Button action1Button = sf::Mouse::Left;
         static sf::Mouse::Button action2Button = sf::Mouse::Right;

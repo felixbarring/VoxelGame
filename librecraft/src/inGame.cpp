@@ -74,7 +74,11 @@ InGame::InGame(Game *game, string name)
     string setMouseSensitivity = "setMouseSensitivity";
     string loadChunks = "loadChunks";
     string setTime = "setTime";
-    vector<string> commands{close, flyMode, gravityMode, turnOfMusic, setMouseSensitivity, loadChunks, setTime};
+    string stopTime = "stopTime";
+    string resumeTime = "resumeTime";
+    string setDayLenght = "setDayLenght";
+    vector<string> commands{close, flyMode, gravityMode, turnOfMusic, setMouseSensitivity, loadChunks, setTime,
+                            stopTime, resumeTime, setDayLenght};
 
     // The first string in the vector should be the command, followed by arguments.
     auto func = [=](vector<string> arguments)
@@ -113,10 +117,17 @@ InGame::InGame(Game *game, string name)
             else
                 ChunkManager::getInstance().loadWorldWhenDecentered();
         } else if (command == setTime) {
+            // TODO Error handeling here...
             float time = std::atof(arguments[1].c_str());
-
-            std::cout << time << "\n";
             m_timeCycle.setTime(time);
+        } else if (command == stopTime) {
+            m_timeCycle.stopCycle();
+        } else if (command == resumeTime) {
+            m_timeCycle.resumeCycle();
+        } else if (command == setDayLenght) {
+            // TODO Error handeling here...
+            float dayLenght = std::atof(arguments[1].c_str());
+            m_timeCycle.setDayLenght(dayLenght);
         } else {
             m_terminal->addLine("Unknown command: " + command);
         }
@@ -148,8 +159,12 @@ void InGame::update(float timePassed) {
     if (input->openTerminalPressed)
         m_state = GameState::Terminal;
 
-    if (input->escapeKeyPressed)
-        m_state = GameState::OverlayMenu;
+    if (input->escapeKeyPressed) {
+        if (m_state == GameState::Terminal)
+            m_state = GameState::NoOverlay;
+        else
+            m_state = GameState::OverlayMenu;
+    }
 
     if (m_state == GameState::NoOverlay) {
         mouse.lock();
