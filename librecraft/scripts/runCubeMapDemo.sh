@@ -1,4 +1,4 @@
 
-cd ../build
-./VoxelGame cubeMapDemo
-cd ../scripts
+cd ..
+./build/VoxelGame cubeMapDemo
+cd scripts

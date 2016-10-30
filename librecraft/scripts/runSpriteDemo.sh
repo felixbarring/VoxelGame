@@ -1,3 +1,3 @@
-cd ../build
-./VoxelGame spriteDemo
-cd ../scripts
+cd ..
+./build/VoxelGame spriteDemo
+cd ..

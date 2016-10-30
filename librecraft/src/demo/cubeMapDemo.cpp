@@ -58,8 +58,8 @@ void CubeMapDemo::runDemo() {
 	glViewport(0, 0, WIDTH, HEIGHT);
 	glClearColor(0.2f, 0.22f, 0.2f, 1.0f);
 
-	glEnable(GL_DEPTH_TEST);
-	glDepthFunc(GL_LESS);
+//	glEnable(GL_DEPTH_TEST);
+//	glDepthFunc(GL_LESS);
 
 	graphics::Camera &camera = graphics::Camera::getInstance();
 
@@ -74,7 +74,7 @@ void CubeMapDemo::runDemo() {
 					config::cube_map_data::cubeMap1Width,
 					config::cube_map_data::cubeMap1Height);
 
-	graphics::CubeMap skybox {texture};
+	graphics::CubeMap skybox{texture};
 
 	float screenCenterX = WIDTH / 2;
 	float screenCenterY = HEIGHT / 2;
@@ -85,20 +85,19 @@ void CubeMapDemo::runDemo() {
 
 		fpsManager.frameStart();
 
-		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+//		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glDepthFunc(GL_LEQUAL);
+//		glDepthFunc(GL_LEQUAL);
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		Input::getInstance()->updateValues();
 
 		if (Input::getInstance()->escapeKeyPressed)
 			window.close();
 
-		viewDirection.changeViewDirection(
-				Input::getInstance()->mouseXMovement,
-				Input::getInstance()->mouseYMovement);
-		camera.updateView(glm::vec3(0, 0, 0), viewDirection.getViewDirection(),
-				viewDirection.getUpDirection());
+		viewDirection.changeViewDirection(Input::getInstance()->mouseXMovement, Input::getInstance()->mouseYMovement);
+		camera.updateView(glm::vec3(0, 0, 0), viewDirection.getViewDirection(), viewDirection.getUpDirection());
 
 		skybox.render();
 

@@ -1,4 +1,4 @@
-cd ../build
-./VoxelGame fontDemo
-cd ../scripts
+cd ..
+./build/VoxelGame fontDemo
+cd ..
 

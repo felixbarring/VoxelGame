@@ -1,3 +1,3 @@
-cd ../build
-./VoxelGame textureArrayDemo
-cd ../scripts
+cd ..
+./build/VoxelGame textureArrayDemo
+cd ..

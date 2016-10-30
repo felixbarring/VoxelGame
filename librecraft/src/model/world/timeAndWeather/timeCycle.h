@@ -38,7 +38,7 @@ private:
 
     bool m_paused{false};
     float m_dayLength{300};
-    float m_time;
+    float m_time{m_dayLength / 4};
 
     float m_sunStrength{};
 };

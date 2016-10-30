@@ -39,7 +39,7 @@ TextureCubeMap& Resources::getTextureCubeMap(string &right, string &left,
     auto it = textureCubeMaps.find(right);
 
     if (it == textureCubeMaps.end())
-        textureCubeMaps.insert(make_pair(right, TextureCubeMap { right.c_str(), left.c_str(),
+        textureCubeMaps.insert(make_pair(right, TextureCubeMap{right.c_str(), left.c_str(),
                         top.c_str(), bottom.c_str(), back.c_str(), front.c_str(), width, height }));
 
     return textureCubeMaps.at(right);
