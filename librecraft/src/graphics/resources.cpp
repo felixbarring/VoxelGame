@@ -33,8 +33,8 @@ TextureArray& Resources::getTextureArray(const vector<string> &textures, int wid
     return textureArraysMap.at(textures.at(0));
 }
 
-TextureCubeMap& Resources::getTextureCubeMap(string &right, string &left,
-		string &top, string &bottom, string &back, string &front, int width, int height) {
+TextureCubeMap& Resources::getTextureCubeMap(string &right, string &left, string &top, string &bottom, string &back,
+        string &front, int width, int height) {
 
     auto it = textureCubeMaps.find(right);
 
@@ -45,8 +45,7 @@ TextureCubeMap& Resources::getTextureCubeMap(string &right, string &left,
     return textureCubeMaps.at(right);
 }
 
-FontMeshBuilder& Resources::getFontMeshBuilder(string &pathToLayout,
-		int atlasWidth, int atlasHeight) {
+FontMeshBuilder& Resources::getFontMeshBuilder(string &pathToLayout, int atlasWidth, int atlasHeight) {
     auto it = fontMeshBuilders.find(pathToLayout);
 
     if (it == fontMeshBuilders.end())
@@ -54,6 +53,6 @@ FontMeshBuilder& Resources::getFontMeshBuilder(string &pathToLayout,
                 pathToLayout, atlasWidth, atlasHeight }));
 
     return fontMeshBuilders.at(pathToLayout);
-    }
+}
 
 } /* namespace graphics */

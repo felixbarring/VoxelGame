@@ -51,6 +51,8 @@ private:
 	std::shared_ptr<gui::Terminal> m_terminal;
 	glm::mat4 m_virtualProjection;
 
+	std::shared_ptr<graphics::CubeMap> m_skyBox;
+
 	Game *m_game;
 	std::string m_name;
 	entity::Player m_player;

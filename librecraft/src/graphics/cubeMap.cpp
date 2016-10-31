@@ -119,6 +119,9 @@ void CubeMap::render() {
 
     skyboxShader.bind();
 
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
     glm::mat4 view = glm::mat4(glm::mat3(graphics::Camera::getInstance().getViewMatrix()));
     skyboxShader.setUniformMatrix4f("view", view);
     skyboxShader.setUniformMatrix4f("projection", graphics::Camera::getInstance().getProjectionMatrix());
