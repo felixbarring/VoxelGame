@@ -43,6 +43,12 @@ public:
 
     void draw();
 
+    /**
+     *
+     * @param value
+     */
+    void setSunStrenght(float value);
+
 // ########################################################
 // Instance Variables #####################################
 // ########################################################
@@ -61,11 +67,13 @@ private:
         int m_lightValue;
     };
 
-    std::vector<Batch> batches;
-    std::vector<TexturedCube> cubes;
+    std::vector<Batch> m_batches;
+    std::vector<TexturedCube> m_cubes;
 
-    std::shared_ptr<ShaderProgram> program;
-    texture::TextureArray &texture;
+    float m_sunStrength{1.0};
+
+    std::shared_ptr<ShaderProgram> m_program;
+    texture::TextureArray &m_texture;
 
 };
 

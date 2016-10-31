@@ -194,6 +194,7 @@ void InGame::update(float timePassed) {
 
         float sunStrenght{m_timeCycle.getSunStrenght()};
         ChunkBatcher::getInstance().setSunStrenght(sunStrenght);
+        CubeBatcher::getInstance().setSunStrenght(sunStrenght);
         SpriteBatcher::getInstance().addBatch(m_crossHair);
 
         auto &res = Resources::getInstance();

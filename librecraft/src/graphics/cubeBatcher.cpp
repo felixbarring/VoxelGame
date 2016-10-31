@@ -15,7 +15,7 @@ namespace graphics {
 // ########################################################
 
 CubeBatcher::CubeBatcher()
-    : texture(
+    : m_texture(
             graphics::Resources::getInstance().getTextureArray(
                     config::cube_data::textures,
                     config::cube_data::TEXTURE_WIDTH,
@@ -23,7 +23,7 @@ CubeBatcher::CubeBatcher()
 {
 
     for (int i = 0; i <= config::cube_data::LAST_CUBE + 1; i++) {
-        cubes.push_back(TexturedCube {2, 0, -1.0f, i});
+        m_cubes.push_back(TexturedCube {2, 0, -1.0f, i});
     }
 
 
@@ -65,7 +65,7 @@ CubeBatcher::CubeBatcher()
         std::pair<std::string, int>("texCoordIn", 2)
     };
 
-    program.reset(new ShaderProgram{vertex, fragment, attributesMap});
+    m_program.reset(new ShaderProgram{vertex, fragment, attributesMap});
 
 }
 
@@ -74,33 +74,37 @@ CubeBatcher::CubeBatcher()
 // ########################################################
 
 void CubeBatcher::addBatch(char type, Transform &transform, int lightValue) {
-    batches.push_back(Batch(cubes.at(type), transform, lightValue));
+    m_batches.push_back(Batch(m_cubes.at(type), transform, lightValue));
 }
 
 void CubeBatcher::draw() {
 
-    program->bind();
+    m_program->bind();
 
     glEnable (GL_CULL_FACE);
     glEnable(GL_DEPTH_TEST);
 
     glActiveTexture(GL_TEXTURE0);
-    program->setUniformli("texture1", 0);
-    texture.bind();
+    m_program->setUniformli("texture1", 0);
+    m_texture.bind();
 
     Camera& camera = Camera::getInstance();
 
-    for (auto b : batches) {
-        program->setUniform1f("lightValue", b.m_lightValue);
+    for (auto b : m_batches) {
+        m_program->setUniform1f("lightValue", b.m_lightValue);
 
         glm::mat4 modelView = camera.getViewMatrix() * b.m_transform.getMatrix();
         glm::mat4 modelViewProjection = camera.getProjectionMatrix() * modelView;
-        program->setUniformMatrix4f("modelViewProjection", modelViewProjection);
+        m_program->setUniformMatrix4f("modelViewProjection", modelViewProjection);
         b.m_cube.draw();
     }
 
-    program->unbind();
-    batches.clear();
+    m_program->unbind();
+    m_batches.clear();
+}
+
+void CubeBatcher::setSunStrenght(float value) {
+    m_sunStrength = value;
 }
 
 } /* namespace graphics */
