@@ -54,9 +54,6 @@ private:
 	std::shared_ptr<IGameState> m_currentState{};
 
 	bool m_changeStateToIngame{false};
-
-	ThreadPool m_threadPool{1};
-
 	bool m_quit{false};
 };
 

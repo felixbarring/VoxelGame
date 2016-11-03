@@ -27,13 +27,13 @@ public:
 // Constructor/Destructor #################################
 // ########################################################
 
-	InGame(Game *game, std::string name);
+    InGame(Game *game, std::string name);
 
 // ########################################################
 // Member Functions########################################
 // ########################################################
 
-	void update(float timePassed);
+    void update(float timePassed);
 
 // ########################################################
 // Implementation #########################################
@@ -41,36 +41,36 @@ public:
 
 private:
 
-	enum class GameState {
-		NoOverlay,
-		OverlayMenu,
-		Terminal
-	};
+    enum class GameState {
+        NoOverlay,
+        OverlayMenu,
+        Terminal
+    };
 
-	GameState m_state = GameState::NoOverlay;
-	std::shared_ptr<gui::Terminal> m_terminal;
-	glm::mat4 m_virtualProjection;
+    GameState m_state = GameState::NoOverlay;
+    std::shared_ptr<gui::Terminal> m_terminal;
+    glm::mat4 m_virtualProjection;
 
-	std::shared_ptr<graphics::CubeMap> m_skyBox;
+    std::shared_ptr<graphics::CubeMap> m_skyBox;
 
-	Game *m_game;
-	std::string m_name;
-	entity::Player m_player;
+    Game *m_game;
+    std::string m_name;
+    entity::Player m_player;
 
-	TimeCycle m_timeCycle;
+    TimeCycle m_timeCycle;
 
-	bool m_displayDebugInfo{false};
+    bool m_displayDebugInfo{false};
 
-	double m_fpsDisplayCounter{0};
-	double m_fpsDisplayDelay{1.0 / 5.0}; // The fps should only be drawn 5 times/second
+    double m_fpsDisplayCounter{0};
+    double m_fpsDisplayDelay{1.0 / 5.0}; // The fps should only be drawn 5 times/second
 
-	std::shared_ptr<widget::WidgetGroup> m_widgetGroup1;
-	std::shared_ptr<graphics::Sprite> m_crossHair;
-	std::shared_ptr<graphics::Sprite> m_direction;
-	std::shared_ptr<graphics::Sprite> m_fps;
-	std::shared_ptr<graphics::Sprite> m_lastSelecteCube;
+    std::shared_ptr<widget::WidgetGroup> m_widgetGroup1;
+    std::shared_ptr<graphics::Sprite> m_crossHair;
+    std::shared_ptr<graphics::Sprite> m_direction;
+    std::shared_ptr<graphics::Sprite> m_fps;
+    std::shared_ptr<graphics::Sprite> m_lastSelecteCube;
 
-	std::vector<std::shared_ptr<graphics::Sprite>> m_selectedCubeThumbnails;
+    std::vector<std::shared_ptr<graphics::Sprite>> m_selectedCubeThumbnails;
 
 };
 

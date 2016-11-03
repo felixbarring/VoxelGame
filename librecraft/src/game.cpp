@@ -28,8 +28,10 @@
 #include "graphics/fontMeshBuilder.h"
 #include "graphics/sprite.h"
 #include "graphics/resources.h"
+#include "ThreadPool.h"
 #include "util/checkSystem.h"
 #include "util/fpsManager.h"
+#include "util/globalResources.h"
 
 using graphics::ChunkBatcher;
 using graphics::CubeBatcher;
@@ -168,11 +170,8 @@ void Game::run() {
 }
 
 void Game::createWorld(string name) {
-
-    //util::SoundPlayer::getInstance().stopMusic();
-
     m_inGame.reset(new InGame(this, name));
-    auto future = m_threadPool.enqueue([name]
+    auto future = util::globalResources::g_threadPool.enqueue([name]
     {
         chunk::ChunkManager::getInstance().createWorld(name);
     }
