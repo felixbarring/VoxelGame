@@ -122,7 +122,7 @@ public:
 	/**
 	 * Uses the graphics::ChunkBatcher to update all the graphical representations of this Chunk that are dirty.
 	 */
-	void updateGraphics();
+	void updateGraphics(bool highPriority = false);
 
 	/**
 	 * @return The x location of the Chunk

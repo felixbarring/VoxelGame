@@ -46,7 +46,7 @@ public:
             std::vector<std::vector<std::vector<Voxel>>> *right,
             std::vector<std::vector<std::vector<Voxel>>> *left,
             std::vector<std::vector<std::vector<Voxel>>> *back,
-            std::vector<std::vector<std::vector<Voxel>>> *front);
+            std::vector<std::vector<std::vector<Voxel>>> *front, bool hightPriority = false);
 
     /**
      * This function is thread safe. When calling this function, the batch will not be removed until the draw function
@@ -77,6 +77,7 @@ public:
 
     std::mutex m_mutex{};
     std::vector<std::pair<int, std::shared_ptr<GraphicalChunk>>> m_batchesToBeAdded{};
+    std::vector<std::pair<int, std::shared_ptr<GraphicalChunk>>> m_batchesToBeAddedHighePriority{};
     std::vector<int> m_batchesToBeRemoved{};
 
     std::shared_ptr<ShaderProgram> m_program{};

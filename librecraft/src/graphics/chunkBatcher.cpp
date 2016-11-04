@@ -100,16 +100,22 @@ ChunkBatcher::ChunkBatcher()
 // ########################################################
 
 int ChunkBatcher::createBatch(float x, float y, float z,
-            vector<vector<vector<Voxel>>> &data,
-            vector<vector<vector<Voxel>>> *right,
-            vector<vector<vector<Voxel>>> *left,
-            vector<vector<vector<Voxel>>> *back,
-            vector<vector<vector<Voxel>>> *front) {
+    vector<vector<vector<Voxel>>> &data,
+    vector<vector<vector<Voxel>>> *right,
+    vector<vector<vector<Voxel>>> *left,
+    vector<vector<vector<Voxel>>> *back,
+    vector<vector<vector<Voxel>>> *front,
+    bool hightPriority) {
 
     auto batch = make_shared<GraphicalChunk>(x, y, z, data, right, left, back, front);
 
     lock_guard<mutex> lock(m_mutex);
-    m_batchesToBeAdded.push_back({++m_idCounter, batch});
+    if (hightPriority)
+        m_batchesToBeAddedHighePriority.push_back({++m_idCounter, batch});
+    else
+        m_batchesToBeAdded.push_back({++m_idCounter, batch});
+
+
     return m_idCounter;
 }
 
@@ -127,9 +133,16 @@ void ChunkBatcher::draw() {
     // calls needs an opengl context, which the main thread does.
     lock_guard<mutex> lock(m_mutex);
 
-    // TODO Consider only adding/removing each n frame, to make it smoother/ better fps
+    // Add all the batches that has high priority
+    while (!m_batchesToBeAddedHighePriority.empty()) {
+        auto batchIt = m_batchesToBeAddedHighePriority.begin();
+        batchIt->second->uploadData();
+        m_batches.emplace(batchIt->first, batchIt->second);
+        m_batchesToBeAddedHighePriority.erase(batchIt);
+    }
 
-    // Add all the batches that has been requested to be added.
+    // TODO Consider only adding/removing each n frame, to make it smoother/ better fps
+    // Add one of the batches that has been requested to be added.
     if (!m_batchesToBeAdded.empty()) {
         auto batchIt = m_batchesToBeAdded.begin();
         batchIt->second->uploadData();
@@ -137,7 +150,7 @@ void ChunkBatcher::draw() {
         m_batchesToBeAdded.erase(batchIt);
     }
 
-    // Remove all the batches that has been requested to be removed.
+    // Remove one of the batches that has been requested to be removed.
     if (!m_batchesToBeRemoved.empty()) {
         auto batch = m_batchesToBeRemoved.begin();
         auto batchIt = m_batches.find(*batch);
@@ -205,10 +218,8 @@ void ChunkBatcher::draw() {
 
         glm::mat4 modelView = camera.getViewMatrix() * batch.second->getTransform().getMatrix();
         glm::mat4 modelViewProjection = camera.getProjectionMatrix() * modelView;
-
         m_program->setUniformMatrix4f("modelViewProjection", modelViewProjection);
         m_program->setUniformMatrix4f("modelView", modelView);
-
         batch.second->drawTransparent();
     }
 
