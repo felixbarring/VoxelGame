@@ -100,26 +100,7 @@ ChunkBatcher::ChunkBatcher()
 // Member Functions########################################
 // ########################################################
 
-int ChunkBatcher::addNewBatch(
-    float x, float y, float z,
-    VoxelMatrix &data,
-    VoxelMatrix *right,
-    VoxelMatrix *left,
-    VoxelMatrix *back,
-    VoxelMatrix *front,
-    bool hightPriority) {
-
-    return replaceBatch(noRemove,
-                x, y, z,
-                data,
-                right,
-                left,
-                back,
-                front,
-                hightPriority);
-}
-
-int ChunkBatcher::replaceBatch(
+int ChunkBatcher::addBatch(
         int replaceId,
         float x, float y, float z,
         VoxelMatrix &data,
@@ -153,6 +134,8 @@ void ChunkBatcher::draw() {
     // calls needs an opengl context, which the main thread does.
 
     lock_guard<mutex> lock(m_mutex);
+
+    // TODO For some fucking reason the flickering chunk problem still remains wtf
 
     // Add all the batches that has high priority
     while (!m_batchesToBeAddedHighePriority.empty()) {

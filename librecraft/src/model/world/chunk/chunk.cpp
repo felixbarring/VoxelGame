@@ -190,7 +190,7 @@ void Chunk::updateGraphics(bool highPriority) {
         back = &(m_backNeighbor->m_cubes);
 
     for (auto i : m_dirtyRegions) {
-        auto derp = ChunkBatcher::getInstance().replaceBatch(
+        auto derp = ChunkBatcher::getInstance().addBatch(
                 m_graphicalChunksIds[i],
                 m_xLocation, i * GRAPHICAL_CHUNK_HEIGHT, m_zLocation,
                 m_cubes, right, left, back, front, highPriority);
