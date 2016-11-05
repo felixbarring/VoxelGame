@@ -32,6 +32,8 @@ private:
 
 public:
 
+    using VoxelMatrix = std::vector<std::vector<std::vector<Voxel>>>;
+
     static ChunkBatcher& getInstance() {
         static ChunkBatcher INSTANCE;
         return INSTANCE;
@@ -40,13 +42,49 @@ public:
     /**
      * It is important that the batch is created by the batcher because threading errors...
      * returns an id that can be used to remove the batch with in removeBatch
+     *
+     * @param x
+     * @param y
+     * @param z
+     * @param data
+     * @param right
+     * @param left
+     * @param back
+     * @param front
+     * @param hightPriority
+     * @return
      */
-    int createBatch(float x, float y, float z,
-            std::vector<std::vector<std::vector<Voxel>>> &data,
-            std::vector<std::vector<std::vector<Voxel>>> *right,
-            std::vector<std::vector<std::vector<Voxel>>> *left,
-            std::vector<std::vector<std::vector<Voxel>>> *back,
-            std::vector<std::vector<std::vector<Voxel>>> *front, bool hightPriority = false);
+    int addNewBatch(float x, float y, float z,
+            VoxelMatrix &data,
+            VoxelMatrix *right,
+            VoxelMatrix *left,
+            VoxelMatrix *back,
+            VoxelMatrix *front, bool hightPriority = false);
+
+    /**
+     * Replaces the batch with the id with a new batch.
+     * The new batch will be added in the same frame as the old one is replace to avoid flickering.
+     *
+     * @param id
+     * @param x
+     * @param y
+     * @param z
+     * @param data
+     * @param right
+     * @param left
+     * @param back
+     * @param front
+     * @param hightPriority
+     * @return
+     */
+    int replaceBatch(
+            int replaceId,
+            float x, float y, float z,
+            VoxelMatrix &data,
+            VoxelMatrix *right,
+            VoxelMatrix *left,
+            VoxelMatrix *back,
+            VoxelMatrix *front, bool hightPriority = false);
 
     /**
      * This function is thread safe. When calling this function, the batch will not be removed until the draw function
@@ -70,14 +108,20 @@ public:
 // Implementation #########################################
 // ########################################################
 
+private:
+
     int m_idCounter{0};
     std::map<int, std::shared_ptr<GraphicalChunk>> m_batches{};
 
     float m_sunStrength{1};
-
     std::mutex m_mutex{};
-    std::vector<std::pair<int, std::shared_ptr<GraphicalChunk>>> m_batchesToBeAdded{};
-    std::vector<std::pair<int, std::shared_ptr<GraphicalChunk>>> m_batchesToBeAddedHighePriority{};
+
+    using batches = std::vector<std::pair<int, std::shared_ptr<GraphicalChunk>>>;
+    batches m_batchesToBeAdded{};
+    batches m_batchesToBeAddedHighePriority{};
+
+    std::vector<std::tuple<int, int, std::shared_ptr<GraphicalChunk>>> m_replaceBatches{};
+
     std::vector<int> m_batchesToBeRemoved{};
 
     std::shared_ptr<ShaderProgram> m_program{};

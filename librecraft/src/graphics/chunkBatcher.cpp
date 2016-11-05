@@ -8,6 +8,7 @@
 #include "shaderProgram.h"
 
 using namespace std;
+using namespace glm;
 
 namespace graphics {
 
@@ -99,12 +100,12 @@ ChunkBatcher::ChunkBatcher()
 // Member Functions########################################
 // ########################################################
 
-int ChunkBatcher::createBatch(float x, float y, float z,
-    vector<vector<vector<Voxel>>> &data,
-    vector<vector<vector<Voxel>>> *right,
-    vector<vector<vector<Voxel>>> *left,
-    vector<vector<vector<Voxel>>> *back,
-    vector<vector<vector<Voxel>>> *front,
+int ChunkBatcher::addNewBatch(float x, float y, float z,
+    VoxelMatrix &data,
+    VoxelMatrix *right,
+    VoxelMatrix *left,
+    VoxelMatrix *back,
+    VoxelMatrix *front,
     bool hightPriority) {
 
     auto batch = make_shared<GraphicalChunk>(x, y, z, data, right, left, back, front);
@@ -115,6 +116,25 @@ int ChunkBatcher::createBatch(float x, float y, float z,
     else
         m_batchesToBeAdded.push_back({++m_idCounter, batch});
 
+    return m_idCounter;
+}
+
+int ChunkBatcher::replaceBatch(
+        int replaceId,
+        float x, float y, float z,
+        VoxelMatrix &data,
+        VoxelMatrix *right,
+        VoxelMatrix *left,
+        VoxelMatrix *back,
+        VoxelMatrix *front, bool hightPriority) {
+
+    auto batch = make_shared<GraphicalChunk>(x, y, z, data, right, left, back, front);
+
+    lock_guard<mutex> lock(m_mutex);
+    if (hightPriority)
+        m_replaceBatches.push_back({++m_idCounter, replaceId, batch});
+    else
+        m_replaceBatches.push_back({++m_idCounter, replaceId, batch});
 
     return m_idCounter;
 }
@@ -131,6 +151,7 @@ void ChunkBatcher::draw() {
 
     // Done on the main thread because the thread doing opengl
     // calls needs an opengl context, which the main thread does.
+
     lock_guard<mutex> lock(m_mutex);
 
     // Add all the batches that has high priority
@@ -141,7 +162,6 @@ void ChunkBatcher::draw() {
         m_batchesToBeAddedHighePriority.erase(batchIt);
     }
 
-    // TODO Consider only adding/removing each n frame, to make it smoother/ better fps
     // Add one of the batches that has been requested to be added.
     if (!m_batchesToBeAdded.empty()) {
         auto batchIt = m_batchesToBeAdded.begin();
@@ -150,8 +170,10 @@ void ChunkBatcher::draw() {
         m_batchesToBeAdded.erase(batchIt);
     }
 
+    // TODO Fix the replaces batches.
+
     // Remove one of the batches that has been requested to be removed.
-    if (!m_batchesToBeRemoved.empty()) {
+    while (!m_batchesToBeRemoved.empty()) {
         auto batch = m_batchesToBeRemoved.begin();
         auto batchIt = m_batches.find(*batch);
         if (batchIt != m_batches.end())
@@ -175,9 +197,9 @@ void ChunkBatcher::draw() {
     m_program->setUniform3f("lightDirection", x, 3.0, 0.3);
     m_program->setUniform1f("sunStrenght", m_sunStrength);
 
-    glm::vec3 skyColor = config::graphics_data::skyColor;
-    glm::vec3 dark{0,0,0};
-    skyColor = glm::mix(dark, skyColor, m_sunStrength);
+    vec3 skyColor = config::graphics_data::skyColor;
+    vec3 dark{0,0,0};
+    skyColor = mix(dark, skyColor, m_sunStrength);
     glClearColor(skyColor.x, skyColor.y, skyColor.z, 1.0f);
     m_program->setUniform3f("fogColor", skyColor.x, skyColor.y, skyColor.z);
 
@@ -186,13 +208,13 @@ void ChunkBatcher::draw() {
     int skippedChunks = 0;
 
     for (auto batch : m_batches) {
-        glm::mat4 modelView = camera.getViewMatrix() * batch.second->getTransform().getMatrix();
-        glm::mat4 modelViewProjection = camera.getProjectionMatrix() * modelView;
+        mat4 modelView = camera.getViewMatrix() * batch.second->getTransform().getMatrix();
+        mat4 modelViewProjection = camera.getProjectionMatrix() * modelView;
 
         // TODO Fix this so that no chunks get culled when they are actually vissible
     //		Frustum frustum{modelViewProjection};
     //		bool result = frustum.isCubeInFrustum(batch.second->getxLocation(), 0, batch.second->getzLocation(), 16, 128, 16);
-    ////		bool result = frustum.isSphereInFrustum(glm::vec3(batch.second->getxLocation() + 8, 64, batch.second->getzLocation() + 8), 100);
+    ////		bool result = frustum.isSphereInFrustum(vec3(batch.second->getxLocation() + 8, 64, batch.second->getzLocation() + 8), 100);
     //
     //		if (!result) {
     //			++skippedChunks;
@@ -205,19 +227,16 @@ void ChunkBatcher::draw() {
         batch.second->drawNoneTransparent();
     }
 
-    //	cout << "Time spent doing matrix multiplications = " << time << "\n";
-    //	cout << "Number of skipped chunks = " << skippedChunks << "\n";
-
     glDisable(GL_CULL_FACE);
 
+    // TODO Reuse matrixes
     // A second pass to draw the water/transparent stuffs
     for (auto batch : m_batches) {
-
         if (!batch.second->hasTransparent())
             continue;
 
-        glm::mat4 modelView = camera.getViewMatrix() * batch.second->getTransform().getMatrix();
-        glm::mat4 modelViewProjection = camera.getProjectionMatrix() * modelView;
+        mat4 modelView = camera.getViewMatrix() * batch.second->getTransform().getMatrix();
+        mat4 modelViewProjection = camera.getProjectionMatrix() * modelView;
         m_program->setUniformMatrix4f("modelViewProjection", modelViewProjection);
         m_program->setUniformMatrix4f("modelView", modelView);
         batch.second->drawTransparent();

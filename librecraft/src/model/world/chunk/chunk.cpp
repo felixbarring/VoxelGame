@@ -192,7 +192,7 @@ void Chunk::updateGraphics(bool highPriority) {
 
     for (auto i : m_dirtyRegions) {
         ChunkBatcher::getInstance().removeBatch((m_graphicalChunksIds[i]));
-        auto derp = ChunkBatcher::getInstance().createBatch(m_xLocation, i * GRAPHICAL_CHUNK_HEIGHT, m_zLocation,
+        auto derp = ChunkBatcher::getInstance().addNewBatch(m_xLocation, i * GRAPHICAL_CHUNK_HEIGHT, m_zLocation,
                 m_cubes, right, left, back, front, highPriority);
         m_graphicalChunksIds[i] = derp;
     }
