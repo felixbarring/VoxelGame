@@ -4,6 +4,7 @@
 #include <vector>
 #include <memory>
 #include <mutex>
+#include <tuple>
 
 #include "graphicalChunk.h"
 #include "camera.h"
@@ -116,11 +117,11 @@ private:
     float m_sunStrength{1};
     std::mutex m_mutex{};
 
-    using batches = std::vector<std::pair<int, std::shared_ptr<GraphicalChunk>>>;
+    static constexpr int noRemove{-1};
+
+    using batches = std::vector<std::tuple<int, int, std::shared_ptr<GraphicalChunk>>>;
     batches m_batchesToBeAdded{};
     batches m_batchesToBeAddedHighePriority{};
-
-    std::vector<std::tuple<int, int, std::shared_ptr<GraphicalChunk>>> m_replaceBatches{};
 
     std::vector<int> m_batchesToBeRemoved{};
 

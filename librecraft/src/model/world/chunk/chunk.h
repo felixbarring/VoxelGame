@@ -276,9 +276,7 @@ private:
 	const int m_depth = config::chunk_data::CHUNK_WIDTH_AND_DEPTH;
 
 	std::vector<glm::vec3> m_lightsToPropagate{};
-
 	std::vector<std::vector<std::vector<Voxel>>> m_cubes{};
-
 	std::vector<int> m_graphicalChunksIds{};
 
 	std::shared_ptr<Chunk> m_rightNeighbor{};

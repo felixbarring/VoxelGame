@@ -38,7 +38,6 @@ Chunk::Chunk(string worldName, int x, int z)
 }
 
 Chunk::~Chunk() {
-    //	cout << "Removing chunk " << m_xLocation << " " << m_zLocation << "\n";
     for (auto graphicalChunk : m_graphicalChunksIds)
         ChunkBatcher::getInstance().removeBatch(graphicalChunk);
 }
@@ -191,12 +190,13 @@ void Chunk::updateGraphics(bool highPriority) {
         back = &(m_backNeighbor->m_cubes);
 
     for (auto i : m_dirtyRegions) {
-        ChunkBatcher::getInstance().removeBatch((m_graphicalChunksIds[i]));
-        auto derp = ChunkBatcher::getInstance().addNewBatch(m_xLocation, i * GRAPHICAL_CHUNK_HEIGHT, m_zLocation,
+        auto derp = ChunkBatcher::getInstance().replaceBatch(
+                m_graphicalChunksIds[i],
+                m_xLocation, i * GRAPHICAL_CHUNK_HEIGHT, m_zLocation,
                 m_cubes, right, left, back, front, highPriority);
+
         m_graphicalChunksIds[i] = derp;
     }
-
     m_dirtyRegions.clear();
 }
 

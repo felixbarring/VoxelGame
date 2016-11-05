@@ -100,7 +100,8 @@ ChunkBatcher::ChunkBatcher()
 // Member Functions########################################
 // ########################################################
 
-int ChunkBatcher::addNewBatch(float x, float y, float z,
+int ChunkBatcher::addNewBatch(
+    float x, float y, float z,
     VoxelMatrix &data,
     VoxelMatrix *right,
     VoxelMatrix *left,
@@ -108,15 +109,14 @@ int ChunkBatcher::addNewBatch(float x, float y, float z,
     VoxelMatrix *front,
     bool hightPriority) {
 
-    auto batch = make_shared<GraphicalChunk>(x, y, z, data, right, left, back, front);
-
-    lock_guard<mutex> lock(m_mutex);
-    if (hightPriority)
-        m_batchesToBeAddedHighePriority.push_back({++m_idCounter, batch});
-    else
-        m_batchesToBeAdded.push_back({++m_idCounter, batch});
-
-    return m_idCounter;
+    return replaceBatch(noRemove,
+                x, y, z,
+                data,
+                right,
+                left,
+                back,
+                front,
+                hightPriority);
 }
 
 int ChunkBatcher::replaceBatch(
@@ -132,9 +132,9 @@ int ChunkBatcher::replaceBatch(
 
     lock_guard<mutex> lock(m_mutex);
     if (hightPriority)
-        m_replaceBatches.push_back({++m_idCounter, replaceId, batch});
+        m_batchesToBeAddedHighePriority.push_back(make_tuple(++m_idCounter, replaceId, batch));
     else
-        m_replaceBatches.push_back({++m_idCounter, replaceId, batch});
+        m_batchesToBeAdded.push_back(make_tuple(++m_idCounter, replaceId, batch));
 
     return m_idCounter;
 }
@@ -157,23 +157,37 @@ void ChunkBatcher::draw() {
     // Add all the batches that has high priority
     while (!m_batchesToBeAddedHighePriority.empty()) {
         auto batchIt = m_batchesToBeAddedHighePriority.begin();
-        batchIt->second->uploadData();
-        m_batches.emplace(batchIt->first, batchIt->second);
+        get<2>(*batchIt)->uploadData();
+        m_batches.emplace(get<0>(*batchIt), get<2>(*batchIt));
         m_batchesToBeAddedHighePriority.erase(batchIt);
+
+        auto removeId{get<1>(*batchIt)};
+        if (removeId == noRemove)
+            continue;
+
+        auto batchRemoveIt = m_batches.find(removeId);
+        if (batchRemoveIt != m_batches.end())
+            m_batches.erase(batchRemoveIt);
+
     }
 
     // Add one of the batches that has been requested to be added.
     if (!m_batchesToBeAdded.empty()) {
         auto batchIt = m_batchesToBeAdded.begin();
-        batchIt->second->uploadData();
-        m_batches.emplace(batchIt->first, batchIt->second);
+        get<2>(*batchIt)->uploadData();
+        m_batches.emplace(get<0>(*batchIt), get<2>(*batchIt));
         m_batchesToBeAdded.erase(batchIt);
+
+        auto removeId{get<1>(*batchIt)};
+        if (removeId != noRemove) {
+            auto batchRemoveIt = m_batches.find(removeId);
+            if (batchRemoveIt != m_batches.end())
+                m_batches.erase(batchRemoveIt);
+        }
     }
 
-    // TODO Fix the replaces batches.
-
     // Remove one of the batches that has been requested to be removed.
-    while (!m_batchesToBeRemoved.empty()) {
+    if (!m_batchesToBeRemoved.empty()) {
         auto batch = m_batchesToBeRemoved.begin();
         auto batchIt = m_batches.find(*batch);
         if (batchIt != m_batches.end())
