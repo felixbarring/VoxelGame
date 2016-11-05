@@ -63,6 +63,7 @@ ChunkBatcher::ChunkBatcher()
             "in vec3 faceNormal; \n"
 
             "uniform sampler2DArray texture1; \n"
+            "uniform float sunStrenght; \n"
 
             "out vec4 color; \n"
 
@@ -74,7 +75,7 @@ ChunkBatcher::ChunkBatcher()
 
             "vec3 calculateDiffuse() \n "
             "{ \n "
-            "  return diffuseLight * materialDiffuse * max(0, dot(faceNormal, normalize(lightDirection))); \n "
+            "  return sunStrenght * diffuseLight * materialDiffuse * max(0, dot(faceNormal, normalize(lightDirection))); \n "
             "} \n "
 
             "void main(){ \n"
@@ -113,9 +114,9 @@ int ChunkBatcher::addBatch(
 
     lock_guard<mutex> lock(m_mutex);
     if (hightPriority)
-        m_batchesToBeAddedHighePriority.push_back(make_tuple(++m_idCounter, replaceId, batch));
+        m_batchesToAddHP.push_back(make_tuple(++m_idCounter, replaceId, batch));
     else
-        m_batchesToBeAdded.push_back(make_tuple(++m_idCounter, replaceId, batch));
+        m_batchesToAdd.push_back(make_tuple(++m_idCounter, replaceId, batch));
 
     return m_idCounter;
 }
@@ -138,34 +139,27 @@ void ChunkBatcher::draw() {
     // TODO For some fucking reason the flickering chunk problem still remains wtf
 
     // Add all the batches that has high priority
-    while (!m_batchesToBeAddedHighePriority.empty()) {
-        auto batchIt = m_batchesToBeAddedHighePriority.begin();
+    while (!m_batchesToAddHP.empty()) {
+        auto batchIt = m_batchesToAddHP.begin();
         get<2>(*batchIt)->uploadData();
         m_batches.emplace(get<0>(*batchIt), get<2>(*batchIt));
-        m_batchesToBeAddedHighePriority.erase(batchIt);
+        m_batchesToAddHP.erase(batchIt);
 
         auto removeId{get<1>(*batchIt)};
-        if (removeId == noRemove)
-            continue;
-
-        auto batchRemoveIt = m_batches.find(removeId);
-        if (batchRemoveIt != m_batches.end())
-            m_batches.erase(batchRemoveIt);
-
+        if (removeId != noRemove)
+            m_batchesToBeRemoved.push_back(removeId);
     }
 
     // Add one of the batches that has been requested to be added.
-    if (!m_batchesToBeAdded.empty()) {
-        auto batchIt = m_batchesToBeAdded.begin();
+    if (!m_batchesToAdd.empty()) {
+        auto batchIt = m_batchesToAdd.begin();
         get<2>(*batchIt)->uploadData();
         m_batches.emplace(get<0>(*batchIt), get<2>(*batchIt));
-        m_batchesToBeAdded.erase(batchIt);
+        m_batchesToAdd.erase(batchIt);
 
         auto removeId{get<1>(*batchIt)};
         if (removeId != noRemove) {
-            auto batchRemoveIt = m_batches.find(removeId);
-            if (batchRemoveIt != m_batches.end())
-                m_batches.erase(batchRemoveIt);
+            m_batchesToBeRemoved.push_back(removeId);
         }
     }
 

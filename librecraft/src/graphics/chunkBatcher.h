@@ -147,8 +147,8 @@ private:
     static constexpr int noRemove{-1};
 
     using batches = std::vector<std::tuple<int, int, std::shared_ptr<GraphicalChunk>>>;
-    batches m_batchesToBeAdded{};
-    batches m_batchesToBeAddedHighePriority{};
+    batches m_batchesToAdd{};
+    batches m_batchesToAddHP{};
 
     std::vector<int> m_batchesToBeRemoved{};
 

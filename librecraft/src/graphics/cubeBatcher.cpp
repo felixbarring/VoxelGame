@@ -34,13 +34,18 @@ CubeBatcher::CubeBatcher()
         "in vec3 normalIn; \n"
         "in vec3 texCoordIn; \n"
 
+        "uniform float lightValue; \n"
+        "uniform float sunStrenght; \n"
+
         "uniform mat4 modelViewProjection; \n"
 
         "out vec3 faceNormal; \n"
         "out vec3 texCoord; \n"
+        "out float light; \n"
 
         "void main(){ \n"
         "  texCoord = vec3(texCoordIn.x, texCoordIn.y, texCoordIn.z); \n"
+        "  light = (lightValue / 16) * sunStrenght; \n"
         "  gl_Position =  modelViewProjection * vec4(positionIn, 1); \n"
         "} \n";
 
@@ -48,14 +53,14 @@ CubeBatcher::CubeBatcher()
         "#version 330 core \n"
 
         "in vec3 texCoord; \n"
+        "in float light; \n"
 
         "uniform sampler2DArray texture1; \n"
-        "uniform float lightValue; \n"
 
         "out vec4 color; \n"
 
         "void main(){ \n"
-        "  color = (lightValue / 16) * texture(texture1, texCoord); \n"
+        "  color = light * texture(texture1, texCoord); \n"
         "  color.w = 1.0; \n"
         "} \n";
 
@@ -88,10 +93,13 @@ void CubeBatcher::draw() {
     m_program->setUniformli("texture1", 0);
     m_texture.bind();
 
+    m_program->setUniform1f("sunStrenght", m_sunStrength);
+
     Camera& camera = Camera::getInstance();
 
     for (auto b : m_batches) {
         m_program->setUniform1f("lightValue", b.m_lightValue);
+
 
         glm::mat4 modelView = camera.getViewMatrix() * b.m_transform.getMatrix();
         glm::mat4 modelViewProjection = camera.getProjectionMatrix() * modelView;
