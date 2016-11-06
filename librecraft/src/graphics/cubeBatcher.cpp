@@ -100,7 +100,6 @@ void CubeBatcher::draw() {
     for (auto b : m_batches) {
         m_program->setUniform1f("lightValue", b.m_lightValue);
 
-
         glm::mat4 modelView = camera.getViewMatrix() * b.m_transform.getMatrix();
         glm::mat4 modelViewProjection = camera.getProjectionMatrix() * modelView;
         m_program->setUniformMatrix4f("modelViewProjection", modelViewProjection);

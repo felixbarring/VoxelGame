@@ -52,7 +52,7 @@ public:
      *
      * This class uses the singleton pattern.
      *
-     * @return Thes singleton instance of this class.
+     * @return The single instance of this class.
      */
     static ChunkBatcher& getInstance() {
         static ChunkBatcher INSTANCE;
@@ -63,21 +63,24 @@ public:
      *
      * \brief Creates a batch that will be used to render when calling draw.
      *
+     * The added batch will be rendered when calling the draw function. The batch will be used for rendering
+     * as long as the user does not call remove batch with the returned id, so a batch should only be added once.
+     *
      * It is important that the batch is created by the ChunkBatcher because only a thread with an opengl context
      * can upload data to the graphics card. The batch's data will be uploaded when calling the draw function.
      * By default the GraphicalChunk uploading will be spread out on several frames to make the workload on
      * the main thread more stable. If it is important that the change is visible immediately @highPriority should
      * be set to true. All batches with high priority will be uploaded the current frame.
      *
-     * If the batch replaces an existing batch, the old batch id should be
-     * provided so that the old batch can be removed in the same frame as the new one is added to avoid flickering
-     * where a batch is removed and a frame is drawn without any replacement batch. If there was no previous
-     * batch, -1 should be used to indicate that there is no previous batch to remove.
+     * If the batch replaces an existing batch, the old batch id should be provided so that the old batch can be
+     * removed in the same frame as the new one is added to avoid flickering where a batch is removed and a frame
+     * is drawn without any replacement batch. If there was no previous batch, -1 should be used to indicate that
+     * there is no previous batch to remove.
      *
      * This function is thread safe in that it can be called by several threads concurrently, but the voxeldata in the
-     * arguments should not be modified by another thread.
+     * arguments should not be modified or read by another thread.
      *
-     * Returns an id that can be used as a handle to remove the batch with.
+     * Returns an id that can be used as a handle to remove the batch with the removeBatch function.
      *
      * @param id The id of the batch that the new batch replaces. If there is no such batch, -1 should be provided.
      * @param x The x location of the batch.
@@ -154,7 +157,6 @@ private:
 
     std::shared_ptr<ShaderProgram> m_program{};
     texture::TextureArray &m_texture;
-
 };
 
 }
