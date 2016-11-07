@@ -137,6 +137,7 @@ void ChunkBatcher::draw() {
     lock_guard<mutex> lock(m_mutex);
 
     // TODO For some fucking reason the flickering chunk problem still remains wtf
+    // TODO Log if we for some reason can not find a chunk in the map when trying to remove it!
 
     // Add all the batches that has high priority
     while (!m_batchesToAddHP.empty()) {
@@ -146,8 +147,11 @@ void ChunkBatcher::draw() {
         m_batchesToAddHP.erase(batchIt);
 
         auto removeId{get<1>(*batchIt)};
-        if (removeId != noRemove)
-            m_batchesToBeRemoved.push_back(removeId);
+        if (removeId != noRemove) {
+            auto batchIt = m_batches.find(removeId);
+            if (batchIt != m_batches.end())
+                m_batches.erase(batchIt);
+        }
     }
 
     // Add one of the batches that has been requested to be added.
