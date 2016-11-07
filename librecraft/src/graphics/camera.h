@@ -24,6 +24,7 @@ private:
 
 public:
 
+    // TODO Remove the singleton pattern!1!
     static Camera& getInstance() {
         static Camera INSTANCE {0, 0, 0};
         return INSTANCE;
