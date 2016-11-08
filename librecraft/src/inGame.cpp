@@ -8,6 +8,7 @@
 #include "model/world/chunk/chunkManager.h"
 
 #include "config/data.h"
+#include "graphics/graphicsManager.h"
 #include "gui/mouse.h"
 #include "gui/terminal.h"
 #include "util/fpsManager.h"
@@ -193,8 +194,8 @@ void InGame::update(float timePassed) {
         m_timeCycle.update(timePassed);
 
         float sunStrenght{m_timeCycle.getSunStrenght()};
-        ChunkBatcher::getInstance().setSunStrenght(sunStrenght);
-        CubeBatcher::getInstance().setSunStrenght(sunStrenght);
+        graphics::GraphicsManager::getInstance().setSunStrenght(sunStrenght);
+
         SpriteBatcher::getInstance().addBatch(m_crossHair);
 
         auto &res = Resources::getInstance();

@@ -1,10 +1,15 @@
 
 #include "graphicsManager.h"
 
+#include "chunkBatcher.h"
+#include "cubeBatcher.h"
+
 namespace graphics {
 
-GraphicsManager::GraphicsManager() {
-
+void GraphicsManager::setSunStrenght(float value)
+{
+    ChunkBatcher::getInstance().setSunStrenght(value);
+    CubeBatcher::getInstance().setSunStrenght(value);
 }
 
 
