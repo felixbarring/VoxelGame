@@ -16,8 +16,9 @@ namespace graphics {
 // Constructor/Destructor #################################
 // ########################################################
 
-CubeMap::CubeMap(texture::TextureCubeMap &texture)
-        : texture {texture} {
+CubeMap::CubeMap(texture::TextureCubeMap &texture, Camera &camera)
+        : texture{texture},
+          m_camera{camera}{
 }
 
 // ########################################################
@@ -124,9 +125,9 @@ void CubeMap::render() {
 
 
     // TODO Implement
-//    glm::mat4 view = glm::mat4(glm::mat3(graphics::Camera::getInstance().getViewMatrix()));
-//    skyboxShader.setUniformMatrix4f("view", view);
-//    skyboxShader.setUniformMatrix4f("projection", graphics::Camera::getInstance().getProjectionMatrix());
+    glm::mat4 view = glm::mat4(glm::mat3(m_camera.getViewMatrix()));
+    skyboxShader.setUniformMatrix4f("view", view);
+    skyboxShader.setUniformMatrix4f("projection", m_camera.getProjectionMatrix());
     texture.bind();
     mesh.draw();
 

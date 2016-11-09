@@ -1,6 +1,7 @@
 
 #include "graphicsManager.h"
 
+#include "../graphics/resources.h"
 #include "chunkBatcher.h"
 #include "cubeBatcher.h"
 
@@ -10,18 +11,18 @@ GraphicsManager::GraphicsManager()
 {
     // TODO Fix skybox...
 
-//    texture::TextureCubeMap &texture =
-//            graphics::Resources::getInstance().getTextureCubeMap(
-//                    config::cube_map_data::cubeMap1[0],
-//                    config::cube_map_data::cubeMap1[1],
-//                    config::cube_map_data::cubeMap1[2],
-//                    config::cube_map_data::cubeMap1[3],
-//                    config::cube_map_data::cubeMap1[4],
-//                    config::cube_map_data::cubeMap1[5],
-//                    config::cube_map_data::cubeMap1Width,
-//                    config::cube_map_data::cubeMap1Height);
-//
-//    m_skyBox = std::make_shared<graphics::CubeMap>(texture);
+    texture::TextureCubeMap &texture =
+            graphics::Resources::getInstance().getTextureCubeMap(
+                    config::cube_map_data::cubeMap1[0],
+                    config::cube_map_data::cubeMap1[1],
+                    config::cube_map_data::cubeMap1[2],
+                    config::cube_map_data::cubeMap1[3],
+                    config::cube_map_data::cubeMap1[4],
+                    config::cube_map_data::cubeMap1[5],
+                    config::cube_map_data::cubeMap1Width,
+                    config::cube_map_data::cubeMap1Height);
+
+    m_skyBox = std::make_shared<graphics::CubeMap>(texture, m_playerCamera); // TODO should be some other camera...
 }
 
 void GraphicsManager::setSunStrenght(float value)

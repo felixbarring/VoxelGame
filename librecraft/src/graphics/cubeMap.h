@@ -13,8 +13,7 @@ public:
 // Constructor/Destructor #################################
 // ########################################################
 
-    CubeMap(texture::TextureCubeMap &texture);
-
+    CubeMap(texture::TextureCubeMap &texture, Camera &camera);
 
 // ########################################################
 // Member Functions########################################
@@ -25,9 +24,10 @@ public:
 // ########################################################
 // Instance Variables #####################################
 // ########################################################
+private:
 
     texture::TextureCubeMap texture;
-
+    Camera &m_camera;
 };
 
 }

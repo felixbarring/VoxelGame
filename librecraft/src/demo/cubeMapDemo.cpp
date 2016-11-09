@@ -78,7 +78,7 @@ void CubeMapDemo::runDemo() {
                     config::cube_map_data::cubeMap1Width,
                     config::cube_map_data::cubeMap1Height);
 
-    graphics::CubeMap skybox{texture};
+    graphics::CubeMap skybox{texture, camera};
 
     float screenCenterX = WIDTH / 2;
     float screenCenterY = HEIGHT / 2;

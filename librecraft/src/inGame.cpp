@@ -36,19 +36,6 @@ InGame::InGame(Game *game, string name)
     m_player.setLocation(chunk_data::NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * chunk_data::CHUNK_WIDTH_AND_DEPTH, 40.1,
                          chunk_data::NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * chunk_data::CHUNK_WIDTH_AND_DEPTH);
 
-    texture::TextureCubeMap &texture =
-            graphics::Resources::getInstance().getTextureCubeMap(
-                    config::cube_map_data::cubeMap1[0],
-                    config::cube_map_data::cubeMap1[1],
-                    config::cube_map_data::cubeMap1[2],
-                    config::cube_map_data::cubeMap1[3],
-                    config::cube_map_data::cubeMap1[4],
-                    config::cube_map_data::cubeMap1[5],
-                    config::cube_map_data::cubeMap1Width,
-                    config::cube_map_data::cubeMap1Height);
-
-    m_skyBox = std::make_shared<graphics::CubeMap>(texture);
-
     auto observer = [this, game](int id)
     {
         switch(id) {
@@ -251,8 +238,6 @@ void InGame::update(float timePassed) {
     chunk::ChunkManager::getInstance().update();
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    m_skyBox->render();
 
     GraphicsManager::getInstance().getChunkBatcher().draw();
     GraphicsManager::getInstance().getCubeBatcher().draw();
