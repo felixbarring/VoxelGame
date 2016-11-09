@@ -2,6 +2,11 @@
 #ifndef SRC_GRAPHICS_GRAPHICSMANAGER_H_
 #define SRC_GRAPHICS_GRAPHICSMANAGER_H_
 
+#include "../graphics/cubeMap.h"
+#include "camera.h"
+#include "chunkBatcher.h"
+#include "cubeBatcher.h"
+
 namespace graphics {
 
 // TODO More detailed description
@@ -10,12 +15,12 @@ namespace graphics {
  *
  */
 class GraphicsManager {
-
+private:
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
 
-    GraphicsManager() {};
+    GraphicsManager();
 
     GraphicsManager(GraphicsManager const&) = delete;
 
@@ -48,11 +53,40 @@ public:
      */
     void setSunStrenght(float value);
 
+    /**
+     * \brief Returns the camera that is used to render the world from the players perspective.
+     *
+     * @return The camera uses to render the world from the players perspective.
+     */
+    Camera& getPlayerCamer();
+
+    /**
+     *
+     * @return
+     */
+    ChunkBatcher& getChunkBatcher();
+
+    /**
+     *
+     * @return
+     */
+    CubeBatcher& getCubeBatcher();
+
 // ########################################################
 // Implementation #########################################
 // ########################################################
 
 private:
+
+    // TODO Make a default constructor with 0,0,0 position
+    Camera m_playerCamera{0,0,0};
+
+    // TODO Put the sprite batcher here as well, and remove the singletong pattern from it.
+
+    ChunkBatcher m_chunkBatcher{m_playerCamera};
+    CubeBatcher m_cubeBatcher{m_playerCamera};
+
+    std::shared_ptr<graphics::CubeMap> m_skyBox;
 
 };
 

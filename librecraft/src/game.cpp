@@ -29,6 +29,8 @@
 #include "graphics/sprite.h"
 #include "graphics/resources.h"
 #include "ThreadPool.h"
+
+#include "graphics/graphicsManager.h"
 #include "util/checkSystem.h"
 #include "util/fpsManager.h"
 #include "util/globalResources.h"
@@ -156,7 +158,8 @@ void Game::run() {
 
     // Load all graphics batchers somewhere else
     // Done here on the main thread to avoid thread issues.
-    ChunkBatcher::getInstance();
+    graphics::GraphicsManager::getInstance();
+
 
     // run the main loop
     while (!m_quit && window->isOpen()) {

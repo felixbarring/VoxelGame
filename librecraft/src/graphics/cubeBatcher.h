@@ -21,33 +21,17 @@ namespace graphics {
  *  remove batch function. The sunstrenght can be set to affect how bright color the batches will have.
  *  */
 class CubeBatcher {
-private:
+public:
 
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
 
-    CubeBatcher();
-
-    virtual ~CubeBatcher() { };
+    CubeBatcher(Camera &camera);
 
     CubeBatcher(CubeBatcher const&) = delete;
 
     void operator=(CubeBatcher const&) = delete;
-
-public:
-
-    /**
-     * \brief Returns the single instance of this class
-     *
-     * This class uses the singleton pattern.
-     *
-     * @return The single instance of this class.
-     */
-    static CubeBatcher& getInstance() {
-        static CubeBatcher INSTANCE;
-        return INSTANCE;
-    }
 
 // ########################################################
 // Member Functions########################################
@@ -94,6 +78,8 @@ private:
         Transform &m_transform;
         int m_lightValue;
     };
+
+    Camera &m_camera;
 
     std::vector<Batch> m_batches;
     std::vector<TexturedCube> m_cubes;

@@ -23,17 +23,15 @@ namespace graphics {
  * done on a thread that has an opengl context for in queues that the draw function will be responsible for
  * handling.
  *
- * This class uses the singleton pattern since there should only ever be one instance.
- *
  */
 class ChunkBatcher {
-private:
+public:
 
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
 
-    ChunkBatcher();
+    ChunkBatcher(Camera &camera);
 
     ChunkBatcher(ChunkBatcher const&) = delete;
 
@@ -43,21 +41,8 @@ private:
 // Member Functions########################################
 // ########################################################
 
-public:
 
     using VoxelMatrix = std::vector<std::vector<std::vector<Voxel>>>;
-
-    /**
-     * \brief Returns the single instance of this class
-     *
-     * This class uses the singleton pattern.
-     *
-     * @return The single instance of this class.
-     */
-    static ChunkBatcher& getInstance() {
-        static ChunkBatcher INSTANCE;
-        return INSTANCE;
-    }
 
     /**
      *
@@ -140,6 +125,8 @@ public:
 // ########################################################
 
 private:
+
+    Camera &m_camera;
 
     int m_idCounter{0};
     std::map<int, std::shared_ptr<GraphicalChunk>> m_batches{};

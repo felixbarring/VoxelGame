@@ -254,8 +254,8 @@ void InGame::update(float timePassed) {
 
     m_skyBox->render();
 
-    ChunkBatcher::getInstance().draw();
-    CubeBatcher::getInstance().draw();
+    GraphicsManager::getInstance().getChunkBatcher().draw();
+    GraphicsManager::getInstance().getCubeBatcher().draw();
     SpriteBatcher::getInstance().draw();
 
 

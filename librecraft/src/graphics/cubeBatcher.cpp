@@ -14,12 +14,13 @@ namespace graphics {
 // Constructor/Destructor #################################
 // ########################################################
 
-CubeBatcher::CubeBatcher()
+CubeBatcher::CubeBatcher(Camera &camera)
     : m_texture(
             graphics::Resources::getInstance().getTextureArray(
                     config::cube_data::textures,
                     config::cube_data::TEXTURE_WIDTH,
-                    config::cube_data::TEXTURE_HEIGHT))
+                    config::cube_data::TEXTURE_HEIGHT)),
+      m_camera(camera)
 {
 
     for (int i = 0; i <= config::cube_data::LAST_CUBE + 1; i++) {
@@ -95,13 +96,11 @@ void CubeBatcher::draw() {
 
     m_program->setUniform1f("sunStrenght", m_sunStrength);
 
-    Camera& camera = Camera::getInstance();
-
     for (auto b : m_batches) {
         m_program->setUniform1f("lightValue", b.m_lightValue);
 
-        glm::mat4 modelView = camera.getViewMatrix() * b.m_transform.getMatrix();
-        glm::mat4 modelViewProjection = camera.getProjectionMatrix() * modelView;
+        glm::mat4 modelView = m_camera.getViewMatrix() * b.m_transform.getMatrix();
+        glm::mat4 modelViewProjection = m_camera.getProjectionMatrix() * modelView;
         m_program->setUniformMatrix4f("modelViewProjection", modelViewProjection);
         b.m_cube.draw();
     }

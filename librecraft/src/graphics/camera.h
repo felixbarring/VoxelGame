@@ -9,37 +9,62 @@
 
 namespace graphics {
 
+/**
+ * \brief This class is used to produce the view matrix used for rendering.
+ *
+ */
 class Camera {
-private:
-
+public:
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
 
+    /**
+     * \brief Creates a camera at the specified position.
+     *
+     * @param xPosition The x position of the camera.
+     * @param yPosition The y position of the camera.
+     * @param zPosition The z position of the camera.
+     */
     Camera(float xPosition, float yPosition, float zPosition);
 
 // ########################################################
 // Member Functions########################################
 // ########################################################
 
-public:
 
-    // TODO Remove the singleton pattern!1!
-    static Camera& getInstance() {
-        static Camera INSTANCE {0, 0, 0};
-        return INSTANCE;
-    }
+    // TODO Document this...
 
+    /**
+     *
+     * @param view
+     */
     void setViewMatrix(glm::mat4 view);
 
+    /**
+     *
+     * @return
+     */
     glm::mat4 getViewMatrix();
 
-    void setProjectionMatrix();
-
+    /**
+     *
+     * @return
+     */
     glm::mat4& getProjectionMatrix();
 
+    /**
+     *
+     * @return
+     */
     glm::vec3& getPosition();
 
+    /**
+     *
+     * @param position
+     * @param direction
+     * @param up
+     */
     void updateView(glm::vec3 position, glm::vec3 direction, glm::vec3 up);
 
 // ########################################################

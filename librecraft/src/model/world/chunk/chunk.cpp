@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 
+#include "../../../graphics/graphicsManager.h"
 #include "../../../graphics/chunkBatcher.h"
 #include "../terrainGen/noiseMixer.h"
 
@@ -39,7 +40,7 @@ Chunk::Chunk(string worldName, int x, int z)
 
 Chunk::~Chunk() {
     for (auto graphicalChunk : m_graphicalChunksIds)
-        ChunkBatcher::getInstance().removeBatch(graphicalChunk);
+        GraphicsManager::getInstance().getChunkBatcher().removeBatch(graphicalChunk);
 }
 
 // ########################################################
@@ -190,7 +191,7 @@ void Chunk::updateGraphics(bool highPriority) {
         back = &(m_backNeighbor->m_cubes);
 
     for (auto i : m_dirtyRegions) {
-        auto derp = ChunkBatcher::getInstance().addBatch(
+        auto derp = GraphicsManager::getInstance().getChunkBatcher().addBatch(
                 m_graphicalChunksIds[i],
                 m_xLocation, i * GRAPHICAL_CHUNK_HEIGHT, m_zLocation,
                 m_cubes, right, left, back, front, highPriority);

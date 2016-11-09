@@ -16,11 +16,13 @@ namespace graphics {
 // Constructor/Destructor #################################
 // ########################################################
 
-ChunkBatcher::ChunkBatcher()
+ChunkBatcher::ChunkBatcher(Camera &camera)
     : m_texture(Resources::getInstance().getTextureArray(
                     config::cube_data::textures,
                     config::cube_data::TEXTURE_WIDTH,
-                    config::cube_data::TEXTURE_HEIGHT)) {
+                    config::cube_data::TEXTURE_HEIGHT)),
+      m_camera(camera)
+{
 
     const char *vertex =
             "#version 330 core \n"
@@ -198,13 +200,11 @@ void ChunkBatcher::draw() {
     glClearColor(skyColor.x, skyColor.y, skyColor.z, 1.0f);
     m_program->setUniform3f("fogColor", skyColor.x, skyColor.y, skyColor.z);
 
-    Camera &camera = Camera::getInstance();
-
     int skippedChunks = 0;
 
     for (auto batch : m_batches) {
-        mat4 modelView = camera.getViewMatrix() * batch.second->getTransform().getMatrix();
-        mat4 modelViewProjection = camera.getProjectionMatrix() * modelView;
+        mat4 modelView = m_camera.getViewMatrix() * batch.second->getTransform().getMatrix();
+        mat4 modelViewProjection = m_camera.getProjectionMatrix() * modelView;
 
         // TODO Fix this so that no chunks get culled when they are actually vissible
     //		Frustum frustum{modelViewProjection};
@@ -230,8 +230,8 @@ void ChunkBatcher::draw() {
         if (!batch.second->hasTransparent())
             continue;
 
-        mat4 modelView = camera.getViewMatrix() * batch.second->getTransform().getMatrix();
-        mat4 modelViewProjection = camera.getProjectionMatrix() * modelView;
+        mat4 modelView = m_camera.getViewMatrix() * batch.second->getTransform().getMatrix();
+        mat4 modelViewProjection = m_camera.getProjectionMatrix() * modelView;
         m_program->setUniformMatrix4f("modelViewProjection", modelViewProjection);
         m_program->setUniformMatrix4f("modelView", modelView);
         batch.second->drawTransparent();

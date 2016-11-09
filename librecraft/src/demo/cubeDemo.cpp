@@ -24,6 +24,8 @@
 #include <SFML/OpenGL.hpp>
 #include <SFML/Graphics.hpp>
 
+using graphics::Camera;
+
 namespace demo
 {
 
@@ -81,8 +83,6 @@ void CubeDemo::runDemo()
 		glm::vec3(0, 0, 1)    // Head is up
 	);
 
-	graphics::Camera::getInstance().setViewMatrix(camera);
-
 	float xAmount = 0;
 
 	while (window.isOpen())	{
@@ -97,12 +97,15 @@ void CubeDemo::runDemo()
 		transform4.rotateY(0.1);
 		transform4.rotateZ(0.1);
 
-		graphics::CubeBatcher::getInstance().addBatch(1, transform1);
-		graphics::CubeBatcher::getInstance().addBatch(2, transform2);
-		graphics::CubeBatcher::getInstance().addBatch(3, transform3);
-		graphics::CubeBatcher::getInstance().addBatch(4, transform4);
+		// TODO Do not use the batcher in the demos?
+		// Or perhaps create a batcher not in the graphicsManager since it is no longer singleton :-)
 
-		graphics::CubeBatcher::getInstance().draw();
+//		graphics::CubeBatcher::getInstance().addBatch(1, transform1);
+//		graphics::CubeBatcher::getInstance().addBatch(2, transform2);
+//		graphics::CubeBatcher::getInstance().addBatch(3, transform3);
+//		graphics::CubeBatcher::getInstance().addBatch(4, transform4);
+//
+//		graphics::CubeBatcher::getInstance().draw();
 
 		fpsManager.sync();
 		window.display();

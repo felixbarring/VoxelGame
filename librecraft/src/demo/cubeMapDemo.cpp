@@ -17,6 +17,8 @@
 
 #include <SFML/Window.hpp>
 
+using graphics::Camera;
+
 using namespace util;
 using namespace sf;
 
@@ -60,7 +62,10 @@ void CubeMapDemo::runDemo() {
     //	glEnable(GL_DEPTH_TEST);
     //	glDepthFunc(GL_LESS);
 
-    graphics::Camera &camera = graphics::Camera::getInstance();
+    // TODO FIX
+
+
+    Camera camera{0,0,0};
 
     texture::TextureCubeMap &texture =
             graphics::Resources::getInstance().getTextureCubeMap(

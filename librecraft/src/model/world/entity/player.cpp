@@ -8,6 +8,7 @@
 #include "../../../graphics/camera.h"
 #include "../chunk/chunkManager.h"
 #include "../../../graphics/cubeBatcher.h"
+#include "../../../graphics/graphicsManager.h"
 #include "../../../util/voxel.h"
 
 #include "../../../util/soundPlayer.h"
@@ -198,7 +199,7 @@ void Player::handlePhysics() {
 void Player::updateCameraAndTargetCube() {
     shared_ptr<Input> input = Input::getInstance();
 
-    Camera::getInstance().updateView(
+    GraphicsManager::getInstance().getPlayerCamer().updateView(
             vec3(m_location.x, m_location.y, m_location.z),
             m_viewDirection.getViewDirection(),
             m_viewDirection.getUpDirection());
@@ -229,7 +230,7 @@ void Player::updateCameraAndTargetCube() {
 
         char voxelID = chunkManager.getCubeId(selectedCube.x, selectedCube.y, selectedCube.z);
         char voxelLightValue = chunkManager.getVoxel(previous.x, previous.y, previous.z).lightValue;
-        CubeBatcher::getInstance().addBatch(voxelID, m_targetedCubeTransform, voxelLightValue + 5);
+        GraphicsManager::getInstance().getCubeBatcher().addBatch(voxelID, m_targetedCubeTransform, voxelLightValue + 5);
     }
 
 }
