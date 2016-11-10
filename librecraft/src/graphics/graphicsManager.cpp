@@ -5,6 +5,8 @@
 #include "chunkBatcher.h"
 #include "cubeBatcher.h"
 
+using namespace std;
+
 namespace graphics {
 
 GraphicsManager::GraphicsManager()
@@ -22,7 +24,7 @@ GraphicsManager::GraphicsManager()
                     config::cube_map_data::cubeMap1Width,
                     config::cube_map_data::cubeMap1Height);
 
-    m_skyBox = std::make_shared<graphics::CubeMap>(texture, m_playerCamera); // TODO should be some other camera...
+    m_skyBox = make_unique<CubeMap>(texture, m_playerCamera); // TODO should be some other camera...
 }
 
 void GraphicsManager::setSunStrenght(float value)
@@ -41,6 +43,10 @@ ChunkBatcher& GraphicsManager::getChunkBatcher() {
 
 CubeBatcher& GraphicsManager::getCubeBatcher() {
     return m_cubeBatcher;
+}
+
+CubeMap& GraphicsManager::getSkyMap() {
+    return *m_skyBox;
 }
 
 } /* namespace graphics */

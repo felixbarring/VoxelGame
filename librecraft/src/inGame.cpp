@@ -239,6 +239,8 @@ void InGame::update(float timePassed) {
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    // TODO Only draw the skymap at night...
+    GraphicsManager::getInstance().getSkyMap().draw();
     GraphicsManager::getInstance().getChunkBatcher().draw();
     GraphicsManager::getInstance().getCubeBatcher().draw();
     SpriteBatcher::getInstance().draw();

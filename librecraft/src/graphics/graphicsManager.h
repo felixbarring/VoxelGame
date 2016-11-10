@@ -72,6 +72,12 @@ public:
      */
     CubeBatcher& getCubeBatcher();
 
+    /**
+     *
+     * @return
+     */
+    CubeMap& getSkyMap();
+
 // ########################################################
 // Implementation #########################################
 // ########################################################
@@ -87,7 +93,7 @@ private:
     ChunkBatcher m_chunkBatcher{m_playerCamera};
     CubeBatcher m_cubeBatcher{m_playerCamera};
 
-    std::shared_ptr<graphics::CubeMap> m_skyBox;
+    std::unique_ptr<graphics::CubeMap> m_skyBox;
 
 };
 

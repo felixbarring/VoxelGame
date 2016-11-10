@@ -25,7 +25,7 @@ CubeMap::CubeMap(texture::TextureCubeMap &texture, Camera &camera)
 // Member Functions########################################
 // ########################################################
 
-void CubeMap::render() {
+void CubeMap::draw() {
 
     static std::map<std::string, int> attributesMap{std::pair<std::string, int>("positionIn", 0)};
 
@@ -122,7 +122,6 @@ void CubeMap::render() {
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
 
     // TODO Implement
     glm::mat4 view = glm::mat4(glm::mat3(m_camera.getViewMatrix()));
