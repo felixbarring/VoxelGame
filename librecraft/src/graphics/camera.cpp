@@ -6,8 +6,14 @@ namespace graphics {
 // Constructor/Destructor #################################
 // ########################################################
 
+Camera::Camera()
+    : position{0.0, 0.0, 0.0}
+{
+}
+
 Camera::Camera(float xPosition, float yPosition, float zPosition)
-    : position {xPosition, yPosition, zPosition} {
+    : position{xPosition, yPosition, zPosition}
+{
 }
 
 // ########################################################

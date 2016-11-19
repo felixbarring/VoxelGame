@@ -20,6 +20,11 @@ public:
 // ########################################################
 
     /**
+     * \brief Creates a camera with position 0 for x, y, and z.
+     */
+    Camera();
+
+    /**
      * \brief Creates a camera at the specified position.
      *
      * @param xPosition The x position of the camera.
@@ -27,6 +32,8 @@ public:
      * @param zPosition The z position of the camera.
      */
     Camera(float xPosition, float yPosition, float zPosition);
+
+
 
 // ########################################################
 // Member Functions########################################

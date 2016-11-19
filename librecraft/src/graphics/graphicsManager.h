@@ -83,10 +83,8 @@ public:
 // ########################################################
 
 private:
-
-    // TODO Make a default constructor with 0,0,0 position
-    Camera m_playerCamera{0, 0, 0};
-    Camera m_skyMapCamera{0, 0, 0};
+    Camera m_playerCamera{};
+    Camera m_skyMapCamera{};
 
     // TODO Put the sprite batcher here as well, and remove the singletong pattern from it.
 
