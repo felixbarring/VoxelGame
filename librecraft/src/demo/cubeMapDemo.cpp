@@ -103,7 +103,7 @@ void CubeMapDemo::runDemo() {
         viewDirection.changeViewDirection(Input::getInstance()->mouseXMovement, Input::getInstance()->mouseYMovement);
         camera.updateView(glm::vec3(0, 0, 0), viewDirection.getViewDirection(), viewDirection.getUpDirection());
 
-        skybox.draw();
+        skybox.draw(1.0);
 
         fpsManager.sync();
         window.display();

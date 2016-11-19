@@ -86,8 +86,7 @@ private:
     Camera m_playerCamera{};
     Camera m_skyMapCamera{};
 
-    // TODO Put the sprite batcher here as well, and remove the singletong pattern from it.
-
+    // TODO Put the sprite batcher here as well, and remove the singleton pattern from it.
     ChunkBatcher m_chunkBatcher{m_playerCamera};
     CubeBatcher m_cubeBatcher{m_playerCamera};
 
