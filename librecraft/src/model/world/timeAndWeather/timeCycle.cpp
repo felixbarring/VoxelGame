@@ -39,7 +39,6 @@ void TimeCycle::stopCycle() {
 
 void TimeCycle::resumeCycle() {
     m_paused = false;
-
 }
 
 double TimeCycle::getSunStrenght() {

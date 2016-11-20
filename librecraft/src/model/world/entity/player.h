@@ -54,6 +54,8 @@ private:
 
     bool isInWater();
 
+    entity::AABB createAABB();
+
     glm::vec3 m_location{0, 0, 0}; // The location of the camera
 
     float m_width{0.8};
