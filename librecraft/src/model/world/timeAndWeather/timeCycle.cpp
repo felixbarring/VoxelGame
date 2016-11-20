@@ -1,10 +1,6 @@
 
 #include "timeCycle.h"
 
-#include <iostream>
-
-#include "detail/func_trigonometric.hpp"
-
 // ########################################################
 // Member Functions########################################
 // ########################################################
@@ -13,16 +9,24 @@ void TimeCycle::update(float timePassed) {
     if (m_paused)
         return;
 
-    m_time += timePassed;
+    m_time += timePassed * m_timeSpeed;
 
     if (m_time > m_dayLength)
         m_time = 0;
 
-    static constexpr float pi{3.14};
-    float magicNumber = 0.2; // bigger value makes the day longer and night shorter.
-    float sinVal = magicNumber + glm::sin((2  * pi / m_dayLength) * m_time);
-    if (sinVal > 1) sinVal = 1;
-    m_sunStrength = std::max(sinVal, 1.0f / (15.0f));
+    if (m_time > m_dawn.first && m_time < m_dawn.second) {
+        m_sunStrength = (m_time - m_dawn.first) / (m_dawn.second - m_dawn.first);
+        m_starStrength = 1 - m_sunStrength;
+    } else if (m_time > m_day.first && m_time < m_day.second) {
+        m_sunStrength = 1.0;
+        m_starStrength = 0;
+    } else if (m_time > m_dusk.first && m_time < m_dusk.second) {
+        m_sunStrength = 1.0 - (m_time - m_dusk.first) / (m_dusk.second - m_dusk.first);
+        m_starStrength = 1 - m_sunStrength;
+    } else if (m_time > m_night.first && m_time < m_night.second) {
+        m_sunStrength = 0.0;
+        m_starStrength = 1.0;
+    }
 }
 
 void TimeCycle::setTime(float time) {
@@ -38,10 +42,14 @@ void TimeCycle::resumeCycle() {
 
 }
 
-void TimeCycle::setDayLenght(float value) {
-    m_dayLength = value;
+double TimeCycle::getSunStrenght() {
+    return m_sunStrength;
 }
 
-float TimeCycle::getSunStrenght() {
-    return m_sunStrength;
+double TimeCycle::getStarStrenght() {
+    return m_starStrength;
+}
+
+void TimeCycle::setTimeSpeed(double value) {
+    m_timeSpeed = value;
 }

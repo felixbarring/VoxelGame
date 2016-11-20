@@ -128,9 +128,10 @@ InGame::InGame(Game *game, string name)
         } else if (command == resumeTime) {
             m_timeCycle.resumeCycle();
         } else if (command == setDayLenght) {
+            // TODO REMOVE
             // TODO Error handeling here...
-            float dayLenght = std::atof(arguments[1].c_str());
-            m_timeCycle.setDayLenght(dayLenght);
+//            float dayLenght = std::atof(arguments[1].c_str());
+//            m_timeCycle.setDayLength(dayLenght);
         } else if (command == printDebugInfo) {
             // TODO Error handeling here...
             float argumentValue = std::atof(arguments[1].c_str());
@@ -180,8 +181,7 @@ void InGame::update(float timePassed) {
         m_player.update(timePassed);
         m_timeCycle.update(timePassed);
 
-        float sunStrenght{m_timeCycle.getSunStrenght()};
-        graphics::GraphicsManager::getInstance().setSunStrenght(sunStrenght);
+        graphics::GraphicsManager::getInstance().setSunStrenght(m_timeCycle.getSunStrenght());
 
         SpriteBatcher::getInstance().addBatch(m_crossHair);
 
@@ -239,10 +239,12 @@ void InGame::update(float timePassed) {
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    // TODO Only draw the skymap at night...
-    GraphicsManager::getInstance().getSkyMap().draw(0.5);
+    if (m_timeCycle.getStarStrenght() > 0.0)
+        GraphicsManager::getInstance().getSkyMap().draw(m_timeCycle.getStarStrenght());
+
     GraphicsManager::getInstance().getChunkBatcher().draw();
     GraphicsManager::getInstance().getCubeBatcher().draw();
+
     SpriteBatcher::getInstance().draw();
 
 
