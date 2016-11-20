@@ -204,9 +204,9 @@ void Player::updateCameraAndTargetCube() {
             chunkManager.removeCube(selectedCube.x, selectedCube.y, selectedCube.z);
             return;
         } else if (input->action2Pressed) {
-            AABB start = createAABB();
-            AABB cube{previous.x, previous.x + 1, previous.y, previous.y + 1, previous.z, previous.z + 1};
-            if (!start.intersects(cube))
+            AABB playerAAABB = createAABB();
+            AABB cubeAABB{previous.x, previous.x + 1, previous.y, previous.y + 1, previous.z, previous.z + 1};
+            if (!playerAAABB.intersects(cubeAABB))
                 chunkManager.setCube(previous.x, previous.y, previous.z, m_cubeUsedForBuilding);
             return;
         }
