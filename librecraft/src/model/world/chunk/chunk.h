@@ -74,7 +74,7 @@ public:
 	 * Chunk::collectLightFromRightNeighbor, Chunk::collectLightFromLeftNeighbor,
 	 * Chunk::collectLightFromBackNeighbor, Chunk::collectLightFromFrontNeighbor
 	 */
-	void collectLightFromAllNeighbors();
+//	void collectLightFromAllNeighbors();
 
 	/**
 	 * This function checks if the light in the right neighbor should light up cubes in this Chunk, and if so adds
@@ -250,8 +250,9 @@ private:
 	 * @param x
 	 * @param y
 	 * @param z
+	 * @param useVec Turn of if the function should not add to the lightPropagate.
 	 */
-	void doSunLightning(std::vector<glm::vec3> &lightPropagate, int x, int y, int z);
+	void doSunLightning(std::vector<glm::vec3> &lightPropagate, int x, int y, int z, bool useVec = true);
 
 	void propagateLight(int x, int y, int z);
 

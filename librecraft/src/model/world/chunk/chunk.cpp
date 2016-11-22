@@ -62,33 +62,36 @@ void Chunk::doSunLightning() {
     // Each step in water reduces the light strength
     for (int x = 0; x < CHUNK_WIDTH_AND_DEPTH; ++x) {
         for (int z = 0; z < CHUNK_WIDTH_AND_DEPTH; ++z) {
-            bool foundSolid = false;
             int lightValue{m_directSunlight};
             for (int y = CHUNK_HEIGHT - 1; y >= 0; --y) {
-                auto &cube = m_cubes[x][y][z];
-                if (cube.id == AIR || cube.id == WATER) {
-                    if (cube.id == WATER) {
-                        --lightValue;
-                        if (lightValue < 0)
-                            lightValue = 0;
-                    }
-                    cube.lightValue = lightValue;
-                    if (cube.lightValue > 0)
-                        m_lightsToPropagate.push_back(vec3(x, y, z));
-                } else {
-                    cube.lightValue = 0;
-                }
+
+                vector<vec3> dummy;
+                doSunLightning(dummy, x, y, z, false);
+
+//                if (cube.id == AIR || cube.id == WATER) {
+//                    if (cube.id == WATER) {
+//                        --lightValue;
+//                        //if (lightValue < 0)
+//                        //    lightValue = 0;
+//                    }
+//                    cube.lightValue = lightValue;
+//                    if (cube.lightValue > 0)
+//                        m_lightsToPropagate.push_back(vec3(x, y, z));
+//                } else {
+//                    cube.lightValue = 0;
+//                }
+
             }
         }
     }
-    }
-
-void Chunk::collectLightFromAllNeighbors() {
-    collectLightFromRightNeighbor();
-    collectLightFromLeftNeighbor();
-    collectLightFromBackNeighbor();
-    collectLightFromFrontNeighbor();
 }
+
+//void Chunk::collectLightFromAllNeighbors() {
+//    collectLightFromRightNeighbor();
+//    collectLightFromLeftNeighbor();
+//    collectLightFromBackNeighbor();
+//    collectLightFromFrontNeighbor();
+//}
 
 void Chunk::collectLightFromRightNeighbor() {
     if (m_rightNeighbor.get()) {
@@ -478,19 +481,26 @@ void Chunk::updateNeighborGraphics() {
     }
 }
 
-void Chunk::doSunLightning(vector<vec3> &lightPropagate, int x, int y, int z) {
-    for (int i = y; y >= 0; i--) {
+void Chunk::doSunLightning(vector<vec3> &lightPropagate, int x, int y, int z, bool useVec) {
+
+    int lightValue{m_directSunlight};
+    for (int i = y; i >= 0; --i) {
         auto &cube = m_cubes[x][i][z];
-        int lightValue{m_directSunlight};
-        if (cube.id == AIR || cube.id == WATER) {
-            if (cube.id == WATER && lightValue > 0)
-                --lightValue;
+
+        //cube.lightValue = 10;
+        //return;
+
+        if (cube.id == AIR /* || cube.id == WATER*/) {
+//            if (cube.id == WATER && lightValue > 0)
+//                --lightValue;
 
             cube.lightValue = lightValue;
-            lightPropagate.push_back(vec3(x, i, z));
+            if (useVec)
+                lightPropagate.push_back(vec3(x, i, z));
 
-            m_lightsToPropagate.push_back(vec3(x, y, z));
         } else {
+//            lightValue = 0;
+            // TODO Should be possible to configure so it breaks...
             break;
         }
     }
@@ -758,10 +768,8 @@ void Chunk::dePropagateLight(int x, int y, int z, int _lightValue) {
         if (m_backNeighbor &&
                 m_backNeighbor->m_cubes[x][y][0].id == AIR &&
                 m_backNeighbor->m_cubes[x][y][0].lightValue < lightValue &&
-                m_backNeighbor->highestLVFromNeighbors(x, y, 0)
-                    <= lightValue
-                    ) {
-
+                m_backNeighbor->highestLVFromNeighbors(x, y, 0) <= lightValue)
+        {
             m_backNeighbor->dePropagateLight(x, y, 0);
         }
         else

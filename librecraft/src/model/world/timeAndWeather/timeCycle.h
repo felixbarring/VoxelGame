@@ -69,15 +69,15 @@ public:
 
 private:
 
-    std::pair<double, double> m_dawn{0.0, 40.0};
-    std::pair<double, double> m_day{20.0, 200.0};
-    std::pair<double, double> m_dusk{200.0, 240.0};
-    std::pair<double, double> m_night{220.0, 300.0};
+    std::pair<double, double> m_dawn{0.0, 100.0};
+    std::pair<double, double> m_day{100.0, 300.0};
+    std::pair<double, double> m_dusk{300.0, 400.0};
+    std::pair<double, double> m_night{500.0, 600.0};
 
     double m_timeSpeed{10.0};
 
     bool m_paused{false};
-    const double m_dayLength{300};
+    const double m_dayLength{600};
     double m_time{0.0};
     double m_sunStrength{0.0};
     double m_starStrength{0.0};

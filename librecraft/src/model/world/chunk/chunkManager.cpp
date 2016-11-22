@@ -65,7 +65,7 @@ void ChunkManager::createWorld(string worldName) {
     // TODO Should be done in parallel..
     for (int x = 0; x < lam; ++x) {
         for (int z = 1; z < lam; ++z) {
-            m_chunks[x][0][z]->propagateLights();
+//            m_chunks[x][0][z]->propagateLights();
             m_chunks[x][0][z]->updateGraphics();
         }
     }
