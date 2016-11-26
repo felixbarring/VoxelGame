@@ -65,8 +65,8 @@ void ChunkManager::createWorld(string worldName) {
     // TODO Should be done in parallel..
     for (int x = 0; x < lam; ++x) {
         for (int z = 1; z < lam; ++z) {
-//            m_chunks[x][0][z]->propagateLights();
-            m_chunks[x][0][z]->updateGraphics();
+            m_chunks[x][0][z]->propagateLights();
+            m_chunks[x][0][z]->updateGraphics(true);
         }
     }
 
@@ -92,7 +92,6 @@ void ChunkManager::clearWorld() {
 }
 
 void ChunkManager::update() {
-    // TODO was used before, maybe could find use later?!?
     // When/if AI is added like npc, this could be a good
     // place to update them
 }

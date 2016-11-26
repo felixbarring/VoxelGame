@@ -57,41 +57,21 @@ void Chunk::create() {
 }
 
 void Chunk::doSunLightning() {
-
-    // Sun lightning, only air and water gets light
-    // Each step in water reduces the light strength
     for (int x = 0; x < CHUNK_WIDTH_AND_DEPTH; ++x) {
         for (int z = 0; z < CHUNK_WIDTH_AND_DEPTH; ++z) {
-            int lightValue{m_directSunlight};
-            for (int y = CHUNK_HEIGHT - 1; y >= 0; --y) {
-
-                vector<vec3> dummy;
-                doSunLightning(dummy, x, y, z, false);
-
-//                if (cube.id == AIR || cube.id == WATER) {
-//                    if (cube.id == WATER) {
-//                        --lightValue;
-//                        //if (lightValue < 0)
-//                        //    lightValue = 0;
-//                    }
-//                    cube.lightValue = lightValue;
-//                    if (cube.lightValue > 0)
-//                        m_lightsToPropagate.push_back(vec3(x, y, z));
-//                } else {
-//                    cube.lightValue = 0;
-//                }
-
-            }
+            vector<vec3> dummy;
+            doSunLightning(dummy, x, CHUNK_HEIGHT - 1, z, true);
+            m_lightsToPropagate.insert(m_lightsToPropagate.end(), dummy.begin(), dummy.end());
         }
     }
 }
 
-//void Chunk::collectLightFromAllNeighbors() {
-//    collectLightFromRightNeighbor();
-//    collectLightFromLeftNeighbor();
-//    collectLightFromBackNeighbor();
-//    collectLightFromFrontNeighbor();
-//}
+void Chunk::collectLightFromAllNeighbors() {
+    collectLightFromRightNeighbor();
+    collectLightFromLeftNeighbor();
+    collectLightFromBackNeighbor();
+    collectLightFromFrontNeighbor();
+}
 
 void Chunk::collectLightFromRightNeighbor() {
     if (m_rightNeighbor.get()) {
@@ -289,14 +269,13 @@ void Chunk::loadChunk() {
     int counter = 0;
     for (int i = 0; i < m_width; ++i) {
         m_cubes.push_back(vector<vector<Voxel>>());
-
         for (int j = 0; j < m_height; ++j) {
             m_cubes[i].push_back(vector<Voxel>());
 
             for (int k = 0; k < m_depth; ++k) {
                 char voxelId = std::stoi(list[counter]);
-                counter++;
-                m_cubes[i][j].push_back(Voxel {voxelId, 0});
+                ++counter;
+                m_cubes[i][j].push_back(Voxel{voxelId, 0});
             }
         }
     }
@@ -304,6 +283,7 @@ void Chunk::loadChunk() {
 }
 
 void Chunk::generateChunk() {
+    m_isDirty = true;
 
     int counterValue;
     {
@@ -314,14 +294,13 @@ void Chunk::generateChunk() {
         counterValue = counter;
     }
 
-    m_isDirty = true;
-
+    // Create the voxels with default values
     for (int x = 0; x < m_width; ++x) {
         m_cubes.push_back(vector<vector<Voxel>>());
         for (int y = 0; y < m_height; ++y) {
             m_cubes[x].push_back(vector<Voxel>());
             for (int z = 0; z < m_depth; ++z) {
-                Voxel v;
+                Voxel v; // TODO Create a default constructor for this...
                 v.lightValue = 0;
                 v.id = AIR;
                 m_cubes[x][y].push_back(v);
@@ -339,12 +318,10 @@ void Chunk::generateChunk() {
 
     for (int x = 0; x < m_width; ++x) {
         for (int z = 0; z < m_depth; ++z) {
-
-
             int noiseValue = mixer.computeNoise(m_xLocation + x, m_zLocation + z);
 
             for (int y = 0; y < m_height; ++y) {
-                Voxel &v = m_cubes[x][y][z];
+                auto &v = m_cubes[x][y][z];
 
                 if (y == 0) {
                     v.id = BED_ROCK;
@@ -482,26 +459,22 @@ void Chunk::updateNeighborGraphics() {
 }
 
 void Chunk::doSunLightning(vector<vec3> &lightPropagate, int x, int y, int z, bool useVec) {
-
+    // Sun lightning, only air and water gets light
+    // Each step in water reduces the light strength
     int lightValue{m_directSunlight};
     for (int i = y; i >= 0; --i) {
         auto &cube = m_cubes[x][i][z];
 
-        //cube.lightValue = 10;
-        //return;
-
-        if (cube.id == AIR /* || cube.id == WATER*/) {
-//            if (cube.id == WATER && lightValue > 0)
-//                --lightValue;
+        if (cube.id == AIR || cube.id == WATER) {
+            if (cube.id == WATER && lightValue > 0)
+                lightValue -= 2;
 
             cube.lightValue = lightValue;
             if (useVec)
                 lightPropagate.push_back(vec3(x, i, z));
 
         } else {
-//            lightValue = 0;
-            // TODO Should be possible to configure so it breaks...
-            break;
+            return;
         }
     }
 }
@@ -554,8 +527,7 @@ void Chunk::propagateLight(int x, int y, int z) {
         } else {
             if (m_leftNeighbor
                     && m_leftNeighbor->m_cubes[m_width - 1][y][z].id == AIR
-                    && m_leftNeighbor->m_cubes[m_width - 1][y][z].lightValue
-                            < lv) {
+                    && m_leftNeighbor->m_cubes[m_width - 1][y][z].lightValue < lv) {
 
                 m_leftNeighbor->m_cubes[m_width - 1][y][z].lightValue = lv;
                 m_leftNeighbor->propagateLight(m_width - 1, y, z);
@@ -637,8 +609,7 @@ void Chunk::propagateLight(int x, int y, int z) {
         } else {
             if (m_frontNeighbor
                     && m_frontNeighbor->m_cubes[x][y][m_depth - 1].id == AIR
-                    && m_frontNeighbor->m_cubes[x][y][m_depth - 1].lightValue
-                            < lv) {
+                    && m_frontNeighbor->m_cubes[x][y][m_depth - 1].lightValue < lv) {
 
                 m_frontNeighbor->m_cubes[x][y][m_depth - 1].lightValue = lv;
                 m_frontNeighbor->propagateLight(x, y, m_depth - 1);

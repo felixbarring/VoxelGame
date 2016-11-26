@@ -74,7 +74,7 @@ public:
 	 * Chunk::collectLightFromRightNeighbor, Chunk::collectLightFromLeftNeighbor,
 	 * Chunk::collectLightFromBackNeighbor, Chunk::collectLightFromFrontNeighbor
 	 */
-//	void collectLightFromAllNeighbors();
+	void collectLightFromAllNeighbors();
 
 	/**
 	 * This function checks if the light in the right neighbor should light up cubes in this Chunk, and if so adds
@@ -244,6 +244,7 @@ private:
 	void updateNeighborGraphics();
 
 	/**
+	 * \brief Computes the lightning of the row specified.
 	 * Only does the lightning for one row.
 	 *
 	 * @param lightPropagate
