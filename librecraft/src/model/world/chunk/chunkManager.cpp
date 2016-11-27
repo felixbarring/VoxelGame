@@ -60,7 +60,7 @@ void ChunkManager::createWorld(string worldName) {
     // Wait for all the chunks to be generated
     for_each(chunkCreationFutures.begin(), chunkCreationFutures.end(), [](future<void> &f){ f.get(); });
 
-    vector<future<void>> updateGrapicsFutures;
+//    vector<future<void>> updateGrapicsFutures;
 
     // TODO Should be done in parallel..
     for (int x = 0; x < lam; ++x) {
