@@ -78,10 +78,9 @@ InGame::InGame(Game *game, string name)
     string setTime = "setTime";
     string stopTime = "stopTime";
     string resumeTime = "resumeTime";
-    string setDayLenght = "setDayLenght";
     string printDebugInfo = "printDebugInfo";
     vector<string> commands{close, flyMode, gravityMode, turnOfMusic, setMouseSensitivity, loadChunks, setTime,
-                            stopTime, resumeTime, setDayLenght, printDebugInfo};
+                            stopTime, resumeTime, printDebugInfo};
 
     // The first string in the vector should be the command, followed by arguments.
     auto func = [=](vector<string> arguments)
@@ -105,12 +104,19 @@ InGame::InGame(Game *game, string name)
                 m_terminal->addLine("To few arguments");
                 return;
             }
-            // TODO Error handeling here...
-            config::input_data::mouseSensitivityX = std::atof(arguments[1].c_str());
-            config::input_data::mouseSensitivityY = std::atof(arguments[2].c_str());
-        } else if (command == loadChunks) {
 
-            // TODO Error handeling here...
+            double x, y;
+            try {
+                x = stod(arguments[1].c_str());
+                y = stod(arguments[2].c_str());
+            } catch (invalid_argument &e) {
+                m_terminal->addLine("Invalid arguments!");
+                return;
+            }
+            config::input_data::mouseSensitivityX = x;
+            config::input_data::mouseSensitivityY = y;
+
+        } else if (command == loadChunks) {
             if (!(arguments.size() >= 2)) {
                 m_terminal->addLine("To few arguments");
                 return;
@@ -120,22 +126,26 @@ InGame::InGame(Game *game, string name)
             else
                 ChunkManager::getInstance().loadWorldWhenDecentered();
         } else if (command == setTime) {
-            // TODO Error handeling here...
-            float time = std::atof(arguments[1].c_str());
+            if (arguments.size() < 1) {
+                m_terminal->addLine("To few arguments");
+                return;
+            }
+
+            double time;
+            try {
+                time = stod(arguments[1].c_str());
+            } catch (invalid_argument &e) {
+                m_terminal->addLine("Invalid arguments!");
+                return;
+            }
             m_timeCycle.setTime(time);
+
         } else if (command == stopTime) {
             m_timeCycle.stopCycle();
         } else if (command == resumeTime) {
             m_timeCycle.resumeCycle();
-        } else if (command == setDayLenght) {
-            // TODO REMOVE
-            // TODO Error handeling here...
-//            float dayLenght = std::atof(arguments[1].c_str());
-//            m_timeCycle.setDayLength(dayLenght);
         } else if (command == printDebugInfo) {
-            // TODO Error handeling here...
-            float argumentValue = std::atof(arguments[1].c_str());
-                m_displayDebugInfo = argumentValue > 0;
+            m_displayDebugInfo = !arguments.empty();
         } else {
             m_terminal->addLine("Unknown command: " + command);
         }

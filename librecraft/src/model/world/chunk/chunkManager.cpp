@@ -50,7 +50,7 @@ void ChunkManager::createWorld(string worldName) {
             {
                 chunk->create();
                 chunk->doSunLightning();
-            } ));
+            }));
             m_chunks[x][0][z] = chunk;
         }
     }

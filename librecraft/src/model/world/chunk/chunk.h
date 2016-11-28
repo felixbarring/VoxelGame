@@ -245,6 +245,7 @@ private:
 
 	/**
 	 * \brief Computes the lightning of the row specified.
+	 *
 	 * Only does the lightning for one row.
 	 *
 	 * @param lightPropagate
