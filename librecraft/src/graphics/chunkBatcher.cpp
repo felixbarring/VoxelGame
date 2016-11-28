@@ -135,11 +135,7 @@ void ChunkBatcher::draw() {
 
     // Done on the main thread because the thread doing opengl
     // calls needs an opengl context, which the main thread does.
-
     lock_guard<mutex> lock(m_mutex);
-
-    // TODO For some fucking reason the flickering chunk problem still remains wtf
-    // TODO Log if we for some reason can not find a chunk in the map when trying to remove it!
 
     // Add all the batches that has high priority
     while (!m_batchesToAddHP.empty()) {
@@ -169,13 +165,29 @@ void ChunkBatcher::draw() {
         }
     }
 
-    // Remove one of the batches that has been requested to be removed.
-    if (!m_batchesToBeRemoved.empty()) {
+    // Remove all of the batches that has been requested to be removed.
+    while (!m_batchesToBeRemoved.empty()) {
         auto batch = m_batchesToBeRemoved.begin();
         auto batchIt = m_batches.find(*batch);
         if (batchIt != m_batches.end())
             m_batches.erase(batchIt);
-        m_batchesToBeRemoved.erase(batch);
+        else {
+
+            // TODO Solve the problem with gchunks not getting removed correctly.
+
+            cout << "GChunk can not be removed. ID = " << *batch << "\n";
+            for (auto b = m_batchesToAdd.begin(); b != m_batchesToAdd.end(); ++b) {
+                std::cout << "   " << get<0>(*b) << "\n";
+                if (get<0>(*b) == *batch) {
+                    m_batchesToAdd.erase(b);
+                    return;
+                }
+            }
+            cout << "Failed :( \n";
+
+        }
+
+        m_batchesToBeRemoved.clear();
     }
 
     m_program->bind();
