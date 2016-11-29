@@ -236,11 +236,11 @@ void Player::intersected(vec3 movement, vector<tuple<float, int, vec3>> &collisi
     int yEnd = floor(box.yMax);
     int zEnd = floor(box.zMax);
 
-    for (int i = xStart; i <= xEnd; i++) {
-        for (int j = yStart; j <= yEnd; j++) {
-            for (int k = zStart; k <= zEnd; k++) {
+    for (double i = xStart; i <= xEnd; ++i) {
+        for (double j = yStart; j <= yEnd; ++j) {
+            for (double k = zStart; k <= zEnd; ++k) {
 
-                AABB cube{i, i + 1, j, j + 1, k, k + 1};
+                AABB cube{i, i + 1.0, j, j + 1.0, k, k + 1};
                 vec3 normal;
                 auto cubeId = ChunkManager::getInstance().getCubeId(i, j, k);
                 if (!(cubeId == cube_data::AIR || cubeId == cube_data::WATER)) {

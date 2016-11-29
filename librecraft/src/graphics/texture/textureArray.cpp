@@ -13,8 +13,7 @@ namespace texture {
 
 // TODO Clean up this class
 
-TextureArray::TextureArray(std::vector<std::string> paths, int width,
-		int height) {
+TextureArray::TextureArray(std::vector<std::string> paths, unsigned width, unsigned height) {
 	GLsizei layerCount = paths.size();
 
 	glGenTextures(1, &textureID);

@@ -190,12 +190,12 @@ MeshElement::~MeshElement() {
 void MeshElement::draw() {
 	glBindVertexArray(VAO);
 
-	for (int i = 0; i < vboHandels.size(); i++)
+	for (unsigned i = 0; i < vboHandels.size(); ++i)
 		glEnableVertexAttribArray(i);
 
 	glDrawElements(GL_TRIANGLES, numberOfElements, GL_UNSIGNED_SHORT, 0);
 
-	for (int i = 0; i < vboHandels.size(); i++)
+	for (unsigned i = 0; i < vboHandels.size(); ++i)
 		glDisableVertexAttribArray(i);
 
 	glBindVertexArray(0);

@@ -14,7 +14,7 @@ public:
 // Constructor/Destructor #################################
 // ########################################################
 
-	TextureArray(std::vector<std::string> paths, int width, int height);
+	TextureArray(std::vector<std::string> paths, unsigned width, unsigned height);
 
 	virtual ~TextureArray() {};
 

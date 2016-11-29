@@ -15,8 +15,9 @@ namespace widget {
 // Constructor/Destructor #################################
 // ########################################################
 
-Label::Label(int x, int y, int width, int height, const string &name, int layer)
-		: AbstractWidget(m_id, x, y, width, height) {
+Label::Label(int x, int y, int width, int height, const string &name, unsigned layer)
+    : AbstractWidget(m_id, x, y, width, height)
+{
 
 	auto &res = Resources::getInstance();
 
@@ -24,12 +25,10 @@ Label::Label(int x, int y, int width, int height, const string &name, int layer)
 			config::font_data::fontLayout, config::font_data::fontAtlasWidth,
 			config::font_data::fontAtlasHeight);
 
-	shared_ptr<mesh::MeshElement> fontMesh = fontMeshBuilder.buldMeshForString(
-			name, height - 5);
+	shared_ptr<mesh::MeshElement> fontMesh = fontMeshBuilder.buldMeshForString(name, height - 5);
 
-	m_text.reset(
-			new Sprite {x, y + 5, layer, fontMesh, res.getTexture(
-					config::font_data::font)});
+	m_text.reset(new Sprite{static_cast<double>(x), y + 5.0, layer, fontMesh,
+	    res.getTexture(config::font_data::font)});
 
 }
 

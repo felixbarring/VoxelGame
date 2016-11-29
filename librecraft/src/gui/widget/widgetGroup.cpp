@@ -14,14 +14,26 @@ namespace widget {
 // Constructor/Destructor #################################
 // ########################################################
 
-WidgetGroup::WidgetGroup(int id, int x, int y, int width, int height, function<void(int)> observer, int layer,
+WidgetGroup::WidgetGroup(int id, int x, int y, int width, int height, function<void(int)> observer, unsigned layer,
 		bool transparentBackground)
 	: AbstractWidget(id, x, y, width, height)
 {
 	if (transparentBackground)
-		m_sprite.reset(new Sprite{x, y, layer, width, height, Resources::getInstance().getTexture(config::gui_data::transparentGuiBox)});
+		m_sprite.reset(new Sprite{
+	        static_cast<double>(x),
+            static_cast<double>(y),
+            layer,
+            static_cast<double>(width),
+            static_cast<double>(height),
+	    Resources::getInstance().getTexture(config::gui_data::transparentGuiBox)});
 	else
-		m_sprite.reset(new Sprite{x, y, layer, width, height, Resources::getInstance().getTexture(config::gui_data::guiBox)});
+		m_sprite.reset(new Sprite{
+	        static_cast<double>(x),
+	        static_cast<double>(y),
+	        layer,
+	        static_cast<double>(width),
+	        static_cast<double>(height),
+	    Resources::getInstance().getTexture(config::gui_data::guiBox)});
 }
 
 // ########################################################

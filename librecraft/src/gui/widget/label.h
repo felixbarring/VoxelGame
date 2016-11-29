@@ -30,8 +30,7 @@ public:
 // Constructor/Destructor #################################
 // ########################################################
 
-	Label(int x, int y, int width, int height, const std::string &name,
-			int layer = 0);
+	Label(int x, int y, int width, int height, const std::string &name, unsigned layer = 0);
 
 	virtual ~Label() {};
 

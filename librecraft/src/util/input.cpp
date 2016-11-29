@@ -107,7 +107,7 @@ void Input::updateValues() {
             m_window->close();
         else if (event.type == sf::Event::TextEntered) {
             char c = static_cast<char>(event.text.unicode);
-            if ((32 <= c && c <= 127)) {
+            if (c >= 32) {
                 keyWasTyped = true;
                 keyTyped = static_cast<char>(event.text.unicode);
             }

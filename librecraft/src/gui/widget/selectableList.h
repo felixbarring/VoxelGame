@@ -20,7 +20,7 @@ public:
 // ########################################################
 
 	SelectableList(int id, int x, int y, int width, int height,
-			std::function<void(int)> observer, int layer = 0);
+			std::function<void(int)> observer, unsigned layer = 0);
 
 	virtual ~SelectableList() {};
 
@@ -51,7 +51,7 @@ private:
 	std::shared_ptr<ToggleButton> getButtonWithId(int i);
 
 	std::function<void(int)> m_observer;
-	int m_layer;
+	unsigned m_layer;
 
 	int idCounter {0};
 	std::vector<std::shared_ptr<ToggleButton>> m_buttons;

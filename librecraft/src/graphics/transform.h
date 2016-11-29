@@ -23,7 +23,7 @@ public:
      * @param y The y location for the transform.
      * @param z The z location for the transform.
      */
-    Transform(float x, float y, float z);
+    Transform(double x, double y, double z);
 
 // ########################################################
 // Member Functions########################################
@@ -43,7 +43,7 @@ public:
      * @param y The y value for the translation change.
      * @param z The z value for the translation change.
      */
-    void translate(float x, float y, float z);
+    void translate(double x, double y, double z);
 
     // Make one that takes glm::vec3 ?!?
     /**
@@ -53,49 +53,49 @@ public:
      * @param y The new translation y value.
      * @param z The new translation z value.
      */
-    void setLocation(float x, float y, float z);
+    void setLocation(double x, double y, double z);
 
     /**
      * \brief Sets the rotation around the x axis.
      *
      * @param value The angle rotation around the x axis.
      */
-    void setRotationX(float value);
+    void setRotationX(double value);
 
     /**
      * \brief Sets the rotation around the y axis.
      *
      * @param value The angle rotation around the y axis.
      */
-    void setRotationY(float value);
+    void setRotationY(double value);
 
     /**
      * '\brief Sets the rotation around the z axis.
      *
      * @param value The angle rotation around the z axis.
      */
-    void setRotationZ(float value);
+    void setRotationZ(double value);
 
     /**
      * \brief Rotates around the x axis.
      *
      * @param value The amount that the rotation around the x axis should increase.
      */
-    void rotateX(float value);
+    void rotateX(double value);
 
     /**
      * \brief Rotates around the y axis.
      *
      * @param value The amount that the rotation around the y axis should increase-
      */
-    void rotateY(float value);
+    void rotateY(double value);
 
     /**
      * \brief Rotates around the z axis.
      *
      * @param value The amount that the rotation around the z axis should increase.
      */
-    void rotateZ(float value);
+    void rotateZ(double value);
 
     /**
      * \brief Returns the matrix that represents the transform.

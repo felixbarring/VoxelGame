@@ -7,19 +7,19 @@ namespace graphics {
 // Constructor/Destructor #################################
 // ########################################################
 
-Sprite::Sprite(float x, float y, float layer, float width, float height, texture::Texture &texture)
+Sprite::Sprite(double x, double y, unsigned layer, double width, double height, texture::Texture &texture)
     : m_transform{x + width / 2, y + height / 2, 0},
       m_width{width},
       m_height{height},
       m_texture(texture),
-      m_layer {layer}
+      m_layer{layer}
 {
 
     std::vector<GLfloat> vertices = {
-        -width/2, -height/2, 0.0f,
-        width/2, -height/2, 0.0f,
-        width/2, height/2, 0.0f,
-        -width/2, height/2, 0.0f,
+        static_cast<float>(-width/2), static_cast<float>(-height/2, 0.0f),
+        static_cast<float>(width/2), static_cast<float>(-height/2, 0.0f),
+        static_cast<float>(width/2), static_cast<float>(height/2, 0.0f),
+        static_cast<float>(-width/2), static_cast<float>(height/2, 0.0f)
     };
 
     std::vector<GLfloat> texCoords = {
@@ -38,7 +38,7 @@ Sprite::Sprite(float x, float y, float layer, float width, float height, texture
 
 }
 
-Sprite::Sprite(float x, float y, float layer, std::shared_ptr<mesh::MeshElement> mesh, texture::Texture &texture)
+Sprite::Sprite(double x, double y, unsigned layer, std::shared_ptr<mesh::MeshElement> mesh, texture::Texture &texture)
     : m_transform{x, y, 0},
       m_texture(texture),
       m_layer{layer}

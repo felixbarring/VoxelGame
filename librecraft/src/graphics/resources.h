@@ -23,11 +23,7 @@ private:
 // ########################################################
 
     Resources() {};
-
-    virtual ~Resources() {}	;
-
     Resources(Resources const&) = delete;
-
     void operator=(Resources const&) = delete;
 
 public:
@@ -43,14 +39,13 @@ public:
 
     texture::Texture& getTexture(const std::string &path);
 
-    texture::TextureArray& getTextureArray(
-            const std::vector<std::string> &textures, int width, int height);
+    texture::TextureArray& getTextureArray(const std::vector<std::string> &textures, unsigned width, unsigned height);
 
     texture::TextureCubeMap& getTextureCubeMap(std::string &right,
             std::string &left, std::string &top, std::string &bottom,
-            std::string &back, std::string &front, int width, int height);
+            std::string &back, std::string &front, unsigned width, unsigned height);
 
-    texture::TextureCubeMap& getTextureCubeMap(int value);
+//    texture::TextureCubeMap& getTextureCubeMap(int value);
 
     FontMeshBuilder& getFontMeshBuilder(std::string &pathToLayout,
             int atlasWidth, int atlasHeight);

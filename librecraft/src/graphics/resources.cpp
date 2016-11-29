@@ -24,7 +24,7 @@ Texture& Resources::getTexture(const string &path) {
     return textures.at(path);
 }
 
-TextureArray& Resources::getTextureArray(const vector<string> &textures, int width, int height) {
+TextureArray& Resources::getTextureArray(const vector<string> &textures, unsigned width, unsigned height) {
     auto it = textureArraysMap.find(textures.at(0));
 
     if (it == textureArraysMap.end())
@@ -34,7 +34,7 @@ TextureArray& Resources::getTextureArray(const vector<string> &textures, int wid
 }
 
 TextureCubeMap& Resources::getTextureCubeMap(string &right, string &left, string &top, string &bottom, string &back,
-        string &front, int width, int height) {
+        string &front, unsigned width, unsigned height) {
 
     auto it = textureCubeMaps.find(right);
 

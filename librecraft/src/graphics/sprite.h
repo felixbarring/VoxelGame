@@ -17,11 +17,9 @@ public:
 // Constructor/Destructor #################################
 // ########################################################
 
-    Sprite(float x, float y, float layer, float width, float height, texture::Texture &texture);
+    Sprite(double x, double y, unsigned layer, double width, double height, texture::Texture &texture);
 
-    Sprite(float x, float y, float layer, std::shared_ptr<mesh::MeshElement> mesh, texture::Texture &texture);
-
-    virtual ~Sprite() {};
+    Sprite(double x, double y, unsigned layer, std::shared_ptr<mesh::MeshElement> mesh, texture::Texture &texture);
 
 // ########################################################
 // Member Functions########################################
@@ -45,13 +43,13 @@ public:
 
 private:
 
-    float m_width{};
-    float m_height{};
+    double m_width{};
+    double m_height{};
 
     std::shared_ptr<mesh::MeshElement> m_mesh;
     texture::Texture &m_texture;
     Transform m_transform;
-    int m_layer;
+    unsigned m_layer;
 
 };
 
