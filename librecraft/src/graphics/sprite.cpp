@@ -16,10 +16,10 @@ Sprite::Sprite(double x, double y, unsigned layer, double width, double height, 
 {
 
     std::vector<GLfloat> vertices = {
-        static_cast<float>(-width/2), static_cast<float>(-height/2, 0.0f),
-        static_cast<float>(width/2), static_cast<float>(-height/2, 0.0f),
-        static_cast<float>(width/2), static_cast<float>(height/2, 0.0f),
-        static_cast<float>(-width/2), static_cast<float>(height/2, 0.0f)
+        static_cast<float>(-width/2.0), static_cast<float>(-height/2.0), 0.0f,
+        static_cast<float>(width/2.0), static_cast<float>(-height/2.0), 0.0f,
+        static_cast<float>(width/2.0), static_cast<float>(height/2.0), 0.0f,
+        static_cast<float>(-width/2.0), static_cast<float>(height/2.0), 0.0f
     };
 
     std::vector<GLfloat> texCoords = {
