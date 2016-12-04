@@ -31,14 +31,11 @@ namespace chunk {
 // ########################################################
 
 void ChunkManager::createWorld(string worldName) {
-
     m_worldName = worldName;
-
     m_xOffset = 0;
     m_zOffset = 0;
 
     const int lam = m_lenghtAcrossMatrix;
-
     vector<future<void>> chunkCreationFutures;
 
     // Create the Chunks
@@ -64,7 +61,7 @@ void ChunkManager::createWorld(string worldName) {
 
     // TODO Should be done in parallel..
     for (int x = 0; x < lam; ++x) {
-        for (int z = 1; z < lam; ++z) {
+        for (int z = 0; z < lam; ++z) {
             m_chunks[x][0][z]->propagateLights();
             m_chunks[x][0][z]->updateGraphics(true);
         }
@@ -321,6 +318,7 @@ void ChunkManager::moveChunksDown() {
 void ChunkManager::moveChunks(Direction direction) {
     vector<shared_ptr<Chunk>> chunksToDelete;
 
+    // Store the chunks that should be removed and moves the old chunks in the matrix.
     if (direction == Direction::Right) {
         for (int i = 0; i < m_lenghtAcrossMatrix; ++i)
             chunksToDelete.push_back(m_chunks[m_lenghtAcrossMatrix - 1][0][i]);
@@ -355,16 +353,18 @@ void ChunkManager::moveChunks(Direction direction) {
         }
     }
 
+    // Off load the work on a thread pool so that the game is not blocked during this lengthy task.
     g_threadPool.enqueue([this, direction, chunksToDelete] {
 
+        // Destroy the chunks that are outside the matrix.
         for (auto chunk : chunksToDelete) {
             chunk->removeAllNeighbors();
             chunk->storeChunk(m_worldName);
             chunk.reset();
         }
 
+        // Add the chunks, they are not yet fully generated.
         vector<shared_ptr<Chunk>> newChunks{};
-
         if (direction == Direction::Right) {
             for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
                 auto ch = m_chunks[0 + 1][0][i];
@@ -390,17 +390,16 @@ void ChunkManager::moveChunks(Direction direction) {
                 newChunks.push_back(chunk);
             }
         } else if (direction == Direction::Down) {
-            // Create / load new chunks for the top row
             for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
                 auto ch = m_chunks[i][0][m_lenghtAcrossMatrix - 2];
                 auto chunk = std::make_shared<Chunk>(m_worldName, ch->getXLocation(), ch->getZLocation() +
                         CHUNK_WIDTH_AND_DEPTH);
-
                 m_chunks[i][0][m_lenghtAcrossMatrix - 1] = chunk;
                 newChunks.push_back(chunk);
             }
         }
 
+        // Run the creation and sunlightning work in parallel on the thread pool.
         vector<future<void>> chunkCreationFutures{};
         for (auto chunk : newChunks) {
             chunkCreationFutures.push_back(g_threadPool2.enqueue([chunk]
@@ -411,10 +410,13 @@ void ChunkManager::moveChunks(Direction direction) {
         }
         for_each(chunkCreationFutures.begin(), chunkCreationFutures.end(), [] (future<void> &f) { f.get(); });
 
+        // TODO This could be optimized to only do the work for the new chunks and their neighbors.
+        // Currently does the work for chunks that are already connected.
         connectChunks();
 
         vector<future<void>> collectLightFutures{};
 
+        // Collect lights from neighbors
         if (direction == Direction::Right) {
             for (auto chunk : newChunks)
                 collectLightFutures.push_back(g_threadPool2.enqueue([chunk] {chunk->collectLightFromRightNeighbor();}));
@@ -431,11 +433,11 @@ void ChunkManager::moveChunks(Direction direction) {
             for (auto chunk : newChunks)
                 collectLightFutures.push_back(g_threadPool2.enqueue([chunk] {chunk->collectLightFromFrontNeighbor();}));
         }
-
         for_each(collectLightFutures.begin(), collectLightFutures.end(), [] (future<void> &f) { f.get(); });
 
-        vector<future<void>> updateGrapicsFutures;
+        // Update the
 
+        vector<future<void>> updateGrapicsFutures;
         for (unsigned i = 0; i < newChunks.size(); i += 2) {
             auto chunk = newChunks[i];
             updateGrapicsFutures.push_back(g_threadPool2.enqueue([chunk, direction]
@@ -471,7 +473,6 @@ void ChunkManager::moveChunks(Direction direction) {
                     chunk->getFrontNeighbor()->forceUpdateGraphics();
             }));
         }
-
         for_each(updateGrapicsFutures.begin(), updateGrapicsFutures.end(), [] (future<void> &f) { f.get(); });
 
         m_bussyMovingChunksMutex.unlock();

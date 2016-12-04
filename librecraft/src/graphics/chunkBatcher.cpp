@@ -115,6 +115,7 @@ int ChunkBatcher::addBatch(
     auto batch = make_shared<GraphicalChunk>(x, y, z, data, right, left, back, front);
 
     lock_guard<mutex> lock(m_mutex);
+
     if (hightPriority)
         m_batchesToAddHP.push_back(make_tuple(++m_idCounter, replaceId, batch));
     else
@@ -144,50 +145,46 @@ void ChunkBatcher::draw() {
         m_batches.emplace(get<0>(*batchIt), get<2>(*batchIt));
         m_batchesToAddHP.erase(batchIt);
 
-        auto removeId{get<1>(*batchIt)};
-        if (removeId != noRemove) {
-            auto batchIt = m_batches.find(removeId);
-            if (batchIt != m_batches.end())
-                m_batches.erase(batchIt);
-        }
+        int replaceId{get<1>(*batchIt)};
+        if (replaceId != noRemove)
+            m_batchesToBeRemoved.push_back(replaceId);
     }
 
-    // Add one of the batches that has been requested to be added.
+    // Add one of the batches with none high priority that has been requested to be added.
     if (!m_batchesToAdd.empty()) {
         auto batchIt = m_batchesToAdd.begin();
         get<2>(*batchIt)->uploadData();
         m_batches.emplace(get<0>(*batchIt), get<2>(*batchIt));
         m_batchesToAdd.erase(batchIt);
 
-        auto removeId{get<1>(*batchIt)};
-        if (removeId != noRemove) {
-            m_batchesToBeRemoved.push_back(removeId);
-        }
+        int replaceId{get<1>(*batchIt)};
+        if (replaceId != noRemove)
+            m_batchesToBeRemoved.push_back(replaceId);
     }
 
     // Remove all of the batches that has been requested to be removed.
     while (!m_batchesToBeRemoved.empty()) {
         auto batch = m_batchesToBeRemoved.begin();
         auto batchIt = m_batches.find(*batch);
-        if (batchIt != m_batches.end())
+
+        if (batchIt != m_batches.end()) {
             m_batches.erase(batchIt);
-        else {
-
-            // TODO Solve the problem with gchunks not getting removed correctly.
-
-            cout << "GChunk can not be removed. ID = " << *batch << "\n";
-            for (auto b = m_batchesToAdd.begin(); b != m_batchesToAdd.end(); ++b) {
-                std::cout << "   " << get<0>(*b) << "\n";
-                if (get<0>(*b) == *batch) {
-                    m_batchesToAdd.erase(b);
-                    return;
-                }
-            }
-            cout << "Failed :( \n";
-
+            m_batchesToBeRemoved.erase(batch);
         }
-
-        m_batchesToBeRemoved.clear();
+        else {
+            // TODO Solve the problem with gchunks not getting removed correctly.
+//            cout << "GChunk can not be removed. ID = " << *batch << "\n";
+//            for (auto b = m_batchesToAdd.begin(); b != m_batchesToAdd.end(); ++b) {
+//                std::cout << "   " << get<0>(*b) << "\n";
+//                if (get<0>(*b) == *batch) {
+//                    m_batchesToAdd.erase(b);
+//                    return;
+//                }
+//            }
+            cout << "Failed to remove chunk with id: " << *batch << " \n";
+            // Should be removed. This is a hack to allow the game to progress even though it has a serious error.
+            m_batchesToBeRemoved.erase(batch);
+        }
     }
 
     m_program->bind();

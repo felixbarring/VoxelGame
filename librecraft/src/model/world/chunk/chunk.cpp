@@ -22,8 +22,8 @@ static const int maxCount = LAST_CUBE_USED_FOR_BUILDING_;
 static std::mutex s_mutex;
 
 // ########################################################
-// Constructor/Destructor #################################
-// ########################################################
+    // Constructor/Destructor #################################
+    // ########################################################
 
 Chunk::Chunk(string worldName, int x, int z)
     : m_xLocation{x},
@@ -161,16 +161,16 @@ void Chunk::updateGraphics(bool highPriority) {
     vector<vector<vector<Voxel>>> *front = nullptr;
     vector<vector<vector<Voxel>>> *back = nullptr;
 
-    if (m_rightNeighbor.get())
+    if (m_rightNeighbor)
         right = &(m_rightNeighbor->m_cubes);
 
-    if (m_leftNeighbor.get())
+    if (m_leftNeighbor)
         left = &(m_leftNeighbor->m_cubes);
 
-    if (m_frontNeighbor.get())
+    if (m_frontNeighbor)
         front = &(m_frontNeighbor->m_cubes);
 
-    if (m_backNeighbor.get())
+    if (m_backNeighbor)
         back = &(m_backNeighbor->m_cubes);
 
     for (auto i : m_dirtyRegions) {
