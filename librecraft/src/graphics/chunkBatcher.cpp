@@ -122,22 +122,12 @@ int ChunkBatcher::addBatch(
     else
         m_batchesToAdd.push_back(make_tuple(++m_idCounter, replaceId, batch));
 
-//    cout << "Added a new batch with ID = " << m_idCounter;
-//    if (replaceId != noRemove)
-//        cout << " and removing ID = " << replaceId;
-//    cout << "\n";
-//
-//    cout << "Contents of batches to be added: \n";
-//    for_each(m_batchesToAdd.begin(), m_batchesToAdd.end(), [](std::tuple<int, int, std::shared_ptr<GraphicalChunk>> &b) { cout << get<0>(b) << " "; });
-//    cout << "\n";
-
     return m_idCounter;
 }
 
 void ChunkBatcher::removeBatch(int id) {
     lock_guard<mutex> lock(m_mutex);
     m_batchesToBeRemoved.push_back(id);
-//    cout << "Added to remove ID " << id << "\n";
 }
 
 float x = 1.0;
@@ -152,71 +142,42 @@ void ChunkBatcher::draw() {
     // Add all the batches that has high priority
     while (!m_batchesToAddHP.empty()) {
         auto batchIt = m_batchesToAddHP.begin();
+        int id{get<0>(*batchIt)};
+        int replaceId{get<1>(*batchIt)};
+
         get<2>(*batchIt)->uploadData();
-        m_batches.emplace(get<0>(*batchIt), get<2>(*batchIt));
+        m_batches.emplace(id, get<2>(*batchIt));
         m_batchesToAddHP.erase(batchIt);
 
-        int replaceId{get<1>(*batchIt)};
-        if (replaceId != noRemove) {
+        if (replaceId != noRemove)
             m_batchesToBeRemoved.push_back(replaceId);
-//            cout << "While adding HP Added to remove ID " << replaceId << "\n";
-        }
     }
-
-//    if (!m_batchesToAdd.empty()) {
-//        cout << "Contents of batches to add: \n";
-//        for (auto &b : m_batchesToAdd)
-//            cout << get<0>(b) << " ";
-//        cout << "\n";
-//    }
 
     // Add one of the batches with none high priority that has been requested to be added.
     if (!m_batchesToAdd.empty()) {
         auto batchIt = m_batchesToAdd.begin();
         int id{get<0>(*batchIt)};
         int replaceId{get<1>(*batchIt)};
-//        cout << "Batch id = " << id << "\n";
 
         get<2>(*batchIt)->uploadData();
         m_batches.emplace(id, get<2>(*batchIt));
-
-//        cout << " Size before = " << m_batchesToAdd.size() << "\n";
         m_batchesToAdd.erase(batchIt);
-//        cout << " Size after = " << m_batchesToAdd.size() << "\n";
-        // TODO ERROR IS HERE :O
-        if (replaceId != noRemove) {
-            m_batchesToBeRemoved.push_back(replaceId);
-//            cout << " While adding " << id << " Added to remove ID " << replaceId << "\n";
-        }
-    }
 
-//    if (m_batchesToBeRemoved.size()) {
-//        cout << "Bathces that shall be removed \n";
-//        for (auto r : m_batchesToBeRemoved)
-//            cout << "      " << r << "\n";
-//    }
+        if (replaceId != noRemove)
+            m_batchesToBeRemoved.push_back(replaceId);
+    }
 
     // Remove all of the batches that has been requested to be removed.
     while (!m_batchesToBeRemoved.empty()) {
         auto batch = m_batchesToBeRemoved.begin();
         auto batchIt = m_batches.find(*batch);
 
-        cout << "   Trying to remove ID = " << *batch << "\n";
-//        for (auto &b : m_batchesToBeRemoved)
-//            cout << " " << b;
-//        cout << "\n";
-
         if (batchIt != m_batches.end()) {
             m_batches.erase(batchIt);
-//            cout << "                                                          " << m_batchesToBeRemoved.size();
             m_batchesToBeRemoved.erase(batch);
-//            cout << "   " << m_batchesToBeRemoved.size() << "\n";
         }
-        else {
+        else
             cout << "      Failed to remove chunk with id: " << *batch << " \n";
-            // TODO Should be removed. This is a hack to allow the game to progress even though it has a serious error.
-            m_batchesToBeRemoved.erase(batch);
-        }
     }
 
     m_program->bind();
