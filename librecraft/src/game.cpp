@@ -122,7 +122,9 @@ void Game::run() {
 
     util::check_system::checkStuff();
 
-    util::SoundPlayer::getInstance().playMusic(config::music::menuMusic);
+
+    // TODO Play lul
+//    util::SoundPlayer::getInstance().playMusic(config::music::menuMusic);
 
     int WIDTH = config::graphics_data::windowWidth;
     int HEIGHT = config::graphics_data::windowHeight;

@@ -1,5 +1,6 @@
 #include "chunkBatcher.h"
 
+#include <algorithm>
 #include <map>
 #include <iostream>
 
@@ -25,70 +26,70 @@ ChunkBatcher::ChunkBatcher(Camera &camera)
 {
 
     const char *vertex =
-            "#version 330 core \n"
+        "#version 330 core \n"
 
-            "const float density = 0.01; \n"
-            "const float gradient = 6; \n"
+        "const float density = 0.01; \n"
+        "const float gradient = 6; \n"
 
-            "in vec4 positionIn; \n"
-            "in vec3 normalIn; \n"
-            "in vec3 texCoordIn; \n"
+        "in vec4 positionIn; \n"
+        "in vec3 normalIn; \n"
+        "in vec3 texCoordIn; \n"
 
-            "uniform mat4 modelViewProjection; \n"
-            "uniform mat4 modelView; \n"
-            "uniform float sunStrenght; \n"
+        "uniform mat4 modelViewProjection; \n"
+        "uniform mat4 modelView; \n"
+        "uniform float sunStrenght; \n"
 
-            "out vec3 texCoord; \n"
-            "out float lightValue; \n"
-            "out float fogFactor; \n"
-            "out vec3 faceNormal; \n"
+        "out vec3 texCoord; \n"
+        "out float lightValue; \n"
+        "out float fogFactor; \n"
+        "out vec3 faceNormal; \n"
 
-            "void main(){ \n"
-            "  texCoord = vec3(texCoordIn.x, texCoordIn.y, texCoordIn.z); \n"
-            "  lightValue = (positionIn.w / 16) * sunStrenght; \n"
-            "  faceNormal = normalIn; \n"
+        "void main(){ \n"
+        "  texCoord = vec3(texCoordIn.x, texCoordIn.y, texCoordIn.z); \n"
+        "  lightValue = (positionIn.w / 16) * sunStrenght; \n"
+        "  faceNormal = normalIn; \n"
 
-            "  vec4 positionView = modelView * vec4(positionIn.xyz, 1); \n"
-            "  float distance = length(positionView.xyz); \n"
-            "  fogFactor = clamp(exp(-pow((distance * density), gradient)), 0.0, 1.0); \n"
+        "  vec4 positionView = modelView * vec4(positionIn.xyz, 1); \n"
+        "  float distance = length(positionView.xyz); \n"
+        "  fogFactor = clamp(exp(-pow((distance * density), gradient)), 0.0, 1.0); \n"
 
-            "  gl_Position =  modelViewProjection * vec4(positionIn.xyz, 1); \n"
-            "} \n";
+        "  gl_Position =  modelViewProjection * vec4(positionIn.xyz, 1); \n"
+        "} \n";
 
     const char *fragment =
-            "#version 330 core \n"
+        "#version 330 core \n"
 
-            "in vec3 texCoord; \n"
-            "in float lightValue; \n"
-            "in float fogFactor; \n"
+        "in vec3 texCoord; \n"
+        "in float lightValue; \n"
+        "in float fogFactor; \n"
 
-            "in vec3 faceNormal; \n"
+        "in vec3 faceNormal; \n"
 
-            "uniform sampler2DArray texture1; \n"
-            "uniform float sunStrenght; \n"
+        "uniform sampler2DArray texture1; \n"
+        "uniform float sunStrenght; \n"
 
-            "out vec4 color; \n"
+        "out vec4 color; \n"
 
-            "uniform vec3 lightDirection; \n"
-            "uniform vec3 fogColor; \n"
+        "uniform vec3 lightDirection; \n"
+        "uniform vec3 fogColor; \n"
 
-            "uniform vec3 diffuseLight = vec3(0.5, 0.5, 0.5); \n"
-            "uniform vec3 materialDiffuse = vec3(0.5, 0.5, 0.5); \n"
+        "uniform vec3 diffuseLight = vec3(0.5, 0.5, 0.5); \n"
+        "uniform vec3 materialDiffuse = vec3(0.5, 0.5, 0.5); \n"
 
-            "vec3 calculateDiffuse() \n "
-            "{ \n "
-            "  return sunStrenght * diffuseLight * materialDiffuse * max(0, dot(faceNormal, normalize(lightDirection))); \n "
-            "} \n "
+        "vec3 calculateDiffuse() \n "
+        "{ \n "
+        "  return sunStrenght * diffuseLight * materialDiffuse * max(0, dot(faceNormal, normalize(lightDirection))); \n "
+        "} \n "
 
-            "void main(){ \n"
+        "void main(){ \n"
 
-            "  vec3 diffuse = calculateDiffuse() / 2; \n"
-            "  color = vec4(diffuse, 1.0f) * texture(texture1, texCoord); \n"
+        "  vec3 diffuse = calculateDiffuse() / 2; \n"
+        "  color = vec4(diffuse, 1.0f) * texture(texture1, texCoord); \n"
 
-            "  vec4 light = vec4(lightValue, lightValue, lightValue, 1) + vec4(diffuse, 0); \n"
-            "  color = mix(vec4(fogColor, 1.0), light * texture(texture1, texCoord), fogFactor);"
+        "  vec4 light = vec4(lightValue, lightValue, lightValue, 1) + vec4(diffuse, 0); \n"
+        "  color = mix(vec4(fogColor, 1.0), light * texture(texture1, texCoord), fogFactor);"
 
-            "} \n";
+        "} \n";
 
     map<string, int> attributesMap{
         pair<string, int>("positionIn", 0),
@@ -121,12 +122,22 @@ int ChunkBatcher::addBatch(
     else
         m_batchesToAdd.push_back(make_tuple(++m_idCounter, replaceId, batch));
 
+//    cout << "Added a new batch with ID = " << m_idCounter;
+//    if (replaceId != noRemove)
+//        cout << " and removing ID = " << replaceId;
+//    cout << "\n";
+//
+//    cout << "Contents of batches to be added: \n";
+//    for_each(m_batchesToAdd.begin(), m_batchesToAdd.end(), [](std::tuple<int, int, std::shared_ptr<GraphicalChunk>> &b) { cout << get<0>(b) << " "; });
+//    cout << "\n";
+
     return m_idCounter;
 }
 
 void ChunkBatcher::removeBatch(int id) {
     lock_guard<mutex> lock(m_mutex);
     m_batchesToBeRemoved.push_back(id);
+//    cout << "Added to remove ID " << id << "\n";
 }
 
 float x = 1.0;
@@ -146,43 +157,64 @@ void ChunkBatcher::draw() {
         m_batchesToAddHP.erase(batchIt);
 
         int replaceId{get<1>(*batchIt)};
-        if (replaceId != noRemove)
+        if (replaceId != noRemove) {
             m_batchesToBeRemoved.push_back(replaceId);
+//            cout << "While adding HP Added to remove ID " << replaceId << "\n";
+        }
     }
+
+//    if (!m_batchesToAdd.empty()) {
+//        cout << "Contents of batches to add: \n";
+//        for (auto &b : m_batchesToAdd)
+//            cout << get<0>(b) << " ";
+//        cout << "\n";
+//    }
 
     // Add one of the batches with none high priority that has been requested to be added.
     if (!m_batchesToAdd.empty()) {
         auto batchIt = m_batchesToAdd.begin();
-        get<2>(*batchIt)->uploadData();
-        m_batches.emplace(get<0>(*batchIt), get<2>(*batchIt));
-        m_batchesToAdd.erase(batchIt);
-
+        int id{get<0>(*batchIt)};
         int replaceId{get<1>(*batchIt)};
-        if (replaceId != noRemove)
+//        cout << "Batch id = " << id << "\n";
+
+        get<2>(*batchIt)->uploadData();
+        m_batches.emplace(id, get<2>(*batchIt));
+
+//        cout << " Size before = " << m_batchesToAdd.size() << "\n";
+        m_batchesToAdd.erase(batchIt);
+//        cout << " Size after = " << m_batchesToAdd.size() << "\n";
+        // TODO ERROR IS HERE :O
+        if (replaceId != noRemove) {
             m_batchesToBeRemoved.push_back(replaceId);
+//            cout << " While adding " << id << " Added to remove ID " << replaceId << "\n";
+        }
     }
+
+//    if (m_batchesToBeRemoved.size()) {
+//        cout << "Bathces that shall be removed \n";
+//        for (auto r : m_batchesToBeRemoved)
+//            cout << "      " << r << "\n";
+//    }
 
     // Remove all of the batches that has been requested to be removed.
     while (!m_batchesToBeRemoved.empty()) {
         auto batch = m_batchesToBeRemoved.begin();
         auto batchIt = m_batches.find(*batch);
 
+        cout << "   Trying to remove ID = " << *batch << "\n";
+//        for (auto &b : m_batchesToBeRemoved)
+//            cout << " " << b;
+//        cout << "\n";
+
         if (batchIt != m_batches.end()) {
             m_batches.erase(batchIt);
+//            cout << "                                                          " << m_batchesToBeRemoved.size();
             m_batchesToBeRemoved.erase(batch);
+//            cout << "   " << m_batchesToBeRemoved.size() << "\n";
         }
         else {
-            // TODO Solve the problem with gchunks not getting removed correctly.
-//            cout << "GChunk can not be removed. ID = " << *batch << "\n";
-//            for (auto b = m_batchesToAdd.begin(); b != m_batchesToAdd.end(); ++b) {
-//                std::cout << "   " << get<0>(*b) << "\n";
-//                if (get<0>(*b) == *batch) {
-//                    m_batchesToAdd.erase(b);
-//                    return;
-//                }
-//            }
-            cout << "Failed to remove chunk with id: " << *batch << " \n";
-            // Should be removed. This is a hack to allow the game to progress even though it has a serious error.
+            cout << "      Failed to remove chunk with id: " << *batch << " \n";
+            // TODO Should be removed. This is a hack to allow the game to progress even though it has a serious error.
             m_batchesToBeRemoved.erase(batch);
         }
     }

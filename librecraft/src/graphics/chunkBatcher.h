@@ -41,7 +41,6 @@ public:
 // Member Functions########################################
 // ########################################################
 
-
     using VoxelMatrix = std::vector<std::vector<std::vector<Voxel>>>;
 
     /**
@@ -82,13 +81,14 @@ public:
      * @return An id that should be used with removeBatch when the batch shold be removed.
      */
     int addBatch(
-            int replaceId,
-            float x, float y, float z,
-            VoxelMatrix &data,
-            VoxelMatrix *right,
-            VoxelMatrix *left,
-            VoxelMatrix *back,
-            VoxelMatrix *front, bool highPriority = false);
+        int replaceId,
+        float x, float y, float z,
+        VoxelMatrix &data,
+        VoxelMatrix *right,
+        VoxelMatrix *left,
+        VoxelMatrix *back,
+        VoxelMatrix *front,
+        bool highPriority = false);
 
     /**
      * \brief Used to remove a batch that is no longer supposed to be drawn.
