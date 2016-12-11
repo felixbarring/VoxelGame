@@ -105,13 +105,14 @@ ChunkBatcher::ChunkBatcher(Camera &camera)
 // ########################################################
 
 int ChunkBatcher::addBatch(
-        int replaceId,
-        float x, float y, float z,
-        VoxelMatrix &data,
-        VoxelMatrix *right,
-        VoxelMatrix *left,
-        VoxelMatrix *back,
-        VoxelMatrix *front, bool hightPriority) {
+    int replaceId,
+    float x, float y, float z,
+    VoxelMatrix &data,
+    VoxelMatrix *right,
+    VoxelMatrix *left,
+    VoxelMatrix *back,
+    VoxelMatrix *front,
+    bool hightPriority) {
 
     auto batch = make_shared<GraphicalChunk>(x, y, z, data, right, left, back, front);
 
@@ -176,8 +177,20 @@ void ChunkBatcher::draw() {
             m_batches.erase(batchIt);
             m_batchesToBeRemoved.erase(batch);
         }
-        else
-            cout << "      Failed to remove chunk with id: " << *batch << " \n";
+        else {
+            // It might not have been added before it was requested to be removed.
+            bool failed{true};
+            for (auto b = m_batchesToAdd.begin(); b != m_batchesToAdd.end(); ++b) {
+                if (get<0>(*b) == *batch) {
+                    m_batchesToAdd.erase(b);
+                    m_batchesToBeRemoved.erase(batch);
+                    failed = false;
+                    break;
+                }
+            }
+            if (failed)
+                cout << "      Failed to remove chunk with id: " << *batch << " \n";
+        }
     }
 
     m_program->bind();
