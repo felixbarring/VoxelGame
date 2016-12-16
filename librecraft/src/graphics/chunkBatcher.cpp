@@ -189,7 +189,7 @@ void ChunkBatcher::draw() {
                 }
             }
             if (failed)
-                cout << "      Failed to remove chunk with id: " << *batch << " \n";
+                cout << "Failed to remove chunk with id: " << *batch << " \n";
         }
     }
 

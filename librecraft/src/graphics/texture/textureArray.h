@@ -14,22 +14,20 @@ public:
 // Constructor/Destructor #################################
 // ########################################################
 
-	TextureArray(std::vector<std::string> paths, unsigned width, unsigned height);
-
-	virtual ~TextureArray() {};
+    TextureArray(std::vector<std::string> paths, unsigned width, unsigned height);
 
 // ########################################################
 // Member Functions########################################
 // ########################################################
 
-	void bind();
+    void bind();
 
 // ########################################################
-// Instance Variables #####################################
+// Implementation #########################################
 // ########################################################
 
 private:
-	GLuint textureID;
+    GLuint textureID;
 
 };
 

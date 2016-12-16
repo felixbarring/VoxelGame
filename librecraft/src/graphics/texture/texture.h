@@ -12,25 +12,23 @@ public:
 // Constructor/Destructor #################################
 // ########################################################
 
-	Texture(const char *path);
-
-	virtual ~Texture() {};
+    Texture(const char *path);
 
 // ########################################################
 // Member Functions########################################
 // ########################################################
 
-	void bind();
+    void bind();
 
-	// TODO
-	// Add functions for texture options
+    // TODO
+    // Add functions for texture options
 
 // ########################################################
-// Instance Variables #####################################
+// Implementation #########################################
 // ########################################################
 
 private:
-	GLuint textureID;
+    GLuint textureID;
 
 };
 

@@ -14,11 +14,11 @@ public:
 // Constructor/Destructor #################################
 // ########################################################
 
-	// TODO Take all six paths as arguments!
+    // TODO Take all six paths as arguments!
 
-	TextureCubeMap(const char* right, const char* left, const char* top,
-			const char* bottom, const char* back, const char* front,
-			unsigned width, unsigned height);
+    TextureCubeMap(const char* right, const char* left, const char* top,
+            const char* bottom, const char* back, const char* front,
+            unsigned width, unsigned height);
 
 // ########################################################
 // Member Functions########################################
@@ -27,11 +27,11 @@ public:
 	void bind();
 
 // ########################################################
-// Instance Variables #####################################
+// Implementation #########################################
 // ########################################################
 
 private:
-	GLuint textureID;
+    GLuint textureID;
 
 };
 

@@ -21,8 +21,8 @@ static GLuint targets[] = {
 // ########################################################
 
 TextureCubeMap::TextureCubeMap(const char* right, const char* left,
-		const char* top, const char* bottom, const char* back,
-		const char* front, unsigned width, unsigned height) {
+    const char* top, const char* bottom, const char* back,
+    const char* front, unsigned width, unsigned height) {
 
     glGenTextures(1, &textureID);
     glActiveTexture(GL_TEXTURE0);
@@ -37,18 +37,18 @@ TextureCubeMap::TextureCubeMap(const char* right, const char* left,
 
     std::vector<const char*> paths{right, left, top, bottom, back, front};
 
-    static Image *image = new Image;
+    Image image;
 
     int i = 0;
     for (auto path : paths) {
 
-        if (!image->loadFromFile(path)) {
+        if (!image.loadFromFile(path)) {
             std::cout << "Coulnd not load image" << path << "\n";
             return;
         }
 
-        glTexImage2D(targets[i++], 0, GL_RGBA, image->getSize().x, image->getSize().y, 0, GL_RGBA, GL_UNSIGNED_BYTE,
-                image->getPixelsPtr());
+        glTexImage2D(targets[i++], 0, GL_RGBA, image.getSize().x, image.getSize().y, 0, GL_RGBA, GL_UNSIGNED_BYTE,
+            image.getPixelsPtr());
     }
     glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 }
