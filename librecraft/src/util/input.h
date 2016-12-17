@@ -105,10 +105,10 @@ public:
 
 private:
 
-    float screenCenterX;
-    float screenCenterY;
+    float m_screenCenterX;
+    float m_screenCenterY;
 
-    bool mouseLocked {true};
+    bool m_mouseLocked {true};
 
     sf::Window *m_window{nullptr};
 };

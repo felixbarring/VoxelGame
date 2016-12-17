@@ -7,6 +7,7 @@
 #include "../config/data.h"
 
 using namespace config::input_data;
+using namespace sf;
 
 namespace util {
 
@@ -15,8 +16,8 @@ namespace util {
 // ########################################################
 
 Input::Input(float centerX, float centerY)
-    : screenCenterX(centerX),
-      screenCenterY(centerY)
+    : m_screenCenterX(centerX),
+      m_screenCenterY(centerY)
 {
 }
 
@@ -38,62 +39,62 @@ void Input::updateValues() {
     mouseYMovement = 0.0;
 
     // Keyboard
-    moveForwardPressed = sf::Keyboard::isKeyPressed(moveForwardButton) && !moveForwardActive;
-    moveLeftPressed = sf::Keyboard::isKeyPressed(moveLeftButton) && !moveLeftActive;
-    moveRightPressed = sf::Keyboard::isKeyPressed(moveRightButton) && !moveRightActive;
-    moveBackwardPressed = sf::Keyboard::isKeyPressed(moveBackwardButton) && !moveBackwardActive;
-    jumpPressed = sf::Keyboard::isKeyPressed(jumpButton) && !jumpActive;
-    goDownPressed = sf::Keyboard::isKeyPressed(goDownButton) && !goDownActive;
+    moveForwardPressed = Keyboard::isKeyPressed(moveForwardButton) && !moveForwardActive;
+    moveLeftPressed = Keyboard::isKeyPressed(moveLeftButton) && !moveLeftActive;
+    moveRightPressed = Keyboard::isKeyPressed(moveRightButton) && !moveRightActive;
+    moveBackwardPressed = Keyboard::isKeyPressed(moveBackwardButton) && !moveBackwardActive;
+    jumpPressed = Keyboard::isKeyPressed(jumpButton) && !jumpActive;
+    goDownPressed = Keyboard::isKeyPressed(goDownButton) && !goDownActive;
 
-    eraseTextPressed = sf::Keyboard::isKeyPressed(eraseTextButton) && !eraseTextActive;
-    switchCubePressed = sf::Keyboard::isKeyPressed(switchBuildingCube) && !switchCubeActive;
+    eraseTextPressed = Keyboard::isKeyPressed(eraseTextButton) && !eraseTextActive;
+    switchCubePressed = Keyboard::isKeyPressed(switchBuildingCube) && !switchCubeActive;
 
-    openTerminalPressed = sf::Keyboard::isKeyPressed(openTerminal) && !openTerminalActive;
-    tabPressed = sf::Keyboard::isKeyPressed(tab) && !tabActive;
-    enterPressed = sf::Keyboard::isKeyPressed(enter) && !enterActive;
-    upPressed = sf::Keyboard::isKeyPressed(up) && !upActive;
-    downPressed = sf::Keyboard::isKeyPressed(down) && !downActive;
+    openTerminalPressed = Keyboard::isKeyPressed(openTerminal) && !openTerminalActive;
+    tabPressed = Keyboard::isKeyPressed(tab) && !tabActive;
+    enterPressed = Keyboard::isKeyPressed(enter) && !enterActive;
+    upPressed = Keyboard::isKeyPressed(up) && !upActive;
+    downPressed = Keyboard::isKeyPressed(down) && !downActive;
 
-    escapeKeyPressed = sf::Keyboard::isKeyPressed(escape) && !escapeKeyActive;
+    escapeKeyPressed = Keyboard::isKeyPressed(escape) && !escapeKeyActive;
 
     // Mouse
-    action1Pressed = sf::Mouse::isButtonPressed(action1Button) && !action1Active;
-    action2Pressed = sf::Mouse::isButtonPressed(action2Button) && !action2Active;
+    action1Pressed = Mouse::isButtonPressed(action1Button) && !action1Active;
+    action2Pressed = Mouse::isButtonPressed(action2Button) && !action2Active;
 
     // Keyboard
-    moveForwardActive = sf::Keyboard::isKeyPressed(moveForwardButton);
-    moveLeftActive = sf::Keyboard::isKeyPressed(moveLeftButton);
-    moveRightActive = sf::Keyboard::isKeyPressed(moveRightButton);
-    moveBackwardActive = sf::Keyboard::isKeyPressed(moveBackwardButton);
-    jumpActive = sf::Keyboard::isKeyPressed(jumpButton);
-    goDownActive = sf::Keyboard::isKeyPressed(goDownButton);
+    moveForwardActive = Keyboard::isKeyPressed(moveForwardButton);
+    moveLeftActive = Keyboard::isKeyPressed(moveLeftButton);
+    moveRightActive = Keyboard::isKeyPressed(moveRightButton);
+    moveBackwardActive = Keyboard::isKeyPressed(moveBackwardButton);
+    jumpActive = Keyboard::isKeyPressed(jumpButton);
+    goDownActive = Keyboard::isKeyPressed(goDownButton);
 
-    eraseTextActive = sf::Keyboard::isKeyPressed(eraseTextButton);
-    switchCubeActive = sf::Keyboard::isKeyPressed(switchBuildingCube);
+    eraseTextActive = Keyboard::isKeyPressed(eraseTextButton);
+    switchCubeActive = Keyboard::isKeyPressed(switchBuildingCube);
 
-    openTerminalActive = sf::Keyboard::isKeyPressed(openTerminal);
-    tabActive = sf::Keyboard::isKeyPressed(tab);
-    enterActive = sf::Keyboard::isKeyPressed(enter);
-    upActive = sf::Keyboard::isKeyPressed(up);
-    downActive = sf::Keyboard::isKeyPressed(down);
+    openTerminalActive = Keyboard::isKeyPressed(openTerminal);
+    tabActive = Keyboard::isKeyPressed(tab);
+    enterActive = Keyboard::isKeyPressed(enter);
+    upActive = Keyboard::isKeyPressed(up);
+    downActive = Keyboard::isKeyPressed(down);
 
-    escapeKeyActive = sf::Keyboard::isKeyPressed(escape);
+    escapeKeyActive = Keyboard::isKeyPressed(escape);
 
 	// Mouse
-	action1Active = sf::Mouse::isButtonPressed(action1Button);
-	action2Active = sf::Mouse::isButtonPressed(action2Button);
+	action1Active = Mouse::isButtonPressed(action1Button);
+	action2Active = Mouse::isButtonPressed(action2Button);
 
-    if (mouseLocked) {
-        auto ve = sf::Mouse::getPosition(*m_window);
+    if (m_mouseLocked) {
+        auto ve = Mouse::getPosition(*m_window);
         double mouseXOffset = ve.x;
         double mouseYOffset = ve.y;
 
-        mouseXMovement = screenCenterX - mouseXOffset;
-        mouseYMovement = screenCenterY - mouseYOffset;
+        mouseXMovement = m_screenCenterX - mouseXOffset;
+        mouseYMovement = m_screenCenterY - mouseYOffset;
         centerMouse();
     }
     else {
-        auto vec = sf::Mouse::getPosition(*m_window);
+        auto vec = Mouse::getPosition(*m_window);
         mouseXPosition = vec.x;
         mouseYPosition = vec.y;
     }
@@ -101,11 +102,11 @@ void Input::updateValues() {
     keyWasTyped = false;
 
     // Loop thru all the key events and use it as the key typed
-    sf::Event event;
+    Event event;
     while (m_window->pollEvent(event)) {
-        if (event.type == sf::Event::Closed)
+        if (event.type == Event::Closed)
             m_window->close();
-        else if (event.type == sf::Event::TextEntered) {
+        else if (event.type == Event::TextEntered) {
             char c = static_cast<char>(event.text.unicode);
             if (c >= 32) {
                 keyWasTyped = true;
@@ -116,19 +117,19 @@ void Input::updateValues() {
 }
 
 void Input::centerMouse() {
-    sf::Vector2<int> vec(screenCenterX, screenCenterY);
-    sf::Mouse::setPosition(vec, *m_window);
+    Vector2<int> vec(m_screenCenterX, m_screenCenterY);
+    Mouse::setPosition(vec, *m_window);
 }
 
 void Input::lockMouse() {
-    mouseLocked = true;
+    m_mouseLocked = true;
 }
 
 void Input::unlockMouse() {
-    mouseLocked = false;
+    m_mouseLocked = false;
 }
 
-void Input::setWindow(sf::Window *window) {
+void Input::setWindow(Window *window) {
     m_window = window;
 }
 

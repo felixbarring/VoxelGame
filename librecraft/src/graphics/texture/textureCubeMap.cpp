@@ -57,7 +57,7 @@ TextureCubeMap::TextureCubeMap(const char* right, const char* left,
 // Member Functions########################################
 // ########################################################
 
-void TextureCubeMap::bind() {
+void TextureCubeMap::bind() const {
     glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
 }
 

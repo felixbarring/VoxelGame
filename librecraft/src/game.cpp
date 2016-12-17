@@ -44,6 +44,7 @@ using sf::Window;
 using util::FPSManager;
 
 using namespace std;
+using namespace util;
 
 // ########################################################
 // Constructor/Destructor #################################
@@ -119,17 +120,16 @@ private:
 // ########################################################
 
 void Game::run() {
-
-    util::check_system::checkStuff();
+    check_system::checkStuff();
 
 
     // TODO Play lul
-//    util::SoundPlayer::getInstance().playMusic(config::music::menuMusic);
+//    SoundPlayer::getInstance().playMusic(config::music::menuMusic);
 
     int WIDTH = config::graphics_data::windowWidth;
     int HEIGHT = config::graphics_data::windowHeight;
 
-    util::Input::createInstance(WIDTH / 2.0, HEIGHT / 2.0);
+    Input::createInstance(WIDTH / 2.0, HEIGHT / 2.0);
 
     // create the window
     sf::ContextSettings settings;
@@ -140,13 +140,12 @@ void Game::run() {
     settings.minorVersion = 1;
 
     window = new sf::Window{sf::VideoMode(WIDTH, HEIGHT), "Voxel Game", sf::Style::Default, settings};
-
     window->setMouseCursorVisible(false);
 
 //    window->setVerticalSyncEnabled(true);
 //    window->setFramerateLimit(300);
 
-    util::Input::getInstance()->setWindow(window);
+    Input::getInstance()->setWindow(window);
 
     glewExperimental = true;
     if (glewInit() != GLEW_OK)
@@ -162,8 +161,7 @@ void Game::run() {
     // Done here on the main thread to avoid thread issues.
     graphics::GraphicsManager::getInstance();
 
-
-    // run the main loop
+    // Run the main loop
     while (!m_quit && window->isOpen()) {
         m_fpsManager.frameStart();
 
@@ -176,7 +174,7 @@ void Game::run() {
 
 void Game::createWorld(string name) {
     m_inGame.reset(new InGame(this, name));
-    auto future = util::globalResources::g_threadPool.enqueue([name]
+    auto future = globalResources::g_threadPool.enqueue([name]
     {
         chunk::ChunkManager::getInstance().createWorld(name);
     }

@@ -321,15 +321,15 @@ void MainMenu::update(float timePassed) {
     graphics::SpriteBatcher::getInstance().draw();
 }
 
-std::string MainMenu::randomName() {
+string MainMenu::randomName() {
 
     static vector<string> names {"Dank World", "Bloxel", "Sees", "Soos", "Satan", "Shrek", "Memus", "Adventure",
         "Swoosh", "Blool"};
     static int last{-1};
 
-    std::random_device randomDevice;
-    std::mt19937 randomNumber(randomDevice());
-    std::uniform_int_distribution<int> uni(0, names.size() - 1);
+    random_device randomDevice;
+    mt19937 randomNumber(randomDevice());
+    uniform_int_distribution<int> uni(0, names.size() - 1);
 
     int value;
     do {

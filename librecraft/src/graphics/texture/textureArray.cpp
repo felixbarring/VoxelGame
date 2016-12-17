@@ -58,7 +58,7 @@ TextureArray::TextureArray(std::vector<std::string> paths, unsigned width, unsig
 // Member Functions########################################
 // ########################################################
 
-void TextureArray::bind() {
+void TextureArray::bind() const {
     glBindTexture(GL_TEXTURE_2D_ARRAY, textureID);
 }
 

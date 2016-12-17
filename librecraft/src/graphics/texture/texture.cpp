@@ -34,14 +34,13 @@ Texture::Texture(const char *path) {
             image.getPixelsPtr());
     glGenerateMipmap(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, 0);
-    }
-
+}
 
 // ########################################################
 // Member Functions########################################
 // ########################################################
 
-void Texture::bind() {
+void Texture::bind() const {
     glBindTexture(GL_TEXTURE_2D, textureID);
 }
 

@@ -18,7 +18,7 @@ public:
 // Member Functions########################################
 // ########################################################
 
-    void bind();
+    void bind() const;
 
     // TODO
     // Add functions for texture options
