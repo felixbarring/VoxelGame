@@ -15,23 +15,27 @@ public:
 // Constructor/Destructor #################################
 // ########################################################
 
-	MeshElement(const std::vector<float> &vbd1, int vbd1Format,
-			const std::vector<short> &elementData);
+	MeshElement(
+        const std::vector<float> &vbd1, int vbd1Format,
+        const std::vector<short> &elementData);
 
-	MeshElement(const std::vector<float> &vbd1, int vbd1Format,
-			const std::vector<float> &vbd2, int vbd2Format,
-			const std::vector<short> &elementData);
+	MeshElement(
+        const std::vector<float> &vbd1, int vbd1Format,
+        const std::vector<float> &vbd2, int vbd2Format,
+        const std::vector<short> &elementData);
 
-	MeshElement(const std::vector<float> &vbd1, int vbd1Format,
-			const std::vector<float> &vbd2, int vbd2Format,
-			const std::vector<float> &vbd3, int vbd3Format,
-			const std::vector<short> &elementData);
+	MeshElement(
+        const std::vector<float> &vbd1, int vbd1Format,
+        const std::vector<float> &vbd2, int vbd2Format,
+        const std::vector<float> &vbd3, int vbd3Format,
+        const std::vector<short> &elementData);
 
-	MeshElement(const std::vector<float> &vbd1, int vbd1Format,
-			const std::vector<float> &vbd2, int vbd2Format,
-			const std::vector<float> &vbd3, int vbd3Format,
-			const std::vector<float> &vbd4, int vbd4Format,
-			const std::vector<short> &elementData);
+	MeshElement(
+        const std::vector<float> &vbd1, int vbd1Format,
+        const std::vector<float> &vbd2, int vbd2Format,
+        const std::vector<float> &vbd3, int vbd3Format,
+        const std::vector<float> &vbd4, int vbd4Format,
+        const std::vector<short> &elementData);
 
 	virtual ~MeshElement();
 
@@ -39,16 +43,17 @@ public:
 // Member Functions########################################
 // ########################################################
 
-	void draw() override;
+    void draw() override;
+
 
 // ########################################################
 // Instance Variables #####################################
 // ########################################################
 
-	GLuint VAO;
-	GLuint EBO;
-	std::vector<GLuint> vboHandels;
-	int numberOfElements;
+    GLuint m_VAO;
+    GLuint m_EBO;
+    std::vector<GLuint> m_vboHandels;
+    int m_numberOfElements;
 
 };
 
