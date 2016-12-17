@@ -28,6 +28,10 @@ glm::mat4 Camera::getViewMatrix() {
     return view;
 }
 
+void Camera::setProjectionMatrix(glm::mat4 view) {
+    projection = view;
+}
+
 glm::mat4& Camera::getProjectionMatrix() {
     return projection;
 }

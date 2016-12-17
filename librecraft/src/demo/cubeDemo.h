@@ -80,15 +80,20 @@ public:
 	    graphics::Transform transform4{6, 0, -5.0f};
 
 	    float aspectRatio = WIDTH / HEIGHT;
-	    glm::mat4 Projection = glm::perspective(80.0f, aspectRatio, 0.1f, 100.0f);
+	    glm::mat4 projection = glm::perspective(80.0f, aspectRatio, 0.1f, 100.0f);
 
-	    glm::mat4 camera = glm::lookAt(
+	    glm::mat4 cameraMatrix = glm::lookAt(
 	        glm::vec3(0, 0.1, 2), // Camera location
 	        glm::vec3(0, 0, 0),   // Look at
 	        glm::vec3(0, 0, 1)    // Head is up
 	    );
 
 	    float xAmount = 0;
+
+	    Camera camera{};
+	    camera.setViewMatrix(std::move(cameraMatrix));
+	    camera.setProjectionMatrix(std::move(projection));
+	    graphics::CubeBatcher batcher{camera};
 
 	    while (window.isOpen()) {
 	        fpsManager.frameStart();
@@ -102,15 +107,12 @@ public:
 	        transform4.rotateY(0.1);
 	        transform4.rotateZ(0.1);
 
-	        // TODO Do not use the batcher in the demos?
-	        // Or perhaps create a batcher not in the graphicsManager since it is no longer singleton :-)
+	        batcher.addBatch(1, transform1);
+	        batcher.addBatch(2, transform2);
+	        batcher.addBatch(3, transform3);
+	        batcher.addBatch(4, transform4);
 
-	//      graphics::CubeBatcher::getInstance().addBatch(1, transform1);
-	//      graphics::CubeBatcher::getInstance().addBatch(2, transform2);
-	//      graphics::CubeBatcher::getInstance().addBatch(3, transform3);
-	//      graphics::CubeBatcher::getInstance().addBatch(4, transform4);
-	//
-	//      graphics::CubeBatcher::getInstance().draw();
+	        batcher.draw();
 
 	        fpsManager.sync();
 	        window.display();

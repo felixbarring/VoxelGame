@@ -33,8 +33,6 @@ public:
      */
     Camera(float xPosition, float yPosition, float zPosition);
 
-
-
 // ########################################################
 // Member Functions########################################
 // ########################################################
@@ -53,6 +51,11 @@ public:
      * @return
      */
     glm::mat4 getViewMatrix();
+
+    /**
+     *
+     */
+    void setProjectionMatrix(glm::mat4 view);
 
     /**
      *

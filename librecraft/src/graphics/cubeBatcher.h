@@ -71,7 +71,8 @@ private:
     public:
 
         Batch(TexturedCube &cube, Transform &transform, int lightValue)
-            : m_cube(cube), m_transform(transform),
+            : m_cube(cube),
+              m_transform(transform),
               m_lightValue(lightValue) {}
 
         TexturedCube &m_cube;
