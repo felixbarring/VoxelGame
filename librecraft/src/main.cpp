@@ -1,66 +1,21 @@
 #define GLM_FORCE_RADIANS
 
-#include "game.h"
-#include "demo/textureDemo.h"
-#include "demo/cubeDemo.h"
-#include "demo/arrayTextureDemo.h"
-#include "demo/cubeMapDemo.h"
-#include "demo/spriteDemo.h"
-#include "demo/guiDemo.h"
-#include "demo/fontDemo.h"
-
 #include <string>
 #include <exception>
 #include <iostream>
 
+#include "game.h"
+
 int main(int argc, char *argv[]) {
 
     try {
+        Game game;
+        game.run();
 
-        std::cout << "argc =" << argc << "\n";
-
-        if (argc == 1) {
-            Game game;
-            game.run();
-        } else {
-
-            std::string str = argv[1];
-
-            if (str == "textureDemo") {
-                demo::TextureDemo textureDemo;
-                textureDemo.runDemo();
-            }
-            else if (str == "cubeDemo") {
-                demo::CubeDemo cubeDemo;
-                cubeDemo.runDemo();
-            }
-            else if (str == "textureArrayDemo") {
-                demo::ArrayTextureDemo arrayTextureDemo;
-                arrayTextureDemo.runDemo();
-            }
-            else if (str == "cubeMapDemo") {
-                demo::CubeMapDemo cubeMapDemo;
-                cubeMapDemo.runDemo();
-            }
-            else if (str == "spriteDemo") {
-                demo::SpriteDemo spriteDemo;
-                spriteDemo.runDemo();
-            }
-            else if (str == "guiDemo") {
-                demo::GuiDemo guiDemo;
-                guiDemo.runDemo();
-            }
-            else if (str == "fontDemo") {
-                demo::FontDemo fontDemo;
-                fontDemo.runDemo();
-            }
-        }
-
-    } catch (std::exception& e) {
+    } catch (std::exception &e) {
         std::cout << "An error occured \n" << e.what() << "\n";
     } catch (...) {
         std::cout << "An error that is not derived from std::exception occured \n";
     }
 
 }
-
