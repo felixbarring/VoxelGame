@@ -1,5 +1,3 @@
-package font;
-
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontFormatException;
@@ -55,21 +53,21 @@ public class FontCreator {
 	 * @param antiAlias If anaialiasing should be used when creating the fontatlas 
 	 * @param outName The name of the output files, .png and .txt will be prepended
 	 */
-	public static void createFontAtlasAndDataFile(java.awt.Font font, boolean antiAlias, String outName) {
+	public static void createFontAtlasAndDataFile(int fontSize, java.awt.Font font, String outName) {
 
 		final int CHAR_ARRAY_SIZE = 256;
 		final CharData[] CHAR_ARRAY = new CharData[CHAR_ARRAY_SIZE];
 
 		
-		final int textureWidth = 1024;
-		final int textureHeight = 1024;
+		final int textureWidth = fontSize;
+		final int textureHeight = fontSize;
 
 		final BufferedImage fontAtlasImage = new BufferedImage(textureWidth, textureHeight, BufferedImage.TYPE_INT_ARGB);
 		final Graphics2D fontGraphics = (Graphics2D) fontAtlasImage.getGraphics();
 		
 		fontGraphics.setFont(font);
-		fontGraphics.setColor(new Color(255,255,255,1));
-		fontGraphics.fillRect(0,0,textureWidth,textureHeight);
+		fontGraphics.setColor(new Color(255, 255, 255, 1)); // COLOE WHITE
+		fontGraphics.fillRect(0, 0, textureWidth, textureHeight);
 
 		int fontHeight = 0;
 		int rowHeight = 0;
@@ -78,7 +76,7 @@ public class FontCreator {
 
 		for (char ch = 0; ch < 256; ch++) {
 
-			BufferedImage fontImage = crateCharImage(ch, fontGraphics, font, antiAlias);
+			BufferedImage fontImage = crateCharImage(ch, fontGraphics, font);
 			CharData charData = new CharData();
 
 			charData.width = fontImage.getWidth();
@@ -135,10 +133,9 @@ public class FontCreator {
 	 * @param ch The charachter to render.
 	 * @param graphics The graphics context of the fontatlas / font
 	 * @param font The font that the char will be rendered with
-	 * @param antiAlias Whether to use antialiasing of not when rendering
 	 * @return A BufferedImage that represents the char
 	 */
-	private static BufferedImage crateCharImage(char ch, Graphics2D graphics, java.awt.Font font, boolean antiAlias) {
+	private static BufferedImage crateCharImage(char ch, Graphics2D graphics, java.awt.Font font) {
 
 		FontMetrics fontMetrics = graphics.getFontMetrics();
 		int charwidth = fontMetrics.charWidth(ch);
@@ -153,9 +150,7 @@ public class FontCreator {
 		BufferedImage fontImage = new BufferedImage(charwidth, charheight, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D charGraphics = (Graphics2D) fontImage.getGraphics();
 
-		if (antiAlias) {
-			charGraphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		}
+		charGraphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
 		charGraphics.setFont(font);
 		charGraphics.setColor(Color.WHITE);
@@ -168,18 +163,22 @@ public class FontCreator {
 	 * The Main function of the program.
 	 * Creates a fontatlas and a data file for the layout of the fontatlas.
 	 * 
-	 * @param argv Must contain two Strings, the firest one is the name of the ttf file that should be in the same root directory where this program is ran.
-	 *             The second String is the name of the output files, .png and .txt will be appended on the file names.
+	 * @param argv Must contain three Strings, the firest one is the desired size of the texture that shall be 
+     *        generated. The second is the name of the ttf file that should be in the same root directory where this 
+     *        program is ran. The third String is the name of the output files, .png and .txt will be appended on the 
+     *        file names.
 	 */
 	public static void main(String[] argv) {
 
 		if (argv.length < 2) {
-			System.out.println("Error, need to provide the following arguments: Name of the ttf file and the name of the output files.");
+			System.out.println("Error, need to provide the following arguments: Desired texture dimension, name of" + 
+                "the ttf file and the name of the output files.");
 			System.exit(0);
 		}
 
-		String ttfName = argv[0];
-		String outName = argv[1];
+		final int size = Integer.parseInt(argv[0]);
+		String ttfName = argv[1];
+		String outName = argv[2];
 
 		Font font;
 		try {
@@ -187,8 +186,7 @@ public class FontCreator {
 			font = Font.createFont(Font.TRUETYPE_FONT, new FileInputStream(ttfName));
 			font = font.deriveFont((float) 60);
 			font = font.deriveFont(Font.PLAIN);
-			
-			FontCreator.createFontAtlasAndDataFile(font, true, outName);
+			FontCreator.createFontAtlasAndDataFile(size, font, outName);
 			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
