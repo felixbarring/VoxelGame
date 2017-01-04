@@ -6,5 +6,5 @@ mkdir data
 cd data
 touch meta
 cd ..
-cmake ..
+cmake -DCMAKE_BUILD_TYPE=Release -DDEMO=TRUE ..
 cd ../scripts
