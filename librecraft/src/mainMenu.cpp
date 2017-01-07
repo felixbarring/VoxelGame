@@ -32,7 +32,7 @@ MainMenu::MainMenu(Game *game)
 
     graphics::SpriteBatcher::getInstance().setProjection(m_virtualProjection);
 
-    m_title = make_shared<gui::Image>(200, 450, 400, 100, config::gui_data::title);
+    m_title = make_unique<gui::Image>(200, 450, 400, 100, config::gui_data::title);
 
     // TODO Use constants for each ID.
     // TODO use better names for the widgets variables.
@@ -42,8 +42,8 @@ MainMenu::MainMenu(Game *game)
     {
         switch(id) {
 
-        case 0: m_activeWidgetGroup = m_playWidgetGroup;break;
-        case 1: m_activeWidgetGroup = m_settingsWidgetGroup;break;
+        case 0: m_activeWidgetGroup = m_playWidgetGroup; break;
+        case 1: m_activeWidgetGroup = m_settingsWidgetGroup; break;
         case 2: game->quitGame(); break;
         case 3: m_activeWidgetGroup = m_newWorldWidgetGroup; break;
         case 4: m_activeWidgetGroup = m_loadWorldWidgetGroup; break;
@@ -60,7 +60,10 @@ MainMenu::MainMenu(Game *game)
         }
         case 12: m_activeWidgetGroup = m_settingsWidgetGroup; break;
         case 13: m_activeWidgetGroup = m_settingsWidgetGroup; break;
-        case 14: break;
+        case 14: {
+            m_activeWidgetGroup = m_newWorldWidgetGroupAdvanced;
+            break;
+        }
         case 15: {
             string name {m_textInput3->getString()};
             if (name.size()) {
@@ -107,7 +110,12 @@ MainMenu::MainMenu(Game *game)
             m_mouseSensitivityInput->setString(to_string(m_mouseSensitivitySlider->getValue() / 100));
             break;
         }
+        case 2000: {
+            m_activeWidgetGroup = m_newWorldWidgetGroup;
+            break;
         }
+        }
+
     };
 
     // TODO Give the variables better names
@@ -247,6 +255,19 @@ MainMenu::MainMenu(Game *game)
         m_newWorldWidgetGroup->addWidget(button2);
         m_newWorldWidgetGroup->addWidget(button3);
         m_newWorldWidgetGroup->addWidget(button4);
+    }
+
+    // ########################################################################
+
+    {
+        shared_ptr<IWidget> label1(new Label{230, 390, 150, 50, " - Advanced - "});
+
+        m_newWorldWidgetGroupAdvanced.reset(new WidgetGroup{0, 200, 120, 400, 270, observer});
+        shared_ptr<IWidget> button1(new Button{2000, 460, 135, 100, 30, observer, "Cancel", 1});
+
+        m_newWorldWidgetGroupAdvanced->addWidget(label1);
+        m_newWorldWidgetGroupAdvanced->addWidget(button1);
+
     }
 
     // ########################################################################
