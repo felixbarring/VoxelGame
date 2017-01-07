@@ -1,33 +1,29 @@
-#ifndef SRC_DEMO_TOGGLEBUTTON_H_
-#define SRC_DEMO_TOGGLEBUTTON_H_
 
-#include "button.h"
+#ifndef SRC_GUI_WIDGET_CHECKBUTTON_H_
+#define SRC_GUI_WIDGET_CHECKBUTTON_H_
+
+#include "abstractWidget.h"
 
 namespace widget {
 
-class ToggleButton: public Button {
+class CheckButton: public AbstractWidget {
 public:
 
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
 
-	ToggleButton(int id, int x, int y, int width, int height, std::function<void(int)> observer,
-			const std::string &name, int layer = 0);
+    CheckButton();
 
-	virtual ~ToggleButton() {};
+    virtual ~CheckButton();
 
 // ########################################################
 // Member Functions########################################
 // ########################################################
 
-	bool isToggled();
+    void draw() override;
 
-	void toggle();
-
-	void draw() override;
-
-	void update(float timePassed) override;
+    void update(float timePassed) override;
 
 // ########################################################
 // Implementation #########################################
@@ -35,10 +31,8 @@ public:
 
 private:
 
-	bool m_toggled{false};
-
 };
 
 } /* namespace widget */
 
-#endif /* SRC_DEMO_TOGGLEBUTTON_H_ */
+#endif /* SRC_GUI_WIDGET_CHECKBUTTON_H_ */

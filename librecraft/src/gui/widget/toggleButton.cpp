@@ -55,7 +55,7 @@ void ToggleButton::update(float timePassed) {
 
 	if (m_pointerInsideBorders && input->action1Pressed) {
 		toggle();
-		m_observer.operator ()(m_id);
+		m_observer(m_id);
 	}
 
 }

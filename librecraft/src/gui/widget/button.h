@@ -1,10 +1,3 @@
-/**
- *  \file [button.h]
- *  \brief A button that can be pressed by a mouse pointer.
- *  \author Felix Bärring
- *
- *  Copyright (c) 2015, Felix Bärring. All rights reserved.
- */
 
 #ifndef SRC_GUI_WIDGET_BUTTON_H_
 #define SRC_GUI_WIDGET_BUTTON_H_
