@@ -161,6 +161,7 @@ namespace config {
         static const std::string highlight = "../resources/gui/highlight.png";
 
         static const std::string checkBox = "../resources/gui/check_box.png";
+        static const std::string checkBoxChecked = "../resources/gui/check_box_checked.png";
 
         static const std::string slider = "../resources/gui/slider_body.png";
         static const std::string sliderKnob = "../resources/gui/slider_knob.png";
