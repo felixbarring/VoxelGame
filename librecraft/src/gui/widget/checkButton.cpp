@@ -3,8 +3,8 @@
 
 namespace widget {
 
-CheckButton::CheckButton() {
-
-}
+//CheckButton::CheckButton() {
+//
+//}
 
 } /* namespace widget */

@@ -6,14 +6,14 @@
 
 namespace widget {
 
-class CheckButton: public AbstractWidget {
+class CheckButton/*: public AbstractWidget */{
 public:
 
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
 
-    CheckButton();
+//    CheckButton();
 
     virtual ~CheckButton();
 
@@ -21,9 +21,9 @@ public:
 // Member Functions########################################
 // ########################################################
 
-    void draw() override;
-
-    void update(float timePassed) override;
+//    void draw() override;
+//
+//    void update(float timePassed) override;
 
 // ########################################################
 // Implementation #########################################
