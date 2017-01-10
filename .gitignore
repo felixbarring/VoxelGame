@@ -22,6 +22,9 @@
 *.a
 *.lib
 
+# Java
+*.class
+
 # Executables
 *.exe
 *.out
@@ -30,5 +33,4 @@
 # Directories
 doxygen/
 Eclipse/
-resources/*
 librecraft/build

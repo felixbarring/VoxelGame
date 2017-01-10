@@ -10,6 +10,10 @@
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Window/Mouse.hpp>
 
+// TODO Remove the static crap.
+// TODO The settings should be read from one file and not be global vars.
+// TODO Instead a game class should be responsible to set the values in places that need them.
+
 namespace config {
 
     static std::string dataFolder = "data/";
@@ -155,6 +159,8 @@ namespace config {
         static const std::string guiBox = "../resources/gui/gui_box.png";
         static const std::string button = "../resources/gui/button.png";
         static const std::string highlight = "../resources/gui/highlight.png";
+
+        static const std::string checkBox = "../resources/gui/check_box.png";
 
         static const std::string slider = "../resources/gui/slider_body.png";
         static const std::string sliderKnob = "../resources/gui/slider_knob.png";
