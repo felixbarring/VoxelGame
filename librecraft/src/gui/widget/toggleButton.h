@@ -37,6 +37,7 @@ private:
 
 	bool m_toggled{false};
 
+	std::shared_ptr<graphics::Sprite> m_spriteToggled;
 };
 
 } /* namespace widget */

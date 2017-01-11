@@ -31,7 +31,8 @@ Button::Button(int id, int x, int y, int width, int height,	function<void(int)> 
 	m_highlight.reset(new Sprite(x, y, layer + 1, width, height, res.getTexture(config::gui_data::highlight)));
 
 	FontMeshBuilder &fontMeshBuilder = res.getFontMeshBuilder(
-			config::font_data::fontLayout, config::font_data::fontAtlasWidth,
+			config::font_data::fontLayout,
+			config::font_data::fontAtlasWidth,
 			config::font_data::fontAtlasHeight);
 
 	m_text.reset(new Sprite(x, y + 5, layer + 1, fontMeshBuilder.buldMeshForString(name, height - 5),

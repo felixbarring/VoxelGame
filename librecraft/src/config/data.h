@@ -158,6 +158,7 @@ namespace config {
         static const std::string transparentGuiBox = "../resources/gui/transparent_gui_box.png";
         static const std::string guiBox = "../resources/gui/gui_box.png";
         static const std::string button = "../resources/gui/button.png";
+        static const std::string buttonToggled = "../resources/gui/button_toggled.png";
         static const std::string highlight = "../resources/gui/highlight.png";
 
         static const std::string checkBox = "../resources/gui/check_box.png";
