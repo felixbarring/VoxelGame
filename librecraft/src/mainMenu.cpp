@@ -52,12 +52,12 @@ MainMenu::MainMenu(Game *game)
             }
         };
 
-        shared_ptr<IWidget> label(new Label{325, 390, 150, 30, " - Main - "});
-        shared_ptr<IWidget> button1(new Button{0, 325, 350, 150, 30, observer,	"Play"});
-        shared_ptr<IWidget> button2(new Button{1, 325, 310, 150, 30, observer, "Settings"});
-        shared_ptr<IWidget> button3(new Button{2, 325, 270, 150, 30, observer, "Quit"});
+        auto label = make_shared<Label>(325, 390, 150, 30, " - Main - ");
+        auto button1 = make_shared<Button>(0, 325, 350, 150, 30, observer,	"Play");
+        auto button2 = make_shared<Button>(1, 325, 310, 150, 30, observer, "Settings");
+        auto button3 = make_shared<Button>(2, 325, 270, 150, 30, observer, "Quit");
 
-        m_mainWidgetGroup.reset(new WidgetGroup{0, 300, 260, 200, 130, observer});
+        m_mainWidgetGroup = make_shared<WidgetGroup>(-1, 300, 260, 200, 130, observer);
 
         m_mainWidgetGroup->addWidget(label);
         m_mainWidgetGroup->addWidget(button1);
@@ -77,12 +77,12 @@ MainMenu::MainMenu(Game *game)
             }
         };
 
-        shared_ptr<IWidget> label(new Label{325, 390, 150, 30, " - Play - "});
-        shared_ptr<IWidget> button1(new Button{0, 325, 350, 150, 30, observer, "New World"});
-        shared_ptr<IWidget> button2(new Button{1, 325, 310, 150, 30, observer, "Load World"});
-        shared_ptr<IWidget> button3(new Button{2, 325, 270, 150, 30, observer, "Back"});
+        auto label = make_shared<Label>(325, 390, 150, 30, " - Play - ");
+        auto button1 = make_shared<Button>(0, 325, 350, 150, 30, observer, "New World");
+        auto button2 = make_shared<Button>(1, 325, 310, 150, 30, observer, "Load World");
+        auto button3 = make_shared<Button>(2, 325, 270, 150, 30, observer, "Back");
 
-        m_playWidgetGroup.reset(new WidgetGroup {0, 300, 260, 200, 130, observer});
+        m_playWidgetGroup = make_shared<WidgetGroup>(-1, 300, 260, 200, 130, observer);
 
         m_playWidgetGroup->addWidget(label);
         m_playWidgetGroup->addWidget(button1);
@@ -109,7 +109,7 @@ MainMenu::MainMenu(Game *game)
         shared_ptr<IWidget> button3(new Button{2, 325, 270, 150, 30, observer, "Graphics"});
         shared_ptr<IWidget> button4(new Button{3, 325, 230, 150, 30, observer, "Back"});
 
-        m_settingsWidgetGroup.reset(new WidgetGroup{0, 300, 220, 200, 170, observer});
+        m_settingsWidgetGroup = make_shared<WidgetGroup>(0, 300, 220, 200, 170, observer);
 
         m_settingsWidgetGroup->addWidget(label);
         m_settingsWidgetGroup->addWidget(button1);
@@ -131,7 +131,7 @@ MainMenu::MainMenu(Game *game)
         shared_ptr<IWidget> label(new Label{325, 390, 150, 30, " - Game - "});
         shared_ptr<IWidget> button(new Button{0, 325, 230, 150, 30, observer, "Back"});
 
-        m_gameSettingsWidgetGroup.reset(new WidgetGroup{0, 300, 220, 200, 170, observer});
+        m_gameSettingsWidgetGroup = make_shared<WidgetGroup>(0, 300, 220, 200, 170, observer);
 
         m_gameSettingsWidgetGroup->addWidget(label);
         m_gameSettingsWidgetGroup->addWidget(button);
@@ -160,7 +160,7 @@ MainMenu::MainMenu(Game *game)
         m_mouseSensitivitySlider.reset(new Slider{1, 125 + 100, 310, 150, 30, observer, 1});
         m_mouseSensitivityInput.reset(new TextInput{666, 125 + 100, 270, 150, 30, 1});
 
-        m_inputSettingsWidgetGroup.reset(new WidgetGroup{0, 100, 100, 600, 250, observer});
+        m_inputSettingsWidgetGroup = make_shared<WidgetGroup>(0, 100, 100, 600, 250, observer);
 
         shared_ptr<IWidget> button1(new Button{0, 245, 130, 150, 30, observer, "Save", 1});
         shared_ptr<IWidget> button2(new Button{0, 400, 130, 150, 30, observer, "Cancel", 1});
@@ -204,7 +204,7 @@ MainMenu::MainMenu(Game *game)
         shared_ptr<IWidget> button1(new Button{0, 245, 130, 150, 30, observer, "Save", 1});
         shared_ptr<IWidget> button2(new Button{1, 400, 130, 150, 30, observer, "Cancel", 1});
 
-        m_graphicsSettingsWidgetGroup.reset(new WidgetGroup{0, 100, 100, 600, 250, observer});
+        m_graphicsSettingsWidgetGroup = make_shared<WidgetGroup>(0, 100, 100, 600, 250, observer);
 
         m_graphicsSettingsWidgetGroup->addWidget(label1);
 
@@ -262,7 +262,7 @@ MainMenu::MainMenu(Game *game)
         shared_ptr<IWidget> button3(new Button{2, 460, 135, 100, 30, observer, "Cancel", 1});
         shared_ptr<IWidget> button4(new Button{3, 250, 250, 300, 30, observer, "Random Name", 1});
 
-        m_newWorldWidgetGroup.reset(new WidgetGroup{0, 200, 120, 400, 270, observer});
+        m_newWorldWidgetGroup = make_shared<WidgetGroup>(0, 200, 120, 400, 270, observer);
 
         m_newWorldWidgetGroup->addWidget(label1);
         m_newWorldWidgetGroup->addWidget(label2);
@@ -285,10 +285,11 @@ MainMenu::MainMenu(Game *game)
 
         shared_ptr<IWidget> label1(new Label{230, 390, 150, 50, " - Advanced - "});
 
-        m_newWorldWidgetGroupAdvanced.reset(new WidgetGroup{0, 200, 120, 400, 270, observer});
         shared_ptr<IWidget> button1(new Button{0, 460, 135, 100, 30, observer, "Cancel", 1});
         shared_ptr<IWidget> button2(new ToggleButton{-1, 220, 350, 30, 30, observer, "", 1});
         shared_ptr<IWidget> button3(new ToggleButton{-1, 220, 310, 30, 30, observer, "", 1});
+
+        m_newWorldWidgetGroupAdvanced = make_shared<WidgetGroup>(0, 200, 120, 400, 270, observer);
 
         m_newWorldWidgetGroupAdvanced->addWidget(label1);
         m_newWorldWidgetGroupAdvanced->addWidget(button1);
@@ -323,7 +324,7 @@ MainMenu::MainMenu(Game *game)
         shared_ptr<IWidget> button3(new Button{2, 405, 60, 80, 30, observer, "Load", 1});
         shared_ptr<IWidget> button4(new Button{3, 495, 60, 80, 30, observer, "Cancel", 1});
 
-        m_loadWorldWidgetGroup.reset(new WidgetGroup{0, 200, 50, 400, 400, observer});
+        m_loadWorldWidgetGroup = make_shared<WidgetGroup>(0, 200, 50, 400, 400, observer);
 
         m_worldList.reset(new SelectableList{666, 220, 100, 360, 300, observer, 2});
 
@@ -352,7 +353,7 @@ MainMenu::MainMenu(Game *game)
 
         shared_ptr<IWidget> label(new Label{210, 260, 150, 25, "Error: Name can not be empty", 4});
         shared_ptr<IWidget> button(new Button{1, 510, 260, 80, 30, observer, "OK", 4});
-        m_errorEmptyName.reset(new WidgetGroup{0, 200, 250, 400, 45, observer, 3});
+        m_errorEmptyName = make_shared<WidgetGroup>(0, 200, 250, 400, 45, observer, 3);
         m_errorEmptyName->addWidget(label);
         m_errorEmptyName->addWidget(button);
     }
@@ -371,7 +372,9 @@ MainMenu::MainMenu(Game *game)
 
         shared_ptr<IWidget> label(new Label{210, 260, 150, 25, "Error: Name is already used", 4});
         shared_ptr<IWidget> button(new Button{1, 510, 260, 80, 30, observer, "OK", 4});
-        m_errorUsedName.reset(new WidgetGroup{0, 200, 250, 400, 45, observer, 3});
+
+        m_errorUsedName = make_shared<WidgetGroup>(0, 200, 250, 400, 45, observer, 3);
+
         m_errorUsedName->addWidget(label);
         m_errorUsedName->addWidget(button);
     }
