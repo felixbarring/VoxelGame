@@ -58,7 +58,7 @@ protected:
 
 	std::function<void(int)> m_observer;
 
-	bool m_pointerInsideBorders {false};
+	bool m_pointerInsideBorders{false};
 	std::string m_name;
 
 	std::shared_ptr<graphics::Sprite> m_sprite;
