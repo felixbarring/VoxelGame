@@ -16,7 +16,6 @@
 
 #include "inGame.h"
 #include "mainMenu.h"
-#include "model/world/chunk/chunkManager.h"
 #include "gui/guiUtil.h"
 #include "util/soundPlayer.h"
 
@@ -172,11 +171,13 @@ void Game::run() {
 
 }
 
-void Game::createWorld(string name) {
-    m_inGame.reset(new InGame(this, name));
-    auto future = globalResources::g_threadPool.enqueue([name]
+void Game::createWorld(chunk::ChunkManager::CreationOptions options) {
+
+    m_inGame.reset(new InGame(this, "LOL")); // TODO REMOVE LOL
+
+    auto future = globalResources::g_threadPool.enqueue([options]
     {
-        chunk::ChunkManager::getInstance().createWorld(name);
+        chunk::ChunkManager::getInstance().createWorld(options);
     }
     );
 

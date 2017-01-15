@@ -30,8 +30,8 @@ namespace chunk {
 // Member Functions########################################
 // ########################################################
 
-void ChunkManager::createWorld(string worldName) {
-    m_worldName = worldName;
+void ChunkManager::createWorld(CreationOptions options) {
+    m_worldName = options.m_name;
     m_xOffset = 0;
     m_zOffset = 0;
 
@@ -41,7 +41,7 @@ void ChunkManager::createWorld(string worldName) {
     // Create the Chunks
     for (int x = 0; x < lam; ++x) {
         for (int z = 0; z < lam; ++z) {
-            auto chunk = make_shared<Chunk>(worldName, x * CHUNK_WIDTH_AND_DEPTH, z * CHUNK_WIDTH_AND_DEPTH);
+            auto chunk = make_shared<Chunk>(m_worldName, x * CHUNK_WIDTH_AND_DEPTH, z * CHUNK_WIDTH_AND_DEPTH);
 
             chunkCreationFutures.push_back(g_threadPool2.enqueue([chunk]
             {

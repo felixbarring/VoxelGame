@@ -24,12 +24,24 @@ private:
 
 public:
 
+    struct CreationOptions {
+
+        CreationOptions(std::string name, bool flat)
+            : m_name{name},
+              m_flat{flat}
+        {
+        }
+
+        std::string m_name;
+        bool m_flat;
+    };
+
     static ChunkManager& getInstance() {
         static ChunkManager INSTANCE;
         return INSTANCE;
     }
 
-    void createWorld(std::string worldName);
+    void createWorld(CreationOptions options);
 
     void saveWorld();
 
@@ -70,6 +82,7 @@ public:
             glm::vec3 &previous, float searchLength);
 
     void loadWorldWhenDecentered(bool value = true);
+
 
 // ########################################################
 // Implementation #########################################

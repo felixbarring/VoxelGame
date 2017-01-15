@@ -43,6 +43,10 @@ private:
 
 	Game *m_game;
 
+
+	bool m_generateFlat{false};
+
+
 	glm::mat4 m_virtualProjection{};
 
 	std::unique_ptr<gui::Image> m_title{};

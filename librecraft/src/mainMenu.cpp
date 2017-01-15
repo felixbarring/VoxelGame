@@ -236,7 +236,7 @@ MainMenu::MainMenu(Game *game)
                 if (name.size()) {
                     if (!world_meta::worldNameExists(name)) {
                         world_meta::addName(name);
-                        game->createWorld(name);
+                        game->createWorld({name, m_generateFlat});
                         m_activeWidgetGroup = m_mainWidgetGroup;
                         m_worldList->addListItem(name);
                     } else {
@@ -283,13 +283,14 @@ MainMenu::MainMenu(Game *game)
         {
             switch(id) {
             case 0: m_activeWidgetGroup = m_newWorldWidgetGroup;
+            case 1: m_generateFlat = true;
             }
         };
 
         auto label1 = make_shared<Label>(230, 390, 150, 50, " - Advanced - ");
 
         auto button1 = make_shared<Button>(0, 460, 135, 100, 30, observer, "Cancel", 1);
-        auto button2 = make_shared<Button>(-1, 220, 350, 30, 30, observer, "", 1);
+        auto button2 = make_shared<Button>(1, 220, 350, 30, 30, observer, "", 1);
         auto button3 = make_shared<Button>(-1, 220, 310, 30, 30, observer, "", 1);
 
         m_newWorldWidgetGroupAdvanced = make_shared<WidgetGroup>(0, 200, 120, 400, 270, observer);
@@ -311,7 +312,7 @@ MainMenu::MainMenu(Game *game)
             case 2: {
                 if (m_worldList->getSelectedListItem().size()) {
                     string name = m_worldList->getSelectedListItem();
-                    game->createWorld(m_worldList->getSelectedListItem());
+                    game->createWorld({m_worldList->getSelectedListItem(), false});
                     m_activeWidgetGroup = m_mainWidgetGroup;
                     m_worldList->reset();
                 }
