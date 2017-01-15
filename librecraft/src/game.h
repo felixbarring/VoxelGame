@@ -21,6 +21,7 @@
 #include "util/fpsManager.h"
 
 #include "model/world/chunk/chunkManager.h"
+#include "model/world/chunk/creationOptions.h"
 
 class Game {
 public:
@@ -35,7 +36,7 @@ public:
 
 	void run();
 
-	void createWorld(chunk::ChunkManager::CreationOptions options);
+	void createWorld(chunk::CreationOptions options);
 
 	void changeStateToMainMenu();
 

@@ -22,8 +22,8 @@ static const int maxCount = LAST_CUBE_USED_FOR_BUILDING_;
 static std::mutex s_mutex;
 
 // ########################################################
-    // Constructor/Destructor #################################
-    // ########################################################
+// Constructor/Destructor #################################
+// ########################################################
 
 Chunk::Chunk(string worldName, int x, int z)
     : m_xLocation{x},
@@ -47,11 +47,11 @@ Chunk::~Chunk() {
 // Member Functions########################################
 // ########################################################
 
-void Chunk::create() {
+void Chunk::create(CreationOptions& options) {
     ifstream stream;
     stream.open(m_name);
     if (stream.fail())
-        generateChunk();
+        generateChunk(options);
     else
         loadChunk();
 }
@@ -282,7 +282,7 @@ void Chunk::loadChunk() {
 
 }
 
-void Chunk::generateChunk() {
+void Chunk::generateChunk(CreationOptions& options) {
     m_isDirty = true;
 
     int counterValue;
@@ -308,32 +308,54 @@ void Chunk::generateChunk() {
         }
     }
 
-    // TODO There should be some kind of seed inorder to generate different worlds.
-    // Currently the same world will be generated each time.
+    if (options.getFlat()) {
 
-    NoiseMixer mixer{};
-    mixer.addNoise(100.f, 15.f);
-    mixer.addNoise(50, 5);
-    mixer.addNoise(15, 3);
-
-    for (int x = 0; x < m_width; ++x) {
-        for (int z = 0; z < m_depth; ++z) {
-            int noiseValue = mixer.computeNoise(m_xLocation + x, m_zLocation + z);
-
-            for (int y = 0; y < m_height; ++y) {
-                auto &v = m_cubes[x][y][z];
-
-                if (y == 0) {
-                    v.id = BED_ROCK;
-                    continue;
+        for (int x = 0; x < m_width; ++x) {
+            for (int z = 0; z < m_depth; ++z) {
+                for (int y = 0; y < m_height; ++y) {
+                    auto &v = m_cubes[x][y][z];
+                    if (y == 0) {
+                        v.id = BED_ROCK;
+                        continue;
+                    }
+                    if (y < 30)
+                        v.id = counterValue;
+                    else
+                        v.id = AIR;
                 }
-                if (y > 5 && y < 25)
-                    v.id = config::cube_data::WATER;
-                if (y < noiseValue)
-                    v.id = counterValue;
             }
         }
+    } else {
+
+        // TODO There should be some kind of seed inorder to generate different worlds.
+        // Currently the same world will be generated each time.
+
+        NoiseMixer mixer{};
+        mixer.addNoise(100.f, 15.f);
+        mixer.addNoise(50, 5);
+        mixer.addNoise(15, 3);
+
+        for (int x = 0; x < m_width; ++x) {
+            for (int z = 0; z < m_depth; ++z) {
+                int noiseValue = mixer.computeNoise(m_xLocation + x, m_zLocation + z);
+
+                for (int y = 0; y < m_height; ++y) {
+                    auto &v = m_cubes[x][y][z];
+
+                    if (y == 0) {
+                        v.id = BED_ROCK;
+                        continue;
+                    }
+                    if (y > 5 && y < 25)
+                        v.id = config::cube_data::WATER;
+                    if (y < noiseValue)
+                        v.id = counterValue;
+                }
+            }
+        }
+
     }
+
 }
 
 Voxel* Chunk::getVoxel2(int x, int y, int z) {

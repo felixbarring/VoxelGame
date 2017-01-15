@@ -14,6 +14,7 @@
 #include "../../../config/data.h"
 #include "../../../util/voxel.h"
 #include "../../../graphics/graphicalChunk.h"
+#include "creationOptions.h"
 
 using std::vector;
 
@@ -59,8 +60,10 @@ public:
 	 * and worldName, the data will be loaded from file. Otherwise it will be generated using noise algorithms. This
 	 * function can be run in parallel with other instances of Chunk, it will not access data from neighbor Chunks or
 	 * any other data that is not read only.
+	 *
+	 * @param options The options used to generate the chunk.
 	 */
-	void create();
+	void create(CreationOptions& options);
 
 	/**
 	 * This function spreads light from the sky downwards. The result is stored in the Chunk and will be used by
@@ -228,7 +231,7 @@ private:
 
 	void loadChunk();
 
-	void generateChunk();
+	void generateChunk(CreationOptions& options);
 
 	/**
 	 * Gets the voxel at the given x, y, z location.

@@ -9,6 +9,8 @@
 #include "../../../util/voxel.h"
 #include "ThreadPool.h"
 
+#include "creationOptions.h"
+
 namespace chunk {
 
 class ChunkManager {
@@ -24,18 +26,7 @@ private:
 
 public:
 
-    struct CreationOptions {
-
-        CreationOptions(std::string name, bool flat)
-            : m_name{name},
-              m_flat{flat}
-        {
-        }
-
-        std::string m_name;
-        bool m_flat;
-    };
-
+    // TODO Remove all the singleton crap
     static ChunkManager& getInstance() {
         static ChunkManager INSTANCE;
         return INSTANCE;
@@ -128,6 +119,10 @@ private:
     glm::vec3 m_previousCube{};
 
     std::mutex m_bussyMovingChunksMutex{};
+
+    // TODO Dummy, should be set in constructor
+    CreationOptions m_options{"derp", false};
+
 };
 
 } /* namespace chunk */

@@ -37,19 +37,17 @@ void ToggleButton::toggle() {
 }
 
 void ToggleButton::draw() {
+    shared_ptr<Sprite> sprite;
+    if (m_toggled)
+        sprite = m_spriteToggled;
+    else
+        sprite = m_sprite;
 
-	if (m_pointerInsideBorders) {
-		SpriteBatcher::getInstance().addBatch(m_sprite);
-		SpriteBatcher::getInstance().addBatch(m_text);
+    SpriteBatcher::getInstance().addBatch(sprite);
+    SpriteBatcher::getInstance().addBatch(m_text);
+
+    if (m_pointerInsideBorders)
 		SpriteBatcher::getInstance().addBatch(m_highlight);
-	} else {
-		SpriteBatcher::getInstance().addBatch(m_sprite);
-		SpriteBatcher::getInstance().addBatch(m_text);
-	}
-
-	if (m_toggled)
-		SpriteBatcher::getInstance().addBatch(m_spriteToggled);
-
 }
 
 void ToggleButton::update(float timePassed) {

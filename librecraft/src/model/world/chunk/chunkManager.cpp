@@ -30,8 +30,14 @@ namespace chunk {
 // Member Functions########################################
 // ########################################################
 
-void ChunkManager::createWorld(CreationOptions options) {
-    m_worldName = options.m_name;
+void ChunkManager::createWorld(CreationOptions options)
+//    : m_options{std::move(options)}
+{
+    // TODO Should be set in constructor.
+    m_options = options;
+
+
+    m_worldName = options.getName();
     m_xOffset = 0;
     m_zOffset = 0;
 
@@ -43,9 +49,9 @@ void ChunkManager::createWorld(CreationOptions options) {
         for (int z = 0; z < lam; ++z) {
             auto chunk = make_shared<Chunk>(m_worldName, x * CHUNK_WIDTH_AND_DEPTH, z * CHUNK_WIDTH_AND_DEPTH);
 
-            chunkCreationFutures.push_back(g_threadPool2.enqueue([chunk]
+            chunkCreationFutures.push_back(g_threadPool2.enqueue([chunk, this]
             {
-                chunk->create();
+                chunk->create(m_options);
                 chunk->doSunLightning();
             }));
             m_chunks[x][0][z] = chunk;
@@ -287,7 +293,7 @@ void ChunkManager::connectChunks() {
                 right->setLeftNeighbor(current);
             }
             if (z != lam - 1) {
-                shared_ptr<Chunk> back = m_chunks[x][0][z + 1];
+                auto back = m_chunks[x][0][z + 1];
                 current->setBackNeighbor(back);
                 back->setFrontNeighbor(current);
             }
@@ -402,9 +408,9 @@ void ChunkManager::moveChunks(Direction direction) {
         // Run the creation and sunlightning work in parallel on the thread pool.
         vector<future<void>> chunkCreationFutures{};
         for (auto chunk : newChunks) {
-            chunkCreationFutures.push_back(g_threadPool2.enqueue([chunk]
+            chunkCreationFutures.push_back(g_threadPool2.enqueue([chunk, this]
             {
-                chunk->create();
+                chunk->create(m_options);
                 chunk->doSunLightning();
             } ));
         }

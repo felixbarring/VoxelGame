@@ -171,7 +171,7 @@ void Game::run() {
 
 }
 
-void Game::createWorld(chunk::ChunkManager::CreationOptions options) {
+void Game::createWorld(chunk::CreationOptions options) {
 
     m_inGame.reset(new InGame(this, "LOL")); // TODO REMOVE LOL
 
