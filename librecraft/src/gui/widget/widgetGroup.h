@@ -19,8 +19,7 @@
 namespace widget {
 
 /**
- * \class WidgetGroup
- * \brief Handles a group of widgets
+ * \brief Handles a group of widgets.
  *
  * A simple layer that redirects all function calls to its widgets.
  * Useful for handling groups of widgets that work together.
@@ -35,7 +34,7 @@ public:
 // ########################################################
 
 	/**
-	 * \brief Constructs a WidgetGroup
+	 * \brief Constructs a WidgetGroup.
 	 */
 	WidgetGroup(int id, int x, int y, int width, int height, std::function<void(int)> observer, unsigned layer = 0,
 			bool transparentBackground = true);
@@ -47,14 +46,24 @@ public:
 // ########################################################
 
 	/**
-	 * \brief Adds a widget to this group
+	 * \brief Adds a widget to this group.
 	 *
 	 * All other functinos in this class will act on the Widgets
 	 * added by this function.
 	 *
-	 * \param[in] widget The widget that will be added to this group
+	 * \param widget The widget that will be added to this group
 	 */
 	void addWidget(std::shared_ptr<IWidget> widget);
+
+	/**
+	 * \brief Adds a vector of widgets to this group.
+	 *
+	 * All other functinos in this class will act on the Widgets
+     * added by this function.
+     *
+	 * @param widgets The widgets that shall be added to this group
+	 */
+	void addWidget(std::vector<std::shared_ptr<IWidget>> widgets);
 
 	void draw() override;
 

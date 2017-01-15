@@ -38,8 +38,6 @@ MainMenu::MainMenu(Game *game)
 
     bool quit = false;
 
-    // TODO Use unique pointers instead of shared, and move them into the WidgetGroups
-
     // ########################################################################
 
     {
@@ -59,10 +57,7 @@ MainMenu::MainMenu(Game *game)
 
         m_mainWidgetGroup = make_shared<WidgetGroup>(-1, 300, 260, 200, 130, observer);
 
-        m_mainWidgetGroup->addWidget(label);
-        m_mainWidgetGroup->addWidget(button1);
-        m_mainWidgetGroup->addWidget(button2);
-        m_mainWidgetGroup->addWidget(button3);
+        m_mainWidgetGroup->addWidget({label, button1, button2, button3});
     }
 
     // ########################################################################
@@ -84,10 +79,7 @@ MainMenu::MainMenu(Game *game)
 
         m_playWidgetGroup = make_shared<WidgetGroup>(-1, 300, 260, 200, 130, observer);
 
-        m_playWidgetGroup->addWidget(label);
-        m_playWidgetGroup->addWidget(button1);
-        m_playWidgetGroup->addWidget(button2);
-        m_playWidgetGroup->addWidget(button3);
+        m_playWidgetGroup->addWidget({label, button1, button2, button3});
     }
 
     // ########################################################################
@@ -111,11 +103,7 @@ MainMenu::MainMenu(Game *game)
 
         m_settingsWidgetGroup = make_shared<WidgetGroup>(0, 300, 220, 200, 170, observer);
 
-        m_settingsWidgetGroup->addWidget(label);
-        m_settingsWidgetGroup->addWidget(button1);
-        m_settingsWidgetGroup->addWidget(button2);
-        m_settingsWidgetGroup->addWidget(button3);
-        m_settingsWidgetGroup->addWidget(button4);
+        m_settingsWidgetGroup->addWidget({label, button1, button2, button3, button4});
     }
 
     // ########################################################################
@@ -160,16 +148,13 @@ MainMenu::MainMenu(Game *game)
         m_mouseSensitivitySlider = make_shared<Slider>(1, 125 + 100, 310, 150, 30, observer, 1);
         m_mouseSensitivityInput = make_shared<TextInput>(666, 125 + 100, 270, 150, 30, 1);
 
-        m_inputSettingsWidgetGroup = make_shared<WidgetGroup>(0, 100, 100, 600, 250, observer);
-
         auto button1 = make_shared<Button>(0, 245, 130, 150, 30, observer, "Save", 1);
         auto button2 = make_shared<Button>(0, 400, 130, 150, 30, observer, "Cancel", 1);
 
-        m_inputSettingsWidgetGroup->addWidget(label);
-        m_inputSettingsWidgetGroup->addWidget(m_mouseSensitivityInput);
-        m_inputSettingsWidgetGroup->addWidget(m_mouseSensitivitySlider);
-        m_inputSettingsWidgetGroup->addWidget(button1);
-        m_inputSettingsWidgetGroup->addWidget(button2);
+        m_inputSettingsWidgetGroup = make_shared<WidgetGroup>(0, 100, 100, 600, 250, observer);
+
+        m_inputSettingsWidgetGroup-> addWidget({label, m_mouseSensitivityInput, m_mouseSensitivitySlider, button1,
+            button2});
     }
 
     // ########################################################################
@@ -207,18 +192,8 @@ MainMenu::MainMenu(Game *game)
 
         m_graphicsSettingsWidgetGroup = make_shared<WidgetGroup>(0, 100, 100, 600, 250, observer);
 
-        m_graphicsSettingsWidgetGroup->addWidget(label1);
-
-        m_graphicsSettingsWidgetGroup->addWidget(label2);
-        m_graphicsSettingsWidgetGroup->addWidget(m_slider);
-        m_graphicsSettingsWidgetGroup->addWidget(m_textInput);
-
-        m_graphicsSettingsWidgetGroup->addWidget(label3);
-        m_graphicsSettingsWidgetGroup->addWidget(m_slider2);
-        m_graphicsSettingsWidgetGroup->addWidget(m_textInput2);
-
-        m_graphicsSettingsWidgetGroup->addWidget(button1);
-        m_graphicsSettingsWidgetGroup->addWidget(button2);
+        m_graphicsSettingsWidgetGroup->addWidget({label1, label2, m_slider, m_textInput, label3, m_slider2,
+            m_textInput2, button1, button2});
     }
 
     // ########################################################################
@@ -267,13 +242,7 @@ MainMenu::MainMenu(Game *game)
 
         m_newWorldWidgetGroup = make_shared<WidgetGroup>(0, 200, 120, 400, 270, observer);
 
-        m_newWorldWidgetGroup->addWidget(label1);
-        m_newWorldWidgetGroup->addWidget(label2);
-        m_newWorldWidgetGroup->addWidget(m_textInput3);
-        m_newWorldWidgetGroup->addWidget(button1);
-        m_newWorldWidgetGroup->addWidget(button2);
-        m_newWorldWidgetGroup->addWidget(button3);
-        m_newWorldWidgetGroup->addWidget(button4);
+        m_newWorldWidgetGroup->addWidget({label1, label2, m_textInput3, button1, button2, button3, button4});
     }
 
     // ########################################################################
@@ -287,18 +256,22 @@ MainMenu::MainMenu(Game *game)
             }
         };
 
+        // TODO Work to be done here!1!
+        // TODO No extra label should be needed, togglebutton with checkbox skin should have the string to the right.
+
         auto label1 = make_shared<Label>(230, 390, 150, 50, " - Advanced - ");
 
-        auto button1 = make_shared<Button>(0, 460, 135, 100, 30, observer, "Cancel", 1);
-        auto button2 = make_shared<Button>(1, 220, 350, 30, 30, observer, "", 1);
-        auto button3 = make_shared<Button>(-1, 220, 310, 30, 30, observer, "", 1);
+        auto label2 = make_shared<Label>(255, 350, 100, 30, "Flatmap");
+
+        auto button1 = make_shared<ToggleButton>(1, 220, 350, 30, 30, observer, "", 2, ToggleButton::Skin::CheckBox);
+        auto button2 = make_shared<ToggleButton>(-1, 220, 310, 30, 30, observer, "", 2, ToggleButton::Skin::CheckBox);
+
+        auto button3 = make_shared<Button>(-1, 350, 135, 100, 30, observer, "Reset", 1);
+        auto button4 = make_shared<Button>(0, 460, 135, 100, 30, observer, "Back", 1);
 
         m_newWorldWidgetGroupAdvanced = make_shared<WidgetGroup>(0, 200, 120, 400, 270, observer);
 
-        m_newWorldWidgetGroupAdvanced->addWidget(label1);
-        m_newWorldWidgetGroupAdvanced->addWidget(button1);
-        m_newWorldWidgetGroupAdvanced->addWidget(button2);
-        m_newWorldWidgetGroupAdvanced->addWidget(button3);
+        m_newWorldWidgetGroupAdvanced->addWidget({label1, label2, button1, button2, button3, button4});
     }
 
     // ########################################################################
@@ -335,12 +308,7 @@ MainMenu::MainMenu(Game *game)
         for (auto s : world_meta::getAllWorldNames())
             m_worldList->addListItem(s);
 
-        m_loadWorldWidgetGroup->addWidget(label);
-        m_loadWorldWidgetGroup->addWidget(button1);
-        m_loadWorldWidgetGroup->addWidget(button2);
-        m_loadWorldWidgetGroup->addWidget(button3);
-        m_loadWorldWidgetGroup->addWidget(button4);
-        m_loadWorldWidgetGroup->addWidget(m_worldList);
+        m_loadWorldWidgetGroup->addWidget({label, button1, button2, button3, button4, m_worldList});
     }
 
     // ########################################################################
@@ -359,8 +327,7 @@ MainMenu::MainMenu(Game *game)
 
         m_errorEmptyName = make_shared<WidgetGroup>(0, 200, 250, 400, 45, observer, 3);
 
-        m_errorEmptyName->addWidget(label);
-        m_errorEmptyName->addWidget(button);
+        m_errorEmptyName->addWidget({label, button});
     }
 
     // ########################################################################
@@ -379,8 +346,7 @@ MainMenu::MainMenu(Game *game)
 
         m_errorUsedName = make_shared<WidgetGroup>(0, 200, 250, 400, 45, observer, 3);
 
-        m_errorUsedName->addWidget(label);
-        m_errorUsedName->addWidget(button);
+        m_errorUsedName->addWidget({label, button});
     }
 
     // ########################################################################

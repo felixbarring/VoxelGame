@@ -8,12 +8,21 @@ namespace widget {
 class ToggleButton: public Button {
 public:
 
+    /**
+     * @brief Uaed to determine the visuals of the button.
+     */
+    enum class Skin {
+        Regular,    //!< Regular visuals representing a button with text drawn on it that can be check
+        CheckBox,   //!< CheckBox visuals representing a small box that can be checked and with text to the right
+        ReadioButton//!< ReadioButton visuals representing a circle that can be check and with text to the right
+    };
+
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
 
 	ToggleButton(int id, int x, int y, int width, int height, std::function<void(int)> observer,
-			const std::string &name, int layer = 0);
+			const std::string &name, int layer = 0, Skin skin = Skin::Regular);
 
 	virtual ~ToggleButton() {};
 

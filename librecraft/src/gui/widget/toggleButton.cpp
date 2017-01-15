@@ -21,11 +21,27 @@ using namespace graphics;
 namespace widget {
 
 ToggleButton::ToggleButton(int id, int x, int y, int width, int height,	function<void(int)> observer,
-        const string &name, int layer)
+        const string &name, int layer, Skin skin)
     : Button(id, x, y, width, height, observer, name, layer)
 {
     auto &res = Resources::getInstance();
-    m_spriteToggled.reset(new Sprite(x, y, layer, width, height, res.getTexture(config::gui_data::buttonToggled)));
+
+    switch (skin) {
+        case Skin::Regular: {
+            m_spriteToggled.reset(new Sprite(x, y, layer, width, height, res.getTexture(config::gui_data::buttonToggled)));
+            break;
+        }
+        case Skin::CheckBox: {
+            m_sprite = make_shared<Sprite>(x, y, layer, width, height, res.getTexture(config::gui_data::checkBox));
+            m_spriteToggled.reset(new Sprite(x, y, layer, width, height, res.getTexture(config::gui_data::checkBoxChecked)));
+            break;
+        }
+        case Skin::ReadioButton: {
+            // TODO Implement
+            break;
+        }
+    }
+
 }
 
 bool ToggleButton::isToggled() {
