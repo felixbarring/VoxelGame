@@ -251,27 +251,35 @@ MainMenu::MainMenu(Game *game)
         function<void(int)> observer = [this, game](int id)
         {
             switch(id) {
-            case 0: m_activeWidgetGroup = m_newWorldWidgetGroup;
-            case 1: m_generateFlat = true;
+            case 0: {
+                m_generateFlat = true;
+                if (button2->isToggled())
+                    button2->toggle();
+                break;
+            }
+            case 1: {
+                m_generateFlat = false;
+                if (button1->isToggled())
+                    button1->toggle();
+                break;
+            }
+            case 2: break; // TODO
+            case 3: m_activeWidgetGroup = m_newWorldWidgetGroup; break;
             }
         };
 
-        // TODO Work to be done here!1!
-        // TODO No extra label should be needed, togglebutton with checkbox skin should have the string to the right.
-
         auto label1 = make_shared<Label>(230, 390, 150, 50, " - Advanced - ");
 
-        auto label2 = make_shared<Label>(255, 350, 100, 30, "Flatmap");
+        button1 = make_shared<ToggleButton>(0, 220, 350, 30, 30, observer, "Flat", 2, ToggleButton::Skin::ReadioButton);
+        button2 = make_shared<ToggleButton>(1, 220, 310, 30, 30, observer, "Height Map", 2,
+                ToggleButton::Skin::ReadioButton);
 
-        auto button1 = make_shared<ToggleButton>(1, 220, 350, 30, 30, observer, "", 2, ToggleButton::Skin::ReadioButton);
-        auto button2 = make_shared<ToggleButton>(-1, 220, 310, 30, 30, observer, "", 2, ToggleButton::Skin::CheckBox);
-
-        auto button3 = make_shared<Button>(-1, 350, 135, 100, 30, observer, "Reset", 1);
-        auto button4 = make_shared<Button>(0, 460, 135, 100, 30, observer, "Back", 1);
+        auto button3 = make_shared<Button>(2, 350, 135, 100, 30, observer, "Reset", 1);
+        auto button4 = make_shared<Button>(3, 460, 135, 100, 30, observer, "Back", 1);
 
         m_newWorldWidgetGroupAdvanced = make_shared<WidgetGroup>(0, 200, 120, 400, 270, observer);
 
-        m_newWorldWidgetGroupAdvanced->addWidget({label1, label2, button1, button2, button3, button4});
+        m_newWorldWidgetGroupAdvanced->addWidget({label1, button1, button2, button3, button4});
     }
 
     // ########################################################################

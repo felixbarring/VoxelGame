@@ -80,6 +80,9 @@ private:
 	std::shared_ptr<widget::Slider> m_slider{};
 	std::shared_ptr<widget::Slider> m_slider2{};
 
+	std::shared_ptr<widget::ToggleButton> button1;
+    std::shared_ptr<widget::ToggleButton> button2;
+
 };
 
 #endif /* SRC_MAINMENU_H_ */

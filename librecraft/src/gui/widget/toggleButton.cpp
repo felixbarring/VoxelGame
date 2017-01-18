@@ -26,6 +26,11 @@ ToggleButton::ToggleButton(int id, int x, int y, int width, int height,	function
 {
     auto &res = Resources::getInstance();
 
+    FontMeshBuilder &fontMeshBuilder = res.getFontMeshBuilder(
+                config::font_data::fontLayout,
+                config::font_data::fontAtlasWidth,
+                config::font_data::fontAtlasHeight);
+
     switch (skin) {
         case Skin::Regular: {
             m_spriteToggled.reset(new Sprite(x, y, layer, width, height, res.getTexture(config::gui_data::buttonToggled)));
@@ -33,13 +38,19 @@ ToggleButton::ToggleButton(int id, int x, int y, int width, int height,	function
         }
         case Skin::CheckBox: {
             m_sprite = make_shared<Sprite>(x, y, layer, width, height, res.getTexture(config::gui_data::checkBox));
-            m_spriteToggled.reset(new Sprite(x, y, layer, width, height, res.getTexture(config::gui_data::checkBoxChecked)));
+            m_spriteToggled.reset(new Sprite(x, y, layer, width, height,
+                res.getTexture(config::gui_data::checkBoxChecked)));
+            m_text.reset(new Sprite(x + height, y + 5, layer + 1, fontMeshBuilder.buldMeshForString(name, height - 5),
+                                res.getTexture(config::font_data::font)));
             m_useHighlight = false;
             break;
         }
         case Skin::ReadioButton: {
             m_sprite = make_shared<Sprite>(x, y, layer, width, height, res.getTexture(config::gui_data::radioButton));
-            m_spriteToggled.reset(new Sprite(x, y, layer, width, height, res.getTexture(config::gui_data::radioButtonChecked)));
+            m_spriteToggled.reset(new Sprite(x, y, layer, width, height,
+                res.getTexture(config::gui_data::radioButtonChecked)));
+            m_text.reset(new Sprite(x + height, y + 5, layer + 1, fontMeshBuilder.buldMeshForString(name, height - 5),
+                                            res.getTexture(config::font_data::font)));
             m_useHighlight = false;
             break;
         }
