@@ -211,7 +211,7 @@ MainMenu::MainMenu(Game *game)
                 if (name.size()) {
                     if (!world_meta::worldNameExists(name)) {
                         world_meta::addName(name);
-                        game->createWorld({name, m_generateFlat});
+                        game->createWorld({name, m_generateFlat, false});
                         m_activeWidgetGroup = m_mainWidgetGroup;
                         m_worldList->addListItem(name);
                     } else {
@@ -273,6 +273,7 @@ MainMenu::MainMenu(Game *game)
         button1 = make_shared<ToggleButton>(0, 220, 350, 30, 30, observer, "Flat", 2, ToggleButton::Skin::ReadioButton);
         button2 = make_shared<ToggleButton>(1, 220, 310, 30, 30, observer, "Height Map", 2,
                 ToggleButton::Skin::ReadioButton);
+        button2->toggle();
 
         auto button3 = make_shared<Button>(2, 350, 135, 100, 30, observer, "Reset", 1);
         auto button4 = make_shared<Button>(3, 460, 135, 100, 30, observer, "Back", 1);
@@ -293,7 +294,8 @@ MainMenu::MainMenu(Game *game)
             case 2: {
                 if (m_worldList->getSelectedListItem().size()) {
                     string name = m_worldList->getSelectedListItem();
-                    game->createWorld({m_worldList->getSelectedListItem(), false});
+                    // TODO Should not be needed to use options here...
+                    game->createWorld({m_worldList->getSelectedListItem(), false, true});
                     m_activeWidgetGroup = m_mainWidgetGroup;
                     m_worldList->reset();
                 }

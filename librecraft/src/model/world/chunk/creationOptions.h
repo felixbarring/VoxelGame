@@ -18,9 +18,10 @@ namespace chunk {
 class CreationOptions {
 public:
 
-    CreationOptions(std::string name, bool flat)
+    CreationOptions(std::string name, bool flat, bool differentCubes)
         : m_name{name},
-          m_flat{flat}
+          m_flat{flat},
+          m_differentCubeForEachChunk{differentCubes}
     {
     }
 
@@ -28,10 +29,13 @@ public:
 
     bool getFlat() const { return m_flat; }
 
+    bool differentCubesForEachChunk() { return m_differentCubeForEachChunk; }
+
 private:
 
     std::string m_name;
     bool m_flat;
+    bool m_differentCubeForEachChunk;
 
 };
 

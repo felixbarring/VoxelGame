@@ -288,7 +288,8 @@ void Chunk::generateChunk(CreationOptions& options) {
     int counterValue;
     {
         lock_guard<mutex> lock(s_mutex);
-        ++counter;
+        if (options.differentCubesForEachChunk())
+            ++counter;
         if (counter > maxCount)
             counter = 0;
         counterValue = counter;
@@ -309,7 +310,6 @@ void Chunk::generateChunk(CreationOptions& options) {
     }
 
     if (options.getFlat()) {
-
         for (int x = 0; x < m_width; ++x) {
             for (int z = 0; z < m_depth; ++z) {
                 for (int y = 0; y < m_height; ++y) {
@@ -325,36 +325,34 @@ void Chunk::generateChunk(CreationOptions& options) {
                 }
             }
         }
-    } else {
+        return;
+    }
 
-        // TODO There should be some kind of seed inorder to generate different worlds.
-        // Currently the same world will be generated each time.
+    // TODO There should be some kind of seed inorder to generate different worlds.
+    // Currently the same world will be generated each time.
 
-        NoiseMixer mixer{};
-        mixer.addNoise(100.f, 15.f);
-        mixer.addNoise(50, 5);
-        mixer.addNoise(15, 3);
+    NoiseMixer mixer{};
+    mixer.addNoise(100.f, 15.f);
+    mixer.addNoise(50, 5);
+    mixer.addNoise(15, 3);
 
-        for (int x = 0; x < m_width; ++x) {
-            for (int z = 0; z < m_depth; ++z) {
-                int noiseValue = mixer.computeNoise(m_xLocation + x, m_zLocation + z);
-
-                for (int y = 0; y < m_height; ++y) {
-                    auto &v = m_cubes[x][y][z];
-
-                    if (y == 0) {
-                        v.id = BED_ROCK;
-                        continue;
-                    }
-                    if (y > 5 && y < 25)
-                        v.id = config::cube_data::WATER;
-                    if (y < noiseValue)
-                        v.id = counterValue;
+    for (int x = 0; x < m_width; ++x) {
+        for (int z = 0; z < m_depth; ++z) {
+            int noiseValue = mixer.computeNoise(m_xLocation + x, m_zLocation + z);
+            for (int y = 0; y < m_height; ++y) {
+                auto &v = m_cubes[x][y][z];
+                if (y == 0) {
+                    v.id = BED_ROCK;
+                    continue;
                 }
+                if (y > 5 && y < 25)
+                    v.id = config::cube_data::WATER;
+                if (y < noiseValue)
+                    v.id = counterValue;
             }
         }
-
     }
+
 
 }
 

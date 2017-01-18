@@ -121,7 +121,7 @@ private:
     std::mutex m_bussyMovingChunksMutex{};
 
     // TODO Dummy, should be set in constructor
-    CreationOptions m_options{"derp", false};
+    CreationOptions m_options{"derp", false, true};
 
 };
 
