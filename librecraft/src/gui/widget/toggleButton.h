@@ -45,6 +45,7 @@ public:
 private:
 
 	bool m_toggled{false};
+	bool m_useHighlight{true}; // Do not use highlights for CheckBox and RadioButton skin since they look bad.
 
 	std::shared_ptr<graphics::Sprite> m_spriteToggled;
 };

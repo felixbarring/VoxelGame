@@ -34,10 +34,13 @@ ToggleButton::ToggleButton(int id, int x, int y, int width, int height,	function
         case Skin::CheckBox: {
             m_sprite = make_shared<Sprite>(x, y, layer, width, height, res.getTexture(config::gui_data::checkBox));
             m_spriteToggled.reset(new Sprite(x, y, layer, width, height, res.getTexture(config::gui_data::checkBoxChecked)));
+            m_useHighlight = false;
             break;
         }
         case Skin::ReadioButton: {
-            // TODO Implement
+            m_sprite = make_shared<Sprite>(x, y, layer, width, height, res.getTexture(config::gui_data::radioButton));
+            m_spriteToggled.reset(new Sprite(x, y, layer, width, height, res.getTexture(config::gui_data::radioButtonChecked)));
+            m_useHighlight = false;
             break;
         }
     }
@@ -62,7 +65,7 @@ void ToggleButton::draw() {
     SpriteBatcher::getInstance().addBatch(sprite);
     SpriteBatcher::getInstance().addBatch(m_text);
 
-    if (m_pointerInsideBorders)
+    if (m_useHighlight && m_pointerInsideBorders)
 		SpriteBatcher::getInstance().addBatch(m_highlight);
 }
 

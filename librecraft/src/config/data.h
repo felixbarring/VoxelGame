@@ -164,6 +164,9 @@ namespace config {
         static const std::string checkBox = "../resources/gui/check_box.png";
         static const std::string checkBoxChecked = "../resources/gui/check_box_checked.png";
 
+        static const std::string radioButton = "../resources/gui/radio_button.png";
+        static const std::string radioButtonChecked = "../resources/gui/radio_button_checked.png";
+
         static const std::string slider = "../resources/gui/slider_body.png";
         static const std::string sliderKnob = "../resources/gui/slider_knob.png";
 

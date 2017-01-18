@@ -263,7 +263,7 @@ MainMenu::MainMenu(Game *game)
 
         auto label2 = make_shared<Label>(255, 350, 100, 30, "Flatmap");
 
-        auto button1 = make_shared<ToggleButton>(1, 220, 350, 30, 30, observer, "", 2, ToggleButton::Skin::CheckBox);
+        auto button1 = make_shared<ToggleButton>(1, 220, 350, 30, 30, observer, "", 2, ToggleButton::Skin::ReadioButton);
         auto button2 = make_shared<ToggleButton>(-1, 220, 310, 30, 30, observer, "", 2, ToggleButton::Skin::CheckBox);
 
         auto button3 = make_shared<Button>(-1, 350, 135, 100, 30, observer, "Reset", 1);
