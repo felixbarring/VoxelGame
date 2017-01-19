@@ -6,6 +6,7 @@
 #include "../../graphics/fontMeshBuilder.h"
 #include "../../graphics/mesh/meshElement.h"
 #include "../../config/data.h"
+#include "../../graphics/graphicsManager.h"
 #include "../../graphics/resources.h"
 #include "../../util/input.h"
 
@@ -42,8 +43,8 @@ float Slider::getValue() {
 }
 
 void Slider::draw() {
-	SpriteBatcher::getInstance().addBatch(m_slider);
-	SpriteBatcher::getInstance().addBatch(m_knob);
+    GraphicsManager::getInstance().getSpriteBatcher().addBatch(m_slider);
+    GraphicsManager::getInstance().getSpriteBatcher().addBatch(m_knob);
 }
 
 void Slider::update(float timePassed) {

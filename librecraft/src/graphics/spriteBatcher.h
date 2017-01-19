@@ -14,6 +14,7 @@
 namespace graphics {
 
 class SpriteBatcher {
+public:
 
 // ########################################################
 // Constructor/Destructor #################################
@@ -21,18 +22,9 @@ class SpriteBatcher {
 
     SpriteBatcher();
 
-    virtual ~SpriteBatcher() { };
-
     SpriteBatcher(SpriteBatcher const&) = delete;
 
     void operator=(SpriteBatcher const&) = delete;
-
-public:
-
-    static SpriteBatcher& getInstance() {
-        static SpriteBatcher INSTANCE;
-        return INSTANCE;
-    }
 
 // ########################################################
 // Member Functions########################################

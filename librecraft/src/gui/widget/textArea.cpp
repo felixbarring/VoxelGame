@@ -1,7 +1,9 @@
 #include "textArea.h"
 
+#include "../../graphics/graphicsManager.h"
 #include "../../graphics/sprite.h"
 #include "../../graphics/resources.h"
+#include "../../graphics/spriteBatcher.h"
 
 using namespace std;
 using namespace graphics;
@@ -29,7 +31,7 @@ TextArea::TextArea(int id, int x, int y, int width, int height,
 // ########################################################
 
 void TextArea::draw() {
-	SpriteBatcher &spriteBatcher(SpriteBatcher::getInstance());
+	SpriteBatcher &spriteBatcher = GraphicsManager::getInstance().getSpriteBatcher();
 	spriteBatcher.addBatch(m_textArea);
 
 	for (auto &s : m_rows)

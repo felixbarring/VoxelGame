@@ -3,6 +3,7 @@
 #define SRC_GRAPHICS_GRAPHICSMANAGER_H_
 
 #include "../graphics/cubeMap.h"
+#include "../graphics/spriteBatcher.h"
 #include "camera.h"
 #include "chunkBatcher.h"
 #include "cubeBatcher.h"
@@ -76,6 +77,12 @@ public:
      *
      * @return
      */
+    SpriteBatcher& getSpriteBatcher();
+
+    /**
+     *
+     * @return
+     */
     CubeMap& getSkyMap();
 
 // ########################################################
@@ -89,6 +96,7 @@ private:
     // TODO Put the sprite batcher here as well, and remove the singleton pattern from it.
     ChunkBatcher m_chunkBatcher{m_playerCamera};
     CubeBatcher m_cubeBatcher{m_playerCamera};
+    SpriteBatcher m_spriteBatcher;
 
     std::unique_ptr<graphics::CubeMap> m_skyBox;
 

@@ -5,6 +5,7 @@
 #include <string>
 
 #include "config/data.h"
+#include "graphics/graphicsManager.h"
 #include "gui/mouse.h"
 #include "gui/terminal.h"
 #include "gui/widget/checkButton.h"
@@ -32,7 +33,7 @@ MainMenu::MainMenu(Game *game)
             static_cast<float>(config::graphics_data::windowHeight), -1.0f,
             1.0f) * matrix;
 
-    graphics::SpriteBatcher::getInstance().setProjection(m_virtualProjection);
+    graphics::GraphicsManager::getInstance().getSpriteBatcher().setProjection(m_virtualProjection);
 
     m_title = make_unique<gui::Image>(200, 450, 400, 100, config::gui_data::title);
 
@@ -397,7 +398,7 @@ void MainMenu::update(float timePassed) {
     glm::vec3 skyColor = config::graphics_data::skyColor;
     glClearColor(skyColor.x, skyColor.y, skyColor.z, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    graphics::SpriteBatcher::getInstance().draw();
+    graphics::GraphicsManager::getInstance().getSpriteBatcher().draw();
 }
 
 string randomName() {

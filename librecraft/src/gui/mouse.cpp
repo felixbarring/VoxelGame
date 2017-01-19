@@ -6,6 +6,7 @@
 #include "../graphics/resources.h"
 #include "../util/input.h"
 #include "../config/data.h"
+#include "../graphics/graphicsManager.h"
 #include "../graphics/spriteBatcher.h"
 
 using namespace std;
@@ -52,7 +53,7 @@ void Mouse::update() {
 }
 
 void Mouse::draw() {
-	SpriteBatcher::getInstance().addBatch(m_sprite);
+    GraphicsManager::getInstance().getSpriteBatcher().addBatch(m_sprite);
 }
 
 void Mouse::lock() {

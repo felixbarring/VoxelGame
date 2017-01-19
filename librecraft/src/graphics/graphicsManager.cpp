@@ -45,6 +45,10 @@ CubeBatcher& GraphicsManager::getCubeBatcher() {
     return m_cubeBatcher;
 }
 
+SpriteBatcher& GraphicsManager::getSpriteBatcher() {
+    return m_spriteBatcher;
+}
+
 CubeMap& GraphicsManager::getSkyMap() {
     return *m_skyBox;
 }

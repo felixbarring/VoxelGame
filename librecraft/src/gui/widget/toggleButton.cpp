@@ -10,6 +10,7 @@
 #include <memory>
 #include <iostream>
 
+#include "../../graphics/graphicsManager.h"
 #include "../../graphics/resources.h"
 #include "../../graphics/sprite.h"
 #include "../../graphics/spriteBatcher.h"
@@ -73,11 +74,11 @@ void ToggleButton::draw() {
     else
         sprite = m_sprite;
 
-    SpriteBatcher::getInstance().addBatch(sprite);
-    SpriteBatcher::getInstance().addBatch(m_text);
+    GraphicsManager::getInstance().getSpriteBatcher().addBatch(sprite);
+    GraphicsManager::getInstance().getSpriteBatcher().addBatch(m_text);
 
     if (m_useHighlight && m_pointerInsideBorders)
-		SpriteBatcher::getInstance().addBatch(m_highlight);
+        GraphicsManager::getInstance().getSpriteBatcher().addBatch(m_highlight);
 }
 
 void ToggleButton::update(float timePassed) {

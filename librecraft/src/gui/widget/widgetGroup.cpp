@@ -5,6 +5,7 @@
 
 #include "../../config/data.h"
 #include "../../graphics/resources.h"
+#include "../../graphics/graphicsManager.h"
 
 using namespace std;
 using namespace graphics;
@@ -52,7 +53,7 @@ void WidgetGroup::addWidget(std::vector<shared_ptr<IWidget>> widgets) {
 }
 
 void WidgetGroup::draw() {
-	SpriteBatcher::getInstance().addBatch(m_sprite);
+	GraphicsManager::getInstance().getSpriteBatcher().addBatch(m_sprite);
 	for (auto widget : m_widgets)
 		widget->draw();
 }

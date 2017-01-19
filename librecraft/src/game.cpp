@@ -93,8 +93,8 @@ public:
                 m_spriteCounter = 0;
         }
 
-        graphics::SpriteBatcher::getInstance().addBatch(m_sprites[m_spriteCounter]);
-        graphics::SpriteBatcher::getInstance().draw();
+        graphics::GraphicsManager::getInstance().getSpriteBatcher().addBatch(m_sprites[m_spriteCounter]);
+        graphics::GraphicsManager::getInstance().getSpriteBatcher().draw();
 
         m_fpsManager.sync();
         m_frameTime += m_fpsManager.frameTime();

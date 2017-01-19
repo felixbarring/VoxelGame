@@ -4,6 +4,7 @@
 #include "../../graphics/fontMeshBuilder.h"
 #include "../../graphics/mesh/meshElement.h"
 #include "../../config/data.h"
+#include "../../graphics/graphicsManager.h"
 #include "../../graphics/resources.h"
 
 using namespace std;
@@ -37,7 +38,7 @@ Label::Label(int x, int y, int width, int height, const string &name, unsigned l
 // ########################################################
 
 void Label::draw() {
-	SpriteBatcher::getInstance().addBatch(m_text);
+    GraphicsManager::getInstance().getSpriteBatcher().addBatch(m_text);
 }
 
 } /* namespace demo */

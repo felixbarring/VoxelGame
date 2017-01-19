@@ -5,6 +5,7 @@
 #include "../../graphics/fontMeshBuilder.h"
 #include "../../graphics/mesh/meshElement.h"
 #include "../../config/data.h"
+#include "../../graphics/graphicsManager.h"
 #include "../../graphics/resources.h"
 
 #include "../../util/input.h"
@@ -49,7 +50,7 @@ std::string Button::getName() {
 }
 
 void Button::draw() {
-	SpriteBatcher &spriteBatcher(SpriteBatcher::getInstance());
+	SpriteBatcher &spriteBatcher = GraphicsManager::getInstance().getSpriteBatcher();
 
 	if (m_pointerInsideBorders) {
 		spriteBatcher.addBatch(m_sprite);

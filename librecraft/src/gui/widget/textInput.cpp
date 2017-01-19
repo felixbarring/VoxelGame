@@ -5,6 +5,7 @@
 #include "../../graphics/spriteBatcher.h"
 #include "../../graphics/mesh/meshElement.h"
 #include "../../config/data.h"
+#include "../../graphics/graphicsManager.h"
 #include "../../graphics/resources.h"
 
 #include "../../util/input.h"
@@ -66,12 +67,12 @@ string TextInput::getString() {
 }
 
 void TextInput::draw() {
-	SpriteBatcher::getInstance().addBatch(m_background);
+	GraphicsManager::getInstance().getSpriteBatcher().addBatch(m_background);
 
 	if (m_cursorVissible && m_hasFocus)
-		SpriteBatcher::getInstance().addBatch(m_cursor);
+	    GraphicsManager::getInstance().getSpriteBatcher().addBatch(m_cursor);
 
-	SpriteBatcher::getInstance().addBatch(m_text);
+	GraphicsManager::getInstance().getSpriteBatcher().addBatch(m_text);
 }
 
 void TextInput::update(float timePassed) {

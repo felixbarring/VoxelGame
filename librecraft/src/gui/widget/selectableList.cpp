@@ -17,6 +17,7 @@
 
 #include <iostream>
 
+#include "../../graphics/graphicsManager.h"
 using namespace std;
 using namespace graphics;
 
@@ -80,7 +81,7 @@ void SelectableList::reset() {
 }
 
 void SelectableList::draw() {
-	SpriteBatcher::getInstance().addBatch(m_sprite);
+    GraphicsManager::getInstance().getSpriteBatcher().addBatch(m_sprite);
 	for (auto b : m_buttons)
 		b->draw();
 }

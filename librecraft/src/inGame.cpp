@@ -193,7 +193,7 @@ void InGame::update(float timePassed) {
 
         graphics::GraphicsManager::getInstance().setSunStrenght(m_timeCycle.getSunStrenght());
 
-        SpriteBatcher::getInstance().addBatch(m_crossHair);
+        GraphicsManager::getInstance().getSpriteBatcher().addBatch(m_crossHair);
 
         auto &res = Resources::getInstance();
         FontMeshBuilder &fontMeshBuilder = res.getFontMeshBuilder(font_data::fontLayout, font_data::fontAtlasWidth,
@@ -218,9 +218,9 @@ void InGame::update(float timePassed) {
                 m_fpsDisplayCounter = 0;
             }
 
-            SpriteBatcher::getInstance().addBatch(m_direction);
-            SpriteBatcher::getInstance().addBatch(m_fps);
-            SpriteBatcher::getInstance().addBatch(m_lastSelecteCube);
+            GraphicsManager::getInstance().getSpriteBatcher().addBatch(m_direction);
+            GraphicsManager::getInstance().getSpriteBatcher().addBatch(m_fps);
+            GraphicsManager::getInstance().getSpriteBatcher().addBatch(m_lastSelecteCube);
         }
 
         vec3 ses = m_player.getLastSelectedCube();
@@ -228,7 +228,7 @@ void InGame::update(float timePassed) {
         m_lastSelecteCube.reset(new Sprite(0, 70, 10, fontMeshBuilder.buldMeshForString(soos, 20),
                     res.getTexture(config::font_data::font)));
 
-        SpriteBatcher::getInstance().addBatch(m_selectedCubeThumbnails[m_player.getBuildingCube()]);
+        GraphicsManager::getInstance().getSpriteBatcher().addBatch(m_selectedCubeThumbnails[m_player.getBuildingCube()]);
 
     } else {
         mouse.unlock();
@@ -255,8 +255,7 @@ void InGame::update(float timePassed) {
     GraphicsManager::getInstance().getChunkBatcher().draw();
     GraphicsManager::getInstance().getCubeBatcher().draw();
 
-    SpriteBatcher::getInstance().draw();
-
+    GraphicsManager::getInstance().getSpriteBatcher().draw();
 
 }
 
