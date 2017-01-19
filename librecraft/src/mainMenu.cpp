@@ -207,11 +207,12 @@ MainMenu::MainMenu(Game *game)
                 break;
             }
             case 1: {
-                string name {m_textInput3->getString()};
+                string name{m_textInput3->getString()};
                 if (name.size()) {
                     if (!world_meta::worldNameExists(name)) {
                         world_meta::addName(name);
-                        game->createWorld({name, m_generateFlat, false});
+                        m_options.setName(name);
+                        game->createWorld(m_options);
                         m_activeWidgetGroup = m_mainWidgetGroup;
                         m_worldList->addListItem(name);
                     } else {
@@ -252,19 +253,27 @@ MainMenu::MainMenu(Game *game)
         {
             switch(id) {
             case 0: {
-                m_generateFlat = true;
+                m_options.setFlat(true);
                 if (button2->isToggled())
                     button2->toggle();
                 break;
             }
             case 1: {
-                m_generateFlat = false;
+                m_options.setFlat(false);
                 if (button1->isToggled())
                     button1->toggle();
                 break;
             }
-            case 2: break; // TODO
-            case 3: m_activeWidgetGroup = m_newWorldWidgetGroup; break;
+            case 2: {
+                m_options.setDifferencBubesForEachChunk(true);
+                break;
+            }
+            case 3: {
+                m_options.setDifferencBubesForEachChunk(false);
+                break;
+            }
+            case 4: break; // TODO
+            case 5: m_activeWidgetGroup = m_newWorldWidgetGroup; break;
             }
         };
 
@@ -275,12 +284,16 @@ MainMenu::MainMenu(Game *game)
                 ToggleButton::Skin::ReadioButton);
         button2->toggle();
 
-        auto button3 = make_shared<Button>(2, 350, 135, 100, 30, observer, "Reset", 1);
-        auto button4 = make_shared<Button>(3, 460, 135, 100, 30, observer, "Back", 1);
+        button3 = make_shared<ToggleButton>(2, 420, 350, 30, 30, observer, "Different", 2, ToggleButton::Skin::ReadioButton);
+        button4 = make_shared<ToggleButton>(3, 420, 310, 30, 30, observer, "Same", 2,
+                        ToggleButton::Skin::ReadioButton);
+
+        auto button5 = make_shared<Button>(4, 350, 135, 100, 30, observer, "Reset", 1);
+        auto button6 = make_shared<Button>(5, 460, 135, 100, 30, observer, "Back", 1);
 
         m_newWorldWidgetGroupAdvanced = make_shared<WidgetGroup>(0, 200, 120, 400, 270, observer);
 
-        m_newWorldWidgetGroupAdvanced->addWidget({label1, button1, button2, button3, button4});
+        m_newWorldWidgetGroupAdvanced->addWidget({label1, button1, button2, button3, button4, button5, button6});
     }
 
     // ########################################################################
@@ -295,7 +308,7 @@ MainMenu::MainMenu(Game *game)
                 if (m_worldList->getSelectedListItem().size()) {
                     string name = m_worldList->getSelectedListItem();
                     // TODO Should not be needed to use options here...
-                    game->createWorld({m_worldList->getSelectedListItem(), false, true});
+                    game->createWorld(m_options);
                     m_activeWidgetGroup = m_mainWidgetGroup;
                     m_worldList->reset();
                 }
@@ -387,7 +400,7 @@ void MainMenu::update(float timePassed) {
     graphics::SpriteBatcher::getInstance().draw();
 }
 
-string MainMenu::randomName() {
+string randomName() {
 
     static vector<string> names {"Dank World", "Bloxel", "Sees", "Soos", "Satan", "Shrek", "Memus", "Adventure",
         "Swoosh", "Blool"};

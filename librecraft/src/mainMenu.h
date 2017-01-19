@@ -39,15 +39,10 @@ public:
 
 private:
 
-	std::string randomName();
-
 	Game *m_game;
-
-
-	bool m_generateFlat{false};
-
-
 	glm::mat4 m_virtualProjection{};
+
+	chunk::CreationOptions m_options;
 
 	std::unique_ptr<gui::Image> m_title{};
 	std::shared_ptr<widget::SelectableList> m_worldList{};
@@ -82,7 +77,11 @@ private:
 
 	std::shared_ptr<widget::ToggleButton> button1;
     std::shared_ptr<widget::ToggleButton> button2;
+    std::shared_ptr<widget::ToggleButton> button3;
+    std::shared_ptr<widget::ToggleButton> button4;
 
 };
+
+std::string randomName();
 
 #endif /* SRC_MAINMENU_H_ */
