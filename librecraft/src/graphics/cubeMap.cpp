@@ -124,7 +124,13 @@ void CubeMap::draw(double trancparency) {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    glm::mat4 view = glm::mat4(glm::mat3(m_camera.getViewMatrix()));
+    static float val = 0.01;
+    val += 0.001;
+    glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), static_cast<float>(val), glm::vec3(0.1, 0.3, 1));
+//    glm::mat4 view = glm::mat4(glm::mat3(m_camera.getViewMatrix()));
+    glm::mat4 view = glm::mat4(glm::mat3(m_camera.getViewMatrix())) * rotation;
+
+
     glm::mat4 modelViewProjection = m_camera.getProjectionMatrix() * view;
 
     skyboxShader.setUniformMatrix4f("mvp", modelViewProjection);

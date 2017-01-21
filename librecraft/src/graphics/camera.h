@@ -85,7 +85,7 @@ private:
 
     glm::vec3 position;
     glm::vec3 direction;
-    glm::vec3 up {0.0f, 1.0f, 0.0f};
+    glm::vec3 up{0.0f, 1.0f, 0.0f};
 
     // TODO Update this in an intelligent way
     float aspectRatio = config::graphics_data::windowWidth / static_cast<float>(config::graphics_data::windowHeight);
