@@ -17,7 +17,7 @@ namespace graphics {
 // ########################################################
 
 CubeMap::CubeMap(texture::TextureCubeMap &texture, Camera &camera)
-        : texture{texture},
+        : m_texture{texture},
           m_camera{camera}{
 }
 
@@ -25,43 +25,47 @@ CubeMap::CubeMap(texture::TextureCubeMap &texture, Camera &camera)
 // Member Functions########################################
 // ########################################################
 
+void CubeMap::setRotationValue(float value) {
+    m_roatationValue = value;
+}
+
 void CubeMap::draw(double trancparency) {
 
     static std::map<std::string, int> attributesMap{std::pair<std::string, int>("positionIn", 0)};
 
     // TODO Remove the projcetion * view multiplication from the shader
     static ShaderProgram skyboxShader(
-            "#version 330 core \n"
+        "#version 330 core \n"
 
-            "in vec3 positionIn; \n"
+        "in vec3 positionIn; \n"
 
-            "uniform mat4 mvp; \n"
+        "uniform mat4 mvp; \n"
 
-            "out vec3 texCoord; \n"
+        "out vec3 texCoord; \n"
 
-            "void main() \n"
-            "{ \n"
-            "    vec4 pos = mvp * vec4(positionIn, 1.0); \n"
-            "    gl_Position = pos.xyww; \n"
-            "    texCoord = positionIn; \n"
-            "} \n",
+        "void main() \n"
+        "{ \n"
+        "    vec4 pos = mvp * vec4(positionIn, 1.0); \n"
+        "    gl_Position = pos.xyww; \n"
+        "    texCoord = positionIn; \n"
+        "} \n",
 
-            "#version 330 core \n"
+        "#version 330 core \n"
 
-            "in vec3 texCoord; \n"
+        "in vec3 texCoord; \n"
 
-            "uniform samplerCube skybox; \n"
-            "uniform float transparency; \n"
+        "uniform samplerCube skybox; \n"
+        "uniform float transparency; \n"
 
-            "out vec4 color; \n"
+        "out vec4 color; \n"
 
-            "void main() \n"
-            "{ \n"
-            "    vec4 tempColor = texture(skybox, texCoord); \n"
-            "    tempColor.w = tempColor.w * transparency; \n"
-            "    color = tempColor; \n"
-            "} \n",
-            attributesMap);
+        "void main() \n"
+        "{ \n"
+        "    vec4 tempColor = texture(skybox, texCoord); \n"
+        "    tempColor.w = tempColor.w * transparency; \n"
+        "    color = tempColor; \n"
+        "} \n",
+        attributesMap);
 
     static std::vector<GLfloat> vert{
         -1.0f, 1.0f, -1.0f,
@@ -124,10 +128,7 @@ void CubeMap::draw(double trancparency) {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    static float val = 0.01;
-    val += 0.001;
-    glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), static_cast<float>(val), glm::vec3(0.1, 0.3, 1));
-//    glm::mat4 view = glm::mat4(glm::mat3(m_camera.getViewMatrix()));
+    glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), m_roatationValue, glm::vec3(0.1, 0.3, 1));
     glm::mat4 view = glm::mat4(glm::mat3(m_camera.getViewMatrix())) * rotation;
 
 
@@ -135,7 +136,7 @@ void CubeMap::draw(double trancparency) {
 
     skyboxShader.setUniformMatrix4f("mvp", modelViewProjection);
     skyboxShader.setUniform1f("transparency", trancparency);
-    texture.bind();
+    m_texture.bind();
     mesh.draw();
 
     skyboxShader.unbind();

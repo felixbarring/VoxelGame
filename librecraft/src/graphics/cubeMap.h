@@ -19,6 +19,8 @@ public:
 // Member Functions########################################
 // ########################################################
 
+    void setRotationValue(float value);
+
     void draw(double trancparency);
 
 // ########################################################
@@ -26,8 +28,9 @@ public:
 // ########################################################
 private:
 
-    texture::TextureCubeMap texture;
+    texture::TextureCubeMap m_texture;
     Camera &m_camera;
+    float m_roatationValue{0.0f};
 };
 
 }

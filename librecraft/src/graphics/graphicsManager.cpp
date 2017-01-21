@@ -11,18 +11,16 @@ namespace graphics {
 
 GraphicsManager::GraphicsManager()
 {
-    // TODO Fix skybox...
-
     texture::TextureCubeMap &texture =
-            graphics::Resources::getInstance().getTextureCubeMap(
-                    config::cube_map_data::cubeMap1[0],
-                    config::cube_map_data::cubeMap1[1],
-                    config::cube_map_data::cubeMap1[2],
-                    config::cube_map_data::cubeMap1[3],
-                    config::cube_map_data::cubeMap1[4],
-                    config::cube_map_data::cubeMap1[5],
-                    config::cube_map_data::cubeMap1Width,
-                    config::cube_map_data::cubeMap1Height);
+        graphics::Resources::getInstance().getTextureCubeMap(
+            config::cube_map_data::cubeMap1[0],
+            config::cube_map_data::cubeMap1[1],
+            config::cube_map_data::cubeMap1[2],
+            config::cube_map_data::cubeMap1[3],
+            config::cube_map_data::cubeMap1[4],
+            config::cube_map_data::cubeMap1[5],
+            config::cube_map_data::cubeMap1Width,
+            config::cube_map_data::cubeMap1Height);
 
     m_skyBox = make_unique<CubeMap>(texture, m_playerCamera); // TODO should be some other camera...
 }

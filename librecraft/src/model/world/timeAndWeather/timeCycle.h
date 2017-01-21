@@ -15,7 +15,6 @@ public:
 // Member Functions########################################
 // ########################################################
 
-    // TODO Explain what state this function changes.
     /**
      * \brief Updates the TimeCycle state.
      *
@@ -24,11 +23,18 @@ public:
     void update(float timePassed);
 
     /**
-     * \brief Sets the time of the day
+     * \brief Sets the time of the day.
      *
      * @param time The new time value.
      */
     void setTime(float time);
+
+    /**
+     * \brief Returns the time value.
+     *
+     * @return The time value.
+     */
+    float getTime();
 
     /**
      * \brief Stops the state changes when update is called.

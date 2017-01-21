@@ -43,6 +43,10 @@ void TimeCycle::setTime(float time) {
     m_time = time;
 }
 
+float TimeCycle::getTime() {
+    return m_time;
+}
+
 void TimeCycle::stopCycle() {
     m_paused = true;
 }
