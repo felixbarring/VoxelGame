@@ -25,7 +25,7 @@ public:
 // Constructor/Destructor #################################
 // ########################################################
 
-	MainMenu(Game *game);
+    MainMenu(Game *game);
 
 // ########################################################
 // Member Functions########################################
@@ -39,41 +39,41 @@ public:
 
 private:
 
-	Game *m_game;
-	glm::mat4 m_virtualProjection{};
+    Game *m_game;
+    glm::mat4 m_virtualProjection{};
 
-	chunk::CreationOptions m_options;
+    chunk::CreationOptions m_options;
 
-	std::unique_ptr<gui::Image> m_title{};
-	std::shared_ptr<widget::SelectableList> m_worldList{};
+    std::unique_ptr<gui::Image> m_title{};
+    std::shared_ptr<widget::SelectableList> m_worldList{};
 
-	std::shared_ptr<widget::WidgetGroup> m_activeWidgetGroup{};
+    std::shared_ptr<widget::WidgetGroup> m_activeWidgetGroup{};
 
-	std::shared_ptr<widget::WidgetGroup> m_mainWidgetGroup{};
+    std::shared_ptr<widget::WidgetGroup> m_mainWidgetGroup{};
 
-	std::shared_ptr<widget::WidgetGroup> m_playWidgetGroup{};
-	std::shared_ptr<widget::WidgetGroup> m_newWorldWidgetGroup{};
+    std::shared_ptr<widget::WidgetGroup> m_playWidgetGroup{};
+    std::shared_ptr<widget::WidgetGroup> m_newWorldWidgetGroup{};
     std::shared_ptr<widget::WidgetGroup> m_newWorldWidgetGroupAdvanced{};
 
-	std::shared_ptr<widget::WidgetGroup> m_loadWorldWidgetGroup{};
+    std::shared_ptr<widget::WidgetGroup> m_loadWorldWidgetGroup{};
 
-	std::shared_ptr<widget::WidgetGroup> m_settingsWidgetGroup{};
-	std::shared_ptr<widget::WidgetGroup> m_gameSettingsWidgetGroup{};
-	std::shared_ptr<widget::WidgetGroup> m_inputSettingsWidgetGroup{};
-	std::shared_ptr<widget::WidgetGroup> m_graphicsSettingsWidgetGroup{};
+    std::shared_ptr<widget::WidgetGroup> m_settingsWidgetGroup{};
+    std::shared_ptr<widget::WidgetGroup> m_gameSettingsWidgetGroup{};
+    std::shared_ptr<widget::WidgetGroup> m_inputSettingsWidgetGroup{};
+    std::shared_ptr<widget::WidgetGroup> m_graphicsSettingsWidgetGroup{};
 
-	std::shared_ptr<widget::WidgetGroup> m_errorEmptyName{};
-	std::shared_ptr<widget::WidgetGroup> m_errorUsedName{};
+    std::shared_ptr<widget::WidgetGroup> m_errorEmptyName{};
+    std::shared_ptr<widget::WidgetGroup> m_errorUsedName{};
 
-	std::shared_ptr<widget::TextInput> m_textInput{};
-	std::shared_ptr<widget::TextInput> m_textInput2{};
-	std::shared_ptr<widget::TextInput> m_textInput3{};
+    std::shared_ptr<widget::TextInput> m_textInput{};
+    std::shared_ptr<widget::TextInput> m_textInput2{};
+    std::shared_ptr<widget::TextInput> m_textInput3{};
 
-	std::shared_ptr<widget::TextInput> m_mouseSensitivityInput{};
-	std::shared_ptr<widget::Slider> m_mouseSensitivitySlider{};
+    std::shared_ptr<widget::TextInput> m_mouseSensitivityInput{};
+    std::shared_ptr<widget::Slider> m_mouseSensitivitySlider{};
 
-	std::shared_ptr<widget::Slider> m_slider{};
-	std::shared_ptr<widget::Slider> m_slider2{};
+    std::shared_ptr<widget::Slider> m_slider{};
+    std::shared_ptr<widget::Slider> m_slider2{};
 
 	std::shared_ptr<widget::ToggleButton> button1;
     std::shared_ptr<widget::ToggleButton> button2;

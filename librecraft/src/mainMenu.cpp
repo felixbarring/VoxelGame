@@ -23,15 +23,15 @@ MainMenu::MainMenu(Game *game)
 {
 
     glm::mat4 matrix = gui::createVirtualToScreen(
-            config::graphics_data::virtualWidth,
-            config::graphics_data::virtualHeight,
-            static_cast<float>(config::graphics_data::windowWidth),
-            static_cast<float>(config::graphics_data::windowHeight));
+        config::graphics_data::virtualWidth,
+        config::graphics_data::virtualHeight,
+        static_cast<float>(config::graphics_data::windowWidth),
+        static_cast<float>(config::graphics_data::windowHeight));
 
     m_virtualProjection = glm::ortho(0.0f,
-            static_cast<float>(config::graphics_data::windowWidth), 0.0f,
-            static_cast<float>(config::graphics_data::windowHeight), -1.0f,
-            1.0f) * matrix;
+        static_cast<float>(config::graphics_data::windowWidth), 0.0f,
+        static_cast<float>(config::graphics_data::windowHeight), -1.0f,
+        1.0f) * matrix;
 
     graphics::GraphicsManager::getInstance().getSpriteBatcher().setProjection(m_virtualProjection);
 
@@ -255,22 +255,26 @@ MainMenu::MainMenu(Game *game)
             switch(id) {
             case 0: {
                 m_options.setFlat(true);
-                if (button2->isToggled())
-                    button2->toggle();
+                button1->setToggled();
+                button2->setUntoggled();
                 break;
             }
             case 1: {
                 m_options.setFlat(false);
-                if (button1->isToggled())
-                    button1->toggle();
+                button1->setUntoggled();
+                button2->setToggled();
                 break;
             }
             case 2: {
                 m_options.setDifferencBubesForEachChunk(true);
+                button3->setToggled();
+                button4->setUntoggled();
                 break;
             }
             case 3: {
                 m_options.setDifferencBubesForEachChunk(false);
+                button3->setUntoggled();
+                button4->setToggled();
                 break;
             }
             case 4: break; // TODO
@@ -280,14 +284,17 @@ MainMenu::MainMenu(Game *game)
 
         auto label1 = make_shared<Label>(230, 390, 150, 50, " - Advanced - ");
 
-        button1 = make_shared<ToggleButton>(0, 220, 350, 30, 30, observer, "Flat", 2, ToggleButton::Skin::ReadioButton);
+        button1 = make_shared<ToggleButton>(0, 220, 350, 30, 30, observer, "Flat", 2,
+            ToggleButton::Skin::ReadioButton);
         button2 = make_shared<ToggleButton>(1, 220, 310, 30, 30, observer, "Height Map", 2,
-                ToggleButton::Skin::ReadioButton);
+            ToggleButton::Skin::ReadioButton);
         button2->toggle();
 
-        button3 = make_shared<ToggleButton>(2, 420, 350, 30, 30, observer, "Different", 2, ToggleButton::Skin::ReadioButton);
-        button4 = make_shared<ToggleButton>(3, 420, 310, 30, 30, observer, "Same", 2,
-                        ToggleButton::Skin::ReadioButton);
+        button3 = make_shared<ToggleButton>(2, 420, 350, 30, 30, observer, "Same", 2,
+            ToggleButton::Skin::ReadioButton);
+        button4 = make_shared<ToggleButton>(3, 420, 310, 30, 30, observer, "Different", 2,
+            ToggleButton::Skin::ReadioButton);
+        button4->toggle();
 
         auto button5 = make_shared<Button>(4, 350, 135, 100, 30, observer, "Reset", 1);
         auto button6 = make_shared<Button>(5, 460, 135, 100, 30, observer, "Back", 1);

@@ -1,6 +1,8 @@
 #ifndef SRC_DEMO_TOGGLEBUTTON_H_
 #define SRC_DEMO_TOGGLEBUTTON_H_
 
+#include <algorithm>
+#include <vector>
 #include "button.h"
 
 namespace widget {
@@ -33,6 +35,10 @@ public:
     bool isToggled();
 
     void toggle();
+
+    void setUntoggled();
+
+    void setToggled();
 
     void draw() override;
 

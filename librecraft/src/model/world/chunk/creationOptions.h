@@ -1,9 +1,3 @@
-/*
- * creationOptions.h
- *
- *  Created on: Jan 15, 2017
- *      Author: felix
- */
 
 #ifndef SRC_MODEL_WORLD_CHUNK_CREATIONOPTIONS_H_
 #define SRC_MODEL_WORLD_CHUNK_CREATIONOPTIONS_H_
@@ -38,7 +32,7 @@ private:
 
     std::string m_name{"Error Name"};
     bool m_flat{false};
-    bool m_differentCubeForEachChunk{false};
+    bool m_differentCubeForEachChunk{true};
 
 };
 

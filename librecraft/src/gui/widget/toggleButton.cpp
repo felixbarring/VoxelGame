@@ -59,6 +59,14 @@ void ToggleButton::toggle() {
     m_toggled = !m_toggled;
 }
 
+void ToggleButton::setUntoggled() {
+    m_toggled = false;
+}
+
+void ToggleButton::setToggled() {
+    m_toggled = true;
+}
+
 void ToggleButton::draw() {
     GraphicsManager::getInstance().getSpriteBatcher().addBatch(m_toggled ? m_spriteToggled : m_sprite);
     GraphicsManager::getInstance().getSpriteBatcher().addBatch(m_text);
@@ -71,8 +79,11 @@ void ToggleButton::update(float timePassed) {
     shared_ptr<util::Input> input = util::Input::getInstance();
     m_pointerInsideBorders = isInsideBorders(input->mouseVirtualAdjustedX, input->mouseVirtualAdjustedY);
 
-    if (((m_skin == Skin::ReadioButton && !m_toggled) || m_skin != Skin::ReadioButton) && m_pointerInsideBorders &&
-            input->action1Pressed) {
+    auto shouldToggle = m_pointerInsideBorders && input->action1Pressed;
+
+    if (m_skin == Skin::ReadioButton && !m_toggled && shouldToggle) {
+        m_observer(m_id);
+    } else if (m_skin != Skin::ReadioButton && shouldToggle) {
         toggle();
         m_observer(m_id);
     }
