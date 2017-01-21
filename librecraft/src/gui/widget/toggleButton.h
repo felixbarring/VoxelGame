@@ -9,7 +9,7 @@ class ToggleButton: public Button {
 public:
 
     /**
-     * @brief Uaed to determine the visuals of the button.
+     * @brief Used to determine the visuals of the button.
      */
     enum class Skin {
         Regular,    //!< Regular visuals representing a button with text drawn on it that can be check
@@ -21,22 +21,22 @@ public:
 // Constructor/Destructor #################################
 // ########################################################
 
-	ToggleButton(int id, int x, int y, int width, int height, std::function<void(int)> observer,
-			const std::string &name, int layer = 0, Skin skin = Skin::Regular);
+    ToggleButton(int id, int x, int y, int width, int height, std::function<void(int)> observer,
+        const std::string &name, int layer = 0, Skin skin = Skin::Regular);
 
-	virtual ~ToggleButton() {};
+    virtual ~ToggleButton() {};
 
 // ########################################################
 // Member Functions########################################
 // ########################################################
 
-	bool isToggled();
+    bool isToggled();
 
-	void toggle();
+    void toggle();
 
-	void draw() override;
+    void draw() override;
 
-	void update(float timePassed) override;
+    void update(float timePassed) override;
 
 // ########################################################
 // Implementation #########################################
@@ -44,10 +44,10 @@ public:
 
 private:
 
-	bool m_toggled{false};
-	bool m_useHighlight{true}; // Do not use highlights for CheckBox and RadioButton skin since they look bad.
+    bool m_toggled{false};
+    Skin m_skin;
 
-	std::shared_ptr<graphics::Sprite> m_spriteToggled;
+    std::shared_ptr<graphics::Sprite> m_spriteToggled;
 };
 
 } /* namespace widget */

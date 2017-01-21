@@ -1,9 +1,3 @@
-/*
- * toggleButton.cpp
- *
- *  Created on: Feb 2, 2016
- *      Author: felix
- */
 
 #include "toggleButton.h"
 
@@ -23,14 +17,15 @@ namespace widget {
 
 ToggleButton::ToggleButton(int id, int x, int y, int width, int height,	function<void(int)> observer,
         const string &name, int layer, Skin skin)
-    : Button(id, x, y, width, height, observer, name, layer)
+    : Button(id, x, y, width, height, observer, name, layer),
+      m_skin{skin}
 {
     auto &res = Resources::getInstance();
 
     FontMeshBuilder &fontMeshBuilder = res.getFontMeshBuilder(
-                config::font_data::fontLayout,
-                config::font_data::fontAtlasWidth,
-                config::font_data::fontAtlasHeight);
+        config::font_data::fontLayout,
+        config::font_data::fontAtlasWidth,
+        config::font_data::fontAtlasHeight);
 
     switch (skin) {
         case Skin::Regular: {
@@ -42,8 +37,7 @@ ToggleButton::ToggleButton(int id, int x, int y, int width, int height,	function
             m_spriteToggled.reset(new Sprite(x, y, layer, width, height,
                 res.getTexture(config::gui_data::checkBoxChecked)));
             m_text.reset(new Sprite(x + height, y + 5, layer + 1, fontMeshBuilder.buldMeshForString(name, height - 5),
-                                res.getTexture(config::font_data::font)));
-            m_useHighlight = false;
+                res.getTexture(config::font_data::font)));
             break;
         }
         case Skin::ReadioButton: {
@@ -51,45 +45,37 @@ ToggleButton::ToggleButton(int id, int x, int y, int width, int height,	function
             m_spriteToggled.reset(new Sprite(x, y, layer, width, height,
                 res.getTexture(config::gui_data::radioButtonChecked)));
             m_text.reset(new Sprite(x + height, y + 5, layer + 1, fontMeshBuilder.buldMeshForString(name, height - 5),
-                                            res.getTexture(config::font_data::font)));
-            m_useHighlight = false;
+                res.getTexture(config::font_data::font)));
             break;
         }
     }
-
 }
 
 bool ToggleButton::isToggled() {
-	return m_toggled;
+    return m_toggled;
 }
 
 void ToggleButton::toggle() {
-	m_toggled = !m_toggled;
+    m_toggled = !m_toggled;
 }
 
 void ToggleButton::draw() {
-    shared_ptr<Sprite> sprite;
-    if (m_toggled)
-        sprite = m_spriteToggled;
-    else
-        sprite = m_sprite;
-
-    GraphicsManager::getInstance().getSpriteBatcher().addBatch(sprite);
+    GraphicsManager::getInstance().getSpriteBatcher().addBatch(m_toggled ? m_spriteToggled : m_sprite);
     GraphicsManager::getInstance().getSpriteBatcher().addBatch(m_text);
 
-    if (m_useHighlight && m_pointerInsideBorders)
+    if (m_skin == Skin::Regular && m_pointerInsideBorders)
         GraphicsManager::getInstance().getSpriteBatcher().addBatch(m_highlight);
 }
 
 void ToggleButton::update(float timePassed) {
-	shared_ptr<util::Input> input = util::Input::getInstance();
+    shared_ptr<util::Input> input = util::Input::getInstance();
+    m_pointerInsideBorders = isInsideBorders(input->mouseVirtualAdjustedX, input->mouseVirtualAdjustedY);
 
-	m_pointerInsideBorders = isInsideBorders(input->mouseVirtualAdjustedX, input->mouseVirtualAdjustedY);
-
-	if (m_pointerInsideBorders && input->action1Pressed) {
-		toggle();
-		m_observer(m_id);
-	}
+    if (((m_skin == Skin::ReadioButton && !m_toggled) || m_skin != Skin::ReadioButton) && m_pointerInsideBorders &&
+            input->action1Pressed) {
+        toggle();
+        m_observer(m_id);
+    }
 
 }
 

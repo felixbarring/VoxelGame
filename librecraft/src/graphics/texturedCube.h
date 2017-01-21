@@ -17,8 +17,6 @@ public:
 
     TexturedCube(float xOffset, float yOffset, float zOffset, int id);
 
-    virtual ~TexturedCube() {};
-
 // ########################################################
 // Member Functions########################################
 // ########################################################
