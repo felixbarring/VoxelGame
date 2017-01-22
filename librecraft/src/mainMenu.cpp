@@ -315,6 +315,7 @@ MainMenu::MainMenu(Game *game)
             case 2: {
                 if (m_worldList->getSelectedListItem().size()) {
                     string name = m_worldList->getSelectedListItem();
+                    m_options.setName(name);
                     // TODO Should not be needed to use options here...
                     game->createWorld(m_options);
                     m_activeWidgetGroup = m_mainWidgetGroup;

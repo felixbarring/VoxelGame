@@ -27,7 +27,7 @@ public:
 // Constructor/Destructor #################################
 // ########################################################
 
-    InGame(Game *game, std::string name);
+    InGame(Game *game);
 
 // ########################################################
 // Member Functions########################################
@@ -52,7 +52,6 @@ private:
     glm::mat4 m_virtualProjection;
 
     Game *m_game;
-    std::string m_name;
     entity::Player m_player;
 
     TimeCycle m_timeCycle;

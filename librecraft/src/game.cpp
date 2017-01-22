@@ -173,7 +173,7 @@ void Game::run() {
 
 void Game::createWorld(chunk::CreationOptions options) {
 
-    m_inGame.reset(new InGame(this, "LOL")); // TODO REMOVE LOL
+    m_inGame.reset(new InGame(this)); // TODO REMOVE LOL
 
     auto future = globalResources::g_threadPool.enqueue([options]
     {

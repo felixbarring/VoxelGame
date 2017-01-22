@@ -29,9 +29,9 @@ using namespace gui;
 // Constructor/Destructor #################################
 // ########################################################
 
-InGame::InGame(Game *game, string name)
-    : m_game{game},
-      m_name{name} {
+InGame::InGame(Game *game)
+    : m_game{game}
+{
 
     m_player.setLocation(chunk_data::NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * chunk_data::CHUNK_WIDTH_AND_DEPTH, 40.1,
                          chunk_data::NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * chunk_data::CHUNK_WIDTH_AND_DEPTH);
