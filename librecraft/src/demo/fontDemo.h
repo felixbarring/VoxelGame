@@ -23,6 +23,7 @@
 
 #include <SFML/Window.hpp>
 
+#include "../graphics/graphicsManager.h"
 using namespace sf;
 
 namespace demo {
@@ -82,8 +83,8 @@ public:
 
 	        glClear(GL_COLOR_BUFFER_BIT);
 
-	        graphics::SpriteBatcher::getInstance().addBatch(sprite);
-	        graphics::SpriteBatcher::getInstance().draw();
+	        graphics::GraphicsManager::getInstance().getSpriteBatcher().addBatch(sprite);
+	        graphics::GraphicsManager::getInstance().getSpriteBatcher().draw();
 
 	        fpsManager.sync();
 

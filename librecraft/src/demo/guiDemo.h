@@ -32,6 +32,7 @@
 
 #include <SFML/Window.hpp>
 
+#include "../graphics/graphicsManager.h"
 using namespace std;
 using namespace widget;
 using namespace sf;
@@ -195,7 +196,7 @@ public:
 
 	    glm::mat4 matrix = gui::createVirtualToScreen(800, 600, 1200, 600);
 	    glm:: mat4 matrix2 = glm::ortho(0.0f, 1200.0f, 0.0f, 600.0f, -1.0f, 1.0f) * matrix;
-	    graphics::SpriteBatcher::getInstance().setProjection(matrix2);
+	    graphics::GraphicsManager::getInstance().getSpriteBatcher().setProjection(matrix2);
 
 	    while (!quit && window.isOpen()) {
 
@@ -213,7 +214,7 @@ public:
 	        currentWidgetGroup->update(0.01);
 	        currentWidgetGroup->draw();
 
-	        graphics::SpriteBatcher::getInstance().draw();
+	        graphics::GraphicsManager::getInstance().getSpriteBatcher().draw();
 
 	        fpsManager.sync();
 	        window.display();

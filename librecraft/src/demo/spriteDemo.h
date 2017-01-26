@@ -30,6 +30,7 @@
 
 #include <SFML/Window.hpp>
 
+#include "../graphics/graphicsManager.h"
 namespace demo {
 
 class SpriteDemo : public IDemo  {
@@ -86,11 +87,11 @@ public:
 
 	        glClear(GL_COLOR_BUFFER_BIT);
 
-	        graphics::SpriteBatcher::getInstance().addBatch(sprite);
-	        graphics::SpriteBatcher::getInstance().addBatch(sprite2);
-	        graphics::SpriteBatcher::getInstance().addBatch(sprite3);
+            graphics::GraphicsManager::getInstance().getSpriteBatcher().addBatch(sprite);
+	        graphics::GraphicsManager::getInstance().getSpriteBatcher().addBatch(sprite2);
+	        graphics::GraphicsManager::getInstance().getSpriteBatcher().addBatch(sprite3);
 
-	        graphics::SpriteBatcher::getInstance().draw();
+	        graphics::GraphicsManager::getInstance().getSpriteBatcher().draw();
 
 	        fpsManager.sync();
 	        window.display();
@@ -102,10 +103,6 @@ public:
 	    }
 
 	}
-
-// ########################################################
-// Instance Variables #####################################
-// ########################################################
 
 };
 

@@ -316,7 +316,10 @@ MainMenu::MainMenu(Game *game)
                 if (m_worldList->getSelectedListItem().size()) {
                     string name = m_worldList->getSelectedListItem();
                     m_options.setName(name);
-                    // TODO Should not be needed to use options here...
+
+                    // TODO The options need to be the same as when the map was created.
+                    // TODO Implement so its possible to save and load options for a map.
+
                     game->createWorld(m_options);
                     m_activeWidgetGroup = m_mainWidgetGroup;
                     m_worldList->reset();
