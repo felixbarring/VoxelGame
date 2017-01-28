@@ -64,6 +64,8 @@ protected:
 	std::shared_ptr<graphics::Sprite> m_sprite;
 	std::shared_ptr<graphics::Sprite> m_highlight;
 	std::shared_ptr<graphics::Sprite> m_text;
+
+//	int derp;
 };
 
 } /* namespace widget */

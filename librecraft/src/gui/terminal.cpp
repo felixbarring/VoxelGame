@@ -34,9 +34,9 @@ Terminal::Terminal(vector<string> commands,	function<void(vector<string>)> comma
             m_textArea->addLine(str);
             m_history.addToHistory(str);
 
-            std::regex r("\\S+");
-            std::smatch match;
-            std::vector<string> results{};
+            regex r("\\S+");
+            smatch match;
+            vector<string> results{};
             while(regex_search(str, match, r)) {
                 results.push_back(match.str());
                 str = match.suffix();
@@ -101,7 +101,7 @@ void Terminal::draw() {
     m_widgets->draw();
 }
 
-void Terminal::addLine(std::string str) {
+void Terminal::addLine(string str) {
     m_textArea->addLine(move(str));
 }
 

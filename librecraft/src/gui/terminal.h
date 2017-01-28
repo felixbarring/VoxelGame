@@ -14,6 +14,18 @@
 
 namespace gui {
 
+/**
+ * \brief Can be used to let the user type in commands.
+ *
+ * The terminal is designed to have a easy to use interface. It supports letting the user type in commands in an input
+ * text field. When hitting enter or pressing the enter button the callback function will be called with the entered
+ * string. There is also a text area that gives feedback to the user, such as if the command was valid and any possible
+ * results of the command. The terminal also allows for auto completion on the commands provided in the constructor by
+ * hitting the tab button. The terminal also keeps history of the strings entered and allows the user to go thru the
+ * history using the up and down button.
+ *
+ * The user should call update once each frame so that it can handle user input and send callbacks.
+ */
 class Terminal {
 public:
 
@@ -21,16 +33,43 @@ public:
 // Constructor/Destructor #################################
 // ########################################################
 
+    /**
+     * \brief Constructs a Terminal.
+     *
+     * @param commands The commands that the user can auto complete on by pressing tab
+     * @param commandListener The callback function that will be called when the user presses the keyboard enter or the
+     *                        widget enter button.
+     */
     Terminal(std::vector<std::string> commands,	std::function<void(std::vector<std::string>)> commandListener);
 
 // ########################################################
 // Member Functions########################################
 // ########################################################
 
+    /**
+     * \brief Updates the terminal.
+     *
+     * Should be called once each frame. Handles all the logic of the terminal, such as sending commands to the callback
+     * function, using auto completion, and going thru the history of entered strings.
+     *
+     * @param timePassed
+     */
     void update(float timePassed);
 
+    /**
+     * \brief Draws all the widgets that the terminal is made up of.
+     */
     void draw();
 
+    /**
+     * \brief Adds a new line to the text area.
+     *
+     * Useful for giving the user feedback of a command, or debugg information and similar.
+     * The added string can be of any realistic size since it will be clipped if it is longer that can fit in one line
+     * of the textarea.
+     *
+     * @param str The string that shall be added.
+     */
     void addLine(std::string str);
 
 // ########################################################
