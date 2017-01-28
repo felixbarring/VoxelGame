@@ -16,6 +16,7 @@
 #include "gui/widget/widgetGroup.h"
 #include "gui/widget/selectableList.h"
 #include "gui/guiUtil.h"
+#include "gui/mouse.h"
 #include "gui/terminal.h"
 
 class MainMenu: public IGameState {
@@ -41,6 +42,7 @@ private:
 
     Game *m_game;
     glm::mat4 m_virtualProjection{};
+    gui::Mouse m_mouse{};
 
     chunk::CreationOptions m_options;
 

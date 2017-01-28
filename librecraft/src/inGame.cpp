@@ -172,7 +172,6 @@ InGame::InGame(Game *game)
 void InGame::update(float timePassed) {
 
     auto input = Input::getInstance();
-    auto &mouse = Mouse::getInstance();
 
     if (input->openTerminalPressed)
         m_state = GameState::Terminal;
@@ -185,9 +184,9 @@ void InGame::update(float timePassed) {
     }
 
     if (m_state == GameState::NoOverlay) {
-        mouse.lock();
+        m_mouse.lock();
         input->updateValues();
-        mouse.update();
+        m_mouse.update();
         m_player.update(timePassed);
         m_timeCycle.update(timePassed);
 
@@ -231,10 +230,10 @@ void InGame::update(float timePassed) {
         GraphicsManager::getInstance().getSpriteBatcher().addBatch(m_selectedCubeThumbnails[m_player.getBuildingCube()]);
 
     } else {
-        mouse.unlock();
+        m_mouse.unlock();
         input->updateValues();
-        mouse.update();
-        mouse.draw();
+        m_mouse.update();
+        m_mouse.draw();
     }
 
     if (m_state == GameState::Terminal) {

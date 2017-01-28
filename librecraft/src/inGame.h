@@ -17,6 +17,7 @@
 #include "graphics/cubeMap.h"
 #include "graphics/resources.h"
 #include "graphics/sprite.h"
+#include "gui/mouse.h"
 #include "gui/terminal.h"
 #include "model/world/timeAndWeather/timeCycle.h"
 
@@ -53,6 +54,8 @@ private:
 
     Game *m_game;
     entity::Player m_player;
+
+    gui::Mouse m_mouse{};
 
     TimeCycle m_timeCycle;
 

@@ -7,45 +7,40 @@
 #include "../gui/guiUtil.h"
 #include "../util/input.h"
 
-namespace widget {
+namespace gui {
+
+// TODO Remove the singleton crap.
 
 class Mouse {
-
+public:
 // ########################################################
 // Constructor/Destructor #################################
 // ########################################################
 
-	Mouse();
+    Mouse();
 
 // ########################################################
 // Member Functions########################################
 // ########################################################
 
-public:
+    void update();
 
-	static Mouse& getInstance() {
-		static Mouse instance;
-		return instance;
-	}
+    void draw();
 
-	void update();
+    void lock();
 
-	void draw();
-
-	void lock();
-
-	void unlock();
+    void unlock();
 
 // ########################################################
 // Implementation #########################################
 // ########################################################
 
-	std::shared_ptr<util::Input> m_input;
-	bool m_locked {false};
+    std::shared_ptr<util::Input> m_input;
+    bool m_locked {false};
 
-	std::shared_ptr<graphics::Sprite> m_sprite;
-	int m_width{10};
-	int m_height{10};
+    std::shared_ptr<graphics::Sprite> m_sprite;
+    int m_width{10};
+    int m_height{10};
 };
 
 } /* namespace widget */

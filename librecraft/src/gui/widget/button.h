@@ -12,7 +12,7 @@
 namespace widget {
 
 /**
- * \class Button
+ * \brief A button that lets the user interact with the GUI.
  *
  * A button can be used to trigger an event when the user clicks on it.
  * Buttons can have a text/name that will be rendered and hence provide
@@ -64,8 +64,6 @@ protected:
 	std::shared_ptr<graphics::Sprite> m_sprite;
 	std::shared_ptr<graphics::Sprite> m_highlight;
 	std::shared_ptr<graphics::Sprite> m_text;
-
-//	int derp;
 };
 
 } /* namespace widget */

@@ -6,13 +6,13 @@
 
 #include "config/data.h"
 #include "graphics/graphicsManager.h"
-#include "gui/mouse.h"
 #include "gui/terminal.h"
 #include "gui/widget/checkButton.h"
 #include "util/worldMeta.h"
 
 using namespace std;
 using namespace widget;
+using namespace gui;
 
 // ########################################################
 // Constructor/Destructor #################################
@@ -396,10 +396,10 @@ MainMenu::MainMenu(Game *game)
 void MainMenu::update(float timePassed) {
     shared_ptr<util::Input> input = util::Input::getInstance();
 
-    Mouse::getInstance().unlock();
+    m_mouse.unlock();
     input->updateValues();
-    Mouse::getInstance().update();
-    Mouse::getInstance().draw();
+    m_mouse.update();
+    m_mouse.draw();
 
     m_activeWidgetGroup->update(timePassed);
 
