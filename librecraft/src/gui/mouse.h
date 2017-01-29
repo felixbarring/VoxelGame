@@ -9,8 +9,6 @@
 
 namespace gui {
 
-// TODO Remove the singleton crap.
-
 class Mouse {
 public:
 // ########################################################

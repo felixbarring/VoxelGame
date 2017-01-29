@@ -14,7 +14,7 @@ public:
 // Constructor/Destructor #################################
 // ########################################################
 
-	Image(double x, double y, double width, double height, const std::string image);
+    Image(double x, double y, double width, double height, const std::string image);
 
 // ########################################################
 // Member Functions########################################

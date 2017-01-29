@@ -33,6 +33,7 @@
 #include <SFML/Window.hpp>
 
 #include "../graphics/graphicsManager.h"
+
 using namespace std;
 using namespace widget;
 using namespace sf;
@@ -194,6 +195,8 @@ public:
 	    glm:: mat4 matrix2 = glm::ortho(0.0f, 1200.0f, 0.0f, 600.0f, -1.0f, 1.0f) * matrix;
 	    graphics::GraphicsManager::getInstance().getSpriteBatcher().setProjection(matrix2);
 
+	    gui::Mouse mouse{};
+
 	    while (!quit && window.isOpen()) {
 
 	        fpsManager.frameStart();
@@ -201,8 +204,8 @@ public:
 
 	        input->updateValues();
 
-	        widget::Mouse::getInstance().update();
-	        widget::Mouse::getInstance().draw();
+	        mouse.update();
+	        mouse.draw();
 
 	        if (input->escapeKeyPressed)
 	            window.close();
