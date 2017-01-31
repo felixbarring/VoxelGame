@@ -1,5 +1,6 @@
-cd ..
-cd ..
+#!/bin/sh
+
+cd ../..
 rm -r Eclipse
 mkdir Eclipse
 cd Eclipse

@@ -119,6 +119,8 @@ private:
         std::vector<std::string> m_history;
     };
 
+    bool kek;
+
     std::function<void(std::vector<std::string>)> m_commandListener;
 
     std::shared_ptr<widget::TextArea> m_textArea{};

@@ -1,9 +1,22 @@
 cmake_minimum_required(VERSION 2.8)
 project(VoxelGame)
 
-add_definitions(-std=c++14 -Wextra)
+set(CMAKE_CXX_FLAGS "-std=c++14 -Wall -Wextra")
+#  -Werror
 
-message(CMAKE_BUILD_TYPE)
+message("")
+if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+  message("Building with Clang")
+elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+  message("Building with GNU")
+elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Intel")
+  message("Building with Intel")
+elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
+  message("Building with MSVC")
+else()
+  message("Building with unknown")
+endif()
+message("")
 
 message("######")
 if(CMAKE_BUILD_TYPE MATCHES Debug)
