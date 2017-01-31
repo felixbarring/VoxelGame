@@ -150,9 +150,6 @@ void Game::run() {
     if (glewInit() != GLEW_OK)
         cout << "Failed to initialize GLEW\n";
 
-    int kek;
-
-
 //    glm::vec3 skyColor = config::graphics_data::skyColor;
     glViewport(0, 0, WIDTH, HEIGHT);
 

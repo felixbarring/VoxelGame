@@ -16,7 +16,7 @@ class Trie {
 public:
 
     Trie() {
-        m_root = new TrieNode('-', false);
+        m_root = new TrieNode('-');
     }
 
     virtual ~Trie() {};
@@ -39,7 +39,7 @@ public:
                 node = child;
                 continue;
             }
-            TrieNode *newNode = new TrieNode(c, i == value.size() - 1);
+            TrieNode *newNode = new TrieNode(c);
             node->addChild(newNode);
             node = newNode;
         }
@@ -82,9 +82,8 @@ private:
     class TrieNode {
     public:
 
-        TrieNode(char ch, bool isEnd)
-            : m_ch(ch),
-              m_isEnd(isEnd)
+        TrieNode(char ch)
+            : m_ch(ch)
         {
         }
 
@@ -118,7 +117,6 @@ private:
     private:
 
         const char m_ch{};
-        const bool m_isEnd{};
         std::vector<TrieNode*> m_children{};
     };
 
