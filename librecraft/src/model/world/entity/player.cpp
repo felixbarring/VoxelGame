@@ -95,7 +95,7 @@ void Player::updateSpeed(float timePassed) {
         m_speed.z = normalizedMD.z;
     }
 
-    if (input->switchCubePressed && ++m_cubeUsedForBuilding > config::cube_data::LAST_CUBE_USED_FOR_BUILDING_)
+    if (input->switchCubePressed && ++m_cubeUsedForBuilding > config::cube_data::LAST_CUBE_USED_FOR_BUILDING)
         m_cubeUsedForBuilding = 0;
 
     float waterFactor = 1.0;
@@ -153,8 +153,8 @@ void Player::handlePhysics() {
             return get<0>(a) < get<0>(b);
         });
 
-        auto c = collisions[0];
-        auto time = get<0>(collisions[0]);
+//        auto c = collisions[0];
+//        auto time = get<0>(collisions[0]);
 
         float derp = 1.0; // / 5.0;
         auto separationVec = derp * -std::get<2>(collisions[0]);
@@ -190,7 +190,7 @@ void Player::updateCameraAndTargetCube() {
 
     chunk::ChunkManager &chunkManager = chunk::ChunkManager::getInstance();
 
-    auto lol = m_viewDirection.getViewDirection();
+//    auto lol = m_viewDirection.getViewDirection();
 
     vec3 selectedCube;
     vec3 previous;

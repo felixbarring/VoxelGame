@@ -42,12 +42,12 @@ MainMenu::MainMenu(Game *game)
     // ########################################################################
 
     {
-        function<void(int)> observer = [this, game](int id)
+        function<void(int)> observer = [this](int id)
         {
             switch(id) {
             case 0: m_activeWidgetGroup = m_playWidgetGroup; break;
             case 1: m_activeWidgetGroup = m_settingsWidgetGroup; break;
-            case 2: game->quitGame(); break;
+            case 2: m_game->quitGame(); break;
             }
         };
 
@@ -64,7 +64,7 @@ MainMenu::MainMenu(Game *game)
     // ########################################################################
 
     {
-        function<void(int)> observer = [this, game](int id)
+        function<void(int)> observer = [this](int id)
         {
             switch(id) {
             case 0: m_activeWidgetGroup = m_newWorldWidgetGroup; break;
@@ -86,7 +86,7 @@ MainMenu::MainMenu(Game *game)
     // ########################################################################
 
     {
-        function<void(int)> observer = [this, game](int id)
+        function<void(int)> observer = [this](int id)
         {
             switch(id) {
             case 0: m_activeWidgetGroup = m_gameSettingsWidgetGroup; break;
@@ -110,7 +110,7 @@ MainMenu::MainMenu(Game *game)
     // ########################################################################
 
     {
-        function<void(int)> observer = [this, game](int id)
+        function<void(int)> observer = [this](int id)
         {
             switch(id) {
             case 0: m_activeWidgetGroup = m_settingsWidgetGroup; break;
@@ -129,7 +129,7 @@ MainMenu::MainMenu(Game *game)
     // ########################################################################
 
     {
-        function<void(int)> observer = [this, game](int id)
+        function<void(int)> observer = [this](int id)
         {
             switch(id) {
             case 0: {
@@ -161,7 +161,7 @@ MainMenu::MainMenu(Game *game)
     // ########################################################################
 
     {
-        function<void(int)> observer = [this, game](int id)
+        function<void(int)> observer = [this](int id)
         {
             switch(id) {
             case 0: m_activeWidgetGroup = m_settingsWidgetGroup; break;
@@ -200,7 +200,7 @@ MainMenu::MainMenu(Game *game)
     // ########################################################################
 
     {
-        function<void(int)> observer = [this, game](int id)
+        function<void(int)> observer = [this](int id)
         {
             switch(id) {
             case 0: {
@@ -213,7 +213,7 @@ MainMenu::MainMenu(Game *game)
                     if (!world_meta::worldNameExists(name)) {
                         world_meta::addName(name);
                         m_options.setName(name);
-                        game->createWorld(m_options);
+                        m_game->createWorld(m_options);
                         m_activeWidgetGroup = m_mainWidgetGroup;
                         m_worldList->addListItem(name);
                     } else {
@@ -250,7 +250,7 @@ MainMenu::MainMenu(Game *game)
     // ########################################################################
 
     {
-        function<void(int)> observer = [this, game](int id)
+        function<void(int)> observer = [this](int id)
         {
             switch(id) {
             case 0: {
@@ -307,7 +307,7 @@ MainMenu::MainMenu(Game *game)
     // ########################################################################
 
     {
-        function<void(int)> observer = [this, game](int id)
+        function<void(int)> observer = [this](int id)
         {
             switch(id) {
             case 0: break;
@@ -320,7 +320,7 @@ MainMenu::MainMenu(Game *game)
                     // TODO The options need to be the same as when the map was created.
                     // TODO Implement so its possible to save and load options for a map.
 
-                    game->createWorld(m_options);
+                    m_game->createWorld(m_options);
                     m_activeWidgetGroup = m_mainWidgetGroup;
                     m_worldList->reset();
                 }
@@ -349,7 +349,7 @@ MainMenu::MainMenu(Game *game)
     // ########################################################################
 
     {
-        function<void(int)> observer = [this, game](int id)
+        function<void(int)> observer = [this](int id)
         {
             switch(id) {
             case 1: m_activeWidgetGroup = m_newWorldWidgetGroup; break;
@@ -368,7 +368,7 @@ MainMenu::MainMenu(Game *game)
     // ########################################################################
 
     {
-        function<void(int)> observer = [this, game](int id)
+        function<void(int)> observer = [this](int id)
         {
             switch(id) {
             case 1: m_activeWidgetGroup = m_newWorldWidgetGroup; break;

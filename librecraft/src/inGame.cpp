@@ -64,7 +64,9 @@ InGame::InGame(Game *game)
     m_crossHair.reset(new Sprite(390, 290, 0, 20, 20, Resources::getInstance().getTexture(
             config::gui_data::crossHair)));
 
-    for (int i = 0; i <= config::cube_data::LAST_CUBE_USED_FOR_BUILDING_; ++i) {
+    // TODO FIX
+    for (int i = 0; i <= config::cube_data::LAST_CUBE_USED_FOR_BUILDING; ++i) {
+//    for (int i = 0; i <= 3; ++i) {
         m_selectedCubeThumbnails.push_back(make_shared<Sprite>(
                 380, 5, 2, 40, 40, Resources::getInstance().getTexture(config::cube_data::thumbnails[i])));
     }
@@ -249,14 +251,13 @@ void InGame::update(float timePassed) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     if (m_timeCycle.getStarStrenght() > 0.0) {
-        float valModifier = 0.01; // Changes so that the rotation dose not get to fast.
+        const float valModifier = 0.01; // Changes so that the rotation dose not get to fast.
         GraphicsManager::getInstance().getSkyMap().setRotationValue(valModifier * m_timeCycle.getTime());
         GraphicsManager::getInstance().getSkyMap().draw(m_timeCycle.getStarStrenght());
     }
 
     GraphicsManager::getInstance().getChunkBatcher().draw();
     GraphicsManager::getInstance().getCubeBatcher().draw();
-
     GraphicsManager::getInstance().getSpriteBatcher().draw();
 
 }

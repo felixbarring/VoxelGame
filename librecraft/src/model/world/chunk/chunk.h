@@ -236,7 +236,6 @@ private:
 	/**
 	 * Gets the voxel at the given x, y, z location.
 	 * Will work if the voxel is in a neighbor chunk and adjacent to the chunk.
-	 *
 	 */
 	Voxel* getVoxel2(int x, int y, int z);
 

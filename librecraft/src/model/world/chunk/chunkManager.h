@@ -20,6 +20,8 @@ private:
 // Constructor/Destructor #################################
 // ########################################################
 
+    ChunkManager();
+
 // ########################################################
 // Member Functions########################################
 // ########################################################
@@ -100,12 +102,12 @@ private:
 
     void moveChunks(Direction direction);
 
-    static constexpr int m_lenghtAcrossMatrix = config::chunk_data::NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * 2 + 1;
+    int m_lenghtAcrossMatrix{config::chunk_data::NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * 2 + 1};
 
-    std::shared_ptr<Chunk> m_chunks
-        [m_lenghtAcrossMatrix]
-        [config::chunk_data::NUMBER_OF_CHUNKS_Y]
-        [m_lenghtAcrossMatrix];
+    std::vector<std::vector<std::vector<std::shared_ptr<Chunk>>>> m_chunks;
+//        [m_lenghtAcrossMatrix]
+//        [config::chunk_data::NUMBER_OF_CHUNKS_Y]
+//        [m_lenghtAcrossMatrix];
 
     int m_xOffset{0};
     int m_zOffset{0};

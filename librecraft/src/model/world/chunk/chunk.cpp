@@ -17,9 +17,9 @@ using namespace terrainGen;
 
 namespace chunk {
 
-static int counter = 1;
-static const int maxCount = LAST_CUBE_USED_FOR_BUILDING_;
-static std::mutex s_mutex;
+int counter = 1;
+const int maxCount = LAST_CUBE_USED_FOR_BUILDING;
+std::mutex s_mutex;
 
 // ########################################################
 // Constructor/Destructor #################################
@@ -301,10 +301,7 @@ void Chunk::generateChunk(CreationOptions& options) {
         for (int y = 0; y < m_height; ++y) {
             m_cubes[x].push_back(vector<Voxel>());
             for (int z = 0; z < m_depth; ++z) {
-                Voxel v; // TODO Create a default constructor for this...
-                v.lightValue = 0;
-                v.id = AIR;
-                m_cubes[x][y].push_back(v);
+                m_cubes[x][y].push_back(Voxel{AIR, 0});
             }
         }
     }

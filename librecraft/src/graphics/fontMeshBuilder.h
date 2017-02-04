@@ -12,6 +12,7 @@
 #include <string>
 #include <memory>
 #include <map>
+#include <vector>
 
 #include "mesh/meshElement.h"
 
@@ -81,7 +82,7 @@ private:
         int yPosition;
     };
 
-    CharData charData[config::font_data::charsInFont];
+    std::vector<CharData> charData  = std::vector<CharData>(config::font_data::charsInFont);
     const int ATLAS_WIDTH;
     const int ATLAS_HEIGHT;
 

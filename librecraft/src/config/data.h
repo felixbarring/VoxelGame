@@ -10,89 +10,59 @@
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Window/Mouse.hpp>
 
-// TODO Remove the static crap.
+// TODO Remove the extern crap.
 // TODO The settings should be read from one file and not be global vars.
 // TODO Instead a game class should be responsible to set the values in places that need them.
 
 namespace config {
 
-    static std::string dataFolder = "data/";
-    static std::string worldMetaFile = "data/meta";
+    extern std::string dataFolder;
+    extern std::string worldMetaFile;
 
     namespace chunk_data {
-        static constexpr int GRAPHICAL_CHUNK_WIDTH = 16;
-        static constexpr int GRAPHICAL_CHUNK_HEIGHT = 64;
+        extern const int GRAPHICAL_CHUNK_WIDTH;
+        extern const int GRAPHICAL_CHUNK_HEIGHT;
 
-        static constexpr int CHUNK_WIDTH_AND_DEPTH = 16;
-        static constexpr int CHUNK_HEIGHT = 128;
+        extern const int CHUNK_WIDTH_AND_DEPTH;
+        extern const int CHUNK_HEIGHT;
 
-        static constexpr const int NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER = 5;
-        static constexpr const int NUMBER_OF_CHUNKS_Y = 1;
+        extern const int NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER;
+        extern const int NUMBER_OF_CHUNKS_Y;
     }
 
     namespace cube_data {
-        static constexpr char AIR = 255;
+        extern const char AIR;
 
-        static constexpr char GRASS = 0;
-        static constexpr char DIRT = 1;
-        static constexpr char ROCK = 2;
-        static constexpr char MORE_ROCK = 3;
-        static constexpr char BRICK_WALL = 4;
-        static constexpr char SAND = 5;
+        extern const char GRASS;
+        extern const char DIRT;
+        extern const char ROCK;
+        extern const char MORE_ROCK;
+        extern const char BRICK_WALL;
+        extern const char SAND;
 
-        static constexpr char LAST_CUBE_USED_FOR_BUILDING_ = SAND; // Better name needed
+        extern const char LAST_CUBE_USED_FOR_BUILDING;
 
-        static constexpr char WATER = 6;
-        static constexpr char BED_ROCK = 7;
-        static constexpr char SELECTED = 8;
+        extern const char WATER;
+        extern const char BED_ROCK;
+        extern const char SELECTED;
 
         // Used for looping over all types, except for air.
-        static constexpr char LAST_CUBE = SELECTED;
+        extern const char LAST_CUBE;
 
-        static constexpr int SIDE_TEXTURE = 0;
-        static constexpr int TOP_TEXTURE = 1;
-        static constexpr int BOTTOM_TEXTURE = 2;
+        extern const int SIDE_TEXTURE;
+        extern const int TOP_TEXTURE;
+        extern const int BOTTOM_TEXTURE;
 
         // 0 = Side, 1 = Top, 2 = Bottom
-        static constexpr char BLOCK_TEXTURES[9][3] {
-            { 0, 1, 2 }, // Grass
-            { 2, 2, 2 }, // Dirt
-            { 3, 3, 3 }, // Rock
-            { 4, 4, 4 }, // More rock
-            { 5, 5, 5 }, // Brick wall
-            { 6, 6, 6 }, // Sand
-            { 7, 7, 7 }, // Water
-            { 8, 8, 8 }, // Bedrock
-            { 9, 9, 9 }, // Selected
-        };
+        extern const char BLOCK_TEXTURES[9][3];
 
-        static constexpr int TEXTURE_WIDTH = 32;
-        static constexpr int TEXTURE_HEIGHT = 32;
+        extern const int TEXTURE_WIDTH;
+        extern const int TEXTURE_HEIGHT;
 
-        static const std::vector<std::string> textures {
-            "../resources/cubes/grass_side.png",
-            "../resources/cubes/grass_top.png",
-            "../resources/cubes/dirt.png",
-            "../resources/cubes/rock.png",
-            "../resources/cubes/more_rock.png",
-            "../resources/cubes/brick.png",
-            "../resources/cubes/sand.png",
-
-            "../resources/cubes/water.png",
-            "../resources/cubes/bedrock.png",
-            "../resources/cubes/selected.png",
-        };
+        extern const std::vector<std::string> textures;
 
         // TODO Fix better thumbnails
-        static const std::vector<std::string> thumbnails {
-            "../resources/cubes/grass_side.png",
-            "../resources/cubes/dirt.png",
-            "../resources/cubes/rock.png",
-            "../resources/cubes/more_rock.png",
-            "../resources/cubes/brick.png",
-            "../resources/cubes/sand.png",
-        };
-
+        extern const std::vector<std::string> thumbnails;
     }
 
     namespace graphics_data {
@@ -103,40 +73,40 @@ namespace config {
 
         extern float fov; // degree to radians
 
-        static float virtualWidth{800};
-        static float virtualHeight{600};
+        extern float virtualWidth;
+        extern float virtualHeight;
 
-        static int directSunlightValue{15};
+        extern int directSunlightValue;
 
-        static glm::vec3 skyColor(0.47f, 0.76f, 0.93f);
+        extern glm::vec3 skyColor;
     }
 
     namespace input_data {
         // Keyboard #####################################################
 
-        static sf::Keyboard::Key moveForwardButton = sf::Keyboard::W;
-        static sf::Keyboard::Key moveLeftButton = sf::Keyboard::A;
-        static sf::Keyboard::Key moveRightButton = sf::Keyboard::D;
-        static sf::Keyboard::Key moveBackwardButton = sf::Keyboard::S;
+        extern sf::Keyboard::Key moveForwardButton;
+        extern sf::Keyboard::Key moveLeftButton;
+        extern sf::Keyboard::Key moveRightButton;
+        extern sf::Keyboard::Key moveBackwardButton;
 
-        static sf::Keyboard::Key jumpButton = sf::Keyboard::Space;
-        static sf::Keyboard::Key goDownButton = sf::Keyboard::LShift;
+        extern sf::Keyboard::Key jumpButton;
+        extern sf::Keyboard::Key goDownButton;
 
-        static sf::Keyboard::Key eraseTextButton = sf::Keyboard::BackSpace;
+        extern sf::Keyboard::Key eraseTextButton;
 
-        static sf::Keyboard::Key switchBuildingCube = sf::Keyboard::E;
+        extern sf::Keyboard::Key switchBuildingCube;
 
-        static sf::Keyboard::Key openTerminal = sf::Keyboard::T;
-        static sf::Keyboard::Key tab = sf::Keyboard::Tab;
-        static sf::Keyboard::Key enter = sf::Keyboard::Return;
-        static sf::Keyboard::Key up = sf::Keyboard::Up;
-        static sf::Keyboard::Key down = sf::Keyboard::Down;
+        extern sf::Keyboard::Key openTerminal;
+        extern sf::Keyboard::Key tab;
+        extern sf::Keyboard::Key enter;
+        extern sf::Keyboard::Key up;
+        extern sf::Keyboard::Key down;
 
-        static sf::Keyboard::Key escape = sf::Keyboard::Escape;
+        extern sf::Keyboard::Key escape;
 
         // Mouse ########################################################
-        static sf::Mouse::Button action1Button = sf::Mouse::Left;
-        static sf::Mouse::Button action2Button = sf::Mouse::Right;
+        extern sf::Mouse::Button action1Button;
+        extern sf::Mouse::Button action2Button;
 
         extern float mouseSensitivityX;
         extern float mouseSensitivityY;
@@ -145,66 +115,59 @@ namespace config {
 
     namespace texture_paths {
         // Remove THESE ?
-        static std::string scout = "../resources/cubes/grass_side.png";
-        static std::string scout2 = "../resources/cubes/grass_top.png";
+        extern std::string scout;
+        extern std::string scout2;
     }
 
     namespace gui_data {
-        static const std::string title = "../resources/gui/title.png";
+        extern const std::string title;
 
-        static const std::string solidBlack = "../resources/gui/solid_black.png";
-        static const std::string solidWhite = "../resources/gui/solid_white.png";
+        extern const std::string solidBlack;
+        extern const std::string solidWhite;
 
-        static const std::string transparentGuiBox = "../resources/gui/transparent_gui_box.png";
-        static const std::string guiBox = "../resources/gui/gui_box.png";
-        static const std::string button = "../resources/gui/button.png";
-        static const std::string buttonToggled = "../resources/gui/button_toggled.png";
-        static const std::string highlight = "../resources/gui/highlight.png";
+        extern const std::string transparentGuiBox;
+        extern const std::string guiBox;
+        extern const std::string button;
+        extern const std::string buttonToggled;
+        extern const std::string highlight;
 
-        static const std::string checkBox = "../resources/gui/check_box.png";
-        static const std::string checkBoxChecked = "../resources/gui/check_box_checked.png";
+        extern const std::string checkBox;
+        extern const std::string checkBoxChecked;
 
-        static const std::string radioButton = "../resources/gui/radio_button.png";
-        static const std::string radioButtonChecked = "../resources/gui/radio_button_checked.png";
+        extern const std::string radioButton;
+        extern const std::string radioButtonChecked;
 
-        static const std::string slider = "../resources/gui/slider_body.png";
-        static const std::string sliderKnob = "../resources/gui/slider_knob.png";
+        extern const std::string slider;
+        extern const std::string sliderKnob;
 
-        static const std::string crossHair = "../resources/gui/crosshair.png";
-        static const std::string mouse = "../resources/gui/mouse.png";
+        extern const std::string crossHair;
+        extern const std::string mouse;
     }
 
     namespace font_data {
-        static constexpr int charsInFont = 256;
-        static constexpr int fontAtlasWidth = 1024;
-        static constexpr int fontAtlasHeight = 1024;
+        extern const int charsInFont;
+        extern const int fontAtlasWidth;
+        extern const int fontAtlasHeight;
 
-        static std::string font = "../resources/font/font1.png";
-        static std::string fontLayout = "../resources/font/font1.txt";
+        extern std::string font;
+        extern std::string fontLayout;
     }
 
     namespace cube_map_data {
-        static std::vector<std::string> cubeMap1 {
-            "../resources/skybox/right.png",
-            "../resources/skybox/left.png",
-            "../resources/skybox/top.png",
-            "../resources/skybox/bottom.png",
-            "../resources/skybox/back.png",
-            "../resources/skybox/front.png"
-        };
+        extern std::vector<std::string> cubeMap1;
 
-        static constexpr int cubeMap1Width = 2048;
-        static constexpr int cubeMap1Height = 2048;
+        extern const int cubeMap1Width;
+        extern const int cubeMap1Height;
     }
 
     namespace souds {
-        static const std::string buttonPressed = "../resources/sound/button.wav";
-        static const std::string cubeAdded = "../resources/sound/cube_place.wav";
-        static const std::string cubeRemoved = 	"../resources/sound/cube_remove.wav";
+        extern const std::string buttonPressed;
+        extern const std::string cubeAdded;
+        extern const std::string cubeRemoved;
     }
 
     namespace music {
-        static const std::string menuMusic = "../resources/music/Continue Life.ogg";
+        extern const std::string menuMusic;
     }
 
 }
