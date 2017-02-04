@@ -16,7 +16,7 @@ namespace widget {
 // Constructor/Destructor #################################
 // ########################################################
 
-WidgetGroup::WidgetGroup(int id, int x, int y, int width, int height, function<void(int)> observer, unsigned layer,
+WidgetGroup::WidgetGroup(int id, int x, int y, int width, int height, unsigned layer,
 		bool transparentBackground)
 	: AbstractWidget(id, x, y, width, height)
 {

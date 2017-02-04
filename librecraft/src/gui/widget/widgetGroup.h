@@ -36,7 +36,7 @@ public:
 	/**
 	 * \brief Constructs a WidgetGroup.
 	 */
-	WidgetGroup(int id, int x, int y, int width, int height, std::function<void(int)> observer, unsigned layer = 0,
+	WidgetGroup(int id, int x, int y, int width, int height, unsigned layer = 0,
 			bool transparentBackground = true);
 
 	virtual ~WidgetGroup() {};

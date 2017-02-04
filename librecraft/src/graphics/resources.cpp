@@ -34,13 +34,13 @@ TextureArray& Resources::getTextureArray(const vector<string> &textures, unsigne
 }
 
 TextureCubeMap& Resources::getTextureCubeMap(string &right, string &left, string &top, string &bottom, string &back,
-        string &front, unsigned width, unsigned height) {
+        string &front) {
 
     auto it = textureCubeMaps.find(right);
 
     if (it == textureCubeMaps.end())
         textureCubeMaps.insert(make_pair(right, TextureCubeMap{right.c_str(), left.c_str(),
-                        top.c_str(), bottom.c_str(), back.c_str(), front.c_str(), width, height }));
+                        top.c_str(), bottom.c_str(), back.c_str(), front.c_str()}));
 
     return textureCubeMaps.at(right);
 }

@@ -39,17 +39,11 @@ void TextArea::draw() {
 
 }
 
-void TextArea::update(float timePassed) {
+void TextArea::update(float) {
 	// Nothing to do yet
 }
 
 void TextArea::add(string str) {
-	auto &res = Resources::getInstance();
-	FontMeshBuilder &fontMeshBuilder = res.getFontMeshBuilder(
-				config::font_data::fontLayout,
-				config::font_data::fontAtlasWidth,
-				config::font_data::fontAtlasHeight);
-
 	if (m_rows.size()) {
 		str = m_rows.back().first + str;
 		m_rows.pop_back();

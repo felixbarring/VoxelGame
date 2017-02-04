@@ -59,7 +59,8 @@ void SelectableList::addListItem(std::string item) {
 	m_buttons.push_back(std::move(button));
 }
 
-void SelectableList::deleteListItem(std::string item) {
+void SelectableList::deleteListItem(std::string) {
+    // TODO Implement
 }
 
 void SelectableList::clear() {

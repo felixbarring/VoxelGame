@@ -75,7 +75,7 @@ void ToggleButton::draw() {
         GraphicsManager::getInstance().getSpriteBatcher().addBatch(m_highlight);
 }
 
-void ToggleButton::update(float timePassed) {
+void ToggleButton::update(float) {
     shared_ptr<util::Input> input = util::Input::getInstance();
     m_pointerInsideBorders = isInsideBorders(input->mouseVirtualAdjustedX, input->mouseVirtualAdjustedY);
 

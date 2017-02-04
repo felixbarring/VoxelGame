@@ -40,10 +40,10 @@ void Performance::loggData() {
 
 void Performance::printData() {
     for_each(m_accumulatedTime.begin(), m_accumulatedTime.end(),
-            [] (tuple<sf::Clock, double> &t)
-            {
-//                std::cout << m_map.find(get<1>(t)) << "Blal " << get<0>(t).getElapsedTime() << "bla bla \n";
-            });
+        [] (tuple<sf::Clock, double>&)
+        {
+//          std::cout << m_map.find(get<1>(t)) << "Blal " << get<0>(t).getElapsedTime() << "bla bla \n";
+        });
 }
 
 } /* namespace util */

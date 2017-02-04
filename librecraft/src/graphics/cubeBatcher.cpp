@@ -15,12 +15,12 @@ namespace graphics {
 // ########################################################
 
 CubeBatcher::CubeBatcher(Camera &camera)
-    : m_texture(
-            graphics::Resources::getInstance().getTextureArray(
-                    config::cube_data::textures,
-                    config::cube_data::TEXTURE_WIDTH,
-                    config::cube_data::TEXTURE_HEIGHT)),
-      m_camera(camera)
+    : m_camera(camera),
+      m_texture(
+        graphics::Resources::getInstance().getTextureArray(
+            config::cube_data::textures,
+            config::cube_data::TEXTURE_WIDTH,
+            config::cube_data::TEXTURE_HEIGHT))
 {
 
     for (int i = 0; i <= config::cube_data::LAST_CUBE + 1; i++) {

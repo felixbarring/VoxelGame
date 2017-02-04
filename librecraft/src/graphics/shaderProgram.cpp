@@ -66,8 +66,6 @@ ShaderProgram::ShaderProgram(const char *vertexSource, const char *fragmentSourc
     // For all uniforms, get a location and add the name and the location to the map.
     GLint numberOfUniforms;
     glGetProgramiv(programID, GL_ACTIVE_UNIFORMS, &numberOfUniforms);
-    GLsizei length;
-    GLint size;
     GLenum type;
     std::vector<GLchar> nameData(256);
     for (int i = 0; i < numberOfUniforms; ++i) {

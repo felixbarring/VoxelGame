@@ -17,10 +17,10 @@ static void checkStuff() {
 
     std::cout << "Number of Array Texture Layers that are supported " << maxLayers << "\n";
 
-    const GLubyte *renderer = glGetString(GL_RENDERER);
-    const GLubyte *vendor = glGetString(GL_VENDOR);
-    const GLubyte *version = glGetString(GL_VERSION);
-    const GLubyte *glslVersion = glGetString(GL_SHADING_LANGUAGE_VERSION);
+//    const GLubyte *renderer = glGetString(GL_RENDERER);
+//    const GLubyte *vendor = glGetString(GL_VENDOR);
+//    const GLubyte *version = glGetString(GL_VERSION);
+//    const GLubyte *glslVersion = glGetString(GL_SHADING_LANGUAGE_VERSION);
 
 //	std::cout << "-------------------------\n";
 //	std::cout << "Graphics Card Info \n";

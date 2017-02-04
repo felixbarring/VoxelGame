@@ -47,7 +47,7 @@ void Mouse::update() {
     m_input->mouseVirtualAdjustedX = mouse.x;
     m_input->mouseVirtualAdjustedY = mouse.y;
 
-    m_sprite->setLocation(mouse.x + m_width / 2, mouse.y - m_height / 2, 0);
+    m_sprite->setLocation(mouse.x + m_width / 2, mouse.y - m_height / 2);
 }
 
 void Mouse::draw() {

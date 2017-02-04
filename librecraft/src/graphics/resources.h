@@ -43,7 +43,7 @@ public:
 
     texture::TextureCubeMap& getTextureCubeMap(std::string &right,
             std::string &left, std::string &top, std::string &bottom,
-            std::string &back, std::string &front, unsigned width, unsigned height);
+            std::string &back, std::string &front);
 
 //    texture::TextureCubeMap& getTextureCubeMap(int value);
 

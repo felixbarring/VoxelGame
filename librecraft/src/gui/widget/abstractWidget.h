@@ -69,7 +69,7 @@ public:
 
 	void update(float timePassed) override;
 
-	void setLocation(float x, float y, float z) override;
+	void setLocation(float x, float y) override;
 
 	void setActive() override;
 

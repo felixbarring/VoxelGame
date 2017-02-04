@@ -72,8 +72,6 @@ FontMeshBuilder::FontMeshBuilder(std::string &pathToLayout, int atlasWidth,	int 
 
 std::shared_ptr<mesh::MeshElement> FontMeshBuilder::buldMeshForString(const std::string &str, float height) {
 
-    const int NUMBER_OF_CHARS = str.length();
-
     std::vector<float> vertices;
     std::vector<float> uvCoordinates;
     std::vector<short> elements;

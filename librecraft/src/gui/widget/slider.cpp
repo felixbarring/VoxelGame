@@ -21,15 +21,16 @@ namespace widget {
 // ########################################################
 
 Slider::Slider(int id, int x, int y, int width, int height,	std::function<void(int)> observer, int layer)
-		: AbstractWidget(id, x, y, width, height) {
+    : AbstractWidget(id, x, y, width, height)
+{
 
 	this->m_observer = observer;
 	m_knobPosition = x;
 	m_knobWidth = height;
 
-	m_slider.reset(new Sprite(x, y, 1, width, height, Resources::getInstance().getTexture(
+	m_slider.reset(new Sprite(x, y, layer, width, height, Resources::getInstance().getTexture(
 							config::gui_data::slider)));
-	m_knob.reset(new Sprite(x, y, 2, height, height, Resources::getInstance().getTexture(
+	m_knob.reset(new Sprite(x, y, layer + 1, height, height, Resources::getInstance().getTexture(
 							config::gui_data::sliderKnob)));
 
 }
@@ -47,7 +48,7 @@ void Slider::draw() {
     GraphicsManager::getInstance().getSpriteBatcher().addBatch(m_knob);
 }
 
-void Slider::update(float timePassed) {
+void Slider::update(float) {
 	shared_ptr<Input> input = Input::getInstance();
 	m_pointerInsideBorders = isInsideBorders(input->mouseVirtualAdjustedX,
 			input->mouseVirtualAdjustedY);
@@ -63,7 +64,7 @@ void Slider::update(float timePassed) {
 		if (m_knobPosition > this->m_xCoordinate + this->m_width - m_knobWidth)
 			m_knobPosition = this->m_xCoordinate + this->m_width - m_knobWidth;
 
-		m_knob->setLocation(m_knobPosition, this->m_yCoordinate, 0);
+		m_knob->setLocation(m_knobPosition, this->m_yCoordinate);
 
 		m_observer.operator ()(m_id);
 	}

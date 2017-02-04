@@ -125,7 +125,7 @@ public:
 	    shared_ptr<IWidget> button8(new Button{3, 325, 230, 150, 30, observer, "List"});
 	    shared_ptr<IWidget> toggleButton(new ToggleButton{666, 325, 190, 150, 30, observer, "Toggle"});
 
-	    mainWidgetGroup.reset(new WidgetGroup{0, 0, 0, 800, 600, observer});
+	    mainWidgetGroup.reset(new WidgetGroup{0, 0, 0, 800, 600});
 
 	    mainWidgetGroup->addWidget(button1);
 	    mainWidgetGroup->addWidget(button2);
@@ -140,7 +140,7 @@ public:
 	    shared_ptr<IWidget> button5(new Button{666, 325, 310, 150, 30, observer, "Load World"});
 	    shared_ptr<IWidget> button6(new Button{5, 325, 270, 150, 30, observer, "Back"});
 
-	    playWidgetGroup.reset(new WidgetGroup{0, 0, 0, 800, 600, observer});
+	    playWidgetGroup.reset(new WidgetGroup{0, 0, 0, 800, 600});
 
 	    playWidgetGroup->addWidget(label1);
 	    playWidgetGroup->addWidget(button4);
@@ -154,7 +154,7 @@ public:
 	    slider.reset(new Slider{666, 325, 310, 150, 30, observer});
 	    shared_ptr<IWidget> button7(new Button{6, 325, 270, 150, 30, observer, "Back"});
 
-	    settingsWidgetGroup.reset(new WidgetGroup{0, 0, 0, 800, 600, observer});
+	    settingsWidgetGroup.reset(new WidgetGroup{0, 0, 0, 800, 600});
 
 	    settingsWidgetGroup->addWidget(label2);
 	    settingsWidgetGroup->addWidget(slider);
@@ -177,7 +177,7 @@ public:
 
 	    shared_ptr<IWidget> button9(new Button{6, 325, 0, 150, 30, observer, "Back"});
 
-	    listWidgetGroup.reset(new WidgetGroup{0, 0, 0, 800, 600, observer});
+	    listWidgetGroup.reset(new WidgetGroup{0, 0, 0, 800, 600});
 	    listWidgetGroup->addWidget(derp);
 	    listWidgetGroup->addWidget(button9);
 

@@ -22,7 +22,7 @@ static GLuint targets[] = {
 
 TextureCubeMap::TextureCubeMap(const char* right, const char* left,
     const char* top, const char* bottom, const char* back,
-    const char* front, unsigned width, unsigned height) {
+    const char* front) {
 
     glGenTextures(1, &textureID);
     glActiveTexture(GL_TEXTURE0);

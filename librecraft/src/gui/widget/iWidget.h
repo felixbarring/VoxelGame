@@ -57,7 +57,7 @@ public:
 	 * \param[in] y The new vertical location
 	 * \param[in] z The 'layer', place holder for now
 	 */
-	virtual void setLocation(float x, float y, float z) = 0;
+	virtual void setLocation(float x, float y) = 0;
 
 	/**
 	 * Sets the Widget to an active state.

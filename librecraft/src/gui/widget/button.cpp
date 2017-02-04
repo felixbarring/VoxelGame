@@ -62,7 +62,7 @@ void Button::draw() {
 	}
 }
 
-void Button::update(float timePassed) {
+void Button::update(float) {
 	shared_ptr<Input> input{Input::getInstance()};
 
 	m_pointerInsideBorders = isInsideBorders(input->mouseVirtualAdjustedX, input->mouseVirtualAdjustedY);

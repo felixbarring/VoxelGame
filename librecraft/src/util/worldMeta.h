@@ -46,10 +46,11 @@ bool worldNameExists(std::string name) {
     return false;
 }
 
-void deleteName(std::string name) {
+void deleteName(const std::string& name) {
     std::vector<std::string> files;
 
-    std::remove("");
+    // TODO
+    std::remove(name.c_str());
 }
 
 std::vector<std::string> getAllWorldNames() {

@@ -18,9 +18,7 @@ GraphicsManager::GraphicsManager()
             config::cube_map_data::cubeMap1[2],
             config::cube_map_data::cubeMap1[3],
             config::cube_map_data::cubeMap1[4],
-            config::cube_map_data::cubeMap1[5],
-            config::cube_map_data::cubeMap1Width,
-            config::cube_map_data::cubeMap1Height);
+            config::cube_map_data::cubeMap1[5]);
 
     m_skyBox = make_unique<CubeMap>(texture, m_playerCamera); // TODO should be some other camera...
 }

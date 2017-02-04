@@ -66,7 +66,7 @@ void Sprite::move(float x, float y) {
     m_transform.translate(x, y, 0);
 }
 
-void Sprite::setLocation(float x, float y, float z) {
+void Sprite::setLocation(float x, float y) {
     m_transform.setLocation(x + m_width / 2, y + m_height / 2, 0);
 }
 

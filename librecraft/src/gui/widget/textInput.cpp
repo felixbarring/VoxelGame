@@ -26,9 +26,9 @@ namespace widget {
 
 TextInput::TextInput(int id, int x, int y, unsigned width, int height, int layer)
 	: AbstractWidget(id, x, y, width, height),
+	  m_layer{layer},
 	  m_maxInputLength{width},
-	  m_textHeight{height - s_textHightDifference},
-	  m_layer{layer}
+	  m_textHeight{height - s_textHightDifference}
 {
 
 	auto &res = Resources::getInstance();
@@ -59,7 +59,7 @@ void TextInput::setString(string str) {
 			res.getTexture(font));
 
 	auto strLength = fontMeshBuilder.lenghtOfString(m_input, m_textHeight);
-	m_cursor->setLocation(m_xCoordinate + strLength, m_yCoordinate + s_cursorSpacing, 0);
+	m_cursor->setLocation(m_xCoordinate + strLength, m_yCoordinate + s_cursorSpacing);
 }
 
 string TextInput::getString() {
@@ -105,7 +105,7 @@ void TextInput::update(float timePassed) {
 		m_text = make_shared<Sprite>(m_xCoordinate, m_yCoordinate + s_textHightDifference, m_layer + 1, move(fontMesh),
 				res.getTexture(font));
 
-		m_cursor->setLocation(m_xCoordinate + strLength, m_yCoordinate + s_cursorSpacing, 0);
+		m_cursor->setLocation(m_xCoordinate + strLength, m_yCoordinate + s_cursorSpacing);
 
 	} else {
 		if (m_hasFocus && Input::getInstance()->eraseTextActive && m_input.size() > 0) {
@@ -123,7 +123,7 @@ void TextInput::update(float timePassed) {
 							res.getTexture(font));
 
 			auto strLenght = fontMeshBuilder.lenghtOfString(m_input, m_textHeight);
-			m_cursor->setLocation(m_xCoordinate + strLenght, m_yCoordinate + s_cursorSpacing, 0);
+			m_cursor->setLocation(m_xCoordinate + strLenght, m_yCoordinate + s_cursorSpacing);
 		}
 	}
 

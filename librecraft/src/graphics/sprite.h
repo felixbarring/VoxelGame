@@ -33,7 +33,7 @@ public:
 
     void move(float x, float y);
 
-    void setLocation(float x, float y, float z);
+    void setLocation(float x, float y);
 
     int getLayer();
 
@@ -42,13 +42,12 @@ public:
 // ########################################################
 
 private:
-
+    Transform m_transform;
     double m_width{};
     double m_height{};
 
     std::shared_ptr<mesh::MeshElement> m_mesh;
     texture::Texture &m_texture;
-    Transform m_transform;
     unsigned m_layer;
 
 };

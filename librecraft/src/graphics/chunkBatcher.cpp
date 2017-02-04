@@ -18,11 +18,12 @@ namespace graphics {
 // ########################################################
 
 ChunkBatcher::ChunkBatcher(Camera &camera)
-    : m_texture(Resources::getInstance().getTextureArray(
-                    config::cube_data::textures,
-                    config::cube_data::TEXTURE_WIDTH,
-                    config::cube_data::TEXTURE_HEIGHT)),
-      m_camera(camera)
+    : m_camera(camera),
+      m_texture(Resources::getInstance().getTextureArray(
+              config::cube_data::textures,
+              config::cube_data::TEXTURE_WIDTH,
+              config::cube_data::TEXTURE_HEIGHT))
+
 {
 
     const char *vertex =
@@ -215,7 +216,7 @@ void ChunkBatcher::draw() {
     glClearColor(skyColor.x, skyColor.y, skyColor.z, 1.0f);
     m_program->setUniform3f("fogColor", skyColor.x, skyColor.y, skyColor.z);
 
-    int skippedChunks = 0;
+//    int skippedChunks = 0;
 
     for (auto batch : m_batches) {
         mat4 modelView = m_camera.getViewMatrix() * batch.second->getTransform().getMatrix();

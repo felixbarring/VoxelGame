@@ -37,8 +37,6 @@ MainMenu::MainMenu(Game *game)
 
     m_title = make_unique<gui::Image>(200, 450, 400, 100, config::gui_data::title);
 
-    bool quit = false;
-
     // ########################################################################
 
     {
@@ -56,7 +54,7 @@ MainMenu::MainMenu(Game *game)
         auto button2 = make_shared<Button>(1, 325, 310, 150, 30, observer, "Settings");
         auto button3 = make_shared<Button>(2, 325, 270, 150, 30, observer, "Quit");
 
-        m_mainWidgetGroup = make_shared<WidgetGroup>(-1, 300, 260, 200, 130, observer);
+        m_mainWidgetGroup = make_shared<WidgetGroup>(-1, 300, 260, 200, 130);
 
         m_mainWidgetGroup->addWidget({label, button1, button2, button3});
     }
@@ -78,7 +76,7 @@ MainMenu::MainMenu(Game *game)
         auto button2 = make_shared<Button>(1, 325, 310, 150, 30, observer, "Load World");
         auto button3 = make_shared<Button>(2, 325, 270, 150, 30, observer, "Back");
 
-        m_playWidgetGroup = make_shared<WidgetGroup>(-1, 300, 260, 200, 130, observer);
+        m_playWidgetGroup = make_shared<WidgetGroup>(-1, 300, 260, 200, 130);
 
         m_playWidgetGroup->addWidget({label, button1, button2, button3});
     }
@@ -102,7 +100,7 @@ MainMenu::MainMenu(Game *game)
         auto button3 = make_shared<Button>(2, 325, 270, 150, 30, observer, "Graphics");
         auto button4 = make_shared<Button>(3, 325, 230, 150, 30, observer, "Back");
 
-        m_settingsWidgetGroup = make_shared<WidgetGroup>(0, 300, 220, 200, 170, observer);
+        m_settingsWidgetGroup = make_shared<WidgetGroup>(0, 300, 220, 200, 170);
 
         m_settingsWidgetGroup->addWidget({label, button1, button2, button3, button4});
     }
@@ -120,7 +118,7 @@ MainMenu::MainMenu(Game *game)
         auto label = make_shared<Label>(325, 390, 150, 30, " - Game - ");
         auto button = make_shared<Button>(0, 325, 230, 150, 30, observer, "Back");
 
-        m_gameSettingsWidgetGroup = make_shared<WidgetGroup>(0, 300, 220, 200, 170, observer);
+        m_gameSettingsWidgetGroup = make_shared<WidgetGroup>(0, 300, 220, 200, 170);
 
         m_gameSettingsWidgetGroup->addWidget(label);
         m_gameSettingsWidgetGroup->addWidget(button);
@@ -152,7 +150,7 @@ MainMenu::MainMenu(Game *game)
         auto button1 = make_shared<Button>(0, 245, 130, 150, 30, observer, "Save", 1);
         auto button2 = make_shared<Button>(0, 400, 130, 150, 30, observer, "Cancel", 1);
 
-        m_inputSettingsWidgetGroup = make_shared<WidgetGroup>(0, 100, 100, 600, 250, observer);
+        m_inputSettingsWidgetGroup = make_shared<WidgetGroup>(0, 100, 100, 600, 250);
 
         m_inputSettingsWidgetGroup-> addWidget({label, m_mouseSensitivityInput, m_mouseSensitivitySlider, button1,
             button2});
@@ -191,7 +189,7 @@ MainMenu::MainMenu(Game *game)
         auto button1 = make_shared<Button>(0, 245, 130, 150, 30, observer, "Save", 1);
         auto button2 = make_shared<Button>(1, 400, 130, 150, 30, observer, "Cancel", 1);
 
-        m_graphicsSettingsWidgetGroup = make_shared<WidgetGroup>(0, 100, 100, 600, 250, observer);
+        m_graphicsSettingsWidgetGroup = make_shared<WidgetGroup>(0, 100, 100, 600, 250);
 
         m_graphicsSettingsWidgetGroup->addWidget({label1, label2, m_slider, m_textInput, label3, m_slider2,
             m_textInput2, button1, button2});
@@ -242,7 +240,7 @@ MainMenu::MainMenu(Game *game)
         auto button3 = make_shared<Button>(2, 460, 135, 100, 30, observer, "Cancel", 1);
         auto button4 = make_shared<Button>(3, 250, 250, 300, 30, observer, "Random Name", 1);
 
-        m_newWorldWidgetGroup = make_shared<WidgetGroup>(0, 200, 120, 400, 270, observer);
+        m_newWorldWidgetGroup = make_shared<WidgetGroup>(0, 200, 120, 400, 270);
 
         m_newWorldWidgetGroup->addWidget({label1, label2, m_textInput3, button1, button2, button3, button4});
     }
@@ -299,7 +297,7 @@ MainMenu::MainMenu(Game *game)
         auto button5 = make_shared<Button>(4, 350, 135, 100, 30, observer, "Reset", 1);
         auto button6 = make_shared<Button>(5, 460, 135, 100, 30, observer, "Back", 1);
 
-        m_newWorldWidgetGroupAdvanced = make_shared<WidgetGroup>(0, 200, 120, 400, 270, observer);
+        m_newWorldWidgetGroupAdvanced = make_shared<WidgetGroup>(0, 200, 120, 400, 270);
 
         m_newWorldWidgetGroupAdvanced->addWidget({label1, button1, button2, button3, button4, button5, button6});
     }
@@ -336,7 +334,7 @@ MainMenu::MainMenu(Game *game)
         auto button3 = make_shared<Button>(2, 405, 60, 80, 30, observer, "Load", 1);
         auto button4 = make_shared<Button>(3, 495, 60, 80, 30, observer, "Cancel", 1);
 
-        m_loadWorldWidgetGroup = make_shared<WidgetGroup>(0, 200, 50, 400, 400, observer);
+        m_loadWorldWidgetGroup = make_shared<WidgetGroup>(0, 200, 50, 400, 400);
 
         m_worldList = make_shared<SelectableList>(666, 220, 100, 360, 300, observer, 2);
 
@@ -360,7 +358,7 @@ MainMenu::MainMenu(Game *game)
         auto label = make_shared<Label>(210, 260, 150, 25, "Error: Name can not be empty", 4);
         auto button = make_shared<Button>(1, 510, 260, 80, 30, observer, "OK", 4);
 
-        m_errorEmptyName = make_shared<WidgetGroup>(0, 200, 250, 400, 45, observer, 3);
+        m_errorEmptyName = make_shared<WidgetGroup>(0, 200, 250, 400, 45, 3);
 
         m_errorEmptyName->addWidget({label, button});
     }
@@ -379,7 +377,7 @@ MainMenu::MainMenu(Game *game)
         auto label = make_shared<Label>(210, 260, 150, 25, "Error: Name is already used", 4);
         auto button = make_shared<Button>(1, 510, 260, 80, 30, observer, "OK", 4);
 
-        m_errorUsedName = make_shared<WidgetGroup>(0, 200, 250, 400, 45, observer, 3);
+        m_errorUsedName = make_shared<WidgetGroup>(0, 200, 250, 400, 45, 3);
 
         m_errorUsedName->addWidget({label, button});
     }

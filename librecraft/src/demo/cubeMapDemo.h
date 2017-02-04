@@ -72,15 +72,13 @@ public:
 	    Camera camera{0,0,0};
 
 	    texture::TextureCubeMap &texture =
-	            graphics::Resources::getInstance().getTextureCubeMap(
-	                    config::cube_map_data::cubeMap1[0],
-	                    config::cube_map_data::cubeMap1[1],
-	                    config::cube_map_data::cubeMap1[2],
-	                    config::cube_map_data::cubeMap1[3],
-	                    config::cube_map_data::cubeMap1[4],
-	                    config::cube_map_data::cubeMap1[5],
-	                    config::cube_map_data::cubeMap1Width,
-	                    config::cube_map_data::cubeMap1Height);
+            graphics::Resources::getInstance().getTextureCubeMap(
+                config::cube_map_data::cubeMap1[0],
+                config::cube_map_data::cubeMap1[1],
+                config::cube_map_data::cubeMap1[2],
+                config::cube_map_data::cubeMap1[3],
+                config::cube_map_data::cubeMap1[4],
+                config::cube_map_data::cubeMap1[5]);
 
 	    graphics::CubeMap skybox{texture, camera};
 
