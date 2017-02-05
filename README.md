@@ -4,6 +4,8 @@
 A project about creating a voxel based game.
 The game currently uses the working title "Librecraft".
 
+![alt tag](doc/images/house.png)
+
 ## Building
 
 Cmake and SFML needs to be installed.
