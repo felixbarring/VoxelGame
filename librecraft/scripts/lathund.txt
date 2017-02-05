@@ -1,3 +1,16 @@
 
-#export CC=/usr/bin/clang
-#export CXX=/usr/bin/clang++
+export CC=/usr/bin/clang
+export CXX=/usr/bin/clang++
+
+export CC=/usr/bin/gcc
+export CXX=/usr/bin/g++
+
+lizard
+cppcheck --enable=all src/
+
+######
+
+valgrind
+callgrind
+gcov
+gprof
