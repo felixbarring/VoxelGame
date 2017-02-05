@@ -45,5 +45,9 @@ void Camera::updateView(glm::vec3 position, glm::vec3 direction, glm::vec3 up) {
     view = glm::lookAt(position, position + direction, up);
 }
 
+void Camera::setFov(float value) {
+    projection = glm::perspective(value, aspectRatio, close, far);
+}
+
 }
 

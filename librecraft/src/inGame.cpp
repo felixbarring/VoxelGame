@@ -81,8 +81,9 @@ InGame::InGame(Game *game)
     string stopTime = "stopTime";
     string resumeTime = "resumeTime";
     string printDebugInfo = "printDebugInfo";
+    string setFOV = "setFOV";
     vector<string> commands{close, flyMode, gravityMode, turnOfMusic, setMouseSensitivity, loadChunks, setTime,
-                            stopTime, resumeTime, printDebugInfo};
+        stopTime, resumeTime, printDebugInfo, setFOV};
 
     // The first string in the vector should be the command, followed by arguments.
     auto func = [=](vector<string> arguments)
@@ -148,10 +149,18 @@ InGame::InGame(Game *game)
             m_timeCycle.resumeCycle();
         } else if (command == printDebugInfo) {
             m_displayDebugInfo = !arguments.empty();
+        } else if (command == setFOV)  {
+            float fov;
+            try {
+                fov = stod(arguments[1].c_str());
+            } catch (invalid_argument &e) {
+                m_terminal->addLine("Invalid arguments!");
+                return;
+            }
+            GraphicsManager::getInstance().getPlayerCamer().setFov(fov * (3.14 / 180));
         } else {
             m_terminal->addLine("Unknown command: " + command);
         }
-
     };
 
     m_terminal = make_shared<gui::Terminal>(move(commands), func);
