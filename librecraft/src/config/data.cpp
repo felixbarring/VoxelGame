@@ -89,7 +89,7 @@ namespace config
         int windowWidth = 1500;
         int windowHeight = 800;
 
-        float fov = 80 * (3.14 / 180); // degree to radians
+        float fov = 80; // degrees
 
         float virtualWidth{800};
         float virtualHeight{600};

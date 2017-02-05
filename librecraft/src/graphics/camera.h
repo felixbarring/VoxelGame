@@ -78,6 +78,11 @@ public:
     void updateView(glm::vec3 position, glm::vec3 direction, glm::vec3 up);
 
 
+    /**
+     * \brief Sets the projection matrix to use the fov specified
+     *
+     * @param value The fov that should be used. The value shall be in degrees.
+     */
     void setFov(float value);
 
 // ########################################################
@@ -96,7 +101,7 @@ private:
     const float close{0.1f};
     const float far{1000.0f};
 
-    glm::mat4 projection = glm::perspective(config::graphics_data::fov,	aspectRatio, close, far);
+    glm::mat4 projection;
     glm::mat4 view;
 };
 

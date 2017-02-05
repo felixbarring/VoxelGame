@@ -157,7 +157,7 @@ InGame::InGame(Game *game)
                 m_terminal->addLine("Invalid arguments!");
                 return;
             }
-            GraphicsManager::getInstance().getPlayerCamer().setFov(fov * (3.14 / 180));
+            GraphicsManager::getInstance().getPlayerCamer().setFov(fov);
         } else {
             m_terminal->addLine("Unknown command: " + command);
         }

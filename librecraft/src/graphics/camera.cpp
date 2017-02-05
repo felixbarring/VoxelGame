@@ -9,6 +9,7 @@ namespace graphics {
 Camera::Camera()
     : position{0.0, 0.0, 0.0}
 {
+    setFov(config::graphics_data::fov);
 }
 
 Camera::Camera(float xPosition, float yPosition, float zPosition)
@@ -46,7 +47,9 @@ void Camera::updateView(glm::vec3 position, glm::vec3 direction, glm::vec3 up) {
 }
 
 void Camera::setFov(float value) {
-    projection = glm::perspective(value, aspectRatio, close, far);
+    static const float degreeToRadian{(3.14 / 180)};
+    float fov = value * degreeToRadian;
+    projection = glm::perspective(fov, aspectRatio, close, far);
 }
 
 }
