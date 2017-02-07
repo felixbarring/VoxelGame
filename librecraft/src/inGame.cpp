@@ -64,12 +64,12 @@ InGame::InGame(Game *game)
     m_crossHair.reset(new Sprite(390, 290, 0, 20, 20, Resources::getInstance().getTexture(
             config::gui_data::crossHair)));
 
-    // TODO FIX
     for (int i = 0; i <= config::cube_data::LAST_CUBE_USED_FOR_BUILDING; ++i) {
-//    for (int i = 0; i <= 3; ++i) {
         m_selectedCubeThumbnails.push_back(make_shared<Sprite>(
                 380, 5, 2, 40, 40, Resources::getInstance().getTexture(config::cube_data::thumbnails[i])));
     }
+
+    // TODO This whole console system should be reworked.
 
     string close = "close";
     string flyMode = "flyMode";
@@ -82,8 +82,12 @@ InGame::InGame(Game *game)
     string resumeTime = "resumeTime";
     string printDebugInfo = "printDebugInfo";
     string setFOV = "setFOV";
+    string setTimeSpeed = "setTimeSpeed";
+
     vector<string> commands{close, flyMode, gravityMode, turnOfMusic, setMouseSensitivity, loadChunks, setTime,
-        stopTime, resumeTime, printDebugInfo, setFOV};
+        stopTime, resumeTime, printDebugInfo, setFOV, setTimeSpeed};
+
+    // TODO Does not handle all errors... fix this!
 
     // The first string in the vector should be the command, followed by arguments.
     auto func = [=](vector<string> arguments)
@@ -104,7 +108,7 @@ InGame::InGame(Game *game)
             util::SoundPlayer::getInstance().stopMusic();
         } else if (command == setMouseSensitivity) {
             if (!(arguments.size() >= 3)) {
-                m_terminal->addLine("To few arguments");
+                m_terminal->addLine("Too few arguments");
                 return;
             }
 
@@ -121,7 +125,7 @@ InGame::InGame(Game *game)
 
         } else if (command == loadChunks) {
             if (!(arguments.size() >= 2)) {
-                m_terminal->addLine("To few arguments");
+                m_terminal->addLine("Too few arguments");
                 return;
             }
             if (arguments[1] == "0")
@@ -130,7 +134,7 @@ InGame::InGame(Game *game)
                 ChunkManager::getInstance().loadWorldWhenDecentered();
         } else if (command == setTime) {
             if (arguments.size() < 1) {
-                m_terminal->addLine("To few arguments");
+                m_terminal->addLine("Too few arguments");
                 return;
             }
 
@@ -150,14 +154,32 @@ InGame::InGame(Game *game)
         } else if (command == printDebugInfo) {
             m_displayDebugInfo = !arguments.empty();
         } else if (command == setFOV)  {
+            if (arguments.size() < 2) {
+                m_terminal->addLine("Too few arguments!");
+                return;
+            }
             float fov;
             try {
                 fov = stod(arguments[1].c_str());
-            } catch (invalid_argument &e) {
+            } catch (exception &e) {
                 m_terminal->addLine("Invalid arguments!");
                 return;
             }
             GraphicsManager::getInstance().getPlayerCamer().setFov(fov);
+        } else if (command == setTimeSpeed) {
+            if (arguments.size() < 2) {
+                m_terminal->addLine("Too few arguments!");
+                return;
+            }
+            double time;
+            try {
+                time = stod(arguments[1].c_str());
+            } catch (invalid_argument &e) {
+                m_terminal->addLine("Invalid arguments!");
+                return;
+            }
+            m_timeCycle.setTimeSpeed(time);
+
         } else {
             m_terminal->addLine("Unknown command: " + command);
         }

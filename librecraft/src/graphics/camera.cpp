@@ -48,8 +48,7 @@ void Camera::updateView(glm::vec3 position, glm::vec3 direction, glm::vec3 up) {
 
 void Camera::setFov(float value) {
     static const float degreeToRadian{(3.14 / 180)};
-    float fov = value * degreeToRadian;
-    projection = glm::perspective(fov, aspectRatio, close, far);
+    projection = glm::perspective(value * degreeToRadian, aspectRatio, close, far);
 }
 
 }

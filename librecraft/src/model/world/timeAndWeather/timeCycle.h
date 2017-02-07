@@ -83,7 +83,7 @@ private:
     std::pair<double, double> m_starIncrease{360, 400};
     std::pair<double, double> m_starDecrease{580, 600};
 
-    double m_timeSpeed{10.0};
+    double m_timeSpeed{1.0};
     const double m_dayLength{600};
     const double m_lowestSunStrength{0.1};
 
