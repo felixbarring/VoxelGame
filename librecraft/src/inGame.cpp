@@ -282,7 +282,7 @@ void InGame::update(float timePassed) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     if (m_timeCycle.getStarStrenght() > 0.0) {
-        const float valModifier = 0.01; // Changes so that the rotation dose not get to fast.
+        const float valModifier = 0.015; // Changes so that the rotation dose not get to fast.
         GraphicsManager::getInstance().getSkyMap().setRotationValue(valModifier * m_timeCycle.getTime());
         GraphicsManager::getInstance().getSkyMap().draw(m_timeCycle.getStarStrenght());
     }
