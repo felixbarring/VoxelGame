@@ -4,6 +4,7 @@
 
 #include <vector>
 #include <string>
+#include <memory>
 
 namespace util {
 
@@ -16,10 +17,8 @@ class Trie {
 public:
 
     Trie() {
-        m_root = new TrieNode('-');
+        m_root = std::make_unique<TrieNode>('-', false);
     }
-
-    virtual ~Trie() {};
 
     /**
      * Adds a string that can be used to auto completed on
@@ -31,7 +30,7 @@ public:
         if (value.empty())
             return;
 
-        TrieNode *node = m_root;
+        TrieNode *node = m_root.get();
         for (unsigned i = 0; i < value.size(); ++i) {
             auto c = value[i];
             TrieNode *child = node->getChild(c);
@@ -39,9 +38,10 @@ public:
                 node = child;
                 continue;
             }
-            TrieNode *newNode = new TrieNode(c);
-            node->addChild(newNode);
-            node = newNode;
+            auto newNode = std::make_unique<TrieNode>(c, i == value.size() - 1);
+            auto *tmp = newNode.get();
+            node->addChild(std::move(newNode));
+            node = tmp;
         }
     }
 
@@ -59,7 +59,7 @@ public:
      */
     std::string getFirstWordWithSequence(const std::string &value) {
 
-        TrieNode *node = m_root;
+        TrieNode *node = m_root.get();
         for (auto c : value) {
             TrieNode *child = node->getChild(c);
             if (!child)
@@ -72,6 +72,9 @@ public:
         while (auto child = node->getSingleChild()) {
             result += child->getValue();
             node = child;
+
+            if (child->isEndChild())
+                break;
         }
 
         return result;
@@ -82,8 +85,9 @@ private:
     class TrieNode {
     public:
 
-        TrieNode(char ch)
-            : m_ch(ch)
+        TrieNode(char ch, bool isEnd)
+            : m_ch(ch),
+              m_isEnd(isEnd)
         {
         }
 
@@ -91,21 +95,21 @@ private:
             return m_ch;
         }
 
-        void addChild(TrieNode *node) {
-            m_children.push_back(node);
+        void addChild(std::unique_ptr<TrieNode> node) {
+            m_children.push_back(std::move(node));
         }
 
         TrieNode* getChild(char c) {
-            for (auto child : m_children) {
+            for (auto &child : m_children) {
                 if (child->m_ch == c)
-                    return child;
+                    return child.get();
             }
             return nullptr;
         }
 
         TrieNode* getSingleChild() {
             if (m_children.size() == 1)
-                return m_children[0];
+                return m_children[0].get();
 
             return nullptr;
         }
@@ -114,13 +118,18 @@ private:
             return m_children.size();
         }
 
+        bool isEndChild() {
+            return m_isEnd;
+        }
+
     private:
 
         const char m_ch{};
-        std::vector<TrieNode*> m_children{};
+        const bool m_isEnd{};
+        std::vector<std::unique_ptr<TrieNode>> m_children{};
     };
 
-    TrieNode *m_root;
+    std::unique_ptr<TrieNode> m_root;
 };
 
 } /* namespace util */
