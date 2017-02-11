@@ -8,6 +8,7 @@
 #include "cubeMapDemo.h"
 #include "fontDemo.h"
 #include "guiDemo.h"
+#include "shadowMapDemo.h"
 #include "spriteDemo.h"
 #include "textureDemo.h"
 
@@ -42,6 +43,10 @@ int main(int argc, char *argv[]) {
         else if (str == "fontDemo") {
             demo::FontDemo fontDemo;
             fontDemo.runDemo();
+        }
+        else if (str == "shadowMapDemo") {
+            demo::ShadowMapDemo shadowDemo;
+            shadowDemo.runDemo();
         }
 
     } catch (std::exception &e) {
