@@ -29,10 +29,6 @@ public:
 
     CubeBatcher(Camera &camera);
 
-    CubeBatcher(CubeBatcher const&) = delete;
-
-    void operator=(CubeBatcher const&) = delete;
-
 // ########################################################
 // Member Functions########################################
 // ########################################################
@@ -87,7 +83,8 @@ private:
 
     float m_sunStrength{1.0};
 
-    std::shared_ptr<ShaderProgram> m_program;
+    // TODO Should be unique...
+    std::unique_ptr<ShaderProgram> m_program;
     texture::TextureArray &m_texture;
 
 };

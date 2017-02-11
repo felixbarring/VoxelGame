@@ -10,6 +10,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 using graphics::Camera;
+using namespace graphics;
 
 #include "../graphics/camera.h"
 namespace demo {
@@ -52,6 +53,12 @@ public:
         glEnable(GL_DEPTH_TEST);
         glDepthFunc(GL_LESS);
 
+
+
+
+
+
+
         float aspectRatio = WIDTH / HEIGHT;
         glm::mat4 projection = glm::perspective(80.0f, aspectRatio, 0.1f, 100.0f);
 
@@ -60,8 +67,6 @@ public:
             glm::vec3(0, 0, 0),   // Look at
             glm::vec3(0, 0, 1)    // Head is up
         );
-
-        float xAmount = 0;
 
         Camera sceneCamera{};
         sceneCamera.setViewMatrix(std::move(cameraMatrix));
@@ -72,12 +77,13 @@ public:
         // TODO Use :p
         Camera lightCamera{};
 
+        int someCubeType{1}; // Todo replace with constant
+        TexturedCube cube1{0.0, 0.0, 0.0, someCubeType};
+
         while (window.isOpen()) {
            fpsManager.frameStart();
 
            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-//           batcher.draw();
 
            fpsManager.sync();
            window.display();
