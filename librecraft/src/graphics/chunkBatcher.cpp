@@ -78,9 +78,7 @@ ChunkBatcher::ChunkBatcher(Camera &camera)
         "} \n "
 
         "void main(){ \n"
-        "  vec3 diffuse = calculateDiffuse() / 2; \n"
-        "  vec3 kek = vec3(lightValue, lightValue, lightValue); \n"
-        "  vec3 lightSum = kek + diffuse; \n"
+        "  vec3 lightSum = vec3(lightValue, lightValue, lightValue) + (calculateDiffuse() / 2); \n"
         "  color = vec4(lightSum, 1.0f) * texture(texture1, texCoord); \n"
         "} \n";
 
@@ -132,59 +130,7 @@ void ChunkBatcher::draw() {
     // Done on the main thread because the thread doing opengl
     // calls needs an opengl context, which the main thread does.
     lock_guard<mutex> lock(m_mutex);
-
-    // Add all the batches that has high priority
-    while (!m_batchesToAddHP.empty()) {
-        auto batchIt = m_batchesToAddHP.begin();
-        int id{get<0>(*batchIt)};
-        int replaceId{get<1>(*batchIt)};
-
-        get<2>(*batchIt)->uploadData();
-        m_batches.emplace(id, get<2>(*batchIt));
-        m_batchesToAddHP.erase(batchIt);
-
-        if (replaceId != noRemove)
-            m_batchesToBeRemoved.push_back(replaceId);
-    }
-
-    // Add one of the batches with none high priority that has been requested to be added.
-    if (!m_batchesToAdd.empty()) {
-        auto batchIt = m_batchesToAdd.begin();
-        int id{get<0>(*batchIt)};
-        int replaceId{get<1>(*batchIt)};
-
-        get<2>(*batchIt)->uploadData();
-        m_batches.emplace(id, get<2>(*batchIt));
-        m_batchesToAdd.erase(batchIt);
-
-        if (replaceId != noRemove)
-            m_batchesToBeRemoved.push_back(replaceId);
-    }
-
-    // Remove all of the batches that has been requested to be removed.
-    while (!m_batchesToBeRemoved.empty()) {
-        auto batch = m_batchesToBeRemoved.begin();
-        auto batchIt = m_batches.find(*batch);
-
-        if (batchIt != m_batches.end()) {
-            m_batches.erase(batchIt);
-            m_batchesToBeRemoved.erase(batch);
-        }
-        else {
-            // It might not have been added before it was requested to be removed.
-            bool failed{true};
-            for (auto b = m_batchesToAdd.begin(); b != m_batchesToAdd.end(); ++b) {
-                if (get<0>(*b) == *batch) {
-                    m_batchesToAdd.erase(b);
-                    m_batchesToBeRemoved.erase(batch);
-                    failed = false;
-                    break;
-                }
-            }
-            if (failed)
-                cout << "Failed to remove chunk with id: " << *batch << " \n";
-        }
-    }
+    addAndRemoveBatches();
 
     m_program->bind();
 
@@ -236,7 +182,64 @@ void ChunkBatcher::setSunStrenght(float value) {
     m_sunStrength = value;
 }
 
+void ChunkBatcher::addAndRemoveBatches() {
+    // Add all the batches that has high priority
+   while (!m_batchesToAddHP.empty()) {
+       auto batchIt = m_batchesToAddHP.begin();
+       int id{get<0>(*batchIt)};
+       int replaceId{get<1>(*batchIt)};
+
+       get<2>(*batchIt)->uploadData();
+       m_batches.emplace(id, get<2>(*batchIt));
+       m_batchesToAddHP.erase(batchIt);
+
+       if (replaceId != noRemove)
+           m_batchesToBeRemoved.push_back(replaceId);
+   }
+
+   // Add one of the batches with none high priority that has been requested to be added.
+   if (!m_batchesToAdd.empty()) {
+       auto batchIt = m_batchesToAdd.begin();
+       int id{get<0>(*batchIt)};
+       int replaceId{get<1>(*batchIt)};
+
+       get<2>(*batchIt)->uploadData();
+       m_batches.emplace(id, get<2>(*batchIt));
+       m_batchesToAdd.erase(batchIt);
+
+       if (replaceId != noRemove)
+           m_batchesToBeRemoved.push_back(replaceId);
+   }
+
+   // Remove all of the batches that has been requested to be removed.
+   while (!m_batchesToBeRemoved.empty()) {
+       auto batch = m_batchesToBeRemoved.begin();
+       auto batchIt = m_batches.find(*batch);
+
+       if (batchIt != m_batches.end()) {
+           m_batches.erase(batchIt);
+           m_batchesToBeRemoved.erase(batch);
+       }
+       else {
+           // It might not have been added before it was requested to be removed.
+           bool failed{true};
+           for (auto b = m_batchesToAdd.begin(); b != m_batchesToAdd.end(); ++b) {
+               if (get<0>(*b) == *batch) {
+                   m_batchesToAdd.erase(b);
+                   m_batchesToBeRemoved.erase(batch);
+                   failed = false;
+                   break;
+               }
+           }
+           if (failed)
+               cout << "Failed to remove chunk with id: " << *batch << " \n";
+       }
+   }
 }
+
+}
+
+// Private
 
 
 // TODO Fix this so that no chunks get culled when they are actually vissible

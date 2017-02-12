@@ -125,6 +125,8 @@ public:
 
 private:
 
+    void addAndRemoveBatches();
+
     Camera &m_camera;
 
     int m_idCounter{0};

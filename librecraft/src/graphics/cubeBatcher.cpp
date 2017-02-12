@@ -33,7 +33,7 @@ const string faceNormalOut = "faceNormal";
 const string texCoordOut = "texCoord";
 const string lightOut = "light";
 
-const string color = "color";
+const string colorOut = "color";
 
 CubeBatcher::CubeBatcher(Camera &camera)
     : m_camera(camera),
@@ -76,11 +76,11 @@ CubeBatcher::CubeBatcher(Camera &camera)
 
         "uniform sampler2DArray " + tex + "; \n"
 
-        "out vec4 color; \n"
+        "out vec4 " + colorOut + "; \n"
 
         "void main(){ \n"
-        "  " + color + " = " + lightOut + " * texture(" + tex + ", " + texCoordOut + "); \n"
-        "  " + color + ".w = 1.0; \n"
+        "  " + colorOut + " = " + lightOut + " * texture(" + tex + ", " + texCoordOut + "); \n"
+        "  " + colorOut + ".w = 1.0; \n"
         "} \n";
 
     map<string, int> attributesMap{

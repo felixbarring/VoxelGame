@@ -133,7 +133,7 @@ Voxel ChunkManager::getVoxel(int x, int y, int z) {
 
 char ChunkManager::getCubeId(int x, int y, int z) {
     return getVoxel(x, y, z).id;
-    }
+}
 
 bool ChunkManager::isSolid(int x, int y, int z) {
     return !isAirOrWater(x, y, z); // Will not be correct if more cubes that are not solid are added.
