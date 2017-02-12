@@ -17,20 +17,25 @@ namespace graphics {
 // Constructor/Destructor #################################
 // ########################################################
 
+// In
+
+// Uniform
+
+// Out
+
 ChunkBatcher::ChunkBatcher(Camera &camera)
     : m_camera(camera),
       m_texture(Resources::getInstance().getTextureArray(
-              config::cube_data::textures,
-              config::cube_data::TEXTURE_WIDTH,
-              config::cube_data::TEXTURE_HEIGHT))
+          config::cube_data::textures,
+          config::cube_data::TEXTURE_WIDTH,
+          config::cube_data::TEXTURE_HEIGHT))
 
 {
 
-    const char *vertex =
+    // TODO Refactor this the same way as the cubeBatcher...
+    // That is, use constant strings for the variables.
+    string vertex =
         "#version 330 core \n"
-
-        "const float density = 0.01; \n"
-        "const float gradient = 6; \n"
 
         "in vec4 positionIn; \n"
         "in vec3 normalIn; \n"
@@ -42,40 +47,30 @@ ChunkBatcher::ChunkBatcher(Camera &camera)
 
         "out vec3 texCoord; \n"
         "out float lightValue; \n"
-        "out float fogFactor; \n"
         "out vec3 faceNormal; \n"
 
         "void main(){ \n"
         "  texCoord = vec3(texCoordIn.x, texCoordIn.y, texCoordIn.z); \n"
         "  lightValue = (positionIn.w / 16) * sunStrenght; \n"
         "  faceNormal = normalIn; \n"
-
-        "  vec4 positionView = modelView * vec4(positionIn.xyz, 1); \n"
-        "  float distance = length(positionView.xyz); \n"
-        "  fogFactor = clamp(exp(-pow((distance * density), gradient)), 0.0, 1.0); \n"
-
         "  gl_Position =  modelViewProjection * vec4(positionIn.xyz, 1); \n"
         "} \n";
 
-    const char *fragment =
+    string fragment =
         "#version 330 core \n"
 
         "in vec3 texCoord; \n"
         "in float lightValue; \n"
-        "in float fogFactor; \n"
-
         "in vec3 faceNormal; \n"
 
         "uniform sampler2DArray texture1; \n"
         "uniform float sunStrenght; \n"
 
-        "out vec4 color; \n"
-
         "uniform vec3 lightDirection; \n"
-        "uniform vec3 fogColor; \n"
-
         "uniform vec3 diffuseLight = vec3(0.5, 0.5, 0.5); \n"
         "uniform vec3 materialDiffuse = vec3(0.5, 0.5, 0.5); \n"
+
+        "out vec4 color; \n"
 
         "vec3 calculateDiffuse() \n "
         "{ \n "
@@ -83,13 +78,10 @@ ChunkBatcher::ChunkBatcher(Camera &camera)
         "} \n "
 
         "void main(){ \n"
-
         "  vec3 diffuse = calculateDiffuse() / 2; \n"
-        "  color = vec4(diffuse, 1.0f) * texture(texture1, texCoord); \n"
-
-        "  vec4 light = vec4(lightValue, lightValue, lightValue, 1) + vec4(diffuse, 0); \n"
-        "  color = mix(vec4(fogColor, 1.0), light * texture(texture1, texCoord), fogFactor);"
-
+        "  vec3 kek = vec3(lightValue, lightValue, lightValue); \n"
+        "  vec3 lightSum = kek + diffuse; \n"
+        "  color = vec4(lightSum, 1.0f) * texture(texture1, texCoord); \n"
         "} \n";
 
     map<string, int> attributesMap{
@@ -97,7 +89,7 @@ ChunkBatcher::ChunkBatcher(Camera &camera)
         pair<string, int>("normalIn", 1),
         pair<string, int>("texCoordIn", 2)};
 
-    m_program.reset(new ShaderProgram(vertex, fragment, attributesMap));
+    m_program.reset(new ShaderProgram(vertex.c_str(), fragment.c_str(), attributesMap));
 
 }
 
@@ -203,10 +195,6 @@ void ChunkBatcher::draw() {
     m_program->setUniformli("texture1", 0);
     m_texture.bind();
 
-    //	if (x > 5 || x < - 5)
-    //		direction = -direction;
-    //	x += 0.1 * direction;
-
     m_program->setUniform3f("lightDirection", x, 3.0, 0.3);
     m_program->setUniform1f("sunStrenght", m_sunStrength);
 
@@ -214,23 +202,11 @@ void ChunkBatcher::draw() {
     vec3 dark{0,0,0};
     skyColor = mix(dark, skyColor, m_sunStrength);
     glClearColor(skyColor.x, skyColor.y, skyColor.z, 1.0f);
-    m_program->setUniform3f("fogColor", skyColor.x, skyColor.y, skyColor.z);
-
-//    int skippedChunks = 0;
+//    m_program->setUniform3f("fogColor", skyColor.x, skyColor.y, skyColor.z);
 
     for (auto batch : m_batches) {
         mat4 modelView = m_camera.getViewMatrix() * batch.second->getTransform().getMatrix();
         mat4 modelViewProjection = m_camera.getProjectionMatrix() * modelView;
-
-        // TODO Fix this so that no chunks get culled when they are actually vissible
-    //		Frustum frustum{modelViewProjection};
-    //		bool result = frustum.isCubeInFrustum(batch.second->getxLocation(), 0, batch.second->getzLocation(), 16, 128, 16);
-    ////		bool result = frustum.isSphereInFrustum(vec3(batch.second->getxLocation() + 8, 64, batch.second->getzLocation() + 8), 100);
-    //
-    //		if (!result) {
-    //			++skippedChunks;
-    //			continue;
-    //		}
 
         m_program->setUniformMatrix4f("modelViewProjection", modelViewProjection);
         m_program->setUniformMatrix4f("modelView", modelView);
@@ -261,3 +237,83 @@ void ChunkBatcher::setSunStrenght(float value) {
 }
 
 }
+
+
+// TODO Fix this so that no chunks get culled when they are actually vissible
+//      Frustum frustum{modelViewProjection};
+//      bool result = frustum.isCubeInFrustum(batch.second->getxLocation(), 0, batch.second->getzLocation(), 16, 128, 16);
+////        bool result = frustum.isSphereInFrustum(vec3(batch.second->getxLocation() + 8, 64, batch.second->getzLocation() + 8), 100);
+//
+//      if (!result) {
+//          ++skippedChunks;
+//          continue;
+//      }
+
+
+//string vertex =
+//    "#version 330 core \n"
+//
+//    "const float density = 0.01; \n"
+//    "const float gradient = 6; \n"
+//
+//    "in vec4 positionIn; \n"
+//    "in vec3 normalIn; \n"
+//    "in vec3 texCoordIn; \n"
+//
+//    "uniform mat4 modelViewProjection; \n"
+//    "uniform mat4 modelView; \n"
+//    "uniform float sunStrenght; \n"
+//
+//    "out vec3 texCoord; \n"
+//    "out float lightValue; \n"
+//    "out float fogFactor; \n"
+//    "out vec3 faceNormal; \n"
+//
+//    "void main(){ \n"
+//    "  texCoord = vec3(texCoordIn.x, texCoordIn.y, texCoordIn.z); \n"
+//    "  lightValue = (positionIn.w / 16) * sunStrenght; \n"
+//    "  faceNormal = normalIn; \n"
+//
+//    "  vec4 positionView = modelView * vec4(positionIn.xyz, 1); \n"
+//    "  float distance = length(positionView.xyz); \n"
+//    "  fogFactor = clamp(exp(-pow((distance * density), gradient)), 0.0, 1.0); \n"
+//
+//    "  gl_Position =  modelViewProjection * vec4(positionIn.xyz, 1); \n"
+//    "} \n";
+//
+//string fragment =
+//    "#version 330 core \n"
+//
+//    "in vec3 texCoord; \n"
+//    "in float lightValue; \n"
+//    "in float fogFactor; \n"
+//
+//    "in vec3 faceNormal; \n"
+//
+//    "uniform sampler2DArray texture1; \n"
+//    "uniform float sunStrenght; \n"
+//
+//    "out vec4 color; \n"
+//
+//    "uniform vec3 lightDirection; \n"
+//    "uniform vec3 fogColor; \n"
+//
+//    "uniform vec3 diffuseLight = vec3(0.5, 0.5, 0.5); \n"
+//    "uniform vec3 materialDiffuse = vec3(0.5, 0.5, 0.5); \n"
+//
+//    "vec3 calculateDiffuse() \n "
+//    "{ \n "
+//    "  return sunStrenght * diffuseLight * materialDiffuse * max(0, dot(faceNormal, normalize(lightDirection))); \n "
+//    "} \n "
+//
+//    "void main(){ \n"
+//
+//    "  vec3 diffuse = calculateDiffuse() / 2; \n"
+//    "  color = vec4(diffuse, 1.0f) * texture(texture1, texCoord); \n"
+//
+//    "  vec4 light = vec4(lightValue, lightValue, lightValue, 1) + vec4(diffuse, 0); \n"
+//    "  color = mix(vec4(fogColor, 1.0), light * texture(texture1, texCoord), fogFactor);"
+//
+//    "} \n";
+
+

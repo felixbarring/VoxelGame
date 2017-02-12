@@ -44,7 +44,6 @@ public:
     using VoxelMatrix = std::vector<std::vector<std::vector<Voxel>>>;
 
     /**
-     *
      * \brief Creates a batch that will be used to render when calling draw.
      *
      * The added batch will be rendered when calling the draw function. The batch will be used for rendering
