@@ -1,43 +1,25 @@
 cmake_minimum_required(VERSION 2.8)
 project(VoxelGame)
 
+# -Werror
 set(CMAKE_CXX_FLAGS "-std=c++14 -Wall -Wextra")
-#  -Werror
 
-message("")
-if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-  message("Building with Clang")
-elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-  message("Building with GNU")
-elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Intel")
-  message("Building with Intel")
-elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
-  message("Building with MSVC")
-else()
-  message("Building with unknown")
-endif()
-message("")
+#set(SFML_ROOT "/home/felix/Code/OpenGL/voxelGame/VoxelGame/SFML-2.4.2")
 
-message("######")
+message("### Building with ${CMAKE_CXX_COMPILER_ID}")
+
 if(CMAKE_BUILD_TYPE MATCHES Debug)
-  message("Debug build.")
+  message("### Debug build.")
 elseif(CMAKE_BUILD_TYPE MATCHES Release)
-  message("Release build. Using -03 gcc optimization")
+  message("### Release build. Using -03 gcc optimization")
   add_definitions(-O3)
 else()
-  message("No build type specified.")
+  message("### No build type specified.")
 endif()
-message("######")
-message("")
 
-message("######")
 if (DEMO)
-    message("Building demos :D")
-else()
-    Message("DEMO was not defined")
+    message("### Building demos")
 endif()
-message("######")
-message("")
 
 # Add deps subdirectory
 add_subdirectory(dependencies)
@@ -95,6 +77,10 @@ endif()
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules" ${CMAKE_MODULE_PATH})
 find_package(SFML 2 REQUIRED system window graphics audio)
+
+message("### SFML Inlucd dirs = ${SFML_INCLUDE_DIR}")
+message("### SFML Libraries = ${SFML_LIBRARIES}")
+
 if(SFML_FOUND)
     include_directories(${SFML_INCLUDE_DIR})
     target_link_libraries(${PROJECT_NAME} pthread libglew_static ${SFML_LIBRARIES})
