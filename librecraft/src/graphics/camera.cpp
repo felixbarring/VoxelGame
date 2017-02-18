@@ -7,14 +7,19 @@ namespace graphics {
 // ########################################################
 
 Camera::Camera()
-    : m_position{0.0, 0.0, 0.0}
+    : Camera::Camera(0.0, 0.0, 0.0)
 {
-    setFov(config::graphics_data::fov);
 }
 
 Camera::Camera(float xPosition, float yPosition, float zPosition)
-    : m_position{xPosition, yPosition, zPosition}
+    : Camera::Camera{{xPosition, yPosition, zPosition}}
 {
+}
+
+Camera::Camera(glm::vec3 vec)
+    : m_position{vec}
+{
+    setFov(config::graphics_data::fov);
 }
 
 // ########################################################

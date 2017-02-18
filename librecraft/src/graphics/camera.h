@@ -24,6 +24,9 @@ public:
      */
     Camera();
 
+    Camera(glm::vec3 vec);
+
+
     /**
      * \brief Creates a camera at the specified position.
      *

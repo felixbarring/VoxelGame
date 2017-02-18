@@ -160,7 +160,8 @@ public:
         sceneCamera.setProjectionMatrix(std::move(projection));
 
 
-        Camera lightCamera{};
+        glm::vec3 lightCameraLocationg{10, 0, 0};
+        Camera lightCamera{lightCameraLocationg};
         const float dimension = 5.0f;
         glm::mat4 kek = glm::ortho(-dimension, dimension, -dimension, dimension, 0.01f, 20.0f);
         lightCamera.setProjectionMatrix(kek);
@@ -203,7 +204,7 @@ public:
 
         std::shared_ptr<mesh::MeshElement> mesh;
         mesh.reset(new mesh::MeshElement(vertexData, 3, normals, 3, UV, 3, elementData));
-        graphics::Transform floorTransform{0, -3, 0};
+        graphics::Transform floorTransform{0, -7, 0};
 
         graphics::ViewDirection viewDirection;
 
@@ -222,7 +223,7 @@ public:
                 window.close();
 
             viewDirection.changeViewDirection(Input::getInstance()->mouseXMovement, Input::getInstance()->mouseYMovement);
-            lightCamera.updateView(glm::vec3(0, 0, 0), viewDirection.getViewDirection(), viewDirection.getUpDirection());
+            lightCamera.updateView(lightCameraLocationg, viewDirection.getViewDirection(), viewDirection.getUpDirection());
 
 
             glActiveTexture(GL_TEXTURE0);
