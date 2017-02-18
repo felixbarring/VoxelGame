@@ -2,9 +2,14 @@ cmake_minimum_required(VERSION 2.8)
 project(VoxelGame)
 
 # -Werror
-set(CMAKE_CXX_FLAGS "-std=c++14 -Wall -Wextra")
+if(WARNINGS)
+	set(CMAKE_CXX_FLAGS "-std=c++14 -Wall -Wextra")
+else()
+	set(CMAKE_CXX_FLAGS "-std=c++14")
+endif()
 
-#set(SFML_ROOT "/home/felix/Code/OpenGL/voxelGame/VoxelGame/SFML-2.4.2")
+
+set(SFML_ROOT "/home/felix/Code/OpenGL/voxelGame/VoxelGame/SFML-2.3.2")
 
 message("### Building with ${CMAKE_CXX_COMPILER_ID}")
 
@@ -78,7 +83,7 @@ endif()
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules" ${CMAKE_MODULE_PATH})
 find_package(SFML 2 REQUIRED system window graphics audio)
 
-message("### SFML Inlucd dirs = ${SFML_INCLUDE_DIR}")
+message("### SFML Inlucd dir = ${SFML_INCLUDE_DIR}")
 message("### SFML Libraries = ${SFML_LIBRARIES}")
 
 if(SFML_FOUND)

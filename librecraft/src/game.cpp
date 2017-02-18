@@ -121,7 +121,6 @@ private:
 void Game::run() {
     check_system::checkStuff();
 
-
     // TODO Play lul
 //    SoundPlayer::getInstance().playMusic(config::music::menuMusic);
 
@@ -150,7 +149,6 @@ void Game::run() {
     if (glewInit() != GLEW_OK)
         cout << "Failed to initialize GLEW\n";
 
-//    glm::vec3 skyColor = config::graphics_data::skyColor;
     glViewport(0, 0, WIDTH, HEIGHT);
 
     m_mainMenu.reset(new MainMenu(this));

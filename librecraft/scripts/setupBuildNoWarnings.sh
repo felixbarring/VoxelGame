@@ -8,5 +8,5 @@ mkdir data
 cd data
 touch meta
 cd ..
-cmake -DCMAKE_BUILD_TYPE=Release -DDEMO=TRUE -DWARNINGS=TRUE ..
+cmake -DCMAKE_BUILD_TYPE=Release -DDEMO=TRUE -DWARNINGS=FALSE ..
 cd ../scripts

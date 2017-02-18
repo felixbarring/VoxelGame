@@ -7,13 +7,13 @@ namespace graphics {
 // ########################################################
 
 Camera::Camera()
-    : position{0.0, 0.0, 0.0}
+    : m_position{0.0, 0.0, 0.0}
 {
     setFov(config::graphics_data::fov);
 }
 
 Camera::Camera(float xPosition, float yPosition, float zPosition)
-    : position{xPosition, yPosition, zPosition}
+    : m_position{xPosition, yPosition, zPosition}
 {
 }
 
@@ -21,34 +21,34 @@ Camera::Camera(float xPosition, float yPosition, float zPosition)
 // Member Functions########################################
 // ########################################################
 
-void Camera::setViewMatrix(glm::mat4 view) {
-    this->view = view;
+void Camera::setViewMatrix(glm::mat4 value) {
+    this->m_view = value;
 }
 
 glm::mat4 Camera::getViewMatrix() {
-    return view;
+    return m_view;
 }
 
-void Camera::setProjectionMatrix(glm::mat4 view) {
-    projection = view;
+void Camera::setProjectionMatrix(glm::mat4 value) {
+    m_projection = value;
 }
 
 glm::mat4& Camera::getProjectionMatrix() {
-    return projection;
+    return m_projection;
 }
 
 glm::vec3& Camera::getPosition() {
-    return position;
+    return m_position;
 }
 
 void Camera::updateView(glm::vec3 position, glm::vec3 direction, glm::vec3 up) {
-    this->position = position;
-    view = glm::lookAt(position, position + direction, up);
+    this->m_position = position;
+    m_view = glm::lookAt(position, position + direction, up);
 }
 
 void Camera::setFov(float value) {
     static const float degreeToRadian{(3.14 / 180)};
-    projection = glm::perspective(value * degreeToRadian, aspectRatio, close, far);
+    m_projection = glm::perspective(value * degreeToRadian, m_aspectRatio, m_close, m_far);
 }
 
 }

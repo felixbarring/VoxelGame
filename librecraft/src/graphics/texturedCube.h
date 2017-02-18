@@ -32,6 +32,7 @@ public:
 // ########################################################
 
 private:
+
     // unique pointer gives error?!?
     std::shared_ptr<mesh::MeshElement> mesh;
 

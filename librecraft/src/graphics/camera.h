@@ -44,7 +44,7 @@ public:
      *
      * @param view
      */
-    void setViewMatrix(glm::mat4 view);
+    void setViewMatrix(glm::mat4 value);
 
     /**
      *
@@ -55,7 +55,7 @@ public:
     /**
      *
      */
-    void setProjectionMatrix(glm::mat4 view);
+    void setProjectionMatrix(glm::mat4 value);
 
     /**
      *
@@ -91,18 +91,18 @@ public:
 
 private:
 
-    glm::vec3 position;
-    glm::vec3 direction;
-    glm::vec3 up{0.0f, 1.0f, 0.0f};
+    glm::vec3 m_position;
+    glm::vec3 m_direction;
+    glm::vec3 m_up{0.0f, 1.0f, 0.0f};
 
     // TODO Update this in an intelligent way
-    float aspectRatio = config::graphics_data::windowWidth / static_cast<float>(config::graphics_data::windowHeight);
+    float m_aspectRatio = config::graphics_data::windowWidth / static_cast<float>(config::graphics_data::windowHeight);
 
-    const float close{0.1f};
-    const float far{1000.0f};
+    const float m_close{0.1f};
+    const float m_far{1000.0f};
 
-    glm::mat4 projection;
-    glm::mat4 view;
+    glm::mat4 m_projection;
+    glm::mat4 m_view;
 };
 
 }

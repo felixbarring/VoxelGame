@@ -83,10 +83,8 @@ private:
 
     float m_sunStrength{1.0};
 
-    // TODO Should be unique...
     std::unique_ptr<ShaderProgram> m_program;
     texture::TextureArray &m_texture;
-
 };
 
 } /* namespace graphics */

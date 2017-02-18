@@ -26,7 +26,7 @@ const string lightValue = "lightValue";
 const string sunStrength = "sunStrenght";
 const string mvp = "modelViewProjection";
 
-const string tex = "tex"; // TODO Need a better name..
+const string arrayTexture = "arrayTexture";
 
 // Out
 const string faceNormalOut = "faceNormal";
@@ -45,7 +45,7 @@ CubeBatcher::CubeBatcher(Camera &camera)
 {
 
     for (int i = 0; i <= config::cube_data::LAST_CUBE + 1; i++)
-        m_cubes.push_back(TexturedCube {2, 0, -1.0f, i});
+        m_cubes.push_back(TexturedCube{2, 0, -1.0f, i});
 
     string vertex =
         "#version 330 core \n"
@@ -74,12 +74,12 @@ CubeBatcher::CubeBatcher(Camera &camera)
         "in vec3 " + texCoordOut + "; \n"
         "in float " + lightOut + "; \n"
 
-        "uniform sampler2DArray " + tex + "; \n"
+        "uniform sampler2DArray " + arrayTexture + "; \n"
 
         "out vec4 " + colorOut + "; \n"
 
         "void main(){ \n"
-        "  " + colorOut + " = " + lightOut + " * texture(" + tex + ", " + texCoordOut + "); \n"
+        "  " + colorOut + " = " + lightOut + " * texture(" + arrayTexture + ", " + texCoordOut + "); \n"
         "  " + colorOut + ".w = 1.0; \n"
         "} \n";
 
@@ -109,7 +109,7 @@ void CubeBatcher::draw() {
     glEnable(GL_DEPTH_TEST);
 
     glActiveTexture(GL_TEXTURE0);
-    m_program->setUniformli(tex, 0);
+    m_program->setUniformli(arrayTexture, 0);
     m_texture.bind();
 
     m_program->setUniform1f(sunStrength, m_sunStrength);

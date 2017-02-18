@@ -8,11 +8,15 @@
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <vector>
+
+#include "../graphics/resources.h"
 
 using graphics::Camera;
 using namespace graphics;
 
 #include "../graphics/camera.h"
+
 namespace demo {
 
 class ShadowMapDemo : public IDemo {
@@ -54,10 +58,93 @@ public:
         glDepthFunc(GL_LESS);
 
 
+        // In
+        const string positionIn = "positionIn";
+        const string normalIn = "normalIn";
+        const string texCoordIn = "texCoordIn";
 
+        // Uniform
+        const string lightValue = "lightValue";
+        const string sunStrength = "sunStrenght";
+        const string mvp = "modelViewProjection";
 
+        const string arrayTexture = "arrayTexture";
 
+        // Out
+        const string faceNormalOut = "faceNormal";
+        const string texCoordOut = "texCoord";
+        const string lightOut = "light";
 
+        const string colorOut = "color";
+
+        string vertex =
+            "#version 330 core \n"
+
+            "in vec3 " + positionIn + "; \n"
+            "in vec3 " + normalIn + "; \n"
+            "in vec3 " + texCoordIn + "; \n"
+
+            "uniform mat4 " + mvp + "; \n"
+
+            "out vec3 " + texCoordOut + "; \n"
+
+            "void main(){ \n"
+            "  " + texCoordOut + " = " + texCoordIn + "; \n"
+            "  gl_Position = " + mvp + " * vec4(" + positionIn + ", 1); \n"
+            "} \n";
+
+        string fragment =
+            "#version 330 core \n"
+
+            "in vec3 " + texCoordOut + "; \n"
+
+            "uniform sampler2DArray " + arrayTexture + "; \n"
+
+            "out vec4 " + colorOut + "; \n"
+
+            "void main(){ \n"
+            "  " + colorOut + " = texture(" + arrayTexture + ", " + texCoordOut + "); \n"
+            "  " + colorOut + ".w = 1.0; \n"
+            "} \n";
+
+        map<string, int> attributesMap{
+            pair<string, int>(positionIn, 0),
+            pair<string, int>(normalIn, 1),
+            pair<string, int>(texCoordIn, 2)
+        };
+
+        std::unique_ptr<ShaderProgram> simpleProgram = make_unique<ShaderProgram>(vertex.c_str(), fragment.c_str(),
+            attributesMap);
+
+        string shadowDepthVert =
+            "#version 330 core \n"
+
+            "in vec3 " + positionIn + "; \n"
+            "in vec3 " + normalIn + "; \n"
+            "in vec3 " + texCoordIn + "; \n"
+
+            "uniform mat4 " + mvp + "; \n"
+
+            "void main() \n"
+            "{ \n"
+            "  gl_Position = " + mvp + " * vec4(" + positionIn + ", 1); \n"
+            "} \n";
+
+        string shadowDepthFrag =
+            "#version 330 core \n"
+
+            "out vec4 " + colorOut + "; \n"
+            "void main() { \n"
+            "  " + colorOut + " = vec4(gl_FragCoord.z); \n"
+            "} \n";
+
+        std::unique_ptr<ShaderProgram> shadowDepth = make_unique<ShaderProgram>(shadowDepthVert.c_str(), shadowDepthFrag.c_str(),
+                attributesMap);
+
+        texture::TextureArray texture{graphics::Resources::getInstance().getTextureArray(
+            config::cube_data::textures,
+            config::cube_data::TEXTURE_WIDTH,
+            config::cube_data::TEXTURE_HEIGHT)};
 
         float aspectRatio = WIDTH / HEIGHT;
         glm::mat4 projection = glm::perspective(80.0f, aspectRatio, 0.1f, 100.0f);
@@ -72,28 +159,100 @@ public:
         sceneCamera.setViewMatrix(std::move(cameraMatrix));
         sceneCamera.setProjectionMatrix(std::move(projection));
 
-//        graphics::CubeBatcher batcher{sceneCamera};
 
-        // TODO Use :p
         Camera lightCamera{};
+        const float dimension = 5.0f;
+        glm::mat4 kek = glm::ortho(-dimension, dimension, -dimension, dimension, 0.01f, 20.0f);
+        lightCamera.setProjectionMatrix(kek);
 
         int someCubeType{1}; // Todo replace with constant
         TexturedCube cube1{0.0, 0.0, 0.0, someCubeType};
+        graphics::Transform transform1{0, 0, -5.0f};
+
+        float size = 5.0f;
+
+        vector<GLfloat> vertexData {
+            -size, size, size, // 0
+            size, size, size, // 1
+            size, size, -size, // 2
+            -size, size, -size, // 3
+        };
+
+        vector<GLfloat> normals {
+            0.0f, 1.0f, 0.0f,
+            0.0f, 1.0f, 0.0f,
+            0.0f, 1.0f, 0.0f,
+            0.0f, 1.0f, 0.0f,
+        };
+
+        GLfloat sideTexture = 1.0f; //BLOCK_TEXTURES[id][SIDE_TEXTURE];
+        GLfloat topTexture = 1.0f; //BLOCK_TEXTURES[id][TOP_TEXTURE];
+        GLfloat bottomTexture = 1.0f; //BLOCK_TEXTURES[id][BOTTOM_TEXTURE];
+
+        vector<GLfloat> UV {
+            0.0f, 0.0f, topTexture,
+            1.0f, 0.0f, topTexture,
+            1.0f, 1.0f, topTexture,
+            0.0f, 1.0f, topTexture,
+
+        };
+
+        vector<short> elementData{
+            0, 1, 2, 0, 2, 3,
+        };
+
+        std::shared_ptr<mesh::MeshElement> mesh;
+        mesh.reset(new mesh::MeshElement(vertexData, 3, normals, 3, UV, 3, elementData));
+        graphics::Transform floorTransform{0, -3, 0};
+
+        graphics::ViewDirection viewDirection;
 
         while (window.isOpen()) {
-           fpsManager.frameStart();
+            fpsManager.frameStart();
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-           glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            shadowDepth->bind();
 
-           fpsManager.sync();
-           window.display();
+            glEnable (GL_CULL_FACE);
+            glEnable(GL_DEPTH_TEST);
 
-           sf::Event event;
-           while (window.pollEvent(event))
-               if (event.type == sf::Event::Closed)
-                   window.close();
+            Input::getInstance()->updateValues();
+
+            if (Input::getInstance()->escapeKeyPressed)
+                window.close();
+
+            viewDirection.changeViewDirection(Input::getInstance()->mouseXMovement, Input::getInstance()->mouseYMovement);
+            lightCamera.updateView(glm::vec3(0, 0, 0), viewDirection.getViewDirection(), viewDirection.getUpDirection());
+
+
+            glActiveTexture(GL_TEXTURE0);
+//            simpleProgram->setUniformli(arrayTexture, 0);
+            texture.bind();
+
+            glm::mat4 modelView = lightCamera.getViewMatrix() * floorTransform.getMatrix();
+            glm::mat4 modelViewProjection = lightCamera.getProjectionMatrix() * modelView;
+
+            shadowDepth->setUniformMatrix4f(mvp, modelViewProjection);
+            mesh->draw();
+
+
+            transform1.rotateX(0.1);
+            modelView = lightCamera.getViewMatrix() * transform1.getMatrix();
+            modelViewProjection = lightCamera.getProjectionMatrix() * modelView;
+
+            shadowDepth->setUniformMatrix4f(mvp, modelViewProjection);
+            cube1.draw();
+
+            shadowDepth->unbind();
+
+            fpsManager.sync();
+            window.display();
+
+            sf::Event event;
+            while (window.pollEvent(event))
+              if (event.type == sf::Event::Closed)
+                  window.close();
        }
-
 
     }
 };
