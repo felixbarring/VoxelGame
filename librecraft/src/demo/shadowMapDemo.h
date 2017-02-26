@@ -160,15 +160,15 @@ public:
         sceneCamera.setProjectionMatrix(std::move(projection));
 
 
-        glm::vec3 lightCameraLocationg{10, 0, 0};
-        Camera lightCamera{lightCameraLocationg};
+        glm::vec3 lightCameraLocation{0, 10, 0};
+        Camera lightCamera{lightCameraLocation};
         const float dimension = 5.0f;
         glm::mat4 kek = glm::ortho(-dimension, dimension, -dimension, dimension, 0.01f, 20.0f);
         lightCamera.setProjectionMatrix(kek);
 
-        int someCubeType{1}; // Todo replace with constant
+        int someCubeType{1}; // TODO replace with constant
         TexturedCube cube1{0.0, 0.0, 0.0, someCubeType};
-        graphics::Transform transform1{0, 0, -5.0f};
+        graphics::Transform transform1{0, 0, -1.0f};
 
         float size = 5.0f;
 
@@ -205,8 +205,24 @@ public:
         std::shared_ptr<mesh::MeshElement> mesh;
         mesh.reset(new mesh::MeshElement(vertexData, 3, normals, 3, UV, 3, elementData));
         graphics::Transform floorTransform{0, -7, 0};
-
         graphics::ViewDirection viewDirection;
+
+
+        // Create framebuffer and texture to draw to
+        GLuint shadowFB;
+        glGenFramebuffers(1, &shadowFB);
+
+        GLuint depthMap;
+        glGenTextures(1, &depthMap);
+        glBindTexture(GL_TEXTURE_2D, depthMap);
+
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT,
+            WIDTH, HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
+
+        glBindFramebuffer(GL_FRAMEBUFFER, shadowFB);
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMap, 0);
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
 
         while (window.isOpen()) {
             fpsManager.frameStart();
@@ -220,11 +236,10 @@ public:
             Input::getInstance()->updateValues();
 
             if (Input::getInstance()->escapeKeyPressed)
-                window.close();
+                break;
 
-            viewDirection.changeViewDirection(Input::getInstance()->mouseXMovement, Input::getInstance()->mouseYMovement);
-            lightCamera.updateView(lightCameraLocationg, viewDirection.getViewDirection(), viewDirection.getUpDirection());
-
+//            lightCamera.updateView(lightCameraLocation, viewDirection.getViewDirection(), viewDirection.getUpDirection());
+            lightCamera.updateView(lightCameraLocation, glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 
             glActiveTexture(GL_TEXTURE0);
 //            simpleProgram->setUniformli(arrayTexture, 0);
@@ -233,8 +248,16 @@ public:
             glm::mat4 modelView = lightCamera.getViewMatrix() * floorTransform.getMatrix();
             glm::mat4 modelViewProjection = lightCamera.getProjectionMatrix() * modelView;
 
+//            glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
+
             shadowDepth->setUniformMatrix4f(mvp, modelViewProjection);
             mesh->draw();
+
+
+
+            // TODO Draw with the from the player cameras perspective.
+            viewDirection.changeViewDirection(Input::getInstance()->mouseXMovement, Input::getInstance()->mouseYMovement);
+
 
 
             transform1.rotateX(0.1);
