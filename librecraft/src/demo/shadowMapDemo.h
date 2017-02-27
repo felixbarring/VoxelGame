@@ -155,6 +155,8 @@ public:
             glm::vec3(0, 0, 1)    // Head is up
         );
 
+
+        glm::vec3 sceneCameraLocation{10, 10, 0};
         Camera sceneCamera{};
         sceneCamera.setViewMatrix(std::move(cameraMatrix));
         sceneCamera.setProjectionMatrix(std::move(projection));
@@ -225,8 +227,20 @@ public:
 
 
         while (window.isOpen()) {
+
+            glm::mat4 modelView;
+            glm::mat4 modelViewProjection;
+
             fpsManager.frameStart();
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+            Input::getInstance()->updateValues();
+            Input::getInstance()->lockMouse();
+            if (Input::getInstance()->escapeKeyPressed)
+                break;
+
+            if (Input::getInstance()->moveForwardActive)
+                sceneCameraLocation += viewDirection.getViewDirection();
 
             shadowDepth->bind();
 
@@ -238,29 +252,18 @@ public:
             if (Input::getInstance()->escapeKeyPressed)
                 break;
 
-//            lightCamera.updateView(lightCameraLocation, viewDirection.getViewDirection(), viewDirection.getUpDirection());
             lightCamera.updateView(lightCameraLocation, glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 
-            glActiveTexture(GL_TEXTURE0);
-//            simpleProgram->setUniformli(arrayTexture, 0);
-            texture.bind();
+            modelView = lightCamera.getViewMatrix() * floorTransform.getMatrix();
+            modelViewProjection = lightCamera.getProjectionMatrix() * modelView;
 
-            glm::mat4 modelView = lightCamera.getViewMatrix() * floorTransform.getMatrix();
-            glm::mat4 modelViewProjection = lightCamera.getProjectionMatrix() * modelView;
-
-//            glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
+            glBindFramebuffer(GL_FRAMEBUFFER, shadowFB);
 
             shadowDepth->setUniformMatrix4f(mvp, modelViewProjection);
+
             mesh->draw();
 
-
-
-            // TODO Draw with the from the player cameras perspective.
-            viewDirection.changeViewDirection(Input::getInstance()->mouseXMovement, Input::getInstance()->mouseYMovement);
-
-
-
-            transform1.rotateX(0.1);
+            transform1.rotateX(0.01);
             modelView = lightCamera.getViewMatrix() * transform1.getMatrix();
             modelViewProjection = lightCamera.getProjectionMatrix() * modelView;
 
@@ -268,6 +271,38 @@ public:
             cube1.draw();
 
             shadowDepth->unbind();
+
+
+
+
+
+            // TODO Draw with the from the player cameras perspective.
+
+            simpleProgram->bind();
+            glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+
+            glActiveTexture(GL_TEXTURE0);
+            simpleProgram->setUniformli(arrayTexture, 0);
+            texture.bind();
+
+
+            viewDirection.changeViewDirection(Input::getInstance()->mouseXMovement, Input::getInstance()->mouseYMovement);
+            sceneCamera.updateView(sceneCameraLocation, viewDirection.getViewDirection(), viewDirection.getUpDirection());
+
+            modelView = sceneCamera.getViewMatrix() * floorTransform.getMatrix();
+            modelViewProjection = sceneCamera.getProjectionMatrix() * modelView;
+
+            mesh->draw();
+
+            modelView = sceneCamera.getViewMatrix() * transform1.getMatrix();
+            modelViewProjection = sceneCamera.getProjectionMatrix() * modelView;
+
+            simpleProgram->setUniformMatrix4f(mvp, modelViewProjection);
+            cube1.draw();
+
+            simpleProgram->unbind();
+
 
             fpsManager.sync();
             window.display();

@@ -54,8 +54,8 @@ namespace config
             { 9, 9, 9 }, // Selected
         };
 
-         const int TEXTURE_WIDTH = 32;
-         const int TEXTURE_HEIGHT = 32;
+         const unsigned TEXTURE_WIDTH = 32;
+         const unsigned TEXTURE_HEIGHT = 32;
 
          const std::vector<std::string> textures {
             "../resources/cubes/grass_side.png",

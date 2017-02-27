@@ -56,8 +56,8 @@ namespace config {
         // 0 = Side, 1 = Top, 2 = Bottom
         extern const char BLOCK_TEXTURES[9][3];
 
-        extern const int TEXTURE_WIDTH;
-        extern const int TEXTURE_HEIGHT;
+        extern const unsigned TEXTURE_WIDTH;
+        extern const unsigned TEXTURE_HEIGHT;
 
         extern const std::vector<std::string> textures;
 
