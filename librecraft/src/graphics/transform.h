@@ -12,10 +12,6 @@ namespace graphics {
 class Transform {
 public:
 
-// ########################################################
-// Constructor/Destructor #################################
-// ########################################################
-
     /**
      * \brief Creates a transform matrix at the the specified location with no rotation.
      *
@@ -24,10 +20,6 @@ public:
      * @param z The z location for the transform.
      */
     Transform(double x, double y, double z);
-
-// ########################################################
-// Member Functions########################################
-// ########################################################
 
     /**
      * \brief Translated the matrix with the specified values.
@@ -105,10 +97,6 @@ public:
      * @return The transform matrix.
      */
     glm::mat4 getMatrix();
-
-// ########################################################
-// Implementation #########################################
-// ########################################################
 
 private:
     glm::mat4 translation;

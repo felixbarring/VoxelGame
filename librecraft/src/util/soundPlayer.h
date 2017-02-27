@@ -11,19 +11,12 @@
 namespace util {
 
 class SoundPlayer {
-// ########################################################
-// Constructor/Destructor #################################
-// ########################################################
 
     SoundPlayer() {};
 
     SoundPlayer(SoundPlayer const&) = delete;
 
     void operator=(SoundPlayer const&) = delete;
-
-// ########################################################
-// Member Functions########################################
-// ########################################################
 
 public:
 
@@ -37,10 +30,6 @@ public:
     void playMusic(const std::string &musicPath);
 
     void stopMusic();
-
-// ########################################################
-// Implementation #########################################
-// ########################################################
 
     std::map<std::string, sf::SoundBuffer> m_buffers;
     std::vector<std::shared_ptr<sf::Sound>> m_playingSounds;

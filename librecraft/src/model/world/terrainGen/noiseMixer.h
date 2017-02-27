@@ -9,14 +9,6 @@ namespace terrainGen {
 class NoiseMixer {
 public:
 
-// ########################################################
-// Constructor/Destructor #################################
-// ########################################################
-
-// ########################################################
-// Member Functions########################################
-// ########################################################
-
     /**
      * This will be used in the computeNoise function.
      * For each noise added, there parts will be summed together
@@ -46,9 +38,7 @@ public:
         return value;
     }
 
-// ########################################################
-// Implementation #########################################
-// ########################################################
+private:
 
     struct Noise {
         Noise(float freq, float amp) :

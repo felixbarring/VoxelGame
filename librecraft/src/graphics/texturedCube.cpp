@@ -13,10 +13,6 @@ using namespace config::cube_data;
 namespace graphics
 {
 
-// ########################################################
-// Constructor/Destructor #################################
-// ########################################################
-
 TexturedCube::TexturedCube(float xOffset, float yOffset, float zOffset, int id):
     xLocation{xOffset},
     yLocation{yOffset},
@@ -151,10 +147,6 @@ TexturedCube::TexturedCube(float xOffset, float yOffset, float zOffset, int id):
     mesh.reset(new mesh::MeshElement(vertexData, 3, normals, 3, UV, 3, elementData));
 
 }
-
-// ########################################################
-// Member Functions########################################
-// ########################################################
 
 void TexturedCube::draw() {
 	mesh->draw();

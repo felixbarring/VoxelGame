@@ -32,10 +32,6 @@ namespace demo
 class CubeMapDemo : public IDemo{
 public:
 
-// ########################################################
-// Member Functions########################################
-// ########################################################
-
 	void runDemo() override {
 	    FPSManager fpsManager(100);
 	    const GLuint WIDTH = 800, HEIGHT = 600;

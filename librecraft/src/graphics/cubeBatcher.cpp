@@ -12,10 +12,6 @@ using namespace std;
 
 namespace graphics {
 
-// ########################################################
-// Constructor/Destructor #################################
-// ########################################################
-
 // In
 const string positionIn = "positionIn";
 const string normalIn = "normalIn";
@@ -92,10 +88,6 @@ CubeBatcher::CubeBatcher(Camera &camera)
     m_program.reset(new ShaderProgram(vertex.c_str(), fragment.c_str(), attributesMap));
 
 }
-
-// ########################################################
-// Member Functions########################################
-// ########################################################
 
 void CubeBatcher::addBatch(char type, Transform &transform, int lightValue) {
     m_batches.push_back(Batch(m_cubes.at(type), transform, lightValue));

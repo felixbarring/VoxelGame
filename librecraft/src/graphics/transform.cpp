@@ -9,10 +9,6 @@
 namespace graphics
 {
 
-// ########################################################
-// Constructor/Destructor #################################
-// ########################################################
-
 Transform::Transform(double x, double y, double z)
 {
     translation = glm::translate(glm::mat4(1.f), glm::vec3(x, y, z));
@@ -21,10 +17,6 @@ Transform::Transform(double x, double y, double z)
     setRotationY(0);
     setRotationZ(0);
 }
-
-// ########################################################
-// Member Functions########################################
-// ########################################################
 
 void Transform::translate(glm::vec3 value) {
     translation = glm::translate(translation, value);

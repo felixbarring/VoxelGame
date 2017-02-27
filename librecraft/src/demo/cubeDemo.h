@@ -35,10 +35,6 @@ namespace demo
 class CubeDemo : public IDemo {
 public:
 
-// ########################################################
-// Member Functions########################################
-// ########################################################
-
 	void runDemo() override {
 
 	    util::FPSManager fpsManager(100);

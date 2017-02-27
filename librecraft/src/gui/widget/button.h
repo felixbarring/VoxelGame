@@ -26,18 +26,10 @@ namespace widget {
 class Button: public AbstractWidget {
 public:
 
-// ########################################################
-// Constructor/Destructor #################################
-// ########################################################
-
 	Button(int id, int x, int y, int width, int height,
 			std::function<void(int)> observer, std::string name, int layer = 0);
 
 	virtual ~Button() {};
-
-// ########################################################
-// Member Functions########################################
-// ########################################################
 
 	std::string getName();
 
@@ -49,10 +41,6 @@ public:
 	 * Makes the button behave as if had been clicked.
 	 */
 	void trigger();
-
-// ########################################################
-// Implementation #########################################
-// ########################################################
 
 protected:
 

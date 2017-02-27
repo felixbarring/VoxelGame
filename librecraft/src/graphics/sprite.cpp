@@ -3,10 +3,6 @@
 
 namespace graphics {
 
-// ########################################################
-// Constructor/Destructor #################################
-// ########################################################
-
 Sprite::Sprite(double x, double y, unsigned layer, double width, double height, texture::Texture &texture)
     : m_transform{x + width / 2, y + height / 2, 0},
       m_width{width},
@@ -45,10 +41,6 @@ Sprite::Sprite(double x, double y, unsigned layer, std::shared_ptr<mesh::MeshEle
 {
 	m_mesh = mesh;
 }
-
-// ########################################################
-// Member Functions########################################
-// ########################################################
 
 void Sprite::draw() {
     m_mesh->draw();

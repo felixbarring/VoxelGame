@@ -4,10 +4,6 @@
 
 namespace mesh {
 
-// ########################################################
-// Constructor/Destructor #################################
-// ########################################################
-
 MeshElement::MeshElement(
     const std::vector<float> &vbd1, int vbd1Format,
     const std::vector<short> &elementData)
@@ -191,10 +187,6 @@ MeshElement::~MeshElement() {
 
     glDeleteBuffers(1, &m_EBO);
 }
-
-// ########################################################
-// Member Functions########################################
-// ########################################################
 
 void MeshElement::draw() {
     glBindVertexArray(m_VAO);

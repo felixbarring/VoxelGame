@@ -43,10 +43,6 @@ namespace demo {
 class GuiDemo : public IDemo{
 public:
 
-// ########################################################
-// Member Functions########################################
-// ########################################################
-
 	void runDemo() override	{
 	    util::FPSManager fpsManager(60);
 	    const GLuint WIDTH = 1200, HEIGHT = 600;

@@ -8,12 +8,10 @@ namespace graphics {
 
 // TODO Remove all the 256 magic numbers!
 
-// ########################################################
-// Constructor/Destructor #################################
-// ########################################################
-
 FontMeshBuilder::FontMeshBuilder(std::string &pathToLayout, int atlasWidth,	int atlasHeight)
-    : ATLAS_WIDTH(atlasWidth), ATLAS_HEIGHT(atlasHeight) {
+    : ATLAS_WIDTH(atlasWidth),
+      ATLAS_HEIGHT(atlasHeight)
+{
 
     std::vector<std::string> list;
     std::ifstream in_stream;
@@ -64,11 +62,6 @@ FontMeshBuilder::FontMeshBuilder(std::string &pathToLayout, int atlasWidth,	int 
     }
 
 }
-
-
-// ########################################################
-// Member Functions########################################
-// ########################################################
 
 std::shared_ptr<mesh::MeshElement> FontMeshBuilder::buldMeshForString(const std::string &str, float height) {
 

@@ -20,10 +20,6 @@ using namespace font_data;
 
 namespace widget {
 
-// ########################################################
-// Constructor/Destructor #################################
-// ########################################################
-
 TextInput::TextInput(int id, int x, int y, unsigned width, int height, int layer)
 	: AbstractWidget(id, x, y, width, height),
 	  m_layer{layer},
@@ -43,10 +39,6 @@ TextInput::TextInput(int id, int x, int y, unsigned width, int height, int layer
 	m_text = make_shared<Sprite>(x, y + s_textHightDifference, layer + 1, move(fontMesh), res.getTexture(font));
 
 }
-
-// ########################################################
-// Member Functions########################################
-// ########################################################
 
 void TextInput::setString(string str) {
 	Resources &res = Resources::getInstance();

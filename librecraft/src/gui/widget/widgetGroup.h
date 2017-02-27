@@ -29,10 +29,6 @@ namespace widget {
 class WidgetGroup: public AbstractWidget {
 public:
 
-// ########################################################
-// Constructor/Destructor #################################
-// ########################################################
-
 	/**
 	 * \brief Constructs a WidgetGroup.
 	 */
@@ -40,10 +36,6 @@ public:
 			bool transparentBackground = true);
 
 	virtual ~WidgetGroup() {};
-
-// ########################################################
-// Member Functions########################################
-// ########################################################
 
 	/**
 	 * \brief Adds a widget to this group.
@@ -68,10 +60,6 @@ public:
 	void draw() override;
 
 	void update(float timePassed) override;
-
-// ########################################################
-// Implementation #########################################
-// ########################################################
 
 private:
 

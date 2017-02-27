@@ -23,10 +23,6 @@ namespace chunk {
 class Chunk {
 public:
 
-// ########################################################
-// Constructor/Destructor #################################
-// ########################################################
-
 	/**
 	 * Creates a chunk. The function create needs to be called to complete the creation.
 	 *
@@ -40,10 +36,6 @@ public:
 	 * Makes sure that the graphics::GraphicalChunk used by this Chunk is destroyed by the graphics::ChunkBatcher.
 	 */
 	~Chunk();
-
-// ########################################################
-// Member Functions########################################
-// ########################################################
 
 	/**
 	 * @name Creation Group
@@ -220,10 +212,6 @@ public:
 	 * @param worldName Used to generate the name of this Chunk
 	 */
 	void storeChunk(std::string worldName);
-
-// ########################################################
-// Implementation #########################################
-// ########################################################
 
 private:
 

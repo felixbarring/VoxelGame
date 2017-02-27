@@ -10,17 +10,9 @@ namespace util {
 
 std::chrono::milliseconds oneMilliSecond(1);
 
-// ########################################################
-// Constructor/Destructor #################################
-// ########################################################
-
 FPSManager::FPSManager(int maxFPS)
     : m_maxFPS {maxFPS}, m_timePerFrame {1.0 / maxFPS} {
 }
-
-// ########################################################
-// Member Functions########################################
-// ########################################################
 
 void FPSManager::frameStart() {
     m_clock.restart();

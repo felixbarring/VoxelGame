@@ -4,10 +4,6 @@
 
 namespace widget {
 
-// ########################################################
-// Constructor/Destructor #################################
-// ########################################################
-
 AbstractWidget::AbstractWidget(int id, int x, int y, int width, int height)
     : m_id{id},
       m_xCoordinate{x},
@@ -16,10 +12,6 @@ AbstractWidget::AbstractWidget(int id, int x, int y, int width, int height)
       m_height{height}
 {
 }
-
-// ########################################################
-// Member Functions########################################
-// ########################################################
 
 int AbstractWidget::getId() {
 	return m_id;

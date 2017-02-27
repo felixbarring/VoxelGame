@@ -12,18 +12,10 @@
 
 namespace graphics {
 
-// ########################################################
-// Constructor/Destructor #################################
-// ########################################################
-
 CubeMap::CubeMap(texture::TextureCubeMap &texture, Camera &camera)
         : m_texture{texture},
           m_camera{camera}{
 }
-
-// ########################################################
-// Member Functions########################################
-// ########################################################
 
 void CubeMap::setRotationValue(float value) {
     m_roatationValue = value;

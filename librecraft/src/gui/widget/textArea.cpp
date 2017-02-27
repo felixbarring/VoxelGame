@@ -10,10 +10,6 @@ using namespace graphics;
 
 namespace widget {
 
-// ########################################################
-// Constructor/Destructor #################################
-// ########################################################
-
 TextArea::TextArea(int id, int x, int y, int width, int height,
 		std::function<void(int)> observer, int layer)
 		: AbstractWidget(id, x, y, width, height),
@@ -25,10 +21,6 @@ TextArea::TextArea(int id, int x, int y, int width, int height,
 			new Sprite(x, y, layer, width, height,
 					res.getTexture(config::gui_data::transparentGuiBox)));
 }
-
-// ########################################################
-// Member Functions########################################
-// ########################################################
 
 void TextArea::draw() {
 	SpriteBatcher &spriteBatcher = GraphicsManager::getInstance().getSpriteBatcher();

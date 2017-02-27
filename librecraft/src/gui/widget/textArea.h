@@ -13,17 +13,9 @@ namespace widget {
 class TextArea: public AbstractWidget {
 public:
 
-// ########################################################
-// Constructor/Destructor #################################
-// ########################################################
-
 	TextArea(int id, int x, int y, int width, int height, std::function<void(int)> observer, int layer);
 
 	virtual ~TextArea() {};
-
-// ########################################################
-// Member Functions########################################
-// ########################################################
 
 	void draw() override;
 
@@ -48,11 +40,8 @@ public:
 	 */
 	void addLine(std::string str);
 
-// ########################################################
-// Implementation #########################################
-// ########################################################
-
 private:
+
 	const unsigned m_fontHeight {20};
 
 	int m_layer;

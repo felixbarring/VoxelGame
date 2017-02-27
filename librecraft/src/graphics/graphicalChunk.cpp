@@ -12,10 +12,6 @@ using namespace config::cube_data;
 
 namespace graphics {
 
-// ############################################################################
-// Constructor/Destructor #####################################################
-// ############################################################################
-
 GraphicalChunk::GraphicalChunk(float _x, float _y, float _z,
     vector<vector<vector<Voxel>>> &data,
     vector<vector<vector<Voxel>>> *right,
@@ -32,10 +28,6 @@ GraphicalChunk::GraphicalChunk(float _x, float _y, float _z,
             _z + m_depth / 2 + 0.5f
         }
 {
-
-// ############################################################################
-// ### Generate Cubeface Data #################################################
-// ############################################################################
 
     // The face data will be one bigger in each direction.
     // This is to make it possible to compare voxels with

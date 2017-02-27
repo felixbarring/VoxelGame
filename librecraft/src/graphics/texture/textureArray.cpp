@@ -7,10 +7,6 @@ using namespace sf;
 
 namespace texture {
 
-// ########################################################
-// Constructor/Destructor #################################
-// ########################################################
-
 // TODO Clean up this class
 
 TextureArray::TextureArray(std::vector<std::string> paths, unsigned width, unsigned height) {
@@ -53,10 +49,6 @@ TextureArray::TextureArray(std::vector<std::string> paths, unsigned width, unsig
 
     glGenerateMipmap(GL_TEXTURE_2D_ARRAY);
 }
-
-// ########################################################
-// Member Functions########################################
-// ########################################################
 
 void TextureArray::bind() const {
     glBindTexture(GL_TEXTURE_2D_ARRAY, textureID);

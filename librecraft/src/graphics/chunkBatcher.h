@@ -27,19 +27,11 @@ namespace graphics {
 class ChunkBatcher {
 public:
 
-// ########################################################
-// Constructor/Destructor #################################
-// ########################################################
-
     ChunkBatcher(Camera &camera);
 
     ChunkBatcher(ChunkBatcher const&) = delete;
 
     void operator=(ChunkBatcher const&) = delete;
-
-// ########################################################
-// Member Functions########################################
-// ########################################################
 
     using VoxelMatrix = std::vector<std::vector<std::vector<Voxel>>>;
 
@@ -118,10 +110,6 @@ public:
      *        and 1 means max sunlight.
      */
     void setSunStrenght(float value);
-
-// ########################################################
-// Implementation #########################################
-// ########################################################
 
 private:
 

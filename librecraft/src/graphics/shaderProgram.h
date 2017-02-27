@@ -11,17 +11,7 @@ namespace graphics {
 class ShaderProgram {
 public:
 
-// ########################################################
-// Constructor/Destructor #################################
-// ########################################################
-
     ShaderProgram(const char *vertexSource, const char *fragmentSource,	const std::map<std::string, int> &mapUniforms);
-
-    ~ShaderProgram() {};
-
-// ########################################################
-// Member Functions########################################
-// ########################################################
 
 private:
 
@@ -50,10 +40,6 @@ public:
     void bind();
 
     void unbind();
-
-// ########################################################
-// Instance Variables #####################################
-// ########################################################
 
 private:
     GLuint programID;

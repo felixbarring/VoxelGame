@@ -3,9 +3,6 @@
 #include <algorithm>
 
 #include <algorithm>
-// ########################################################
-// Member Functions########################################
-// ########################################################
 
 void TimeCycle::update(float timePassed) {
     if (m_paused)

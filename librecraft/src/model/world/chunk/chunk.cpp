@@ -21,10 +21,6 @@ int counter = 1;
 const int maxCount = LAST_CUBE_USED_FOR_BUILDING;
 std::mutex s_mutex;
 
-// ########################################################
-// Constructor/Destructor #################################
-// ########################################################
-
 Chunk::Chunk(string worldName, int x, int z)
     : m_xLocation{x},
       m_zLocation{z},
@@ -42,10 +38,6 @@ Chunk::~Chunk() {
     for (auto graphicalChunk : m_graphicalChunksIds)
         GraphicsManager::getInstance().getChunkBatcher().removeBatch(graphicalChunk);
 }
-
-// ########################################################
-// Member Functions########################################
-// ########################################################
 
 void Chunk::create(CreationOptions& options) {
     ifstream stream;
@@ -241,10 +233,6 @@ void Chunk::storeChunk(string worldName) {
     }
     outStream.close();
 }
-
-// ############################################################################
-// Private Methods ------------------------------------------------------------
-// ############################################################################
 
 std::string Chunk::createChunkName(std::string worldName) {
     return config::dataFolder + worldName + "_" +

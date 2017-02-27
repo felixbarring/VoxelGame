@@ -8,10 +8,6 @@ namespace entity {
 class AABB {
 public:
 
-// ########################################################
-// Constructor/Destructor #################################
-// ########################################################
-
     /**
      *
      * @param xMinimum
@@ -22,10 +18,6 @@ public:
      * @param zMaximum
      */
 	AABB(double xMinimum, double xMaximum, double yMinimum, double yMaximum, double zMinimum, double zMaximum);
-
-// ########################################################
-// Member Functions########################################
-// ########################################################
 
 	/**
 	 *
@@ -63,10 +55,6 @@ public:
 	 * @return Entry time. [0, 1) is considered a collision.
 	 */
 	static float collisionTime(AABB &box1, AABB &box2, glm::vec3 &collisionNormal, glm::vec3 &velocity);
-
-// ########################################################
-// Implementation #########################################
-// ########################################################
 
 	double xMin, xMax, yMin, yMax, zMin, zMax;
 

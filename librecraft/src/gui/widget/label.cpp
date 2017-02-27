@@ -12,10 +12,6 @@ using namespace graphics;
 
 namespace widget {
 
-// ########################################################
-// Constructor/Destructor #################################
-// ########################################################
-
 Label::Label(int x, int y, int width, int height, const string &name, unsigned layer)
     : AbstractWidget(m_id, x, y, width, height)
 {
@@ -32,10 +28,6 @@ Label::Label(int x, int y, int width, int height, const string &name, unsigned l
 	    res.getTexture(config::font_data::font)});
 
 }
-
-// ########################################################
-// Member Functions########################################
-// ########################################################
 
 void Label::draw() {
     GraphicsManager::getInstance().getSpriteBatcher().addBatch(m_text);

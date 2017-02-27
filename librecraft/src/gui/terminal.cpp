@@ -12,10 +12,6 @@ using namespace widget;
 
 namespace gui {
 
-// ########################################################
-// Constructor/Destructor #################################
-// ########################################################
-
 Terminal::Terminal(vector<string> commands,	function<void(vector<string>)> commandListener)
     : m_commands(commands)
 {
@@ -70,10 +66,6 @@ Terminal::Terminal(vector<string> commands,	function<void(vector<string>)> comma
     m_textArea = make_shared<TextArea>(0, 110, 150, 580, 340, observer, 7);
     m_widgets->addWidget(m_textArea);
 }
-
-// ########################################################
-// Member Functions########################################
-// ########################################################
 
 void Terminal::update(float timePassed) {
     m_widgets->update(timePassed);

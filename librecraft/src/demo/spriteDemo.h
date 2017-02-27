@@ -36,10 +36,6 @@ namespace demo {
 class SpriteDemo : public IDemo  {
 public:
 
-// ########################################################
-// Member Functions########################################
-// ########################################################
-
 	void runDemo() override	{
 
 	    util::FPSManager fpsManager(60);

@@ -22,25 +22,17 @@ using namespace globalResources;
 
 namespace chunk {
 
-// ########################################################
-// Constructor/Destructor #################################
-// ########################################################
-
-    ChunkManager::ChunkManager() {
-        for (int x = 0; x < m_lenghtAcrossMatrix; ++x) {
-            m_chunks.push_back(vector<vector<std::shared_ptr<Chunk>>>());
-            for (int y = 0; y < config::chunk_data::NUMBER_OF_CHUNKS_Y; ++y) {
-                m_chunks[x].push_back(vector<std::shared_ptr<Chunk>>());
-                for (int z = 0; z < m_lenghtAcrossMatrix; ++z) {
-                    m_chunks[x][y].push_back(std::shared_ptr<Chunk>());
-                }
+ChunkManager::ChunkManager() {
+    for (int x = 0; x < m_lenghtAcrossMatrix; ++x) {
+        m_chunks.push_back(vector<vector<std::shared_ptr<Chunk>>>());
+        for (int y = 0; y < config::chunk_data::NUMBER_OF_CHUNKS_Y; ++y) {
+            m_chunks[x].push_back(vector<std::shared_ptr<Chunk>>());
+            for (int z = 0; z < m_lenghtAcrossMatrix; ++z) {
+                m_chunks[x][y].push_back(std::shared_ptr<Chunk>());
             }
         }
     }
-
-// ########################################################
-// Member Functions########################################
-// ########################################################
+}
 
 void ChunkManager::createWorld(CreationOptions options)
 //    : m_options{std::move(options)}

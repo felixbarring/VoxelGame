@@ -13,16 +13,6 @@ using namespace glm;
 
 namespace graphics {
 
-// ########################################################
-// Constructor/Destructor #################################
-// ########################################################
-
-// In
-
-// Uniform
-
-// Out
-
 ChunkBatcher::ChunkBatcher(Camera &camera)
     : m_camera(camera),
       m_texture(Resources::getInstance().getTextureArray(

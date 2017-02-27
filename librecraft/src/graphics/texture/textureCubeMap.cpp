@@ -16,10 +16,6 @@ static GLuint targets[] = {
     GL_TEXTURE_CUBE_MAP_NEGATIVE_Z
 };
 
-// ########################################################
-// Constructor/Destructor #################################
-// ########################################################
-
 TextureCubeMap::TextureCubeMap(const char* right, const char* left,
     const char* top, const char* bottom, const char* back,
     const char* front) {
@@ -52,10 +48,6 @@ TextureCubeMap::TextureCubeMap(const char* right, const char* left,
     }
     glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 }
-
-// ########################################################
-// Member Functions########################################
-// ########################################################
 
 void TextureCubeMap::bind() const {
     glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);

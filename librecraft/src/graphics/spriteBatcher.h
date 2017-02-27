@@ -16,29 +16,17 @@ namespace graphics {
 class SpriteBatcher {
 public:
 
-// ########################################################
-// Constructor/Destructor #################################
-// ########################################################
-
     SpriteBatcher();
 
     SpriteBatcher(SpriteBatcher const&) = delete;
 
     void operator=(SpriteBatcher const&) = delete;
 
-// ########################################################
-// Member Functions########################################
-// ########################################################
-
     void addBatch(std::shared_ptr<Sprite> batch);
 
     void draw();
 
     void setProjection(glm::mat4 projection);
-
-// ########################################################
-// Implementation #########################################
-// ########################################################
 
 private:
 

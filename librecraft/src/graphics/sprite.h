@@ -13,17 +13,9 @@ namespace graphics {
 class Sprite {
 public:
 
-// ########################################################
-// Constructor/Destructor #################################
-// ########################################################
-
     Sprite(double x, double y, unsigned layer, double width, double height, texture::Texture &texture);
 
     Sprite(double x, double y, unsigned layer, std::shared_ptr<mesh::MeshElement> mesh, texture::Texture &texture);
-
-// ########################################################
-// Member Functions########################################
-// ########################################################
 
     void draw();
 
@@ -36,10 +28,6 @@ public:
     void setLocation(float x, float y);
 
     int getLayer();
-
-// ########################################################
-// Instance Variables #####################################
-// ########################################################
 
 private:
     Transform m_transform;

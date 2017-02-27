@@ -6,14 +6,6 @@ using namespace config;
 
 namespace graphics {
 
-// ########################################################
-// Constructor/Destructor #################################
-// ########################################################
-
-// ########################################################
-// Member Functions########################################
-// ########################################################
-
 void ViewDirection::changeViewDirection(float horizontal, float vertical) {
 
     // TODO Remove the dependencies on config::input_data

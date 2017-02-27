@@ -15,18 +15,9 @@ namespace widget {
 class SelectableList: public AbstractWidget {
 public:
 
-// ########################################################
-// Constructor/Destructor #################################
-// ########################################################
-
-	SelectableList(int id, int x, int y, int width, int height,
-			std::function<void(int)> observer, unsigned layer = 0);
+	SelectableList(int id, int x, int y, int width, int height, std::function<void(int)> observer, unsigned layer = 0);
 
 	virtual ~SelectableList() {};
-
-// ########################################################
-// Member Functions########################################
-// ########################################################
 
 	void addListItem(std::string item);
 
@@ -41,10 +32,6 @@ public:
 	void draw() override;
 
 	void update(float timePassed) override;
-
-// ########################################################
-// Implementation #########################################
-// ########################################################
 
 private:
 

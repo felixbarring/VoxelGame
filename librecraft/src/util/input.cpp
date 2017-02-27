@@ -11,19 +11,11 @@ using namespace sf;
 
 namespace util {
 
-// ########################################################
-// Constructor/Destructor #################################
-// ########################################################
-
 Input::Input(float centerX, float centerY)
     : m_screenCenterX(centerX),
       m_screenCenterY(centerY)
 {
 }
-
-// ########################################################
-// Member Functions########################################
-// ########################################################
 
 void Input::createInstance(float centerX, float centerY) {
     input.reset(new Input {centerX, centerY});

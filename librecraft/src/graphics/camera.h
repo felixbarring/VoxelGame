@@ -15,9 +15,6 @@ namespace graphics {
  */
 class Camera {
 public:
-// ########################################################
-// Constructor/Destructor #################################
-// ########################################################
 
     /**
      * \brief Creates a camera with position 0 for x, y, and z.
@@ -35,11 +32,6 @@ public:
      * @param zPosition The z position of the camera.
      */
     Camera(float xPosition, float yPosition, float zPosition);
-
-// ########################################################
-// Member Functions########################################
-// ########################################################
-
 
     // TODO Document this...
 

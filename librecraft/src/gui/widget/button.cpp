@@ -17,10 +17,6 @@ using namespace util;
 
 namespace widget {
 
-// ########################################################
-// Constructor/Destructor #################################
-// ########################################################
-
 Button::Button(int id, int x, int y, int width, int height,	function<void(int)> observer, string name, int layer)
     : AbstractWidget(id, x, y, width, height),
       m_name(name)
@@ -40,10 +36,6 @@ Button::Button(int id, int x, int y, int width, int height,	function<void(int)> 
 					res.getTexture(config::font_data::font)));
 
 }
-
-// ########################################################
-// Member Functions########################################
-// ########################################################
 
 std::string Button::getName() {
 	return m_name;

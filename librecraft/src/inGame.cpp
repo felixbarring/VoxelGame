@@ -25,10 +25,6 @@ using namespace widget;
 using namespace util;
 using namespace gui;
 
-// ########################################################
-// Constructor/Destructor #################################
-// ########################################################
-
 InGame::InGame(Game *game)
     : m_game{game}
 {
@@ -200,10 +196,6 @@ InGame::InGame(Game *game)
                             res.getTexture(config::font_data::font)));
 
 }
-
-// ########################################################
-// Member Functions########################################
-// ########################################################
 
 void InGame::update(float timePassed) {
 

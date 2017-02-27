@@ -11,10 +11,6 @@ namespace util {
 
 class Input {
 
-// ########################################################
-// Constructor/Destructor #################################
-// ########################################################
-
     Input(float centerX, float centerY);
 
 public:
@@ -22,10 +18,6 @@ public:
     static void createInstance(float centerX, float centerY);
 
     static std::shared_ptr<Input> getInstance();
-
-// ########################################################
-// Member Functions########################################
-// ########################################################
 
     void updateValues();
 
@@ -36,10 +28,6 @@ public:
     void unlockMouse();
 
     void setWindow(sf::Window *window);
-
-// ########################################################
-// Implementation #########################################
-// ########################################################
 
     // Keyboard
     bool moveForwardPressed{false};

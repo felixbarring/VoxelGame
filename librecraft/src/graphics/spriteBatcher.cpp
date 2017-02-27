@@ -10,10 +10,6 @@ using namespace std;
 
 namespace graphics {
 
-// ########################################################
-// Constructor/Destructor #################################
-// ########################################################
-
 SpriteBatcher::SpriteBatcher() {
     // hard coded default value
     m_projection = glm::ortho(0.0f, 800.0f, 0.0f, 600.0f, -1.0f, 1.0f);
@@ -55,9 +51,6 @@ SpriteBatcher::SpriteBatcher() {
 
 }
 
-// ########################################################
-// Member Functions########################################
-// ########################################################
 void SpriteBatcher::addBatch(shared_ptr<Sprite> batch) {
     m_batches.push_back(batch);
 }

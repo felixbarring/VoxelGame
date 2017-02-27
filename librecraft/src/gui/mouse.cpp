@@ -12,13 +12,7 @@
 using namespace std;
 using namespace graphics;
 
-// TODO Change namespace to gui
-
 namespace gui {
-
-// ########################################################
-// Constructor/Destructor #################################
-// ########################################################
 
 Mouse::Mouse() {
     m_input = util::Input::getInstance();
@@ -26,10 +20,6 @@ Mouse::Mouse() {
     m_sprite.reset(new Sprite(380, 280, 100, m_width, m_height, Resources::getInstance().getTexture(
         config::gui_data::mouse)));
 }
-
-// ########################################################
-// Member Functions########################################
-// ########################################################
 
 void Mouse::update() {
     double y = m_input->mouseYPosition - config::graphics_data::windowHeight;

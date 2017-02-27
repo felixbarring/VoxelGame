@@ -16,10 +16,6 @@ using namespace util;
 
 namespace widget {
 
-// ########################################################
-// Constructor/Destructor #################################
-// ########################################################
-
 Slider::Slider(int id, int x, int y, int width, int height,	std::function<void(int)> observer, int layer)
     : AbstractWidget(id, x, y, width, height)
 {
@@ -34,10 +30,6 @@ Slider::Slider(int id, int x, int y, int width, int height,	std::function<void(i
 							config::gui_data::sliderKnob)));
 
 }
-
-// ########################################################
-// Member Functions########################################
-// ########################################################
 
 float Slider::getValue() {
 	return (m_knobPosition - this->m_xCoordinate) / (m_width - m_knobWidth);

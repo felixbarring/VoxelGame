@@ -23,15 +23,7 @@ namespace graphics {
 class CubeBatcher {
 public:
 
-// ########################################################
-// Constructor/Destructor #################################
-// ########################################################
-
     CubeBatcher(Camera &camera);
-
-// ########################################################
-// Member Functions########################################
-// ########################################################
 
     /**
      * \brief Adds a cube to be drawn in the next draw call. The batch will only be drawn in the next draw call.
@@ -56,10 +48,6 @@ public:
      *        and 1 means max sunlight.
      */
     void setSunStrenght(float value);
-
-// ########################################################
-// Instance Variables #####################################
-// ########################################################
 
 private:
 

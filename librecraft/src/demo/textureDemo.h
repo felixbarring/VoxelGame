@@ -29,10 +29,6 @@ namespace demo
 class TextureDemo : public IDemo {
 public:
 
-// ########################################################
-// Member Functions########################################
-// ########################################################
-
 	void runDemo() override
 	{
 

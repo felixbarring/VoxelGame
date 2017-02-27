@@ -31,10 +31,6 @@ namespace demo {
 class FontDemo : public IDemo {
 public:
 
-// ########################################################
-// Member Functions########################################
-// ########################################################
-
 	void runDemo() override
 	{
 	    util::FPSManager fpsManager(60);

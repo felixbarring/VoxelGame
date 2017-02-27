@@ -2,10 +2,6 @@
 
 namespace graphics {
 
-// ########################################################
-// Constructor/Destructor #################################
-// ########################################################
-
 Camera::Camera()
     : Camera::Camera(0.0, 0.0, 0.0)
 {
@@ -21,10 +17,6 @@ Camera::Camera(glm::vec3 vec)
 {
     setFov(config::graphics_data::fov);
 }
-
-// ########################################################
-// Member Functions########################################
-// ########################################################
 
 void Camera::setViewMatrix(glm::mat4 value) {
     this->m_view = value;

@@ -11,10 +11,6 @@ namespace graphics {
 
 // TODO Remove printf
 
-// ########################################################
-// Constructor/Destructor #################################
-// ########################################################
-
 ShaderProgram::ShaderProgram(const char *vertexSource, const char *fragmentSource,
         const std::map<std::string, int> &attributes) {
     // Create the shaders
@@ -112,10 +108,6 @@ ShaderProgram::ShaderProgram(const char *vertexSource, const char *fragmentSourc
     glDeleteShader(fragmentID);
 
 }
-
-// ########################################################
-// Member Functions #######################################
-// ########################################################
 
 GLuint ShaderProgram::createVertexShader(const char *source) {
     return createShader(GL_VERTEX_SHADER, source);

@@ -18,12 +18,10 @@ namespace graphics {
 class Resources {
 private:
 
-// ########################################################
-// Constructor/Destructor #################################
-// ########################################################
-
     Resources() {};
+
     Resources(Resources const&) = delete;
+
     void operator=(Resources const&) = delete;
 
 public:
@@ -32,10 +30,6 @@ public:
         static Resources instance;
         return instance;
     }
-
-// ########################################################
-// Member Functions########################################
-// ########################################################
 
     texture::Texture& getTexture(const std::string &path);
 

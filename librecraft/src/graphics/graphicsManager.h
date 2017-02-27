@@ -17,9 +17,6 @@ namespace graphics {
  */
 class GraphicsManager {
 private:
-// ########################################################
-// Constructor/Destructor #################################
-// ########################################################
 
     GraphicsManager();
 
@@ -28,10 +25,6 @@ private:
     void operator=(GraphicsManager const&) = delete;
 
 public:
-
-// ########################################################
-// Member Functions########################################
-// ########################################################
 
     /**
      * \brief Returns the single instance of this class
@@ -84,10 +77,6 @@ public:
      * @return
      */
     CubeMap& getSkyMap();
-
-// ########################################################
-// Implementation #########################################
-// ########################################################
 
 private:
     Camera m_playerCamera{};

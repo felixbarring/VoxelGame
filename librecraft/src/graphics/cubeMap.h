@@ -9,23 +9,12 @@ namespace graphics {
 class CubeMap {
 public:
 
-// ########################################################
-// Constructor/Destructor #################################
-// ########################################################
-
     CubeMap(texture::TextureCubeMap &texture, Camera &camera);
-
-// ########################################################
-// Member Functions########################################
-// ########################################################
 
     void setRotationValue(float value);
 
     void draw(double trancparency);
 
-// ########################################################
-// Instance Variables #####################################
-// ########################################################
 private:
 
     texture::TextureCubeMap m_texture;

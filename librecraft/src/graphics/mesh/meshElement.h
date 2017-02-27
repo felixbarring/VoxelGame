@@ -11,10 +11,6 @@ namespace mesh {
 class MeshElement: public virtual IMesh {
 public:
 
-// ########################################################
-// Constructor/Destructor #################################
-// ########################################################
-
 	MeshElement(
         const std::vector<float> &vbd1, int vbd1Format,
         const std::vector<short> &elementData);
@@ -39,16 +35,9 @@ public:
 
 	virtual ~MeshElement();
 
-// ########################################################
-// Member Functions########################################
-// ########################################################
-
     void draw() override;
 
-
-// ########################################################
-// Instance Variables #####################################
-// ########################################################
+private:
 
     GLuint m_VAO;
     GLuint m_EBO;

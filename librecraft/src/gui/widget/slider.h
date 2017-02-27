@@ -1,11 +1,3 @@
-/**
- *  \file [slider.h]
- *  \brief A slider can be used to input values in a gui
- *  \author Felix Bärring
- *
- *  Copyright (c) 2015, Felix Bärring. All rights reserved.
- */
-
 #ifndef SRC_GUI_WIDGET_SLIDER_H_
 #define SRC_GUI_WIDGET_SLIDER_H_
 
@@ -24,27 +16,15 @@ namespace widget {
 class Slider: public AbstractWidget {
 public:
 
-// ########################################################
-// Constructor/Destructor #################################
-// ########################################################
-
 	Slider(int id, int x, int y, int width, int height, std::function<void(int)> observer, int layer = 0);
 
 	virtual ~Slider() {};
-
-// ########################################################
-// Member Functions########################################
-// ########################################################
 
 	float getValue();
 
 	void draw() override;
 
 	void update(float timePassed) override;
-
-// ########################################################
-// Implementation #########################################
-// ########################################################
 
 private:
 

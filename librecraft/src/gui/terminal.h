@@ -29,10 +29,6 @@ namespace gui {
 class Terminal {
 public:
 
-// ########################################################
-// Constructor/Destructor #################################
-// ########################################################
-
     /**
      * \brief Constructs a Terminal.
      *
@@ -41,10 +37,6 @@ public:
      *                        widget enter button.
      */
     Terminal(std::vector<std::string> commands,	std::function<void(std::vector<std::string>)> commandListener);
-
-// ########################################################
-// Member Functions########################################
-// ########################################################
 
     /**
      * \brief Updates the terminal.
@@ -71,10 +63,6 @@ public:
      * @param str The string that shall be added.
      */
     void addLine(std::string str);
-
-// ########################################################
-// Implementation #########################################
-// ########################################################
 
 private:
 

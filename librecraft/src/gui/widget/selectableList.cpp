@@ -1,10 +1,3 @@
-/*
- * selectableList.cpp
- *
- *  Created on: Jan 31, 2016
- *      Author: felix
- */
-
 #include "selectableList.h"
 
 #include "../../graphics/spriteBatcher.h"

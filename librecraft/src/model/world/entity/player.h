@@ -18,14 +18,6 @@ namespace entity {
 class Player: public IEntity {
 public:
 
-// ########################################################
-// Constructor/Destructor #################################
-// ########################################################
-
-// ########################################################
-// Member Functions########################################
-// ########################################################
-
     void update(float timePassed) override;
 
     void setLocation(float x, float y, float z);
@@ -37,10 +29,6 @@ public:
     glm::vec3 getLastSelectedCube();
 
     int getBuildingCube() { return m_cubeUsedForBuilding; }
-
-// ########################################################
-// Implementation #########################################
-// ########################################################
 
 private:
 

@@ -7,10 +7,6 @@ using namespace sf;
 
 namespace texture {
 
-// ########################################################
-// Constructor/Destructor #################################
-// ########################################################
-
 Texture::Texture(const char *path) {
     glGenTextures(1, &textureID);
     glBindTexture(GL_TEXTURE_2D, textureID);
@@ -35,10 +31,6 @@ Texture::Texture(const char *path) {
     glGenerateMipmap(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, 0);
 }
-
-// ########################################################
-// Member Functions########################################
-// ########################################################
 
 void Texture::bind() const {
     glBindTexture(GL_TEXTURE_2D, textureID);

@@ -1,10 +1,3 @@
-/**
- *  \file [abstractWidget.h]
- *  \author Felix Bärring
- *
- *  Copyright (c) 2015, Felix Bärring. All rights reserved.
- */
-
 #ifndef SRC_GUI_WIDGET_ABSTRACTWIDGET_H_
 #define SRC_GUI_WIDGET_ABSTRACTWIDGET_H_
 
@@ -32,10 +25,6 @@ namespace widget {
  */
 class AbstractWidget: public IWidget {
 public:
-
-// ########################################################
-// Constructor/Destructor #################################
-// ########################################################
 
 	/**
 	 * \brief Constructs a AbstractWidget.

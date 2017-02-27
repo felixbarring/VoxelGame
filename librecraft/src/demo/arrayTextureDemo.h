@@ -30,10 +30,6 @@ namespace demo
 class ArrayTextureDemo : public IDemo {
 public:
 
-// ########################################################
-// Member Functions########################################
-// ########################################################
-
 	void runDemo() override {
 	    util::FPSManager fpsManager(60);
 

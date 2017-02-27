@@ -10,24 +10,12 @@ namespace texture {
 class TextureCubeMap {
 public:
 
-// ########################################################
-// Constructor/Destructor #################################
-// ########################################################
-
     // TODO Take all six paths as arguments!
 
     TextureCubeMap(const char* right, const char* left, const char* top,
             const char* bottom, const char* back, const char* front);
 
-// ########################################################
-// Member Functions########################################
-// ########################################################
-
 	void bind() const;
-
-// ########################################################
-// Implementation #########################################
-// ########################################################
 
 private:
     GLuint textureID;

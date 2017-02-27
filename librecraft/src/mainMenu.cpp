@@ -7,16 +7,11 @@
 #include "config/data.h"
 #include "graphics/graphicsManager.h"
 #include "gui/terminal.h"
-#include "gui/widget/checkButton.h"
 #include "util/worldMeta.h"
 
 using namespace std;
 using namespace widget;
 using namespace gui;
-
-// ########################################################
-// Constructor/Destructor #################################
-// ########################################################
 
 MainMenu::MainMenu(Game *game)
     : m_game(game)
@@ -386,10 +381,6 @@ MainMenu::MainMenu(Game *game)
 
     m_activeWidgetGroup = m_mainWidgetGroup;
 }
-
-// ########################################################
-// Member Functions########################################
-// ########################################################
 
 void MainMenu::update(float timePassed) {
     shared_ptr<util::Input> input = util::Input::getInstance();

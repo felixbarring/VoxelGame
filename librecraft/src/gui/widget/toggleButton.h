@@ -19,18 +19,10 @@ public:
         ReadioButton//!< ReadioButton visuals representing a circle that can be check and with text to the right
     };
 
-// ########################################################
-// Constructor/Destructor #################################
-// ########################################################
-
     ToggleButton(int id, int x, int y, int width, int height, std::function<void(int)> observer,
         const std::string &name, int layer = 0, Skin skin = Skin::Regular);
 
     virtual ~ToggleButton() {};
-
-// ########################################################
-// Member Functions########################################
-// ########################################################
 
     bool isToggled();
 
@@ -43,10 +35,6 @@ public:
     void draw() override;
 
     void update(float timePassed) override;
-
-// ########################################################
-// Implementation #########################################
-// ########################################################
 
 private:
 
