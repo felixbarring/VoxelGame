@@ -39,6 +39,7 @@ using graphics::CubeBatcher;
 using graphics::FontMeshBuilder;
 using graphics::Resources;
 using graphics::Sprite;
+using graphics::GraphicsManager;
 using sf::Window;
 using util::FPSManager;
 
@@ -54,22 +55,22 @@ public:
     {
         auto &res = Resources::getInstance();
         FontMeshBuilder &fontMeshBuilder = res.getFontMeshBuilder(
-                config::font_data::fontLayout,
-                config::font_data::fontAtlasWidth,
-                config::font_data::fontAtlasHeight);
+            config::font_data::fontLayout,
+            config::font_data::fontAtlasWidth,
+            config::font_data::fontAtlasHeight);
 
-        m_sprites.push_back(shared_ptr<Sprite> {new Sprite(300, 300, 10,
-                            fontMeshBuilder.buldMeshForString("Loading", 80),
-                            res.getTexture(config::font_data::font))});
-        m_sprites.push_back(shared_ptr<Sprite> {new Sprite(300, 300, 10,
-                            fontMeshBuilder.buldMeshForString("Loading.", 80),
-                            res.getTexture(config::font_data::font))});
-        m_sprites.push_back(shared_ptr<Sprite> {new Sprite(300, 300, 10,
-                            fontMeshBuilder.buldMeshForString("Loading..", 80),
-                            res.getTexture(config::font_data::font))});
-        m_sprites.push_back(shared_ptr<Sprite> {new Sprite(300, 300, 10,
-                            fontMeshBuilder.buldMeshForString("Loading...", 80),
-                            res.getTexture(config::font_data::font))});
+        m_sprites.push_back(make_shared<Sprite>(300, 300, 10,
+            fontMeshBuilder.buldMeshForString("Loading", 80),
+            res.getTexture(config::font_data::font)));
+        m_sprites.push_back(make_shared<Sprite>(300, 300, 10,
+            fontMeshBuilder.buldMeshForString("Loading.", 80),
+            res.getTexture(config::font_data::font)));
+        m_sprites.push_back(make_shared<Sprite>(300, 300, 10,
+            fontMeshBuilder.buldMeshForString("Loading..", 80),
+            res.getTexture(config::font_data::font)));
+        m_sprites.push_back(make_shared<Sprite>(300, 300, 10,
+            fontMeshBuilder.buldMeshForString("Loading...", 80),
+            res.getTexture(config::font_data::font)));
     }
 
     void update()
@@ -85,8 +86,8 @@ public:
                 m_spriteCounter = 0;
         }
 
-        graphics::GraphicsManager::getInstance().getSpriteBatcher().addBatch(m_sprites[m_spriteCounter]);
-        graphics::GraphicsManager::getInstance().getSpriteBatcher().draw();
+        GraphicsManager::getInstance().getSpriteBatcher().addBatch(m_sprites[m_spriteCounter]);
+        GraphicsManager::getInstance().getSpriteBatcher().draw();
 
         m_fpsManager.sync();
         m_frameTime += m_fpsManager.frameTime();
@@ -100,7 +101,7 @@ private:
     sf::Window *m_window;
 
     unsigned m_spriteCounter{0};
-    const double m_timePerFrame{0.3};
+    const double m_timePerFrame{0.2};
     double m_frameTime{0.0};
 
 };
@@ -111,10 +112,10 @@ void Game::run() {
     // TODO Play lul
 //    SoundPlayer::getInstance().playMusic(config::music::menuMusic);
 
-    int WIDTH = config::graphics_data::windowWidth;
-    int HEIGHT = config::graphics_data::windowHeight;
+    const int width = config::graphics_data::windowWidth;
+    const int height = config::graphics_data::windowHeight;
 
-    Input::createInstance(WIDTH / 2.0, HEIGHT / 2.0);
+    Input::createInstance(width / 2.0, height / 2.0);
 
     // create the window
     sf::ContextSettings settings;
@@ -124,7 +125,8 @@ void Game::run() {
     settings.majorVersion = 3;
     settings.minorVersion = 1;
 
-    window = new sf::Window{sf::VideoMode(WIDTH, HEIGHT), "Voxel Game", sf::Style::Default, settings};
+    string windowTitle = "Voxel Game";
+    window = new sf::Window{sf::VideoMode(width, height), windowTitle, sf::Style::Default, settings};
     window->setMouseCursorVisible(false);
 
 //    window->setVerticalSyncEnabled(true);
@@ -136,7 +138,7 @@ void Game::run() {
     if (glewInit() != GLEW_OK)
         cout << "Failed to initialize GLEW\n";
 
-    glViewport(0, 0, WIDTH, HEIGHT);
+    glViewport(0, 0, width, height);
 
     m_mainMenu.reset(new MainMenu(this));
     m_currentState = m_mainMenu;
