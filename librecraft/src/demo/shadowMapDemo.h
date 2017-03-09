@@ -265,27 +265,27 @@ public:
 
 
 
-//      shadowDepthProgram->bind();
-//
-//      modelView = lightCamera.getViewMatrix() * floorTransform.getMatrix();
-//      modelViewProjection = lightCamera.getProjectionMatrix() * modelView;
-//
-////      glBindFramebuffer(GL_FRAMEBUFFER, shadowFB);
-//
-//      shadowDepthProgram->setUniformMatrix4f(mvp, modelViewProjection);
-//
-//      mesh->draw();
-//
-//      transform1.rotateX(0.01);
-//      modelView = lightCamera.getViewMatrix() * transform1.getMatrix();
-//      modelViewProjection = lightCamera.getProjectionMatrix() * modelView;
-//
-//      shadowDepthProgram->setUniformMatrix4f(mvp, modelViewProjection);
-//      cube1.draw();
-//
-//      shadowDepthProgram->unbind();
+      shadowDepthProgram->bind();
 
-      // TODO Draw with the from the player cameras perspective.
+      modelView = lightCamera.getViewMatrix() * floorTransform.getMatrix();
+      modelViewProjection = lightCamera.getProjectionMatrix() * modelView;
+
+      glBindFramebuffer(GL_FRAMEBUFFER, shadowFB);
+
+      shadowDepthProgram->setUniformMatrix4f(mvp, modelViewProjection);
+
+      mesh->draw();
+
+      transform1.rotateX(0.01);
+      modelView = lightCamera.getViewMatrix() * transform1.getMatrix();
+      modelViewProjection = lightCamera.getProjectionMatrix() * modelView;
+
+      shadowDepthProgram->setUniformMatrix4f(mvp, modelViewProjection);
+      cube1.draw();
+
+      shadowDepthProgram->unbind();
+
+//       TODO Draw with the from the player cameras perspective.
 
 
 
@@ -303,7 +303,7 @@ public:
           Input::getInstance()->mouseYMovement);
 
       sceneCamera.updateView(sceneCameraLocation,
-          viewDirection.getViewDirection(), viewDirection.getUpDirection());
+          viewDirection.getViewDirection(), -viewDirection.getUpDirection());
 
       modelView = sceneCamera.getViewMatrix() * floorTransform.getMatrix();
       modelViewProjection = sceneCamera.getProjectionMatrix() * modelView;
