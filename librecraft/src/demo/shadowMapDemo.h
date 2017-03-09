@@ -1,4 +1,3 @@
-
 #ifndef SRC_DEMO_SHADOWMAPDEMO_H_
 #define SRC_DEMO_SHADOWMAPDEMO_H_
 
@@ -11,305 +10,328 @@
 #include <vector>
 
 #include "../graphics/resources.h"
+#include "../graphics/camera.h"
 
 using graphics::Camera;
 using namespace graphics;
 
-#include "../graphics/camera.h"
-
 namespace demo {
 
-class ShadowMapDemo : public IDemo {
+class ShadowMapDemo: public IDemo {
 public:
 
-    void runDemo() override {
+  void runDemo() override {
 
-        util::FPSManager fpsManager(100);
-        int WIDTH = 800;
-        int HEIGHT = 600;
+    util::FPSManager fpsManager(100);
+    const int width{800};
+    const int height{600};
 
-        util::Input::createInstance(WIDTH / 2.0, HEIGHT / 2.0);
+    util::Input::createInstance(width / 2.0, height / 2.0);
 
-        // create the window
-        sf::ContextSettings settings;
-        settings.depthBits = 24;
-        settings.stencilBits = 8;
-        settings.antialiasingLevel = 4;
-        settings.majorVersion = 3;
-        settings.minorVersion = 1;
+    // create the window
+    sf::ContextSettings settings;
+    settings.depthBits = 24;
+    settings.stencilBits = 8;
+    settings.antialiasingLevel = 4;
+    settings.majorVersion = 3;
+    settings.minorVersion = 1;
 
-        sf::Window window(sf::VideoMode(800, 600), "Cube Demo",
-                sf::Style::Default, settings);
+    sf::Window window(sf::VideoMode(width, height), "Cube Demo",
+        sf::Style::Default, settings);
 
-        util::Input::getInstance()->setWindow(&window);
+    util::Input::getInstance()->setWindow(&window);
 
-        glewExperimental = true;
-        if (glewInit() != GLEW_OK)
-            std::cout << "Failed to initialize GLEW\n";
+    glewExperimental = true;
+    if (glewInit() != GLEW_OK)
+      std::cout << "Failed to initialize GLEW\n";
 
-        glViewport(0, 0, WIDTH, HEIGHT);
-        glClearColor(0.2f, 0.22f, 0.2f, 1.0f);
+    glViewport(0, 0, width, height);
+    glClearColor(0.2f, 0.22f, 0.2f, 1.0f);
 
-        glEnable(GL_DEPTH_TEST);
-        glDepthFunc(GL_LESS);
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
 
 
-        // In
-        const string positionIn = "positionIn";
-        const string normalIn = "normalIn";
-        const string texCoordIn = "texCoordIn";
 
-        // Uniform
-        const string lightValue = "lightValue";
-        const string sunStrength = "sunStrenght";
-        const string mvp = "modelViewProjection";
 
-        const string arrayTexture = "arrayTexture";
 
-        // Out
-        const string faceNormalOut = "faceNormal";
-        const string texCoordOut = "texCoord";
-        const string lightOut = "light";
 
-        const string colorOut = "color";
+    // In
+    const string positionIn = "positionIn";
+    const string normalIn = "normalIn";
+    const string texCoordIn = "texCoordIn";
 
-        string vertex =
-            "#version 330 core \n"
+    // Uniform
+    const string lightValue = "lightValue";
+    const string sunStrength = "sunStrenght";
+    const string mvp = "modelViewProjection";
 
-            "in vec3 " + positionIn + "; \n"
-            "in vec3 " + normalIn + "; \n"
-            "in vec3 " + texCoordIn + "; \n"
+    const string arrayTexture = "arrayTexture";
 
-            "uniform mat4 " + mvp + "; \n"
+    // Out
+    const string faceNormalOut = "faceNormal";
+    const string texCoordOut = "texCoord";
+    const string lightOut = "light";
 
-            "out vec3 " + texCoordOut + "; \n"
+    const string colorOut = "color";
 
-            "void main(){ \n"
-            "  " + texCoordOut + " = " + texCoordIn + "; \n"
-            "  gl_Position = " + mvp + " * vec4(" + positionIn + ", 1); \n"
-            "} \n";
+    string vertex = "#version 330 core \n"
 
-        string fragment =
-            "#version 330 core \n"
+        "in vec3 " + positionIn + "; \n"
+        "in vec3 " + normalIn + "; \n"
+        "in vec3 " + texCoordIn + "; \n"
 
-            "in vec3 " + texCoordOut + "; \n"
+        "uniform mat4 " + mvp + "; \n"
 
-            "uniform sampler2DArray " + arrayTexture + "; \n"
+        "out vec3 " + texCoordOut + "; \n"
 
-            "out vec4 " + colorOut + "; \n"
+        "void main(){ \n"
+        "  " + texCoordOut + " = " + texCoordIn + "; \n"
+        "  gl_Position = " + mvp + " * vec4(" + positionIn + ", 1); \n"
+        "} \n";
 
-            "void main(){ \n"
-            "  " + colorOut + " = texture(" + arrayTexture + ", " + texCoordOut + "); \n"
+    string fragment = "#version 330 core \n"
+
+        "in vec3 " + texCoordOut + "; \n"
+        "uniform sampler2DArray " + arrayTexture + "; \n"
+        "out vec4 " + colorOut + "; \n"
+        "void main(){ \n"
+        "  " + colorOut + " = texture(" + arrayTexture + ", " + texCoordOut
+        + "); \n"
             "  " + colorOut + ".w = 1.0; \n"
             "} \n";
 
-        map<string, int> attributesMap{
-            pair<string, int>(positionIn, 0),
-            pair<string, int>(normalIn, 1),
-            pair<string, int>(texCoordIn, 2)
-        };
+    map<string, int> attributesMap{pair<string, int>(positionIn, 0), pair<
+        string, int>(normalIn, 1), pair<string, int>(texCoordIn, 2)};
 
-        std::unique_ptr<ShaderProgram> simpleProgram = make_unique<ShaderProgram>(vertex.c_str(), fragment.c_str(),
-            attributesMap);
+    std::unique_ptr<ShaderProgram> simpleProgram = make_unique<ShaderProgram>
+      (vertex.c_str(), fragment.c_str(), attributesMap);
 
-        string shadowDepthVert =
-            "#version 330 core \n"
 
-            "in vec3 " + positionIn + "; \n"
-            "in vec3 " + normalIn + "; \n"
-            "in vec3 " + texCoordIn + "; \n"
 
-            "uniform mat4 " + mvp + "; \n"
+    string shadowDepthVert = "#version 330 core \n"
 
-            "void main() \n"
-            "{ \n"
-            "  gl_Position = " + mvp + " * vec4(" + positionIn + ", 1); \n"
-            "} \n";
+        "in vec3 " + positionIn + "; \n"
+        "in vec3 " + normalIn + "; \n"
+        "in vec3 " + texCoordIn + "; \n"
 
-        string shadowDepthFrag =
-            "#version 330 core \n"
+        "uniform mat4 " + mvp + "; \n"
 
-            "out vec4 " + colorOut + "; \n"
-            "void main() { \n"
-            "  " + colorOut + " = vec4(gl_FragCoord.z); \n"
-            "} \n";
+        "void main() \n"
+        "{ \n"
+        "  gl_Position = " + mvp + " * vec4(" + positionIn + ", 1); \n"
+        "} \n";
 
-        std::unique_ptr<ShaderProgram> shadowDepth = make_unique<ShaderProgram>(shadowDepthVert.c_str(), shadowDepthFrag.c_str(),
-                attributesMap);
+    string shadowDepthFrag = "#version 330 core \n"
 
-        texture::TextureArray texture{graphics::Resources::getInstance().getTextureArray(
-            config::cube_data::textures,
-            config::cube_data::TEXTURE_WIDTH,
+        "out vec4 " + colorOut + "; \n"
+        "void main() { \n"
+        "  " + colorOut + " = vec4(gl_FragCoord.z); \n"
+        "} \n";
+
+    std::unique_ptr<ShaderProgram> shadowDepthProgram =
+        make_unique<ShaderProgram>(shadowDepthVert.c_str(),
+            shadowDepthFrag.c_str(), attributesMap);
+
+
+
+
+
+    texture::TextureArray texture{
+        graphics::Resources::getInstance().getTextureArray(
+            config::cube_data::textures, config::cube_data::TEXTURE_WIDTH,
             config::cube_data::TEXTURE_HEIGHT)};
 
-        float aspectRatio = WIDTH / HEIGHT;
-        glm::mat4 projection = glm::perspective(80.0f, aspectRatio, 0.1f, 100.0f);
-
-        glm::mat4 cameraMatrix = glm::lookAt(
-            glm::vec3(0, 0.1, 2), // Camera location
-            glm::vec3(0, 0, 0),   // Look at
-            glm::vec3(0, 0, 1)    // Head is up
-        );
 
 
-        glm::vec3 sceneCameraLocation{10, 10, 0};
-        Camera sceneCamera{};
-        sceneCamera.setViewMatrix(std::move(cameraMatrix));
-        sceneCamera.setProjectionMatrix(std::move(projection));
+
+    float aspectRatio = width / height;
+    glm::mat4 projection = glm::perspective(80.0f, aspectRatio, 0.1f, 100.0f);
+
+    glm::vec3 sceneCameraLocation{0, 10, 0};
+    Camera sceneCamera{};
+//    sceneCamera.setViewMatrix(std::move(cameraMatrix));
+    sceneCamera.setProjectionMatrix(std::move(projection));
 
 
-        glm::vec3 lightCameraLocation{0, 10, 0};
-        Camera lightCamera{lightCameraLocation};
-        const float dimension = 5.0f;
-        glm::mat4 kek = glm::ortho(-dimension, dimension, -dimension, dimension, 0.01f, 20.0f);
-        lightCamera.setProjectionMatrix(kek);
 
-        int someCubeType{1}; // TODO replace with constant
-        TexturedCube cube1{0.0, 0.0, 0.0, someCubeType};
-        graphics::Transform transform1{0, 0, -1.0f};
-
-        float size = 5.0f;
-
-        vector<GLfloat> vertexData {
-            -size, size, size, // 0
-            size, size, size, // 1
-            size, size, -size, // 2
-            -size, size, -size, // 3
-        };
-
-        vector<GLfloat> normals {
-            0.0f, 1.0f, 0.0f,
-            0.0f, 1.0f, 0.0f,
-            0.0f, 1.0f, 0.0f,
-            0.0f, 1.0f, 0.0f,
-        };
-
-        GLfloat sideTexture = 1.0f; //BLOCK_TEXTURES[id][SIDE_TEXTURE];
-        GLfloat topTexture = 1.0f; //BLOCK_TEXTURES[id][TOP_TEXTURE];
-        GLfloat bottomTexture = 1.0f; //BLOCK_TEXTURES[id][BOTTOM_TEXTURE];
-
-        vector<GLfloat> UV {
-            0.0f, 0.0f, topTexture,
-            1.0f, 0.0f, topTexture,
-            1.0f, 1.0f, topTexture,
-            0.0f, 1.0f, topTexture,
-
-        };
-
-        vector<short> elementData{
-            0, 1, 2, 0, 2, 3,
-        };
-
-        std::shared_ptr<mesh::MeshElement> mesh;
-        mesh.reset(new mesh::MeshElement(vertexData, 3, normals, 3, UV, 3, elementData));
-        graphics::Transform floorTransform{0, -7, 0};
-        graphics::ViewDirection viewDirection;
+    glm::vec3 lightCameraLocation{0, 10, 0};
+    Camera lightCamera{lightCameraLocation};
+    const float dimension = 5.0f;
+    glm::mat4 kek = glm::ortho(-dimension, dimension, -dimension, dimension,
+        0.01f, 20.0f);
+    lightCamera.setProjectionMatrix(kek);
+    lightCamera.updateView(lightCameraLocation, glm::vec3(0.0f, -1.0f, 0.0f),
+        glm::vec3(0.0f, 0.0f, 1.0f));
 
 
-        // Create framebuffer and texture to draw to
-        GLuint shadowFB;
-        glGenFramebuffers(1, &shadowFB);
+    int someCubeType{1}; // TODO replace with constant
+    TexturedCube cube1{0.0, 0.0, 0.0, someCubeType};
+    graphics::Transform transform1{0.0, 0.0, 0.0};
 
-        GLuint depthMap;
-        glGenTextures(1, &depthMap);
-        glBindTexture(GL_TEXTURE_2D, depthMap);
+    float size = 5.0f;
 
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT,
-            WIDTH, HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
+    vector<GLfloat> vertexData{
+      -size, size, size, // 0
+      size, size, size, // 1
+      size, size, -size, // 2
+      -size, size, -size, // 3
+    };
 
-        glBindFramebuffer(GL_FRAMEBUFFER, shadowFB);
-        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMap, 0);
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    vector<GLfloat> normals{
+        0.0f, 1.0f, 0.0f,
+        0.0f, 1.0f, 0.0f,
+        0.0f, 1.0f, 0.0f,
+        0.0f, 1.0f, 0.0f,
+    };
+
+    GLfloat sideTexture = 1.0f; //BLOCK_TEXTURES[id][SIDE_TEXTURE];
+    GLfloat topTexture = 1.0f; //BLOCK_TEXTURES[id][TOP_TEXTURE];
+    GLfloat bottomTexture = 1.0f; //BLOCK_TEXTURES[id][BOTTOM_TEXTURE];
+
+    vector<GLfloat> UV{
+      0.0f, 0.0f, topTexture,
+      1.0f, 0.0f, topTexture,
+      1.0f, 1.0f, topTexture,
+      0.0f, 1.0f, topTexture,
+    };
+
+    vector<short> elementData{0, 1, 2, 0, 2, 3 };
+
+    std::shared_ptr<mesh::MeshElement> mesh;
+    mesh.reset(new mesh::MeshElement(vertexData, 3, normals, 3, UV, 3,
+                                     elementData));
+    graphics::Transform floorTransform{0, -7, 0};
+    graphics::ViewDirection viewDirection;
 
 
-        while (window.isOpen()) {
 
-            glm::mat4 modelView;
-            glm::mat4 modelViewProjection;
+    // Create framebuffer and texture to draw to
+    GLuint shadowFB;
+    glGenFramebuffers(1, &shadowFB);
 
-            fpsManager.frameStart();
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    GLuint depthMap;
+    glGenTextures(1, &depthMap);
+    glBindTexture(GL_TEXTURE_2D, depthMap);
 
-            Input::getInstance()->updateValues();
-            Input::getInstance()->lockMouse();
-            if (Input::getInstance()->escapeKeyPressed)
-                break;
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, width, height, 0,
+    GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
 
-            if (Input::getInstance()->moveForwardActive)
-                sceneCameraLocation += viewDirection.getViewDirection();
+    glBindFramebuffer(GL_FRAMEBUFFER, shadowFB);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D,
+        depthMap, 0);
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-            shadowDepth->bind();
 
-            glEnable (GL_CULL_FACE);
-            glEnable(GL_DEPTH_TEST);
 
-            Input::getInstance()->updateValues();
+    while (window.isOpen()) {
 
-            if (Input::getInstance()->escapeKeyPressed)
-                break;
 
-            lightCamera.updateView(lightCameraLocation, glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 
-            modelView = lightCamera.getViewMatrix() * floorTransform.getMatrix();
-            modelViewProjection = lightCamera.getProjectionMatrix() * modelView;
 
-            glBindFramebuffer(GL_FRAMEBUFFER, shadowFB);
+      Input::getInstance()->updateValues();
+      Input::getInstance()->lockMouse();
 
-            shadowDepth->setUniformMatrix4f(mvp, modelViewProjection);
+      if (Input::getInstance()->escapeKeyActive)
+        return;
 
-            mesh->draw();
+      if (Input::getInstance()->moveForwardActive)
+        sceneCameraLocation += viewDirection.getViewDirection();
 
-            transform1.rotateX(0.01);
-            modelView = lightCamera.getViewMatrix() * transform1.getMatrix();
-            modelViewProjection = lightCamera.getProjectionMatrix() * modelView;
+      if (Input::getInstance()->moveBackwardActive)
+        sceneCameraLocation -= viewDirection.getViewDirection();
 
-            shadowDepth->setUniformMatrix4f(mvp, modelViewProjection);
-            cube1.draw();
+      if (Input::getInstance()->moveLeftActive)
+        sceneCameraLocation -= -viewDirection.getRightDirection();
 
-            shadowDepth->unbind();
+      if (Input::getInstance()->moveRightActive)
+        sceneCameraLocation -= viewDirection.getRightDirection();
 
 
 
 
 
-            // TODO Draw with the from the player cameras perspective.
-
-            simpleProgram->bind();
-            glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 
-            glActiveTexture(GL_TEXTURE0);
-            simpleProgram->setUniformli(arrayTexture, 0);
-            texture.bind();
+
+      glm::mat4 modelView;
+      glm::mat4 modelViewProjection;
+
+      fpsManager.frameStart();
+      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+      glEnable(GL_DEPTH_TEST);
 
 
-            viewDirection.changeViewDirection(Input::getInstance()->mouseXMovement, Input::getInstance()->mouseYMovement);
-            sceneCamera.updateView(sceneCameraLocation, viewDirection.getViewDirection(), viewDirection.getUpDirection());
-
-            modelView = sceneCamera.getViewMatrix() * floorTransform.getMatrix();
-            modelViewProjection = sceneCamera.getProjectionMatrix() * modelView;
-
-            mesh->draw();
-
-            modelView = sceneCamera.getViewMatrix() * transform1.getMatrix();
-            modelViewProjection = sceneCamera.getProjectionMatrix() * modelView;
-
-            simpleProgram->setUniformMatrix4f(mvp, modelViewProjection);
-            cube1.draw();
-
-            simpleProgram->unbind();
 
 
-            fpsManager.sync();
-            window.display();
 
-            sf::Event event;
-            while (window.pollEvent(event))
-              if (event.type == sf::Event::Closed)
-                  window.close();
-       }
+//      shadowDepthProgram->bind();
+//
+//      modelView = lightCamera.getViewMatrix() * floorTransform.getMatrix();
+//      modelViewProjection = lightCamera.getProjectionMatrix() * modelView;
+//
+////      glBindFramebuffer(GL_FRAMEBUFFER, shadowFB);
+//
+//      shadowDepthProgram->setUniformMatrix4f(mvp, modelViewProjection);
+//
+//      mesh->draw();
+//
+//      transform1.rotateX(0.01);
+//      modelView = lightCamera.getViewMatrix() * transform1.getMatrix();
+//      modelViewProjection = lightCamera.getProjectionMatrix() * modelView;
+//
+//      shadowDepthProgram->setUniformMatrix4f(mvp, modelViewProjection);
+//      cube1.draw();
+//
+//      shadowDepthProgram->unbind();
 
+      // TODO Draw with the from the player cameras perspective.
+
+
+
+
+      simpleProgram->bind();
+      glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+      glActiveTexture(GL_TEXTURE0);
+      simpleProgram->setUniformli(arrayTexture, 0);
+      texture.bind();
+
+      viewDirection.setSensitivity(0.01, 0.01);
+
+      viewDirection.changeViewDirection(Input::getInstance()->mouseXMovement,
+          Input::getInstance()->mouseYMovement);
+
+      sceneCamera.updateView(sceneCameraLocation,
+          viewDirection.getViewDirection(), viewDirection.getUpDirection());
+
+      modelView = sceneCamera.getViewMatrix() * floorTransform.getMatrix();
+      modelViewProjection = sceneCamera.getProjectionMatrix() * modelView;
+
+      simpleProgram->setUniformMatrix4f(mvp, modelViewProjection);
+
+      mesh->draw();
+
+      modelView = sceneCamera.getViewMatrix() * transform1.getMatrix();
+      modelViewProjection = sceneCamera.getProjectionMatrix() * modelView;
+
+      simpleProgram->setUniformMatrix4f(mvp, modelViewProjection);
+
+      cube1.draw();
+
+      simpleProgram->unbind();
+
+
+      fpsManager.sync();
+      window.display();
+
+      sf::Event event;
+      while (window.pollEvent(event))
+        if (event.type == sf::Event::Closed)
+          window.close();
     }
+
+  }
 };
 
 }

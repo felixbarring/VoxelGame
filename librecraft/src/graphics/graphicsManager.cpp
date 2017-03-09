@@ -20,7 +20,7 @@ GraphicsManager::GraphicsManager()
             config::cube_map_data::cubeMap1[4],
             config::cube_map_data::cubeMap1[5]);
 
-    m_skyBox = make_unique<CubeMap>(texture, m_playerCamera); // TODO should be some other camera...
+    m_skyBox = make_unique<CubeMap>(texture, m_playerCamera);
 }
 
 void GraphicsManager::setSunStrenght(float value)
@@ -29,7 +29,7 @@ void GraphicsManager::setSunStrenght(float value)
     m_cubeBatcher.setSunStrenght(value);
 }
 
-Camera& GraphicsManager::getPlayerCamer() {
+Camera& GraphicsManager::getPlayerCamera() {
     return m_playerCamera;
 }
 

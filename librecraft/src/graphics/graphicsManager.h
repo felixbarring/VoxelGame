@@ -52,7 +52,7 @@ public:
      *
      * @return The camera uses to render the world from the players perspective.
      */
-    Camera& getPlayerCamer();
+    Camera& getPlayerCamera();
 
     /**
      *
@@ -80,7 +80,6 @@ public:
 
 private:
     Camera m_playerCamera{};
-    Camera m_skyMapCamera{};
 
     ChunkBatcher m_chunkBatcher{m_playerCamera};
     CubeBatcher m_cubeBatcher{m_playerCamera};

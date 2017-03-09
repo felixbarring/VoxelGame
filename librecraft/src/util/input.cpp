@@ -11,7 +11,7 @@ using namespace sf;
 
 namespace util {
 
-Input::Input(float centerX, float centerY)
+Input::Input(double centerX, double centerY)
     : m_screenCenterX(centerX),
       m_screenCenterY(centerY)
 {
@@ -72,9 +72,9 @@ void Input::updateValues() {
 
     escapeKeyActive = Keyboard::isKeyPressed(escape);
 
-	// Mouse
-	action1Active = Mouse::isButtonPressed(action1Button);
-	action2Active = Mouse::isButtonPressed(action2Button);
+    // Mouse
+    action1Active = Mouse::isButtonPressed(action1Button);
+    action2Active = Mouse::isButtonPressed(action2Button);
 
     if (m_mouseLocked) {
         auto ve = Mouse::getPosition(*m_window);

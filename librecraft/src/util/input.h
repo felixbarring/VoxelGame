@@ -11,7 +11,7 @@ namespace util {
 
 class Input {
 
-    Input(float centerX, float centerY);
+    Input(double centerX, double centerY);
 
 public:
 
@@ -93,10 +93,10 @@ public:
 
 private:
 
-    float m_screenCenterX;
-    float m_screenCenterY;
+    double m_screenCenterX;
+    double m_screenCenterY;
 
-    bool m_mouseLocked {true};
+    bool m_mouseLocked{true};
 
     sf::Window *m_window{nullptr};
 };

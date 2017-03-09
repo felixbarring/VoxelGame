@@ -8,14 +8,14 @@
 
 int main() {
 
-    try {
-        Game game;
-        game.run();
+  try {
+    Game game;
+    game.run();
 
-    } catch (std::exception &e) {
-        std::cout << "An error occured \n" << e.what() << "\n";
-    } catch (...) {
-        std::cout << "An error that is not derived from std::exception occured \n";
-    }
+  } catch (std::exception &e) {
+    std::cout << "An error occured \n" << e.what() << "\n";
+  } catch (...) {
+    std::cout << "An error that is not derived from std::exception occured \n";
+  }
 
 }
