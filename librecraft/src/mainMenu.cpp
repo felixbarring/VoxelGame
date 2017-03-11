@@ -7,7 +7,10 @@
 #include "config/data.h"
 #include "graphics/graphicsManager.h"
 #include "gui/terminal.h"
+#include "util/soundPlayer.h"
 #include "util/worldMeta.h"
+
+using util::SoundPlayer;
 
 using namespace std;
 using namespace widget;
@@ -225,6 +228,9 @@ MainMenu::MainMenu(Game *game)
               world_meta::addName(name);
               m_options.setName(name);
               m_game->createWorld(m_options);
+
+              SoundPlayer::getInstance().stopMusic();
+
               m_activeWidgetGroup = m_mainWidgetGroup;
               m_worldList->addListItem(name);
             } else {
@@ -342,23 +348,22 @@ MainMenu::MainMenu(Game *game)
             // TODO Implement so its possible to save and load options for a map.
 
         m_game->createWorld(m_options);
+        SoundPlayer::getInstance().stopMusic();
         m_activeWidgetGroup = m_mainWidgetGroup;
         m_worldList->reset();
       }
-      break;
+        break;
+        }
+        case 3: m_activeWidgetGroup = m_playWidgetGroup; break;
       }
-      case 3: m_activeWidgetGroup = m_playWidgetGroup; break;
-    }
-  };
+    };
 
     auto label = make_shared<Label>(270, 390, 150, 50, " - Load World - ");
-    auto button1 = make_shared<Button>(0, 225, 60, 80, 30, observer, "Rename",
-        1);
+    auto button1 = make_shared<Button>(0, 225, 60, 80, 30, observer, "Rename", 1);
     auto button2 = make_shared<Button>(1, 315, 60, 80, 30, observer, "Delete",
         1);
     auto button3 = make_shared<Button>(2, 405, 60, 80, 30, observer, "Load", 1);
-    auto button4 = make_shared<Button>(3, 495, 60, 80, 30, observer, "Cancel",
-        1);
+    auto button4 = make_shared<Button>(3, 495, 60, 80, 30, observer, "Cancel", 1);
 
     m_loadWorldWidgetGroup = make_shared<WidgetGroup>(0, 200, 50, 400, 400);
 
@@ -368,8 +373,8 @@ MainMenu::MainMenu(Game *game)
     for (auto s : world_meta::getAllWorldNames())
       m_worldList->addListItem(s);
 
-    m_loadWorldWidgetGroup->addWidget({label, button1, button2, button3,
-        button4, m_worldList});
+    m_loadWorldWidgetGroup->addWidget({label, button1, button2, button3, button4,
+      m_worldList});
   }
 
   // ########################################################################
@@ -415,6 +420,7 @@ MainMenu::MainMenu(Game *game)
   // ########################################################################
 
   m_activeWidgetGroup = m_mainWidgetGroup;
+
 }
 
 void MainMenu::update(float timePassed) {
@@ -431,8 +437,11 @@ void MainMenu::update(float timePassed) {
   m_activeWidgetGroup->draw();
 
   glm::vec3 skyColor = config::graphics_data::skyColor;
+
+  // TODO No openGl outside graphics!
   glClearColor(skyColor.x, skyColor.y, skyColor.z, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
   graphics::GraphicsManager::getInstance().getSpriteBatcher().draw();
 }
 
@@ -442,9 +451,9 @@ string randomName() {
       "Shrek", "Memus", "Adventure", "Swoosh", "Blool"};
   static int last{-1};
 
-  random_device randomDevice;
-  mt19937 randomNumber(randomDevice());
-  uniform_int_distribution<int> uni(0, names.size() - 1);
+  static random_device randomDevice;
+  static mt19937 randomNumber(randomDevice());
+  static uniform_int_distribution<int> uni(0, names.size() - 1);
 
   int value;
   do {

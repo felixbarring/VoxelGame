@@ -302,6 +302,7 @@ public:
       viewDirection.changeViewDirection(Input::getInstance()->mouseXMovement,
           Input::getInstance()->mouseYMovement);
 
+      // TODO - up direction is very wrong, fix it!
       sceneCamera.updateView(sceneCameraLocation,
           viewDirection.getViewDirection(), -viewDirection.getUpDirection());
 

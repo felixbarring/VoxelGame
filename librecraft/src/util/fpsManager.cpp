@@ -8,8 +8,6 @@
 
 namespace util {
 
-std::chrono::milliseconds oneMilliSecond(1);
-
 FPSManager::FPSManager(int maxFPS)
     : m_maxFPS {maxFPS}, m_timePerFrame {1.0 / maxFPS} {
 }
@@ -22,6 +20,8 @@ int currentFPS{0};
 double timeForLatestFrame{0};
 
 void FPSManager::sync() {
+
+  static std::chrono::milliseconds oneMilliSecond(1);
 
     // Sleep the thread if we are running fast to save computer power.
     // If we are running too fast and there is more than 1 miliseconds
