@@ -13,9 +13,15 @@ class SoundPlayer {
 
   SoundPlayer() = default;
 
+  ~SoundPlayer() = default;
+
   SoundPlayer(SoundPlayer const&) = delete;
 
+  SoundPlayer(SoundPlayer &&) = delete;
+
   void operator=(SoundPlayer const&) = delete;
+
+  void operator=(SoundPlayer &&) = delete;
 
 public:
 
@@ -24,10 +30,24 @@ public:
     return INSTANCE;
   }
 
+  /**
+   * @brief Plays the sound specified by the argument.
+   *
+   * @param soundPath The path to the sound file.
+   */
   void playSound(const std::string &soundPath);
 
+  /**
+   * @brief Plays the music specified by the argument.
+   *
+   * @param musicPath
+   */
   void playMusic(const std::string &musicPath);
 
+  /**
+   * @brief Stops the music if any is currently playing.
+   *
+   */
   void stopMusic();
 
 private:
@@ -36,6 +56,11 @@ private:
     INCREASE, DECREASE
   };
 
+  /**
+   * @brief Changes the volume of the currently playing music.
+   *
+   * @param value Specifies if the volume should increase or decreas.
+   */
   void graduallyChangeMusicVolume(ChangeMusicVolume value);
 
   std::map<std::string, sf::SoundBuffer> m_buffers;
