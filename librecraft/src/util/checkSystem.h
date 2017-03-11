@@ -12,10 +12,11 @@ namespace check_system {
 
 static void checkStuff() {
 
-    int maxLayers;
-    glGetIntegerv(GL_MAX_ARRAY_TEXTURE_LAYERS, &maxLayers);
+  int maxLayers;
+  glGetIntegerv(GL_MAX_ARRAY_TEXTURE_LAYERS, &maxLayers);
 
-    std::cout << "Number of Array Texture Layers that are supported " << maxLayers << "\n";
+  std::cout << "Number of Array Texture Layers that are supported " << maxLayers
+      << "\n";
 
 //    const GLubyte *renderer = glGetString(GL_RENDERER);
 //    const GLubyte *vendor = glGetString(GL_VENDOR);
@@ -30,8 +31,8 @@ static void checkStuff() {
 //	std::cout << "GLSL Version: " << glslVersion << "\n";
 //	std::cout << "-------------------------\n";
 
-	unsigned int hwThreads = std::thread::hardware_concurrency();
-	std::cout << "Number of hardware threads = " << hwThreads;
+  unsigned int hwThreads = std::thread::hardware_concurrency();
+  std::cout << "Number of hardware threads = " << hwThreads;
 
 }
 

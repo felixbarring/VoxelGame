@@ -9,6 +9,9 @@
 
 namespace util {
 
+/**
+ * @brief Singleton class for managing all music and sounds.
+ */
 class SoundPlayer {
 
   SoundPlayer() = default;
@@ -25,6 +28,9 @@ class SoundPlayer {
 
 public:
 
+  /**
+   * @return The single instance of this class.
+   */
   static SoundPlayer& getInstance() {
     static SoundPlayer INSTANCE;
     return INSTANCE;

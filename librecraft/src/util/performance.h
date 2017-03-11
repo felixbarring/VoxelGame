@@ -1,4 +1,3 @@
-
 #ifndef SRC_UTIL_PERFORMANCE_H_
 #define SRC_UTIL_PERFORMANCE_H_
 
@@ -10,32 +9,32 @@ namespace util {
 
 class Performance {
 
-    Performance();
+  Performance();
 
 public:
 
-    Performance getInstance() {
-        static Performance INSTANCE;
-        return INSTANCE;
-    }
+  Performance getInstance() {
+    static Performance INSTANCE;
+    return INSTANCE;
+  }
 
-    unsigned createId(const std::string& value);
+  unsigned createId(const std::string& value);
 
-    void startTimer(unsigned id);
+  void startTimer(unsigned id);
 
-    void stopTimer(unsigned id);
+  void stopTimer(unsigned id);
 
-    void clearData();
+  void clearData();
 
-    void loggData();
+  void loggData();
 
-    void printData();
+  void printData();
 
 private:
 
-    std::map<int, std::string> m_map{};
-    std::vector<std::tuple<sf::Clock, double>> m_accumulatedTime{};
-    sf::Clock m_clock{};
+  std::map<int, std::string> m_map{};
+  std::vector<std::tuple<sf::Clock, double>> m_accumulatedTime{};
+  sf::Clock m_clock{};
 
 };
 
