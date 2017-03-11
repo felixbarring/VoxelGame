@@ -9,36 +9,34 @@
 namespace widget {
 
 /**
- * \class Slider
- *
- * \author Felix Bärring
  */
 class Slider: public AbstractWidget {
 public:
 
-	Slider(int id, int x, int y, int width, int height, std::function<void(int)> observer, int layer = 0);
+  Slider(int id, int x, int y, int width, int height,
+      std::function<void(int)> observer, int layer = 0);
 
-	virtual ~Slider() {};
+  virtual ~Slider() = default;
 
-	float getValue();
+  float getValue();
 
-	void draw() override;
+  void draw() override;
 
-	void update(float timePassed) override;
+  void update(float timePassed) override;
 
 private:
 
-	std::function<void(int)> m_observer;
+  std::function<void(int)> m_observer;
 
-	bool m_pointerInsideBorders {false};
+  bool m_pointerInsideBorders{false};
 
-	std::shared_ptr<graphics::Sprite> m_slider;
-	std::shared_ptr<graphics::Sprite> m_knob;
+  std::shared_ptr<graphics::Sprite> m_slider;
+  std::shared_ptr<graphics::Sprite> m_knob;
 
-	float m_knobPosition;
-	float m_knobWidth;
+  float m_knobPosition;
+  float m_knobWidth;
 
-	bool m_grabbed {false};
+  bool m_grabbed{false};
 
 };
 

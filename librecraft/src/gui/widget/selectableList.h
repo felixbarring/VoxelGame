@@ -15,39 +15,40 @@ namespace widget {
 class SelectableList: public AbstractWidget {
 public:
 
-	SelectableList(int id, int x, int y, int width, int height, std::function<void(int)> observer, unsigned layer = 0);
+  SelectableList(int id, int x, int y, int width, int height,
+      std::function<void(int)> observer, unsigned layer = 0);
 
-	virtual ~SelectableList() {};
+  virtual ~SelectableList() = default;
 
-	void addListItem(std::string item);
+  void addListItem(std::string item);
 
-	void deleteListItem(std::string item);
+  void deleteListItem(std::string item);
 
-	std::string getSelectedListItem();
+  std::string getSelectedListItem();
 
-	void clear();
+  void clear();
 
-	void reset();
+  void reset();
 
-	void draw() override;
+  void draw() override;
 
-	void update(float timePassed) override;
+  void update(float timePassed) override;
 
 private:
 
-	std::shared_ptr<ToggleButton> getButtonWithId(int i);
+  std::shared_ptr<ToggleButton> getButtonWithId(int i);
 
-	std::function<void(int)> m_observer;
-	unsigned m_layer;
+  std::function<void(int)> m_observer;
+  unsigned m_layer;
 
-	int idCounter {0};
-	std::vector<std::shared_ptr<ToggleButton>> m_buttons;
+  int idCounter{0};
+  std::vector<std::shared_ptr<ToggleButton>> m_buttons;
 
-	std::shared_ptr<ToggleButton> m_currentlyToggled {nullptr};
+  std::shared_ptr<ToggleButton> m_currentlyToggled{nullptr};
 
-	std::shared_ptr<graphics::Sprite> m_sprite;
-	std::shared_ptr<graphics::Sprite> m_highlight;
-	std::shared_ptr<graphics::Sprite> m_text;
+  std::shared_ptr<graphics::Sprite> m_sprite;
+  std::shared_ptr<graphics::Sprite> m_highlight;
+  std::shared_ptr<graphics::Sprite> m_text;
 
 };
 

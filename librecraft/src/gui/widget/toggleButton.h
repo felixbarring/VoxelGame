@@ -10,38 +10,45 @@ namespace widget {
 class ToggleButton: public Button {
 public:
 
-    /**
-     * @brief Used to determine the visuals of the button.
-     */
-    enum class Skin {
-        Regular,    //!< Regular visuals representing a button with text drawn on it that can be check
-        CheckBox,   //!< CheckBox visuals representing a small box that can be checked and with text to the right
-        ReadioButton//!< ReadioButton visuals representing a circle that can be check and with text to the right
-    };
+  /**
+   * @brief Used to determine the visuals of the button.
+   */
+  enum class Skin {
+    //!< Regular visuals representing a button with text drawn on it that can be
+    //! check
+    Regular,
+    //!< CheckBox visuals representing a small box that can be checked and with
+    //! text to the right
+    CheckBox,
+    //!< ReadioButton visuals representing a circle that can be check and with
+    //! text to the right
+    ReadioButton
+  };
 
-    ToggleButton(int id, int x, int y, int width, int height, std::function<void(int)> observer,
-        const std::string &name, int layer = 0, Skin skin = Skin::Regular);
+  ToggleButton(int id, int x, int y, int width, int height,
+      std::function<void(int)> observer, const std::string &name, int layer = 0,
+      Skin skin = Skin::Regular);
 
-    virtual ~ToggleButton() {};
+  virtual ~ToggleButton() = default;
 
-    bool isToggled();
+  bool isToggled();
 
-    void toggle();
+  void toggle();
 
-    void setUntoggled();
+  void setUntoggled();
 
-    void setToggled();
+  void setToggled();
 
-    void draw() override;
+  void draw() override;
 
-    void update(float timePassed) override;
+  void update(float timePassed) override;
 
 private:
 
-    bool m_toggled{false};
-    Skin m_skin;
+  bool m_toggled{false};
+  Skin m_skin;
 
-    std::shared_ptr<graphics::Sprite> m_spriteToggled;
+  std::shared_ptr<graphics::Sprite> m_spriteToggled;
 };
 
 } /* namespace widget */

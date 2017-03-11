@@ -29,42 +29,44 @@ namespace widget {
 class WidgetGroup: public AbstractWidget {
 public:
 
-	/**
-	 * \brief Constructs a WidgetGroup.
-	 */
-	WidgetGroup(int id, int x, int y, int width, int height, unsigned layer = 0,
-			bool transparentBackground = true);
+  /**
+   * \brief Constructs a WidgetGroup.
+   */
+  WidgetGroup(int id, int x, int y, int width, int height, unsigned layer = 0,
+      bool transparentBackground = true);
 
-	virtual ~WidgetGroup() {};
+  virtual ~WidgetGroup() {
+  }
+  ;
 
-	/**
-	 * \brief Adds a widget to this group.
-	 *
-	 * All other functinos in this class will act on the Widgets
-	 * added by this function.
-	 *
-	 * \param widget The widget that will be added to this group
-	 */
-	void addWidget(std::shared_ptr<IWidget> widget);
+  /**
+   * \brief Adds a widget to this group.
+   *
+   * All other functinos in this class will act on the Widgets
+   * added by this function.
+   *
+   * \param widget The widget that will be added to this group
+   */
+  void addWidget(std::shared_ptr<IWidget> widget);
 
-	/**
-	 * \brief Adds a vector of widgets to this group.
-	 *
-	 * All other functinos in this class will act on the Widgets
-     * added by this function.
-     *
-	 * @param widgets The widgets that shall be added to this group
-	 */
-	void addWidget(std::vector<std::shared_ptr<IWidget>> widgets);
+  /**
+   * \brief Adds a vector of widgets to this group.
+   *
+   * All other functinos in this class will act on the Widgets
+   * added by this function.
+   *
+   * @param widgets The widgets that shall be added to this group
+   */
+  void addWidget(std::vector<std::shared_ptr<IWidget>> widgets);
 
-	void draw() override;
+  void draw() override;
 
-	void update(float timePassed) override;
+  void update(float timePassed) override;
 
 private:
 
-	std::shared_ptr<graphics::Sprite> m_sprite;
-	std::vector<std::shared_ptr<IWidget>> m_widgets;
+  std::shared_ptr<graphics::Sprite> m_sprite;
+  std::vector<std::shared_ptr<IWidget>> m_widgets;
 
 };
 

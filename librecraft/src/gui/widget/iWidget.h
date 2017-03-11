@@ -28,55 +28,57 @@ namespace widget {
 class IWidget {
 public:
 
-	virtual ~IWidget() {};
+  virtual ~IWidget() {
+  }
+  ;
 
-	/**
-	 *  \brief Makes the Widget draw itself
-	 *
-	 *  To actually render the sprite batcher's draw function
-	 *  should be called.
-	 *
-	 */
-	virtual void draw() = 0;
+  /**
+   *  \brief Makes the Widget draw itself
+   *
+   *  To actually render the sprite batcher's draw function
+   *  should be called.
+   *
+   */
+  virtual void draw() = 0;
 
-	/**
-	 *  \brief Returns the button's ID
-	 */
-	virtual int getId() = 0;
+  /**
+   *  \brief Returns the button's ID
+   */
+  virtual int getId() = 0;
 
-	/**
-	 * \brief If the Widget needs to be updated each frame, it should implement
-	 * 	this method
-	 */
-	virtual void update(float timePassed) = 0;
+  /**
+   * \brief If the Widget needs to be updated each frame, it should implement
+   * 	this method
+   */
+  virtual void update(float timePassed) = 0;
 
-	/**
-	 * \brief Set the absolute position of the widget
-	 *
-	 * \param[in] x The new horizontal location
-	 * \param[in] y The new vertical location
-	 * \param[in] z The 'layer', place holder for now
-	 */
-	virtual void setLocation(float x, float y) = 0;
+  /**
+   * \brief Set the absolute position of the widget
+   *
+   * \param[in] x The new horizontal location
+   * \param[in] y The new vertical location
+   * \param[in] z The 'layer', place holder for now
+   */
+  virtual void setLocation(float x, float y) = 0;
 
-	/**
-	 * Sets the Widget to an active state.
-	 * If it is not in an active state all other methods will be ignored.
-	 */
-	virtual void setActive() = 0;
+  /**
+   * Sets the Widget to an active state.
+   * If it is not in an active state all other methods will be ignored.
+   */
+  virtual void setActive() = 0;
 
-	/**
-	 * Sets the widget to an inactive state.
-	 * All other methods will be ignored except for setActive.
-	 */
-	virtual void setInactive() = 0;
+  /**
+   * Sets the widget to an inactive state.
+   * All other methods will be ignored except for setActive.
+   */
+  virtual void setInactive() = 0;
 
-	/**
-	 * Checks if the widget is active or not
-	 *
-	 * \return Whether the Widget is active or not
-	 */
-	virtual bool isActive() = 0;
+  /**
+   * Checks if the widget is active or not
+   *
+   * \return Whether the Widget is active or not
+   */
+  virtual bool isActive() = 0;
 
 };
 

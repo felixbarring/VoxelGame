@@ -1,4 +1,3 @@
-
 #ifndef SRC_GUI_WIDGET_BUTTON_H_
 #define SRC_GUI_WIDGET_BUTTON_H_
 
@@ -26,32 +25,32 @@ namespace widget {
 class Button: public AbstractWidget {
 public:
 
-	Button(int id, int x, int y, int width, int height,
-			std::function<void(int)> observer, std::string name, int layer = 0);
+  Button(int id, int x, int y, int width, int height,
+      std::function<void(int)> observer, std::string name, int layer = 0);
 
-	virtual ~Button() {};
+  virtual ~Button() = default;
 
-	std::string getName();
+  std::string getName();
 
-	void draw() override;
+  void draw() override;
 
-	void update(float timePassed) override;
+  void update(float timePassed) override;
 
-	/**
-	 * Makes the button behave as if had been clicked.
-	 */
-	void trigger();
+  /**
+   * Makes the button behave as if had been clicked.
+   */
+  void trigger();
 
 protected:
 
-	std::function<void(int)> m_observer;
+  std::function<void(int)> m_observer;
 
-	bool m_pointerInsideBorders{false};
-	std::string m_name;
+  bool m_pointerInsideBorders{false};
+  std::string m_name;
 
-	std::shared_ptr<graphics::Sprite> m_sprite;
-	std::shared_ptr<graphics::Sprite> m_highlight;
-	std::shared_ptr<graphics::Sprite> m_text;
+  std::shared_ptr<graphics::Sprite> m_sprite;
+  std::shared_ptr<graphics::Sprite> m_highlight;
+  std::shared_ptr<graphics::Sprite> m_text;
 };
 
 } /* namespace widget */

@@ -12,25 +12,24 @@ namespace gui {
 class Mouse {
 public:
 
-    Mouse();
+  Mouse();
 
-    void update();
+  void update();
 
-    void draw();
+  void draw();
 
-    void lock();
+  void lock();
 
-    void unlock();
-
+  void unlock();
 
 private:
 
-    std::shared_ptr<util::Input> m_input;
-    bool m_locked {false};
+  std::shared_ptr<util::Input> m_input;
+  bool m_locked{false};
 
-    std::shared_ptr<graphics::Sprite> m_sprite;
-    int m_width{10};
-    int m_height{10};
+  std::shared_ptr<graphics::Sprite> m_sprite;
+  int m_width{10};
+  int m_height{10};
 };
 
 } /* namespace widget */

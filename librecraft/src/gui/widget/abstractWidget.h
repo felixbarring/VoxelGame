@@ -33,26 +33,23 @@ public:
 	 *           the listener that this button was pressed
 	 *
 	 * \param[in] text A String that will rendered ontop of the button
-	 *             providing information of what the purpose of this button is
+	 *                 providing information of what the purpose of this button is
 	 *
-	 * \param[in] listener The listener that implements the IButtonListener interface.
-	 *                 When the button is pressed the listener will be notified.
+	 * \param[in] listener The listener that implements the IButtonListener
+	 *                     interface. When the button is pressed the listener will
+	 *                     be notified.
 	 *
 	 * \param[in] x The x location of the bottom left corner
 	 * \param[in] y The y location of the bottom left corner
 	 * \param[in] width The width, that is, the horizontal distance between the
-	 *              left and right corners
+	 *                  left and right corners
 	 *
 	 * \param[in] height The height, that is, the vertical distance between the
-	 *               bottom and top corners
+	 *                   bottom and top corners
 	 */
 	AbstractWidget(int id, int x, int y, int width, int height);
 
-	virtual ~AbstractWidget() {};
-
-// ########################################################
-// Member Functions########################################
-// ########################################################
+	virtual ~AbstractWidget() = default;
 
 	int getId() override;
 
@@ -65,10 +62,6 @@ public:
 	void setInactive() override;
 
 	bool isActive() override;
-
-// ########################################################
-// Implementation #########################################
-// ########################################################
 
 protected:
 

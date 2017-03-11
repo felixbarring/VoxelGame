@@ -10,13 +10,14 @@ namespace gui {
 class Image {
 public:
 
-    Image(double x, double y, double width, double height, const std::string image);
+  Image(double x, double y, double width, double height,
+      const std::string image);
 
-	void draw();
+  void draw();
 
 private:
 
-	std::shared_ptr<graphics::Sprite> sprite;
+  std::shared_ptr<graphics::Sprite> sprite;
 
 };
 
