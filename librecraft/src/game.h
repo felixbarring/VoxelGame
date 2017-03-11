@@ -1,14 +1,3 @@
-/**
- *  \file    game.h
- *
- *  \brief :o
- *
- *  \author  Felix Bärring
- *  \date    1337
- *
- * Copyright (c) 2010, Felix Bärring. All rights reserved.
- */
-
 #ifndef SRC_GAME_H_
 #define SRC_GAME_H_
 
@@ -26,26 +15,26 @@
 class Game {
 public:
 
-	void run();
+  void run();
 
-	void createWorld(chunk::CreationOptions options);
+  void createWorld(chunk::CreationOptions options);
 
-	void changeStateToMainMenu();
+  void changeStateToMainMenu();
 
-	void quitGame();
+  void quitGame();
 
 private:
 
-	util::FPSManager m_fpsManager{config::graphics_data::fps};
+  util::FPSManager m_fpsManager{config::graphics_data::fps};
 
-	sf::Window *window{};
+  sf::Window *window{};
 
-	std::shared_ptr<IGameState> m_mainMenu{};
-	std::shared_ptr<IGameState> m_inGame{};
-	std::shared_ptr<IGameState> m_currentState{};
+  std::shared_ptr<IGameState> m_mainMenu{};
+  std::shared_ptr<IGameState> m_inGame{};
+  std::shared_ptr<IGameState> m_currentState{};
 
-	bool m_changeStateToIngame{false};
-	bool m_quit{false};
+  bool m_changeStateToIngame{false};
+  bool m_quit{false};
 };
 
 #endif /* SRC_GAME_H_ */

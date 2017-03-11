@@ -18,55 +18,58 @@ namespace entity {
 class Player: public IEntity {
 public:
 
-    void update(float timePassed) override;
+  void update(float timePassed) override;
 
-    void setLocation(float x, float y, float z);
+  void setLocation(float x, float y, float z);
 
-    void turnGravityOff(bool value = true);
+  void turnGravityOff(bool value = true);
 
-    glm::vec3 getViewingDirection();
+  glm::vec3 getViewingDirection();
 
-    glm::vec3 getLastSelectedCube();
+  glm::vec3 getLastSelectedCube();
 
-    int getBuildingCube() { return m_cubeUsedForBuilding; }
+  int getBuildingCube() {
+    return m_cubeUsedForBuilding;
+  }
 
 private:
 
-    void updateSpeed(float timePassed);
+  void updateSpeed(float timePassed);
 
-    void handlePhysics();
+  void handlePhysics();
 
-    void updateCameraAndTargetCube();
+  void updateCameraAndTargetCube();
 
-    void intersected(glm::vec3 movement, std::vector<std::tuple<float, int, glm::vec3>> &collisions);
+  void intersected(glm::vec3 movement,
+      std::vector<std::tuple<float, int, glm::vec3>> &collisions);
 
-    bool isInWater();
+  bool isInWater();
 
-    entity::AABB createAABB();
+  entity::AABB createAABB();
 
-    glm::vec3 m_location{0, 0, 0}; // The location of the camera
+  glm::vec3 m_location{0, 0, 0}; // The location of the camera
 
-    float m_width{0.8};
-    float m_height{1.7};
-    float m_depth{0.8};
-    float m_cameraHeight{1.5};
+  float m_width{0.8};
+  float m_height{1.7};
+  float m_depth{0.8};
+  float m_cameraHeight{1.5};
 
-    float m_gravity{30};
-    float m_jumpSpeed{12};
-    int m_selectCubeDistance{5};
-    float m_movementSpeed{8};
+  float m_gravity{30};
+  float m_jumpSpeed{12};
+  int m_selectCubeDistance{5};
+  float m_movementSpeed{8};
 
-    bool m_gravitiyOn{true};
+  bool m_gravitiyOn{true};
 
-    float m_flySpeed = 8;
+  float m_flySpeed = 8;
 
-    glm::vec3 m_speed{0, 0, 0};
-    glm::vec3 m_frameSpeed{};
-    glm::vec3 m_lastSelecteCube{};
-    graphics::ViewDirection m_viewDirection{};
-    graphics::Transform m_targetedCubeTransform{0, 0, 0};
-    int m_cubeUsedForBuilding{0};
-    };
+  glm::vec3 m_speed{0, 0, 0};
+  glm::vec3 m_frameSpeed{};
+  glm::vec3 m_lastSelecteCube{};
+  graphics::ViewDirection m_viewDirection{};
+  graphics::Transform m_targetedCubeTransform{0, 0, 0};
+  int m_cubeUsedForBuilding{0};
+};
 
 } /* namespace entity */
 
