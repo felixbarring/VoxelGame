@@ -1,0 +1,42 @@
+Iventory of cubes
+Type: Feature
+
+When the player removes a cube it will automatically be
+added to an iventory. When building, only cubes in the 
+iventory can be used. There should be a GUI that provides
+a view of all the cubes that is in the players posession.
+When using a cube to build of a certain type, one of 
+the collected cubes are consumed and removed from the 
+iventory. If there are no cubes of the selected cube, 
+the player can not build. The player can select cube types 
+that should be in a quick access list that is vissible on
+the HUD. If all the cubes from a type is consumed, the cube
+type is removed from the HUD.
+
+###
+
+Removein cube effect
+Type: Feature
+
+When a cube is removed/destroyed, there shold be a particle
+effect to make it look cool. The cube will then be represented
+by a small floating cube that the player can collect by 
+colliding with. When collecting it, it be be added to the 
+iventory, thus removing a cube will not automatically add it to the inventory.
+The particle effects should have a demo shocasing it.
+
+###
+
+Light cube
+Type: Feature
+
+Add a new cube type that can spread ligh similar to sunlight.
+This ligh will light up places that have higher contribution 
+the light cube than from the sun. The cube can spread light 16 
+cubes far. Initial strenght is 16, and decreased with one
+for each cube away from the source.
+
+###
+
+
+
