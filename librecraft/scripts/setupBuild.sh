@@ -1,12 +1,8 @@
 #!/bin/sh
 
-cd ..
-rm -r build
-mkdir build
-cd build
-mkdir data
-cd data
-touch meta
-cd ..
-cmake -DCMAKE_BUILD_TYPE=Release -DDEMO=TRUE -DWARNINGS=TRUE ..
+rm -r ../build
+mkdir ../build
+touch ../build/data/meta
+cd ../build
+cmake ..
 cd ../scripts

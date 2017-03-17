@@ -1,6 +1,7 @@
 
 lizard
 cppcheck --enable=all src/
+clang-tidy -checks='*' file.cpp --
 
 ######
 
