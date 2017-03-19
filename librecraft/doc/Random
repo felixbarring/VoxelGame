@@ -1,0 +1,27 @@
+Build the game on windows
+
+Terrain generation
+
+Fix more options being possible to change with both terminal and
+settings
+
+Moving sun on the sky
+
+Fix so it is possible to change the markers position in the text
+input
+
+Fix so that the terminal can show all possible settings
+
+Cube map demo is broken
+
+Add cool post processing effects demo
+
+Refactor, use dependency injection
+
+Improve gui when world is dark
+
+Sometimes nothing is rendered when entering the game, 
+broken shaders somehow
+
+use xml to load/store settings
+
