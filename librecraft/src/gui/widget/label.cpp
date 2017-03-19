@@ -14,7 +14,7 @@ namespace widget {
 
 Label::Label(int x, int y, int width, int height, const string &name,
     unsigned layer)
-    : AbstractWidget(m_id, x, y, width, height)
+    : AbstractWidget(1, x, y, width, height)
 {
 
   auto &res = Resources::getInstance();

@@ -73,7 +73,7 @@ private:
   std::vector<std::shared_ptr<sf::Sound>> m_playingSounds;
   std::shared_ptr<sf::Music> m_playingMusic;
 
-  // TODO Load these from confi files...
+  // TODO Load these from config files...
   double m_soundVolume{2.0};
   double m_musicVolume{2.0};
 };

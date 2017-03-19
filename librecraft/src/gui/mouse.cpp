@@ -18,7 +18,7 @@ Mouse::Mouse() {
   m_input = util::Input::getInstance();
 
   m_sprite.reset(
-      new Sprite(380, 280, 100, m_width, m_height,
+      new Sprite(0, 0, 100, m_width, m_height,
           Resources::getInstance().getTexture(config::gui_data::mouse)));
 }
 
@@ -36,7 +36,7 @@ void Mouse::update() {
   m_input->mouseVirtualAdjustedX = mouse.x;
   m_input->mouseVirtualAdjustedY = mouse.y;
 
-  m_sprite->setLocation(mouse.x + m_width / 2, mouse.y - m_height / 2);
+  m_sprite->setLocation(mouse.x, mouse.y - m_height);
 }
 
 void Mouse::draw() {

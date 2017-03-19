@@ -127,6 +127,7 @@ void Game::run() {
   string windowTitle = "Voxel Game";
   window = new sf::Window{sf::VideoMode(width, height), windowTitle,
       sf::Style::Default, settings};
+
   window->setMouseCursorVisible(false);
 
 //    window->setVerticalSyncEnabled(true);

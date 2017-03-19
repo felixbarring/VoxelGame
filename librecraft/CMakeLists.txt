@@ -13,7 +13,7 @@ if(WARNINGS)
 	set(CMAKE_CXX_FLAGS "-std=c++14 -Wall -Wextra")
 endif()
 
-set(SFML_ROOT "${CMAKE_SOURCE_DIR}/SFML-2.4.2")
+# set(SFML_ROOT "${CMAKE_SOURCE_DIR}/SFML-2.4.2")
 
 message("### Building with ${CMAKE_CXX_COMPILER_ID}")
 
