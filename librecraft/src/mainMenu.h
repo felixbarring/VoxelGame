@@ -51,6 +51,7 @@ private:
   std::shared_ptr<widget::WidgetGroup> m_gameSettingsWidgetGroup{};
   std::shared_ptr<widget::WidgetGroup> m_inputSettingsWidgetGroup{};
   std::shared_ptr<widget::WidgetGroup> m_graphicsSettingsWidgetGroup{};
+  std::shared_ptr<widget::WidgetGroup> m_audioSettingsWidgetGroup{};
 
   std::shared_ptr<widget::WidgetGroup> m_errorEmptyName{};
   std::shared_ptr<widget::WidgetGroup> m_errorUsedName{};

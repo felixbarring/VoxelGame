@@ -1,10 +1,12 @@
 
-#Voxel Game
+# Voxel Game
 
 A project about creating a voxel based game.
 The game currently uses the working title "Librecraft".
 
 ![alt tag](doc/images/house.png)
+
+## Purpose And Scope
 
 ## Building
 

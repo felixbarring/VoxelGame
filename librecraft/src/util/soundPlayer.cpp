@@ -52,6 +52,10 @@ void SoundPlayer::stopMusic() {
 }
 
 void SoundPlayer::graduallyChangeMusicVolume(ChangeMusicVolume value) {
+  return;
+
+  // This causes error when exiting the game!
+
   static std::chrono::milliseconds oneMilliSecond(1);
 
   double changeValue{0.001};

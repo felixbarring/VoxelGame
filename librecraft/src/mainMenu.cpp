@@ -17,7 +17,8 @@ using namespace widget;
 using namespace gui;
 
 MainMenu::MainMenu(Game *game)
-    : m_game(game) {
+    : m_game(game)
+{
 
   glm::mat4 matrix = gui::createVirtualToScreen(
       config::graphics_data::virtualWidth, config::graphics_data::virtualHeight,
@@ -91,7 +92,8 @@ MainMenu::MainMenu(Game *game)
         case 0: m_activeWidgetGroup = m_gameSettingsWidgetGroup; break;
         case 1: m_activeWidgetGroup = m_inputSettingsWidgetGroup; break;
         case 2: m_activeWidgetGroup = m_graphicsSettingsWidgetGroup; break;
-        case 3: m_activeWidgetGroup = m_mainWidgetGroup; break;
+        case 3: m_activeWidgetGroup = m_audioSettingsWidgetGroup; break;
+        case 4: m_activeWidgetGroup = m_mainWidgetGroup; break;
       }
     };
 
@@ -100,12 +102,13 @@ MainMenu::MainMenu(Game *game)
     auto button2 = make_shared<Button>(1, 325, 310, 150, 30, observer, "Input");
     auto button3 = make_shared<Button>(2, 325, 270, 150, 30, observer,
         "Graphics");
-    auto button4 = make_shared<Button>(3, 325, 230, 150, 30, observer, "Back");
+    auto button4 = make_shared<Button>(3, 325, 230, 150, 30, observer, "Audio");
+    auto button5 = make_shared<Button>(4, 325, 190, 150, 30, observer, "Back");
 
-    m_settingsWidgetGroup = make_shared<WidgetGroup>(0, 300, 220, 200, 170);
+    m_settingsWidgetGroup = make_shared<WidgetGroup>(0, 300, 180, 200, 210);
 
     m_settingsWidgetGroup->addWidget(
-        {label, button1, button2, button3, button4});
+        {label, button1, button2, button3, button4, button5});
   }
 
   // ########################################################################
@@ -209,6 +212,29 @@ MainMenu::MainMenu(Game *game)
 
     m_graphicsSettingsWidgetGroup->addWidget({label1, label2, m_slider,
         m_textInput, label3, m_slider2, m_textInput2, button1, button2});
+  }
+
+  // ########################################################################
+
+  {
+
+    auto  observer = [this](int id)
+    {
+      switch(id) {
+        case 1: m_activeWidgetGroup = m_settingsWidgetGroup;
+      }
+    };
+
+    auto label1 = make_shared<Label>(325, 390, 150, 30, " - Audio - ");
+
+    auto button1 = make_shared<Button>(0, 245, 130, 150, 30, observer, "Save",
+       1);
+    auto button2 = make_shared<Button>(1, 400, 130, 150, 30, observer, "Cancel",
+       1);
+
+    m_audioSettingsWidgetGroup = make_shared<WidgetGroup>(0, 100, 100, 600,
+            250);
+    m_audioSettingsWidgetGroup->addWidget({label1, button1, button2});
   }
 
   // ########################################################################
