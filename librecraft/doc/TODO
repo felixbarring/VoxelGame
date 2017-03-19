@@ -22,8 +22,9 @@ When a cube is removed/destroyed, there shold be a particle
 effect to make it look cool. The cube will then be represented
 by a small floating cube that the player can collect by 
 colliding with. When collecting it, it be be added to the 
-iventory, thus removing a cube will not automatically add it to the inventory.
-The particle effects should have a demo shocasing it.
+iventory, thus removing a cube will not automatically add it 
+to the inventory. The particle effects should have a demo 
+shocasing it.
 
 ###
 
@@ -37,6 +38,156 @@ cubes far. Initial strenght is 16, and decreased with one
 for each cube away from the source.
 
 ###
+
+Loading 3D-models
+Type: Feature
+
+Create a demo showcasing how to load and render 3D models.
+
+###
+
+Explosions
+Type: Feature
+
+Implement so that an explosion from a cube position propagates and
+destroys cubes. Varying amount of cubes gets destoryed depending
+on how strong the explosion is and the cube thoughness. There 
+should be an billboard animation for the explosion effect show 
+cased in a demo. The explosion can be used by a TNT block that
+triggers the explosion when hit by the player.
+
+###
+
+File Managing
+Type: Feature
+
+Implement so that it is possible to rename worlds and also delete 
+them. Either With boost file system, or C++ 17 file system.
+
+###
+
+Reduce matrix multiplications
+Type: Performance
+
+Instead of doing one matrix multiplication for each chunk, do one
+for several chunks. This requires some system to group the chunks
+together and not using one modelspace for each chunk, but a 
+shared one for all chunks thatt share the same matrix.
+
+###
+
+Tree structure
+Type: Performance
+
+Implement a tree structure to reduce the number of frustum cheks.
+Each chunks gets placed in the tree as a child node. The parrent 
+nodes all represent a volume. If the volume is not in the
+frustum the child does not need to be checked. If it is inside the
+frustum, then step into the next child node of the current node, 
+which will have another node representing a volume, or a 
+chunk. All chunks that are reached this way shall be rendered.
+
+
+###
+
+Monotoring
+Type: Performance
+
+Implement a way to monitor the performance of the functions and
+keep statistics. Should be possible to compile withouth 
+performance checks and turn of on/off at runtime with the consoll.
+
+###
+
+Collision response not accurate
+Type: Bugg
+
+The collision responce separates the player more than necessary. 
+This will cause incorrect behaviour that will be more noticable 
+at low fps. The solution should be to adjust the players speed 
+so that he just gets very close, but not intersecting with any 
+solid cube. 
+
+###
+
+Make the water physics better:
+Type: Improvement
+
+Currently the speed in water feels very off. Should be improved
+to feel more natural.
+
+###
+
+Demo with frustum culling
+Type: Feature
+
+Create a demo that have a vissible cube. When the cube is not in 
+the view ther eshould be printed to stdout to make it easy to
+validate that the culling works correctly.
+
+###
+
+Load generation options
+Type: Improvement
+
+When creating a new map, the generations setting should be saved
+and used when loading the same map. Currently when loading a 
+saved map, the default settings will be used, wich might not be
+the correct ones for theat map, causing inconsistent terrain
+generation.
+
+###
+
+Save player location
+Type: Feature
+
+When exeting a world the location of the player should also be
+stored and used when loading the world again. The current chunk
+that the player i located in should be used as the center next
+time the world is loaded.
+
+###
+
+Shadow map demo
+Type: Feature
+
+Implement a demo showcasing shadow mapping on a simple sceen of 
+cubes and a floor. The light source shall be a sun that moves 
+and hence created moving shadows.
+
+###
+
+Bump mapping demo:
+Type: Feature
+
+Implement a demo showcasing bumpmapping og a brick texture. The 
+light source shall be moving to make it easy to see that the 
+bump effect works as intended.
+
+###
+
+Specular shading demo
+Type: Feature
+
+Implement a demo showcasing a specular shading of a 3D-model
+
+###
+
+Improve the error handeling
+Type: Improvement
+
+When failing to load an image/sound resource, improve the error
+ message so it becomes easy to discover what caused the error.
+
+###
+
+Add unit tests
+Type: Code quality
+
+Add a testing framewor like googl-test. Do some basic unit test
+on some apropiate and try to evaluate if they will improve the 
+code quality. The test do not need to actualy test a big number
+of classed. Just a test to see if it is worth while.
 
 
 
