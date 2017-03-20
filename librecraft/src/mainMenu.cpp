@@ -180,11 +180,11 @@ MainMenu::MainMenu(Game *game)
         case 0: m_activeWidgetGroup = m_settingsWidgetGroup; break;
         case 1: m_activeWidgetGroup = m_settingsWidgetGroup; break;
         case 2: {
-          m_textInput->setString(to_string(m_slider->getValue()));
+          m_fovTextInput->setString(to_string(m_fovSlider->getValue()));
           break;
         }
         case 3: {
-          m_textInput2->setString(to_string(m_slider2->getValue()));
+          m_renderDistanceInput->setString(to_string(m_renderDistanceSlider->getValue()));
           break;
         }
       }
@@ -193,14 +193,15 @@ MainMenu::MainMenu(Game *game)
     auto label1 = make_shared<Label>(325, 390, 150, 30, " - Graphics - ");
     auto label2 = make_shared<Label>(30 + 100, 310, 80, 20, "FOV:", 1);
 
-    m_slider = make_shared<Slider>(2, 125 + 100, 310, 150, 30, observer, 1);
-    m_textInput = make_shared<TextInput>(666, 285 + 100, 310, 100, 30, 1);
+    m_fovSlider = make_shared<Slider>(2, 125 + 100, 310, 150, 30, observer, 1);
+    m_fovTextInput = make_shared<TextInput>(666, 285 + 100, 310, 100, 30, 1);
 
     auto label3 = make_shared<Label>(30 + 100, 270, 80, 20, "Render Distance:",
         1);
 
-    m_slider2 = make_shared<Slider>(3, 125 + 100, 270, 150, 30, observer, 1);
-    m_textInput2 = make_shared<TextInput>(-1, 285 + 100, 270, 100, 30, 1);
+    m_renderDistanceSlider = make_shared<Slider>(3, 125 + 100, 270, 150, 30,
+        observer, 1);
+    m_renderDistanceInput = make_shared<TextInput>(-1, 285 + 100, 270, 100, 30, 1);
 
     auto button1 = make_shared<Button>(0, 245, 130, 150, 30, observer, "Save",
         1);
@@ -210,8 +211,9 @@ MainMenu::MainMenu(Game *game)
     m_graphicsSettingsWidgetGroup = make_shared<WidgetGroup>(0, 100, 100, 600,
         250);
 
-    m_graphicsSettingsWidgetGroup->addWidget({label1, label2, m_slider,
-        m_textInput, label3, m_slider2, m_textInput2, button1, button2});
+    m_graphicsSettingsWidgetGroup->addWidget({label1, label2, m_fovSlider,
+        m_fovTextInput, label3, m_renderDistanceSlider, m_renderDistanceInput,
+        button1, button2});
   }
 
   // ########################################################################
@@ -227,14 +229,34 @@ MainMenu::MainMenu(Game *game)
 
     auto label1 = make_shared<Label>(325, 390, 150, 30, " - Audio - ");
 
+    auto label2 = make_shared<Label>(30 + 100, 310, 80, 20, "Master Volume:", 1);
+    m_masterVolumeSlider = make_shared<Slider>(2, 125 + 100, 310, 150, 30,
+        observer, 1);
+    m_masterVolumeInput = make_shared<TextInput>(666, 285 + 100, 310, 100, 30, 1);
+
+    auto label3 = make_shared<Label>(30 + 100, 270, 80, 20, "Music Volume:", 1);
+    m_musicVolumeSlider = make_shared<Slider>(2, 125 + 100, 270, 150, 30,
+        observer, 1);
+    m_musicVolumeInput = make_shared<TextInput>(666, 285 + 100, 270, 100, 30, 1);
+
+    auto label4 = make_shared<Label>(30 + 100, 230, 80, 20, "Sound Volume:", 1);
+    m_soundVolumeSlider = make_shared<Slider>(2, 125 + 100, 230, 150, 30,
+        observer, 1);
+    m_soundVolumeInput = make_shared<TextInput>(666, 285 + 100, 230, 100, 30, 1);
+
+
     auto button1 = make_shared<Button>(0, 245, 130, 150, 30, observer, "Save",
        1);
     auto button2 = make_shared<Button>(1, 400, 130, 150, 30, observer, "Cancel",
        1);
 
     m_audioSettingsWidgetGroup = make_shared<WidgetGroup>(0, 100, 100, 600,
-            250);
-    m_audioSettingsWidgetGroup->addWidget({label1, button1, button2});
+      250);
+    m_audioSettingsWidgetGroup->addWidget({label1, button1, button2,
+      m_masterVolumeSlider, m_masterVolumeInput,
+      m_musicVolumeSlider, m_musicVolumeInput,
+      m_soundVolumeSlider, m_soundVolumeInput,
+      label2, label3, label4});
   }
 
   // ########################################################################

@@ -30,11 +30,11 @@ private:
 
   bool m_pointerInsideBorders{false};
 
-  std::shared_ptr<graphics::Sprite> m_slider;
-  std::shared_ptr<graphics::Sprite> m_knob;
+  std::shared_ptr<graphics::Sprite> m_slider{};
+  std::shared_ptr<graphics::Sprite> m_knob{};
 
-  float m_knobPosition;
-  float m_knobWidth;
+  float m_knobPosition{};
+  float m_knobWidth{};
 
   bool m_grabbed{false};
 

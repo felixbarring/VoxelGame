@@ -56,15 +56,25 @@ private:
   std::shared_ptr<widget::WidgetGroup> m_errorEmptyName{};
   std::shared_ptr<widget::WidgetGroup> m_errorUsedName{};
 
-  std::shared_ptr<widget::TextInput> m_textInput{};
-  std::shared_ptr<widget::TextInput> m_textInput2{};
+  std::shared_ptr<widget::TextInput> m_fovTextInput{};
+
+  std::shared_ptr<widget::TextInput> m_renderDistanceInput{};
   std::shared_ptr<widget::TextInput> m_textInput3{};
 
   std::shared_ptr<widget::TextInput> m_mouseSensitivityInput{};
   std::shared_ptr<widget::Slider> m_mouseSensitivitySlider{};
 
-  std::shared_ptr<widget::Slider> m_slider{};
-  std::shared_ptr<widget::Slider> m_slider2{};
+  std::shared_ptr<widget::Slider> m_fovSlider{};
+  std::shared_ptr<widget::Slider> m_renderDistanceSlider{};
+
+  std::shared_ptr<widget::Slider> m_masterVolumeSlider{};
+  std::shared_ptr<widget::TextInput> m_masterVolumeInput{};
+
+  std::shared_ptr<widget::Slider> m_musicVolumeSlider{};
+  std::shared_ptr<widget::TextInput> m_musicVolumeInput{};
+
+  std::shared_ptr<widget::Slider> m_soundVolumeSlider{};
+  std::shared_ptr<widget::TextInput> m_soundVolumeInput{};
 
   std::shared_ptr<widget::ToggleButton> button1;
   std::shared_ptr<widget::ToggleButton> button2;

@@ -52,7 +52,6 @@ public:
 
   /**
    * @brief Stops the music if any is currently playing.
-   *
    */
   void stopMusic();
 

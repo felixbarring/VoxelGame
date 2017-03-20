@@ -1,10 +1,3 @@
-/**
- *  \file [widgetGroup.h]
- *  \author Felix Bärring
- *
- *  Copyright (c) 2015, Felix Bärring. All rights reserved.
- */
-
 #ifndef SRC_GUI_WIDGET_WIDGETGROUP_H_
 #define SRC_GUI_WIDGET_WIDGETGROUP_H_
 
@@ -24,7 +17,6 @@ namespace widget {
  * A simple layer that redirects all function calls to its widgets.
  * Useful for handling groups of widgets that work together.
  *
- * \author Felix Bärring
  */
 class WidgetGroup: public AbstractWidget {
 public:
@@ -35,9 +27,7 @@ public:
   WidgetGroup(int id, int x, int y, int width, int height, unsigned layer = 0,
       bool transparentBackground = true);
 
-  virtual ~WidgetGroup() {
-  }
-  ;
+  virtual ~WidgetGroup() = default;
 
   /**
    * \brief Adds a widget to this group.
