@@ -80,8 +80,8 @@ private:
 
   // TODO Load these from config files...
   double m_masterVolume{1.0};
-  double m_soundVolume{2.0};
-  double m_musicVolume{2.0};
+  double m_soundVolume{100.0};
+  double m_musicVolume{100.0};
 };
 
 } /* namespace util */

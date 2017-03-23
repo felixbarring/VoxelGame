@@ -224,11 +224,11 @@ MainMenu::MainMenu(Game *game)
 
     auto observer = [this](int id)
     {
-      int stupid{3};
+      int stupid{100};
       switch(id) {
         case 0: {
           SoundPlayer::getInstance().setMasterVolume(
-              stupid * m_masterVolumeSlider->getValue());
+              m_masterVolumeSlider->getValue());
 
           SoundPlayer::getInstance().setSoundVolume(
               stupid * m_soundVolumeSlider->getValue());
@@ -241,7 +241,6 @@ MainMenu::MainMenu(Game *game)
           m_activeWidgetGroup = m_settingsWidgetGroup;
           break;
         }
-
       }
     };
 
