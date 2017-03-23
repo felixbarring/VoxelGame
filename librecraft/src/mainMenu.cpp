@@ -184,7 +184,8 @@ MainMenu::MainMenu(Game *game)
           break;
         }
         case 3: {
-          m_renderDistanceInput->setString(to_string(m_renderDistanceSlider->getValue()));
+          m_renderDistanceInput->setString(to_string(
+              m_renderDistanceSlider->getValue()));
           break;
         }
       }
@@ -201,7 +202,8 @@ MainMenu::MainMenu(Game *game)
 
     m_renderDistanceSlider = make_shared<Slider>(3, 125 + 100, 270, 150, 30,
         observer, 1);
-    m_renderDistanceInput = make_shared<TextInput>(-1, 285 + 100, 270, 100, 30, 1);
+    m_renderDistanceInput = make_shared<TextInput>(-1, 285 + 100, 270, 100, 30,
+        1);
 
     auto button1 = make_shared<Button>(0, 245, 130, 150, 30, observer, "Save",
         1);
@@ -220,29 +222,47 @@ MainMenu::MainMenu(Game *game)
 
   {
 
-    auto  observer = [this](int id)
+    auto observer = [this](int id)
     {
+      int stupid{3};
       switch(id) {
-        case 1: m_activeWidgetGroup = m_settingsWidgetGroup;
+        case 0: {
+          SoundPlayer::getInstance().setMasterVolume(
+              stupid * m_masterVolumeSlider->getValue());
+
+          SoundPlayer::getInstance().setSoundVolume(
+              stupid * m_soundVolumeSlider->getValue());
+
+          SoundPlayer::getInstance().setMusicVolume(
+              stupid * m_musicVolumeSlider->getValue());
+          break;
+        }
+        case 1: {
+          m_activeWidgetGroup = m_settingsWidgetGroup;
+          break;
+        }
+
       }
     };
 
     auto label1 = make_shared<Label>(325, 390, 150, 30, " - Audio - ");
 
-    auto label2 = make_shared<Label>(30 + 100, 310, 80, 20, "Master Volume:", 1);
-    m_masterVolumeSlider = make_shared<Slider>(2, 125 + 100, 310, 150, 30,
+    auto label2 = make_shared<Label>(230, 310, 80, 20, "Master Volume:",
+        1);
+    m_masterVolumeSlider = make_shared<Slider>(2, 325, 310, 150, 30,
         observer, 1);
-    m_masterVolumeInput = make_shared<TextInput>(666, 285 + 100, 310, 100, 30, 1);
+    m_masterVolumeInput = make_shared<TextInput>(666, 485, 310, 50, 30, 1);
 
-    auto label3 = make_shared<Label>(30 + 100, 270, 80, 20, "Music Volume:", 1);
-    m_musicVolumeSlider = make_shared<Slider>(2, 125 + 100, 270, 150, 30,
+    auto label3 = make_shared<Label>(230, 270, 80, 20, "Music Volume:", 1);
+    m_musicVolumeSlider = make_shared<Slider>(2, 325, 270, 150, 30,
         observer, 1);
-    m_musicVolumeInput = make_shared<TextInput>(666, 285 + 100, 270, 100, 30, 1);
+    m_musicVolumeInput = make_shared<TextInput>(666, 485, 270, 50, 30,
+        1);
 
-    auto label4 = make_shared<Label>(30 + 100, 230, 80, 20, "Sound Volume:", 1);
-    m_soundVolumeSlider = make_shared<Slider>(2, 125 + 100, 230, 150, 30,
+    auto label4 = make_shared<Label>(230, 230, 80, 20, "Sound Volume:", 1);
+    m_soundVolumeSlider = make_shared<Slider>(2, 325, 230, 150, 30,
         observer, 1);
-    m_soundVolumeInput = make_shared<TextInput>(666, 285 + 100, 230, 100, 30, 1);
+    m_soundVolumeInput = make_shared<TextInput>(666, 485, 230, 50, 30, 1);
 
 
     auto button1 = make_shared<Button>(0, 245, 130, 150, 30, observer, "Save",
@@ -250,8 +270,8 @@ MainMenu::MainMenu(Game *game)
     auto button2 = make_shared<Button>(1, 400, 130, 150, 30, observer, "Cancel",
        1);
 
-    m_audioSettingsWidgetGroup = make_shared<WidgetGroup>(0, 100, 100, 600,
-      250);
+    m_audioSettingsWidgetGroup = make_shared<WidgetGroup>(0, 200, 120, 400,
+      230);
     m_audioSettingsWidgetGroup->addWidget({label1, button1, button2,
       m_masterVolumeSlider, m_masterVolumeInput,
       m_musicVolumeSlider, m_musicVolumeInput,
@@ -407,11 +427,13 @@ MainMenu::MainMenu(Game *game)
     };
 
     auto label = make_shared<Label>(270, 390, 150, 50, " - Load World - ");
-    auto button1 = make_shared<Button>(0, 225, 60, 80, 30, observer, "Rename", 1);
+    auto button1 = make_shared<Button>(0, 225, 60, 80, 30, observer, "Rename",
+        1);
     auto button2 = make_shared<Button>(1, 315, 60, 80, 30, observer, "Delete",
         1);
     auto button3 = make_shared<Button>(2, 405, 60, 80, 30, observer, "Load", 1);
-    auto button4 = make_shared<Button>(3, 495, 60, 80, 30, observer, "Cancel", 1);
+    auto button4 = make_shared<Button>(3, 495, 60, 80, 30, observer, "Cancel",
+        1);
 
     m_loadWorldWidgetGroup = make_shared<WidgetGroup>(0, 200, 50, 400, 400);
 

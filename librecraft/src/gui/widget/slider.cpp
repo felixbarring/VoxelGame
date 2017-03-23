@@ -18,7 +18,8 @@ namespace widget {
 
 Slider::Slider(int id, int x, int y, int width, int height,
     std::function<void(int)> observer, int layer)
-    : AbstractWidget(id, x, y, width, height) {
+    : AbstractWidget(id, x, y, width, height)
+{
 
   this->m_observer = observer;
   m_knobPosition = x;

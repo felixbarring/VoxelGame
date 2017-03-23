@@ -26,7 +26,7 @@ void SoundPlayer::playSound(const std::string &soundPath) {
   auto sound = std::make_shared<sf::Sound>();
   sound->setBuffer((*m_buffers.find(soundPath)).second);
   sound->play();
-  sound->setVolume(m_soundVolume);
+  sound->setVolume(m_soundVolume * m_masterVolume);
   m_playingSounds.push_back(sound);
 }
 
@@ -35,6 +35,7 @@ void SoundPlayer::playMusic(const std::string &musicPath) {
   if (!music->openFromFile(musicPath))
     std::cout << "Could not play music :( - " << musicPath << "\n";
   music->play();
+  music->setVolume(m_musicVolume * m_masterVolume);
   m_playingMusic = music;
   globalResources::g_threadPool.enqueue([this] {
     graduallyChangeMusicVolume(ChangeMusicVolume::INCREASE);
@@ -49,6 +50,23 @@ void SoundPlayer::stopMusic() {
     graduallyChangeMusicVolume(ChangeMusicVolume::DECREASE);
     m_playingMusic->stop();
   });
+}
+
+void SoundPlayer::setMasterVolume(double value)
+{
+  m_masterVolume = value;
+}
+
+void SoundPlayer::setSoundVolume(double value)
+{
+  m_soundVolume = value;
+}
+
+void SoundPlayer::setMusicVolume(double value)
+{
+  m_musicVolume = value;
+  if (m_playingMusic)
+    m_playingMusic->setVolume(m_musicVolume * m_masterVolume);
 }
 
 void SoundPlayer::graduallyChangeMusicVolume(ChangeMusicVolume value) {

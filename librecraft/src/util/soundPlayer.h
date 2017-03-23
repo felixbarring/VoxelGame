@@ -55,6 +55,12 @@ public:
    */
   void stopMusic();
 
+  void setMasterVolume(double value);
+
+  void setSoundVolume(double value);
+
+  void setMusicVolume(double value);
+
 private:
 
   enum class ChangeMusicVolume {
@@ -73,6 +79,7 @@ private:
   std::shared_ptr<sf::Music> m_playingMusic;
 
   // TODO Load these from config files...
+  double m_masterVolume{1.0};
   double m_soundVolume{2.0};
   double m_musicVolume{2.0};
 };
