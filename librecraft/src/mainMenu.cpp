@@ -4,6 +4,8 @@
 #include <random>
 #include <string>
 
+#include <experimental/filesystem>
+
 #include "config/data.h"
 #include "graphics/graphicsManager.h"
 #include "gui/terminal.h"
@@ -33,8 +35,8 @@ MainMenu::MainMenu(Game *game)
   graphics::GraphicsManager::getInstance().getSpriteBatcher().setProjection(
       m_virtualProjection);
 
-  m_title = make_unique < gui::Image
-      > (200, 450, 400, 100, config::gui_data::title);
+  m_title = make_unique<gui::Image>(200, 450, 400, 100,
+      config::gui_data::title);
 
   // ########################################################################
 
@@ -511,6 +513,7 @@ void MainMenu::update(float timePassed) {
   glClearColor(skyColor.x, skyColor.y, skyColor.z, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+  graphics::GraphicsManager::getInstance().clearScreen();
   graphics::GraphicsManager::getInstance().getSpriteBatcher().draw();
 }
 

@@ -41,14 +41,17 @@ public:
     /**
      * \brief Sets the sun strength of the world.
      *
-     * This will affect all graphical objects in different batches that are dependent on sunlight.
+     * This will affect all graphical objects in different batches that are
+     * dependent on sunlight.
      *
-     * @param value The sun strength, in the range (0, 1) where 0 is no light, and 1 is max light.
+     * @param value The sun strength, in the range (0, 1) where 0 is no light,
+     *              and 1 is max light.
      */
-    void setSunStrenght(float value);
+    void setSunStrength(float value);
 
     /**
-     * \brief Returns the camera that is used to render the world from the players perspective.
+     * \brief Returns the camera that is used to render the world from the
+     *        players perspective.
      *
      * @return The camera uses to render the world from the players perspective.
      */
@@ -78,6 +81,22 @@ public:
      */
     CubeMap& getSkyMap();
 
+    /**
+     * @brief Clears the screen.
+     *
+     * Clears the screen with the default sky color.
+     */
+    void clearScreen();
+
+    /**
+     * @brief Clears the screen.
+     *
+     * Clears the screen with a sky color that is adjusted to depend on the
+     * sun strength set by setSunStrenght. Lower sun strenght means darker
+     * clear color.
+     */
+    void clearScreenSunDependent();
+
 private:
     Camera m_playerCamera{};
 
@@ -85,8 +104,9 @@ private:
     CubeBatcher m_cubeBatcher{m_playerCamera};
     SpriteBatcher m_spriteBatcher;
 
-    std::unique_ptr<graphics::CubeMap> m_skyBox;
+    double m_sunStrength{};
 
+    std::unique_ptr<graphics::CubeMap> m_skyBox;
 };
 
 } /* namespace graphics */

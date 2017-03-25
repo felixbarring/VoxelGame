@@ -26,7 +26,8 @@ using namespace util;
 using namespace gui;
 
 InGame::InGame(Game *game)
-    : m_game{game} {
+    : m_game{game}
+{
 
   // TODO Should be possible to save and load the player location.
   double playerYLocation{40.1};
@@ -228,7 +229,7 @@ void InGame::update(float timePassed) {
     m_player.update(timePassed);
     m_timeCycle.update(timePassed);
 
-    graphics::GraphicsManager::getInstance().setSunStrenght(
+    graphics::GraphicsManager::getInstance().setSunStrength(
         m_timeCycle.getSunStrenght());
 
     GraphicsManager::getInstance().getSpriteBatcher().addBatch(m_crossHair);
@@ -295,8 +296,6 @@ void InGame::update(float timePassed) {
 
   chunk::ChunkManager::getInstance().update();
 
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
   if (m_timeCycle.getStarStrenght() > 0.0) {
     // Changes so that the rotation dose not get to fast.
     const float valModifier = 0.015;
@@ -306,6 +305,8 @@ void InGame::update(float timePassed) {
         m_timeCycle.getStarStrenght());
   }
 
+
+  GraphicsManager::getInstance().clearScreenSunDependent();
   GraphicsManager::getInstance().getChunkBatcher().draw();
   GraphicsManager::getInstance().getCubeBatcher().draw();
   GraphicsManager::getInstance().getSpriteBatcher().draw();

@@ -6,11 +6,11 @@ set(CMAKE_BUILD_TYPE Release)
 set(DEMO FALSE) 
 set(WARNINGS FALSE)
 
-set(CMAKE_CXX_FLAGS "-std=c++14")
+set(CMAKE_CXX_FLAGS "-std=c++17 -lstdc++fs")
 
 # -Werror
 if(WARNINGS)
-	set(CMAKE_CXX_FLAGS "-std=c++14 -Wall -Wextra")
+	set(CMAKE_CXX_FLAGS "-std=c++17 -lstdc++fs -Wall -Wextra")
 endif()
 
 # set(SFML_ROOT "${CMAKE_SOURCE_DIR}/SFML-2.4.2")
