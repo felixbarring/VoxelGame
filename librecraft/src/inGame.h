@@ -20,45 +20,50 @@
 #include "gui/mouse.h"
 #include "gui/terminal.h"
 #include "model/world/timeAndWeather/timeCycle.h"
+#include "settings.h"
 
 class InGame: public IGameState {
 public:
 
-    InGame(Game *game);
+  InGame(Game *game);
 
-    void update(float timePassed);
+  void update(double timePassed);
 
 private:
 
-    enum class GameState {
-        NoOverlay,
-        OverlayMenu,
-        Terminal
-    };
+  enum class GameState {
+    NoOverlay,
+    OverlayMenu,
+    Terminal
+  };
 
-    GameState m_state = GameState::NoOverlay;
-    std::shared_ptr<gui::Terminal> m_terminal;
-    glm::mat4 m_virtualProjection;
+  GameState m_state = GameState::NoOverlay;
+  std::shared_ptr<gui::Terminal> m_terminal;
+  glm::mat4 m_virtualProjection;
 
-    Game *m_game;
-    entity::Player m_player;
+  Game *m_game;
+  entity::Player m_player;
 
-    gui::Mouse m_mouse{};
+  gui::Mouse m_mouse{};
 
-    TimeCycle m_timeCycle;
+  TimeCycle m_timeCycle;
 
-    bool m_displayDebugInfo{false};
+  bool m_displayDebugInfo{false};
 
-    double m_fpsDisplayCounter{0};
-    double m_fpsDisplayDelay{1.0 / 5.0}; // The fps should only be drawn 5 times/second
+  double m_fpsDisplayCounter{0};
+  double m_fpsDisplayDelay{1.0 / 5.0}; // The fps should only be drawn 5 times/second
 
-    std::shared_ptr<widget::WidgetGroup> m_widgetGroup1;
-    std::shared_ptr<graphics::Sprite> m_crossHair;
-    std::shared_ptr<graphics::Sprite> m_direction;
-    std::shared_ptr<graphics::Sprite> m_fps;
-    std::shared_ptr<graphics::Sprite> m_lastSelecteCube;
+  Settings m_settings;
 
-    std::vector<std::shared_ptr<graphics::Sprite>> m_selectedCubeThumbnails;
+  std::shared_ptr<widget::WidgetGroup> m_activeWidgetGroup;
+  std::shared_ptr<widget::WidgetGroup> m_mainWidgetGroup;
+
+  std::shared_ptr<graphics::Sprite> m_crossHair;
+  std::shared_ptr<graphics::Sprite> m_direction;
+  std::shared_ptr<graphics::Sprite> m_fps;
+  std::shared_ptr<graphics::Sprite> m_lastSelecteCube;
+
+  std::vector<std::shared_ptr<graphics::Sprite>> m_selectedCubeThumbnails;
 
 };
 

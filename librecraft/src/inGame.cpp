@@ -26,7 +26,8 @@ using namespace util;
 using namespace gui;
 
 InGame::InGame(Game *game)
-    : m_game{game}
+  : m_game{game}
+  , m_settings{m_activeWidgetGroup, m_mainWidgetGroup}
 {
 
   // TODO Should be possible to save and load the player location.
@@ -51,6 +52,10 @@ InGame::InGame(Game *game)
         break;
       }
       case 1: {
+        m_activeWidgetGroup = m_settings.getMainWidgetGroup();
+        break;
+      }
+      case 2: {
         Input::getInstance()->centerMouse();
         m_state = GameState::NoOverlay;
         break;
@@ -61,11 +66,17 @@ InGame::InGame(Game *game)
   shared_ptr<IWidget> button1(new Button{0, 325, 350, 150, 30, observer,
       "Main Menu"});
   shared_ptr<IWidget> button2(new Button{1, 325, 310, 150, 30, observer,
+      "Settings"});
+  shared_ptr<IWidget> button3(new Button{2, 325, 270, 150, 30, observer,
       "Back To Game"});
-  m_widgetGroup1.reset(new WidgetGroup{0, 300, 300, 200, 90});
 
-  m_widgetGroup1->addWidget(button1);
-  m_widgetGroup1->addWidget(button2);
+  m_mainWidgetGroup.reset(new WidgetGroup{0, 300, 260, 200, 130});
+
+  m_mainWidgetGroup->addWidget(button1);
+  m_mainWidgetGroup->addWidget(button2);
+  m_mainWidgetGroup->addWidget(button3);
+
+  m_activeWidgetGroup = m_mainWidgetGroup;
 
   m_crossHair.reset(
       new Sprite(390, 290, 0, 20, 20,
@@ -208,7 +219,7 @@ InGame::InGame(Game *game)
 
 }
 
-void InGame::update(float timePassed) {
+void InGame::update(double timePassed) {
 
   auto input = Input::getInstance();
 
@@ -290,8 +301,8 @@ void InGame::update(float timePassed) {
     m_terminal->update(timePassed);
     m_terminal->draw();
   } else if (m_state == GameState::OverlayMenu) {
-    m_widgetGroup1->update(timePassed);
-    m_widgetGroup1->draw();
+    m_activeWidgetGroup->update(timePassed);
+    m_activeWidgetGroup->draw();
   }
 
   chunk::ChunkManager::getInstance().update();
@@ -310,6 +321,5 @@ void InGame::update(float timePassed) {
   GraphicsManager::getInstance().getChunkBatcher().draw();
   GraphicsManager::getInstance().getCubeBatcher().draw();
   GraphicsManager::getInstance().getSpriteBatcher().draw();
-
 }
 

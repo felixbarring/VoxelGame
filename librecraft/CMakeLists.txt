@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8)
 project(VoxelGame)
 
 set(APPLICATION TRUE)
-set(CMAKE_BUILD_TYPE Release) 
+#set(CMAKE_BUILD_TYPE Release) 
 set(DEMO FALSE) 
 set(WARNINGS FALSE)
 

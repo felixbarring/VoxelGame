@@ -18,19 +18,23 @@
 #include "gui/guiUtil.h"
 #include "gui/mouse.h"
 #include "gui/terminal.h"
+#include "settings.h"
 
-class MainMenu: public IGameState {
+class MainMenu : public IGameState {
 public:
 
   MainMenu(Game *game);
 
-  void update(float timePassed);
+  void update(double timePassed);
 
 private:
 
   Game *m_game;
   glm::mat4 m_virtualProjection{};
   gui::Mouse m_mouse{};
+
+  Settings m_settings;
+  bool m_inSettings{false};
 
   chunk::CreationOptions m_options;
 
@@ -47,34 +51,11 @@ private:
 
   std::shared_ptr<widget::WidgetGroup> m_loadWorldWidgetGroup{};
 
-  std::shared_ptr<widget::WidgetGroup> m_settingsWidgetGroup{};
-  std::shared_ptr<widget::WidgetGroup> m_gameSettingsWidgetGroup{};
-  std::shared_ptr<widget::WidgetGroup> m_inputSettingsWidgetGroup{};
-  std::shared_ptr<widget::WidgetGroup> m_graphicsSettingsWidgetGroup{};
-  std::shared_ptr<widget::WidgetGroup> m_audioSettingsWidgetGroup{};
 
   std::shared_ptr<widget::WidgetGroup> m_errorEmptyName{};
   std::shared_ptr<widget::WidgetGroup> m_errorUsedName{};
 
-  std::shared_ptr<widget::TextInput> m_fovTextInput{};
-
-  std::shared_ptr<widget::TextInput> m_renderDistanceInput{};
   std::shared_ptr<widget::TextInput> m_textInput3{};
-
-  std::shared_ptr<widget::TextInput> m_mouseSensitivityInput{};
-  std::shared_ptr<widget::Slider> m_mouseSensitivitySlider{};
-
-  std::shared_ptr<widget::Slider> m_fovSlider{};
-  std::shared_ptr<widget::Slider> m_renderDistanceSlider{};
-
-  std::shared_ptr<widget::Slider> m_masterVolumeSlider{};
-  std::shared_ptr<widget::TextInput> m_masterVolumeInput{};
-
-  std::shared_ptr<widget::Slider> m_musicVolumeSlider{};
-  std::shared_ptr<widget::TextInput> m_musicVolumeInput{};
-
-  std::shared_ptr<widget::Slider> m_soundVolumeSlider{};
-  std::shared_ptr<widget::TextInput> m_soundVolumeInput{};
 
   std::shared_ptr<widget::ToggleButton> button1;
   std::shared_ptr<widget::ToggleButton> button2;
