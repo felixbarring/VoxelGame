@@ -90,6 +90,10 @@ InGame::InGame(Game *game)
   }
 
   // TODO This whole console system should be reworked.
+  // TODO Refactor
+  // TODO Refactor
+  // TODO Refactor
+  // TODO Refactor
 
   string close = "close";
   string flyMode = "flyMode";

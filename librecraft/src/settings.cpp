@@ -217,7 +217,6 @@ Settings::Settings(
      label2, label3, label4});
  }
 
- m_activeWidgetGroup = m_settingsWidgetGroup;
 }
 
 void Settings::update(double timePassed) {

@@ -213,8 +213,12 @@ MainMenu::MainMenu(Game *game)
     auto observer = [this](int id)
     {
       switch(id) {
-        case 0: break;
-        case 1: break;
+        case 0: {
+          break;
+        }
+        case 1: {
+          break;
+        }
         case 2: {
           if (m_worldList->getSelectedListItem().size()) {
             string name = m_worldList->getSelectedListItem();
@@ -223,11 +227,11 @@ MainMenu::MainMenu(Game *game)
             // TODO The options need to be the same as when the map was created.
             // TODO Implement so its possible to save and load options for a map.
 
-        m_game->createWorld(m_options);
-        SoundPlayer::getInstance().stopMusic();
-        m_activeWidgetGroup = m_mainWidgetGroup;
-        m_worldList->reset();
-      }
+            m_game->createWorld(m_options);
+            SoundPlayer::getInstance().stopMusic();
+            m_activeWidgetGroup = m_mainWidgetGroup;
+            m_worldList->reset();
+          }
         break;
         }
         case 3: m_activeWidgetGroup = m_playWidgetGroup; break;
@@ -318,12 +322,6 @@ void MainMenu::update(double timePassed) {
   m_activeWidgetGroup->update(timePassed);
 
   m_activeWidgetGroup->draw();
-
-  glm::vec3 skyColor = config::graphics_data::skyColor;
-
-  // TODO No openGl outside graphics!
-  glClearColor(skyColor.x, skyColor.y, skyColor.z, 1.0f);
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   graphics::GraphicsManager::getInstance().clearScreen();
   graphics::GraphicsManager::getInstance().getSpriteBatcher().draw();
