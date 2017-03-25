@@ -18,7 +18,9 @@ public:
 
   virtual ~Slider() = default;
 
-  float getValue();
+  void setValue(double value);
+
+  double getValue();
 
   void draw() override;
 

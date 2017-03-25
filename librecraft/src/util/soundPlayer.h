@@ -57,9 +57,15 @@ public:
 
   void setMasterVolume(double value);
 
+  double getMasterVolume();
+
   void setSoundVolume(double value);
 
+  double getSoundVolume();
+
   void setMusicVolume(double value);
+
+  double getMusicVolume();
 
 private:
 

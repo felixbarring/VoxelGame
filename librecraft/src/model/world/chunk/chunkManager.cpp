@@ -36,7 +36,7 @@ ChunkManager::ChunkManager() {
 
 void ChunkManager::createWorld(CreationOptions options)
 //    : m_options{std::move(options)}
-    {
+{
   // TODO Should be set in constructor.
   m_options = options;
 

@@ -18,23 +18,26 @@ namespace widget {
 
 Slider::Slider(int id, int x, int y, int width, int height,
     std::function<void(int)> observer, int layer)
-    : AbstractWidget(id, x, y, width, height)
+  : AbstractWidget(id, x, y, width, height)
 {
 
   this->m_observer = observer;
   m_knobPosition = x;
   m_knobWidth = height;
 
-  m_slider.reset(
-      new Sprite(x, y, layer, width, height,
-          Resources::getInstance().getTexture(config::gui_data::slider)));
-  m_knob.reset(
-      new Sprite(x, y, layer + 1, height, height,
-          Resources::getInstance().getTexture(config::gui_data::sliderKnob)));
+  m_slider.reset(new Sprite(x, y, layer, width, height,
+      Resources::getInstance().getTexture(config::gui_data::slider)));
+  m_knob.reset(new Sprite(x, y, layer + 1, height, height,
+      Resources::getInstance().getTexture(config::gui_data::sliderKnob)));
 
 }
 
-float Slider::getValue() {
+void Slider::setValue(double value) {
+  m_knobPosition = value * (m_width - m_knobWidth) + this->m_xCoordinate;
+  m_knob->setLocation(m_knobPosition, this->m_yCoordinate);
+}
+
+double Slider::getValue() {
   return (m_knobPosition - this->m_xCoordinate) / (m_width - m_knobWidth);
 }
 

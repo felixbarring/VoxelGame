@@ -9,6 +9,8 @@
 
 namespace util {
 
+double kek{100};
+
 void SoundPlayer::playSound(const std::string &soundPath) {
   for (auto sound = m_playingSounds.begin(); sound < m_playingSounds.end();
       ++sound) {
@@ -57,16 +59,28 @@ void SoundPlayer::setMasterVolume(double value)
   m_masterVolume = value;
 }
 
+double SoundPlayer::getMasterVolume() {
+  return m_masterVolume;
+}
+
 void SoundPlayer::setSoundVolume(double value)
 {
-  m_soundVolume = value;
+  m_soundVolume = value * kek;
+}
+
+double SoundPlayer::getSoundVolume() {
+  return m_soundVolume / kek;
 }
 
 void SoundPlayer::setMusicVolume(double value)
 {
-  m_musicVolume = value;
+  m_musicVolume = value * kek;
   if (m_playingMusic)
     m_playingMusic->setVolume(m_musicVolume * m_masterVolume);
+}
+
+double SoundPlayer::getMusicVolume() {
+  return m_musicVolume / kek;
 }
 
 void SoundPlayer::graduallyChangeMusicVolume(ChangeMusicVolume value) {

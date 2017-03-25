@@ -163,17 +163,16 @@ Settings::Settings(
 
    auto observer = [this](int id)
    {
-     int stupid{100};
      switch(id) {
        case 0: {
          SoundPlayer::getInstance().setMasterVolume(
              m_masterVolumeSlider->getValue());
 
          SoundPlayer::getInstance().setSoundVolume(
-             stupid * m_soundVolumeSlider->getValue());
+             m_soundVolumeSlider->getValue());
 
          SoundPlayer::getInstance().setMusicVolume(
-             stupid * m_musicVolumeSlider->getValue());
+             m_musicVolumeSlider->getValue());
          break;
        }
        case 1: {
@@ -183,23 +182,27 @@ Settings::Settings(
      }
    };
 
+   auto &soundP = SoundPlayer::getInstance();
+
    auto label1 = make_shared<Label>(325, 390, 150, 30, " - Audio - ");
 
    auto label2 = make_shared<Label>(230, 310, 80, 20, "Master Volume:",
        1);
-   m_masterVolumeSlider = make_shared<Slider>(2, 325, 310, 150, 30,
-       observer, 1);
+   m_masterVolumeSlider = make_shared<Slider>(2, 325, 310, 150, 30, observer,
+       1);
+   m_masterVolumeSlider->setValue(soundP.getMasterVolume());
    m_masterVolumeInput = make_shared<TextInput>(666, 485, 310, 50, 30, 1);
 
    auto label3 = make_shared<Label>(230, 270, 80, 20, "Music Volume:", 1);
    m_musicVolumeSlider = make_shared<Slider>(2, 325, 270, 150, 30,
        observer, 1);
-   m_musicVolumeInput = make_shared<TextInput>(666, 485, 270, 50, 30,
-       1);
+   m_musicVolumeSlider->setValue(soundP.getMusicVolume());
+   m_musicVolumeInput = make_shared<TextInput>(666, 485, 270, 50, 30, 1);
 
    auto label4 = make_shared<Label>(230, 230, 80, 20, "Sound Volume:", 1);
    m_soundVolumeSlider = make_shared<Slider>(2, 325, 230, 150, 30,
        observer, 1);
+   m_soundVolumeSlider->setValue(soundP.getSoundVolume());
    m_soundVolumeInput = make_shared<TextInput>(666, 485, 230, 50, 30, 1);
 
 
