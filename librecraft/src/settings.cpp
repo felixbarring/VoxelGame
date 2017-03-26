@@ -168,11 +168,11 @@ Settings::Settings(
          SoundPlayer::getInstance().setMasterVolume(
              m_masterVolumeSlider->getValue());
 
-         SoundPlayer::getInstance().setSoundVolume(
-             m_soundVolumeSlider->getValue());
-
          SoundPlayer::getInstance().setMusicVolume(
              m_musicVolumeSlider->getValue());
+
+         SoundPlayer::getInstance().setSoundVolume(
+             m_soundVolumeSlider->getValue());
          break;
        }
        case 1: {

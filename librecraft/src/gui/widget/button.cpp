@@ -17,9 +17,10 @@ using namespace util;
 namespace widget {
 
 Button::Button(int id, int x, int y, int width, int height,
-    function<void(int)> observer, string name, int layer)
-    : AbstractWidget(id, x, y, width, height)
-    , m_name(name)
+    function<void(int)> observer, string name, int layer
+)
+  : AbstractWidget(id, x, y, width, height)
+  , m_name(name)
 {
   this->m_observer = observer;
   auto &res = Resources::getInstance();

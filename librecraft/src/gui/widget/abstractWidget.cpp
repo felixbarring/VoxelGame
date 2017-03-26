@@ -5,11 +5,11 @@
 namespace widget {
 
 AbstractWidget::AbstractWidget(int id, int x, int y, int width, int height)
-    : m_id{id}
-    , m_xCoordinate{x}
-    , m_yCoordinate{y}
-    , m_width{width}
-    , m_height{height}
+  : m_id{id}
+  , m_xCoordinate{x}
+  , m_yCoordinate{y}
+  , m_width{width}
+  , m_height{height}
 {
 }
 

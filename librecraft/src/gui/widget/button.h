@@ -20,7 +20,6 @@ namespace widget {
  * When the mouse pointer is inside the buttons border it will hint
  * that it is interactable by highlight it self.
  *
- * \author Felix Bärring
  */
 class Button: public AbstractWidget {
 public:
@@ -30,6 +29,9 @@ public:
 
   virtual ~Button() = default;
 
+  /**
+   * @return The name of the button.
+   */
   std::string getName();
 
   void draw() override;
@@ -37,7 +39,10 @@ public:
   void update(float timePassed) override;
 
   /**
-   * Makes the button behave as if had been clicked.
+   * @brief Makes the button behave as if had been clicked.
+   *
+   * This will cause the button to call the callback observer function
+   * registered in the ctor.
    */
   void trigger();
 

@@ -64,7 +64,7 @@ void Slider::update(float) {
 
     m_knob->setLocation(m_knobPosition, this->m_yCoordinate);
 
-    m_observer.operator ()(m_id);
+    m_observer(m_id);
   }
 
 }

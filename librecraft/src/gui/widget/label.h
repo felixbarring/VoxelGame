@@ -10,10 +10,7 @@
 namespace widget {
 
 /**
- * \class Label
- *
- * A label can be used to provide information in GUIs by displaying text
- *
+ * @brief A label can be used to provide information in GUIs by displaying text.
  */
 class Label: public AbstractWidget {
 public:

@@ -17,9 +17,11 @@ using namespace graphics;
 namespace widget {
 
 SelectableList::SelectableList(int id, int x, int y, int width, int height,
-    function<void(int)> observer, unsigned layer)
-    : AbstractWidget(id, static_cast<double>(x), static_cast<double>(y),
-            width, height), m_layer{layer + 1}
+    function<void(int)> observer, unsigned layer
+)
+  : AbstractWidget(id, static_cast<double>(x), static_cast<double>(y),
+        width, height)
+  , m_layer{layer + 1}
 {
   this->m_observer = observer;
 
@@ -31,6 +33,9 @@ SelectableList::SelectableList(int id, int x, int y, int width, int height,
 }
 
 void SelectableList::addListItem(std::string item) {
+
+ // TODO Do not add item that already exists.
+
   auto x = m_xCoordinate + 5;
   auto y = m_yCoordinate + m_height - (5 + 30 * (1 + m_buttons.size()));
   auto width = m_width - 10;

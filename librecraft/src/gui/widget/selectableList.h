@@ -12,22 +12,62 @@
 
 namespace widget {
 
+/**
+ * @brief
+ */
 class SelectableList: public AbstractWidget {
 public:
 
+  /**
+   * @brief Constructs a selectable list.
+   *
+   * @param id Id of the
+   * @param x
+   * @param y
+   * @param width
+   * @param height
+   * @param observer
+   * @param layer
+   */
   SelectableList(int id, int x, int y, int width, int height,
       std::function<void(int)> observer, unsigned layer = 0);
 
   virtual ~SelectableList() = default;
 
-  void addListItem(std::string item);
+  /**
+   * @brief Adds a new item to the list.
+   *
+   * If addListItem is called with a string value that has already been added,
+   * then it will silently ignore and not add a new item.
+   *
+   * @param item The new item will have the value as a visible string.
+   */
+  void addListItem(std::string value);
 
-  void deleteListItem(std::string item);
+  /**
+   * @brief Removes the item that has the string value as a visible string.
+   *
+   * @param item
+   */
+  void deleteListItem(std::string value);
 
+  /**
+   * @brief Returns the string of the currently selected item.
+   *
+   * @return If no item is selected, an empty string will be returned.
+   *         Otherwise the string value of the selected list item will be
+   *         returned.
+   */
   std::string getSelectedListItem();
 
+  /**
+   * @brief Removes all items.
+   */
   void clear();
 
+  /**
+   * @brief Resets the list so that no item is toggled.
+   */
   void reset();
 
   void draw() override;
