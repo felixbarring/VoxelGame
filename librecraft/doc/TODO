@@ -189,5 +189,24 @@ on some apropiate and try to evaluate if they will improve the
 code quality. The test do not need to actualy test a big number
 of classed. Just a test to see if it is worth while.
 
+###
+
+Step sounds
+Type: Feature
+
+When the player moves there shold be foot step sound played.
+There should be a basic sound implemented, and possibility to
+extend the feature to have different sounds depending on the 
+material that the player is walking on. Soume types of materials
+could be: grass/dirt, stone/rock, wood.
+
+###
+
+More ingame ambience
+Type Feature
+
+There should be more ambienct sounds and perhaps music playing
+in game to create a better atmosphere.
+
 
 

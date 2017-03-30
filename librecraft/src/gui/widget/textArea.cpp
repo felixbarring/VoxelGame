@@ -11,16 +11,16 @@ using namespace graphics;
 namespace widget {
 
 TextArea::TextArea(int id, int x, int y, int width, int height,
-    std::function<void(int)> observer, int layer)
-    : AbstractWidget(id, x, y, width, height)
-    , m_layer{layer}
+    std::function<void(int)> observer, int layer
+)
+  : AbstractWidget(id, x, y, width, height)
+  , m_layer{layer}
 {
   this->m_observer = observer;
   auto &res = Resources::getInstance();
 
-  m_textArea.reset(
-      new Sprite(x, y, layer, width, height,
-          res.getTexture(config::gui_data::transparentGuiBox)));
+  m_textArea.reset(new Sprite(x, y, layer, width, height,
+      res.getTexture(config::gui_data::transparentGuiBox)));
 }
 
 void TextArea::draw() {
@@ -63,8 +63,7 @@ void TextArea::addLine(string str) {
     str = str.substr(0, split);
   }
 
-  m_rows.push_back(
-      std::pair<string, shared_ptr<Sprite>>(str,
+  m_rows.push_back(std::pair<string, shared_ptr<Sprite>>(str,
           make_shared<Sprite>(m_xCoordinate, y, m_layer + 1,
               fontMeshBuilder.buldMeshForString(str, m_fontHeight),
               res.getTexture(config::font_data::font))));
