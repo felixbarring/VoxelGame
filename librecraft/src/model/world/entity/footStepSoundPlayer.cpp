@@ -21,6 +21,10 @@ void FootStepSoundPlayer::walkingActive(double time) {
 
   m_accumulatedTime -= m_footStepDelay;
 
+  playSteppingSound();
+}
+
+void FootStepSoundPlayer::playSteppingSound() {
   static int last{-1};
   static random_device randomDevice;
   static mt19937 randomNumber(randomDevice());

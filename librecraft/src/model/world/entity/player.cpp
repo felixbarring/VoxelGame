@@ -102,8 +102,10 @@ void Player::updateSpeed(float timePassed) {
     m_speed.y -= m_gravity * timePassed;
 
     if (input->jumpPressed) {
-      if (m_isOnGround)
+      if (m_isOnGround) {
         m_speed.y = m_jumpSpeed;
+        m_stepPlayer.playSteppingSound();
+      }
     }
 
     if (isInWater()) {

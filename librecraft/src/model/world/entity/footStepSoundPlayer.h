@@ -37,6 +37,16 @@ public:
   void walkingActive(double time);
 
   /**
+   * @brief Plays a stepping sound immediately.
+   *
+   * This can be used when the delay of walkinActive is not desired. This
+   * function can for example be useful when the player jumps and want to
+   * play a sound immediately.
+   *
+   */
+  void playSteppingSound();
+
+  /**
    * @brief Changes the delay between each time the foot step sound will be
    *        played.
    *
@@ -51,7 +61,7 @@ private:
 
   bool m_isWalking{false};
   double m_accumulatedTime{};
-  double m_footStepDelay{0.5};
+  double m_footStepDelay{0.35};
 };
 
 #endif /* SRC_MODEL_WORLD_ENTITY_FOOTSTEPSOUNDPLAYER_H_ */
