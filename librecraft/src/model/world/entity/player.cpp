@@ -27,9 +27,13 @@ using namespace cube_data;
 namespace entity {
 
 void Player::update(float timePassed) {
+  updateIsOnGround();
   updateSpeed(timePassed);
   handlePhysics();
   updateCameraAndTargetCube(); // Updates the camera as well
+
+  if (length(m_speed) && m_isOnGround)
+    m_stepPlayer.walkingActive(timePassed);
 
   chunk::ChunkManager::getInstance().setCenter(m_location.x, m_location.z);
 }
@@ -88,9 +92,8 @@ void Player::updateSpeed(float timePassed) {
     m_speed.z = normalizedMD.z;
   }
 
-  if (input->switchCubePressed
-      && ++m_cubeUsedForBuilding
-          > config::cube_data::LAST_CUBE_USED_FOR_BUILDING)
+  if (input->switchCubePressed && ++m_cubeUsedForBuilding >
+      config::cube_data::LAST_CUBE_USED_FOR_BUILDING)
     m_cubeUsedForBuilding = 0;
 
   float waterFactor = 1.0;
@@ -99,11 +102,7 @@ void Player::updateSpeed(float timePassed) {
     m_speed.y -= m_gravity * timePassed;
 
     if (input->jumpPressed) {
-
-      // Only jump if the player stands on solid ground.
-      vector<tuple<float, int, vec3>> collisions;
-      intersected(vec3(0, -0.1, 0), collisions);
-      if (collisions.size())
+      if (m_isOnGround)
         m_speed.y = m_jumpSpeed;
     }
 
@@ -217,6 +216,12 @@ void Player::updateCameraAndTargetCube() {
         m_targetedCubeTransform, voxelLightValue + 5);
   }
 
+}
+
+void Player::updateIsOnGround() {
+  vector<tuple<float, int, vec3>> collisions;
+  intersected(vec3(0, -0.1, 0), collisions);
+  m_isOnGround = !collisions.empty();
 }
 
 void Player::intersected(vec3 movement,

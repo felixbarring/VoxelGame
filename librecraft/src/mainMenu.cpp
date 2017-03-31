@@ -338,7 +338,7 @@ string randomName() {
   static mt19937 randomNumber(randomDevice());
   static uniform_int_distribution<int> uni(0, names.size() - 1);
 
-  int value;
+  int value{};
   do {
     value = uni(randomNumber);
   } while (value == last);

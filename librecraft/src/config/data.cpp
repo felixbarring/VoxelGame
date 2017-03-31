@@ -189,6 +189,20 @@ namespace souds {
  const std::string buttonPressed = "../resources/sound/button.wav";
  const std::string cubeAdded = "../resources/sound/cube_place.wav";
  const std::string cubeRemoved =  "../resources/sound/cube_remove.wav";
+
+ const std::vector<std::string> footStepSounds{
+   "../resources/sound/steps/step1.ogg",
+   "../resources/sound/steps/step2.ogg",
+   "../resources/sound/steps/step3.ogg",
+   "../resources/sound/steps/step4.ogg",
+   "../resources/sound/steps/step5.ogg",
+   "../resources/sound/steps/step6.ogg",
+   "../resources/sound/steps/step7.ogg",
+   "../resources/sound/steps/step8.ogg",
+   "../resources/sound/steps/step9.ogg",
+   "../resources/sound/steps/step10.ogg"
+ };
+
 }
 
 namespace music {

@@ -12,6 +12,7 @@
 #include "../../../graphics/transform.h"
 
 #include "../../../config/data.h"
+#include "footStepSoundPlayer.h"
 
 namespace entity {
 
@@ -40,6 +41,8 @@ private:
 
   void updateCameraAndTargetCube();
 
+  void updateIsOnGround();
+
   void intersected(glm::vec3 movement,
       std::vector<std::tuple<float, int, glm::vec3>> &collisions);
 
@@ -48,6 +51,10 @@ private:
   entity::AABB createAABB();
 
   glm::vec3 m_location{0, 0, 0}; // The location of the camera
+
+  FootStepSoundPlayer m_stepPlayer{
+      config::souds::footStepSounds
+  };
 
   float m_width{0.8};
   float m_height{1.7};
@@ -60,6 +67,7 @@ private:
   float m_movementSpeed{8};
 
   bool m_gravitiyOn{true};
+  bool m_isOnGround{false};
 
   float m_flySpeed = 8;
 
