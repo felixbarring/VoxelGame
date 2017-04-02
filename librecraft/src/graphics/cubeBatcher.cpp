@@ -85,7 +85,7 @@ CubeBatcher::CubeBatcher(Camera &camera)
         pair<string, int>(texCoordIn, 2)
     };
 
-    m_program.reset(new ShaderProgram(vertex.c_str(), fragment.c_str(), attributesMap));
+    m_program.reset(new ShaderProgram(vertex, fragment, attributesMap));
 
 }
 

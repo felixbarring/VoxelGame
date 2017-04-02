@@ -1,11 +1,49 @@
 
+
+Variables for CMAKE 
+
+Can be changed by providing the following when calling cmake
+-D variabled=value
+
+The first value is the defualt one
+
+CMAKE_BUILD_TYPE: Debug | Release
+APPLICATION: TRUE | FALSE
+DEMO: FALSE | TRUE
+WARNINGS: FALSE| TRUE
+
+
+Building with makefiles
+
+mkdir build
+cd build
+cmake ..
+make
+
+Setting up an eclipse/kdevelop/codeblocks project:
+
+Create a directory in the git projects root folder
+
+cd ../..
+mkdir Eclipse
+
+cd Eclipse
+touch data/meta
+cmake -G "your ide generator"
+
+And then just import it with your ide.
+
+Tools
+
+# Used to count lines of code
+find . -name "*.h" -or -name "*.cpp" | xargs wc -l
+
 lizard
 cppcheck --enable=all src/
 clang-tidy -checks='*' file.cpp --
-
-######
 
 valgrind
 callgrind
 gcov
 gprof
+

@@ -61,7 +61,7 @@ public:
 	    glViewport(0, 0, WIDTH, HEIGHT);
 	    glClearColor(0.2f, 0.22f, 0.2f, 1.0f);
 
-	    const char *vertex =
+	    std:: string vertex =
 	        "#version 330 core \n"
 	        "in vec3 positionIn; \n"
 	        "in vec3 texCoordIn; \n"
@@ -74,7 +74,7 @@ public:
 	        "  texCoord = vec3(texCoordIn.x, 1.0 - texCoordIn.y, texCoordIn.z); \n"
 	        "} \n";
 
-	    const char *frag =
+	    std::string frag =
 	        "#version 330 core \n"
 	        "in vec3 texCoord; \n"
 

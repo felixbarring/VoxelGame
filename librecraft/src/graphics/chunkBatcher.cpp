@@ -75,7 +75,7 @@ ChunkBatcher::ChunkBatcher(Camera &camera)
       string, int>("normalIn", 1), pair<string, int>("texCoordIn", 2)};
 
   m_program.reset(
-      new ShaderProgram(vertex.c_str(), fragment.c_str(), attributesMap));
+      new ShaderProgram(vertex, fragment, attributesMap));
 
 }
 

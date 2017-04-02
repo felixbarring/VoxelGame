@@ -1,16 +1,16 @@
 cmake_minimum_required(VERSION 2.8)
 project(VoxelGame)
 
-set(APPLICATION TRUE)
-#set(CMAKE_BUILD_TYPE Release) 
-set(DEMO FALSE) 
+#set(CMAKE_BUILD_TYPE Debug) 
+#set(APPLICATION TRUE)
+#set(DEMO FALSE) 
 set(WARNINGS FALSE)
 
-set(CMAKE_CXX_FLAGS "-std=c++17 -lstdc++fs")
+set(CMAKE_CXX_FLAGS "-std=c++14")
 
 # -Werror
 if(WARNINGS)
-	set(CMAKE_CXX_FLAGS "-std=c++17 -lstdc++fs -Wall -Wextra")
+	set(CMAKE_CXX_FLAGS "-std=c++14 -lstdc++fs -Wall -Wextra")
 endif()
 
 # set(SFML_ROOT "${CMAKE_SOURCE_DIR}/SFML-2.4.2")

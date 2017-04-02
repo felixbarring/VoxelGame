@@ -20,6 +20,7 @@
 #include "../config/data.h"
 #include "../util/fpsManager.h"
 #include <SFML/Window.hpp>
+#include <string>
 
 using namespace sf;
 
@@ -56,7 +57,7 @@ public:
 	    glViewport(0, 0, WIDTH, HEIGHT);
 	    glClearColor(0.2f, 0.22f, 0.2f, 1.0f);
 
-	    const char *vertex =
+	    std::string vertex =
 	        "#version 330 core \n"
 	        "in vec2 positionIn; \n"
 	        "in vec2 texCoordIn; \n"
@@ -69,7 +70,7 @@ public:
 	        "  texCoord = vec2(texCoordIn.x, 1.0 - texCoordIn.y); \n"
 	        "} \n";
 
-	    const char *frag =
+	    std::string frag =
 	        "#version 330 core \n"
 	        "in vec2 texCoord; \n"
 

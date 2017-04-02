@@ -39,6 +39,7 @@ void SoundPlayer::playMusic(const std::string &musicPath) {
   music->play();
   music->setVolume(m_musicVolume * m_masterVolume);
   m_playingMusic = music;
+
   globalResources::g_threadPool.enqueue([this] {
     graduallyChangeMusicVolume(ChangeMusicVolume::INCREASE);
   });
@@ -84,13 +85,11 @@ double SoundPlayer::getMusicVolume() {
 }
 
 void SoundPlayer::graduallyChangeMusicVolume(ChangeMusicVolume value) {
-  return;
-
   // This causes error when exiting the game!
 
   static std::chrono::milliseconds oneMilliSecond(1);
 
-  double changeValue{0.001};
+  double changeValue{0.1};
   double targetVolume{m_musicVolume};
   double startVolume{0.0};
 

@@ -6,5 +6,5 @@ mkdir Eclipse
 cd Eclipse
 mkdir data
 touch data/meta
-cmake -G "Eclipse CDT4 - Unix Makefiles" -D CMAKE_BUILD_TYPE=Debug ../librecraft
+cmake -G "Eclipse CDT4 - Unix Makefiles" DCMAKE_BUILD_TYPE=Debug -DAPPLICATION=TRUE -DDEMO=FALSE -DWARNINGS=TRUE ../librecraft
 cd ../librecraft/scripts

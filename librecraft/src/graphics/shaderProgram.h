@@ -11,39 +11,41 @@ namespace graphics {
 class ShaderProgram {
 public:
 
-    ShaderProgram(const char *vertexSource, const char *fragmentSource,	const std::map<std::string, int> &mapUniforms);
-
-private:
-
-    GLuint createVertexShader(const char *vertexSource);
-
-    GLuint createFragmentShader(const char *fragmentSource);
-
-    GLuint createShader(GLenum shaderType, const char *source);
+  ShaderProgram(
+      const std::string &vertexSource,
+      const std::string &fragmentSource,
+      const std::map<std::string, int> &mapUniforms);
 
 public:
 
-	// TODO Use GLuint and other correct types
+// TODO Use GLuint and other correct types
 
-    void setUniformi(std::string uniformName, GLuint value);
+  void setUniformi(std::string uniformName, GLuint value);
 
-    void setUniform1f(std::string uniformName, float value);
+  void setUniform1f(std::string uniformName, float value);
 
-    void setUniform3f(std::string uniformName, float x, float y, float z);
+  void setUniform3f(std::string uniformName, float x, float y, float z);
 
-    void setUniformMatrix3f(std::string uniformName, glm::mat3&);
+  void setUniformMatrix3f(std::string uniformName, glm::mat3&);
 
-    void setUniformMatrix4f(std::string uniformName, glm::mat4&);
+  void setUniformMatrix4f(std::string uniformName, glm::mat4&);
 
-    void setUniformli(std::string uniformName, GLuint value);
+  void setUniformli(std::string uniformName, GLuint value);
 
-    void bind();
+  void bind();
 
-    void unbind();
+  void unbind();
 
 private:
-    GLuint programID;
-    std::map<std::string, int> uniforms;
+
+  GLuint createVertexShader(const std::string &vertexSource);
+
+  GLuint createFragmentShader(const std::string &fragmentSource);
+
+  GLuint createShader(GLenum shaderType, const std::string &source);
+
+  GLuint programID;
+  std::map<std::string, int> uniforms;
 };
 
 }
