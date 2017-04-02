@@ -304,14 +304,14 @@ void InGame::update(double timePassed) {
 
   chunk::ChunkManager::getInstance().update();
 
-  if (m_timeCycle.getStarStrenght() > 0.0) {
+//  if (true || m_timeCycle.getStarStrenght() > 0.0) {
     // Changes so that the rotation dose not get to fast.
     const float valModifier = 0.015;
     GraphicsManager::getInstance().getSkyMap().setRotationValue(
         valModifier * m_timeCycle.getTime());
     GraphicsManager::getInstance().getSkyMap().draw(
         m_timeCycle.getStarStrenght());
-  }
+//  }
 
   GraphicsManager::getInstance().clearScreenSunDependent();
   GraphicsManager::getInstance().getChunkBatcher().draw();

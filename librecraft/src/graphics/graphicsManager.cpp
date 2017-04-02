@@ -11,43 +11,43 @@ namespace graphics {
 
 GraphicsManager::GraphicsManager()
 {
-    texture::TextureCubeMap &texture =
-        graphics::Resources::getInstance().getTextureCubeMap(
-            config::cube_map_data::cubeMap1[0],
-            config::cube_map_data::cubeMap1[1],
-            config::cube_map_data::cubeMap1[2],
-            config::cube_map_data::cubeMap1[3],
-            config::cube_map_data::cubeMap1[4],
-            config::cube_map_data::cubeMap1[5]);
+  texture::TextureCubeMap &texture =
+    graphics::Resources::getInstance().getTextureCubeMap(
+      config::cube_map_data::cubeMap1[0],
+      config::cube_map_data::cubeMap1[1],
+      config::cube_map_data::cubeMap1[2],
+      config::cube_map_data::cubeMap1[3],
+      config::cube_map_data::cubeMap1[4],
+      config::cube_map_data::cubeMap1[5]);
 
-    m_skyBox = make_unique<CubeMap>(texture, m_playerCamera);
+  m_skyBox = make_unique<CubeMap>(texture, m_playerCamera);
 }
 
 void GraphicsManager::setSunStrength(float value)
 {
-    m_chunkBatcher.setSunStrenght(value);
-    m_cubeBatcher.setSunStrenght(value);
-    m_sunStrength = value;
+  m_chunkBatcher.setSunStrenght(value);
+  m_cubeBatcher.setSunStrenght(value);
+  m_sunStrength = value;
 }
 
 Camera& GraphicsManager::getPlayerCamera() {
-    return m_playerCamera;
+  return m_playerCamera;
 }
 
 ChunkBatcher& GraphicsManager::getChunkBatcher() {
-    return m_chunkBatcher;
+  return m_chunkBatcher;
 }
 
 CubeBatcher& GraphicsManager::getCubeBatcher() {
-    return m_cubeBatcher;
+  return m_cubeBatcher;
 }
 
 SpriteBatcher& GraphicsManager::getSpriteBatcher() {
-    return m_spriteBatcher;
+  return m_spriteBatcher;
 }
 
 CubeMap& GraphicsManager::getSkyMap() {
-    return *m_skyBox;
+  return *m_skyBox;
 }
 
 void GraphicsManager::clearScreen() {

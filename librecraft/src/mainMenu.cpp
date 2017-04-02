@@ -4,9 +4,6 @@
 #include <random>
 #include <string>
 
-// This does not work?!?
-//#include <experimental/filesystem>
-
 #include "config/data.h"
 #include "graphics/graphicsManager.h"
 #include "gui/terminal.h"
@@ -85,8 +82,6 @@ MainMenu::MainMenu(Game *game)
 
     m_playWidgetGroup->addWidget({label, button1, button2, button3});
   }
-
-
 
   // ########################################################################
 
@@ -316,12 +311,7 @@ void MainMenu::update(double timePassed) {
 
   m_title->draw();
 
-//  if (m_inSettings)
-//    m_settings.getActiveWidgetGroup()->update(timePassed);
-//  else
-//
   m_activeWidgetGroup->update(timePassed);
-
   m_activeWidgetGroup->draw();
 
   graphics::GraphicsManager::getInstance().clearScreen();
