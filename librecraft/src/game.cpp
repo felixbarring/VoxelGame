@@ -97,7 +97,6 @@ public:
   }
 
 private:
-
   vector<shared_ptr<Sprite>> m_sprites{};
   FPSManager &m_fpsManager;
   sf::Window *m_window;
@@ -145,7 +144,7 @@ void Game::run() {
   m_mainMenu.reset(new MainMenu(this));
   changeStateToMainMenu();
 
-  // Load all graphics batchers somewhere else
+  // TODO Load all singletons somewhere else?!?
   // Done here on the main thread to avoid thread issues.
   graphics::GraphicsManager::getInstance();
 

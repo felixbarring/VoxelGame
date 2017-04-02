@@ -17,9 +17,9 @@ public:
 
   void sync();
 
-  static double frameTime();
+  double frameTime();
 
-  static int getFps();
+  int getFps();
 
 private:
   int m_maxFPS{};
@@ -29,6 +29,9 @@ private:
 
   double m_timer{0};
   double m_totalTimed{0};
+
+  int m_currentFPS{0};
+  double m_timeForLatestFrame{0};
 
   sf::Clock m_clock{};
 };

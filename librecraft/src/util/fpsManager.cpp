@@ -17,9 +17,6 @@ void FPSManager::frameStart() {
   m_clock.restart();
 }
 
-int currentFPS{0};
-double timeForLatestFrame{0};
-
 void FPSManager::sync() {
 
   static std::chrono::milliseconds oneMilliSecond(1);
@@ -42,17 +39,16 @@ void FPSManager::sync() {
     totalFrameTime = m_clock.getElapsedTime().asSeconds() - m_frameStartTime;
   }
 
-  currentFPS = 1.0 / totalFrameTime;
-  timeForLatestFrame = totalFrameTime;
-
+  m_currentFPS = 1.0 / totalFrameTime;
+  m_timeForLatestFrame = totalFrameTime;
 }
 
 double FPSManager::frameTime() {
-  return timeForLatestFrame;
+  return m_timeForLatestFrame;
 }
 
 int FPSManager::getFps() {
-  return currentFPS;
+  return m_currentFPS;
 }
 
 }
