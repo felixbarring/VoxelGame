@@ -78,15 +78,12 @@ InGame::InGame(Game *game)
 
   m_activeWidgetGroup = m_mainWidgetGroup;
 
-  m_crossHair.reset(
-      new Sprite(390, 290, 0, 20, 20,
-          Resources::getInstance().getTexture(config::gui_data::crossHair)));
+  m_crossHair.reset(new Sprite(390, 290, 0, 20, 20,
+      Resources::getInstance().getTexture(config::gui_data::crossHair)));
 
   for (int i = 0; i <= config::cube_data::LAST_CUBE_USED_FOR_BUILDING; ++i) {
-    m_selectedCubeThumbnails.push_back(
-        make_shared<Sprite>(380, 5, 2, 40, 40,
-            Resources::getInstance().getTexture(
-                config::cube_data::thumbnails[i])));
+    m_selectedCubeThumbnails.push_back(make_shared<Sprite>(380, 5, 2, 40, 40,
+        Resources::getInstance().getTexture(config::cube_data::thumbnails[i])));
   }
 
   // TODO This whole console system should be reworked.
@@ -217,9 +214,8 @@ InGame::InGame(Game *game)
       font_data::fontLayout, font_data::fontAtlasWidth,
       font_data::fontAtlasHeight);
 
-  m_fps.reset(
-      new Sprite(0, 45, 10, fontMeshBuilder.buldMeshForString("FPS: " + 0, 20),
-          res.getTexture(config::font_data::font)));
+  m_fps.reset(new Sprite(0, 45, 10, fontMeshBuilder.buldMeshForString(
+      "FPS: " + 0, 20), res.getTexture(config::font_data::font)));
 
 }
 
@@ -267,13 +263,10 @@ void InGame::update(double timePassed) {
       // Updating the fps every frame makes it unreadable
       m_fpsDisplayCounter += timePassed;
       if (m_fpsDisplayCounter > m_fpsDisplayDelay) {
-        m_fps.reset(
-            new Sprite(0, 45, 10,
-                fontMeshBuilder.buldMeshForString(
-                    "FPS: " + to_string(util::FPSManager::getFps())
-                        + " Frame Time = "
-                        + to_string(util::FPSManager::frameTime()), 20),
-                res.getTexture(config::font_data::font)));
+        m_fps.reset(new Sprite(0, 45, 10, fontMeshBuilder.buldMeshForString(
+          "FPS: " + to_string(util::FPSManager::getFps()) + " Frame Time = "
+            + to_string(util::FPSManager::frameTime()), 20), res.getTexture(
+                config::font_data::font)));
 
         m_fpsDisplayCounter = 0;
       }
@@ -319,7 +312,6 @@ void InGame::update(double timePassed) {
     GraphicsManager::getInstance().getSkyMap().draw(
         m_timeCycle.getStarStrenght());
   }
-
 
   GraphicsManager::getInstance().clearScreenSunDependent();
   GraphicsManager::getInstance().getChunkBatcher().draw();

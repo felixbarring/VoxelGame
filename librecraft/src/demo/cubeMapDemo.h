@@ -32,83 +32,74 @@ namespace demo
 class CubeMapDemo : public IDemo{
 public:
 
-	void runDemo() override {
-	    FPSManager fpsManager(100);
-	    const GLuint WIDTH = 800, HEIGHT = 600;
+  void runDemo() override {
+    FPSManager fpsManager(100);
+    const GLuint WIDTH = 800, HEIGHT = 600;
 
-	    config::graphics_data::windowWidth = WIDTH;
-	    config::graphics_data::windowHeight = HEIGHT;
+    config::graphics_data::windowWidth = WIDTH;
+    config::graphics_data::windowHeight = HEIGHT;
 
-	    // create the window
-	    ContextSettings settings;
-	    settings.depthBits = 24;
-	    settings.stencilBits = 8;
-	    settings.antialiasingLevel = 4;
-	    settings.majorVersion = 3;
-	    settings.minorVersion = 1;
+    // create the window
+    ContextSettings settings;
+    settings.depthBits = 24;
+    settings.stencilBits = 8;
+    settings.antialiasingLevel = 4;
+    settings.majorVersion = 3;
+    settings.minorVersion = 1;
 
-	    Window window(VideoMode(800, 600), "Voxel Game", Style::Default, settings);
+    Window window(VideoMode(800, 600), "Voxel Game", Style::Default, settings);
 
-	    Input::createInstance(WIDTH / 2.0, HEIGHT / 2.0);
-	    Input::getInstance()->setWindow(&window);
+    Input::createInstance(WIDTH / 2.0, HEIGHT / 2.0);
+    Input::getInstance()->setWindow(&window);
 
-	    glewExperimental = true;
-	    if (glewInit() != GLEW_OK)
-	        std::cout << "Failed to initialize GLEW\n";
+    glewExperimental = true;
+    if (glewInit() != GLEW_OK)
+      std::cout << "Failed to initialize GLEW\n";
 
-	    glViewport(0, 0, WIDTH, HEIGHT);
-	    glClearColor(0.2f, 0.22f, 0.2f, 1.0f);
+    glViewport(0, 0, WIDTH, HEIGHT);
+    glClearColor(0.2f, 0.22f, 0.2f, 1.0f);
 
-	    //  glEnable(GL_DEPTH_TEST);
-	    //  glDepthFunc(GL_LESS);
+    Camera camera{0,0,0};
 
-	    // TODO FIX
+    texture::TextureCubeMap &texture =
+      graphics::Resources::getInstance().getTextureCubeMap(
+        config::cube_map_data::cubeMap1[0],
+        config::cube_map_data::cubeMap1[1],
+        config::cube_map_data::cubeMap1[2],
+        config::cube_map_data::cubeMap1[3],
+        config::cube_map_data::cubeMap1[4],
+        config::cube_map_data::cubeMap1[5]);
 
+    graphics::CubeMap skybox{texture, camera};
 
-	    Camera camera{0,0,0};
+    float screenCenterX = WIDTH / 2;
+    float screenCenterY = HEIGHT / 2;
 
-	    texture::TextureCubeMap &texture =
-            graphics::Resources::getInstance().getTextureCubeMap(
-                config::cube_map_data::cubeMap1[0],
-                config::cube_map_data::cubeMap1[1],
-                config::cube_map_data::cubeMap1[2],
-                config::cube_map_data::cubeMap1[3],
-                config::cube_map_data::cubeMap1[4],
-                config::cube_map_data::cubeMap1[5]);
+    graphics::ViewDirection viewDirection;
 
-	    graphics::CubeMap skybox{texture, camera};
+    while (window.isOpen()) {
+      fpsManager.frameStart();
 
-	    float screenCenterX = WIDTH / 2;
-	    float screenCenterY = HEIGHT / 2;
+      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+      glEnable(GL_BLEND);
+      glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	    graphics::ViewDirection viewDirection;
+      Input::getInstance()->updateValues();
 
-	    while (window.isOpen()) {
+      if (Input::getInstance()->escapeKeyPressed)
+          window.close();
 
-	        fpsManager.frameStart();
+      viewDirection.changeViewDirection(Input::getInstance()->mouseXMovement,
+          Input::getInstance()->mouseYMovement);
+      camera.updateView(glm::vec3(0, 0, 0), viewDirection.getViewDirection(),
+          viewDirection.getUpDirection());
 
-	    //      glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-	        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	    //      glDepthFunc(GL_LEQUAL);
-	        glEnable(GL_BLEND);
-	        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+      skybox.draw(1.0);
 
-	        Input::getInstance()->updateValues();
-
-	        if (Input::getInstance()->escapeKeyPressed)
-	            window.close();
-
-	        viewDirection.changeViewDirection(Input::getInstance()->mouseXMovement, Input::getInstance()->mouseYMovement);
-	        camera.updateView(glm::vec3(0, 0, 0), viewDirection.getViewDirection(), viewDirection.getUpDirection());
-
-	        skybox.draw(1.0);
-
-	        fpsManager.sync();
-	        window.display();
-	    }
-
-	}
-
+      fpsManager.sync();
+      window.display();
+    }
+  }
 
 };
 

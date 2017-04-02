@@ -24,46 +24,34 @@ void CubeMap::setRotationValue(float value) {
 
 void CubeMap::draw(double trancparency) {
 
-  // TODO Remove the projcetion * view multiplication from the shader
-
   std::string vertex =
     "#version 330 core \n"
-
     "in vec3 positionIn; \n"
-
     "uniform mat4 mvp; \n"
-
     "out vec3 texCoord; \n"
-
     "void main() \n"
     "{ \n"
-    "    vec4 pos = mvp * vec4(positionIn, 1.0); \n"
-    "    gl_Position = pos.xyww; \n"
-    "    texCoord = positionIn; \n"
+    "  vec4 pos = mvp * vec4(positionIn, 1.0); \n"
+    "  gl_Position = pos.xyww; \n"
+    "  texCoord = positionIn; \n"
     "} \n";
 
   std::string fragment =
     "#version 330 core \n"
-
     "in vec3 texCoord; \n"
-
     "uniform samplerCube skybox; \n"
     "uniform float transparency; \n"
-
     "out vec4 color; \n"
-
     "void main() \n"
     "{ \n"
-    "    vec4 tempColor = texture(skybox, texCoord); \n"
-    "    tempColor.w = tempColor.w * transparency; \n"
-    "    color = tempColor; \n"
+    "  vec4 tempColor = texture(skybox, texCoord); \n"
+    "  tempColor.w = tempColor.w * transparency; \n"
+    "  color = tempColor; \n"
     "} \n";
 
-  static std::map<std::string, int> attributesMap{
-      std::pair<std::string, int>("positionIn", 0)};
+  static std::map<std::string, int> attributesMap{{"positionIn", 0}};
 
-  static ShaderProgram skyboxShader(
-      vertex, fragment, attributesMap);
+  static ShaderProgram skyboxShader(vertex, fragment, attributesMap);
 
   static std::vector<GLfloat> vert{
     -1.0f, 1.0f, -1.0f,
@@ -129,7 +117,6 @@ void CubeMap::draw(double trancparency) {
   glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), m_roatationValue,
       glm::vec3(0.1, 0.3, 1));
   glm::mat4 view = glm::mat4(glm::mat3(m_camera.getViewMatrix())) * rotation;
-
 
   glm::mat4 modelViewProjection = m_camera.getProjectionMatrix() * view;
 

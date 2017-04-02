@@ -9,17 +9,17 @@ namespace graphics {
 class CubeMap {
 public:
 
-    CubeMap(texture::TextureCubeMap &texture, Camera &camera);
+  CubeMap(texture::TextureCubeMap &texture, Camera &camera);
 
-    void setRotationValue(float value);
+  void setRotationValue(float value);
 
-    void draw(double trancparency);
+  void draw(double trancparency);
 
 private:
 
-    texture::TextureCubeMap m_texture;
-    Camera &m_camera;
-    float m_roatationValue{0.0f};
+  texture::TextureCubeMap m_texture;
+  Camera &m_camera;
+  float m_roatationValue{0.0f};
 };
 
 }
