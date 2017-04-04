@@ -28,7 +28,6 @@ public:
   void operator=(SoundPlayer &&) = delete;
 
 
-
   void update(double time);
 
   /**
@@ -78,6 +77,13 @@ private:
   std::map<std::string, sf::SoundBuffer> m_buffers;
   std::vector<std::shared_ptr<sf::Sound>> m_playingSounds;
   std::shared_ptr<sf::Music> m_playingMusic;
+
+  bool m_graduayllChange{false};
+  double m_changeVolume{};
+  ChangeMusicVolume m_changeDirection{ChangeMusicVolume::INCREASE};
+  double changeValue{};
+  double targetVolume{};
+  double startVolume{};
 
   // TODO Load these from config files...
   double m_masterVolume{1.0};

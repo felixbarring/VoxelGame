@@ -12,12 +12,21 @@ namespace util {
 double kek{100};
 
 void SoundPlayer::update(double time) {
-  // TODO Implement
+  m_changeVolume += changeValue * time;
+  if (!(m_graduayllChange && (m_changeDirection == ChangeMusicVolume::DECREASE ?
+      m_changeVolume >= targetVolume :
+      m_changeVolume <= targetVolume)))
+  {
+    m_changeVolume = targetVolume;
+    m_graduayllChange = false;
+  }
+  m_playingMusic->setVolume(m_changeVolume);
 }
 
 void SoundPlayer::playSound(const std::string &soundPath) {
   for (auto sound = m_playingSounds.begin(); sound < m_playingSounds.end();
-      ++sound) {
+      ++sound)
+  {
     if ((*sound)->getStatus() == sf::SoundSource::Status::Stopped)
       m_playingSounds.erase(sound);
   }
@@ -44,19 +53,15 @@ void SoundPlayer::playMusic(const std::string &musicPath) {
   music->setVolume(m_musicVolume * m_masterVolume);
   m_playingMusic = music;
 
-  globalResources::g_threadPool.enqueue([this] {
-    graduallyChangeMusicVolume(ChangeMusicVolume::INCREASE);
-  });
+  graduallyChangeMusicVolume(ChangeMusicVolume::INCREASE);
 }
 
 void SoundPlayer::stopMusic() {
   if (m_playingMusic == nullptr)
     return;
 
-  globalResources::g_threadPool.enqueue([this] {
-    graduallyChangeMusicVolume(ChangeMusicVolume::DECREASE);
-    m_playingMusic->stop();
-  });
+  graduallyChangeMusicVolume(ChangeMusicVolume::DECREASE);
+//  m_playingMusic->stop();
 }
 
 void SoundPlayer::setMasterVolume(double value)
@@ -89,29 +94,20 @@ double SoundPlayer::getMusicVolume() {
 }
 
 void SoundPlayer::graduallyChangeMusicVolume(ChangeMusicVolume value) {
-  // This causes error when exiting the game!
-  return;
+  m_graduayllChange = true;
+  m_changeDirection = value;
 
-  static std::chrono::milliseconds oneMilliSecond(1);
-
-  double changeValue{0.1};
-  double targetVolume{m_musicVolume};
-  double startVolume{0.0};
-
-  if (value == ChangeMusicVolume::DECREASE) {
-    changeValue = -changeValue;
+  static double change{20.0};
+  if (value == ChangeMusicVolume::INCREASE) {
+    changeValue = change;
+    targetVolume = m_musicVolume;
+    startVolume = std::max(0.0, m_changeVolume);
+  } else {
+    changeValue = -change;
     targetVolume = 0.0;
-    startVolume = m_musicVolume;
+    startVolume = std::min(m_musicVolume, m_changeVolume);
   }
-
-  for (double volume{startVolume};
-      value == ChangeMusicVolume::DECREASE ?
-          volume >= targetVolume :
-          volume <= targetVolume; volume += changeValue)
-  {
-    m_playingMusic->setVolume(volume);
-    std::this_thread::sleep_for(oneMilliSecond);
-  }
+  m_changeVolume = startVolume;
 }
 
 

@@ -152,7 +152,10 @@ void Game::run() {
   while (!m_quit && window->isOpen()) {
     m_fpsManager.frameStart();
 
-    m_currentState->update(m_fpsManager.frameTime());
+    auto frameTime = m_fpsManager.frameTime();
+    m_soundPlayer.update(frameTime);
+
+    m_currentState->update(frameTime);
     window->display();
     m_fpsManager.sync();
   }
