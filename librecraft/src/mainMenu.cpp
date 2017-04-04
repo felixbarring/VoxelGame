@@ -16,9 +16,10 @@ using namespace std;
 using namespace widget;
 using namespace gui;
 
-MainMenu::MainMenu(Game *game)
-    : m_game(game)
-    , m_settings{m_activeWidgetGroup, m_mainWidgetGroup}
+MainMenu::MainMenu(Game *game, SoundPlayer &soundPlayer)
+  : m_game(game)
+  , m_soundPlayer(soundPlayer)
+  , m_settings{m_activeWidgetGroup, m_mainWidgetGroup, m_soundPlayer}
 {
 
   glm::mat4 matrix = gui::createVirtualToScreen(
@@ -42,6 +43,7 @@ MainMenu::MainMenu(Game *game)
   {
     auto observer = [this](int id)
     {
+      m_soundPlayer.playSound(config::souds::buttonPressed);
       switch(id) {
         case 0: m_activeWidgetGroup = m_playWidgetGroup; break;
         case 1: m_activeWidgetGroup = m_settings.getMainWidgetGroup(); break;
@@ -101,7 +103,7 @@ MainMenu::MainMenu(Game *game)
               m_options.setName(name);
               m_game->createWorld(m_options);
 
-              SoundPlayer::getInstance().stopMusic();
+              m_soundPlayer.stopMusic();
 
               m_activeWidgetGroup = m_mainWidgetGroup;
               m_worldList->addListItem(name);
@@ -224,7 +226,7 @@ MainMenu::MainMenu(Game *game)
             // TODO Implement so its possible to save and load options for a map.
 
             m_game->createWorld(m_options);
-            SoundPlayer::getInstance().stopMusic();
+            m_soundPlayer.stopMusic();
             m_activeWidgetGroup = m_mainWidgetGroup;
             m_worldList->reset();
           }

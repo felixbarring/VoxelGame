@@ -16,10 +16,12 @@ using namespace std;
 
 Settings::Settings(
     std::shared_ptr<widget::WidgetGroup>& active,
-    std::shared_ptr<widget::WidgetGroup>& parrent
+    std::shared_ptr<widget::WidgetGroup>& parrent,
+    SoundPlayer &soundPlayer
 )
   : m_activeWidgetGroup{active}
   , m_parentWidgetGroup{parrent}
+  , m_soundPlayer(soundPlayer)
 {
 
   // ########################################################################
@@ -165,13 +167,13 @@ Settings::Settings(
    {
      switch(id) {
        case 0: {
-         SoundPlayer::getInstance().setMasterVolume(
+         m_soundPlayer.setMasterVolume(
              m_masterVolumeSlider->getValue());
 
-         SoundPlayer::getInstance().setMusicVolume(
+         m_soundPlayer.setMusicVolume(
              m_musicVolumeSlider->getValue());
 
-         SoundPlayer::getInstance().setSoundVolume(
+         m_soundPlayer.setSoundVolume(
              m_soundVolumeSlider->getValue());
          break;
        }
@@ -182,27 +184,25 @@ Settings::Settings(
      }
    };
 
-   auto &soundP = SoundPlayer::getInstance();
-
    auto label1 = make_shared<Label>(325, 390, 150, 30, " - Audio - ");
 
    auto label2 = make_shared<Label>(230, 310, 80, 20, "Master Volume:",
        1);
    m_masterVolumeSlider = make_shared<Slider>(2, 325, 310, 150, 30, observer,
        1);
-   m_masterVolumeSlider->setValue(soundP.getMasterVolume());
+   m_masterVolumeSlider->setValue(m_soundPlayer.getMasterVolume());
    m_masterVolumeInput = make_shared<TextInput>(666, 485, 310, 50, 30, 1);
 
    auto label3 = make_shared<Label>(230, 270, 80, 20, "Music Volume:", 1);
    m_musicVolumeSlider = make_shared<Slider>(2, 325, 270, 150, 30,
        observer, 1);
-   m_musicVolumeSlider->setValue(soundP.getMusicVolume());
+   m_musicVolumeSlider->setValue(m_soundPlayer.getMusicVolume());
    m_musicVolumeInput = make_shared<TextInput>(666, 485, 270, 50, 30, 1);
 
    auto label4 = make_shared<Label>(230, 230, 80, 20, "Sound Volume:", 1);
    m_soundVolumeSlider = make_shared<Slider>(2, 325, 230, 150, 30,
        observer, 1);
-   m_soundVolumeSlider->setValue(soundP.getSoundVolume());
+   m_soundVolumeSlider->setValue(m_soundPlayer.getSoundVolume());
    m_soundVolumeInput = make_shared<TextInput>(666, 485, 230, 50, 30, 1);
 
 

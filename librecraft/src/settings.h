@@ -5,12 +5,14 @@
 #include "gui/widget/slider.h"
 #include "gui/widget/textInput.h"
 #include "gui/widget/widgetGroup.h"
+#include "util/soundPlayer.h"
 
 class Settings {
 public:
 
   Settings(std::shared_ptr<widget::WidgetGroup>& active,
-           std::shared_ptr<widget::WidgetGroup>& parrent);
+           std::shared_ptr<widget::WidgetGroup>& parrent,
+           util::SoundPlayer &soundPlayer);
 
   void update(double timePassed);
 
@@ -20,9 +22,10 @@ public:
 
 private:
 
+  util::SoundPlayer &m_soundPlayer;
+
   std::shared_ptr<widget::WidgetGroup>& m_activeWidgetGroup;
   std::shared_ptr<widget::WidgetGroup>& m_parentWidgetGroup;
-
 
   std::shared_ptr<widget::WidgetGroup> m_settingsWidgetGroup{};
 

@@ -141,7 +141,7 @@ void Game::run() {
   // TODO No opengl outside graphics!
   glViewport(0, 0, width, height);
 
-  m_mainMenu.reset(new MainMenu(this));
+  m_mainMenu.reset(new MainMenu(this, m_soundPlayer));
   changeStateToMainMenu();
 
   // TODO Load all singletons somewhere else?!?
@@ -160,7 +160,7 @@ void Game::run() {
 }
 
 void Game::createWorld(chunk::CreationOptions options) {
-  m_inGame.reset(new InGame(this));
+  m_inGame.reset(new InGame(this, m_soundPlayer));
 
   auto future = globalResources::g_threadPool.enqueue([options]
   {
@@ -174,12 +174,12 @@ void Game::createWorld(chunk::CreationOptions options) {
     loadingScreen.update();
 
   m_currentState = m_inGame;
-  SoundPlayer::getInstance().stopMusic();
+  m_soundPlayer.stopMusic();
 }
 
 void Game::changeStateToMainMenu() {
   m_currentState = m_mainMenu;
-  SoundPlayer::getInstance().playMusic(config::music::menuMusic);
+  m_soundPlayer.playMusic(config::music::menuMusic);
 }
 
 void Game::quitGame() {

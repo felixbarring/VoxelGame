@@ -23,7 +23,7 @@
 class MainMenu : public IGameState {
 public:
 
-  MainMenu(Game *game);
+  MainMenu(Game *game, util::SoundPlayer& soundPlayer);
 
   void update(double timePassed);
 
@@ -32,6 +32,8 @@ private:
   Game *m_game;
   glm::mat4 m_virtualProjection{};
   gui::Mouse m_mouse{};
+
+  util::SoundPlayer &m_soundPlayer;
 
   Settings m_settings;
   bool m_inSettings{false};

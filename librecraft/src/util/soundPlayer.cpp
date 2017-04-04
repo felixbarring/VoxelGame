@@ -11,6 +11,10 @@ namespace util {
 
 double kek{100};
 
+void SoundPlayer::update(double time) {
+  // TODO Implement
+}
+
 void SoundPlayer::playSound(const std::string &soundPath) {
   for (auto sound = m_playingSounds.begin(); sound < m_playingSounds.end();
       ++sound) {

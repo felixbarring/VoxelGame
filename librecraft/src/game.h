@@ -11,6 +11,7 @@
 
 #include "model/world/chunk/chunkManager.h"
 #include "model/world/chunk/creationOptions.h"
+#include "util/soundPlayer.h"
 
 class Game {
 public:
@@ -26,6 +27,7 @@ public:
 private:
 
   util::FPSManager m_fpsManager{config::graphics_data::fps};
+  util::SoundPlayer m_soundPlayer{};
 
   sf::Window *window{};
 

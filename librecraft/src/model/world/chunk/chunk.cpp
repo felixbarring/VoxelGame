@@ -35,145 +35,147 @@ Chunk::Chunk(string worldName, int x, int z)
 }
 
 Chunk::~Chunk() {
-    for (auto graphicalChunk : m_graphicalChunksIds)
-        GraphicsManager::getInstance().getChunkBatcher().removeBatch(graphicalChunk);
+  for (auto graphicalChunk : m_graphicalChunksIds)
+    GraphicsManager::getInstance().getChunkBatcher().removeBatch(graphicalChunk);
 }
 
 void Chunk::create(CreationOptions& options) {
-    ifstream stream;
-    stream.open(m_name);
-    if (stream.fail())
-        generateChunk(options);
-    else
-        loadChunk();
+  ifstream stream;
+  stream.open(m_name);
+  if (stream.fail())
+    generateChunk(options);
+  else
+    loadChunk();
 }
 
 void Chunk::doSunLightning() {
-    for (int x = 0; x < CHUNK_WIDTH_AND_DEPTH; ++x) {
-        for (int z = 0; z < CHUNK_WIDTH_AND_DEPTH; ++z) {
-            vector<vec3> dummy;
-            doSunLightning(dummy, x, CHUNK_HEIGHT - 1, z, true);
-            m_lightsToPropagate.insert(m_lightsToPropagate.end(), dummy.begin(), dummy.end());
-        }
+  for (int x = 0; x < CHUNK_WIDTH_AND_DEPTH; ++x) {
+    for (int z = 0; z < CHUNK_WIDTH_AND_DEPTH; ++z) {
+      vector<vec3> dummy;
+      doSunLightning(dummy, x, CHUNK_HEIGHT - 1, z, true);
+      m_lightsToPropagate.insert(m_lightsToPropagate.end(), dummy.begin(), dummy.end());
     }
+  }
 }
 
 void Chunk::collectLightFromAllNeighbors() {
-    collectLightFromRightNeighbor();
-    collectLightFromLeftNeighbor();
-    collectLightFromBackNeighbor();
-    collectLightFromFrontNeighbor();
+  collectLightFromRightNeighbor();
+  collectLightFromLeftNeighbor();
+  collectLightFromBackNeighbor();
+  collectLightFromFrontNeighbor();
 }
 
 void Chunk::collectLightFromRightNeighbor() {
-    if (m_rightNeighbor.get()) {
-        for (int j = 0; j < CHUNK_HEIGHT; j++) {
-            for (int k = 0; k < CHUNK_WIDTH_AND_DEPTH; k++) {
-                char lv = m_rightNeighbor->m_cubes[0][j][k].lightValue - 1;
+  if (m_rightNeighbor.get()) {
+    for (int j = 0; j < CHUNK_HEIGHT; j++) {
+      for (int k = 0; k < CHUNK_WIDTH_AND_DEPTH; k++) {
+        char lv = m_rightNeighbor->m_cubes[0][j][k].lightValue - 1;
 
-                if (m_rightNeighbor->m_cubes[0][j][k].id == AIR
-                        && m_cubes[15][j][k].id == AIR
-                        && lv > m_cubes[15][j][k].lightValue) {
-                    m_cubes[15][j][k].lightValue = lv;
-                    m_lightsToPropagate.push_back(vec3(15, j, k));
-                }
-            }
+        if (m_rightNeighbor->m_cubes[0][j][k].id == AIR
+                && m_cubes[15][j][k].id == AIR
+                && lv > m_cubes[15][j][k].lightValue)
+        {
+          m_cubes[15][j][k].lightValue = lv;
+          m_lightsToPropagate.push_back(vec3(15, j, k));
         }
+      }
     }
+  }
 }
 
 void Chunk::collectLightFromLeftNeighbor() {
-    if (m_leftNeighbor.get()) {
-        for (int j = 0; j < CHUNK_HEIGHT; j++) {
-            for (int k = 0; k < CHUNK_WIDTH_AND_DEPTH; k++) {
-                char lv = m_leftNeighbor->m_cubes[15][j][k].lightValue - 1;
+  if (m_leftNeighbor.get()) {
+    for (int j = 0; j < CHUNK_HEIGHT; j++) {
+      for (int k = 0; k < CHUNK_WIDTH_AND_DEPTH; k++) {
+        char lv = m_leftNeighbor->m_cubes[15][j][k].lightValue - 1;
 
-                if (m_leftNeighbor->m_cubes[15][j][k].id == AIR
-                        && m_cubes[0][j][k].id == AIR
-                        && lv > m_cubes[0][j][k].lightValue) {
-                    m_cubes[0][j][k].lightValue = lv;
-                    m_lightsToPropagate.push_back(vec3(0, j, k));
-                }
-            }
+        if (m_leftNeighbor->m_cubes[15][j][k].id == AIR
+                && m_cubes[0][j][k].id == AIR
+                && lv > m_cubes[0][j][k].lightValue)
+        {
+          m_cubes[0][j][k].lightValue = lv;
+          m_lightsToPropagate.push_back(vec3(0, j, k));
         }
+      }
     }
+  }
 }
 
 void Chunk::collectLightFromBackNeighbor() {
-    if (m_backNeighbor.get()) {
-        for (int i = 0; i < CHUNK_WIDTH_AND_DEPTH; i++) {
-            for (int j = 0; j < CHUNK_HEIGHT; j++) {
-                char lv = m_backNeighbor->m_cubes[i][j][0].lightValue - 1;
+  if (m_backNeighbor.get()) {
+    for (int i = 0; i < CHUNK_WIDTH_AND_DEPTH; i++) {
+    for (int j = 0; j < CHUNK_HEIGHT; j++) {
+        char lv = m_backNeighbor->m_cubes[i][j][0].lightValue - 1;
 
-                if (m_backNeighbor->m_cubes[i][j][0].id == AIR
-                        && m_cubes[i][j][15].id == AIR
-                        && lv > m_cubes[i][j][15].lightValue) {
-
-                    m_cubes[i][j][15].lightValue = lv;
-                    m_lightsToPropagate.push_back(vec3(i, j, 15));
-                }
-            }
+        if (m_backNeighbor->m_cubes[i][j][0].id == AIR
+                && m_cubes[i][j][15].id == AIR
+                && lv > m_cubes[i][j][15].lightValue)
+        {
+          m_cubes[i][j][15].lightValue = lv;
+          m_lightsToPropagate.push_back(vec3(i, j, 15));
         }
+      }
     }
+  }
 }
 
 void Chunk::collectLightFromFrontNeighbor() {
-    if (m_frontNeighbor.get()) {
-        for (int i = 0; i < CHUNK_WIDTH_AND_DEPTH; i++) {
-            for (int j = 0; j < CHUNK_HEIGHT; j++) {
-                char lv = m_frontNeighbor->m_cubes[i][j][15].lightValue - 1;
+  if (m_frontNeighbor.get()) {
+    for (int i = 0; i < CHUNK_WIDTH_AND_DEPTH; i++) {
+      for (int j = 0; j < CHUNK_HEIGHT; j++) {
+        char lv = m_frontNeighbor->m_cubes[i][j][15].lightValue - 1;
 
-                if (m_frontNeighbor->m_cubes[i][j][15].id == AIR
-                        && m_cubes[i][j][0].id == AIR
-                        && lv > m_cubes[i][j][0].lightValue) {
-
-                    m_cubes[i][j][0].lightValue = lv;
-                    m_lightsToPropagate.push_back(vec3(i, j, 0));
-                }
-            }
+        if (m_frontNeighbor->m_cubes[i][j][15].id == AIR
+                && m_cubes[i][j][0].id == AIR
+                && lv > m_cubes[i][j][0].lightValue)
+        {
+          m_cubes[i][j][0].lightValue = lv;
+          m_lightsToPropagate.push_back(vec3(i, j, 0));
         }
+      }
     }
+  }
 }
 
 void Chunk::propagateLights() {
-    for (auto l : m_lightsToPropagate)
-        propagateLight(l.x, l.y, l.z);
+  for (auto l : m_lightsToPropagate)
+      propagateLight(l.x, l.y, l.z);
 }
 
 void Chunk::forceUpdateGraphics() {
-    for (int i = 0; i < CHUNK_HEIGHT / GRAPHICAL_CHUNK_HEIGHT; ++i)
-        m_dirtyRegions.emplace(i);
+  for (int i = 0; i < CHUNK_HEIGHT / GRAPHICAL_CHUNK_HEIGHT; ++i)
+      m_dirtyRegions.emplace(i);
 
-    updateGraphics();
+  updateGraphics();
 }
 
 void Chunk::updateGraphics(bool highPriority) {
-    vector<vector<vector<Voxel>>> *right = nullptr;
-    vector<vector<vector<Voxel>>> *left = nullptr;
-    vector<vector<vector<Voxel>>> *front = nullptr;
-    vector<vector<vector<Voxel>>> *back = nullptr;
+  vector<vector<vector<Voxel>>> *right = nullptr;
+  vector<vector<vector<Voxel>>> *left = nullptr;
+  vector<vector<vector<Voxel>>> *front = nullptr;
+  vector<vector<vector<Voxel>>> *back = nullptr;
 
-    if (m_rightNeighbor)
-        right = &(m_rightNeighbor->m_cubes);
+  if (m_rightNeighbor)
+    right = &(m_rightNeighbor->m_cubes);
 
-    if (m_leftNeighbor)
-        left = &(m_leftNeighbor->m_cubes);
+  if (m_leftNeighbor)
+    left = &(m_leftNeighbor->m_cubes);
 
-    if (m_frontNeighbor)
-        front = &(m_frontNeighbor->m_cubes);
+  if (m_frontNeighbor)
+    front = &(m_frontNeighbor->m_cubes);
 
-    if (m_backNeighbor)
-        back = &(m_backNeighbor->m_cubes);
+  if (m_backNeighbor)
+    back = &(m_backNeighbor->m_cubes);
 
-    for (auto i : m_dirtyRegions) {
-        auto derp = GraphicsManager::getInstance().getChunkBatcher().addBatch(
-                m_graphicalChunksIds[i],
-                m_xLocation, i * GRAPHICAL_CHUNK_HEIGHT, m_zLocation,
-                m_cubes, right, left, back, front, highPriority);
+  for (auto i : m_dirtyRegions) {
+    auto derp = GraphicsManager::getInstance().getChunkBatcher().addBatch(
+            m_graphicalChunksIds[i],
+            m_xLocation, i * GRAPHICAL_CHUNK_HEIGHT, m_zLocation,
+            m_cubes, right, left, back, front, highPriority);
 
-        m_graphicalChunksIds[i] = derp;
-    }
-    m_dirtyRegions.clear();
+    m_graphicalChunksIds[i] = derp;
+  }
+  m_dirtyRegions.clear();
 }
 
 Voxel Chunk::getVoxel(int x, int y, int z) {

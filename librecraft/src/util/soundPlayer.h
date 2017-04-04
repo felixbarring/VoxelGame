@@ -10,9 +10,10 @@
 namespace util {
 
 /**
- * @brief Singleton class for managing all music and sounds.
+ * @brief Class for managing all music and sounds.
  */
 class SoundPlayer {
+public:
 
   SoundPlayer() = default;
 
@@ -26,15 +27,9 @@ class SoundPlayer {
 
   void operator=(SoundPlayer &&) = delete;
 
-public:
 
-  /**
-   * @return The single instance of this class.
-   */
-  static SoundPlayer& getInstance() {
-    static SoundPlayer INSTANCE;
-    return INSTANCE;
-  }
+
+  void update(double time);
 
   /**
    * @brief Plays the sound specified by the argument.

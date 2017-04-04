@@ -25,9 +25,10 @@ using namespace widget;
 using namespace util;
 using namespace gui;
 
-InGame::InGame(Game *game)
+InGame::InGame(Game *game, util::SoundPlayer &soundPlayer)
   : m_game{game}
-  , m_settings{m_activeWidgetGroup, m_mainWidgetGroup}
+  , m_soundPlayer(soundPlayer)
+  , m_settings{m_activeWidgetGroup, m_mainWidgetGroup, m_soundPlayer}
 {
 
   // TODO Should be possible to save and load the player location.
@@ -127,7 +128,7 @@ InGame::InGame(Game *game)
     } else if (command == gravityMode) {
       m_player.turnGravityOff(false);
     } else if (command == turnOfMusic) {
-      util::SoundPlayer::getInstance().stopMusic();
+      m_soundPlayer.stopMusic();
     } else if (command == setMouseSensitivity) {
       if (!(arguments.size() >= 3)) {
         m_terminal->addLine("Too few arguments");
@@ -304,14 +305,14 @@ void InGame::update(double timePassed) {
 
   chunk::ChunkManager::getInstance().update();
 
-//  if (true || m_timeCycle.getStarStrenght() > 0.0) {
+  if (true /*|| m_timeCycle.getStarStrenght() > 0.0*/) {
     // Changes so that the rotation dose not get to fast.
     const float valModifier = 0.015;
     GraphicsManager::getInstance().getSkyMap().setRotationValue(
         valModifier * m_timeCycle.getTime());
     GraphicsManager::getInstance().getSkyMap().draw(
         m_timeCycle.getStarStrenght());
-//  }
+  }
 
   GraphicsManager::getInstance().clearScreenSunDependent();
   GraphicsManager::getInstance().getChunkBatcher().draw();

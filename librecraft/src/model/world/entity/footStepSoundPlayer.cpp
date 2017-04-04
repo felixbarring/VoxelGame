@@ -36,7 +36,8 @@ void FootStepSoundPlayer::playSteppingSound() {
   } while (value == last);
   last = value;
 
-  util::SoundPlayer::getInstance().playSound(m_stepSounds[value]);
+  // TODO Fix
+//  util::SoundPlayer::getInstance().playSound(m_stepSounds[value]);
 }
 
 void FootStepSoundPlayer::setWalkingIntervall(double value) {

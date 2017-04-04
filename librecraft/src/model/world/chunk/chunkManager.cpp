@@ -146,7 +146,7 @@ void ChunkManager::removeCube(int x, int y, int z) {
     else
       setCube(x, y, z, AIR);
 
-    SoundPlayer::getInstance().playSound(config::souds::cubeRemoved);
+//    SoundPlayer::getInstance().playSound(config::souds::cubeRemoved);
   }
 }
 
@@ -167,7 +167,7 @@ void ChunkManager::setCube(int x, int y, int z, char id) {
   int localZ = z % CHUNK_WIDTH_AND_DEPTH;
 
   m_chunks[chunkX][chunkY][chunkZ]->setCube(localX, localY, localZ, id);
-  SoundPlayer::getInstance().playSound(config::souds::cubeAdded);
+//  SoundPlayer::getInstance().playSound(config::souds::cubeAdded);
 }
 
 void ChunkManager::setCenter(float x, float z) {

@@ -45,7 +45,7 @@ void CubeMap::draw(double trancparency) {
     "void main() \n"
     "{ \n"
     "  vec4 tempColor = texture(skybox, texCoord); \n"
-    "  tempColor.w = tempColor.w * transparency; \n"
+//    "  tempColor.w = tempColor.w * transparency; \n"
     "  color = tempColor; \n"
     "} \n";
 

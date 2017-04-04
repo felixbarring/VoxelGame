@@ -25,7 +25,7 @@
 class InGame: public IGameState {
 public:
 
-  InGame(Game *game);
+  InGame(Game *game, util::SoundPlayer &soundPlayer);
 
   void update(double timePassed);
 
@@ -43,6 +43,8 @@ private:
 
   Game *m_game;
   entity::Player m_player;
+
+  util::SoundPlayer& m_soundPlayer;
 
   gui::Mouse m_mouse{};
 

@@ -72,7 +72,6 @@ void Button::update(float) {
 }
 
 void Button::trigger() {
-  util::SoundPlayer::getInstance().playSound(config::souds::buttonPressed);
   m_observer(m_id);
 }
 
