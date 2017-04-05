@@ -28,6 +28,15 @@ public:
   void operator=(SoundPlayer &&) = delete;
 
 
+  /**
+   * @brief Updates the sound player.
+   *
+   * This should be called each frame at enables the sound player do handle
+   * housekeeping such as gradually change sound volume and remove sounds that
+   * are no longer playing.
+   *
+   * @param time
+   */
   void update(double time);
 
   /**
@@ -49,16 +58,49 @@ public:
    */
   void stopMusic();
 
+  /**
+   * @brief Sets the master volume.
+   *
+   * This affects both music and sounds, since their volume is multiplied by
+   * the master volume.
+   *
+   * @param value The new value of the master volume. Should be in the the range
+   *              of [0, 1] where 0 is no volume and 1 is max volume.
+   */
   void setMasterVolume(double value);
 
+  /**
+   * @return Returns the current master volume value in the the range [0, 1]
+   *         where 0 is no volume and 1 is max volume.
+   */
   double getMasterVolume();
 
+  /**
+   * @brief Sets the volume of the sounds.
+   *
+   * All sounds that are played with playSound will be affected by this setting.
+   *
+   * @param value The new volume of the sounds. Should be in the range of
+   *              [0, 1] where 0 is no volume and 1 is max volume.
+   */
   void setSoundVolume(double value);
 
+  /**
+   * @return Returns the current sound volume value in the the range [0, 1]
+   *         where 0 is no volume and 1 is max volume.
+   */
   double getSoundVolume();
 
+  /**
+   *
+   * @param value
+   */
   void setMusicVolume(double value);
 
+  /**
+   *
+   * @return
+   */
   double getMusicVolume();
 
 private:
@@ -75,15 +117,15 @@ private:
   void graduallyChangeMusicVolume(ChangeMusicVolume value);
 
   std::map<std::string, sf::SoundBuffer> m_buffers;
-  std::vector<std::shared_ptr<sf::Sound>> m_playingSounds;
+  std::vector<std::unique_ptr<sf::Sound>> m_playingSounds;
   std::shared_ptr<sf::Music> m_playingMusic;
 
   bool m_graduayllChange{false};
   double m_changeVolume{};
   ChangeMusicVolume m_changeDirection{ChangeMusicVolume::INCREASE};
-  double changeValue{};
-  double targetVolume{};
-  double startVolume{};
+  double m_changeValue{};
+  double m_targetVolume{};
+  double m_startVolume{};
 
   // TODO Load these from config files...
   double m_masterVolume{1.0};

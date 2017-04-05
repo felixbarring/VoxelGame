@@ -12,24 +12,30 @@ namespace util {
 double kek{100};
 
 void SoundPlayer::update(double time) {
-  m_changeVolume += changeValue * time;
-  if (!(m_graduayllChange && (m_changeDirection == ChangeMusicVolume::DECREASE ?
-      m_changeVolume >= targetVolume :
-      m_changeVolume <= targetVolume)))
-  {
-    m_changeVolume = targetVolume;
-    m_graduayllChange = false;
-  }
-  m_playingMusic->setVolume(m_changeVolume);
-}
-
-void SoundPlayer::playSound(const std::string &soundPath) {
   for (auto sound = m_playingSounds.begin(); sound < m_playingSounds.end();
-      ++sound)
+        ++sound)
   {
     if ((*sound)->getStatus() == sf::SoundSource::Status::Stopped)
       m_playingSounds.erase(sound);
   }
+
+  if (m_graduayllChange) {
+    if ((m_changeDirection == ChangeMusicVolume::DECREASE ?
+        m_changeVolume >= m_targetVolume :
+        m_changeVolume <= m_targetVolume))
+    {
+      m_changeVolume += m_changeValue * time;
+    } else {
+      m_changeVolume = m_targetVolume;
+      m_graduayllChange = false;
+      if (m_changeDirection == ChangeMusicVolume::DECREASE)
+        m_playingMusic->stop();
+    }
+    m_playingMusic->setVolume(m_changeVolume);
+  }
+}
+
+void SoundPlayer::playSound(const std::string &soundPath) {
 
   if (m_buffers.find(soundPath) == m_buffers.end()) {
     sf::SoundBuffer buffer;
@@ -38,11 +44,11 @@ void SoundPlayer::playSound(const std::string &soundPath) {
     m_buffers.emplace(soundPath, std::move(buffer));
   }
 
-  auto sound = std::make_shared<sf::Sound>();
+  auto sound = std::make_unique<sf::Sound>();
   sound->setBuffer((*m_buffers.find(soundPath)).second);
   sound->play();
   sound->setVolume(m_soundVolume * m_masterVolume);
-  m_playingSounds.push_back(sound);
+  m_playingSounds.push_back(std::move(sound));
 }
 
 void SoundPlayer::playMusic(const std::string &musicPath) {
@@ -61,7 +67,6 @@ void SoundPlayer::stopMusic() {
     return;
 
   graduallyChangeMusicVolume(ChangeMusicVolume::DECREASE);
-//  m_playingMusic->stop();
 }
 
 void SoundPlayer::setMasterVolume(double value)
@@ -99,15 +104,15 @@ void SoundPlayer::graduallyChangeMusicVolume(ChangeMusicVolume value) {
 
   static double change{20.0};
   if (value == ChangeMusicVolume::INCREASE) {
-    changeValue = change;
-    targetVolume = m_musicVolume;
-    startVolume = std::max(0.0, m_changeVolume);
+    m_changeValue = change;
+    m_targetVolume = m_musicVolume;
+    m_startVolume = std::max(0.0, m_changeVolume);
   } else {
-    changeValue = -change;
-    targetVolume = 0.0;
-    startVolume = std::min(m_musicVolume, m_changeVolume);
+    m_changeValue = -change;
+    m_targetVolume = 0.0;
+    m_startVolume = std::min(m_musicVolume, m_changeVolume);
   }
-  m_changeVolume = startVolume;
+  m_changeVolume = m_startVolume;
 }
 
 
