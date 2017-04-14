@@ -183,309 +183,298 @@ Voxel Chunk::getVoxel(int x, int y, int z) {
 }
 
 void Chunk::setCube(int x, int y, int z, char id) {
-    // We can not change bedrock!
-    if (m_cubes[x][y][z].id == BED_ROCK)
-        return;
+  // We can not change bedrock!
+  if (m_cubes[x][y][z].id == BED_ROCK)
+    return;
 
-    Voxel &voxel = m_cubes[x][y][z];
-    voxel.id = id;
+  Voxel &voxel = m_cubes[x][y][z];
+  voxel.id = id;
 
-    // If we removed a cube
-    if (id == AIR || id == WATER) {
-        updateLightningCubeRemoved(voxel, x, y, z);
-    } else { // We added a cube
-        updateLightningCubeAdded(x, y, z);
-        voxel.lightValue = 0;
-    }
-    m_isDirty = true;
+  // If we removed a cube
+  if (id == AIR || id == WATER) {
+    updateLightningCubeRemoved(voxel, x, y, z);
+  } else { // We added a cube
+    updateLightningCubeAdded(x, y, z);
+    voxel.lightValue = 0;
+  }
+  m_isDirty = true;
 }
 
 void Chunk::removeAllNeighbors() {
-    if (m_leftNeighbor) {
-        m_leftNeighbor->m_rightNeighbor.reset();
-        m_leftNeighbor.reset();
-    }
-    if (m_rightNeighbor) {
-        m_rightNeighbor->m_leftNeighbor.reset();
-        m_rightNeighbor.reset();
-    }
-    if (m_frontNeighbor) {
-        m_frontNeighbor->m_backNeighbor.reset();
-        m_frontNeighbor.reset();
-    }
-    if (m_backNeighbor) {
-        m_backNeighbor->m_frontNeighbor.reset();
-        m_backNeighbor.reset();
-    }
+  if (m_leftNeighbor) {
+    m_leftNeighbor->m_rightNeighbor.reset();
+    m_leftNeighbor.reset();
+  }
+  if (m_rightNeighbor) {
+    m_rightNeighbor->m_leftNeighbor.reset();
+    m_rightNeighbor.reset();
+  }
+  if (m_frontNeighbor) {
+    m_frontNeighbor->m_backNeighbor.reset();
+    m_frontNeighbor.reset();
+  }
+  if (m_backNeighbor) {
+    m_backNeighbor->m_frontNeighbor.reset();
+    m_backNeighbor.reset();
+  }
 }
 
 void Chunk::storeChunk(string worldName) {
-    if (!m_isDirty)
-        return;
-    string fileName = config::dataFolder + worldName + "_" + to_string(m_xLocation) + "_"
-            + to_string(m_zLocation) + ".chunk";
+  if (!m_isDirty)
+    return;
+  string fileName = config::dataFolder + worldName + "_" +
+      to_string(m_xLocation) + "_" + to_string(m_zLocation) + ".chunk";
 
-    ofstream outStream(fileName);
-    for (int x = 0; x < m_width; x++) {
-        for (int y = 0; y < m_height; y++) {
-            for (int z = 0; z < m_depth; z++) {
-                outStream << to_string(m_cubes[x][y][z].id) << "\n";
-            }
-        }
+  ofstream outStream(fileName);
+  for (int x = 0; x < m_width; x++) {
+    for (int y = 0; y < m_height; y++) {
+      for (int z = 0; z < m_depth; z++) {
+        outStream << to_string(m_cubes[x][y][z].id) << "\n";
+      }
     }
-    outStream.close();
+  }
+  outStream.close();
 }
 
 std::string Chunk::createChunkName(std::string worldName) {
-    return config::dataFolder + worldName + "_" +
-            std::to_string(m_xLocation) + "_" +
-            std::to_string(m_zLocation) + ".chunk";
+  return config::dataFolder + worldName + "_" +
+        std::to_string(m_xLocation) + "_" +
+        std::to_string(m_zLocation) + ".chunk";
 }
 
 void Chunk::loadChunk() {
-    m_isDirty = false;
+  m_isDirty = false;
 
-    vector<string> list;
-    string line;
-    ifstream inStream;
-    inStream.open(m_name);
+  vector<string> list;
+  string line;
+  ifstream inStream;
+  inStream.open(m_name);
 
-    // Add all lines to the vector
-    while (getline(inStream, line))
-        list.push_back(line);
+  // Add all lines to the vector
+  while (getline(inStream, line))
+    list.push_back(line);
 
-    inStream.close();
+  inStream.close();
 
-    int counter = 0;
-    for (int i = 0; i < m_width; ++i) {
-        m_cubes.push_back(vector<vector<Voxel>>());
-        for (int j = 0; j < m_height; ++j) {
-            m_cubes[i].push_back(vector<Voxel>());
+  int counter = 0;
+  for (int i = 0; i < m_width; ++i) {
+    m_cubes.push_back(vector<vector<Voxel>>());
+    for (int j = 0; j < m_height; ++j) {
+      m_cubes[i].push_back(vector<Voxel>());
 
-            for (int k = 0; k < m_depth; ++k) {
-                char voxelId = std::stoi(list[counter]);
-                ++counter;
-                m_cubes[i][j].push_back(Voxel{voxelId, 0});
-            }
-        }
+      for (int k = 0; k < m_depth; ++k) {
+        char voxelId = std::stoi(list[counter]);
+        ++counter;
+        m_cubes[i][j].push_back(Voxel{voxelId, 0});
+      }
     }
-
+  }
 }
 
+
+// TODO Long function consider splitting it upin smaller ones!
 void Chunk::generateChunk(CreationOptions& options) {
-    m_isDirty = true;
+  m_isDirty = true;
 
-    int counterValue;
-    {
-        lock_guard<mutex> lock(s_mutex);
-        if (options.differentCubesForEachChunk())
-            ++counter;
-        if (counter > maxCount)
-            counter = 0;
-        counterValue = counter;
+  int counterValue;
+  {
+    lock_guard<mutex> lock(s_mutex);
+    if (options.differentCubesForEachChunk())
+      ++counter;
+    if (counter > maxCount)
+      counter = 0;
+    counterValue = counter;
+  }
+
+  // Create the voxels with default values
+  for (int x = 0; x < m_width; ++x) {
+    m_cubes.push_back(vector<vector<Voxel>>());
+    for (int y = 0; y < m_height; ++y) {
+      m_cubes[x].push_back(vector<Voxel>());
+      for (int z = 0; z < m_depth; ++z) {
+        m_cubes[x][y].push_back(Voxel{AIR, 0});
+      }
     }
+  }
 
-    // Create the voxels with default values
+  if (options.getFlat()) {
     for (int x = 0; x < m_width; ++x) {
-        m_cubes.push_back(vector<vector<Voxel>>());
+      for (int z = 0; z < m_depth; ++z) {
         for (int y = 0; y < m_height; ++y) {
-            m_cubes[x].push_back(vector<Voxel>());
-            for (int z = 0; z < m_depth; ++z) {
-                m_cubes[x][y].push_back(Voxel{AIR, 0});
-            }
+          auto &v = m_cubes[x][y][z];
+          if (y == 0) {
+            v.id = BED_ROCK;
+            continue;
+          }
+          if (y < 30)
+            v.id = counterValue;
+          else
+            v.id = AIR;
         }
+      }
     }
+    return;
+  }
 
-    if (options.getFlat()) {
-        for (int x = 0; x < m_width; ++x) {
-            for (int z = 0; z < m_depth; ++z) {
-                for (int y = 0; y < m_height; ++y) {
-                    auto &v = m_cubes[x][y][z];
-                    if (y == 0) {
-                        v.id = BED_ROCK;
-                        continue;
-                    }
-                    if (y < 30)
-                        v.id = counterValue;
-                    else
-                        v.id = AIR;
-                }
-            }
+  // TODO There should be some kind of seed inorder to generate different worlds.
+  // Currently the same world will be generated each time.
+
+  NoiseMixer mixer{};
+  mixer.addNoise(100.f, 15.f);
+  mixer.addNoise(50, 5);
+  mixer.addNoise(15, 3);
+
+  for (int x = 0; x < m_width; ++x) {
+    for (int z = 0; z < m_depth; ++z) {
+      int noiseValue = mixer.computeNoise(m_xLocation + x, m_zLocation + z);
+      for (int y = 0; y < m_height; ++y) {
+        auto &v = m_cubes[x][y][z];
+        if (y == 0) {
+          v.id = BED_ROCK;
+          continue;
         }
-        return;
+        if (y > 5 && y < 25)
+          v.id = config::cube_data::WATER;
+        if (y < noiseValue)
+          v.id = counterValue;
+      }
     }
-
-    // TODO There should be some kind of seed inorder to generate different worlds.
-    // Currently the same world will be generated each time.
-
-    NoiseMixer mixer{};
-    mixer.addNoise(100.f, 15.f);
-    mixer.addNoise(50, 5);
-    mixer.addNoise(15, 3);
-
-    for (int x = 0; x < m_width; ++x) {
-        for (int z = 0; z < m_depth; ++z) {
-            int noiseValue = mixer.computeNoise(m_xLocation + x, m_zLocation + z);
-            for (int y = 0; y < m_height; ++y) {
-                auto &v = m_cubes[x][y][z];
-                if (y == 0) {
-                    v.id = BED_ROCK;
-                    continue;
-                }
-                if (y > 5 && y < 25)
-                    v.id = config::cube_data::WATER;
-                if (y < noiseValue)
-                    v.id = counterValue;
-            }
-        }
-    }
-
-
+  }
 }
 
 Voxel* Chunk::getVoxel2(int x, int y, int z) {
-    if (x < m_width && x >= 0 && y < m_height && y >= 0 && z < m_depth
-            && z >= 0) {
-
-        return &m_cubes[x][y][z];
-    } else if (x == m_width
-            && (y < m_height && y >= 0 && z < m_depth && z >= 0)) {
-
-        if (m_rightNeighbor)
-            return &(m_rightNeighbor->m_cubes[0][y][z]);
-        else
-            return nullptr;
-    } else if (x == -1 && (y < m_height && y >= 0 && z < m_depth && z >= 0)) {
-
-        if (m_leftNeighbor)
-            return &(m_leftNeighbor->m_cubes[m_width - 1][y][z]);
-        else
-            return nullptr;
-    } else if (z == m_depth
-            && (x < m_width && x >= 0 && y < m_height && y >= 0)) {
-
-        if (m_backNeighbor)
-            return &(m_backNeighbor->m_cubes[x][y][0]);
-        else
-            return nullptr;
-    } else if (z == -1 && (x < m_width && x >= 0 && y < m_height && y >= 0)) {
-
-        if (m_frontNeighbor)
-            return &(m_frontNeighbor->m_cubes[x][y][m_depth - 1]);
-        else
-            return nullptr;
-    }
-
-    return nullptr;
+  if (x < m_width && x >= 0 && y < m_height && y >= 0 && z < m_depth && z >= 0)
+  {
+    return &m_cubes[x][y][z];
+  } else if (x == m_width && (y < m_height && y >= 0 && z < m_depth && z >= 0))
+  {
+    if (m_rightNeighbor)
+      return &(m_rightNeighbor->m_cubes[0][y][z]);
+    else
+      return nullptr;
+  } else if (x == -1 && (y < m_height && y >= 0 && z < m_depth && z >= 0)) {
+    if (m_leftNeighbor)
+      return &(m_leftNeighbor->m_cubes[m_width - 1][y][z]);
+    else
+      return nullptr;
+  } else if (z == m_depth && (x < m_width && x >= 0 && y < m_height && y >= 0))
+  {
+    if (m_backNeighbor)
+      return &(m_backNeighbor->m_cubes[x][y][0]);
+    else
+      return nullptr;
+  } else if (z == -1 && (x < m_width && x >= 0 && y < m_height && y >= 0)) {
+    if (m_frontNeighbor)
+      return &(m_frontNeighbor->m_cubes[x][y][m_depth - 1]);
+    else
+      return nullptr;
+  }
+  return nullptr;
 }
 
 void Chunk::updateLightningCubeRemoved(Voxel& voxel, int x, int y, int z) {
-    updateDirtyRegions(y);
+  updateDirtyRegions(y);
 
-    // If the cube is adjacent to a neighbor, the neighbor needs to be update.
-    if (x == m_width - 1 && m_rightNeighbor)
-        m_rightNeighbor->updateDirtyRegions(y);
+  // If the cube is adjacent to a neighbor, the neighbor needs to be update.
+  if (x == m_width - 1 && m_rightNeighbor)
+    m_rightNeighbor->updateDirtyRegions(y);
 
-    if (x == 0 && m_leftNeighbor)
-        m_leftNeighbor->updateDirtyRegions(y);
+  if (x == 0 && m_leftNeighbor)
+    m_leftNeighbor->updateDirtyRegions(y);
 
-    if (z == m_depth - 1 && m_backNeighbor)
-        m_backNeighbor->updateDirtyRegions(y);
+  if (z == m_depth - 1 && m_backNeighbor)
+    m_backNeighbor->updateDirtyRegions(y);
 
-    if (z == 0 && m_frontNeighbor)
-        m_frontNeighbor->updateDirtyRegions(y);
+  if (z == 0 && m_frontNeighbor)
+    m_frontNeighbor->updateDirtyRegions(y);
 
-    if (isInDirectSunlight(x, y, z)) {
-        vector<vec3> lightPropagate;
-        doSunLightning(lightPropagate, x, y, z);
-        for (auto v : lightPropagate)
-            propagateLight(v.x, v.y, v.z);
+  if (isInDirectSunlight(x, y, z)) {
+    vector<vec3> lightPropagate;
+    doSunLightning(lightPropagate, x, y, z);
+    for (auto v : lightPropagate)
+      propagateLight(v.x, v.y, v.z);
 
-    } else {
-        int highestLightValue = 0;
-        highestLightValue = highestLVFromNeighbors(x, y, z) - 1;
-        if (highestLightValue < 0)
-            highestLightValue = 0;
+  } else {
+    int highestLightValue = 0;
+    highestLightValue = highestLVFromNeighbors(x, y, z) - 1;
+    if (highestLightValue < 0)
+      highestLightValue = 0;
 
-        voxel.lightValue = highestLightValue;
-        propagateLight(x, y, z);
-    }
+    voxel.lightValue = highestLightValue;
+    propagateLight(x, y, z);
+  }
 
-    updateGraphics(true);
-    updateNeighborGraphics();
+  updateGraphics(true);
+  updateNeighborGraphics();
 }
 
 void Chunk::updateLightningCubeAdded(int x, int y, int z) {
+  if (isInDirectSunlight(x, y, z)) {
+    for (int i = y; i >= 0; --i)
+      m_cubes[x][i][z].lightValue = 0;
 
-    if (isInDirectSunlight(x, y, z)) {
-        for (int i = y; i >= 0; --i)
-            m_cubes[x][i][z].lightValue = 0;
+    for (int i = y; i >= 0; --i)
+      dePropagateLight(x, i ,z, 15);
+  }
+  dePropagateLight(x, y ,z);
 
-        for (int i = y; i >= 0; --i)
-            dePropagateLight(x, i ,z, 15);
-    }
-    dePropagateLight(x, y ,z);
-
-    updateDirtyRegions(y);
-    updateGraphics(true);
-    updateNeighborGraphics();
+  updateDirtyRegions(y);
+  updateGraphics(true);
+  updateNeighborGraphics();
 }
 
 void Chunk::updateNeighborGraphics() {
-    if (m_rightNeighbor) {
-        m_rightNeighbor->updateGraphics();
+  if (m_rightNeighbor) {
+    m_rightNeighbor->updateGraphics();
 
-        if (m_rightNeighbor->m_backNeighbor) {
-            m_rightNeighbor->m_backNeighbor->updateGraphics();
-        }
+    if (m_rightNeighbor->m_backNeighbor)
+      m_rightNeighbor->m_backNeighbor->updateGraphics();
 
-        if (m_rightNeighbor->m_frontNeighbor) {
-            m_rightNeighbor->m_frontNeighbor->updateGraphics();
-        }
-    }
+    if (m_rightNeighbor->m_frontNeighbor)
+      m_rightNeighbor->m_frontNeighbor->updateGraphics();
+  }
 
-    if (m_leftNeighbor) {
-        m_leftNeighbor->updateGraphics();
+  if (m_leftNeighbor) {
+    m_leftNeighbor->updateGraphics();
 
-        if (m_leftNeighbor->m_backNeighbor) {
-            m_leftNeighbor->m_backNeighbor->updateGraphics();
-        }
+    if (m_leftNeighbor->m_backNeighbor)
+      m_leftNeighbor->m_backNeighbor->updateGraphics();
 
-        if (m_leftNeighbor->m_frontNeighbor) {
-            m_leftNeighbor->m_frontNeighbor->updateGraphics();
-        }
-    }
+    if (m_leftNeighbor->m_frontNeighbor)
+      m_leftNeighbor->m_frontNeighbor->updateGraphics();
+  }
 
-    if (m_backNeighbor) {
-        m_backNeighbor->updateGraphics();
-    }
+  if (m_backNeighbor)
+    m_backNeighbor->updateGraphics();
 
-    if (m_frontNeighbor) {
-        m_frontNeighbor->updateGraphics();
-    }
+  if (m_frontNeighbor)
+    m_frontNeighbor->updateGraphics();
 }
 
-void Chunk::doSunLightning(vector<vec3> &lightPropagate, int x, int y, int z, bool useVec) {
-    // Sun lightning, only air and water gets light
-    // Each step in water reduces the light strength
-    int lightValue{m_directSunlight};
-    for (int i = y; i >= 0; --i) {
-        auto &cube = m_cubes[x][i][z];
+void Chunk::doSunLightning(vector<vec3> &lightPropagate, int x, int y, int z,
+    bool useVec)
+{
+  // Sun lightning, only air and water gets light
+  // Each step in water reduces the light strength
+  int lightValue{m_directSunlight};
+  for (int i = y; i >= 0; --i) {
+    auto &cube = m_cubes[x][i][z];
 
-        if (cube.id == AIR || cube.id == WATER) {
-            if (cube.id == WATER && lightValue > 0)
-                lightValue -= 2;
+    if (cube.id == AIR || cube.id == WATER) {
+      if (cube.id == WATER && lightValue > 0)
+        lightValue -= 2;
 
-            cube.lightValue = lightValue;
-            if (useVec)
-                lightPropagate.push_back(vec3(x, i, z));
+      cube.lightValue = lightValue;
+      if (useVec)
+        lightPropagate.push_back(vec3(x, i, z));
 
-        } else {
-            return;
-        }
+    } else {
+      return;
     }
+  }
 }
 
+// TODO Refactor/clean this up
 void Chunk::propagateLight(int x, int y, int z) {
     Voxel &voxel = m_cubes[x][y][z];
     int lvInitial = voxel.lightValue - 1;
@@ -631,10 +620,11 @@ void Chunk::propagateLight(int x, int y, int z) {
 }
 
 void Chunk::updateDirtyRegions(int y) {
-    int region = y / GRAPHICAL_CHUNK_HEIGHT;
-    m_dirtyRegions.emplace(region);
+  int region = y / GRAPHICAL_CHUNK_HEIGHT;
+  m_dirtyRegions.emplace(region);
 }
 
+// TODO Refactor/clean this up
 void Chunk::dePropagateLight(int x, int y, int z, int _lightValue) {
     Voxel &voxel = m_cubes[x][y][z];
 
@@ -783,40 +773,40 @@ void Chunk::dePropagateLight(int x, int y, int z, int _lightValue) {
 }
 
 int Chunk::highestLVFromNeighbors(int x, int y, int z) {
-    int highestValue = -1;
+  int highestValue = -1;
 
-    Voxel* v = getVoxel2(x + 1, y, z);
-    if (v && v->lightValue > highestValue)
-        highestValue = v->lightValue;
+  Voxel* v = getVoxel2(x + 1, y, z);
+  if (v && v->lightValue > highestValue)
+    highestValue = v->lightValue;
 
-    v = getVoxel2(x - 1, y, z);
-    if (v && v->lightValue > highestValue)
-        highestValue = v->lightValue;
+  v = getVoxel2(x - 1, y, z);
+  if (v && v->lightValue > highestValue)
+    highestValue = v->lightValue;
 
-    v = getVoxel2(x, y + 1, z);
-    if (v && v->lightValue > highestValue)
-        highestValue = v->lightValue;
+  v = getVoxel2(x, y + 1, z);
+  if (v && v->lightValue > highestValue)
+    highestValue = v->lightValue;
 
-    v = getVoxel2(x, y - 1, z);
-    if (v && v->lightValue > highestValue)
-        highestValue = v->lightValue;
+  v = getVoxel2(x, y - 1, z);
+  if (v && v->lightValue > highestValue)
+    highestValue = v->lightValue;
 
-    v = getVoxel2(x, y, z + 1);
-    if (v && v->lightValue > highestValue)
-        highestValue = v->lightValue;
+  v = getVoxel2(x, y, z + 1);
+  if (v && v->lightValue > highestValue)
+    highestValue = v->lightValue;
 
-    v = getVoxel2(x, y, z - 1);
-    if (v && v->lightValue > highestValue)
-        highestValue = v->lightValue;
+  v = getVoxel2(x, y, z - 1);
+  if (v && v->lightValue > highestValue)
+    highestValue = v->lightValue;
 
-    return highestValue;
+  return highestValue;
 }
 
 bool Chunk::isInDirectSunlight(int x, int y, int z) {
-    if (y < m_height)
-        return getVoxel(x, y + 1, z).lightValue == m_directSunlight;
+  if (y < m_height)
+    return getVoxel(x, y + 1, z).lightValue == m_directSunlight;
 
-    return false;
+  return false;
 }
 
 }
