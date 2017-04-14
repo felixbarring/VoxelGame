@@ -447,44 +447,33 @@ void ChunkManager::moveChunks(Direction direction) {
       for_each(collectLightFutures.begin(), collectLightFutures.end(), [] (future<void> &f) {f.get();});
 
       // Update the
+      auto f = [&](int start)
+      {
+        vector<future<void>> updateGrapicsFutures;
+        for (unsigned i = start; i < newChunks.size(); i += 2) {
+          auto chunk = newChunks[i];
+          updateGrapicsFutures.push_back(g_threadPool2.enqueue(
+          [chunk, direction]
+          {
+            chunk->propagateLights();
+            chunk->updateGraphics();
+            if (direction == Direction::Right)
+              chunk->getRightNeighbor()->forceUpdateGraphics();
+            if (direction == Direction::Left)
+              chunk->getLeftNeighbor()->forceUpdateGraphics();
+            if (direction == Direction::Up)
+              chunk->getBackNeighbor()->forceUpdateGraphics();
+            if (direction == Direction::Down)
+              chunk->getFrontNeighbor()->forceUpdateGraphics();
+          }));
+        }
+        for_each(updateGrapicsFutures.begin(), updateGrapicsFutures.end(),
+            [] (future<void> &f) {f.get();});
+        updateGrapicsFutures.clear();
+      };
 
-      vector<future<void>> updateGrapicsFutures;
-      for (unsigned i = 0; i < newChunks.size(); i += 2) {
-        auto chunk = newChunks[i];
-        updateGrapicsFutures.push_back(g_threadPool2.enqueue([chunk, direction]
-        {
-          chunk->propagateLights();
-          chunk->updateGraphics();
-          if (direction == Direction::Right)
-          chunk->getRightNeighbor()->forceUpdateGraphics();
-          if (direction == Direction::Left)
-          chunk->getLeftNeighbor()->forceUpdateGraphics();
-          if (direction == Direction::Up)
-          chunk->getBackNeighbor()->forceUpdateGraphics();
-          if (direction == Direction::Down)
-          chunk->getFrontNeighbor()->forceUpdateGraphics();
-        }));
-      }
-      for_each(updateGrapicsFutures.begin(), updateGrapicsFutures.end(), [] (future<void> &f) {f.get();});
-      updateGrapicsFutures.clear();
-
-      for (unsigned i = 1; i < newChunks.size(); i += 2) {
-        auto chunk = newChunks[i];
-        updateGrapicsFutures.push_back(g_threadPool2.enqueue([chunk, direction]
-        {
-          chunk->propagateLights();
-          chunk->updateGraphics();
-          if (direction == Direction::Right)
-          chunk->getRightNeighbor()->forceUpdateGraphics();
-          if (direction == Direction::Left)
-          chunk->getLeftNeighbor()->forceUpdateGraphics();
-          if (direction == Direction::Up)
-          chunk->getBackNeighbor()->forceUpdateGraphics();
-          if (direction == Direction::Down)
-          chunk->getFrontNeighbor()->forceUpdateGraphics();
-        }));
-      }
-      for_each(updateGrapicsFutures.begin(), updateGrapicsFutures.end(), [] (future<void> &f) {f.get();});
+      f(0);
+      f(1);
 
       m_bussyMovingChunksMutex.unlock();
     });

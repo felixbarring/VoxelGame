@@ -92,14 +92,18 @@ public:
   double getSoundVolume();
 
   /**
+   * @brief Sets the volume of the music.
    *
-   * @param value
+   * The music that is played will be affected by this setting.
+   *
+   * @param value The new volume of the music. Should be in the range of
+   *              [0, 1] where 0 is no volume and 1 is max volume.
    */
   void setMusicVolume(double value);
 
   /**
-   *
-   * @return
+   * @return Returns the current music volume value in the the range [0, 1]
+   *         where 0 is no volume and 1 is max volume.
    */
   double getMusicVolume();
 
@@ -112,7 +116,7 @@ private:
   /**
    * @brief Changes the volume of the currently playing music.
    *
-   * @param value Specifies if the volume should increase or decreas.
+   * @param value Specifies if the volume should increase or decrease.
    */
   void graduallyChangeMusicVolume(ChangeMusicVolume value);
 
