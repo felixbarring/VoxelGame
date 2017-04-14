@@ -16,11 +16,11 @@ using namespace std;
 
 Settings::Settings(
     std::shared_ptr<widget::WidgetGroup>& active,
-    std::shared_ptr<widget::WidgetGroup>& parrent,
+    std::shared_ptr<widget::WidgetGroup>& parent,
     SoundPlayer &soundPlayer
 )
   : m_activeWidgetGroup{active}
-  , m_parentWidgetGroup{parrent}
+  , m_parentWidgetGroup{parent}
   , m_soundPlayer(soundPlayer)
 {
 
