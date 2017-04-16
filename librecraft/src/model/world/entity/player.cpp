@@ -26,8 +26,10 @@ using namespace cube_data;
 
 namespace entity {
 
-Player::Player(chunk::ChunkManager& chunkManager)
+Player::Player(chunk::ChunkManager& chunkManager,
+    util::SoundPlayer &soundPlayer)
   : m_chunkManager{chunkManager}
+  , m_stepPlayer{soundPlayer, config::souds::footStepSounds}
 {
 }
 

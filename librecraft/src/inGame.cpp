@@ -29,7 +29,7 @@ InGame::InGame(Game &game, chunk::ChunkManager &&chunkManager,
     util::SoundPlayer &soundPlayer)
   : m_game{&game}
   , m_chunkManager(move(chunkManager))
-  , m_player{m_chunkManager}
+  , m_player{m_chunkManager, soundPlayer}
   , m_soundPlayer(soundPlayer)
   , m_settings{m_activeWidgetGroup, m_mainWidgetGroup, m_soundPlayer}
 {

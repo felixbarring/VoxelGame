@@ -9,8 +9,10 @@ using std::mt19937;
 using std::random_device;
 using std::uniform_int_distribution;
 
-FootStepSoundPlayer::FootStepSoundPlayer(std::vector<std::string> stepSounds)
+FootStepSoundPlayer::FootStepSoundPlayer(util::SoundPlayer &player,
+    std::vector<std::string> stepSounds)
   : m_stepSounds{stepSounds}
+  , m_soundPlayer{player}
 {
 }
 
@@ -36,8 +38,7 @@ void FootStepSoundPlayer::playSteppingSound() {
   } while (value == last);
   last = value;
 
-  // TODO Fix
-//  util::SoundPlayer::getInstance().playSound(m_stepSounds[value]);
+  m_soundPlayer.playSound(m_stepSounds[value]);
 }
 
 void FootStepSoundPlayer::setWalkingIntervall(double value) {

@@ -9,6 +9,7 @@
 #include "../../../util/voxel.h"
 #include "ThreadPool.h"
 
+#include "../../../util/soundPlayer.h"
 #include "creationOptions.h"
 
 namespace chunk {
@@ -16,7 +17,7 @@ namespace chunk {
 class ChunkManager {
 public:
 
-  ChunkManager(CreationOptions options);
+  ChunkManager(CreationOptions options, util::SoundPlayer &soundPlayer);
 
   void createWorld();
 
@@ -93,6 +94,7 @@ private:
 
   std::string m_worldName{};
   CreationOptions m_options;
+  util::SoundPlayer &m_soundPlayer;
 
   bool m_loadStoreWorldWhenPlyayerIsNotInTheCenterChunk{true}; // Good name 10/10
 

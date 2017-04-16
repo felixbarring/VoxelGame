@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 
+#include "../../../util/soundPlayer.h"
 /**
  * @brief A class that is used to play foot step sounds.
  *
@@ -15,13 +16,14 @@ class FootStepSoundPlayer {
 public:
 
   /**
-   * @brief Constructs an instance of FootStepSoundPlayer
+   * @brief Constructs an instance of FootStepSoundPlayer.
    *
    * @param stepSounds The instance will use the provided vector of strings to
    *                   play the foot steps. The strings should correspond to a
    *                   sound file.
    */
-  FootStepSoundPlayer(std::vector<std::string> stepSounds);
+  FootStepSoundPlayer(util::SoundPlayer &player,
+      std::vector<std::string> stepSounds);
 
   /**
    * @brief Plays stepping sounds at a regular interval.
@@ -54,10 +56,10 @@ public:
    */
   void setWalkingIntervall(double value);
 
-
 private:
 
   std::vector<std::string> m_stepSounds{};
+  util::SoundPlayer &m_soundPlayer;
 
   bool m_isWalking{false};
   double m_accumulatedTime{};

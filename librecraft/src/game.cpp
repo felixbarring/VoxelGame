@@ -165,7 +165,7 @@ void Game::run() {
 
 void Game::createWorld(chunk::CreationOptions options) {
 
-  chunk::ChunkManager chunkManager{options};
+  chunk::ChunkManager chunkManager{options, m_soundPlayer};
 
   auto future = globalResources::g_threadPool.enqueue([options, &chunkManager]
   {

@@ -20,7 +20,7 @@ namespace entity {
 class Player: public IEntity {
 public:
 
-  Player(chunk::ChunkManager& chunkManager);
+  Player(chunk::ChunkManager& chunkManager, util::SoundPlayer &soundPlayer);
 
   void update(float timePassed) override;
 
@@ -55,9 +55,7 @@ private:
 
   glm::vec3 m_location{0, 0, 0}; // The location of the camera
 
-  FootStepSoundPlayer m_stepPlayer{
-      config::souds::footStepSounds
-  };
+  FootStepSoundPlayer m_stepPlayer;
 
   chunk::ChunkManager& m_chunkManager;
 
@@ -71,7 +69,7 @@ private:
   int m_selectCubeDistance{5};
   float m_movementSpeed{8};
 
-  bool m_gravitiyOn{false};
+  bool m_gravitiyOn{true};
   bool m_isOnGround{false};
 
   float m_flySpeed = 8;

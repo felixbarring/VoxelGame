@@ -22,8 +22,10 @@ using namespace globalResources;
 
 namespace chunk {
 
-ChunkManager::ChunkManager(CreationOptions options)
+ChunkManager::ChunkManager(CreationOptions options,
+    util::SoundPlayer &soundPlayer)
   : m_options{move(options)}
+  , m_soundPlayer{soundPlayer}
 {
   m_worldName = m_options.getName();
   m_bussyMovingChunksMutex = make_unique<mutex>();
@@ -144,7 +146,7 @@ void ChunkManager::removeCube(int x, int y, int z) {
     else
       setCube(x, y, z, AIR);
 
-//    SoundPlayer::getInstance().playSound(config::souds::cubeRemoved);
+    m_soundPlayer.playSound(config::souds::cubeRemoved);
   }
 }
 
@@ -165,7 +167,7 @@ void ChunkManager::setCube(int x, int y, int z, char id) {
   int localZ = z % CHUNK_WIDTH_AND_DEPTH;
 
   m_chunks[chunkX][chunkY][chunkZ]->setCube(localX, localY, localZ, id);
-//  SoundPlayer::getInstance().playSound(config::souds::cubeAdded);
+  m_soundPlayer.playSound(config::souds::cubeAdded);
 }
 
 void ChunkManager::setCenter(float x, float z) {
