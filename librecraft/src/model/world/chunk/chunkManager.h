@@ -16,9 +16,9 @@ namespace chunk {
 class ChunkManager {
 public:
 
-  ChunkManager();
+  ChunkManager(CreationOptions options);
 
-  void createWorld(CreationOptions options);
+  void createWorld();
 
   void saveWorld();
 
@@ -60,10 +60,6 @@ public:
 
   void loadWorldWhenDecentered(bool value = true);
 
-// ########################################################
-// Implementation #########################################
-// ########################################################
-
 private:
 
   /*
@@ -90,12 +86,13 @@ private:
   int m_lenghtAcrossMatrix{
       config::chunk_data::NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * 2 + 1};
 
-  std::vector<std::vector<std::vector<std::shared_ptr<Chunk>>> >m_chunks;
+  std::vector<std::vector<std::vector<std::shared_ptr<Chunk>>>> m_chunks;
 
   int m_xOffset{0};
   int m_zOffset{0};
 
   std::string m_worldName{};
+  CreationOptions m_options;
 
   bool m_loadStoreWorldWhenPlyayerIsNotInTheCenterChunk{true}; // Good name 10/10
 
@@ -105,9 +102,6 @@ private:
 
   // Mutex is non movable
   std::unique_ptr<std::mutex> m_bussyMovingChunksMutex{};
-
-  // TODO Dummy, should be set in constructor
-  CreationOptions m_options;
 };
 
 }

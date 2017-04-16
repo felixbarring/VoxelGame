@@ -164,13 +164,12 @@ void Game::run() {
 }
 
 void Game::createWorld(chunk::CreationOptions options) {
-  // TODO Create the chunkmanager here and move it into ingame...
 
-  chunk::ChunkManager chunkManager{};
+  chunk::ChunkManager chunkManager{options};
 
   auto future = globalResources::g_threadPool.enqueue([options, &chunkManager]
   {
-    chunkManager.createWorld(options);
+    chunkManager.createWorld();
   });
 
   LoadingScreen loadingScreen(m_fpsManager, window);
@@ -179,7 +178,7 @@ void Game::createWorld(chunk::CreationOptions options) {
   while (future.wait_for(span) != future_status::ready)
     loadingScreen.update();
 
-  m_inGame.reset(new InGame(this, move(chunkManager), m_soundPlayer));
+  m_inGame.reset(new InGame(*this, move(chunkManager), m_soundPlayer));
 
   m_currentState = m_inGame;
   m_soundPlayer.stopMusic();

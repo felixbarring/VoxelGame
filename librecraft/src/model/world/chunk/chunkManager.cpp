@@ -22,36 +22,32 @@ using namespace globalResources;
 
 namespace chunk {
 
-ChunkManager::ChunkManager() {
+ChunkManager::ChunkManager(CreationOptions options)
+  : m_options{move(options)}
+{
+  m_worldName = m_options.getName();
+
   m_bussyMovingChunksMutex = make_unique<mutex>();
 
-  for (int x = 0; x < m_lenghtAcrossMatrix; ++x) {
+  for (int x{0}; x < m_lenghtAcrossMatrix; ++x) {
     m_chunks.push_back(vector<vector<std::shared_ptr<Chunk>>>());
-    for (int y = 0; y < config::chunk_data::NUMBER_OF_CHUNKS_Y; ++y) {
+    for (int y{0}; y < config::chunk_data::NUMBER_OF_CHUNKS_Y; ++y) {
       m_chunks[x].push_back(vector<std::shared_ptr<Chunk>>());
-      for (int z = 0; z < m_lenghtAcrossMatrix; ++z) {
+      for (int z{0}; z < m_lenghtAcrossMatrix; ++z) {
         m_chunks[x][y].push_back(std::shared_ptr<Chunk>());
       }
     }
   }
 }
 
-void ChunkManager::createWorld(CreationOptions options)
-//    : m_options{std::move(options)}
+void ChunkManager::createWorld()
 {
-  // TODO Should be set in constructor.
-  m_options = options;
-
-  m_worldName = options.getName();
-  m_xOffset = 0;
-  m_zOffset = 0;
-
   const int lam = m_lenghtAcrossMatrix;
   vector<future<void>> chunkCreationFutures;
 
   // Create the Chunks
-  for (int x = 0; x < lam; ++x) {
-    for (int z = 0; z < lam; ++z) {
+  for (int x {0}; x < lam; ++x) {
+    for (int z{0}; z < lam; ++z) {
       auto chunk = make_shared<Chunk>(m_worldName, x * CHUNK_WIDTH_AND_DEPTH,
           z * CHUNK_WIDTH_AND_DEPTH);
 
@@ -73,8 +69,8 @@ void ChunkManager::createWorld(CreationOptions options)
 //    vector<future<void>> updateGrapicsFutures;
 
 // TODO Should be done in parallel..
-  for (int x = 0; x < lam; ++x) {
-    for (int z = 0; z < lam; ++z) {
+  for (int x{0}; x < lam; ++x) {
+    for (int z{0}; z < lam; ++z) {
       m_chunks[x][0][z]->propagateLights();
       m_chunks[x][0][z]->updateGraphics(true);
     }
@@ -112,8 +108,8 @@ Voxel ChunkManager::getVoxel(int x, int y, int z) {
   static float yD = 1.0 / CHUNK_HEIGHT;
   static float zD = 1.0 / CHUNK_WIDTH_AND_DEPTH;
 
-  x += m_xOffset;
-  z += m_zOffset;
+  x += 0; //m_xOffset;
+  z += 0; //m_zOffset;
 
   int chunkX = x * xD;
   int chunkY = y * yD;
@@ -132,7 +128,8 @@ char ChunkManager::getCubeId(int x, int y, int z) {
 }
 
 bool ChunkManager::isSolid(int x, int y, int z) {
-  return !isAirOrWater(x, y, z); // Will not be correct if more cubes that are not solid are added.
+  // Will not be correct if more cubes that are not solid are added.
+  return !isAirOrWater(x, y, z);
 }
 
 bool ChunkManager::isAirOrWater(int x, int y, int z) {
@@ -157,8 +154,8 @@ void ChunkManager::setCube(int x, int y, int z, char id) {
   static float yD = 1.0 / CHUNK_HEIGHT;
   static float zD = 1.0 / CHUNK_WIDTH_AND_DEPTH;
 
-  x += m_xOffset;
-  z += m_zOffset;
+  x += 0; //m_xOffset;
+  z += 0; //m_zOffset;
 
   int chunkX = x * xD;
   int chunkY = y * yD;
@@ -173,6 +170,7 @@ void ChunkManager::setCube(int x, int y, int z, char id) {
 }
 
 void ChunkManager::setCenter(float x, float z) {
+  return;
   if (!m_loadStoreWorldWhenPlyayerIsNotInTheCenterChunk)
     return;
 
@@ -314,17 +312,17 @@ void ChunkManager::moveChunksRight() {
 }
 
 void ChunkManager::moveChunksLeft() {
-  m_xOffset -= CHUNK_WIDTH_AND_DEPTH;
+//  m_xOffset -= CHUNK_WIDTH_AND_DEPTH;
   moveChunks(Direction::Left);
 }
 
 void ChunkManager::moveChunksUp() {
-  m_zOffset += CHUNK_WIDTH_AND_DEPTH;
+//  m_zOffset += CHUNK_WIDTH_AND_DEPTH;
   moveChunks(Direction::Up);
 }
 
 void ChunkManager::moveChunksDown() {
-  m_zOffset -= CHUNK_WIDTH_AND_DEPTH;
+//  m_zOffset -= CHUNK_WIDTH_AND_DEPTH;
   moveChunks(Direction::Down);
 }
 

@@ -25,10 +25,11 @@ using namespace widget;
 using namespace util;
 using namespace gui;
 
-InGame::InGame(Game *game, chunk::ChunkManager &&chunkManager,
+InGame::InGame(Game &game, chunk::ChunkManager &&chunkManager,
     util::SoundPlayer &soundPlayer)
-  : m_game{game}
+  : m_game{&game}
   , m_chunkManager(move(chunkManager))
+  , m_player{m_chunkManager}
   , m_soundPlayer(soundPlayer)
   , m_settings{m_activeWidgetGroup, m_mainWidgetGroup, m_soundPlayer}
 {
@@ -44,11 +45,11 @@ InGame::InGame(Game *game, chunk::ChunkManager &&chunkManager,
   static const int startTime{100};
   m_timeCycle.setTime(startTime);
 
-  auto observer = [this, game](int id)
+  auto observer = [this](int id)
   {
     switch(id) {
       case 0: {
-        game->changeStateToMainMenu();
+        m_game->changeStateToMainMenu();
         m_state = GameState::NoOverlay;
         m_chunkManager.saveWorld();
         m_chunkManager.clearWorld();

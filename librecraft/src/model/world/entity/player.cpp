@@ -26,6 +26,11 @@ using namespace cube_data;
 
 namespace entity {
 
+Player::Player(chunk::ChunkManager& chunkManager)
+  : m_chunkManager{chunkManager}
+{
+}
+
 void Player::update(float timePassed) {
   updateIsOnGround();
   updateSpeed(timePassed);
@@ -35,7 +40,7 @@ void Player::update(float timePassed) {
   if (length(m_speed) && m_isOnGround)
     m_stepPlayer.walkingActive(timePassed);
 
-//  chunk::ChunkManager::getInstance().setCenter(m_location.x, m_location.z);
+  m_chunkManager.setCenter(m_location.x, m_location.z);
 }
 
 void Player::setLocation(float x, float y, float z) {
@@ -144,10 +149,10 @@ void Player::handlePhysics() {
   while (collisions.size()) {
 
     sort(collisions.begin(), collisions.end(),
-        [](tuple<float, int, vec3> a, tuple<float, int, vec3> b)
-        {
-          return get<0>(a) < get<0>(b);
-        });
+      [](tuple<float, int, vec3> a, tuple<float, int, vec3> b)
+      {
+        return get<0>(a) < get<0>(b);
+      });
 
 //        auto c = collisions[0];
 //        auto time = get<0>(collisions[0]);
@@ -179,44 +184,40 @@ void Player::updateCameraAndTargetCube() {
       vec3(m_location.x, m_location.y, m_location.z),
       m_viewDirection.getViewDirection(), m_viewDirection.getUpDirection());
 
-//  chunk::ChunkManager &chunkManager = chunk::ChunkManager::getInstance();
+  vec3 selectedCube;
+  vec3 previous;
 
-//    auto lol = m_viewDirection.getViewDirection();
+  if (m_chunkManager.intersectWithSolidCube(m_location,
+      m_viewDirection.getViewDirection(), selectedCube, previous,
+      m_selectCubeDistance)) {
 
-//  vec3 selectedCube;
-//  vec3 previous;
-//
-//  if (chunkManager.intersectWithSolidCube(m_location,
-//      m_viewDirection.getViewDirection(), selectedCube, previous,
-//      m_selectCubeDistance)) {
-//
-//    m_lastSelecteCube = selectedCube;
-//
-//    if (input->action1Pressed) {
-//      chunkManager.removeCube(selectedCube.x, selectedCube.y, selectedCube.z);
-//      return;
-//    } else if (input->action2Pressed) {
-//      AABB playerAAABB = createAABB();
-//      AABB cubeAABB{previous.x, previous.x + 1, previous.y, previous.y + 1,
-//          previous.z, previous.z + 1};
-//      if (!playerAAABB.intersects(cubeAABB))
-//        chunkManager.setCube(previous.x, previous.y, previous.z,
-//            m_cubeUsedForBuilding);
-//      return;
-//    }
-//
-//    // TODO Remove hardcoded values
-//    // 0.5 = half width of cube
-//    m_targetedCubeTransform.setLocation(selectedCube.x + 0.5,
-//        selectedCube.y + 0.5, selectedCube.z + 0.5);
-//
-//    char voxelID = chunkManager.getCubeId(selectedCube.x, selectedCube.y,
-//        selectedCube.z);
-//    char voxelLightValue = chunkManager.getVoxel(previous.x, previous.y,
-//        previous.z).lightValue;
-//    GraphicsManager::getInstance().getCubeBatcher().addBatch(voxelID,
-//        m_targetedCubeTransform, voxelLightValue + 5);
-//  }
+    m_lastSelecteCube = selectedCube;
+
+    if (input->action1Pressed) {
+      m_chunkManager.removeCube(selectedCube.x, selectedCube.y, selectedCube.z);
+      return;
+    } else if (input->action2Pressed) {
+      AABB playerAAABB = createAABB();
+      AABB cubeAABB{previous.x, previous.x + 1, previous.y, previous.y + 1,
+          previous.z, previous.z + 1};
+      if (!playerAAABB.intersects(cubeAABB))
+        m_chunkManager.setCube(previous.x, previous.y, previous.z,
+            m_cubeUsedForBuilding);
+      return;
+    }
+
+    // TODO Remove hardcoded values
+    // 0.5 = half width of cube
+    m_targetedCubeTransform.setLocation(selectedCube.x + 0.5,
+        selectedCube.y + 0.5, selectedCube.z + 0.5);
+
+    char voxelID = m_chunkManager.getCubeId(selectedCube.x, selectedCube.y,
+        selectedCube.z);
+    char voxelLightValue = m_chunkManager.getVoxel(previous.x, previous.y,
+        previous.z).lightValue;
+    GraphicsManager::getInstance().getCubeBatcher().addBatch(voxelID,
+        m_targetedCubeTransform, voxelLightValue + 5);
+  }
 
 }
 
@@ -229,64 +230,61 @@ void Player::updateIsOnGround() {
 void Player::intersected(vec3 movement,
                          vector<tuple<float, int, vec3>> &collisions) {
 
-//  AABB start = createAABB();
-//
-//  AABB box = AABB::getSweptBroadPhaseBox(start, movement);
-//
-//  int xStart = floor(box.xMin);
-//  int yStart = floor(box.yMin);
-//  int zStart = floor(box.zMin);
-//
-//  int xEnd = floor(box.xMax);
-//  int yEnd = floor(box.yMax);
-//  int zEnd = floor(box.zMax);
-//
-//  for (double i = xStart; i <= xEnd; ++i) {
-//    for (double j = yStart; j <= yEnd; ++j) {
-//      for (double k = zStart; k <= zEnd; ++k) {
-//
-//        AABB cube{i, i + 1.0, j, j + 1.0, k, k + 1};
-//        vec3 normal;
-//        auto cubeId = ChunkManager::getInstance().getCubeId(i, j, k);
-//        if (!(cubeId == cube_data::AIR || cubeId == cube_data::WATER)) {
-//          vec3 vec;
-//          float time = AABB::collisionTime(start, cube, vec, movement);
-//
-//          if (time < 1 && time >= 0)
-//            collisions.push_back(std::make_tuple(time, cubeId, vec));
-//
-//        }
-//      }
-//    }
-//  }
+  AABB start = createAABB();
 
+  AABB box = AABB::getSweptBroadPhaseBox(start, movement);
+
+  int xStart = floor(box.xMin);
+  int yStart = floor(box.yMin);
+  int zStart = floor(box.zMin);
+
+  int xEnd = floor(box.xMax);
+  int yEnd = floor(box.yMax);
+  int zEnd = floor(box.zMax);
+
+  for (double i = xStart; i <= xEnd; ++i) {
+    for (double j = yStart; j <= yEnd; ++j) {
+      for (double k = zStart; k <= zEnd; ++k) {
+
+        AABB cube{i, i + 1.0, j, j + 1.0, k, k + 1};
+        vec3 normal;
+        auto cubeId = m_chunkManager.getCubeId(i, j, k);
+        if (!(cubeId == cube_data::AIR || cubeId == cube_data::WATER)) {
+          vec3 vec;
+          float time = AABB::collisionTime(start, cube, vec, movement);
+
+          if (time < 1 && time >= 0)
+            collisions.push_back(std::make_tuple(time, cubeId, vec));
+
+        }
+      }
+    }
+  }
 }
 
 bool Player::isInWater() {
-  // Fix hardcoded shit...
-//  AABB box{m_location.x - 0.4, m_location.x + 0.4, m_location.y - 1.5,
-//      m_location.y + 0.1, m_location.z - 0.4, m_location.z + 0.4};
-//
-//  int xStart = floor(box.xMin);
-//  int yStart = floor(box.yMin);
-//  int zStart = floor(box.zMin);
-//
-//  int xEnd = floor(box.xMax);
-//  int yEnd = floor(box.yMax);
-//  int zEnd = floor(box.zMax);
-//
-//  for (int i = xStart; i <= xEnd; i++) {
-//    for (int j = yStart; j <= yEnd; j++) {
-//      for (int k = zStart; k <= zEnd; k++) {
-//        auto cubeId = ChunkManager::getInstance().getCubeId(i, j, k);
-//        if (cubeId != WATER)
-//          return false;
-//      }
-//    }
-//  }
-//  return true;
+//   Fix hardcoded shit...
+  AABB box{m_location.x - 0.4, m_location.x + 0.4, m_location.y - 1.5,
+      m_location.y + 0.1, m_location.z - 0.4, m_location.z + 0.4};
 
-  return false;
+  int xStart = floor(box.xMin);
+  int yStart = floor(box.yMin);
+  int zStart = floor(box.zMin);
+
+  int xEnd = floor(box.xMax);
+  int yEnd = floor(box.yMax);
+  int zEnd = floor(box.zMax);
+
+  for (int i = xStart; i <= xEnd; i++) {
+    for (int j = yStart; j <= yEnd; j++) {
+      for (int k = zStart; k <= zEnd; k++) {
+        auto cubeId = m_chunkManager.getCubeId(i, j, k);
+        if (cubeId != WATER)
+          return false;
+      }
+    }
+  }
+  return true;
 }
 
 AABB Player::createAABB() {

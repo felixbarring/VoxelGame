@@ -25,7 +25,7 @@
 class InGame: public IGameState {
 public:
 
-  InGame(Game *game, chunk::ChunkManager &&chunkManager,
+  InGame(Game &game, chunk::ChunkManager &&chunkManager,
       util::SoundPlayer &soundPlayer);
 
   void update(double timePassed);
@@ -43,9 +43,7 @@ private:
   glm::mat4 m_virtualProjection;
 
   Game *m_game;
-
   chunk::ChunkManager m_chunkManager;
-
   entity::Player m_player;
 
   util::SoundPlayer& m_soundPlayer;

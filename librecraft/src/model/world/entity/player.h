@@ -12,12 +12,15 @@
 #include "../../../graphics/transform.h"
 
 #include "../../../config/data.h"
+#include "../chunk/chunkManager.h"
 #include "footStepSoundPlayer.h"
 
 namespace entity {
 
 class Player: public IEntity {
 public:
+
+  Player(chunk::ChunkManager& chunkManager);
 
   void update(float timePassed) override;
 
@@ -55,6 +58,8 @@ private:
   FootStepSoundPlayer m_stepPlayer{
       config::souds::footStepSounds
   };
+
+  chunk::ChunkManager& m_chunkManager;
 
   float m_width{0.8};
   float m_height{1.7};
