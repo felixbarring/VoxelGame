@@ -66,7 +66,7 @@ private:
   int m_selectCubeDistance{5};
   float m_movementSpeed{8};
 
-  bool m_gravitiyOn{true};
+  bool m_gravitiyOn{false};
   bool m_isOnGround{false};
 
   float m_flySpeed = 8;

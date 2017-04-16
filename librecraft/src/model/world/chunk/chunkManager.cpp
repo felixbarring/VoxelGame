@@ -23,6 +23,8 @@ using namespace globalResources;
 namespace chunk {
 
 ChunkManager::ChunkManager() {
+  m_bussyMovingChunksMutex = make_unique<mutex>();
+
   for (int x = 0; x < m_lenghtAcrossMatrix; ++x) {
     m_chunks.push_back(vector<vector<std::shared_ptr<Chunk>>>());
     for (int y = 0; y < config::chunk_data::NUMBER_OF_CHUNKS_Y; ++y) {
@@ -174,7 +176,7 @@ void ChunkManager::setCenter(float x, float z) {
   if (!m_loadStoreWorldWhenPlyayerIsNotInTheCenterChunk)
     return;
 
-  if (!m_bussyMovingChunksMutex.try_lock())
+  if (!m_bussyMovingChunksMutex->try_lock())
     return;
 
   if (x < NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * 16 - m_xOffset)
@@ -186,7 +188,7 @@ void ChunkManager::setCenter(float x, float z) {
   else if (z > NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * 16 - m_zOffset + 16)
     moveChunksDown();
   else
-    m_bussyMovingChunksMutex.unlock();
+    m_bussyMovingChunksMutex->unlock();
 
 }
 
@@ -475,7 +477,7 @@ void ChunkManager::moveChunks(Direction direction) {
       f(0);
       f(1);
 
-      m_bussyMovingChunksMutex.unlock();
+      m_bussyMovingChunksMutex->unlock();
     });
 }
 

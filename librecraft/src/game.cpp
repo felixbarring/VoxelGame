@@ -144,6 +144,7 @@ void Game::run() {
   m_mainMenu.reset(new MainMenu(this, m_soundPlayer));
   changeStateToMainMenu();
 
+  // TODO No more singletons!
   // TODO Load all singletons somewhere else?!?
   // Done here on the main thread to avoid thread issues.
   graphics::GraphicsManager::getInstance();
@@ -163,11 +164,13 @@ void Game::run() {
 }
 
 void Game::createWorld(chunk::CreationOptions options) {
-  m_inGame.reset(new InGame(this, m_soundPlayer));
+  // TODO Create the chunkmanager here and move it into ingame...
 
-  auto future = globalResources::g_threadPool.enqueue([options]
+  chunk::ChunkManager chunkManager{};
+
+  auto future = globalResources::g_threadPool.enqueue([options, &chunkManager]
   {
-    chunk::ChunkManager::getInstance().createWorld(options);
+    chunkManager.createWorld(options);
   });
 
   LoadingScreen loadingScreen(m_fpsManager, window);
@@ -175,6 +178,8 @@ void Game::createWorld(chunk::CreationOptions options) {
   std::chrono::milliseconds span{0};
   while (future.wait_for(span) != future_status::ready)
     loadingScreen.update();
+
+  m_inGame.reset(new InGame(this, move(chunkManager), m_soundPlayer));
 
   m_currentState = m_inGame;
   m_soundPlayer.stopMusic();

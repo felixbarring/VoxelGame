@@ -14,17 +14,9 @@
 namespace chunk {
 
 class ChunkManager {
-private:
-
-  ChunkManager();
-
 public:
 
-  // TODO Remove all the singleton crap
-  static ChunkManager& getInstance() {
-    static ChunkManager INSTANCE;
-    return INSTANCE;
-  }
+  ChunkManager();
 
   void createWorld(CreationOptions options);
 
@@ -99,14 +91,11 @@ private:
       config::chunk_data::NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * 2 + 1};
 
   std::vector<std::vector<std::vector<std::shared_ptr<Chunk>>> >m_chunks;
-//        [m_lenghtAcrossMatrix]
-//        [config::chunk_data::NUMBER_OF_CHUNKS_Y]
-//        [m_lenghtAcrossMatrix];
 
-  int m_xOffset {0};
-  int m_zOffset {0};
+  int m_xOffset{0};
+  int m_zOffset{0};
 
-  std::string m_worldName {};
+  std::string m_worldName{};
 
   bool m_loadStoreWorldWhenPlyayerIsNotInTheCenterChunk{true}; // Good name 10/10
 
@@ -114,11 +103,11 @@ private:
   glm::vec3 m_intersectedCube{};
   glm::vec3 m_previousCube{};
 
-  std::mutex m_bussyMovingChunksMutex {};
+  // Mutex is non movable
+  std::unique_ptr<std::mutex> m_bussyMovingChunksMutex{};
 
   // TODO Dummy, should be set in constructor
   CreationOptions m_options;
-
 };
 
 }

@@ -25,8 +25,10 @@ using namespace widget;
 using namespace util;
 using namespace gui;
 
-InGame::InGame(Game *game, util::SoundPlayer &soundPlayer)
+InGame::InGame(Game *game, chunk::ChunkManager &&chunkManager,
+    util::SoundPlayer &soundPlayer)
   : m_game{game}
+  , m_chunkManager(move(chunkManager))
   , m_soundPlayer(soundPlayer)
   , m_settings{m_activeWidgetGroup, m_mainWidgetGroup, m_soundPlayer}
 {
@@ -48,8 +50,8 @@ InGame::InGame(Game *game, util::SoundPlayer &soundPlayer)
       case 0: {
         game->changeStateToMainMenu();
         m_state = GameState::NoOverlay;
-        chunk::ChunkManager::getInstance().saveWorld();
-        chunk::ChunkManager::getInstance().clearWorld();
+        m_chunkManager.saveWorld();
+        m_chunkManager.clearWorld();
         break;
       }
       case 1: {
@@ -152,9 +154,9 @@ InGame::InGame(Game *game, util::SoundPlayer &soundPlayer)
         return;
       }
       if (arguments[1] == "0")
-      ChunkManager::getInstance().loadWorldWhenDecentered(false);
+        m_chunkManager.loadWorldWhenDecentered(false);
       else
-      ChunkManager::getInstance().loadWorldWhenDecentered();
+        m_chunkManager.loadWorldWhenDecentered();
     } else if (command == setTime) {
       if (arguments.size() < 1) {
         m_terminal->addLine("Too few arguments");
@@ -303,7 +305,7 @@ void InGame::update(double timePassed) {
     m_activeWidgetGroup->draw();
   }
 
-  chunk::ChunkManager::getInstance().update();
+  m_chunkManager.update();
 
   if (true /*|| m_timeCycle.getStarStrenght() > 0.0*/) {
     // Changes so that the rotation dose not get to fast.
