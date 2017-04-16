@@ -141,7 +141,7 @@ void Game::run() {
   // TODO No opengl outside graphics!
   glViewport(0, 0, width, height);
 
-  m_mainMenu.reset(new MainMenu(this, m_soundPlayer));
+  m_mainMenu.reset(new MainMenu(*this, m_soundPlayer));
   changeStateToMainMenu();
 
   // TODO No more singletons!

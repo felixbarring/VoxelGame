@@ -20,12 +20,27 @@
 #include "gui/terminal.h"
 #include "settings.h"
 
+/**
+ * @brief Class that is responsible to provide the main menu.
+ *
+ * Extends the game state interface. The update function will update the
+ * internal logic of the main menu. Logic involves changing settings, creating
+ * new worlds and loading existin ones.
+ */
 class MainMenu : public IGameState {
 public:
 
-  MainMenu(Game *game, util::SoundPlayer& soundPlayer);
+  /**
+   * @brief Creates an instance of the MainMenu.
+   *
+   * @param game The game class instance. Callback functions in this class will
+   *             be called when changing state to ingame.
+   * @param soundPlayer The soundplayer that will be used to play sounds on
+   *                    various GUI events.
+   */
+  MainMenu(Game &game, util::SoundPlayer& soundPlayer);
 
-  void update(double timePassed);
+  void update(double timePassed) override;
 
 private:
 
@@ -52,7 +67,6 @@ private:
   std::shared_ptr<widget::WidgetGroup> m_newWorldWidgetGroupAdvanced{};
 
   std::shared_ptr<widget::WidgetGroup> m_loadWorldWidgetGroup{};
-
 
   std::shared_ptr<widget::WidgetGroup> m_errorEmptyName{};
   std::shared_ptr<widget::WidgetGroup> m_errorUsedName{};

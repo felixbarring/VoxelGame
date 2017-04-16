@@ -16,8 +16,8 @@ using namespace std;
 using namespace widget;
 using namespace gui;
 
-MainMenu::MainMenu(Game *game, SoundPlayer &soundPlayer)
-  : m_game(game)
+MainMenu::MainMenu(Game &game, SoundPlayer &soundPlayer)
+  : m_game(&game)
   , m_soundPlayer(soundPlayer)
   , m_settings{m_activeWidgetGroup, m_mainWidgetGroup, m_soundPlayer}
 {

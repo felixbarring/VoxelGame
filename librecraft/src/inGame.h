@@ -22,13 +22,29 @@
 #include "model/world/timeAndWeather/timeCycle.h"
 #include "settings.h"
 
+/**
+ * @brief This class is responsible to handle all the mayor ingame abstractions.
+ *
+ * Updates the inagme state, controls the HUD and the GUI.
+ */
 class InGame: public IGameState {
 public:
 
+  /**
+   * @brief Creates an instance of the InGame class.
+   *
+   * @param game The game class instance. Callback functions in this class will
+   *             be called when changing state to ingame.
+   * @param chunkManager The ChunkManager that handles all the chunks. The
+   *                     user is responsible to create and make it ready for
+   *                     use before calling this constructor, and then moving
+   *                     it in, giving the ownership to this instance.
+   * @param soundPlayer The SoundPlayer that will be used to play sounds with.
+   */
   InGame(Game &game, chunk::ChunkManager &&chunkManager,
       util::SoundPlayer &soundPlayer);
 
-  void update(double timePassed);
+  void update(double timePassed) override;
 
 private:
 
@@ -55,7 +71,8 @@ private:
   bool m_displayDebugInfo{false};
 
   double m_fpsDisplayCounter{0};
-  double m_fpsDisplayDelay{1.0 / 5.0}; // The fps should only be drawn 5 times/second
+  // The fps should only be drawn 5 times/second
+  double m_fpsDisplayDelay{1.0 / 5.0};
 
   Settings m_settings;
 
