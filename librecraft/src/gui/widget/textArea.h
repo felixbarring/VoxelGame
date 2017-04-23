@@ -14,6 +14,7 @@ class TextArea: public AbstractWidget {
 public:
 
   TextArea(int id, int x, int y, int width, int height,
+      graphics::GraphicsManager &graphicsManager,
       std::function<void(int)> observer, int layer);
 
   virtual ~TextArea() = default;

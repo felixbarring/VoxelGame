@@ -42,7 +42,8 @@ public:
    * @param soundPlayer The SoundPlayer that will be used to play sounds with.
    */
   InGame(Game &game, chunk::ChunkManager &&chunkManager,
-      util::SoundPlayer &soundPlayer);
+      util::SoundPlayer &soundPlayer,
+      graphics::GraphicsManager &graphicsManager);
 
   void update(double timePassed) override;
 
@@ -62,9 +63,10 @@ private:
   chunk::ChunkManager m_chunkManager;
   entity::Player m_player;
 
-  util::SoundPlayer& m_soundPlayer;
+  util::SoundPlayer &m_soundPlayer;
+  graphics::GraphicsManager &m_graphicsManager;
 
-  gui::Mouse m_mouse{};
+  gui::Mouse m_mouse;
 
   TimeCycle m_timeCycle;
 

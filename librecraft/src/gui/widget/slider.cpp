@@ -17,8 +17,9 @@ using namespace util;
 namespace widget {
 
 Slider::Slider(int id, int x, int y, int width, int height,
+    graphics::GraphicsManager &graphicsManager,
     std::function<void(int)> observer, int layer)
-  : AbstractWidget(id, x, y, width, height)
+  : AbstractWidget(id, x, y, width, height, graphicsManager)
 {
 
   this->m_observer = observer;
@@ -42,8 +43,8 @@ double Slider::getValue() {
 }
 
 void Slider::draw() {
-  GraphicsManager::getInstance().getSpriteBatcher().addBatch(m_slider);
-  GraphicsManager::getInstance().getSpriteBatcher().addBatch(m_knob);
+  m_graphicsManager.getSpriteBatcher().addBatch(m_slider);
+  m_graphicsManager.getSpriteBatcher().addBatch(m_knob);
 }
 
 void Slider::update(float) {

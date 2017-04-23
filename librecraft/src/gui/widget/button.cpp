@@ -17,29 +17,27 @@ using namespace util;
 namespace widget {
 
 Button::Button(int id, int x, int y, int width, int height,
+    graphics::GraphicsManager &graphicsManager,
     function<void(int)> observer, string name, int layer
 )
-  : AbstractWidget(id, x, y, width, height)
+  : AbstractWidget(id, x, y, width, height, graphicsManager)
   , m_name(name)
 {
   this->m_observer = observer;
   auto &res = Resources::getInstance();
 
-  m_sprite.reset(
-      new Sprite(x, y, layer, width, height,
-          res.getTexture(config::gui_data::button)));
-  m_highlight.reset(
-      new Sprite(x, y, layer + 1, width, height,
-          res.getTexture(config::gui_data::highlight)));
+  m_sprite.reset(new Sprite(x, y, layer, width, height,
+    res.getTexture(config::gui_data::button)));
+  m_highlight.reset(new Sprite(x, y, layer + 1, width, height,
+    res.getTexture(config::gui_data::highlight)));
 
   FontMeshBuilder &fontMeshBuilder = res.getFontMeshBuilder(
       config::font_data::fontLayout, config::font_data::fontAtlasWidth,
       config::font_data::fontAtlasHeight);
 
-  m_text.reset(
-      new Sprite(x, y + 5, layer + 1,
-          fontMeshBuilder.buldMeshForString(name, height - 5),
-          res.getTexture(config::font_data::font)));
+  m_text.reset(new Sprite(x, y + 5, layer + 1,
+      fontMeshBuilder.buldMeshForString(name, height - 5),
+      res.getTexture(config::font_data::font)));
 
 }
 
@@ -48,8 +46,7 @@ std::string Button::getName() {
 }
 
 void Button::draw() {
-  SpriteBatcher &spriteBatcher =
-      GraphicsManager::getInstance().getSpriteBatcher();
+  SpriteBatcher &spriteBatcher{m_graphicsManager.getSpriteBatcher()};
 
   if (m_pointerInsideBorders) {
     spriteBatcher.addBatch(m_sprite);

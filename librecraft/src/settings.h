@@ -2,6 +2,7 @@
 #ifndef SRC_SETTINGS_H_
 #define SRC_SETTINGS_H_
 
+#include "graphics/graphicsManager.h"
 #include "gui/widget/slider.h"
 #include "gui/widget/textInput.h"
 #include "gui/widget/widgetGroup.h"
@@ -30,7 +31,8 @@ public:
    */
   Settings(std::shared_ptr<widget::WidgetGroup>& active,
            std::shared_ptr<widget::WidgetGroup>& parent,
-           util::SoundPlayer &soundPlayer);
+           util::SoundPlayer &soundPlayer,
+           graphics::GraphicsManager &graphicsManager);
 
   /**
    * @brief Updates the settings
@@ -51,6 +53,7 @@ public:
 private:
 
   util::SoundPlayer &m_soundPlayer;
+  graphics::GraphicsManager &m_graphicsManager;
 
   std::shared_ptr<widget::WidgetGroup>& m_activeWidgetGroup;
   std::shared_ptr<widget::WidgetGroup>& m_parentWidgetGroup;

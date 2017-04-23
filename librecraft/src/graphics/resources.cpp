@@ -16,35 +16,38 @@ Texture& Resources::getTexture(const string &path) {
     return textures.at(path);
 }
 
-TextureArray& Resources::getTextureArray(const vector<string> &textures, unsigned width, unsigned height) {
+TextureArray& Resources::getTextureArray(const vector<string> &textures,
+    unsigned width, unsigned height) {
     auto it = textureArraysMap.find(textures.at(0));
 
     if (it == textureArraysMap.end())
-        textureArraysMap.insert(make_pair(textures.at(0), TextureArray{textures, width, height}));
+        textureArraysMap.insert(make_pair(textures.at(0),
+            TextureArray{textures, width, height}));
 
     return textureArraysMap.at(textures.at(0));
 }
 
-TextureCubeMap& Resources::getTextureCubeMap(string &right, string &left, string &top, string &bottom, string &back,
-        string &front) {
+TextureCubeMap& Resources::getTextureCubeMap(string &right, string &left,
+    string &top, string &bottom, string &back, string &front)
+{
+  auto it = textureCubeMaps.find(right);
 
-    auto it = textureCubeMaps.find(right);
+  if (it == textureCubeMaps.end())
+    textureCubeMaps.insert(make_pair(right, TextureCubeMap{right.c_str(),
+    left.c_str(), top.c_str(), bottom.c_str(), back.c_str(), front.c_str()}));
 
-    if (it == textureCubeMaps.end())
-        textureCubeMaps.insert(make_pair(right, TextureCubeMap{right.c_str(), left.c_str(),
-                        top.c_str(), bottom.c_str(), back.c_str(), front.c_str()}));
-
-    return textureCubeMaps.at(right);
+  return textureCubeMaps.at(right);
 }
 
-FontMeshBuilder& Resources::getFontMeshBuilder(string &pathToLayout, int atlasWidth, int atlasHeight) {
-    auto it = fontMeshBuilders.find(pathToLayout);
+FontMeshBuilder& Resources::getFontMeshBuilder(string &pathToLayout,
+    int atlasWidth, int atlasHeight) {
+  auto it = fontMeshBuilders.find(pathToLayout);
 
-    if (it == fontMeshBuilders.end())
-        fontMeshBuilders.insert(make_pair(pathToLayout, FontMeshBuilder {
-                pathToLayout, atlasWidth, atlasHeight }));
+  if (it == fontMeshBuilders.end())
+    fontMeshBuilders.insert(make_pair(pathToLayout, FontMeshBuilder {
+      pathToLayout, atlasWidth, atlasHeight }));
 
-    return fontMeshBuilders.at(pathToLayout);
+  return fontMeshBuilders.at(pathToLayout);
 }
 
 } /* namespace graphics */

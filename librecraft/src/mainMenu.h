@@ -5,6 +5,7 @@
 
 #include "iGameState.h"
 #include "game.h"
+#include "graphics/graphicsManager.h"
 
 #include "util/input.h"
 
@@ -38,7 +39,8 @@ public:
    * @param soundPlayer The soundplayer that will be used to play sounds on
    *                    various GUI events.
    */
-  MainMenu(Game &game, util::SoundPlayer& soundPlayer);
+  MainMenu(Game &game, util::SoundPlayer& soundPlayer,
+      graphics::GraphicsManager &graphicsManager);
 
   void update(double timePassed) override;
 
@@ -46,9 +48,10 @@ private:
 
   Game *m_game;
   glm::mat4 m_virtualProjection{};
-  gui::Mouse m_mouse{};
 
   util::SoundPlayer &m_soundPlayer;
+  graphics::GraphicsManager &m_graphicsManager;
+  gui::Mouse m_mouse;
 
   Settings m_settings;
   bool m_inSettings{false};

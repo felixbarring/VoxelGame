@@ -7,6 +7,7 @@
 #include "ThreadPool.h"
 
 #include "config/data.h"
+#include "graphics/graphicsManager.h"
 #include "util/fpsManager.h"
 
 #include "model/world/chunk/chunkManager.h"
@@ -28,6 +29,8 @@ private:
 
   util::FPSManager m_fpsManager{config::graphics_data::fps};
   util::SoundPlayer m_soundPlayer{};
+
+  std::unique_ptr<graphics::GraphicsManager> m_graphicsmanager;
 
   sf::Window *window{};
 

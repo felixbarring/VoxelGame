@@ -14,12 +14,13 @@ using namespace graphics;
 
 namespace gui {
 
-Mouse::Mouse() {
+Mouse::Mouse(graphics::GraphicsManager &graphicsManager)
+  : m_graphicsManager{graphicsManager}
+{
   m_input = util::Input::getInstance();
 
-  m_sprite.reset(
-      new Sprite(0, 0, 100, m_width, m_height,
-          Resources::getInstance().getTexture(config::gui_data::mouse)));
+  m_sprite.reset(new Sprite(0, 0, 100, m_width, m_height,
+      Resources::getInstance().getTexture(config::gui_data::mouse)));
 }
 
 void Mouse::update() {
@@ -40,7 +41,7 @@ void Mouse::update() {
 }
 
 void Mouse::draw() {
-  GraphicsManager::getInstance().getSpriteBatcher().addBatch(m_sprite);
+  m_graphicsManager.getSpriteBatcher().addBatch(m_sprite);
 }
 
 void Mouse::lock() {

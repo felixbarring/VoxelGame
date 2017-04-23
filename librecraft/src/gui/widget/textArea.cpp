@@ -11,9 +11,10 @@ using namespace graphics;
 namespace widget {
 
 TextArea::TextArea(int id, int x, int y, int width, int height,
+    graphics::GraphicsManager &graphicsManager,
     std::function<void(int)> observer, int layer
 )
-  : AbstractWidget(id, x, y, width, height)
+  : AbstractWidget(id, x, y, width, height, graphicsManager)
   , m_layer{layer}
 {
   this->m_observer = observer;
@@ -24,8 +25,7 @@ TextArea::TextArea(int id, int x, int y, int width, int height,
 }
 
 void TextArea::draw() {
-  SpriteBatcher &spriteBatcher =
-      GraphicsManager::getInstance().getSpriteBatcher();
+  SpriteBatcher &spriteBatcher{m_graphicsManager.getSpriteBatcher()};
   spriteBatcher.addBatch(m_textArea);
 
   for (auto &s : m_rows)

@@ -17,7 +17,8 @@ namespace chunk {
 class ChunkManager {
 public:
 
-  ChunkManager(CreationOptions options, util::SoundPlayer &soundPlayer);
+  ChunkManager(CreationOptions options, util::SoundPlayer &soundPlayer,
+      graphics::GraphicsManager &graphicsManager);
 
   void createWorld();
 
@@ -95,6 +96,7 @@ private:
   std::string m_worldName{};
   CreationOptions m_options;
   util::SoundPlayer &m_soundPlayer;
+  graphics::GraphicsManager &m_graphicsManager;
 
   bool m_loadStoreWorldWhenPlyayerIsNotInTheCenterChunk{true}; // Good name 10/10
 

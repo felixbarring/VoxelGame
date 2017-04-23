@@ -23,9 +23,10 @@ using namespace globalResources;
 namespace chunk {
 
 ChunkManager::ChunkManager(CreationOptions options,
-    util::SoundPlayer &soundPlayer)
+    util::SoundPlayer &soundPlayer, graphics::GraphicsManager &graphicsManager)
   : m_options{move(options)}
   , m_soundPlayer{soundPlayer}
+  , m_graphicsManager{graphicsManager}
 {
   m_worldName = m_options.getName();
   m_bussyMovingChunksMutex = make_unique<mutex>();
@@ -50,7 +51,7 @@ void ChunkManager::createWorld()
   for (int x {0}; x < lam; ++x) {
     for (int z{0}; z < lam; ++z) {
       auto chunk = make_shared<Chunk>(m_worldName, x * CHUNK_WIDTH_AND_DEPTH,
-          z * CHUNK_WIDTH_AND_DEPTH);
+          z * CHUNK_WIDTH_AND_DEPTH, m_graphicsManager);
 
       chunkCreationFutures.push_back(g_threadPool2.enqueue([chunk, this]
       {
@@ -383,7 +384,7 @@ void ChunkManager::moveChunks(Direction direction) {
         for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
           auto ch = m_chunks[0 + 1][0][i];
           auto chunk = std::make_shared<Chunk>(m_worldName, ch->getXLocation()
-              - CHUNK_WIDTH_AND_DEPTH, ch->getZLocation());
+              - CHUNK_WIDTH_AND_DEPTH, ch->getZLocation(), m_graphicsManager);
           m_chunks[0][0][i] = chunk;
           newChunks.push_back(chunk);
         }
@@ -391,7 +392,7 @@ void ChunkManager::moveChunks(Direction direction) {
         for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
           auto ch = m_chunks[m_lenghtAcrossMatrix - 2][0][i];
           auto chunk = std::make_shared<Chunk>(m_worldName, ch->getXLocation()
-              + CHUNK_WIDTH_AND_DEPTH, ch->getZLocation());
+              + CHUNK_WIDTH_AND_DEPTH, ch->getZLocation(), m_graphicsManager);
           m_chunks[m_lenghtAcrossMatrix - 1][0][i] = chunk;
           newChunks.push_back(chunk);
         }
@@ -399,7 +400,7 @@ void ChunkManager::moveChunks(Direction direction) {
         for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
           auto ch = m_chunks[i][0][0 + 1];
           auto chunk = std::make_shared<Chunk>(m_worldName, ch->getXLocation(),
-              ch->getZLocation() - CHUNK_WIDTH_AND_DEPTH);
+              ch->getZLocation() - CHUNK_WIDTH_AND_DEPTH, m_graphicsManager);
           m_chunks[i][0][0] = chunk;
           newChunks.push_back(chunk);
         }
@@ -407,7 +408,7 @@ void ChunkManager::moveChunks(Direction direction) {
         for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
           auto ch = m_chunks[i][0][m_lenghtAcrossMatrix - 2];
           auto chunk = std::make_shared<Chunk>(m_worldName, ch->getXLocation(),
-              ch->getZLocation() + CHUNK_WIDTH_AND_DEPTH);
+              ch->getZLocation() + CHUNK_WIDTH_AND_DEPTH, m_graphicsManager);
           m_chunks[i][0][m_lenghtAcrossMatrix - 1] = chunk;
           newChunks.push_back(chunk);
         }

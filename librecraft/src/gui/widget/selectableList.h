@@ -5,6 +5,7 @@
 #include <vector>
 #include <memory>
 
+#include "../../graphics/graphicsManager.h"
 #include "abstractWidget.h"
 #include "toggleButton.h"
 
@@ -30,6 +31,7 @@ public:
    * @param layer
    */
   SelectableList(int id, int x, int y, int width, int height,
+      graphics::GraphicsManager &graphicsManager,
       std::function<void(int)> observer, unsigned layer = 0);
 
   virtual ~SelectableList() = default;

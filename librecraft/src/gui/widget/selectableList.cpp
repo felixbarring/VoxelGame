@@ -17,10 +17,11 @@ using namespace graphics;
 namespace widget {
 
 SelectableList::SelectableList(int id, int x, int y, int width, int height,
+    graphics::GraphicsManager &graphicsManager,
     function<void(int)> observer, unsigned layer
 )
   : AbstractWidget(id, static_cast<double>(x), static_cast<double>(y),
-        width, height)
+        width, height, graphicsManager)
   , m_layer{layer + 1}
 {
   this->m_observer = observer;
@@ -56,7 +57,7 @@ void SelectableList::addListItem(std::string item) {
   };
 
   auto button = make_shared<ToggleButton>(++idCounter, x, y, width, height,
-      func, item, m_layer);
+      m_graphicsManager, func, item, m_layer);
   m_buttons.push_back(std::move(button));
 }
 
@@ -83,7 +84,7 @@ void SelectableList::reset() {
 }
 
 void SelectableList::draw() {
-  GraphicsManager::getInstance().getSpriteBatcher().addBatch(m_sprite);
+  m_graphicsManager.getSpriteBatcher().addBatch(m_sprite);
   for (auto b : m_buttons)
     b->draw();
 }

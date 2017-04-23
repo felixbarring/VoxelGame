@@ -13,8 +13,8 @@ using namespace graphics;
 namespace widget {
 
 Label::Label(int x, int y, int width, int height, const string &name,
-    unsigned layer)
-    : AbstractWidget(1, x, y, width, height)
+    graphics::GraphicsManager &graphicsManager, unsigned layer)
+    : AbstractWidget(1, x, y, width, height, graphicsManager)
 {
 
   auto &res = Resources::getInstance();
@@ -33,7 +33,7 @@ Label::Label(int x, int y, int width, int height, const string &name,
 }
 
 void Label::draw() {
-  GraphicsManager::getInstance().getSpriteBatcher().addBatch(m_text);
+  m_graphicsManager.getSpriteBatcher().addBatch(m_text);
 }
 
 } /* namespace demo */

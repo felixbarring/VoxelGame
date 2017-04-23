@@ -8,11 +8,6 @@ set(WARNINGS FALSE)
 
 set(CMAKE_CXX_FLAGS "-std=c++14")
 
-# -Werror
-if(WARNINGS)
-	set(CMAKE_CXX_FLAGS "-std=c++14 -lstdc++fs -Wall -Wextra")
-endif()
-
 # set(SFML_ROOT "${CMAKE_SOURCE_DIR}/SFML-2.4.2")
 
 message("### Building with ${CMAKE_CXX_COMPILER_ID}")
@@ -75,10 +70,13 @@ if(DEMO)
 	endforeach()
 endif()
 
-#foreach (f ${SRC_LIST})
-#    message("${f}")
-#	SET_PROPERTY(SOURCE ${f} PROPERTY COMPILE_FLAGS "-std=c++14 -Wall -Wextra")
-#endforeach()
+if(WARNINGS)
+	foreach (f ${SRC_LIST})
+    	message("${f}")
+		#SET_PROPERTY(SOURCE ${f} PROPERTY COMPILE_FLAGS "-std=c++14 -Wall -Wextra -Werror -Wfatal-errors")
+endforeach()
+
+endif()
 
 # Add executable to project
 if(APPLICATION)

@@ -3,6 +3,7 @@
 
 #include <string>
 
+#include "../../graphics/graphicsManager.h"
 #include "abstractWidget.h"
 
 #include "../../graphics/sprite.h"
@@ -26,7 +27,7 @@ public:
    * @param layer The layer that the label shall be drawn at.
    */
   Label(int x, int y, int width, int height, const std::string &name,
-      unsigned layer = 0);
+      graphics::GraphicsManager &graphicsManager, unsigned layer = 0);
 
   virtual ~Label() = default;
 

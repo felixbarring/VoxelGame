@@ -53,7 +53,7 @@ Terminal::Terminal(vector<string> commands,
       }
     }
   };
-
+/*
   m_widgets = make_shared<WidgetGroup>(0, 100, 100, 600, 400, 5);
   m_textInput = make_shared<TextInput>(1, 110, 110, 430, 30, 6);
   m_textInput->setFocus();
@@ -68,6 +68,7 @@ Terminal::Terminal(vector<string> commands,
 
   m_textArea = make_shared<TextArea>(0, 110, 150, 580, 340, observer, 7);
   m_widgets->addWidget(m_textArea);
+  */
 }
 
 void Terminal::update(float timePassed) {

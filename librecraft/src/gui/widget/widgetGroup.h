@@ -4,6 +4,7 @@
 #include <vector>
 #include <memory>
 
+#include "../../graphics/graphicsManager.h"
 #include "abstractWidget.h"
 #include "iWidget.h"
 
@@ -24,7 +25,8 @@ public:
   /**
    * \brief Constructs a WidgetGroup.
    */
-  WidgetGroup(int id, int x, int y, int width, int height, unsigned layer = 0,
+  WidgetGroup(int id, int x, int y, int width, int height,
+      graphics::GraphicsManager &graphicsManager, unsigned layer = 0,
       bool transparentBackground = true);
 
   virtual ~WidgetGroup() = default;

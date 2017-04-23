@@ -27,9 +27,10 @@ using namespace cube_data;
 namespace entity {
 
 Player::Player(chunk::ChunkManager& chunkManager,
-    util::SoundPlayer &soundPlayer)
+    util::SoundPlayer &soundPlayer, graphics::GraphicsManager &graphicsManager)
   : m_chunkManager{chunkManager}
   , m_stepPlayer{soundPlayer, config::souds::footStepSounds}
+  , m_graphicsManager{graphicsManager}
 {
 }
 
@@ -182,7 +183,7 @@ void Player::handlePhysics() {
 void Player::updateCameraAndTargetCube() {
   shared_ptr<Input> input = Input::getInstance();
 
-  GraphicsManager::getInstance().getPlayerCamera().updateView(
+  m_graphicsManager.getPlayerCamera().updateView(
       vec3(m_location.x, m_location.y, m_location.z),
       m_viewDirection.getViewDirection(), m_viewDirection.getUpDirection());
 
@@ -217,7 +218,7 @@ void Player::updateCameraAndTargetCube() {
         selectedCube.z);
     char voxelLightValue = m_chunkManager.getVoxel(previous.x, previous.y,
         previous.z).lightValue;
-    GraphicsManager::getInstance().getCubeBatcher().addBatch(voxelID,
+    m_graphicsManager.getCubeBatcher().addBatch(voxelID,
         m_targetedCubeTransform, voxelLightValue + 5);
   }
 

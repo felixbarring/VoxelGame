@@ -17,13 +17,15 @@ using namespace terrainGen;
 
 namespace chunk {
 
-int counter = 1;
-const int maxCount = LAST_CUBE_USED_FOR_BUILDING;
+int counter{1};
+const int maxCount{LAST_CUBE_USED_FOR_BUILDING};
 std::mutex s_mutex;
 
-Chunk::Chunk(string worldName, int x, int z)
+Chunk::Chunk(string worldName, int x, int z,
+    graphics::GraphicsManager &graphicsManager)
   : m_xLocation{x}
   , m_zLocation{z}
+  , m_graphicsManager{graphicsManager}
   , m_isDirty{true}
   , m_name{createChunkName(worldName)}
 {
@@ -36,7 +38,7 @@ Chunk::Chunk(string worldName, int x, int z)
 
 Chunk::~Chunk() {
   for (auto graphicalChunk : m_graphicalChunksIds)
-    GraphicsManager::getInstance().getChunkBatcher().removeBatch(graphicalChunk);
+    m_graphicsManager.getChunkBatcher().removeBatch(graphicalChunk);
 }
 
 void Chunk::create(CreationOptions& options) {
@@ -168,7 +170,7 @@ void Chunk::updateGraphics(bool highPriority) {
     back = &(m_backNeighbor->m_cubes);
 
   for (auto i : m_dirtyRegions) {
-    auto derp = GraphicsManager::getInstance().getChunkBatcher().addBatch(
+    auto derp = m_graphicsManager.getChunkBatcher().addBatch(
             m_graphicalChunksIds[i],
             m_xLocation, i * GRAPHICAL_CHUNK_HEIGHT, m_zLocation,
             m_cubes, right, left, back, front, highPriority);

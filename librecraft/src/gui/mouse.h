@@ -3,6 +3,7 @@
 
 #include <memory>
 
+#include "../graphics/graphicsManager.h"
 #include "../graphics/sprite.h"
 #include "../gui/guiUtil.h"
 #include "../util/input.h"
@@ -12,7 +13,7 @@ namespace gui {
 class Mouse {
 public:
 
-  Mouse();
+  Mouse(graphics::GraphicsManager &graphicsManager);
 
   void update();
 
@@ -23,6 +24,8 @@ public:
   void unlock();
 
 private:
+
+  graphics::GraphicsManager &m_graphicsManager;
 
   std::shared_ptr<util::Input> m_input;
   bool m_locked{false};

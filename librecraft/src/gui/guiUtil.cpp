@@ -50,10 +50,11 @@ glm::mat4 createVirtualToScreen(int virtualWidth, int virtualHeight,
 }
 
 glm::vec2 adjustMouse(int virtualWidth, int virtualHeight, int realWidth,
-    int realHeight, int mouseX, int mouseY) {
-  float mouseOffX = 0;
-  float mouseOffY = 0;
-  float mouseScale = 1;
+    int realHeight, int mouseX, int mouseY)
+{
+  float mouseOffX{0.0};
+  float mouseOffY{0.0};
+  float mouseScale{1.0};
 
   float vW = virtualWidth;
   float vH = virtualHeight;
