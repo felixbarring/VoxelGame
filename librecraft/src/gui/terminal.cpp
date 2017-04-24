@@ -12,8 +12,10 @@ using namespace widget;
 namespace gui {
 
 Terminal::Terminal(vector<string> commands,
+    graphics::GraphicsManager &graphicsManager,
     function<void(vector<string>)> commandListener)
-    : m_commands(commands)
+  : m_graphicsManager{graphicsManager}
+  , m_commands(commands)
 {
 
   for (auto command : commands)
@@ -53,22 +55,23 @@ Terminal::Terminal(vector<string> commands,
       }
     }
   };
-/*
-  m_widgets = make_shared<WidgetGroup>(0, 100, 100, 600, 400, 5);
-  m_textInput = make_shared<TextInput>(1, 110, 110, 430, 30, 6);
+  m_widgets = make_shared<WidgetGroup>(0, 100, 100, 600, 400, m_graphicsManager,
+      5);
+  m_textInput = make_shared<TextInput>(1, 110, 110, 430, 30, m_graphicsManager,
+      6);
   m_textInput->setFocus();
   m_widgets->addWidget(m_textInput);
 
-  m_enterButton = make_shared<Button>(2, 545, 110, 70, 30, observer, "Enter",
-      6);
+  m_enterButton = make_shared<Button>(2, 545, 110, 70, 30, m_graphicsManager,
+      observer, "Enter", 6);
 
   m_widgets->addWidget(m_enterButton);
-  m_widgets->addWidget(
-      make_shared<Button>(3, 545 + 75, 110, 70, 30, observer, "Close", 6));
+  m_widgets->addWidget(make_shared<Button>(3, 545 + 75, 110, 70, 30,
+      m_graphicsManager, observer, "Close", 6));
 
-  m_textArea = make_shared<TextArea>(0, 110, 150, 580, 340, observer, 7);
+  m_textArea = make_shared<TextArea>(0, 110, 150, 580, 340, m_graphicsManager,
+      observer, 7);
   m_widgets->addWidget(m_textArea);
-  */
 }
 
 void Terminal::update(float timePassed) {

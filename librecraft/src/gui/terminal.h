@@ -14,7 +14,7 @@
 namespace gui {
 
 /**
- * \brief Can be used to let the user type in commands.
+ * @brief Can be used to let the user type in commands.
  *
  * The terminal is designed to have a easy to use interface. It supports letting
  * the user type in commands in an input text field. When hitting enter or
@@ -33,7 +33,7 @@ class Terminal {
 public:
 
   /**
-   * \brief Constructs a Terminal.
+   * @brief Constructs a Terminal.
    *
    * @param commands The commands that the user can auto complete on by pressing
    *                  tab
@@ -42,10 +42,11 @@ public:
    *                        button.
    */
   Terminal(std::vector<std::string> commands,
+      graphics::GraphicsManager &graphicsManager,
       std::function<void(std::vector<std::string>)> commandListener);
 
   /**
-   * \brief Updates the terminal.
+   * @brief Updates the terminal.
    *
    * Should be called once each frame. Handles all the logic of the terminal,
    * such as sending commands to the callback function, using auto completion,
@@ -56,12 +57,12 @@ public:
   void update(float timePassed);
 
   /**
-   * \brief Draws all the widgets that the terminal is made up of.
+   * @brief Draws all the widgets that the terminal is made up of.
    */
   void draw();
 
   /**
-   * \brief Adds a new line to the text area.
+   * @brief Adds a new line to the text area.
    *
    * Useful for giving the user feedback of a command, or debugg information and
    * similar. The added string can be of any realistic size since it will be
@@ -77,7 +78,8 @@ private:
   public:
 
     History(unsigned maxLenght)
-        : m_history(maxLenght, "") {
+        : m_history(maxLenght, "")
+    {
     }
 
     void addToHistory(std::string str) {
@@ -114,6 +116,8 @@ private:
     unsigned m_historyPointer{0};
     std::vector<std::string> m_history;
   };
+
+  graphics::GraphicsManager &m_graphicsManager;
 
   std::function<void(std::vector<std::string>)> m_commandListener;
 

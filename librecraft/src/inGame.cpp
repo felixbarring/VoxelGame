@@ -216,7 +216,8 @@ InGame::InGame(Game &game, chunk::ChunkManager &&chunkManager,
     }
   };
 
-  m_terminal = make_shared<gui::Terminal>(move(commands), func);
+  m_terminal = make_shared<gui::Terminal>(move(commands), m_graphicsManager,
+      func);
 
   auto &res = Resources::getInstance();
   FontMeshBuilder &fontMeshBuilder = res.getFontMeshBuilder(
