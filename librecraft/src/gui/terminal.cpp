@@ -34,7 +34,7 @@ Terminal::Terminal(vector<string> commands,
 
         regex r("\\S+");
         smatch match;
-        vector<string> results {};
+        vector<string> results{};
         while(regex_search(str, match, r)) {
           results.push_back(match.str());
           str = match.suffix();
@@ -45,7 +45,7 @@ Terminal::Terminal(vector<string> commands,
         break;
       }
       case 3: {
-        auto arg = vector<string> {};
+        auto arg = vector<string>{};
         arg.push_back("close");
         m_commandListener(arg);
         // Hack, we lose focus when clicking on close. Next time terminal is

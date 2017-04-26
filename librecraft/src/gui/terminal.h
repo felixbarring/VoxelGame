@@ -78,7 +78,7 @@ private:
   public:
 
     History(unsigned maxLenght)
-        : m_history(maxLenght, "")
+      : m_history(maxLenght, "")
     {
     }
 
