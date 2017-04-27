@@ -20,10 +20,10 @@ Settings::Settings(
     SoundPlayer &soundPlayer,
     graphics::GraphicsManager &graphicsManager
 )
-  : m_activeWidgetGroup{active}
-  , m_parentWidgetGroup{parent}
-  , m_soundPlayer(soundPlayer)
+  : m_soundPlayer(soundPlayer)
   , m_graphicsManager(graphicsManager)
+  , m_activeWidgetGroup{active}
+  , m_parentWidgetGroup{parent}
 {
   // ########################################################################
 
@@ -239,10 +239,10 @@ Settings::Settings(
      m_musicVolumeSlider, m_musicVolumeInput,
      m_soundVolumeSlider, m_soundVolumeInput,
      label2, label3, label4});
- }
+  }
 }
 
-void Settings::update(double timePassed) {
-//  m_activeWidgetGroup->update(timePassed);
+std::shared_ptr<widget::WidgetGroup> Settings::getMainWidgetGroup() const {
+  return m_settingsWidgetGroup;
 }
 

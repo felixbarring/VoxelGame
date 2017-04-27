@@ -16,9 +16,8 @@ namespace gui {
 
 Mouse::Mouse(graphics::GraphicsManager &graphicsManager)
   : m_graphicsManager{graphicsManager}
+  , m_input{util::Input::getInstance()}
 {
-  m_input = util::Input::getInstance();
-
   m_sprite.reset(new Sprite(0, 0, 100, m_width, m_height,
       Resources::getInstance().getTexture(config::gui_data::mouse)));
 }

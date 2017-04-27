@@ -40,6 +40,7 @@ public:
    *                     use before calling this constructor, and then moving
    *                     it in, giving the ownership to this instance.
    * @param soundPlayer The SoundPlayer that will be used to play sounds with.
+   * @param graphicsManager Needed for drawing 2d and 3d graphics.
    */
   InGame(Game &game, chunk::ChunkManager &&chunkManager,
       util::SoundPlayer &soundPlayer,

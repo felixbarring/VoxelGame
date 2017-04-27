@@ -50,10 +50,9 @@ public:
 
 protected:
 
-  std::function<void(int)> m_observer;
-
   bool m_pointerInsideBorders{false};
   std::string m_name;
+  std::function<void(int)> m_observer;
 
   std::shared_ptr<graphics::Sprite> m_sprite;
   std::shared_ptr<graphics::Sprite> m_highlight;

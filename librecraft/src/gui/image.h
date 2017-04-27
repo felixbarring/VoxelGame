@@ -12,7 +12,7 @@ class Image {
 public:
 
   Image(double x, double y, double width, double height,
-      const std::string image, graphics::GraphicsManager &graphicsManager);
+      const std::string &image, graphics::GraphicsManager &graphicsManager);
 
   void draw();
 
@@ -20,7 +20,6 @@ private:
 
   graphics::GraphicsManager &m_graphicsManager;
   std::shared_ptr<graphics::Sprite> m_sprite;
-
 };
 
 } /* namespace gui */

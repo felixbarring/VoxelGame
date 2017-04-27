@@ -26,10 +26,8 @@ Chunk::Chunk(string worldName, int x, int z,
   : m_xLocation{x}
   , m_zLocation{z}
   , m_graphicsManager{graphicsManager}
-  , m_isDirty{true}
   , m_name{createChunkName(worldName)}
 {
-
   for (int i = 0; i < CHUNK_HEIGHT / GRAPHICAL_CHUNK_HEIGHT; ++i) {
     m_graphicalChunksIds.push_back(-1);
     m_dirtyRegions.emplace(i);

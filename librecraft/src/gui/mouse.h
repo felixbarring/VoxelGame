@@ -13,7 +13,7 @@ namespace gui {
 class Mouse {
 public:
 
-  Mouse(graphics::GraphicsManager &graphicsManager);
+  explicit Mouse(graphics::GraphicsManager &graphicsManager);
 
   void update();
 

@@ -57,11 +57,10 @@ private:
 
   glm::vec3 m_location{0, 0, 0}; // The location of the camera
 
+  chunk::ChunkManager& m_chunkManager;
   FootStepSoundPlayer m_stepPlayer;
-
   graphics::GraphicsManager &m_graphicsManager;
 
-  chunk::ChunkManager& m_chunkManager;
 
   float m_width{0.8};
   float m_height{1.7};

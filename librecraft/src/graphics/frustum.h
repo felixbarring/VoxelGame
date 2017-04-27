@@ -25,7 +25,7 @@ using glm::sqrt;
 class Frustum {
 public:
 
-    Frustum(glm::mat4 mvp) {
+    explicit Frustum(glm::mat4 mvp) {
         // See http://web.archive.org/web/20120531231005/http://crazyjoke.free.fr/doc/3D/plane%20extraction.pdf
         // and https://github.com/danhedron/openrw/blob/master/rwengine/src/render/ViewFrustum.hpp
 
@@ -44,7 +44,7 @@ public:
         }
     }
 
-    virtual ~Frustum() {};
+    virtual ~Frustum() = default;
 
     bool isSphereInFrustum(glm::vec3 center, float radius) {
         for (size_t i = 0; i < 6; ++i) {

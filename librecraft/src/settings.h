@@ -28,6 +28,7 @@ public:
    * @param parent The parent widget group. Will be set as the active widget
    *               group when the user is done with the settings
    * @param soundPlayer Needed to play sounds when GUI events occurs.
+   * @param graphicsManager Needed for drawing 2d and 3d graphics.
    */
   Settings(std::shared_ptr<widget::WidgetGroup>& active,
            std::shared_ptr<widget::WidgetGroup>& parent,
@@ -35,20 +36,9 @@ public:
            graphics::GraphicsManager &graphicsManager);
 
   /**
-   * @brief Updates the settings
-   *
-   * All the internal logic for handling the settings will be handled here.
-   *
-   * @param timePassed The amount of time that has passed since the last frame.
-   */
-  void update(double timePassed);
-
-  /**
    * @return The main widget group / the entry point of the settings.
    */
-  std::shared_ptr<widget::WidgetGroup> getMainWidgetGroup() {
-    return m_settingsWidgetGroup;
-  }
+  std::shared_ptr<widget::WidgetGroup> getMainWidgetGroup() const;
 
 private:
 

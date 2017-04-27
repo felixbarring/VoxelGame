@@ -302,11 +302,12 @@ private:
 
 	bool isInDirectSunlight(int x, int y, int z);
 
-	graphics::GraphicsManager &m_graphicsManager;
-
 	const int m_xLocation;
 	const int m_zLocation;
-	bool m_isDirty;
+
+	graphics::GraphicsManager &m_graphicsManager;
+
+	bool m_isDirty{true};
 
 	std::string m_name{};
 

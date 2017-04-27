@@ -14,15 +14,31 @@
 #include "model/world/chunk/creationOptions.h"
 #include "util/soundPlayer.h"
 
+/**
+ *
+ */
 class Game {
 public:
 
+  /**
+   *
+   */
   void run();
 
+  /**
+   *
+   * @param options
+   */
   void createWorld(chunk::CreationOptions options);
 
+  /**
+   *
+   */
   void changeStateToMainMenu();
 
+  /**
+   *
+   */
   void quitGame();
 
 private:
@@ -40,6 +56,8 @@ private:
 
   bool m_changeStateToIngame{false};
   bool m_quit{false};
+
+  int kek;
 };
 
 #endif /* SRC_GAME_H_ */

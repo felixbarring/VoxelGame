@@ -7,7 +7,7 @@
 namespace gui {
 
 Image::Image(double x, double y, double width, double height,
-    const std::string image, graphics::GraphicsManager &graphicsManager)
+    const std::string &image, graphics::GraphicsManager &graphicsManager)
   : m_graphicsManager{graphicsManager}
 {
   m_sprite.reset(new graphics::Sprite{x, y, 0, width, height,

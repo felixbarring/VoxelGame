@@ -38,6 +38,7 @@ public:
    *             be called when changing state to ingame.
    * @param soundPlayer The soundplayer that will be used to play sounds on
    *                    various GUI events.
+   * @param graphicsManager Needed for drawing 2d and 3d graphics.
    */
   MainMenu(Game &game, util::SoundPlayer& soundPlayer,
       graphics::GraphicsManager &graphicsManager);

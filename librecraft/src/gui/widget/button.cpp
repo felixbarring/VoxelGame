@@ -22,8 +22,8 @@ Button::Button(int id, int x, int y, int width, int height,
 )
   : AbstractWidget(id, x, y, width, height, graphicsManager)
   , m_name(name)
+  , m_observer{observer}
 {
-  this->m_observer = observer;
   auto &res = Resources::getInstance();
 
   m_sprite.reset(new Sprite(x, y, layer, width, height,
@@ -38,7 +38,6 @@ Button::Button(int id, int x, int y, int width, int height,
   m_text.reset(new Sprite(x, y + 5, layer + 1,
       fontMeshBuilder.buldMeshForString(name, height - 5),
       res.getTexture(config::font_data::font)));
-
 }
 
 std::string Button::getName() {
@@ -63,9 +62,8 @@ void Button::update(float) {
 
   m_pointerInsideBorders = isInsideBorders(input->mouseVirtualAdjustedX,
       input->mouseVirtualAdjustedY);
-  if (m_pointerInsideBorders && input->action1Pressed) {
+  if (m_pointerInsideBorders && input->action1Pressed)
     trigger();
-  }
 }
 
 void Button::trigger() {
