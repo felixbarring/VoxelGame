@@ -49,8 +49,8 @@ class LoadingScreen {
 public:
 
   LoadingScreen(FPSManager &fpsManager, sf::Window *window)
-      : m_fpsManager(fpsManager)
-      , m_window(window)
+    : m_fpsManager(fpsManager)
+    , m_window(window)
   {
     auto &res = Resources::getInstance();
     FontMeshBuilder &fontMeshBuilder = res.getFontMeshBuilder(
@@ -110,6 +110,9 @@ private:
 void Game::run() {
   check_system::checkStuff();
 
+  config::graphics_data::windowWidth = sf::VideoMode::getDesktopMode().width;
+  config::graphics_data::windowHeight = sf::VideoMode::getDesktopMode().height;
+
   const int width = config::graphics_data::windowWidth;
   const int height = config::graphics_data::windowHeight;
 
@@ -124,8 +127,8 @@ void Game::run() {
   settings.minorVersion = 1;
 
   string windowTitle = "Voxel Game";
-  window = new sf::Window{sf::VideoMode(width, height), windowTitle,
-      sf::Style::Default, settings};
+  window = new sf::Window{sf::VideoMode::getDesktopMode(), windowTitle,
+      sf::Style::Fullscreen, settings};
 
   window->setMouseCursorVisible(false);
 

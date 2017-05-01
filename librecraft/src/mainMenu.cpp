@@ -17,7 +17,7 @@ using namespace widget;
 using namespace gui;
 
 MainMenu::MainMenu(Game &game, SoundPlayer &soundPlayer)
-  : m_game(&game)
+  : m_game{game}
   , m_soundPlayer(soundPlayer)
   , m_settings{m_activeWidgetGroup, m_mainWidgetGroup, m_soundPlayer}
 {
@@ -47,7 +47,7 @@ MainMenu::MainMenu(Game &game, SoundPlayer &soundPlayer)
       switch(id) {
         case 0: m_activeWidgetGroup = m_playWidgetGroup; break;
         case 1: m_activeWidgetGroup = m_settings.getMainWidgetGroup(); break;
-        case 2: m_game->quitGame(); break;
+        case 2: m_game.quitGame(); break;
       }
     };
 
@@ -101,7 +101,7 @@ MainMenu::MainMenu(Game &game, SoundPlayer &soundPlayer)
             if (!world_meta::worldNameExists(name)) {
               world_meta::addName(name);
               m_options.setName(name);
-              m_game->createWorld(m_options);
+              m_game.createWorld(m_options);
 
               m_soundPlayer.stopMusic();
 
@@ -225,7 +225,7 @@ MainMenu::MainMenu(Game &game, SoundPlayer &soundPlayer)
             // TODO The options need to be the same as when the map was created.
             // TODO Implement so its possible to save and load options for a map.
 
-            m_game->createWorld(m_options);
+            m_game.createWorld(m_options);
             m_soundPlayer.stopMusic();
             m_activeWidgetGroup = m_mainWidgetGroup;
             m_worldList->reset();

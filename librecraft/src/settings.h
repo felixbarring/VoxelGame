@@ -23,9 +23,11 @@ public:
    * @brief Creates an instance of this class.
    *
    * @param active The active widget group that the user is responsible to call
-   *               update and draw on.
+   *               update and draw on. This class logic can changed what the
+   *               active WidgetGroup is.
    * @param parent The parent widget group. Will be set as the active widget
-   *               group when the user is done with the settings
+   *               group when the user is done with the settings in order to
+   *               return the control to the user.
    * @param soundPlayer Needed to play sounds when GUI events occurs.
    */
   Settings(std::shared_ptr<widget::WidgetGroup>& active,
@@ -44,16 +46,14 @@ public:
   /**
    * @return The main widget group / the entry point of the settings.
    */
-  std::shared_ptr<widget::WidgetGroup> getMainWidgetGroup() {
-    return m_settingsWidgetGroup;
-  }
+  std::shared_ptr<widget::WidgetGroup> getMainWidgetGroup();
 
 private:
 
   util::SoundPlayer &m_soundPlayer;
 
-  std::shared_ptr<widget::WidgetGroup>& m_activeWidgetGroup;
-  std::shared_ptr<widget::WidgetGroup>& m_parentWidgetGroup;
+  std::shared_ptr<widget::WidgetGroup> &m_activeWidgetGroup;
+  std::shared_ptr<widget::WidgetGroup> &m_parentWidgetGroup;
 
   std::shared_ptr<widget::WidgetGroup> m_settingsWidgetGroup{};
 
@@ -77,7 +77,6 @@ private:
 
   std::shared_ptr<widget::Slider> m_soundVolumeSlider{};
   std::shared_ptr<widget::TextInput> m_soundVolumeInput{};
-
 
   std::shared_ptr<widget::TextInput> m_fovTextInput{};
   std::shared_ptr<widget::TextInput> m_renderDistanceInput{};

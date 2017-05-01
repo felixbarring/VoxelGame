@@ -186,8 +186,7 @@ Settings::Settings(
 
    auto label1 = make_shared<Label>(325, 390, 150, 30, " - Audio - ");
 
-   auto label2 = make_shared<Label>(230, 310, 80, 20, "Master Volume:",
-       1);
+   auto label2 = make_shared<Label>(230, 310, 80, 20, "Master Volume:", 1);
    m_masterVolumeSlider = make_shared<Slider>(2, 325, 310, 150, 30, observer,
        1);
    m_masterVolumeSlider->setValue(m_soundPlayer.getMasterVolume());
@@ -224,5 +223,9 @@ Settings::Settings(
 
 void Settings::update(double timePassed) {
   m_activeWidgetGroup->update(timePassed);
+}
+
+shared_ptr<WidgetGroup> Settings::getMainWidgetGroup() {
+  return m_settingsWidgetGroup;
 }
 

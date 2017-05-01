@@ -25,7 +25,7 @@
  *
  * Extends the game state interface. The update function will update the
  * internal logic of the main menu. Logic involves changing settings, creating
- * new worlds and loading existin ones.
+ * new worlds, loading existing ones and quitting the game.
  */
 class MainMenu : public IGameState {
 public:
@@ -44,7 +44,7 @@ public:
 
 private:
 
-  Game *m_game;
+  Game &m_game;
   glm::mat4 m_virtualProjection{};
   gui::Mouse m_mouse{};
 

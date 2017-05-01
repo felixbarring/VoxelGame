@@ -284,8 +284,8 @@ void InGame::update(double timePassed) {
     vec3 ses = m_player.getLastSelectedCube();
     string soos = "Last Selected: " + to_string(ses.x) + ", " + to_string(ses.y)
         + ", " + to_string(ses.z);
-    m_lastSelecteCube.reset(
-        new Sprite(0, 70, 10, fontMeshBuilder.buldMeshForString(soos, 20),
+    m_lastSelecteCube.reset(new Sprite(0, 70, 10,
+        fontMeshBuilder.buldMeshForString(soos, 20),
             res.getTexture(config::font_data::font)));
 
     GraphicsManager::getInstance().getSpriteBatcher().addBatch(
@@ -308,9 +308,9 @@ void InGame::update(double timePassed) {
 
   m_chunkManager.update();
 
-  if (true /*|| m_timeCycle.getStarStrenght() > 0.0*/) {
+  if (m_timeCycle.getStarStrenght() > 0.0) {
     // Changes so that the rotation dose not get to fast.
-    const float valModifier = 0.015;
+    static const float valModifier = 0.015;
     GraphicsManager::getInstance().getSkyMap().setRotationValue(
         valModifier * m_timeCycle.getTime());
     GraphicsManager::getInstance().getSkyMap().draw(
