@@ -11,7 +11,7 @@ namespace util {
 class FPSManager {
 public:
 
-  FPSManager(int maxFPS);
+  explicit FPSManager(int maxFPS);
 
   void frameStart();
 

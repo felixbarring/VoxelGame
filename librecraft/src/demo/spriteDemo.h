@@ -36,65 +36,67 @@ namespace demo {
 class SpriteDemo : public IDemo  {
 public:
 
-	void runDemo() override	{
+void runDemo() override	{
 
-	    util::FPSManager fpsManager(60);
-	    const GLuint WIDTH = 800, HEIGHT = 600;
+  util::FPSManager fpsManager(60);
+  const GLuint WIDTH = 800, HEIGHT = 600;
 
-	    config::graphics_data::windowWidth = WIDTH;
-	    config::graphics_data::windowHeight = HEIGHT;
+  config::graphics_data::windowWidth = WIDTH;
+  config::graphics_data::windowHeight = HEIGHT;
 
-	    // create the window
-	    ContextSettings settings;
-	    settings.depthBits = 24;
-	    settings.stencilBits = 8;
-	    settings.antialiasingLevel = 4;
-	    settings.majorVersion = 3;
-	    settings.minorVersion = 1;
+  // create the window
+  ContextSettings settings;
+  settings.depthBits = 24;
+  settings.stencilBits = 8;
+  settings.antialiasingLevel = 4;
+  settings.majorVersion = 3;
+  settings.minorVersion = 1;
 
-	    Window window(VideoMode(800, 600), "Voxel Game", Style::Default,
-	            settings);
+  Window window(VideoMode(800, 600), "Voxel Game", Style::Default,
+          settings);
 
-	    glewExperimental = true;
-	    if (glewInit() != GLEW_OK) {
-	        std::cout << "Failed to initialize GLEW\n";
-	    }
+  glewExperimental = true;
+  if (glewInit() != GLEW_OK) {
+    std::cout << "Failed to initialize GLEW\n";
+  }
 
-	    glViewport(0, 0, WIDTH, HEIGHT);
-	    glClearColor(0.2f, 0.22f, 0.2f, 1.0f);
+  glViewport(0, 0, WIDTH, HEIGHT);
+  glClearColor(0.2f, 0.22f, 0.2f, 1.0f);
 
-	    std::shared_ptr<graphics::Sprite> sprite(new graphics::Sprite{
-	        200, 200, 0, 200, 200, graphics::Resources::getInstance().getTexture(
-	                config::texture_paths::scout)});
-	    std::shared_ptr<graphics::Sprite> sprite2(new graphics::Sprite{
-	        300, 300, 0, 200, 200, graphics::Resources::getInstance().getTexture(
-	                config::texture_paths::scout)});
-	    std::shared_ptr<graphics::Sprite> sprite3(new graphics::Sprite{
-	        600, 200, 0, 200, 200, graphics::Resources::getInstance().getTexture(
-	                config::texture_paths::scout)});
+  std::shared_ptr<graphics::Sprite> sprite(new graphics::Sprite{
+      200, 200, 0, 200, 200, graphics::Resources::getInstance().getTexture(
+              config::texture_paths::scout)});
+  std::shared_ptr<graphics::Sprite> sprite2(new graphics::Sprite{
+      300, 300, 0, 200, 200, graphics::Resources::getInstance().getTexture(
+              config::texture_paths::scout)});
+  std::shared_ptr<graphics::Sprite> sprite3(new graphics::Sprite{
+      600, 200, 0, 200, 200, graphics::Resources::getInstance().getTexture(
+              config::texture_paths::scout)});
 
-	    while (window.isOpen()) {
+  graphics::GraphicsManager graphicsmanager{};
 
-	        fpsManager.frameStart();
+  while (window.isOpen()) {
 
-	        glClear(GL_COLOR_BUFFER_BIT);
+    fpsManager.frameStart();
 
-            graphics::GraphicsManager::getInstance().getSpriteBatcher().addBatch(sprite);
-	        graphics::GraphicsManager::getInstance().getSpriteBatcher().addBatch(sprite2);
-	        graphics::GraphicsManager::getInstance().getSpriteBatcher().addBatch(sprite3);
+    glClear(GL_COLOR_BUFFER_BIT);
 
-	        graphics::GraphicsManager::getInstance().getSpriteBatcher().draw();
+    graphicsmanager.getSpriteBatcher().addBatch(sprite);
+    graphicsmanager.getSpriteBatcher().addBatch(sprite2);
+    graphicsmanager.getSpriteBatcher().addBatch(sprite3);
 
-	        fpsManager.sync();
-	        window.display();
+    graphicsmanager.getSpriteBatcher().draw();
 
-	        sf::Event event;
-	        while (window.pollEvent(event))
-	            if (event.type == sf::Event::Closed)
-	                window.close();
-	    }
+    fpsManager.sync();
+    window.display();
 
-	}
+    sf::Event event;
+    while (window.pollEvent(event))
+      if (event.type == sf::Event::Closed)
+        window.close();
+  }
+
+}
 
 };
 

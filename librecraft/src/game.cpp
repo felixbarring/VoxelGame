@@ -48,9 +48,11 @@ using namespace util;
 class LoadingScreen {
 public:
 
-  LoadingScreen(FPSManager &fpsManager, sf::Window *window)
-    : m_fpsManager(fpsManager)
-    , m_window(window)
+  LoadingScreen(FPSManager &fpsManager, sf::Window *window,
+      graphics::GraphicsManager &graphicsManager)
+      : m_fpsManager(fpsManager)
+      , m_window(window)
+      , m_graphicsManager{graphicsManager}
   {
     auto &res = Resources::getInstance();
     FontMeshBuilder &fontMeshBuilder = res.getFontMeshBuilder(
@@ -87,9 +89,9 @@ public:
         m_spriteCounter = 0;
     }
 
-    GraphicsManager::getInstance().getSpriteBatcher().addBatch(
+    m_graphicsManager.getSpriteBatcher().addBatch(
         m_sprites[m_spriteCounter]);
-    GraphicsManager::getInstance().getSpriteBatcher().draw();
+    m_graphicsManager.getSpriteBatcher().draw();
 
     m_fpsManager.sync();
     m_frameTime += m_fpsManager.frameTime();
@@ -100,6 +102,8 @@ private:
   vector<shared_ptr<Sprite>> m_sprites{};
   FPSManager &m_fpsManager;
   sf::Window *m_window;
+
+  graphics::GraphicsManager &m_graphicsManager;
 
   unsigned m_spriteCounter{0};
   const double m_timePerFrame{0.2};
@@ -144,13 +148,12 @@ void Game::run() {
   // TODO No opengl outside graphics!
   glViewport(0, 0, width, height);
 
-  m_mainMenu.reset(new MainMenu(*this, m_soundPlayer));
-  changeStateToMainMenu();
+  // TODO PUT THE ABOVE SHIT IN THE GRAPHICS MANAGER?!?
 
-  // TODO No more singletons!
-  // TODO Load all singletons somewhere else?!?
-  // Done here on the main thread to avoid thread issues.
-  graphics::GraphicsManager::getInstance();
+  m_graphicsmanager = make_unique<graphics::GraphicsManager>();
+
+  m_mainMenu.reset(new MainMenu(*this, m_soundPlayer, *m_graphicsmanager));
+  changeStateToMainMenu();
 
   // Run the main loop
   while (!m_quit && window->isOpen()) {
@@ -168,20 +171,23 @@ void Game::run() {
 
 void Game::createWorld(chunk::CreationOptions options) {
 
-  chunk::ChunkManager chunkManager{options, m_soundPlayer};
+  kek++;
+
+  chunk::ChunkManager chunkManager{options, m_soundPlayer, *m_graphicsmanager};
 
   auto future = globalResources::g_threadPool.enqueue([options, &chunkManager]
   {
     chunkManager.createWorld();
   });
 
-  LoadingScreen loadingScreen(m_fpsManager, window);
+  LoadingScreen loadingScreen(m_fpsManager, window, *m_graphicsmanager);
 
   std::chrono::milliseconds span{0};
   while (future.wait_for(span) != future_status::ready)
     loadingScreen.update();
 
-  m_inGame.reset(new InGame(*this, move(chunkManager), m_soundPlayer));
+  m_inGame.reset(new InGame(*this, move(chunkManager), m_soundPlayer,
+      *m_graphicsmanager));
 
   m_currentState = m_inGame;
   m_soundPlayer.stopMusic();

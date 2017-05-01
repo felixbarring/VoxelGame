@@ -4,8 +4,10 @@
 
 namespace widget {
 
-AbstractWidget::AbstractWidget(int id, int x, int y, int width, int height)
-  : m_id{id}
+AbstractWidget::AbstractWidget(int id, int x, int y, int width, int height,
+    graphics::GraphicsManager &graphicsManager)
+  : m_graphicsManager{graphicsManager}
+  , m_id{id}
   , m_xCoordinate{x}
   , m_yCoordinate{y}
   , m_width{width}

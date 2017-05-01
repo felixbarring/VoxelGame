@@ -13,8 +13,9 @@ using namespace graphics;
 namespace widget {
 
 WidgetGroup::WidgetGroup(int id, int x, int y, int width, int height,
-    unsigned layer, bool transparentBackground)
-    : AbstractWidget(id, x, y, width, height)
+    graphics::GraphicsManager &graphicsManager, unsigned layer,
+    bool transparentBackground)
+    : AbstractWidget(id, x, y, width, height, graphicsManager)
 {
   if (transparentBackground) {
     m_sprite.reset(
@@ -39,7 +40,7 @@ void WidgetGroup::addWidget(std::vector<shared_ptr<IWidget>> widgets) {
 }
 
 void WidgetGroup::draw() {
-  GraphicsManager::getInstance().getSpriteBatcher().addBatch(m_sprite);
+  m_graphicsManager.getSpriteBatcher().addBatch(m_sprite);
   for (auto widget : m_widgets)
     widget->draw();
 }

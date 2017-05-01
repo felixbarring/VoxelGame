@@ -65,7 +65,7 @@ void SpriteBatcher::draw() {
   glDisable(GL_DEPTH_TEST);
 
   sort(m_batches.begin(), m_batches.end(),
-  [](shared_ptr<Sprite> a, shared_ptr<Sprite> b) -> bool
+  [](shared_ptr<Sprite> a, shared_ptr<Sprite> b)
   {
     return a->getLayer() < b->getLayer();
   });

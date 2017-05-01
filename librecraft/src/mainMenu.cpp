@@ -16,10 +16,14 @@ using namespace std;
 using namespace widget;
 using namespace gui;
 
-MainMenu::MainMenu(Game &game, SoundPlayer &soundPlayer)
-  : m_game{game}
+MainMenu::MainMenu(Game &game, SoundPlayer &soundPlayer,
+    graphics::GraphicsManager &graphicsManager)
+  : m_game(game)
   , m_soundPlayer(soundPlayer)
-  , m_settings{m_activeWidgetGroup, m_mainWidgetGroup, m_soundPlayer}
+  , m_graphicsManager(graphicsManager)
+  , m_mouse{m_graphicsManager}
+  , m_settings{m_activeWidgetGroup, m_mainWidgetGroup, m_soundPlayer,
+    m_graphicsManager}
 {
 
   glm::mat4 matrix = gui::createVirtualToScreen(
@@ -32,11 +36,13 @@ MainMenu::MainMenu(Game &game, SoundPlayer &soundPlayer)
       static_cast<float>(config::graphics_data::windowHeight), -1.0f, 1.0f)
       * matrix;
 
-  graphics::GraphicsManager::getInstance().getSpriteBatcher().setProjection(
+
+
+  m_graphicsManager.getSpriteBatcher().setProjection(
       m_virtualProjection);
 
   m_title = make_unique<gui::Image>(200, 450, 400, 100,
-      config::gui_data::title);
+      config::gui_data::title, m_graphicsManager);
 
   // ########################################################################
 
@@ -51,13 +57,17 @@ MainMenu::MainMenu(Game &game, SoundPlayer &soundPlayer)
       }
     };
 
-    auto label = make_shared<Label>(325, 390, 150, 30, " - Main - ");
-    auto button1 = make_shared<Button>(0, 325, 350, 150, 30, observer, "Play");
-    auto button2 = make_shared<Button>(1, 325, 310, 150, 30, observer,
-        "Settings");
-    auto button3 = make_shared<Button>(2, 325, 270, 150, 30, observer, "Quit");
+    auto label = make_shared<Label>(325, 390, 150, 30, " - Main - ",
+        m_graphicsManager);
+    auto button1 = make_shared<Button>(0, 325, 350, 150, 30, m_graphicsManager,
+        observer, "Play");
+    auto button2 = make_shared<Button>(1, 325, 310, 150, 30, m_graphicsManager,
+        observer, "Settings");
+    auto button3 = make_shared<Button>(2, 325, 270, 150, 30, m_graphicsManager,
+        observer, "Quit");
 
-    m_mainWidgetGroup = make_shared<WidgetGroup>(-1, 300, 260, 200, 130);
+    m_mainWidgetGroup = make_shared<WidgetGroup>(-1, 300, 260, 200, 130,
+        m_graphicsManager);
     m_mainWidgetGroup->addWidget({label, button1, button2, button3});
   }
 
@@ -73,14 +83,17 @@ MainMenu::MainMenu(Game &game, SoundPlayer &soundPlayer)
       }
     };
 
-    auto label = make_shared<Label>(325, 390, 150, 30, " - Play - ");
-    auto button1 = make_shared<Button>(0, 325, 350, 150, 30, observer,
-        "New World");
-    auto button2 = make_shared<Button>(1, 325, 310, 150, 30, observer,
-        "Load World");
-    auto button3 = make_shared<Button>(2, 325, 270, 150, 30, observer, "Back");
+    auto label = make_shared<Label>(325, 390, 150, 30, " - Play - ",
+        m_graphicsManager);
+    auto button1 = make_shared<Button>(0, 325, 350, 150, 30, m_graphicsManager,
+        observer, "New World");
+    auto button2 = make_shared<Button>(1, 325, 310, 150, 30, m_graphicsManager,
+        observer, "Load World");
+    auto button3 = make_shared<Button>(2, 325, 270, 150, 30, m_graphicsManager,
+        observer, "Back");
 
-    m_playWidgetGroup = make_shared<WidgetGroup>(-1, 300, 260, 200, 130);
+    m_playWidgetGroup = make_shared<WidgetGroup>(-1, 300, 260, 200, 130,
+        m_graphicsManager);
 
     m_playWidgetGroup->addWidget({label, button1, button2, button3});
   }
@@ -124,21 +137,24 @@ MainMenu::MainMenu(Game &game, SoundPlayer &soundPlayer)
     };
 
     auto label1 = make_shared<Label>(230, 390, 150, 50,
-        " - Create New World - ");
-    auto label2 = make_shared<Label>(250, 330, 150, 30, "Enter a Name:", 1);
+        " - Create New World - ", m_graphicsManager);
+    auto label2 = make_shared<Label>(250, 330, 150, 30, "Enter a Name:",
+        m_graphicsManager, 1);
 
-    m_textInput3 = make_shared<TextInput>(666, 250, 290, 300, 30, 1);
+    m_textInput3 = make_shared<TextInput>(666, 250, 290, 300, 30,
+        m_graphicsManager, 1);
 
-    auto button1 = make_shared<Button>(0, 240, 135, 100, 30, observer,
-        "Advanced", 1);
-    auto button2 = make_shared<Button>(1, 350, 135, 100, 30, observer, "Create",
-        1);
-    auto button3 = make_shared<Button>(2, 460, 135, 100, 30, observer, "Cancel",
-        1);
-    auto button4 = make_shared<Button>(3, 250, 250, 300, 30, observer,
-        "Random Name", 1);
+    auto button1 = make_shared<Button>(0, 240, 135, 100, 30, m_graphicsManager,
+        observer, "Advanced", 1);
+    auto button2 = make_shared<Button>(1, 350, 135, 100, 30, m_graphicsManager,
+        observer, "Create", 1);
+    auto button3 = make_shared<Button>(2, 460, 135, 100, 30, m_graphicsManager,
+        observer, "Cancel", 1);
+    auto button4 = make_shared<Button>(3, 250, 250, 300, 30, m_graphicsManager,
+        observer, "Random Name", 1);
 
-    m_newWorldWidgetGroup = make_shared<WidgetGroup>(0, 200, 120, 400, 270);
+    m_newWorldWidgetGroup = make_shared<WidgetGroup>(0, 200, 120, 400, 270,
+        m_graphicsManager);
 
     m_newWorldWidgetGroup->addWidget({label1, label2, m_textInput3, button1,
         button2, button3, button4});
@@ -179,27 +195,28 @@ MainMenu::MainMenu(Game &game, SoundPlayer &soundPlayer)
       }
     };
 
-    auto label1 = make_shared<Label>(230, 390, 150, 50, " - Advanced - ");
+    auto label1 = make_shared<Label>(230, 390, 150, 50, " - Advanced - ",
+        m_graphicsManager);
 
-    button1 = make_shared<ToggleButton>(0, 220, 350, 30, 30, observer, "Flat",
-        2, ToggleButton::Skin::ReadioButton);
-    button2 = make_shared<ToggleButton>(1, 220, 310, 30, 30, observer,
-        "Height Map", 2, ToggleButton::Skin::ReadioButton);
+    button1 = make_shared<ToggleButton>(0, 220, 350, 30, 30, m_graphicsManager,
+        observer, "Flat", 2, ToggleButton::Skin::ReadioButton);
+    button2 = make_shared<ToggleButton>(1, 220, 310, 30, 30, m_graphicsManager,
+        observer, "Height Map", 2, ToggleButton::Skin::ReadioButton);
     button2->toggle();
 
-    button3 = make_shared<ToggleButton>(2, 420, 350, 30, 30, observer, "Same",
-        2, ToggleButton::Skin::ReadioButton);
-    button4 = make_shared<ToggleButton>(3, 420, 310, 30, 30, observer,
-        "Different", 2, ToggleButton::Skin::ReadioButton);
+    button3 = make_shared<ToggleButton>(2, 420, 350, 30, 30, m_graphicsManager,
+        observer, "Same", 2, ToggleButton::Skin::ReadioButton);
+    button4 = make_shared<ToggleButton>(3, 420, 310, 30, 30, m_graphicsManager,
+        observer, "Different", 2, ToggleButton::Skin::ReadioButton);
     button4->toggle();
 
-    auto button5 = make_shared<Button>(4, 350, 135, 100, 30, observer, "Reset",
-        1);
-    auto button6 = make_shared<Button>(5, 460, 135, 100, 30, observer, "Back",
-        1);
+    auto button5 = make_shared<Button>(4, 350, 135, 100, 30, m_graphicsManager,
+        observer, "Reset", 1);
+    auto button6 = make_shared<Button>(5, 460, 135, 100, 30, m_graphicsManager,
+        observer, "Back", 1);
 
     m_newWorldWidgetGroupAdvanced = make_shared<WidgetGroup>(0, 200, 120, 400,
-        270);
+        270, m_graphicsManager);
 
     m_newWorldWidgetGroupAdvanced->addWidget({label1, button1, button2, button3,
         button4, button5, button6});
@@ -236,19 +253,22 @@ MainMenu::MainMenu(Game &game, SoundPlayer &soundPlayer)
       }
     };
 
-    auto label = make_shared<Label>(270, 390, 150, 50, " - Load World - ");
-    auto button1 = make_shared<Button>(0, 225, 60, 80, 30, observer, "Rename",
-        1);
-    auto button2 = make_shared<Button>(1, 315, 60, 80, 30, observer, "Delete",
-        1);
-    auto button3 = make_shared<Button>(2, 405, 60, 80, 30, observer, "Load", 1);
-    auto button4 = make_shared<Button>(3, 495, 60, 80, 30, observer, "Cancel",
-        1);
+    auto label = make_shared<Label>(270, 390, 150, 50, " - Load World - ",
+        m_graphicsManager);
+    auto button1 = make_shared<Button>(0, 225, 60, 80, 30, m_graphicsManager,
+        observer, "Rename", 1);
+    auto button2 = make_shared<Button>(1, 315, 60, 80, 30, m_graphicsManager,
+        observer, "Delete", 1);
+    auto button3 = make_shared<Button>(2, 405, 60, 80, 30, m_graphicsManager,
+        observer, "Load", 1);
+    auto button4 = make_shared<Button>(3, 495, 60, 80, 30, m_graphicsManager,
+        observer, "Cancel", 1);
 
-    m_loadWorldWidgetGroup = make_shared<WidgetGroup>(0, 200, 50, 400, 400);
+    m_loadWorldWidgetGroup = make_shared<WidgetGroup>(0, 200, 50, 400, 400,
+        m_graphicsManager);
 
-    m_worldList = make_shared<SelectableList>(666, 220, 100, 360, 300, observer,
-        2);
+    m_worldList = make_shared<SelectableList>(666, 220, 100, 360, 300,
+        m_graphicsManager, observer, 2);
 
     for (auto s : world_meta::getAllWorldNames())
       m_worldList->addListItem(s);
@@ -269,10 +289,12 @@ MainMenu::MainMenu(Game &game, SoundPlayer &soundPlayer)
     };
 
     auto label = make_shared<Label>(210, 260, 150, 25,
-        "Error: Name can not be empty", 4);
-    auto button = make_shared<Button>(1, 510, 260, 80, 30, observer, "OK", 4);
+        "Error: Name can not be empty", m_graphicsManager, 4);
+    auto button = make_shared<Button>(1, 510, 260, 80, 30, m_graphicsManager,
+        observer, "OK", 4);
 
-    m_errorEmptyName = make_shared<WidgetGroup>(0, 200, 250, 400, 45, 3);
+    m_errorEmptyName = make_shared<WidgetGroup>(0, 200, 250, 400, 45,
+        m_graphicsManager, 3);
 
     m_errorEmptyName->addWidget({label, button});
   }
@@ -289,10 +311,12 @@ MainMenu::MainMenu(Game &game, SoundPlayer &soundPlayer)
     };
 
     auto label = make_shared<Label>(210, 260, 150, 25,
-        "Error: Name is already used", 4);
-    auto button = make_shared<Button>(1, 510, 260, 80, 30, observer, "OK", 4);
+        "Error: Name is already used", m_graphicsManager, 4);
+    auto button = make_shared<Button>(1, 510, 260, 80, 30, m_graphicsManager,
+        observer, "OK", 4);
 
-    m_errorUsedName = make_shared<WidgetGroup>(0, 200, 250, 400, 45, 3);
+    m_errorUsedName = make_shared<WidgetGroup>(0, 200, 250, 400, 45,
+        m_graphicsManager, 3);
 
     m_errorUsedName->addWidget({label, button});
   }
@@ -316,8 +340,8 @@ void MainMenu::update(double timePassed) {
   m_activeWidgetGroup->update(timePassed);
   m_activeWidgetGroup->draw();
 
-  graphics::GraphicsManager::getInstance().clearScreen();
-  graphics::GraphicsManager::getInstance().getSpriteBatcher().draw();
+  m_graphicsManager.clearScreen();
+  m_graphicsManager.getSpriteBatcher().draw();
 }
 
 string randomName() {

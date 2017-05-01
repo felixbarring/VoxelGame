@@ -4,6 +4,7 @@
 #include <string>
 #include <memory>
 
+#include "../../graphics/graphicsManager.h"
 #include "abstractWidget.h"
 
 #include "../../graphics/sprite.h"
@@ -25,6 +26,7 @@ class Button: public AbstractWidget {
 public:
 
   Button(int id, int x, int y, int width, int height,
+      graphics::GraphicsManager &graphicsManager,
       std::function<void(int)> observer, std::string name, int layer = 0);
 
   virtual ~Button() = default;
@@ -48,10 +50,9 @@ public:
 
 protected:
 
-  std::function<void(int)> m_observer;
-
   bool m_pointerInsideBorders{false};
   std::string m_name;
+  std::function<void(int)> m_observer;
 
   std::shared_ptr<graphics::Sprite> m_sprite;
   std::shared_ptr<graphics::Sprite> m_highlight;

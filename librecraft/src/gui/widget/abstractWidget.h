@@ -6,8 +6,7 @@
 #include <memory>
 #include <iostream>
 
-#include "../../graphics/sprite.h"
-#include "../../graphics/spriteBatcher.h"
+#include "../../graphics/graphicsManager.h"
 
 namespace widget {
 
@@ -45,7 +44,8 @@ public:
 	 * \param height The height, that is, the vertical distance between the
 	 *                   bottom and top corners
 	 */
-	AbstractWidget(int id, int x, int y, int width, int height);
+	AbstractWidget(int id, int x, int y, int width, int height,
+	    graphics::GraphicsManager &graphicsManager);
 
 	virtual ~AbstractWidget() = default;
 
@@ -73,6 +73,8 @@ protected:
 	 *  \return True if the point is inside the borders, else false
 	 */
 	bool isInsideBorders(double x, double y);
+
+	graphics::GraphicsManager &m_graphicsManager;
 
 	bool m_active {true};
 	const int m_id;

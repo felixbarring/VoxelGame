@@ -19,8 +19,8 @@ ShaderProgram::ShaderProgram(
     const map<string, int> &attributes)
 {
   // Create the shaders
-  GLuint vertexID = createVertexShader(vertexSource.c_str());
-  GLuint fragmentID = createFragmentShader(fragmentSource.c_str());
+  GLuint vertexID = createVertexShader(vertexSource);
+  GLuint fragmentID = createFragmentShader(fragmentSource);
 
   programID = glCreateProgram();
 

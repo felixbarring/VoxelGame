@@ -40,9 +40,11 @@ public:
    *                     use before calling this constructor, and then moving
    *                     it in, giving the ownership to this instance.
    * @param soundPlayer The SoundPlayer that will be used to play sounds with.
+   * @param graphicsManager Needed for drawing 2d and 3d graphics.
    */
   InGame(Game &game, chunk::ChunkManager &&chunkManager,
-      util::SoundPlayer &soundPlayer);
+      util::SoundPlayer &soundPlayer,
+      graphics::GraphicsManager &graphicsManager);
 
   void update(double timePassed) override;
 
@@ -62,9 +64,10 @@ private:
   chunk::ChunkManager m_chunkManager;
   entity::Player m_player;
 
-  util::SoundPlayer& m_soundPlayer;
+  util::SoundPlayer &m_soundPlayer;
+  graphics::GraphicsManager &m_graphicsManager;
 
-  gui::Mouse m_mouse{};
+  gui::Mouse m_mouse;
 
   TimeCycle m_timeCycle;
 

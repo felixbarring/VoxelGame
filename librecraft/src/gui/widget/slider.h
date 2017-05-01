@@ -38,6 +38,7 @@ public:
    *              drawn with the layer value.
    */
   Slider(int id, int x, int y, int width, int height,
+      graphics::GraphicsManager &graphicsManager,
       std::function<void(int)> observer, int layer = 0);
 
   virtual ~Slider() = default;

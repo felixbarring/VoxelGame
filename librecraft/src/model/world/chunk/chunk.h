@@ -14,6 +14,7 @@
 #include "../../../config/data.h"
 #include "../../../util/voxel.h"
 #include "../../../graphics/graphicalChunk.h"
+#include "../../../graphics/graphicsManager.h"
 #include "creationOptions.h"
 
 using std::vector;
@@ -31,7 +32,8 @@ public:
 	 * @param x The x coordinate of the chunk
 	 * @param z The z coordinate of the chunk
 	 */
-	Chunk(std::string worldName, int x, int z);
+	Chunk(std::string worldName, int x, int z,
+	    graphics::GraphicsManager &graphicsManager);
 
 	/**
 	 * Makes sure that the graphics::GraphicalChunk used by this Chunk is
@@ -126,6 +128,7 @@ public:
 
 	///@}
 
+	// TODO Maybe should be called make dirty?
 	/**
 	 * Forces all the graphical sections to update even if they are not dirty.
 	 * Chunk::updateGraphics should be called after for it to have effect.
@@ -141,12 +144,16 @@ public:
 	/**
 	 * @return The x location of the Chunk
 	 */
-	int getXLocation() { return m_xLocation; }
+	int getXLocation() {
+	  return m_xLocation;
+	}
 
 	/**
 	 * @return The z location of the Chunk
 	 */
-	int getZLocation() { return m_zLocation; }
+	int getZLocation() {
+	  return m_zLocation;
+	}
 
 	/**
 	 * Returns a Voxel at the specified location.
@@ -182,45 +189,61 @@ public:
 	 * Sets the right neighbor of this Chunk
 	 * @param chunk The new right Chunk
 	 */
-	void setRightNeighbor(std::shared_ptr<Chunk> chunk) { m_rightNeighbor = chunk; }
+	void setRightNeighbor(std::shared_ptr<Chunk> chunk) {
+	  m_rightNeighbor = chunk;
+	}
 
 	/**
 	 * Sets the left neighbor of this Chunk
 	 * @param chunk The new left neighbor
 	 */
-	void setLeftNeighbor(std::shared_ptr<Chunk> chunk) { m_leftNeighbor = chunk; }
+	void setLeftNeighbor(std::shared_ptr<Chunk> chunk) {
+	  m_leftNeighbor = chunk;
+	}
 
 	/**
 	 * Sets the front neighbor of this Chunk
 	 * @param chunk The new front neighbor
 	 */
-	void setFrontNeighbor(std::shared_ptr<Chunk> chunk) { m_frontNeighbor = chunk; }
+	void setFrontNeighbor(std::shared_ptr<Chunk> chunk) {
+	  m_frontNeighbor = chunk;
+	}
 
 	/**
 	 * Sets the back neighbor of this Chunk
 	 * @param chunk The new back neighbor
 	 */
-	void setBackNeighbor(std::shared_ptr<Chunk> chunk) { m_backNeighbor = chunk; }
+	void setBackNeighbor(std::shared_ptr<Chunk> chunk) {
+	  m_backNeighbor = chunk;
+	}
 
 	/**
 	 * @return The right neighbor
 	 */
-	std::shared_ptr<Chunk> getRightNeighbor() { return m_rightNeighbor; }
+	std::shared_ptr<Chunk> getRightNeighbor() {
+	  return m_rightNeighbor;
+	}
 
 	/**
 	 * @return The left neighbor
 	 */
-	std::shared_ptr<Chunk> getLeftNeighbor() { return m_leftNeighbor; }
+	std::shared_ptr<Chunk> getLeftNeighbor() {
+	  return m_leftNeighbor;
+	}
 
 	/**
 	 * @return The front neighbor
 	 */
-	std::shared_ptr<Chunk> getFrontNeighbor() { return m_frontNeighbor; }
+	std::shared_ptr<Chunk> getFrontNeighbor() {
+	  return m_frontNeighbor;
+	}
 
 	/**
 	 * @return The back neighbor
 	 */
-	std::shared_ptr<Chunk> getBackNeighbor() { return m_backNeighbor; }
+	std::shared_ptr<Chunk> getBackNeighbor() {
+	  return m_backNeighbor;
+	}
 
 	/**
 	 * Used when a chunk should be removed from memory. Clears all pointers from
@@ -256,7 +279,7 @@ private:
 	void updateNeighborGraphics();
 
 	/**
-	 * \brief Computes the lightning of the row specified.
+	 * @brief Computes the lightning of the row specified.
 	 *
 	 * Only does the lightning for one row.
 	 *
@@ -281,7 +304,10 @@ private:
 
 	const int m_xLocation;
 	const int m_zLocation;
-	bool m_isDirty;
+
+	graphics::GraphicsManager &m_graphicsManager;
+
+	bool m_isDirty{true};
 
 	std::string m_name{};
 

@@ -7,14 +7,15 @@
 namespace gui {
 
 Image::Image(double x, double y, double width, double height,
-    const std::string image)
+    const std::string &image, graphics::GraphicsManager &graphicsManager)
+  : m_graphicsManager{graphicsManager}
 {
-  sprite.reset(new graphics::Sprite{x, y, 0, width, height,
+  m_sprite.reset(new graphics::Sprite{x, y, 0, width, height,
       graphics::Resources::getInstance().getTexture(image)});
 }
 
 void Image::draw() {
-  graphics::GraphicsManager::getInstance().getSpriteBatcher().addBatch(sprite);
+  m_graphicsManager.getSpriteBatcher().addBatch(m_sprite);
 }
 
 } /* namespace gui */

@@ -17,12 +17,10 @@ FootStepSoundPlayer::FootStepSoundPlayer(util::SoundPlayer &player,
 }
 
 void FootStepSoundPlayer::walkingActive(double time) {
-
   if ((m_accumulatedTime += time) <= m_footStepDelay)
     return;
 
   m_accumulatedTime -= m_footStepDelay;
-
   playSteppingSound();
 }
 

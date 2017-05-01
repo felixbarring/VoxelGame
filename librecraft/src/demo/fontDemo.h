@@ -66,6 +66,8 @@ public:
 	    std::shared_ptr<graphics::Sprite> sprite(
 	            new graphics::Sprite(0, 0, 0, mesh, fontAtlas));
 
+	    graphics::GraphicsManager graphicsManager{};
+
 	    while (window.isOpen()) {
 
 	        fpsManager.frameStart();
@@ -75,8 +77,8 @@ public:
 
 	        glClear(GL_COLOR_BUFFER_BIT);
 
-	        graphics::GraphicsManager::getInstance().getSpriteBatcher().addBatch(sprite);
-	        graphics::GraphicsManager::getInstance().getSpriteBatcher().draw();
+	        graphicsManager.getSpriteBatcher().addBatch(sprite);
+	        graphicsManager.getSpriteBatcher().draw();
 
 	        fpsManager.sync();
 

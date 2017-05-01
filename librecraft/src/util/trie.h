@@ -16,8 +16,9 @@ using namespace std;
 class Trie {
 public:
 
-  Trie() {
-    m_root = std::make_unique<TrieNode>('-', false);
+  Trie()
+    : m_root{std::make_unique<TrieNode>('-', false)}
+  {
   }
 
   /**
@@ -46,7 +47,7 @@ public:
   }
 
   /**
-   * Auto completes a string from the given value.
+   * @brief Auto completes a string from the given value.
    *
    * If there is no string added that starts with the value, an empty
    * string will be returned. If there are more than one string that starts

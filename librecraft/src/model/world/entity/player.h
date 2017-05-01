@@ -12,6 +12,7 @@
 #include "../../../graphics/transform.h"
 
 #include "../../../config/data.h"
+#include "../../../graphics/graphicsManager.h"
 #include "../chunk/chunkManager.h"
 #include "footStepSoundPlayer.h"
 
@@ -20,7 +21,8 @@ namespace entity {
 class Player: public IEntity {
 public:
 
-  Player(chunk::ChunkManager& chunkManager, util::SoundPlayer &soundPlayer);
+  Player(chunk::ChunkManager& chunkManager, util::SoundPlayer &soundPlayer,
+      graphics::GraphicsManager &graphicsManager);
 
   void update(float timePassed) override;
 
@@ -55,9 +57,10 @@ private:
 
   glm::vec3 m_location{0, 0, 0}; // The location of the camera
 
-  FootStepSoundPlayer m_stepPlayer;
-
   chunk::ChunkManager& m_chunkManager;
+  FootStepSoundPlayer m_stepPlayer;
+  graphics::GraphicsManager &m_graphicsManager;
+
 
   float m_width{0.8};
   float m_height{1.7};

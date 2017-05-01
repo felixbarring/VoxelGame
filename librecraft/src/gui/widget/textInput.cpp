@@ -21,8 +21,9 @@ using namespace font_data;
 namespace widget {
 
 TextInput::TextInput(int id, int x, int y, unsigned width, int height,
-    int layer)
-    : AbstractWidget(id, x, y, width, height), m_layer{layer}
+    graphics::GraphicsManager &graphicsManager, int layer)
+    : AbstractWidget(id, x, y, width, height, graphicsManager)
+    , m_layer{layer}
     , m_maxInputLength{width}
     , m_textHeight{height - s_textHightDifference}
 {
@@ -65,12 +66,12 @@ string TextInput::getString() {
 }
 
 void TextInput::draw() {
-  GraphicsManager::getInstance().getSpriteBatcher().addBatch(m_background);
+  m_graphicsManager.getSpriteBatcher().addBatch(m_background);
 
   if (m_cursorVissible && m_hasFocus)
-    GraphicsManager::getInstance().getSpriteBatcher().addBatch(m_cursor);
+    m_graphicsManager.getSpriteBatcher().addBatch(m_cursor);
 
-  GraphicsManager::getInstance().getSpriteBatcher().addBatch(m_text);
+  m_graphicsManager.getSpriteBatcher().addBatch(m_text);
 }
 
 void TextInput::update(float timePassed) {

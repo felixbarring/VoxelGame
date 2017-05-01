@@ -7,6 +7,7 @@
 #include <memory>
 
 #include "../../graphics/fontMeshBuilder.h"
+#include "../../graphics/graphicsManager.h"
 #include "../../graphics/sprite.h"
 
 namespace widget {
@@ -23,7 +24,8 @@ public:
    * @param height
    * @param layer
    */
-  TextInput(int id, int x, int y, unsigned width, int height, int layer = 0);
+  TextInput(int id, int x, int y, unsigned width, int height,
+      graphics::GraphicsManager &graphicsManager, int layer = 0);
 
   /**
    *

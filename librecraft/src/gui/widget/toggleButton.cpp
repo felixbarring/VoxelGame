@@ -15,8 +15,9 @@ using namespace graphics;
 namespace widget {
 
 ToggleButton::ToggleButton(int id, int x, int y, int width, int height,
+    graphics::GraphicsManager &graphicsManager,
     function<void(int)> observer, const string &name, int layer, Skin skin)
-    : Button(id, x, y, width, height, observer, name, layer)
+    : Button(id, x, y, width, height, graphicsManager, observer, name, layer)
     , m_skin{skin}
 {
   auto &res = Resources::getInstance();
@@ -76,12 +77,12 @@ void ToggleButton::setToggled() {
 }
 
 void ToggleButton::draw() {
-  GraphicsManager::getInstance().getSpriteBatcher().addBatch(
+  m_graphicsManager.getSpriteBatcher().addBatch(
       m_toggled ? m_spriteToggled : m_sprite);
-  GraphicsManager::getInstance().getSpriteBatcher().addBatch(m_text);
+  m_graphicsManager.getSpriteBatcher().addBatch(m_text);
 
   if (m_skin == Skin::Regular && m_pointerInsideBorders)
-    GraphicsManager::getInstance().getSpriteBatcher().addBatch(m_highlight);
+    m_graphicsManager.getSpriteBatcher().addBatch(m_highlight);
 }
 
 void ToggleButton::update(float) {

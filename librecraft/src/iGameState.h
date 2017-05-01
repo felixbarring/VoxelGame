@@ -4,7 +4,7 @@
 class IGameState {
 public:
 
-  virtual ~IGameState() {}
+  virtual ~IGameState() = default;
 
   virtual void update(double timePassed) = 0;
 

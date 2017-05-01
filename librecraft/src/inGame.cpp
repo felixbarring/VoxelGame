@@ -26,12 +26,16 @@ using namespace util;
 using namespace gui;
 
 InGame::InGame(Game &game, chunk::ChunkManager &&chunkManager,
-    util::SoundPlayer &soundPlayer)
+    util::SoundPlayer &soundPlayer,
+    graphics::GraphicsManager &graphicsManager)
   : m_game{&game}
   , m_chunkManager(move(chunkManager))
-  , m_player{m_chunkManager, soundPlayer}
+  , m_player{m_chunkManager, soundPlayer, graphicsManager}
   , m_soundPlayer(soundPlayer)
-  , m_settings{m_activeWidgetGroup, m_mainWidgetGroup, m_soundPlayer}
+  , m_graphicsManager{graphicsManager}
+  , m_mouse{m_graphicsManager}
+  , m_settings{m_activeWidgetGroup, m_mainWidgetGroup, m_soundPlayer,
+    graphicsManager}
 {
 
   // TODO Should be possible to save and load the player location.
@@ -67,14 +71,15 @@ InGame::InGame(Game &game, chunk::ChunkManager &&chunkManager,
     }
   };
 
-  shared_ptr<IWidget> button1(new Button{0, 325, 350, 150, 30, observer,
-      "Main Menu"});
-  shared_ptr<IWidget> button2(new Button{1, 325, 310, 150, 30, observer,
-      "Settings"});
-  shared_ptr<IWidget> button3(new Button{2, 325, 270, 150, 30, observer,
-      "Back To Game"});
+  shared_ptr<IWidget> button1(new Button{0, 325, 350, 150, 30,
+    m_graphicsManager, observer, "Main Menu"});
+  shared_ptr<IWidget> button2(new Button{1, 325, 310, 150, 30,
+    m_graphicsManager, observer, "Settings"});
+  shared_ptr<IWidget> button3(new Button{2, 325, 270, 150, 30,
+    m_graphicsManager, observer, "Back To Game"});
 
-  m_mainWidgetGroup.reset(new WidgetGroup{0, 300, 260, 200, 130});
+  m_mainWidgetGroup = make_shared<WidgetGroup>(0, 300, 260, 200, 130,
+      m_graphicsManager);
 
   m_mainWidgetGroup->addWidget(button1);
   m_mainWidgetGroup->addWidget(button2);
@@ -191,7 +196,7 @@ InGame::InGame(Game &game, chunk::ChunkManager &&chunkManager,
         m_terminal->addLine("Invalid arguments!");
         return;
       }
-      GraphicsManager::getInstance().getPlayerCamera().setFov(fov);
+      m_graphicsManager.getPlayerCamera().setFov(fov);
     } else if (command == setTimeSpeed) {
       if (arguments.size() < 2) {
         m_terminal->addLine("Too few arguments!");
@@ -211,7 +216,8 @@ InGame::InGame(Game &game, chunk::ChunkManager &&chunkManager,
     }
   };
 
-  m_terminal = make_shared<gui::Terminal>(move(commands), func);
+  m_terminal = make_shared<gui::Terminal>(move(commands), m_graphicsManager,
+      func);
 
   auto &res = Resources::getInstance();
   FontMeshBuilder &fontMeshBuilder = res.getFontMeshBuilder(
@@ -244,10 +250,10 @@ void InGame::update(double timePassed) {
     m_player.update(timePassed);
     m_timeCycle.update(timePassed);
 
-    graphics::GraphicsManager::getInstance().setSunStrength(
+    m_graphicsManager.setSunStrength(
         m_timeCycle.getSunStrenght());
 
-    GraphicsManager::getInstance().getSpriteBatcher().addBatch(m_crossHair);
+    m_graphicsManager.getSpriteBatcher().addBatch(m_crossHair);
 
     auto &res = Resources::getInstance();
     FontMeshBuilder &fontMeshBuilder = res.getFontMeshBuilder(
@@ -275,20 +281,20 @@ void InGame::update(double timePassed) {
         m_fpsDisplayCounter = 0;
       }
 
-      GraphicsManager::getInstance().getSpriteBatcher().addBatch(m_direction);
-      GraphicsManager::getInstance().getSpriteBatcher().addBatch(m_fps);
-      GraphicsManager::getInstance().getSpriteBatcher().addBatch(
+      m_graphicsManager.getSpriteBatcher().addBatch(m_direction);
+      m_graphicsManager.getSpriteBatcher().addBatch(m_fps);
+      m_graphicsManager.getSpriteBatcher().addBatch(
           m_lastSelecteCube);
     }
 
     vec3 ses = m_player.getLastSelectedCube();
     string soos = "Last Selected: " + to_string(ses.x) + ", " + to_string(ses.y)
         + ", " + to_string(ses.z);
-    m_lastSelecteCube.reset(new Sprite(0, 70, 10,
-        fontMeshBuilder.buldMeshForString(soos, 20),
+    m_lastSelecteCube.reset(
+        new Sprite(0, 70, 10, fontMeshBuilder.buldMeshForString(soos, 20),
             res.getTexture(config::font_data::font)));
 
-    GraphicsManager::getInstance().getSpriteBatcher().addBatch(
+    m_graphicsManager.getSpriteBatcher().addBatch(
         m_selectedCubeThumbnails[m_player.getBuildingCube()]);
 
   } else {
@@ -310,16 +316,16 @@ void InGame::update(double timePassed) {
 
   if (m_timeCycle.getStarStrenght() > 0.0) {
     // Changes so that the rotation dose not get to fast.
-    static const float valModifier = 0.015;
-    GraphicsManager::getInstance().getSkyMap().setRotationValue(
+    const float valModifier = 0.015;
+    m_graphicsManager.getSkyMap().setRotationValue(
         valModifier * m_timeCycle.getTime());
-    GraphicsManager::getInstance().getSkyMap().draw(
+    m_graphicsManager.getSkyMap().draw(
         m_timeCycle.getStarStrenght());
   }
 
-  GraphicsManager::getInstance().clearScreenSunDependent();
-  GraphicsManager::getInstance().getChunkBatcher().draw();
-  GraphicsManager::getInstance().getCubeBatcher().draw();
-  GraphicsManager::getInstance().getSpriteBatcher().draw();
+  m_graphicsManager.clearScreenSunDependent();
+  m_graphicsManager.getChunkBatcher().draw();
+  m_graphicsManager.getCubeBatcher().draw();
+  m_graphicsManager.getSpriteBatcher().draw();
 }
 

@@ -3,6 +3,8 @@
 
 #include <algorithm>
 #include <vector>
+
+#include "../../graphics/graphicsManager.h"
 #include "button.h"
 
 namespace widget {
@@ -26,6 +28,7 @@ public:
   };
 
   ToggleButton(int id, int x, int y, int width, int height,
+      graphics::GraphicsManager &graphicsManager,
       std::function<void(int)> observer, const std::string &name, int layer = 0,
       Skin skin = Skin::Regular);
 
