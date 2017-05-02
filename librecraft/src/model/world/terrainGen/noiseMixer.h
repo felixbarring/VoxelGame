@@ -12,15 +12,15 @@ public:
    * This will be used in the computeNoise function. For each noise added,
    * there parts will be summed together to produce the final result.
    *
-   * @param frequenzy
+   * @param frequency
    * @param amplitude
    */
-  void addNoise(float frequenzy, float amplitude) {
-    m_noises.push_back(Noise{frequenzy, amplitude});
+  void addNoise(float frequency, float amplitude) {
+    m_noises.push_back(Noise{frequency, amplitude});
   }
 
   /**
-   * Generates noise
+   * @brief Generates noise
    *
    * @param x
    * @param y
@@ -30,7 +30,7 @@ public:
     float value = 10;
     for (auto noise : m_noises) {
       value += noise.m_amplitude * (1.0f + glm::simplex(
-          glm::vec3(x / noise.m_frequenzy, z / noise.m_frequenzy, 0.5f)));
+          glm::vec3(x / noise.m_frequency, z / noise.m_frequency, 0.5f)));
     }
     return value;
   }
@@ -39,11 +39,11 @@ private:
 
   struct Noise {
     Noise(float freq, float amp)
-        : m_frequenzy(freq), m_amplitude(amp)
+      : m_frequency(freq), m_amplitude(amp)
     {
     }
 
-    float m_frequenzy;
+    float m_frequency;
     float m_amplitude;
   };
 

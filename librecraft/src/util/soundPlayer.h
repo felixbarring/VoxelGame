@@ -35,7 +35,7 @@ public:
    * housekeeping such as gradually change sound volume and remove sounds that
    * are no longer playing.
    *
-   * @param time
+   * @param time The time that has passed for the last frame.
    */
   void update(double time);
 

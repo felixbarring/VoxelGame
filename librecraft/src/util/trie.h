@@ -10,8 +10,8 @@ namespace util {
 using namespace std;
 
 /**
- * Trie class that supports adding strings and giving the best auto complete on
- * those string for a given sequence
+ * @brief Trie class that supports adding strings and giving the best auto
+ *        complete on those string for a given sequence.
  */
 class Trie {
 public:
@@ -22,7 +22,7 @@ public:
   }
 
   /**
-   * Adds a string that can be used to auto completed on
+   * Adds a string that can be used to auto completed on.
    *
    * @param value The string that will be added
    */
@@ -53,7 +53,7 @@ public:
    * string will be returned. If there are more than one string that starts
    * with the value, the longest common substring will be returned.
    *
-   * @param value The value that will be auto completed on
+   * @param value The value that will be auto completed on.
    * @return The best auto complete match, empty if there is no string that
    *         starts with the value. The longest common substring if there are
    *         more than one string that contains the value.

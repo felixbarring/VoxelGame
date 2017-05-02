@@ -7,38 +7,38 @@ class TimeCycle {
 public:
 
   /**
-   * \brief Updates the TimeCycle state.
+   * @brief Updates the TimeCycle state.
    *
    * @param timePassed The time change since the last call to this function.
    */
   void update(float timePassed);
 
   /**
-   * \brief Sets the time of the day.
+   * @brief Sets the time of the day.
    *
    * @param time The new time value.
    */
   void setTime(float time);
 
   /**
-   * \brief Returns the time value.
+   * @brief Returns the time value.
    *
    * @return The time value.
    */
   float getTime();
 
   /**
-   * \brief Stops the state changes when update is called.
+   * @brief Stops the state changes when update is called.
    */
   void stopCycle();
 
   /**
-   * \brief Reverts the stopCycle function.
+   * @brief Reverts the stopCycle function.
    */
   void resumeCycle();
 
   /**
-   * \brief Returns the sunlight strength that was computed in the update
+   * @brief Returns the sunlight strength that was computed in the update
    *        function.
    *
    * @return The sun strength in the range of (0, 1) where 0 means no light and
@@ -47,7 +47,7 @@ public:
   double getSunStrenght();
 
   /**
-   * \brief Returns the starlight strength that was computed in the update
+   * @brief Returns the starlight strength that was computed in the update
    *        function
    *
    * @return The star strength in the range of (0, 1) where 0 means no light and
@@ -56,7 +56,7 @@ public:
   double getStarStrenght();
 
   /**
-   * \brief Sets the speed in which the time increases.
+   * @brief Sets the speed in which the time increases.
    *
    * By default the value is 1. Setting the value to 2 will mean that the time
    * progress twice as fast as the default.

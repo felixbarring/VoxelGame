@@ -30,7 +30,7 @@ void Performance::stopTimer(unsigned id) {
 
 void Performance::clearData() {
   for_each(m_accumulatedTime.begin(), m_accumulatedTime.end(),
-      [](tuple<sf::Clock, double> &t) {get<1>(t) = 0;});
+      [](tuple<sf::Clock, double> &t) { get<1>(t) = 0; });
 }
 
 void Performance::loggData() {
