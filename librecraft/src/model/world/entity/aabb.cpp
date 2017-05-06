@@ -7,56 +7,56 @@ namespace entity {
 
 AABB::AABB(double xMinimum, double xMaximum, double yMinimum, double yMaximum,
     double zMinimum, double zMaximum)
-    : xMin{xMinimum}, xMax{xMaximum}, yMin{yMinimum}, yMax{yMaximum}, zMin{
-        zMinimum}, zMax{zMaximum} {
+    : m_xMin{xMinimum}, m_xMax{xMaximum}, m_yMin{yMinimum}, m_yMax{yMaximum}, m_zMin{
+        zMinimum}, m_zMax{zMaximum} {
 }
 
 void AABB::setBounds(double xMinimum, double xMaximum, double yMinimum,
     double yMaximum, double zMinimum, double zMaximum) {
 
-  xMin = xMinimum;
-  xMax = xMaximum;
-  yMin = yMinimum;
-  yMax = yMaximum;
-  zMin = zMinimum;
-  zMax = zMaximum;
+  m_xMin = xMinimum;
+  m_xMax = xMaximum;
+  m_yMin = yMinimum;
+  m_yMax = yMaximum;
+  m_zMin = zMinimum;
+  m_zMax = zMaximum;
 
 }
 
 bool AABB::intersects(const AABB &that) {
-  return ((this->xMin >= that.xMin && this->xMin <= that.xMax)
-      || (this->xMax >= that.xMin && this->xMax <= that.xMax))
-      && ((this->yMin >= that.yMin && this->yMin <= that.yMax)
-          || (this->yMax >= that.yMin && this->yMax <= that.yMax))
-      && ((this->zMin >= that.zMin && this->zMin <= that.zMax)
-          || (this->zMax >= that.zMin && this->zMax <= that.zMax));
+  return ((this->m_xMin >= that.m_xMin && this->m_xMin <= that.m_xMax)
+      || (this->m_xMax >= that.m_xMin && this->m_xMax <= that.m_xMax))
+      && ((this->m_yMin >= that.m_yMin && this->m_yMin <= that.m_yMax)
+          || (this->m_yMax >= that.m_yMin && this->m_yMax <= that.m_yMax))
+      && ((this->m_zMin >= that.m_zMin && this->m_zMin <= that.m_zMax)
+          || (this->m_zMax >= that.m_zMin && this->m_zMax <= that.m_zMax));
 }
 
 AABB AABB::getSweptBroadPhaseBox(AABB &box, glm::vec3 &velocity) {
   float xMin, xMax, yMin, yMax, zMin, zMax;
 
   if (velocity.x > 0.0f) {
-    xMin = box.xMin;
-    xMax = box.xMax + velocity.x;
+    xMin = box.m_xMin;
+    xMax = box.m_xMax + velocity.x;
   } else {
-    xMin = box.xMin + velocity.x;
-    xMax = box.xMax;
+    xMin = box.m_xMin + velocity.x;
+    xMax = box.m_xMax;
   }
 
   if (velocity.y > 0.0f) {
-    yMin = box.yMin;
-    yMax = box.yMax + velocity.y;
+    yMin = box.m_yMin;
+    yMax = box.m_yMax + velocity.y;
   } else {
-    yMin = box.yMin + velocity.y;
-    yMax = box.yMax;
+    yMin = box.m_yMin + velocity.y;
+    yMax = box.m_yMax;
   }
 
   if (velocity.z > 0.0f) {
-    zMin = box.zMin;
-    zMax = box.zMax + velocity.z;
+    zMin = box.m_zMin;
+    zMax = box.m_zMax + velocity.z;
   } else {
-    zMin = box.zMin + velocity.z;
-    zMax = box.zMax;
+    zMin = box.m_zMin + velocity.z;
+    zMax = box.m_zMax;
   }
 
   return AABB{xMin, xMax, yMin, yMax, zMin, zMax};
@@ -69,27 +69,27 @@ float AABB::collisionTime(AABB &box1, AABB &box2, glm::vec3 &collisionNormal,
   float xExitDistance, yExitDistance, zExitDistance;
 
   if (velocity.x > 0.0f) {
-    xEntryDistance = box2.xMin - box1.xMax;
-    xExitDistance = box2.xMax - box1.xMin;
+    xEntryDistance = box2.m_xMin - box1.m_xMax;
+    xExitDistance = box2.m_xMax - box1.m_xMin;
   } else {
-    xEntryDistance = box2.xMax - box1.xMin;
-    xExitDistance = box2.xMin - box1.xMax;
+    xEntryDistance = box2.m_xMax - box1.m_xMin;
+    xExitDistance = box2.m_xMin - box1.m_xMax;
   }
 
   if (velocity.y > 0.0f) {
-    yEntryDistance = box2.yMin - box1.yMax;
-    yExitDistance = box2.yMax - box1.yMin;
+    yEntryDistance = box2.m_yMin - box1.m_yMax;
+    yExitDistance = box2.m_yMax - box1.m_yMin;
   } else {
-    yEntryDistance = box2.yMax - box1.yMin;
-    yExitDistance = box2.yMin - box1.yMax;
+    yEntryDistance = box2.m_yMax - box1.m_yMin;
+    yExitDistance = box2.m_yMin - box1.m_yMax;
   }
 
   if (velocity.z > 0.0f) {
-    zEntryDistance = box2.zMin - box1.zMax;
-    zExitDistance = box2.zMax - box1.zMin;
+    zEntryDistance = box2.m_zMin - box1.m_zMax;
+    zExitDistance = box2.m_zMax - box1.m_zMin;
   } else {
-    zEntryDistance = box2.zMax - box1.zMin;
-    zExitDistance = box2.zMin - box1.zMax;
+    zEntryDistance = box2.m_zMax - box1.m_zMin;
+    zExitDistance = box2.m_zMin - box1.m_zMax;
   }
 
   float xEntryTime, yEntryTime, zEntryTime;

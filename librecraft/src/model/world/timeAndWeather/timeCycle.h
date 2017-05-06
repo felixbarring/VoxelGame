@@ -3,6 +3,12 @@
 
 #include <utility>
 
+/**
+ * @brief This class is responsible of controlling the logic concerning the
+ *        things that are affected by the time.
+ *
+ * Things that are affected by the time of day includes: sunStrength.
+ */
 class TimeCycle {
 public:
 

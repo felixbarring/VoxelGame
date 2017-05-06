@@ -28,7 +28,7 @@ using namespace gui;
 InGame::InGame(Game &game, chunk::ChunkManager &&chunkManager,
     util::SoundPlayer &soundPlayer,
     graphics::GraphicsManager &graphicsManager)
-  : m_game{&game}
+  : m_game{game}
   , m_chunkManager(move(chunkManager))
   , m_player{m_chunkManager, soundPlayer, graphicsManager}
   , m_soundPlayer(soundPlayer)
@@ -53,7 +53,7 @@ InGame::InGame(Game &game, chunk::ChunkManager &&chunkManager,
   {
     switch(id) {
       case 0: {
-        m_game->changeStateToMainMenu();
+        m_game.changeStateToMainMenu();
         m_state = GameState::NoOverlay;
         m_chunkManager.saveWorld();
         m_chunkManager.clearWorld();

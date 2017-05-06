@@ -237,13 +237,13 @@ void Player::intersected(vec3 movement,
 
   AABB box = AABB::getSweptBroadPhaseBox(start, movement);
 
-  int xStart = floor(box.xMin);
-  int yStart = floor(box.yMin);
-  int zStart = floor(box.zMin);
+  int xStart = floor(box.m_xMin);
+  int yStart = floor(box.m_yMin);
+  int zStart = floor(box.m_zMin);
 
-  int xEnd = floor(box.xMax);
-  int yEnd = floor(box.yMax);
-  int zEnd = floor(box.zMax);
+  int xEnd = floor(box.m_xMax);
+  int yEnd = floor(box.m_yMax);
+  int zEnd = floor(box.m_zMax);
 
   for (double i = xStart; i <= xEnd; ++i) {
     for (double j = yStart; j <= yEnd; ++j) {
@@ -270,13 +270,13 @@ bool Player::isInWater() {
   AABB box{m_location.x - 0.4, m_location.x + 0.4, m_location.y - 1.5,
       m_location.y + 0.1, m_location.z - 0.4, m_location.z + 0.4};
 
-  int xStart = floor(box.xMin);
-  int yStart = floor(box.yMin);
-  int zStart = floor(box.zMin);
+  int xStart = floor(box.m_xMin);
+  int yStart = floor(box.m_yMin);
+  int zStart = floor(box.m_zMin);
 
-  int xEnd = floor(box.xMax);
-  int yEnd = floor(box.yMax);
-  int zEnd = floor(box.zMax);
+  int xEnd = floor(box.m_xMax);
+  int yEnd = floor(box.m_yMax);
+  int zEnd = floor(box.m_zMax);
 
   for (int i = xStart; i <= xEnd; i++) {
     for (int j = yStart; j <= yEnd; j++) {

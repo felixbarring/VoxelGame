@@ -5,6 +5,9 @@
 
 namespace terrainGen {
 
+/**
+ *
+ */
 class NoiseMixer {
 public:
 

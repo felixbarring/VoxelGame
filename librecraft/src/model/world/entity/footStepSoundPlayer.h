@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "../../../util/soundPlayer.h"
+
 /**
  * @brief A class that is used to play foot step sounds.
  *

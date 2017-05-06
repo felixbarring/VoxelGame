@@ -58,7 +58,7 @@ public:
   static float collisionTime(AABB &box1, AABB &box2, glm::vec3 &collisionNormal,
       glm::vec3 &velocity);
 
-  double xMin, xMax, yMin, yMax, zMin, zMax;
+  double m_xMin, m_xMax, m_yMin, m_yMax, m_zMin, m_zMax;
 
 };
 
