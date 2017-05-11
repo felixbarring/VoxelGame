@@ -139,12 +139,12 @@ void Chunk::collectLightFromFrontNeighbor() {
 
 void Chunk::propagateLights() {
   for (auto l : m_lightsToPropagate)
-      propagateLight(l.x, l.y, l.z);
+    propagateLight(l.x, l.y, l.z);
 }
 
 void Chunk::forceUpdateGraphics() {
   for (int i = 0; i < CHUNK_HEIGHT / GRAPHICAL_CHUNK_HEIGHT; ++i)
-      m_dirtyRegions.emplace(i);
+    m_dirtyRegions.emplace(i);
 
   updateGraphics();
 }
@@ -179,7 +179,7 @@ void Chunk::updateGraphics(bool highPriority) {
 }
 
 Voxel Chunk::getVoxel(int x, int y, int z) {
-    return m_cubes[x][y][z];
+  return m_cubes[x][y][z];
 }
 
 void Chunk::setCube(int x, int y, int z, char id) {
@@ -219,13 +219,11 @@ void Chunk::removeAllNeighbors() {
   }
 }
 
-void Chunk::storeChunk(string worldName) {
+void Chunk::storeChunk() {
   if (!m_isDirty)
     return;
-  string fileName = config::dataFolder + worldName + "_" +
-      to_string(m_xLocation) + "_" + to_string(m_zLocation) + ".chunk";
 
-  ofstream outStream(fileName);
+  ofstream outStream(m_name);
   for (int x = 0; x < m_width; x++) {
     for (int y = 0; y < m_height; y++) {
       for (int z = 0; z < m_depth; z++) {

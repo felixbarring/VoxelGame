@@ -17,16 +17,15 @@ GraphicalChunk::GraphicalChunk(float _x, float _y, float _z,
     vector<vector<vector<Voxel>>> *right,
     vector<vector<vector<Voxel>>> *left,
     vector<vector<vector<Voxel>>> *back,
-    vector<vector<vector<Voxel>>> *front):
-
-        m_xLocation{_x},
-        m_yLocation{_y},
-        m_zLocation{_z},
-        transform {
-            _x + m_width / 2 + 0.5f,
-            _y + m_height / 2 + 0.5f,
-            _z + m_depth / 2 + 0.5f
-        }
+    vector<vector<vector<Voxel>>> *front)
+  : m_xLocation{_x}
+  , m_yLocation{_y}
+  , m_zLocation{_z}
+  , transform {
+      _x + m_width / 2 + 0.5f,
+      _y + m_height / 2 + 0.5f,
+      _z + m_depth / 2 + 0.5f
+    }
 {
 
     // The face data will be one bigger in each direction.
@@ -579,7 +578,7 @@ void GraphicalChunk::createMeshData(
     }
 }
 
-int AOFactor = 1;
+int AOFactor = 2;
 
 void GraphicalChunk::doAORight(CubeFaceData &cf, int x, int y, int z,
         std::vector<std::vector<std::vector<CubeFaceData>>> &faceData) {

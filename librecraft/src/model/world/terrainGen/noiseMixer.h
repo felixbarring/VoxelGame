@@ -13,7 +13,7 @@ public:
 
   /**
    * This will be used in the computeNoise function. For each noise added,
-   * there parts will be summed together to produce the final result.
+   * their parts will be summed together to produce the final result.
    *
    * @param frequency
    * @param amplitude

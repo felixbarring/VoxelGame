@@ -84,7 +84,7 @@ void ChunkManager::saveWorld() {
   const int lam = m_lenghtAcrossMatrix;
   for (int x = 0; x < lam; x++) {
     for (int z = 0; z < lam; z++) {
-      m_chunks[x][0][z]->storeChunk(m_worldName);
+      m_chunks[x][0][z]->storeChunk();
     }
   }
 }
@@ -328,6 +328,7 @@ void ChunkManager::moveChunksDown() {
   moveChunks(Direction::Down);
 }
 
+// TODO The thread safety needs to be improved and documented.
 void ChunkManager::moveChunks(Direction direction) {
   vector<shared_ptr<Chunk>> chunksToDelete;
 
@@ -367,69 +368,77 @@ void ChunkManager::moveChunks(Direction direction) {
     }
   }
 
+  // ##########################################################################
+  // This used to be inside the function run by the thread pool!!!
+  // ##########################################################################
+
+  // Destroy the chunks that are outside the matrix.
+  for (auto chunk : chunksToDelete) {
+    chunk->removeAllNeighbors();
+    chunk->storeChunk();
+    chunk.reset();
+  }
+
+  // Add the chunks, they are not yet fully generated.
+  vector<shared_ptr<Chunk>> newChunks {};
+  if (direction == Direction::Right) {
+    for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
+      auto ch = m_chunks[0 + 1][0][i];
+      auto chunk = std::make_shared<Chunk>(m_worldName, ch->getXLocation()
+          - CHUNK_WIDTH_AND_DEPTH, ch->getZLocation(), m_graphicsManager);
+      m_chunks[0][0][i] = chunk;
+      newChunks.push_back(chunk);
+    }
+  } else if (direction == Direction::Left) {
+    for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
+      auto ch = m_chunks[m_lenghtAcrossMatrix - 2][0][i];
+      auto chunk = std::make_shared<Chunk>(m_worldName, ch->getXLocation()
+          + CHUNK_WIDTH_AND_DEPTH, ch->getZLocation(), m_graphicsManager);
+      m_chunks[m_lenghtAcrossMatrix - 1][0][i] = chunk;
+      newChunks.push_back(chunk);
+    }
+  } else if (direction == Direction::Up) {
+    for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
+      auto ch = m_chunks[i][0][0 + 1];
+      auto chunk = std::make_shared<Chunk>(m_worldName, ch->getXLocation(),
+          ch->getZLocation() - CHUNK_WIDTH_AND_DEPTH, m_graphicsManager);
+      m_chunks[i][0][0] = chunk;
+      newChunks.push_back(chunk);
+    }
+  } else if (direction == Direction::Down) {
+    for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
+      auto ch = m_chunks[i][0][m_lenghtAcrossMatrix - 2];
+      auto chunk = std::make_shared<Chunk>(m_worldName, ch->getXLocation(),
+          ch->getZLocation() + CHUNK_WIDTH_AND_DEPTH, m_graphicsManager);
+      m_chunks[i][0][m_lenghtAcrossMatrix - 1] = chunk;
+      newChunks.push_back(chunk);
+    }
+  }
+
+  // TODO This could be optimized to only do the work for the new chunks and
+  // their neighbors. Currently does the work for chunks that are already
+  // connected.
+  connectChunks();
+
+  // ##########################################################################
+  // ##########################################################################
+
+
   // Off load the work on a thread pool so that the game is not blocked during
   // this lengthy task.
-  g_threadPool.enqueue([this, direction, chunksToDelete] {
-
-    // Destroy the chunks that are outside the matrix.
-      for (auto chunk : chunksToDelete) {
-        chunk->removeAllNeighbors();
-        chunk->storeChunk(m_worldName);
-        chunk.reset();
-      }
-
-      // Add the chunks, they are not yet fully generated.
-      vector<shared_ptr<Chunk>> newChunks {};
-      if (direction == Direction::Right) {
-        for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
-          auto ch = m_chunks[0 + 1][0][i];
-          auto chunk = std::make_shared<Chunk>(m_worldName, ch->getXLocation()
-              - CHUNK_WIDTH_AND_DEPTH, ch->getZLocation(), m_graphicsManager);
-          m_chunks[0][0][i] = chunk;
-          newChunks.push_back(chunk);
-        }
-      } else if (direction == Direction::Left) {
-        for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
-          auto ch = m_chunks[m_lenghtAcrossMatrix - 2][0][i];
-          auto chunk = std::make_shared<Chunk>(m_worldName, ch->getXLocation()
-              + CHUNK_WIDTH_AND_DEPTH, ch->getZLocation(), m_graphicsManager);
-          m_chunks[m_lenghtAcrossMatrix - 1][0][i] = chunk;
-          newChunks.push_back(chunk);
-        }
-      } else if (direction == Direction::Up) {
-        for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
-          auto ch = m_chunks[i][0][0 + 1];
-          auto chunk = std::make_shared<Chunk>(m_worldName, ch->getXLocation(),
-              ch->getZLocation() - CHUNK_WIDTH_AND_DEPTH, m_graphicsManager);
-          m_chunks[i][0][0] = chunk;
-          newChunks.push_back(chunk);
-        }
-      } else if (direction == Direction::Down) {
-        for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
-          auto ch = m_chunks[i][0][m_lenghtAcrossMatrix - 2];
-          auto chunk = std::make_shared<Chunk>(m_worldName, ch->getXLocation(),
-              ch->getZLocation() + CHUNK_WIDTH_AND_DEPTH, m_graphicsManager);
-          m_chunks[i][0][m_lenghtAcrossMatrix - 1] = chunk;
-          newChunks.push_back(chunk);
-        }
-      }
+  g_threadPool.enqueue([this, direction, chunksToDelete, newChunks] {
 
       // Run the creation and sunlightning work in parallel on the thread pool.
       vector<future<void>> chunkCreationFutures {};
       for (auto chunk : newChunks) {
         chunkCreationFutures.push_back(g_threadPool2.enqueue([chunk, this]
-                {
-                  chunk->create(m_options);
-                  chunk->doSunLightning();
-                }));
+        {
+          chunk->create(m_options);
+          chunk->doSunLightning();
+        }));
       }
       for_each(chunkCreationFutures.begin(), chunkCreationFutures.end(),
-          [] (future<void> &f) {f.get();});
-
-      // TODO This could be optimized to only do the work for the new chunks and
-      // their neighbors. Currently does the work for chunks that are already
-      // connected.
-      connectChunks();
+          [] (future<void> &f) { f.get(); });
 
       vector<future<void>> collectLightFutures {};
 
@@ -457,7 +466,6 @@ void ChunkManager::moveChunks(Direction direction) {
       for_each(collectLightFutures.begin(), collectLightFutures.end(),
           [] (future<void> &f) {f.get();});
 
-      // Update the
       auto f = [&](int start)
       {
         vector<future<void>> updateGrapicsFutures;
@@ -479,7 +487,7 @@ void ChunkManager::moveChunks(Direction direction) {
           }));
         }
         for_each(updateGrapicsFutures.begin(), updateGrapicsFutures.end(),
-            [] (future<void> &f) {f.get();});
+            [] (future<void> &f) { f.get(); });
         updateGrapicsFutures.clear();
       };
 

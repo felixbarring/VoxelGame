@@ -41,6 +41,14 @@ public:
 	 */
 	~Chunk();
 
+	Chunk(const Chunk&) = delete;
+
+	Chunk(Chunk&&) = delete;
+
+	Chunk& operator=(const Chunk&) = delete;
+
+	Chunk& operator=(Chunk&&) = delete;
+
 	/**
 	 * @name Creation Group
 	 * These functions needs to be called in order to finish the creation of the
@@ -254,9 +262,8 @@ public:
 
 	/**
 	 * Saved the chunk to disk
-	 * @param worldName Used to generate the name of this Chunk
 	 */
-	void storeChunk(std::string worldName);
+	void storeChunk();
 
 private:
 

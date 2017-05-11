@@ -80,7 +80,10 @@ private:
   void moveChunksDown();
 
   enum class Direction {
-    Right, Left, Up, Down
+    Right,
+    Left,
+    Up,
+    Down
   };
 
   void moveChunks(Direction direction);
