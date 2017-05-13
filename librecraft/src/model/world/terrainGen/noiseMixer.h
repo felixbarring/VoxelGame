@@ -29,8 +29,8 @@ public:
    * @param y
    * @return
    */
-  int computeNoise(float x, float z) {
-    float value = 10;
+  unsigned computeNoise(float x, float z) {
+    float value{10.0};
     for (auto noise : m_noises) {
       value += noise.m_amplitude * (1.0f + glm::simplex(
           glm::vec3(x / noise.m_frequency, z / noise.m_frequency, 0.5f)));

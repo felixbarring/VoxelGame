@@ -3,13 +3,13 @@
 
 #include <memory>
 #include <vector>
+#include "ThreadPool.h"
 
 #include "chunk.h"
 #include "../../../config/data.h"
 #include "../../../util/voxel.h"
-#include "ThreadPool.h"
-
 #include "../../../util/soundPlayer.h"
+
 #include "creationOptions.h"
 
 namespace chunk {
@@ -107,7 +107,7 @@ private:
   glm::vec3 m_intersectedCube{};
   glm::vec3 m_previousCube{};
 
-  // Mutex is non movable
+  // Mutex is non movable, hence the uniqueptr
   std::unique_ptr<std::mutex> m_bussyMovingChunksMutex{};
 };
 

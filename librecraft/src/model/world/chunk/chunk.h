@@ -8,8 +8,6 @@
 #include <glm/glm.hpp>
 #include <map>
 #include <set>
-#include <thread>
-#include <mutex>
 
 #include "../../../config/data.h"
 #include "../../../util/voxel.h"
