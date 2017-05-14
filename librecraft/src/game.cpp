@@ -174,9 +174,6 @@ void Game::run() {
 }
 
 void Game::createWorld(chunk::CreationOptions options) {
-
-  kek++;
-
   chunk::ChunkManager chunkManager{options, m_soundPlayer, *m_graphicsmanager};
 
   auto future = globalResources::g_threadPool.enqueue([options, &chunkManager]
@@ -191,7 +188,7 @@ void Game::createWorld(chunk::CreationOptions options) {
     loadingScreen.update();
 
   m_inGame.reset(new InGame(*this, move(chunkManager), m_soundPlayer,
-      *m_graphicsmanager));
+      *m_graphicsmanager, m_fpsManager));
 
   m_currentState = m_inGame;
   m_soundPlayer.stopMusic();

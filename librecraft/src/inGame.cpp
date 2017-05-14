@@ -27,12 +27,14 @@ using namespace gui;
 
 InGame::InGame(Game &game, chunk::ChunkManager &&chunkManager,
     util::SoundPlayer &soundPlayer,
-    graphics::GraphicsManager &graphicsManager)
+    graphics::GraphicsManager &graphicsManager,
+    util::FPSManager &fpsManager)
   : m_game{game}
   , m_chunkManager(move(chunkManager))
   , m_player{m_chunkManager, soundPlayer, graphicsManager}
   , m_soundPlayer(soundPlayer)
   , m_graphicsManager{graphicsManager}
+  , m_fpsManager{fpsManager}
   , m_mouse{m_graphicsManager}
   , m_settings{m_activeWidgetGroup, m_mainWidgetGroup, m_soundPlayer,
     graphicsManager}
@@ -281,10 +283,10 @@ void InGame::update(double timePassed) {
       // Updating the fps every frame makes it unreadable
       m_fpsDisplayCounter += timePassed;
       if (m_fpsDisplayCounter > m_fpsDisplayDelay) {
-//        m_fps.reset(new Sprite(0, 45, 10, fontMeshBuilder.buldMeshForString(
-//          "FPS: " + to_string(util::FPSManager::getFps()) + " Frame Time = "
-//            + to_string(util::FPSManager::frameTime()), 20), res.getTexture(
-//                config::font_data::font)));
+        m_fps.reset(new Sprite(0, 45, 10, fontMeshBuilder.buldMeshForString(
+          "FPS: " + to_string(m_fpsManager.getFps()) + " Frame Time = "
+            + to_string(m_fpsManager.frameTime()), 20), res.getTexture(
+                config::font_data::font)));
 
         m_fpsDisplayCounter = 0;
       }

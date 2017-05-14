@@ -41,10 +41,12 @@ public:
    *                     it in, giving the ownership to this instance.
    * @param soundPlayer The SoundPlayer that will be used to play sounds with.
    * @param graphicsManager Needed for drawing 2d and 3d graphics.
+   * @param fpsManager Used to display the fps in the HUD.
    */
   InGame(Game &game, chunk::ChunkManager &&chunkManager,
       util::SoundPlayer &soundPlayer,
-      graphics::GraphicsManager &graphicsManager);
+      graphics::GraphicsManager &graphicsManager,
+      util::FPSManager &fpsManager);
 
   void update(double timePassed) override;
 
@@ -66,6 +68,7 @@ private:
 
   util::SoundPlayer &m_soundPlayer;
   graphics::GraphicsManager &m_graphicsManager;
+  util::FPSManager &m_fpsManager;
 
   gui::Mouse m_mouse;
 

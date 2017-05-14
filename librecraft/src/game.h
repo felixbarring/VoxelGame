@@ -56,8 +56,6 @@ private:
 
   bool m_changeStateToIngame{false};
   bool m_quit{false};
-
-  int kek;
 };
 
 #endif /* SRC_GAME_H_ */
