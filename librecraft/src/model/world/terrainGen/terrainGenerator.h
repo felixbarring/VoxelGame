@@ -17,6 +17,16 @@ public:
   std::vector<std::vector<std::vector<Voxel>>> generateTerrain(
       CreationOptions& options, int x, int y);
 
+private:
+
+  void generateFlat(std::vector<std::vector<std::vector<Voxel>>> &cubes);
+
+  unsigned counterValue{};
+
+  unsigned m_width{16};
+  unsigned height{128};
+  unsigned depth{16};
+
 };
 
 }

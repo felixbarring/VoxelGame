@@ -3,12 +3,19 @@
 
 #include <thread>
 #include <mutex>
+#include <iostream>
 
 #include "noiseMixer.h"
 
 #include "../../../config/data.h"
+#include "libnoise/module/billow.h"
+#include "libnoise/module/perlin.h"
+#include "libnoise/module/ridgedmulti.h"
+#include "libnoise/module/scalebias.h"
+#include "libnoise/module/select.h"
 
 using namespace std;
+using namespace noise;
 
 namespace terrainGen{
 
@@ -19,7 +26,6 @@ std::mutex s_mutex;
 vector<vector<vector<Voxel>>> TerrainGenerator::generateTerrain(
     CreationOptions& options,  int x, int y) {
 
-  unsigned counterValue;
   {
     lock_guard<mutex> lock(s_mutex);
     if (options.differentCubesForEachChunk())
@@ -31,13 +37,8 @@ vector<vector<vector<Voxel>>> TerrainGenerator::generateTerrain(
 
   vector<vector<vector<Voxel>>> cubes;
 
-  // TODO Get these from input parameters!
-  unsigned width{16};
-  unsigned height{128};
-  unsigned depth{16};
-
   // Create the voxels with default values
-  for (unsigned x{0}; x < width; ++x) {
+  for (unsigned x{0}; x < m_width; ++x) {
     cubes.push_back(vector<vector<Voxel>>());
     for (unsigned y{0}; y < height; ++y) {
       cubes[x].push_back(vector<Voxel>());
@@ -48,45 +49,54 @@ vector<vector<vector<Voxel>>> TerrainGenerator::generateTerrain(
   }
 
   if (options.getFlat()) {
-//    for (unsigned x{0}; x < width; ++x) {
-//      for (unsigned z{0}; z < depth; ++z) {
-//        for (unsigned y{0}; y < height; ++y) {
-//          auto &v = cubes[x][y][z];
-//          if (y == 0) {
-//            v.id = config::cube_data::BED_ROCK;
-//            continue;
-//          }
-//          if (y < 30)
-//            v.id = counterValue;
-//          else
-//            v.id = config::cube_data::AIR; // should already be air?
-//        }
-//      }
-//    }
+    generateFlat(cubes);
+    return cubes;
   } else {
-    // TODO There should be some kind of seed in order to generate different
-    // worlds. Currently the same world will be generated each time.
 
-    NoiseMixer mixer{};
-    mixer.addNoise(100.f, 15.f);
-    mixer.addNoise(50, 5);
-    mixer.addNoise(15, 3);
+    module::RidgedMulti mountainSource;
+    mountainSource.SetFrequency(0.05);
+    mountainSource.SetOctaveCount(3);
+
+    module::ScaleBias mountain;
+    mountain.SetSourceModule(0, mountainSource);
+    mountain.SetBias(40);
+    mountain.SetScale(30);
+
+
+    module::Billow flatSource;
+    flatSource.SetFrequency(0.2);
+
+    module::ScaleBias flat;
+    flat.SetSourceModule(0, flatSource);
+    flat.SetScale(3);
+    flat.SetBias(20);
+
+    module::Perlin terrainType;
+    terrainType.SetFrequency(0.1);
+
+    module::Select finalTerrain;
+    finalTerrain.SetSourceModule(1, flat);
+    finalTerrain.SetSourceModule(0, mountain);
+    finalTerrain.SetControlModule(terrainType);
+    finalTerrain.SetEdgeFalloff(1);
 
     int xOffsetLocation{x};
     int yOffsetLocation{y};
 
-    for (unsigned x{0}; x < width; ++x) {
+    for (unsigned x{0}; x < m_width; ++x) {
       for (unsigned z{0}; z < depth; ++z) {
-        unsigned noiseValue{
-          mixer.computeNoise(xOffsetLocation + static_cast<int>(x),
-              yOffsetLocation + static_cast<int>(z))};
+
+        double noiseValue = finalTerrain.GetValue(
+            (xOffsetLocation + static_cast<int>(x)) / 10.0,
+            (yOffsetLocation + static_cast<int>(z)) / 10.0, 0.5);
+
         for (unsigned y{0}; y < height; ++y) {
           auto &v = cubes[x][y][z];
           if (y == 0) {
             v.id = config::cube_data::BED_ROCK;
             continue;
           }
-          if (y > 5 && y < 25)
+          if (y > 5 && y < 10)
             v.id = config::cube_data::WATER;
           if (y < noiseValue)
             v.id = counterValue;
@@ -96,6 +106,24 @@ vector<vector<vector<Voxel>>> TerrainGenerator::generateTerrain(
   }
 
   return cubes;
+}
+
+void TerrainGenerator::generateFlat(std::vector<std::vector<std::vector<Voxel>>> &cubes) {
+  for (unsigned x{0}; x < m_width; ++x) {
+     for (unsigned z{0}; z < depth; ++z) {
+       for (unsigned y{0}; y < height; ++y) {
+         auto &v = cubes[x][y][z];
+         if (y == 0) {
+           v.id = config::cube_data::BED_ROCK;
+           continue;
+         }
+         if (y < 30)
+           v.id = counterValue;
+         else
+           v.id = config::cube_data::AIR; // should already be air?
+       }
+     }
+   }
 }
 
 }

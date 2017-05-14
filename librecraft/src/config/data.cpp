@@ -14,7 +14,7 @@ namespace chunk_data {
  const int CHUNK_WIDTH_AND_DEPTH = 16;
  const int CHUNK_HEIGHT = 128;
 
- const int NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER = 4;
+ const int NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER = 6;
  const int NUMBER_OF_CHUNKS_Y = 1;
 }
 

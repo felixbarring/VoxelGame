@@ -39,7 +39,7 @@ InGame::InGame(Game &game, chunk::ChunkManager &&chunkManager,
 {
 
   // TODO Should be possible to save and load the player location.
-  double playerYLocation{40.1};
+  double playerYLocation{80.1};
   m_player.setLocation(
       chunk_data::NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER
           * chunk_data::CHUNK_WIDTH_AND_DEPTH, playerYLocation,
