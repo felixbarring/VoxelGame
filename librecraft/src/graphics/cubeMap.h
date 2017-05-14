@@ -1,8 +1,12 @@
 #ifndef SRC_GRAPHICS_CUBEMAP_H_
 #define SRC_GRAPHICS_CUBEMAP_H_
 
+#include <memory>
+
 #include "texture/textureCubeMap.h"
 #include "camera.h"
+#include "mesh/meshElement.h"
+#include "shaderProgram.h"
 
 namespace graphics {
 
@@ -24,6 +28,10 @@ private:
   texture::TextureCubeMap m_texture;
   Camera &m_camera;
   float m_roatationValue{0.0f};
+
+  std::unique_ptr<graphics::ShaderProgram> m_program;
+  std::unique_ptr<mesh::MeshElement> mesh;
+
 };
 
 }

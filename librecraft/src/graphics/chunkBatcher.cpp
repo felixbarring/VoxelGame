@@ -86,7 +86,8 @@ ChunkBatcher::ChunkBatcher(Camera &camera)
 int ChunkBatcher::addBatch(int replaceId, float x, float y, float z,
                            VoxelMatrix &data, VoxelMatrix *right,
                            VoxelMatrix *left, VoxelMatrix *back,
-                           VoxelMatrix *front, bool hightPriority) {
+                           VoxelMatrix *front, bool hightPriority)
+{
 
   auto batch = make_shared<GraphicalChunk>(x, y, z, data, right, left, back,
       front);

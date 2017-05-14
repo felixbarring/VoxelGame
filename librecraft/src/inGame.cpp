@@ -322,6 +322,8 @@ void InGame::update(double timePassed) {
 
   m_chunkManager.update();
 
+  m_graphicsManager.clearScreenSunDependent();
+
   if (m_timeCycle.getStarStrenght() > 0.0) {
     // Changes so that the rotation dose not get to fast.
     const float valModifier = 0.015;
@@ -331,7 +333,6 @@ void InGame::update(double timePassed) {
         m_timeCycle.getStarStrenght());
   }
 
-  m_graphicsManager.clearScreenSunDependent();
   m_graphicsManager.getChunkBatcher().draw();
   m_graphicsManager.getCubeBatcher().draw();
   m_graphicsManager.getSpriteBatcher().draw();

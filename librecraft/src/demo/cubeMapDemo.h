@@ -72,9 +72,6 @@ public:
 
     graphics::CubeMap skybox{texture, camera};
 
-    float screenCenterX = WIDTH / 2;
-    float screenCenterY = HEIGHT / 2;
-
     graphics::ViewDirection viewDirection;
 
     while (window.isOpen()) {

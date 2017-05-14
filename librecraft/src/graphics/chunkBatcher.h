@@ -151,7 +151,7 @@ private:
 
     std::vector<int> m_batchesToBeRemoved{};
 
-    std::shared_ptr<ShaderProgram> m_program{};
+    std::unique_ptr<ShaderProgram> m_program{};
     texture::TextureArray &m_texture;
 };
 
