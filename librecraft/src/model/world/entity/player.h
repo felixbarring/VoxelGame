@@ -38,6 +38,8 @@ public:
     return m_cubeUsedForBuilding;
   }
 
+  void setSpeed(double value);
+
 private:
 
   void updateSpeed(float timePassed);

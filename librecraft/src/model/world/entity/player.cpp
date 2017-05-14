@@ -62,6 +62,10 @@ glm::vec3 Player::getLastSelectedCube() {
   return m_lastSelecteCube;
 }
 
+void Player::setSpeed(double value) {
+  m_movementSpeed = value;
+}
+
 void Player::updateSpeed(float timePassed) {
   auto input = Input::getInstance();
   m_viewDirection.changeViewDirection(input->mouseXMovement,

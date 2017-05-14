@@ -13,7 +13,11 @@ public:
 
   void setRotationValue(float value);
 
-  void draw(double trancparency);
+  /**
+   *
+   * @param transparency
+   */
+  void draw(double transparency);
 
 private:
 

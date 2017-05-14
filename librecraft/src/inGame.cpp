@@ -113,10 +113,11 @@ InGame::InGame(Game &game, chunk::ChunkManager &&chunkManager,
   string printDebugInfo = "printDebugInfo";
   string setFOV = "setFOV";
   string setTimeSpeed = "setTimeSpeed";
+  string setPlayerSpeed = "setPlayerSpeed";
 
   vector<string> commands{close, flyMode, gravityMode, turnOfMusic,
       setMouseSensitivity, loadChunks, setTime, stopTime, resumeTime,
-      printDebugInfo, setFOV, setTimeSpeed};
+      printDebugInfo, setFOV, setTimeSpeed, setPlayerSpeed};
 
   // TODO Does not handle all errors... fix this!
 
@@ -210,7 +211,14 @@ InGame::InGame(Game &game, chunk::ChunkManager &&chunkManager,
         return;
       }
       m_timeCycle.setTimeSpeed(time);
-
+    } else if (command == setPlayerSpeed) {
+      try {
+        double speed = stod(arguments[1].c_str());
+        m_player.setSpeed(speed);
+      } catch (invalid_argument &e) {
+        m_terminal->addLine("Invalid arguments!");
+        return;
+      }
     } else {
       m_terminal->addLine("Unknown command: " + command);
     }

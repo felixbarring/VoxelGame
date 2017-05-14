@@ -22,7 +22,7 @@ void CubeMap::setRotationValue(float value) {
   m_roatationValue = value;
 }
 
-void CubeMap::draw(double trancparency) {
+void CubeMap::draw(double transparency) {
 
   std::string vertex =
     "#version 330 core \n"
@@ -40,7 +40,7 @@ void CubeMap::draw(double trancparency) {
     "#version 330 core \n"
     "in vec3 texCoord; \n"
     "uniform samplerCube skybox; \n"
-    "uniform float transparency; \n"
+    "uniform float transparency = 1.0; \n"
     "out vec4 color; \n"
     "void main() \n"
     "{ \n"
@@ -121,7 +121,7 @@ void CubeMap::draw(double trancparency) {
   glm::mat4 modelViewProjection = m_camera.getProjectionMatrix() * view;
 
   skyboxShader.setUniformMatrix4f("mvp", modelViewProjection);
-  skyboxShader.setUniform1f("transparency", trancparency);
+//  skyboxShader.setUniform1f("transparency", transparency);
   m_texture.bind();
   mesh.draw();
 

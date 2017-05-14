@@ -7,15 +7,13 @@
 #include "../../../util/voxel.h"
 #include "../chunk/creationOptions.h"
 
-using chunk::CreationOptions;
-
 namespace terrainGen {
 
 class TerrainGenerator {
 public:
 
   std::vector<std::vector<std::vector<Voxel>>> generateTerrain(
-      CreationOptions& options, int x, int y);
+      chunk::CreationOptions& options, int x, int y);
 
 private:
 

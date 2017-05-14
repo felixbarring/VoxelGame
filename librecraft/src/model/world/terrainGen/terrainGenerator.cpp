@@ -17,6 +17,8 @@
 using namespace std;
 using namespace noise;
 
+using chunk::CreationOptions;
+
 namespace terrainGen{
 
 int counter{1};
@@ -24,7 +26,8 @@ const int maxCount{config::cube_data::LAST_CUBE_USED_FOR_BUILDING};
 std::mutex s_mutex;
 
 vector<vector<vector<Voxel>>> TerrainGenerator::generateTerrain(
-    CreationOptions& options,  int x, int y) {
+    CreationOptions& options,  int x, int y)
+{
 
   {
     lock_guard<mutex> lock(s_mutex);
@@ -86,7 +89,7 @@ vector<vector<vector<Voxel>>> TerrainGenerator::generateTerrain(
     for (unsigned x{0}; x < m_width; ++x) {
       for (unsigned z{0}; z < depth; ++z) {
 
-        double noiseValue = finalTerrain.GetValue(
+        double noiseValue = mountain.GetValue(
             (xOffsetLocation + static_cast<int>(x)) / 10.0,
             (yOffsetLocation + static_cast<int>(z)) / 10.0, 0.5);
 
@@ -110,7 +113,7 @@ vector<vector<vector<Voxel>>> TerrainGenerator::generateTerrain(
 
 void TerrainGenerator::generateFlat(std::vector<std::vector<std::vector<Voxel>>> &cubes) {
   for (unsigned x{0}; x < m_width; ++x) {
-     for (unsigned z{0}; z < depth; ++z) {
+    for (unsigned z{0}; z < depth; ++z) {
        for (unsigned y{0}; y < height; ++y) {
          auto &v = cubes[x][y][z];
          if (y == 0) {

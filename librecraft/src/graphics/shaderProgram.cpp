@@ -84,12 +84,10 @@ ShaderProgram::ShaderProgram(
     case GL_NO_ERROR:
       break; // All is well
     case GL_INVALID_VALUE:
-      cout
-              << "Error, glGetUniformLocation gave a GL_INVALID_VALUE error. \n";
+      cout << "Error, glGetUniformLocation gave a GL_INVALID_VALUE error. \n";
       return;
     case GL_INVALID_OPERATION:
-      cout
-              << "Error, glGetUniformLocation gave a GL_INVALID_OPERATION error. \n";
+      cout << "Error, glGetUniformLocation gave a GL_INVALID_OPERATION error. \n";
       return;
     }
   }
