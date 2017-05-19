@@ -5,7 +5,6 @@
 
 #include "../../../graphics/graphicsManager.h"
 #include "../../../graphics/chunkBatcher.h"
-#include "../terrainGen/noiseMixer.h"
 #include "../terrainGen/terrainGenerator.h"
 
 using namespace std;
@@ -271,7 +270,10 @@ void Chunk::loadChunk() {
 void Chunk::generateChunk(CreationOptions& options) {
   m_isDirty = true;
 
-  terrainGen::TerrainGenerator generator{};
+  terrainGen::TerrainGenerator generator{
+    config::chunk_data::CHUNK_WIDTH_AND_DEPTH,
+    config::chunk_data::CHUNK_HEIGHT,
+    config::chunk_data::CHUNK_WIDTH_AND_DEPTH};
   m_cubes = generator.generateTerrain(options, m_xLocation, m_zLocation);
 
 /*

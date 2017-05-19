@@ -37,7 +37,7 @@ InGame::InGame(Game &game, chunk::ChunkManager &&chunkManager,
   , m_fpsManager{fpsManager}
   , m_mouse{m_graphicsManager}
   , m_settings{m_activeWidgetGroup, m_mainWidgetGroup, m_soundPlayer,
-    graphicsManager}
+      graphicsManager}
 {
 
   // TODO Should be possible to save and load the player location.
