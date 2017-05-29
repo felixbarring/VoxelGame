@@ -7,5 +7,12 @@ Type: Feature
 When the player moves there shold be foot step sound played.
 There should be a basic sound implemented, and possibility to
 extend the feature to have different sounds depending on the 
-material that the player is walking on. Soume types of materials
+material that the player is walking on. Some types of materials
 could be: grass/dirt, stone/rock, wood.
+
+###
+
+Star night sky is broken:
+
+The star sky does not work correctly, I get shader errors at the
+time when it should be vissible.

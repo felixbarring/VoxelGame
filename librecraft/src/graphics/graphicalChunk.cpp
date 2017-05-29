@@ -12,7 +12,9 @@ using namespace config::cube_data;
 
 namespace graphics {
 
-GraphicalChunk::GraphicalChunk(float _x, float _y, float _z,
+bool useSmoothShading{true};
+
+GraphicalChunk::GraphicalChunk(double _x, double _y, double _z,
     vector<vector<vector<Voxel>>> &data,
     vector<vector<vector<Voxel>>> *right,
     vector<vector<vector<Voxel>>> *left,
@@ -28,177 +30,186 @@ GraphicalChunk::GraphicalChunk(float _x, float _y, float _z,
     }
 {
 
-    // The face data will be one bigger in each direction.
-    // This is to make it possible to compare voxels with
-    // neighbors in other chunks.
-    for (int x = 0; x < m_width + 2; ++x) {
-        m_faceData.push_back(vector<vector<CubeFaceData>>());
-        for (int y = 0; y < m_height + 2; ++y) {
-            m_faceData[x].push_back(vector<CubeFaceData>());
-            for (int z = 0; z < m_depth + 2; z++) {
-                CubeFaceData cube;
+  // The face data will be one bigger in each direction.
+  // This is to make it possible to compare voxels with
+  // neighbors in other chunks.
+  for (unsigned x{0}; x < m_width + 2; ++x) {
+    m_faceData.push_back(vector<vector<CubeFaceData>>());
+    for (unsigned y{0}; y < m_height + 2; ++y) {
+      m_faceData[x].push_back(vector<CubeFaceData>());
+      for (unsigned z{0}; z < m_depth + 2; z++) {
+        CubeFaceData cube;
 
-                auto *voxel = getVoxel(x - 1, y - 1 + m_yLocation, z - 1, data, right, left, back, front);
-                if (voxel) {
-                    cube.id = voxel->id;
-                    cube.lightValue = voxel->lightValue;
-                } else {
-                    cube.id = AIR;
-                    cube.lightValue = 0;
-                }
-
-                cube.front = false;
-                cube.back = false;
-                cube.left = false;
-                cube.right = false;
-                cube.top = false;
-                cube.bottom = false;
-
-                m_faceData[x][y].push_back(cube);
-            }
+        auto *voxel = getVoxel(x - 1, y - 1 + m_yLocation, z - 1, data, right,
+            left, back, front);
+        if (voxel) {
+          cube.id = voxel->id;
+          cube.lightValue = voxel->lightValue;
+        } else {
+          cube.id = AIR;
+          cube.lightValue = 0;
         }
+
+        cube.front = false;
+        cube.back = false;
+        cube.left = false;
+        cube.right = false;
+        cube.top = false;
+        cube.bottom = false;
+
+        m_faceData[x][y].push_back(cube);
+      }
     }
+  }
 
-    // Remove faces and compute lightning
-    for (int x = 0; x < m_width; x++) {
-        for (int y = 0; y < m_height; y++) {
-            for (int k = 0; k < m_depth; k++) {
+  // Remove faces and compute lightning
+  for (unsigned x = 0; x < m_width; x++) {
+    for (unsigned y = 0; y < m_height; y++) {
+      for (unsigned k = 0; k < m_depth; k++) {
 
-                CubeFaceData &current = m_faceData[x + 1][y + 1][k + 1];
-                if (current.id == AIR)
-                    continue;
+        CubeFaceData &current = m_faceData[x + 1][y + 1][k + 1];
+        if (current.id == AIR)
+          continue;
 
-                if (current.id == WATER) {
-                    if (m_faceData[x + 1][y + 2][k + 1].id == AIR) {
-                        current.top = true;
-                        current.lvTop_BottomLeft = 5;
-                        current.lvTop_BottomRight = 5;
-                        current.lvTop_TopRight = 5;
-                        current.lvTop_TopLeft = 5;
-                    }
-                    continue;
-                }
+        if (current.id == WATER) {
+          if (m_faceData[x + 1][y + 2][k + 1].id == AIR) {
+            current.top = true;
+            current.lvTop_BottomLeft = 5;
+            current.lvTop_BottomRight = 5;
+            current.lvTop_TopRight = 5;
+            current.lvTop_TopLeft = 5;
+          }
+          continue;
+        }
 
     // X ##########################################################################
-                CubeFaceData cd;
-                cd = m_faceData[x + 2][y + 1][k + 1];
-                if (cd.id == AIR || cd.id == WATER) {
+        CubeFaceData cd;
+        cd = m_faceData[x + 2][y + 1][k + 1];
+        if (cd.id == AIR || cd.id == WATER) {
+          current.right = true;
 
-                    current.right = true;
+          if (useSmoothShading) {
+            computeAverageRight(cd.lightValue, x + 1, y + 1, k + 1,
+              current.lvRight_BottomLeft,
+              current.lvRight_BottomRight,
+              current.lvRight_TopRight,
+              current.lvRight_TopLeft,
+              m_faceData);
 
-    //					current.lvRight_BottomLeft = cd.lightValue;
-    //					current.lvRight_BottomRight = cd.lightValue;
-    //					current.lvRight_TopRight = cd.lightValue;
-    //					current.lvRight_TopLeft = cd.lightValue;
 
-                    computeAverageRight(cd.lightValue, x + 1, y + 1, k + 1,
-                        current.lvRight_BottomLeft,
-                        current.lvRight_BottomRight,
-                        current.lvRight_TopRight,
-                        current.lvRight_TopLeft,
-                        m_faceData);
+          } else {
+            current.lvRight_BottomLeft = cd.lightValue;
+            current.lvRight_BottomRight = cd.lightValue;
+            current.lvRight_TopRight = cd.lightValue;
+            current.lvRight_TopLeft = cd.lightValue;
+          }
 
-                    doAORight(current, x + 1, y + 1, k + 1,m_faceData);
-                }
+          doAORight(current, x + 1, y + 1, k + 1,m_faceData);
 
-                cd = m_faceData[x][y + 1][k + 1];
-                if (cd.id == AIR || cd.id == WATER) {
-                    current.left = true;
+        }
 
-    //					current.lvLeft_BottomLeft = cd.lightValue;
-    //					current.lvLeft_BottomRight = cd.lightValue;
-    //					current.lvLeft_TopRight = cd.lightValue;
-    //					current.lvLeft_TopLeft = cd.lightValue;
+        cd = m_faceData[x][y + 1][k + 1];
+        if (cd.id == AIR || cd.id == WATER) {
+          current.left = true;
 
-                    computeAverageLeft(cd.lightValue, x + 1, y + 1, k + 1,
-                        current.lvLeft_BottomLeft,
-                        current.lvLeft_BottomRight,
-                        current.lvLeft_TopRight,
-                        current.lvLeft_TopLeft,
-                        m_faceData);
+          if (useSmoothShading) {
+            current.lvLeft_BottomLeft = cd.lightValue;
+            current.lvLeft_BottomRight = cd.lightValue;
+            current.lvLeft_TopRight = cd.lightValue;
+            current.lvLeft_TopLeft = cd.lightValue;
+          } else {
+            computeAverageLeft(cd.lightValue, x + 1, y + 1, k + 1,
+              current.lvLeft_BottomLeft,
+              current.lvLeft_BottomRight,
+              current.lvLeft_TopRight,
+              current.lvLeft_TopLeft,
+              m_faceData);
+          }
 
-                    doAOLeft(current, x + 1, y + 1, k + 1, m_faceData);
-                }
+            doAOLeft(current, x + 1, y + 1, k + 1, m_faceData);
+          }
 
     // Z ##########################################################################
 
-                cd = m_faceData[x + 1][y + 1][k + 2];
-                if (cd.id == AIR || cd.id == WATER) {
-                    current.front = true;
+        cd = m_faceData[x + 1][y + 1][k + 2];
+        if (cd.id == AIR || cd.id == WATER) {
+          current.front = true;
 
-    //					current.lvFront_BottomLeft = cd.lightValue;
-    //					current.lvFront_BottomRight = cd.lightValue;
-    //					current.lvFront_TopRight = cd.lightValue;
-    //					current.lvFront_TopLeft = cd.lightValue;
-
-                    computeAverageFront(cd.lightValue, x + 1, y + 1, k + 1,
-                        current.lvFront_BottomLeft,
-                        current.lvFront_BottomRight,
-                        current.lvFront_TopRight,
-                        current.lvFront_TopLeft, m_faceData);
-
-                    doAOFront(current, x + 1, y + 1, k + 1, m_faceData);
-                }
-
-                cd = m_faceData[x + 1][y + 1][k];
-                if (cd.id == AIR || cd.id == WATER) {
-                    current.back = true;
-
-    //					current.lvBack_BottomLeft = cd.lightValue;
-    //					current.lvBack_BottomRight = cd.lightValue;
-    //					current.lvBack_TopRight = cd.lightValue;
-    //					current.lvBack_TopLeft = cd.lightValue;
-
-                    computeAverageBack(cd.lightValue, x + 1, y + 1, k + 1,
-                            current.lvBack_BottomLeft,
-                            current.lvBack_BottomRight,
-                            current.lvBack_TopRight,
-                            current.lvBack_TopLeft, m_faceData);
-
-                    doAOBack(current, x + 1, y + 1, k + 1, m_faceData);
-                }
-    // Y ##########################################################################
-
-                cd = m_faceData[x + 1][y + 2][k + 1];
-                if (cd.id == AIR || cd.id == WATER) {
-                    current.top = true;
-
-    //					current.lvTop_BottomLeft = cd.lightValue;
-    //					current.lvTop_BottomRight = cd.lightValue;
-    //					current.lvTop_TopRight = cd.lightValue;
-    //					current.lvTop_TopLeft = cd.lightValue;
-
-                    computeAverageTop(cd.lightValue, x + 1, y + 1, k + 1,
-                        current.lvTop_BottomLeft,
-                        current.lvTop_BottomRight,
-                        current.lvTop_TopRight,
-                        current.lvTop_TopLeft, m_faceData);
-
-                    doAOTop(current, x + 1, y + 1, k + 1, m_faceData);
-                }
-
-                cd = m_faceData[x + 1][y][k + 1];
-                if (cd.id == AIR || cd.id == WATER) {
-                    current.bottom = true;
-
-    //					current.lvBottom_BottomLeft = cd.lightValue;
-    //					current.lvBottom_BottomRight = cd.lightValue;
-    //					current.lvBottom_TopRight = cd.lightValue;
-    //					current.lvBottom_TopLeft = cd.lightValue;
-
-                    computeAverageBottom(cd.lightValue, x + 1, y + 1, k + 1,
-                        current.lvBottom_BottomLeft,
-                        current.lvBottom_BottomRight,
-                        current.lvBottom_TopRight,
-                        current.lvBottom_TopLeft, m_faceData);
-
-                    doAOBottom(current, x + 1, y + 1, k + 1, m_faceData);
-                }
-
-            }
+          if (useSmoothShading) {
+            computeAverageFront(cd.lightValue, x + 1, y + 1, k + 1,
+              current.lvFront_BottomLeft,
+              current.lvFront_BottomRight,
+              current.lvFront_TopRight,
+              current.lvFront_TopLeft, m_faceData);
+          } else {
+            current.lvFront_BottomLeft = cd.lightValue;
+            current.lvFront_BottomRight = cd.lightValue;
+            current.lvFront_TopRight = cd.lightValue;
+            current.lvFront_TopLeft = cd.lightValue;
+          }
+          doAOFront(current, x + 1, y + 1, k + 1, m_faceData);
         }
-    }
 
+        cd = m_faceData[x + 1][y + 1][k];
+        if (cd.id == AIR || cd.id == WATER) {
+          current.back = true;
+
+          if (useSmoothShading) {
+            computeAverageBack(cd.lightValue, x + 1, y + 1, k + 1,
+              current.lvBack_BottomLeft,
+              current.lvBack_BottomRight,
+              current.lvBack_TopRight,
+              current.lvBack_TopLeft, m_faceData);
+          } else {
+
+          }
+//					current.lvBack_BottomLeft = cd.lightValue;
+//					current.lvBack_BottomRight = cd.lightValue;
+//					current.lvBack_TopRight = cd.lightValue;
+//					current.lvBack_TopLeft = cd.lightValue;
+
+          doAOBack(current, x + 1, y + 1, k + 1, m_faceData);
+        }
+  // Y ##########################################################################
+
+        cd = m_faceData[x + 1][y + 2][k + 1];
+        if (cd.id == AIR || cd.id == WATER) {
+          current.top = true;
+
+//					current.lvTop_BottomLeft = cd.lightValue;
+//					current.lvTop_BottomRight = cd.lightValue;
+//					current.lvTop_TopRight = cd.lightValue;
+//					current.lvTop_TopLeft = cd.lightValue;
+
+          computeAverageTop(cd.lightValue, x + 1, y + 1, k + 1,
+              current.lvTop_BottomLeft,
+              current.lvTop_BottomRight,
+              current.lvTop_TopRight,
+              current.lvTop_TopLeft, m_faceData);
+
+          doAOTop(current, x + 1, y + 1, k + 1, m_faceData);
+        }
+
+        cd = m_faceData[x + 1][y][k + 1];
+        if (cd.id == AIR || cd.id == WATER) {
+          current.bottom = true;
+
+//					current.lvBottom_BottomLeft = cd.lightValue;
+//					current.lvBottom_BottomRight = cd.lightValue;
+//					current.lvBottom_TopRight = cd.lightValue;
+//					current.lvBottom_TopLeft = cd.lightValue;
+
+          computeAverageBottom(cd.lightValue, x + 1, y + 1, k + 1,
+              current.lvBottom_BottomLeft,
+              current.lvBottom_BottomRight,
+              current.lvBottom_TopRight,
+              current.lvBottom_TopLeft, m_faceData);
+
+          doAOBottom(current, x + 1, y + 1, k + 1, m_faceData);
+        }
+      }
+    }
+  }
 }
 
 // ########################################################
@@ -206,54 +217,57 @@ GraphicalChunk::GraphicalChunk(float _x, float _y, float _z,
 // ########################################################
 
 void GraphicalChunk::uploadData() {
-    vector<GLfloat> vertexData;
-    vector<GLfloat> normals;
-    vector<GLfloat> UV;
-    vector<short> elementData;
+  vector<GLfloat> vertexData;
+  vector<GLfloat> normals;
+  vector<GLfloat> UV;
+  vector<short> elementData;
 
-    createMeshData(false, m_faceData, vertexData, normals, UV, elementData);
-    m_mesh.reset(new mesh::MeshElement(vertexData, 4, normals, 3, UV, 3, elementData));
+  createMeshData(false, m_faceData, vertexData, normals, UV, elementData);
+  m_mesh.reset(new mesh::MeshElement(vertexData, 4, normals, 3, UV, 3,
+      elementData));
 
-    vertexData.clear();
-    normals.clear();
-    UV.clear();
-    elementData.clear();
+  vertexData.clear();
+  normals.clear();
+  UV.clear();
+  elementData.clear();
 
-    createMeshData(true, m_faceData, vertexData, normals, UV, elementData);
+  createMeshData(true, m_faceData, vertexData, normals, UV, elementData);
 
-    if (vertexData.empty())
-        m_hasTransparent = false;
-    m_waterMesh.reset(new mesh::MeshElement(vertexData, 4, normals, 3, UV, 3, elementData));
+  if (vertexData.empty())
+    m_hasTransparent = false;
 
-    m_faceData.clear();
+  m_waterMesh.reset(new mesh::MeshElement(vertexData, 4, normals, 3, UV, 3,
+      elementData));
+
+  m_faceData.clear();
 }
 
 void GraphicalChunk::drawNoneTransparent() {
-    m_mesh->draw();
+  m_mesh->draw();
 }
 
 void GraphicalChunk::drawTransparent() {
-    m_waterMesh->draw();
+  m_waterMesh->draw();
 }
 
 bool GraphicalChunk::hasTransparent() {
-    return m_hasTransparent;
+  return m_hasTransparent;
 }
 
 Transform& GraphicalChunk::getTransform() {
-    return transform;
+  return transform;
 }
 
 float GraphicalChunk::getxLocation() {
-    return m_xLocation;
+  return m_xLocation;
 }
 
 float GraphicalChunk::getyLocation() {
-    return m_yLocation;
+  return m_yLocation;
 }
 
 float GraphicalChunk::getzLocation() {
-    return m_zLocation;
+  return m_zLocation;
 }
 
 // Function for getting voxels, can collect from neighbor chunks data

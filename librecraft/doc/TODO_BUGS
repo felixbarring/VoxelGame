@@ -10,13 +10,6 @@ solid cube.
 
 ###
 
-Star night sky is broken:
-
-The star sky does not work correctly, I get shader errors at the
-time when it should be vissible.
-
-###
-
 The voxel lightning does not work correctly when loading a world.
 The light does not spread correctly between chunks. Works fine
 while playing, but not if the world is saved and  then loaded.
@@ -39,4 +32,8 @@ shader becomes broken somehow and dont render correctly.
 Verry annoying, and hard to see how it happens since,
 it occurs randomly.
 
+###
+
+When going back to the main menu from ingame, the music plays at 100% for a 
+short moment and then starts from 0 to 100
 

@@ -12,151 +12,202 @@
 
 namespace graphics {
 
+/**
+ *
+ */
 class GraphicalChunk {
 public:
 
-    GraphicalChunk(float x, float y, float z,
-            std::vector<std::vector<std::vector<Voxel>>> &data,
-            std::vector<std::vector<std::vector<Voxel>>> *right,
-            std::vector<std::vector<std::vector<Voxel>>> *left,
-            std::vector<std::vector<std::vector<Voxel>>> *back,
-            std::vector<std::vector<std::vector<Voxel>>> *front);
+  /**
+   *
+   * @param x
+   * @param y
+   * @param z
+   * @param data
+   * @param right
+   * @param left
+   * @param back
+   * @param front
+   */
+  GraphicalChunk(double x, double y, double z,
+    std::vector<std::vector<std::vector<Voxel>>> &data,
+    std::vector<std::vector<std::vector<Voxel>>> *right,
+    std::vector<std::vector<std::vector<Voxel>>> *left,
+    std::vector<std::vector<std::vector<Voxel>>> *back,
+    std::vector<std::vector<std::vector<Voxel>>> *front);
 
-    /**
-     * Creates the meshes that will be used for rendering. This function must be called from the main thread
-     * that has the opengl context. Forgetting to call this function before draw is an error. Should only be done once.
-     */
-    void uploadData();
+  /**
+   * Creates the meshes that will be used for rendering. This function must be
+   * called from the main thread that has the opengl context. Forgetting to
+   * call this function before draw is an error. Should only be done once.
+   */
+  void uploadData();
 
-    void drawNoneTransparent();
+  /**
+   *
+   */
+  void drawNoneTransparent();
 
-    void drawTransparent();
+  /**
+   *
+   */
+  void drawTransparent();
 
-    bool hasTransparent();
+  /**
+   *
+   * @return
+   */
+  bool hasTransparent();
 
-    Transform& getTransform();
+  /**
+   *
+   * @return
+   */
+  Transform& getTransform();
 
-    float getxLocation();
+  /**
+   *
+   * @return
+   */
+  float getxLocation();
 
-    float getyLocation();
+  /**
+   *
+   * @return
+   */
+  float getyLocation();
 
-    float getzLocation();
+  /**
+   *
+   * @return
+   */
+  float getzLocation();
 
 private:
 
-    struct CubeFaceData {
-        int id;
-        bool vissible, front, back, left, right, top, bottom;
-        char lightValue;
+  struct CubeFaceData {
+    int id;
+    bool vissible, front, back, left, right, top, bottom;
+    char lightValue;
 
-        // lv means lightValue
-        float lvFront_BottomLeft, lvFront_BottomRight, lvFront_TopRight, lvFront_TopLeft;
+    // lv means lightValue
+    float lvFront_BottomLeft, lvFront_BottomRight;
+    float lvFront_TopRight, lvFront_TopLeft;
 
-        float lvBack_BottomLeft, lvBack_BottomRight, lvBack_TopRight, lvBack_TopLeft;
+    float lvBack_BottomLeft, lvBack_BottomRight;
+    float lvBack_TopRight, lvBack_TopLeft;
 
-        float lvLeft_BottomLeft, lvLeft_BottomRight, lvLeft_TopRight, lvLeft_TopLeft;
+    float lvLeft_BottomLeft, lvLeft_BottomRight;
+    float lvLeft_TopRight, lvLeft_TopLeft;
 
-        float lvRight_BottomLeft, lvRight_BottomRight, lvRight_TopRight, lvRight_TopLeft;
+    float lvRight_BottomLeft, lvRight_BottomRight;
+    float lvRight_TopRight, lvRight_TopLeft;
 
-        float lvTop_BottomLeft, lvTop_BottomRight, lvTop_TopRight, lvTop_TopLeft;
+    float lvTop_BottomLeft, lvTop_BottomRight;
+    float lvTop_TopRight, lvTop_TopLeft;
 
-        float lvBottom_BottomLeft, lvBottom_BottomRight, lvBottom_TopRight, lvBottom_TopLeft;
-    };
+    float lvBottom_BottomLeft, lvBottom_BottomRight;
+    float lvBottom_TopRight, lvBottom_TopLeft;
+  };
 
-    Voxel* getVoxel(int x, int y, int z,
-        std::vector<std::vector<std::vector<CubeFaceData>>> &faceData);
+  Voxel* getVoxel(int x, int y, int z,
+    std::vector<std::vector<std::vector<CubeFaceData>>> &faceData);
 
-    void createMeshData(
-            bool transparent,
-            const std::vector<std::vector<std::vector<CubeFaceData>>> &faceData,
-            std::vector<GLfloat> &vertexData,
-            std::vector<GLfloat> &normals,
-            std::vector<GLfloat> &UV,
-            std::vector<short> &elementData);
+  void createMeshData(
+    bool transparent,
+    const std::vector<std::vector<std::vector<CubeFaceData>>> &faceData,
+    std::vector<GLfloat> &vertexData,
+    std::vector<GLfloat> &normals,
+    std::vector<GLfloat> &UV,
+    std::vector<short> &elementData);
 
-    void doAORight(CubeFaceData &cf, int x, int y, int z,
-        std::vector<std::vector<std::vector<CubeFaceData>>> &faceData);
+  void doAORight(CubeFaceData &cf, int x, int y, int z,
+      std::vector<std::vector<std::vector<CubeFaceData>>> &faceData);
 
-    void doAOLeft(CubeFaceData &cf, int x, int y, int z,
-        std::vector<std::vector<std::vector<CubeFaceData>>> &faceData);
+  void doAOLeft(CubeFaceData &cf, int x, int y, int z,
+      std::vector<std::vector<std::vector<CubeFaceData>>> &faceData);
 
-    void doAOFront(CubeFaceData &cf, int x, int y, int z,
-        std::vector<std::vector<std::vector<CubeFaceData>>> &faceData);
+  void doAOFront(CubeFaceData &cf, int x, int y, int z,
+      std::vector<std::vector<std::vector<CubeFaceData>>> &faceData);
 
-    void doAOBack(CubeFaceData &cf, int x, int y, int z,
-        std::vector<std::vector<std::vector<CubeFaceData>>> &faceData);
+  void doAOBack(CubeFaceData &cf, int x, int y, int z,
+      std::vector<std::vector<std::vector<CubeFaceData>>> &faceData);
 
-    void doAOTop(CubeFaceData &cf, int x, int y, int z,
-        std::vector<std::vector<std::vector<CubeFaceData>>> &faceData);
+  void doAOTop(CubeFaceData &cf, int x, int y, int z,
+      std::vector<std::vector<std::vector<CubeFaceData>>> &faceData);
 
-    void doAOBottom(CubeFaceData &cf, int x, int y, int z,
-        std::vector<std::vector<std::vector<CubeFaceData>>> &faceData);
+  void doAOBottom(CubeFaceData &cf, int x, int y, int z,
+      std::vector<std::vector<std::vector<CubeFaceData>>> &faceData);
 
-    Voxel* getVoxel(int x, int y, int z,
-        std::vector<std::vector<std::vector<Voxel>>> &data,
-        std::vector<std::vector<std::vector<Voxel>>> *right,
-        std::vector<std::vector<std::vector<Voxel>>> *left,
-        std::vector<std::vector<std::vector<Voxel>>> *back,
-        std::vector<std::vector<std::vector<Voxel>>> *front);
+  Voxel* getVoxel(int x, int y, int z,
+      std::vector<std::vector<std::vector<Voxel>>> &data,
+      std::vector<std::vector<std::vector<Voxel>>> *right,
+      std::vector<std::vector<std::vector<Voxel>>> *left,
+      std::vector<std::vector<std::vector<Voxel>>> *back,
+      std::vector<std::vector<std::vector<Voxel>>> *front);
 
-    void computeAverageRight(int lightValue, int x, int y, int z, float &bottomLeft, float &bottomRight,
-            float &topRight, float &topLeft, std::vector<std::vector<std::vector<CubeFaceData>>> &faceData);
+  void computeAverageRight(int lightValue, int x, int y, int z,
+      float &bottomLeft, float &bottomRight, float &topRight, float &topLeft,
+      std::vector<std::vector<std::vector<CubeFaceData>>> &faceData);
 
-    void computeAverageLeft(int lightValue, int x, int y, int z, float &bottomLeft, float &bottomRight,
-            float &topRight, float &topLeft, std::vector<std::vector<std::vector<CubeFaceData>>> &faceData);
+  void computeAverageLeft(int lightValue, int x, int y, int z,
+      float &bottomLeft, float &bottomRight, float &topRight, float &topLeft,
+      std::vector<std::vector<std::vector<CubeFaceData>>> &faceData);
 
-    void computeAverageTop(int lightValue, int x, int y, int z, float &bottomLeft, float &bottomRight,
-            float &topRight, float &topLeft, std::vector<std::vector<std::vector<CubeFaceData>>> &faceData);
+  void computeAverageTop(int lightValue, int x, int y, int z,
+      float &bottomLeft, float &bottomRight, float &topRight, float &topLeft,
+      std::vector<std::vector<std::vector<CubeFaceData>>> &faceData);
 
-    void computeAverageBottom(int lightValue, int x, int y, int z, float &bottomLeft, float &bottomRight,
-            float &topRight, float &topLeft, std::vector<std::vector<std::vector<CubeFaceData>>> &faceData);
+  void computeAverageBottom(int lightValue, int x, int y, int z,
+      float &bottomLeft, float &bottomRight, float &topRight, float &topLeft,
+      std::vector<std::vector<std::vector<CubeFaceData>>> &faceData);
 
-    void computeAverageBack(int lightValue, int x, int y, int z, float &bottomLeft, float &bottomRight,
-            float &topRight, float &topLeft, std::vector<std::vector<std::vector<CubeFaceData>>> &faceData);
+  void computeAverageBack(int lightValue, int x, int y, int z,
+      float &bottomLeft, float &bottomRight, float &topRight, float &topLeft,
+      std::vector<std::vector<std::vector<CubeFaceData>>> &faceData);
 
-    void computeAverageFront(int lightValue, int x, int y, int z,
-            float &bottomLeft, float &bottomRight,
-            float &topRight, float &topLeft,
-            std::vector<std::vector<std::vector<CubeFaceData>>> &faceData);
+  void computeAverageFront(int lightValue, int x, int y, int z,
+      float &bottomLeft, float &bottomRight, float &topRight, float &topLeft,
+      std::vector<std::vector<std::vector<CubeFaceData>>> &faceData);
 
-    void computeAverageHelper(int lightValue,
-            const CubeFaceData& cLeftLeft,
-            const CubeFaceData& cLeftLeft_Right,
-            const CubeFaceData&	cBottomLeft,
-            const CubeFaceData& cBottomLeft_Right,
-            const CubeFaceData& cBottomMiddle,
-            const CubeFaceData&	cBottomMiddle_Right,
-            const CubeFaceData& cBottomRight,
-            const CubeFaceData& cBottomRight_Right,
-            const CubeFaceData& cRightRight,
-            const CubeFaceData& cRightRight_Right,
-            const CubeFaceData& cTopRight,
-            const CubeFaceData& cTopRight_Right,
-            const CubeFaceData& cTopMiddle,
-            const CubeFaceData& cTopMiddle_Right,
-            const CubeFaceData& cTopLeft,
-            const CubeFaceData& cTopLeft_Right,
-            float& bottomLeft,
-            float& bottomRight,
-            float& topRight,
-            float& topLeft);
+  void computeAverageHelper(int lightValue,
+      const CubeFaceData& cLeftLeft,
+      const CubeFaceData& cLeftLeft_Right,
+      const CubeFaceData&	cBottomLeft,
+      const CubeFaceData& cBottomLeft_Right,
+      const CubeFaceData& cBottomMiddle,
+      const CubeFaceData&	cBottomMiddle_Right,
+      const CubeFaceData& cBottomRight,
+      const CubeFaceData& cBottomRight_Right,
+      const CubeFaceData& cRightRight,
+      const CubeFaceData& cRightRight_Right,
+      const CubeFaceData& cTopRight,
+      const CubeFaceData& cTopRight_Right,
+      const CubeFaceData& cTopMiddle,
+      const CubeFaceData& cTopMiddle_Right,
+      const CubeFaceData& cTopLeft,
+      const CubeFaceData& cTopLeft_Right,
+      float& bottomLeft,
+      float& bottomRight,
+      float& topRight,
+      float& topLeft);
 
-    std::vector<std::vector<std::vector<CubeFaceData>>> m_faceData;
+  std::vector<std::vector<std::vector<CubeFaceData>>> m_faceData;
 
-    std::unique_ptr<mesh::MeshElement> m_mesh;
-    std::unique_ptr<mesh::MeshElement> m_waterMesh;
+  std::unique_ptr<mesh::MeshElement> m_mesh;
+  std::unique_ptr<mesh::MeshElement> m_waterMesh;
 
-    bool m_hasTransparent{true};
+  bool m_hasTransparent{true};
 
-    float m_xLocation;
-    float m_yLocation;
-    float m_zLocation;
+  double m_xLocation;
+  double m_yLocation;
+  double m_zLocation;
 
-    int m_width = config::chunk_data::GRAPHICAL_CHUNK_WIDTH;
-    int m_height = config::chunk_data::GRAPHICAL_CHUNK_HEIGHT;
-    int m_depth = config::chunk_data::GRAPHICAL_CHUNK_WIDTH;
+  int m_width = config::chunk_data::GRAPHICAL_CHUNK_WIDTH;
+  int m_height = config::chunk_data::GRAPHICAL_CHUNK_HEIGHT;
+  int m_depth = config::chunk_data::GRAPHICAL_CHUNK_WIDTH;
 
-    Transform transform;
+  Transform transform;
 };
 
 } /* graphics namespace */
