@@ -6,7 +6,31 @@ The game currently uses the working title "Librecraft".
 
 ![alt tag](doc/images/house.png)
 
-## Purpose And Scope
+## Background
+
+The purpose of this project is to create voxel based game, similar to
+games such as Infiniminer. The most characteristic feature is the ability
+to modify the world by removing and adding cubes. The player can move
+around in a seemingly infinite world, exploring and creating content. To
+make this possible, components such as rendering, collision detection, and
+procedural terrain generation must be implemented. Other components
+that can be relevant are: artificial intelligence and multi-player.
+
+### Motivation and Background
+My Bachelor Thesis (available here https://gupea.ub.gu.se/handle/2077/
+39606) was about creating a voxel game engine in Java using OpengGL, together
+with five other students. Although we were successful with reaching our goals,
+there were several aspects of the implementation that I think could have been
+done better. As I am interested in learning C++, I figured that doing a similar
+project in C++ instead of Java would be a good way to learn the language and
+various other topics, such as computer graphics and OpenGL.
+
+### Goals
+My main goal with this project will be to learn as much as possible, if the game
+happens to be enjoyable that would of course be good, but it is not the main
+concern. The primary focus will be on rendering and world interaction. When
+those areas have been implemented other aspects such as Terrain Generation,
+AI, Audio, and GUIs will hopefully be implemented.
 
 ## Building
 

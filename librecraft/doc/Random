@@ -1,4 +1,4 @@
-Build the game on windows
+lBuild the game on windows
 
 Terrain generation
 
@@ -13,8 +13,6 @@ Fix so it is possible to change the markers position in the text
 input
 
 Fix so that the terminal can show all possible settings
-
-Star night sky is broken
 
 Add cool post processing effects demo
 

@@ -37,3 +37,11 @@ it occurs randomly.
 When going back to the main menu from ingame, the music plays at 100% for a 
 short moment and then starts from 0 to 100
 
+###
+
+Segfaults when the player moves between chunks. Some how an error causing
+to many chunks to get removed by the chunkmanager. Bug is likely inside the 
+chunkmanager.
+
+###
+
