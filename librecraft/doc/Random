@@ -1,4 +1,12 @@
-lBuild the game on windows
+
+###
+
+These are things that can be added to the todod after 
+being explained more thoroughly.
+
+###
+
+Build the game on windows
 
 Terrain generation
 
@@ -25,4 +33,9 @@ broken shaders somehow
 
 bunch of graphics buggs with light propagation when loading
 a new world
+
+Sort the chunks rendering order after the distance to the
+player. This way chunks that are father away and ocluded
+by another chunk will fail z-depth test and hence might
+improve performance since no shading is needed.
 

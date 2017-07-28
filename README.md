@@ -17,8 +17,8 @@ procedural terrain generation must be implemented. Other components
 that can be relevant are: artificial intelligence and multi-player.
 
 ### Motivation and Background
-My Bachelor Thesis (available here https://gupea.ub.gu.se/handle/2077/
-39606) was about creating a voxel game engine in Java using OpengGL, together
+My Bachelor Thesis (available here https://gupea.ub.gu.se/handle/2077/39606) 
+was about creating a voxel game engine in Java using OpengGL, together
 with five other students. Although we were successful with reaching our goals,
 there were several aspects of the implementation that I think could have been
 done better. As I am interested in learning C++, I figured that doing a similar
