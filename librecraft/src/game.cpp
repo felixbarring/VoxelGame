@@ -59,22 +59,14 @@ public:
         config::font_data::fontLayout, config::font_data::fontAtlasWidth,
         config::font_data::fontAtlasHeight);
 
-    m_sprites.push_back(
-        make_shared<Sprite>(300, 300, 10,
-            fontMeshBuilder.buldMeshForString("Loading", 80),
-            res.getTexture(config::font_data::font)));
-    m_sprites.push_back(
-        make_shared<Sprite>(300, 300, 10,
-            fontMeshBuilder.buldMeshForString("Loading.", 80),
-            res.getTexture(config::font_data::font)));
-    m_sprites.push_back(
-        make_shared<Sprite>(300, 300, 10,
-            fontMeshBuilder.buldMeshForString("Loading..", 80),
-            res.getTexture(config::font_data::font)));
-    m_sprites.push_back(
-        make_shared<Sprite>(300, 300, 10,
-            fontMeshBuilder.buldMeshForString("Loading...", 80),
-            res.getTexture(config::font_data::font)));
+    const unsigned numberOfDots{3};
+    string dots{""};
+    for (unsigned i{0}; i <= numberOfDots; ++i) {
+      m_sprites.push_back(make_shared<Sprite>(300, 300, 10,
+              fontMeshBuilder.buldMeshForString("Loading" + dots, 80),
+              res.getTexture(config::font_data::font)));
+      dots += ".";
+    }
   }
 
   void update() {

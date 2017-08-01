@@ -46,6 +46,7 @@ private:
   util::FPSManager m_fpsManager{config::graphics_data::fps};
   util::SoundPlayer m_soundPlayer{};
 
+  // TODO It should be possible to not have this as a ptr.
   std::unique_ptr<graphics::GraphicsManager> m_graphicsmanager;
 
   sf::Window *window{};
