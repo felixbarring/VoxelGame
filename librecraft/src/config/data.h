@@ -26,7 +26,7 @@ namespace config {
     extern const unsigned CHUNK_WIDTH_AND_DEPTH;
     extern const unsigned CHUNK_HEIGHT;
 
-    extern const unsigned NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER;
+    extern const int NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER;
     extern const unsigned NUMBER_OF_CHUNKS_Y;
   }
 

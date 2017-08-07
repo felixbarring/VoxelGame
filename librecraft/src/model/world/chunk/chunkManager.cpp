@@ -178,6 +178,8 @@ void ChunkManager::setCenter(float x, float z) {
   if (!m_bussyMovingChunksMutex->try_lock())
     return;
 
+  // TODO Remove the hardcoded 16 values!!!
+
   if (x < NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * 16 - m_xOffset)
     moveChunksRight();
   else if (x > NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * 16 - m_xOffset + 16)
@@ -191,10 +193,16 @@ void ChunkManager::setCenter(float x, float z) {
 
 }
 
-// Has one bugg, when the player is exactly located at an integer position
-// the selection will be wrong!
 bool ChunkManager::intersectWithSolidCube(vec3 origin, vec3 direction,
     vec3 &intersected, vec3 &previous, float searchLength) {
+	static const double smallNumber = 0.0001;
+
+
+	// When the player is exactly located at an integer position the selection
+	// will be wrong due to incorrect rounding of the values. The additions with
+	// a small number solves this problem. Not bulletproof but seems to work well
+	// in practice.
+	origin = origin + glm::vec3{smallNumber, smallNumber, smallNumber};
 
   // Get the sign of the directions
   int signXDirection = (direction.x > 0) - (direction.x < 0);
@@ -331,6 +339,8 @@ void ChunkManager::moveChunksDown() {
 // TODO The thread safety needs to be improved and documented.
 void ChunkManager::moveChunks(Direction direction) {
   vector<shared_ptr<Chunk>> chunksToDelete;
+
+  std::cout << "Moving Chunks \n";
 
   // Store the chunks that should be removed and moves the old chunks in the
   // matrix.
