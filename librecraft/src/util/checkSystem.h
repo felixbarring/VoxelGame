@@ -32,7 +32,7 @@ static void checkStuff() {
 //	std::cout << "-------------------------\n";
 
   unsigned int hwThreads = std::thread::hardware_concurrency();
-  std::cout << "Number of hardware threads = " << hwThreads;
+  std::cout << "Number of hardware threads = " << hwThreads << "\n";
 
 }
 

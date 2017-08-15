@@ -1,8 +1,6 @@
 #include "fpsManager.h"
 
 #include <iostream>
-
-#include <chrono>
 #include <thread>
 
 namespace util {
@@ -14,7 +12,7 @@ FPSManager::FPSManager(int maxFPS)
 }
 
 void FPSManager::frameStart() {
-  m_clock.restart();
+	m_frameStartTime = std::chrono::system_clock::now();
 }
 
 void FPSManager::sync() {
@@ -28,7 +26,10 @@ void FPSManager::sync() {
   // wait until it is time to proceed with the next frame.
   // The busy waiting is used to increase the timing accuracy, we do not
   // want to start the next frame to late.
-  double totalFrameTime = m_clock.getElapsedTime().asSeconds();
+
+  std::chrono::duration<double> tft = std::chrono::system_clock::now() - m_frameStartTime;
+  double totalFrameTime = tft.count();
+
   while (totalFrameTime < m_timePerFrame) {
     double timeRemainingInMilis = (m_timePerFrame - totalFrameTime) / m_mili;
     if (timeRemainingInMilis > 2) {
@@ -36,9 +37,11 @@ void FPSManager::sync() {
     } else if (timeRemainingInMilis > 1) {
       std::this_thread::sleep_for(oneMilliSecond);
     }
-    totalFrameTime = m_clock.getElapsedTime().asSeconds() - m_frameStartTime;
+    tft = std::chrono::system_clock::now() - m_frameStartTime;
+    totalFrameTime = tft.count();
   }
 
+  m_frameStartTime = std::chrono::system_clock::now();
   m_currentFPS = 1.0 / totalFrameTime;
   m_timeForLatestFrame = totalFrameTime;
 }

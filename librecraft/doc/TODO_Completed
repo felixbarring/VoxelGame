@@ -16,3 +16,11 @@ Star night sky is broken:
 
 The star sky does not work correctly, I get shader errors at the
 time when it should be vissible.
+
+###
+
+
+Segfaults when the player moves between chunks. Some how an error causing
+to many chunks to get removed by the chunkmanager. Bug is likely inside the 
+chunkmanager.
+

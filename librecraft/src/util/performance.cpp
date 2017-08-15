@@ -20,17 +20,17 @@ unsigned Performance::createId(const string& value) {
 }
 
 void Performance::startTimer(unsigned id) {
-  get<0>(m_accumulatedTime[id]).restart();
+//  get<0>(m_accumulatedTime[id]).restart();
 }
 
 void Performance::stopTimer(unsigned id) {
-  auto &p = m_accumulatedTime[id];
-  get<1>(p) += get<0>(p).getElapsedTime().asSeconds();
+//  auto &p = m_accumulatedTime[id];
+//  get<1>(p) += get<0>(p).getElapsedTime().asSeconds();
 }
 
 void Performance::clearData() {
-  for_each(m_accumulatedTime.begin(), m_accumulatedTime.end(),
-      [](tuple<sf::Clock, double> &t) { get<1>(t) = 0; });
+//  for_each(m_accumulatedTime.begin(), m_accumulatedTime.end(),
+//      [](tuple<sf::Clock, double> &t) { get<1>(t) = 0; });
 }
 
 void Performance::loggData() {
@@ -38,11 +38,11 @@ void Performance::loggData() {
 }
 
 void Performance::printData() {
-  for_each(m_accumulatedTime.begin(), m_accumulatedTime.end(),
-      [] (tuple<sf::Clock, double>&)
-      {
-//          std::cout << m_map.find(get<1>(t)) << "Blal " << get<0>(t).getElapsedTime() << "bla bla \n";
-      });
+//  for_each(m_accumulatedTime.begin(), m_accumulatedTime.end(),
+//      [] (tuple<sf::Clock, double>&)
+//      {
+////          std::cout << m_map.find(get<1>(t)) << "Blal " << get<0>(t).getElapsedTime() << "bla bla \n";
+//      });
 }
 
 } /* namespace util */

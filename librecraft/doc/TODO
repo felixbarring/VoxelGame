@@ -1,3 +1,4 @@
+
 Iventory of cubes
 Type: Feature
 
@@ -25,17 +26,6 @@ colliding with. When collecting it, it be be added to the
 iventory, thus removing a cube will not automatically add it 
 to the inventory. The particle effects should have a demo 
 shocasing it.
-
-###
-
-Light cube
-Type: Feature
-
-Add a new cube type that can spread ligh similar to sunlight.
-This ligh will light up places that have higher contribution 
-the light cube than from the sun. The cube can spread light 16 
-cubes far. Initial strenght is 16, and decreased with one
-for each cube away from the source.
 
 ###
 
@@ -146,7 +136,7 @@ and hence created moving shadows.
 
 ###
 
-Bump mapping demo:
+Bump mapping demo
 Type: Feature
 
 Implement a demo showcasing bumpmapping og a brick texture. The 
@@ -194,4 +184,22 @@ Type: Code Quality
 Remove all use of Singletons
 
 ###
+
+Improve the HUD
+Type: Feature
+
+Add several building blocks so that the player can easily see wich he can 
+change to by pressing the change buttons. The player can change in both 
+directions and the currently selected one is highlighted by being extra large
+and in the middel.
+
+###
+
+Add a minimap
+
+Type: Feature
+
+Create a minimap that shows the details of the world from above. This can
+probably be acheived by rendering the world from above to a texture.
+
 

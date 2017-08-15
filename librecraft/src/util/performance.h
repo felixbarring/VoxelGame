@@ -1,7 +1,6 @@
 #ifndef SRC_UTIL_PERFORMANCE_H_
 #define SRC_UTIL_PERFORMANCE_H_
 
-#include <SFML/System/Clock.hpp>
 #include <map>
 #include <vector>
 
@@ -33,8 +32,8 @@ public:
 private:
 
   std::map<int, std::string> m_map{};
-  std::vector<std::tuple<sf::Clock, double>> m_accumulatedTime{};
-  sf::Clock m_clock{};
+//  std::vector<std::tuple<sf::Clock, double>> m_accumulatedTime{};
+//  sf::Clock m_clock{};
 
 };
 

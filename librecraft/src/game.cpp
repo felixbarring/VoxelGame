@@ -144,8 +144,6 @@ void Game::run() {
   // TODO No opengl outside graphics!
   glViewport(0, 0, width, height);
 
-  // TODO PUT THE ABOVE SHIT IN THE GRAPHICS MANAGER?!?
-
   m_graphicsmanager = make_unique<graphics::GraphicsManager>();
 
   m_mainMenu.reset(new MainMenu(*this, m_soundPlayer, *m_graphicsmanager));
