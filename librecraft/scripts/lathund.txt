@@ -28,8 +28,9 @@ cd ../..
 mkdir Eclipse
 
 cd Eclipse
+mkdir data
 touch data/meta
-cmake -G "your ide generator"
+cmake -G "your ide generator" path_to_cmake.txt
 
 And then just import it with your ide.
 

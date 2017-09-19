@@ -27,12 +27,14 @@ namespace cube_data {
  const char MORE_ROCK = 3;
  const char BRICK_WALL = 4;
  const char SAND = 5;
+ const char LIGHT = 6;
 
- const char LAST_CUBE_USED_FOR_BUILDING = SAND; // Better name needed
+ const char LAST_CUBE_USED_FOR_BUILDING = LIGHT; // Better name needed
 
- const char WATER = 6;
- const char BED_ROCK = 7;
- const char SELECTED = 8;
+ const char WATER = 7;
+ const char BED_ROCK = 8;
+ const char SELECTED = 9;
+
 
 // Used for looping over all types, except for air.
  const char LAST_CUBE = SELECTED;
@@ -42,13 +44,14 @@ namespace cube_data {
  const int BOTTOM_TEXTURE = 2;
 
 // 0 = Side, 1 = Top, 2 = Bottom
- const char BLOCK_TEXTURES[9][3] {
+ const char BLOCK_TEXTURES[10][3] {
     { 0, 1, 2 }, // Grass
     { 2, 2, 2 }, // Dirt
     { 3, 3, 3 }, // Rock
     { 4, 4, 4 }, // More rock
     { 5, 5, 5 }, // Brick wall
     { 6, 6, 6 }, // Sand
+	{ 10, 10, 10}, //LIGHT
     { 7, 7, 7 }, // Water
     { 8, 8, 8 }, // Bedrock
     { 9, 9, 9 }, // Selected
@@ -69,6 +72,7 @@ const std::vector<std::string> textures {
   "../resources/cubes/water.png",
   "../resources/cubes/bedrock.png",
   "../resources/cubes/selected.png",
+  "../resources/cubes/light.png",
 };
 
 // TODO Fix better thumbnails
@@ -79,6 +83,7 @@ const std::vector<std::string> thumbnails {
   "../resources/cubes/more_rock.png",
   "../resources/cubes/brick.png",
   "../resources/cubes/sand.png",
+  "../resources/cubes/light.png",
 };
 
 }
