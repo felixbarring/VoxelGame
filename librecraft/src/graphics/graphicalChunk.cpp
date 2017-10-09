@@ -45,7 +45,7 @@ GraphicalChunk::GraphicalChunk(double _x, double _y, double _z,
             left, back, front);
         if (voxel) {
           cube.id = voxel->id;
-          cube.lightValue = voxel->lightValue;
+          cube.lightValue = voxel->sunLightValue;
         } else {
           cube.id = AIR;
           cube.lightValue = 0;

@@ -221,7 +221,7 @@ void Player::updateCameraAndTargetCube() {
     char voxelID = m_chunkManager.getCubeId(selectedCube.x, selectedCube.y,
         selectedCube.z);
     char voxelLightValue = m_chunkManager.getVoxel(previous.x, previous.y,
-        previous.z).lightValue;
+        previous.z).sunLightValue;
     m_graphicsManager.getCubeBatcher().addBatch(voxelID,
         m_targetedCubeTransform, voxelLightValue + 5);
   }

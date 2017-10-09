@@ -297,7 +297,9 @@ private:
 	void doSunLightning(std::vector<glm::vec3> &lightPropagate, int x, int y,
 	    int z, bool useVec = true);
 
-	void propagateLight(int x, int y, int z);
+	void propagateSunLight(int x, int y, int z);
+
+	void propagateOtherLight(int x, int y, int z);
 
 	void updateDirtyRegions(int y);
 
