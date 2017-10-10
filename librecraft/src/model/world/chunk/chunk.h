@@ -303,9 +303,13 @@ private:
 
 	void updateDirtyRegions(int y);
 
-	void dePropagateLight(int x, int y, int z, int _lightValue = -1);
+	void dePropagateSunlight(int x, int y, int z, int _lightValue = -1);
 
-	int highestLVFromNeighbors(int x, int y, int z);
+	void dePropagateOtherlight(int x, int y, int z, int _lightValue = -1);
+
+	int highestSunLVFromNeighbors(int x, int y, int z);
+
+	int highestOtherLVFromNeighbors(int x, int y, int z);
 
 	bool isInDirectSunlight(int x, int y, int z);
 
