@@ -640,7 +640,8 @@ void Chunk::propagateOtherLight(int x, int y, int z) {
 
   vector<vec3> newPropagates;
 
-  std::cout << "The light value is = " << lvInitial << "\n";
+  if (lvInitial > 16 || lvInitial <= 0)
+    std::cout << "The light value is = " << lvInitial << "\n";
 
    // ########################################################################
 
@@ -935,6 +936,9 @@ void Chunk::dePropagateOtherlight(int x, int y, int z, int _lightValue) {
   vector<vec3> propagates;
 
   while (!keks.empty()) {
+
+    cout << "Keks size = " << keks.size() << "\n";
+
     vec3 current = keks.front();
     keks.pop();
     Voxel &voxel = m_cubes[current.x][current.y][current.z];
@@ -944,10 +948,13 @@ void Chunk::dePropagateOtherlight(int x, int y, int z, int _lightValue) {
     // Right
     if (current.x + 1 < m_width) {
       Voxel &v{m_cubes[current.x + 1][current.y][current.z]};
-      if (v.otherLightValue != 0 && v.otherLightValue <= lightValue) {
-        keks.emplace(current.x + 1, current.y, current.z);
-      } else if (v.otherLightValue >= lightValue) {
-        propagates.push_back({current.x + 1, current.y, current.z});
+      if (v.id == AIR) {
+        if (v.otherLightValue != 0 &&
+            v.otherLightValue <= lightValue) {
+          keks.emplace(current.x + 1, current.y, current.z);
+        } else if (v.otherLightValue >= lightValue) {
+          propagates.push_back({current.x + 1, current.y, current.z});
+        }
       }
     } else {
 
@@ -956,10 +963,13 @@ void Chunk::dePropagateOtherlight(int x, int y, int z, int _lightValue) {
     // Left
     if (current.x - 1 >= 0) {
       Voxel &v{m_cubes[current.x - 1][current.y][current.z]};
-      if (v.otherLightValue != 0 && v.otherLightValue <= lightValue) {
-        keks.emplace(current.x - 1, current.y, current.z);
-      } else if (v.otherLightValue >= lightValue) {
-        propagates.push_back({current.x - 1, current.y, current.z});
+      if (v.id == AIR ) {
+        if (v.otherLightValue != 0 &&
+            v.otherLightValue <= lightValue) {
+          keks.emplace(current.x - 1, current.y, current.z);
+        } else if (v.otherLightValue >= lightValue) {
+          propagates.push_back({current.x - 1, current.y, current.z});
+        }
       }
     } else {
 
@@ -968,30 +978,42 @@ void Chunk::dePropagateOtherlight(int x, int y, int z, int _lightValue) {
     // Up
     if (current.y + 1 < m_height) {
       Voxel &v{m_cubes[current.x][current.y + 1][current.z]};
-      if (v.otherLightValue != 0 && v.otherLightValue <= lightValue) {
-        keks.emplace(current.x, current.y + 1, current.z);
-      } else if (v.otherLightValue >= lightValue) {
-        propagates.push_back({current.x , current.y + 1, current.z});
+      if (v.id == AIR) {
+        if (v.otherLightValue != 0 &&
+            v.otherLightValue <= lightValue)
+        {
+          keks.emplace(current.x, current.y + 1, current.z);
+        } else if (v.otherLightValue >= lightValue) {
+          propagates.push_back({current.x , current.y + 1, current.z});
+        }
       }
     }
 
     // Down
     if (current.y - 1 >= 0) {
       Voxel &v{m_cubes[current.x][current.y - 1][current.z]};
-      if (v.otherLightValue != 0 && v.otherLightValue <= lightValue) {
-        keks.emplace(current.x, current.y - 1, current.z);
-      } else if (v.otherLightValue >= lightValue) {
-        propagates.push_back({current.x , current.y - 1, current.z});
+      if (v.id == AIR) {
+        if (v.otherLightValue != 0 &&
+            v.otherLightValue <= lightValue)
+        {
+          keks.emplace(current.x, current.y - 1, current.z);
+        } else if (v.otherLightValue >= lightValue) {
+          propagates.push_back({current.x , current.y - 1, current.z});
+        }
       }
     }
 
     // Backwards
     if (current.z + 1 > 0) {
       Voxel &v{m_cubes[current.x][current.y][current.z + 1]};
-      if (v.otherLightValue != 0 && v.otherLightValue <= lightValue) {
-        keks.emplace(current.x, current.y, current.z + 1);
-      } else if (v.otherLightValue >= lightValue) {
-        propagates.push_back({current.x , current.y, current.z + 1});
+      if (v.id == AIR) {
+        if (v.otherLightValue != 0 &&
+            v.otherLightValue <= lightValue)
+        {
+          keks.emplace(current.x, current.y, current.z + 1);
+        } else if (v.otherLightValue >= lightValue) {
+          propagates.push_back({current.x , current.y, current.z + 1});
+        }
       }
     } else {
 
@@ -1000,10 +1022,14 @@ void Chunk::dePropagateOtherlight(int x, int y, int z, int _lightValue) {
     // Forward
     if (current.z - 1 >= 0) {
       Voxel &v{m_cubes[current.x][current.y][current.z - 1]};
-      if (v.otherLightValue != 0 && v.otherLightValue <= lightValue) {
-        keks.emplace(current.x, current.y, current.z - 1);
-      } else if (v.otherLightValue >= lightValue) {
-        propagates.push_back({current.x , current.y, current.z - 1});
+      if (v.id == AIR) {
+        if (v.otherLightValue != 0 &&
+            v.otherLightValue <= lightValue)
+        {
+          keks.emplace(current.x, current.y, current.z - 1);
+        } else if (v.otherLightValue >= lightValue) {
+          propagates.push_back({current.x , current.y, current.z - 1});
+        }
       }
     } else {
 
@@ -1012,9 +1038,9 @@ void Chunk::dePropagateOtherlight(int x, int y, int z, int _lightValue) {
 
   cout << "Size of propagates = " << propagates.size() << "\n";
 
-//  for (auto &p : propagates) {
-//    propagateOtherLight(p.x, p.y, p.z);
-//  }
+  for (auto &p : propagates) {
+    propagateOtherLight(p.x, p.y, p.z);
+  }
 
 }
 
