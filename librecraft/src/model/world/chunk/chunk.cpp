@@ -927,8 +927,6 @@ void Chunk::dePropagateSunlight(int x, int y, int z, int _lightValue) {
 
 void Chunk::dePropagateOtherlight(int x, int y, int z, int _lightValue) {
 
-  std::cout << "De propagating ;) \n";
-
   updateDirtyRegions(y);
 
   queue<vec3> keks;
@@ -936,8 +934,6 @@ void Chunk::dePropagateOtherlight(int x, int y, int z, int _lightValue) {
   vector<vec3> propagates;
 
   while (!keks.empty()) {
-
-    cout << "Keks size = " << keks.size() << "\n";
 
     vec3 current = keks.front();
     keks.pop();
@@ -957,7 +953,18 @@ void Chunk::dePropagateOtherlight(int x, int y, int z, int _lightValue) {
         }
       }
     } else {
-
+      if (m_rightNeighbor) {
+        Voxel &v{m_rightNeighbor->m_cubes[0][current.y][current.z]};
+        if (v.id == AIR) {
+          if (v.otherLightValue != 0 &&
+              v.otherLightValue <= lightValue) {
+            m_rightNeighbor->dePropagateOtherlight(0, current.y, current.z);
+          }
+//          else if (v.otherLightValue >= lightValue) {
+//            propagates.push_back({current.x + 1, current.y, current.z});
+//          }
+        }
+      }
     }
 
     // Left
@@ -972,7 +979,18 @@ void Chunk::dePropagateOtherlight(int x, int y, int z, int _lightValue) {
         }
       }
     } else {
-
+      if (m_leftNeighbor) {
+        Voxel &v{m_leftNeighbor->m_cubes[m_width - 1][current.y][current.z]};
+        if (v.id == AIR ) {
+          if (v.otherLightValue != 0 &&
+              v.otherLightValue <= lightValue) {
+            m_leftNeighbor->dePropagateOtherlight(m_width - 1, current.y, current.z);
+          }
+//          else if (v.otherLightValue >= lightValue) {
+//            propagates.push_back({current.x - 1, current.y, current.z});
+//          }
+        }
+      }
     }
 
     // Up
@@ -1016,7 +1034,19 @@ void Chunk::dePropagateOtherlight(int x, int y, int z, int _lightValue) {
         }
       }
     } else {
-
+      if (m_backNeighbor) {
+        Voxel &v{m_cubes[current.x][current.y][0]};
+        if (v.id == AIR) {
+          if (v.otherLightValue != 0 &&
+              v.otherLightValue <= lightValue)
+          {
+            m_backNeighbor->dePropagateOtherlight(current.x, current.y, 0);
+          }
+//          else if (v.otherLightValue >= lightValue) {
+//            propagates.push_back({current.x , current.y, current.z + 1});
+//          }
+        }
+      }
     }
 
     // Forward
@@ -1032,11 +1062,21 @@ void Chunk::dePropagateOtherlight(int x, int y, int z, int _lightValue) {
         }
       }
     } else {
-
+      if (m_frontNeighbor) {
+        Voxel &v{m_cubes[current.x][current.y][m_depth - 1]};
+        if (v.id == AIR) {
+          if (v.otherLightValue != 0 &&
+              v.otherLightValue <= lightValue)
+          {
+            m_frontNeighbor->dePropagateOtherlight(current.x, current.y, m_depth - 1);
+          }
+//          else if (v.otherLightValue >= lightValue) {
+//            propagates.push_back({current.x , current.y, 16});
+//          }
+        }
+      }
     }
   }
-
-  cout << "Size of propagates = " << propagates.size() << "\n";
 
   for (auto &p : propagates) {
     propagateOtherLight(p.x, p.y, p.z);
