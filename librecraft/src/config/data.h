@@ -40,6 +40,7 @@ namespace config {
     extern const char BRICK_WALL;
     extern const char SAND;
 
+    extern const char LAST_CUBE_USED_FOR_GENERATION;
     extern const char LAST_CUBE_USED_FOR_BUILDING;
 
     extern const char WATER;

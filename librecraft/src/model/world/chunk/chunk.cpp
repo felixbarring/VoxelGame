@@ -135,8 +135,15 @@ void Chunk::collectLightFromFrontNeighbor() {
 }
 
 void Chunk::propagateLights() {
-  for (auto l : m_lightsToPropagate)
+  for (auto &l : m_lightsToPropagate)
     propagateSunLight(l.x, l.y, l.z);
+
+  m_lightsToPropagate.clear(); // Is This okay?!?
+
+  for (auto &l : m_otherLightSources)
+    propagateOtherLight(l.x, l.y, l.z);
+
+  m_otherLightSources.clear();
 }
 
 void Chunk::forceUpdateGraphics() {
@@ -264,7 +271,12 @@ void Chunk::loadChunk() {
       for (int k = 0; k < m_depth; ++k) {
         char voxelId = std::stoi(list[counter]);
         ++counter;
-        m_cubes[i][j].push_back(Voxel{voxelId, 0});
+        if (voxelId == LIGHT) {
+          m_cubes[i][j].push_back({voxelId, 0, 16});
+          m_otherLightSources.push_back(vec3(i, j, k));
+        } else {
+          m_cubes[i][j].push_back({voxelId, 0, 0});
+        }
       }
     }
   }

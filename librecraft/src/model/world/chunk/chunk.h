@@ -6,7 +6,6 @@
 #include <vector>
 #include <array>
 #include <glm/glm.hpp>
-#include <map>
 #include <set>
 
 #include "../../../config/data.h"
@@ -124,11 +123,11 @@ public:
 	void collectLightFromFrontNeighbor();
 
 	/**
-	 * This function uses the results from Chunk::doSunLightning and
-	 * collecLightFrom* to calculate the lightning of the Chunk. It is not safe to
-	 * run this in parallel with a neighbor or a neighbors neighbor. That is,
-	 * there must be a distance of two chunks between two Chunks for it to be safe
-	 * to run them in parallel.
+	 * This function will propagate the sun and other lights. It uses the results
+	 * from Chunk::doSunLightning and collecLightFrom* to calculate the lightning
+	 * of the Chunk. It is not safe to run this in parallel with a neighbor or a
+	 * neighbors neighbor. That is, there must be a distance of two chunks between
+	 * two Chunks for it to be safe to run them in parallel.
 	 */
 	void propagateLights();
 
@@ -339,6 +338,9 @@ private:
 	std::shared_ptr<Chunk> m_backNeighbor{};
 
 	std::set<int> m_dirtyRegions{};
+
+	std::vector<glm::vec3> m_otherLightSources;
+
 };
 
 }

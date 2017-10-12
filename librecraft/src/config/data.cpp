@@ -29,6 +29,7 @@ namespace cube_data {
  const char SAND = 5;
  const char LIGHT = 6;
 
+ const char LAST_CUBE_USED_FOR_GENERATION = SAND;
  const char LAST_CUBE_USED_FOR_BUILDING = LIGHT; // Better name needed
 
  const char WATER = 7;
