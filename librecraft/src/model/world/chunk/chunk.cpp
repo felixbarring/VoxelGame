@@ -185,24 +185,17 @@ void Chunk::setCube(int x, int y, int z, char id) {
     return;
 
   Voxel &voxel = m_cubes[x][y][z];
-  int removedId = voxel.id;
+  int replacedId = voxel.id;
   voxel.id = id;
 
   // If we removed a cube
   if (id == AIR || id == WATER) {
-    if (removedId == LIGHT)
+    if (replacedId == LIGHT)
       dePropagateOtherlight(x, y, z);
 
     updateLightningCubeRemoved(voxel, x, y, z);
   }
   else { // We added a cube
-    voxel.sunLightValue = 0;
-
-    if (id == LIGHT) {
-      voxel.otherLightValue = 16;
-      propagateOtherLight(x, y, z);
-    }
-
     updateLightningCubeAdded(x, y, z);
   }
   m_isDirty = true;
@@ -407,14 +400,14 @@ void Chunk::updateLightningCubeRemoved(Voxel& voxel, int x, int y, int z) {
       propagateSunLight(v.x, v.y, v.z);
 
   } else {
-    int highestLightValue = 0;
-    highestLightValue = highestSunLVFromNeighbors(x, y, z) - 1;
-    if (highestLightValue < 0)
-      highestLightValue = 0;
-
-    voxel.sunLightValue = highestLightValue;
+    int highestSLV = std::max(highestSunLVFromNeighbors(x, y, z) - 1, 0);
+    voxel.sunLightValue = highestSLV;
     propagateSunLight(x, y, z);
   }
+
+  int highestOLV = std::max(highestOtherLVFromNeighbors(x, y, z) -1, 0);
+  voxel.otherLightValue = highestOLV;
+  propagateOtherLight(x, y, z);
 
   updateGraphics(true);
   updateNeighborGraphics();
@@ -429,6 +422,14 @@ void Chunk::updateLightningCubeAdded(int x, int y, int z) {
       dePropagateSunlight(x, i ,z, 15);
   }
   dePropagateSunlight(x, y ,z);
+
+  Voxel &v{m_cubes[x][y][z]};
+  if (v.id == LIGHT) {
+    v.otherLightValue = 16;
+    propagateOtherLight(x, y, z);
+  } else {
+    dePropagateOtherlight(x, y, z);
+  }
 
   updateDirtyRegions(y);
   updateGraphics(true);
