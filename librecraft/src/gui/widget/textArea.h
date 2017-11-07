@@ -4,6 +4,7 @@
 #include <memory>
 #include <string>
 #include <list>
+#include <functional>
 
 #include "../../graphics/sprite.h"
 #include "abstractWidget.h"
