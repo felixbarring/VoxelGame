@@ -30,7 +30,7 @@ should.
 Whene entering the ingame state, there is a chanse that the
 shader becomes broken somehow and dont render correctly. 
 Verry annoying, and hard to see how it happens since,
-it occurs randomly.
+it occurs randomly. This only happens on intel, not NVIDIA.
 
 ###
 

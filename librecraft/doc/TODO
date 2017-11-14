@@ -1,4 +1,12 @@
 
+
+
+###
+
+Try out using clang tidy and clang format.
+
+###
+
 Iventory of cubes
 Type: Feature
 
@@ -19,7 +27,7 @@ type is removed from the HUD.
 Removeing cube effect
 Type: Feature
 
-When a cube is removed/destroyed, there shold be a particle
+When a cube is removed/destroyed, there should be a particle
 effect to make it look cool. The cube will then be represented
 by a small floating cube that the player can collect by 
 colliding with. When collecting it, it be be added to the 
@@ -45,14 +53,6 @@ on how strong the explosion is and the cube thoughness. There
 should be an billboard animation for the explosion effect show 
 cased in a demo. The explosion can be used by a TNT block that
 triggers the explosion when hit by the player.
-
-###
-
-File Managing
-Type: Feature
-
-Implement so that it is possible to rename worlds and also delete 
-them. Either With boost file system, or C++ 17 file system.
 
 ###
 
