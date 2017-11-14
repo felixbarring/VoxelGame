@@ -265,8 +265,6 @@ void Chunk::loadChunk() {
   }
 }
 
-
-// TODO Long function consider splitting it upin smaller ones!
 void Chunk::generateChunk(CreationOptions& options) {
   m_isDirty = true;
 

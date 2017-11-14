@@ -10,13 +10,15 @@ solid cube.
 
 ###
 
+Is this still true?
+
 The voxel lightning does not work correctly when loading a world.
 The light does not spread correctly between chunks. Works fine
 while playing, but not if the world is saved and  then loaded.
 
 ###
 
-The shading between the voxels are not completly correct.
+The shading between the chunks are not completly correct.
 
 ###
 

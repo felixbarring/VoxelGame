@@ -58,7 +58,6 @@ vector<vector<vector<Voxel>>> TerrainGenerator::generateTerrain(
 
   if (options.getFlat()) {
     generateFlat(cubes);
-    return cubes;
   } else {
     generateNoneFlat(cubes, x, y);
   }
