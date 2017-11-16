@@ -20,14 +20,14 @@ namespace config {
   extern std::string worldMetaFile;
 
   namespace chunk_data {
-    extern const unsigned GRAPHICAL_CHUNK_WIDTH;
-    extern const unsigned GRAPHICAL_CHUNK_HEIGHT;
+    extern const int GRAPHICAL_CHUNK_WIDTH;
+    extern const int GRAPHICAL_CHUNK_HEIGHT;
 
-    extern const unsigned CHUNK_WIDTH_AND_DEPTH;
-    extern const unsigned CHUNK_HEIGHT;
+    extern const int CHUNK_WIDTH_AND_DEPTH;
+    extern const int CHUNK_HEIGHT;
 
     extern const int NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER;
-    extern const unsigned NUMBER_OF_CHUNKS_Y;
+    extern const int NUMBER_OF_CHUNKS_Y;
   }
 
   namespace cube_data {

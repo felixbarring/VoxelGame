@@ -34,21 +34,23 @@ GraphicalChunk::GraphicalChunk(double _x, double _y, double _z,
   // The face data will be one bigger in each direction.
   // This is to make it possible to compare voxels with
   // neighbors in other chunks.
-  for (unsigned x{0}; x < m_width + 2; ++x) {
+  for (int x{0}; x < m_width + 2; ++x) {
     m_faceData.push_back(vector<vector<CubeFaceData>>());
-    for (unsigned y{0}; y < m_height + 2; ++y) {
+    for (int y{0}; y < m_height + 2; ++y) {
       m_faceData[x].push_back(vector<CubeFaceData>());
-      for (unsigned z{0}; z < m_depth + 2; z++) {
+      for (int z{0}; z < m_depth + 2; ++z) {
         CubeFaceData cube;
 
-        auto *voxel = getVoxel(x - 1, y - 1 + m_yLocation, z - 1, data, right,
+        Voxel *voxel = getVoxel(x - 1, y - 1 + m_yLocation, z - 1, data, right,
             left, back, front);
         if (voxel) {
           cube.id = voxel->id;
-          cube.lightValue = voxel->otherLightValue;
+          cube.sunLightValue = voxel->sunLightValue;
+          cube.otherLightValue = voxel->otherLightValue;
         } else {
           cube.id = AIR;
-          cube.lightValue = 0;
+          cube.sunLightValue = 0;
+          cube.otherLightValue = 0;
         }
 
         cube.front = false;
@@ -64,9 +66,9 @@ GraphicalChunk::GraphicalChunk(double _x, double _y, double _z,
   }
 
   // Remove faces and compute lightning
-  for (unsigned x = 0; x < m_width; x++) {
-    for (unsigned y = 0; y < m_height; y++) {
-      for (unsigned k = 0; k < m_depth; k++) {
+  for (int x = 0; x < m_width; x++) {
+    for (int y = 0; y < m_height; y++) {
+      for (int k = 0; k < m_depth; k++) {
 
         CubeFaceData &current = m_faceData[x + 1][y + 1][k + 1];
         if (current.id == AIR)
@@ -90,17 +92,17 @@ GraphicalChunk::GraphicalChunk(double _x, double _y, double _z,
           current.right = true;
 
           if (useSmoothShading) {
-            computeAverageRight(cd.lightValue, x + 1, y + 1, k + 1,
+            computeAverageRight(cd.sunLightValue, x + 1, y + 1, k + 1,
               current.lvRight_BottomLeft,
               current.lvRight_BottomRight,
               current.lvRight_TopRight,
               current.lvRight_TopLeft,
               m_faceData);
           } else {
-            current.lvRight_BottomLeft = cd.lightValue;
-            current.lvRight_BottomRight = cd.lightValue;
-            current.lvRight_TopRight = cd.lightValue;
-            current.lvRight_TopLeft = cd.lightValue;
+            current.lvRight_BottomLeft = cd.sunLightValue;
+            current.lvRight_BottomRight = cd.sunLightValue;
+            current.lvRight_TopRight = cd.sunLightValue;
+            current.lvRight_TopLeft = cd.sunLightValue;
           }
 
           doAORight(current, x + 1, y + 1, k + 1,m_faceData);
@@ -111,12 +113,12 @@ GraphicalChunk::GraphicalChunk(double _x, double _y, double _z,
           current.left = true;
 
           if (useSmoothShading) {
-            current.lvLeft_BottomLeft = cd.lightValue;
-            current.lvLeft_BottomRight = cd.lightValue;
-            current.lvLeft_TopRight = cd.lightValue;
-            current.lvLeft_TopLeft = cd.lightValue;
+            current.lvLeft_BottomLeft = cd.sunLightValue;
+            current.lvLeft_BottomRight = cd.sunLightValue;
+            current.lvLeft_TopRight = cd.sunLightValue;
+            current.lvLeft_TopLeft = cd.sunLightValue;
           } else {
-            computeAverageLeft(cd.lightValue, x + 1, y + 1, k + 1,
+            computeAverageLeft(cd.sunLightValue, x + 1, y + 1, k + 1,
               current.lvLeft_BottomLeft,
               current.lvLeft_BottomRight,
               current.lvLeft_TopRight,
@@ -124,8 +126,8 @@ GraphicalChunk::GraphicalChunk(double _x, double _y, double _z,
               m_faceData);
           }
 
-            doAOLeft(current, x + 1, y + 1, k + 1, m_faceData);
-          }
+          doAOLeft(current, x + 1, y + 1, k + 1, m_faceData);
+        }
 
         // Z ###################################################################
 
@@ -134,16 +136,16 @@ GraphicalChunk::GraphicalChunk(double _x, double _y, double _z,
           current.front = true;
 
           if (useSmoothShading) {
-            computeAverageFront(cd.lightValue, x + 1, y + 1, k + 1,
+            computeAverageFront(cd.sunLightValue, x + 1, y + 1, k + 1,
               current.lvFront_BottomLeft,
               current.lvFront_BottomRight,
               current.lvFront_TopRight,
               current.lvFront_TopLeft, m_faceData);
           } else {
-            current.lvFront_BottomLeft = cd.lightValue;
-            current.lvFront_BottomRight = cd.lightValue;
-            current.lvFront_TopRight = cd.lightValue;
-            current.lvFront_TopLeft = cd.lightValue;
+            current.lvFront_BottomLeft = cd.sunLightValue;
+            current.lvFront_BottomRight = cd.sunLightValue;
+            current.lvFront_TopRight = cd.sunLightValue;
+            current.lvFront_TopLeft = cd.sunLightValue;
           }
           doAOFront(current, x + 1, y + 1, k + 1, m_faceData);
         }
@@ -153,18 +155,17 @@ GraphicalChunk::GraphicalChunk(double _x, double _y, double _z,
           current.back = true;
 
           if (useSmoothShading) {
-            computeAverageBack(cd.lightValue, x + 1, y + 1, k + 1,
+            computeAverageBack(cd.sunLightValue, x + 1, y + 1, k + 1,
               current.lvBack_BottomLeft,
               current.lvBack_BottomRight,
               current.lvBack_TopRight,
               current.lvBack_TopLeft, m_faceData);
           } else {
-            current.lvBack_BottomLeft = cd.lightValue;
-            current.lvBack_BottomRight = cd.lightValue;
-            current.lvBack_TopRight = cd.lightValue;
-            current.lvBack_TopLeft = cd.lightValue;
+            current.lvBack_BottomLeft = cd.sunLightValue;
+            current.lvBack_BottomRight = cd.sunLightValue;
+            current.lvBack_TopRight = cd.sunLightValue;
+            current.lvBack_TopLeft = cd.sunLightValue;
           }
-
 
           doAOBack(current, x + 1, y + 1, k + 1, m_faceData);
         }
@@ -175,16 +176,16 @@ GraphicalChunk::GraphicalChunk(double _x, double _y, double _z,
           current.top = true;
 
           if (useSmoothShading) {
-            computeAverageTop(cd.lightValue, x + 1, y + 1, k + 1,
+            computeAverageTop(cd.sunLightValue, x + 1, y + 1, k + 1,
               current.lvTop_BottomLeft,
               current.lvTop_BottomRight,
               current.lvTop_TopRight,
               current.lvTop_TopLeft, m_faceData);
           } else {
-            current.lvTop_BottomLeft = cd.lightValue;
-            current.lvTop_BottomRight = cd.lightValue;
-            current.lvTop_TopRight = cd.lightValue;
-            current.lvTop_TopLeft = cd.lightValue;
+            current.lvTop_BottomLeft = cd.sunLightValue;
+            current.lvTop_BottomRight = cd.sunLightValue;
+            current.lvTop_TopRight = cd.sunLightValue;
+            current.lvTop_TopLeft = cd.sunLightValue;
           }
 
           doAOTop(current, x + 1, y + 1, k + 1, m_faceData);
@@ -195,16 +196,16 @@ GraphicalChunk::GraphicalChunk(double _x, double _y, double _z,
           current.bottom = true;
 
           if (useSmoothShading) {
-            computeAverageBottom(cd.lightValue, x + 1, y + 1, k + 1,
+            computeAverageBottom(cd.sunLightValue, x + 1, y + 1, k + 1,
                 current.lvBottom_BottomLeft,
                 current.lvBottom_BottomRight,
                 current.lvBottom_TopRight,
                 current.lvBottom_TopLeft, m_faceData);
           } else {
-            current.lvBottom_BottomLeft = cd.lightValue;
-            current.lvBottom_BottomRight = cd.lightValue;
-            current.lvBottom_TopRight = cd.lightValue;
-            current.lvBottom_TopLeft = cd.lightValue;
+            current.lvBottom_BottomLeft = cd.sunLightValue;
+            current.lvBottom_BottomRight = cd.sunLightValue;
+            current.lvBottom_TopRight = cd.sunLightValue;
+            current.lvBottom_TopLeft = cd.sunLightValue;
           }
 
           doAOBottom(current, x + 1, y + 1, k + 1, m_faceData);
@@ -220,26 +221,30 @@ GraphicalChunk::GraphicalChunk(double _x, double _y, double _z,
 
 void GraphicalChunk::uploadData() {
   vector<GLfloat> vertexData;
+  vector<GLfloat> lightData;
   vector<GLfloat> normals;
   vector<GLfloat> UV;
   vector<short> elementData;
 
-  createMeshData(false, m_faceData, vertexData, normals, UV, elementData);
-  m_mesh.reset(new mesh::MeshElement(vertexData, 4, normals, 3, UV, 3,
-      elementData));
+  createMeshData(false, m_faceData, vertexData, lightData, normals, UV,
+      elementData);
+
+  m_mesh.reset(new mesh::MeshElement(vertexData, 3, /*lightData, 1,*/ normals, 3,
+      UV, 3, elementData));
 
   vertexData.clear();
   normals.clear();
   UV.clear();
   elementData.clear();
 
-  createMeshData(true, m_faceData, vertexData, normals, UV, elementData);
+  createMeshData(true, m_faceData, vertexData, lightData, normals, UV,
+      elementData);
 
   if (vertexData.empty())
     m_hasTransparent = false;
 
-  m_waterMesh.reset(new mesh::MeshElement(vertexData, 4, normals, 3, UV, 3,
-      elementData));
+  m_waterMesh.reset(new mesh::MeshElement(vertexData, 3, /*lightData, 1,*/ normals,
+      3, UV, 3, elementData));
 
   m_faceData.clear();
 }
@@ -323,6 +328,7 @@ void GraphicalChunk::createMeshData(
   bool transparent,
   const vector<vector<vector<CubeFaceData>>> &faceData,
   vector<GLfloat> &vertexData,
+  vector<GLfloat> &lightData,
   vector<GLfloat> &normals,
   vector<GLfloat> &UV,
   vector<short> &elementData) {
@@ -351,10 +357,17 @@ void GraphicalChunk::createMeshData(
         if (fd.right) {
 
           vector<GLfloat> vertex {
-            0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz, fd.lvRight_BottomLeft,
-            0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz, fd.lvRight_BottomRight,
-            0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz, fd.lvRight_TopRight,
-            0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz, fd.lvRight_TopLeft,
+            0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz,
+            0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz,
+            0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz,
+            0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz,
+          };
+
+          vector<GLfloat> light {
+            fd.lvRight_BottomLeft,
+            fd.lvRight_BottomRight,
+            fd.lvRight_TopRight,
+            fd.lvRight_TopLeft,
           };
 
           vector<GLfloat> nor {
@@ -377,13 +390,14 @@ void GraphicalChunk::createMeshData(
             static_cast<short>(2 + elementOffset),
             static_cast<short>(0 + elementOffset),
             static_cast<short>(2 + elementOffset),
-            static_cast<short>(3 + elementOffset)
+            static_cast<short>(3 + elementOffset),
           };
 
-          for (auto v : vertex) {vertexData.push_back(v);}
-          for (auto n : nor) {normals.push_back(n);}
-          for (auto u : uv) {UV.push_back(u);}
-          for (auto e : el) {elementData.push_back(e);}
+          vertexData.insert(vertexData.end(), vertex.begin(), vertex.end());
+          lightData.insert(lightData.end(), lightData.begin(), lightData.end());
+          normals.insert(normals.end(), nor.begin(), nor.end());
+          UV.insert(UV.end(), uv.begin(), uv.end());
+          elementData.insert(elementData.end(), el.begin(), el.end());
 
           elementOffset += 4;
           totalNumberOfFaces++;
@@ -392,10 +406,17 @@ void GraphicalChunk::createMeshData(
         if (fd.left) {
 
           vector<GLfloat> vertex {
-            -0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz, fd.lvLeft_BottomLeft,
-            -0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz, fd.lvLeft_BottomRight,
-            -0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz, fd.lvLeft_TopRight ,
-            -0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz, fd.lvLeft_TopLeft,
+            -0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz,
+            -0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz,
+            -0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz,
+            -0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz,
+          };
+
+          vector<GLfloat> light {
+            fd.lvLeft_BottomLeft,
+            fd.lvLeft_BottomRight,
+            fd.lvLeft_TopRight,
+            fd.lvLeft_TopLeft,
           };
 
           vector<GLfloat> nor {
@@ -421,10 +442,11 @@ void GraphicalChunk::createMeshData(
             static_cast<short>(3 + elementOffset)
           };
 
-          for (auto v : vertex) {vertexData.push_back(v);}
-          for (auto n : nor) {normals.push_back(n);}
-          for (auto u : uv) {UV.push_back(u);}
-          for (auto e : el) {elementData.push_back(e);}
+          vertexData.insert(vertexData.end(), vertex.begin(), vertex.end());
+          lightData.insert(lightData.end(), lightData.begin(), lightData.end());
+          normals.insert(normals.end(), nor.begin(), nor.end());
+          UV.insert(UV.end(), uv.begin(), uv.end());
+          elementData.insert(elementData.end(), el.begin(), el.end());
 
           elementOffset += 4;
           totalNumberOfFaces++;
@@ -433,10 +455,17 @@ void GraphicalChunk::createMeshData(
         if (fd.back) {
 
           vector<GLfloat> vertex {
-            0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz, fd.lvBack_BottomLeft,
-            -0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz, fd.lvBack_BottomRight,
-            -0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz, fd.lvBack_TopRight,
-            0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz, fd.lvBack_TopLeft,
+            0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz, //
+            -0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz, //
+            -0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz, //
+            0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz, //
+          };
+
+          vector<GLfloat> light {
+            fd.lvBack_BottomLeft,
+            fd.lvBack_BottomRight,
+            fd.lvBack_TopRight,
+            fd.lvBack_TopLeft,
           };
 
           vector<GLfloat> nor {
@@ -462,10 +491,11 @@ void GraphicalChunk::createMeshData(
             static_cast<short>(3 + elementOffset)
           };
 
-          for (auto v : vertex) {vertexData.push_back(v);}
-          for (auto n : nor) {normals.push_back(n);}
-          for (auto u : uv) {UV.push_back(u);}
-          for (auto e : el) {elementData.push_back(e);}
+          vertexData.insert(vertexData.end(), vertex.begin(), vertex.end());
+          lightData.insert(lightData.end(), lightData.begin(), lightData.end());
+          normals.insert(normals.end(), nor.begin(), nor.end());
+          UV.insert(UV.end(), uv.begin(), uv.end());
+          elementData.insert(elementData.end(), el.begin(), el.end());
 
           elementOffset += 4;
           totalNumberOfFaces++;
@@ -474,10 +504,17 @@ void GraphicalChunk::createMeshData(
         if (fd.front) {
 
           vector<GLfloat> vertex {
-            -0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz, fd.lvFront_BottomLeft,
-            0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz, fd.lvFront_BottomRight,
-            0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz, fd.lvFront_TopRight,
-            -0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz, fd.lvFront_TopLeft,
+            -0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz, //
+            0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz, //
+            0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz, //
+            -0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz, //
+          };
+
+          vector<GLfloat> light {
+            fd.lvFront_BottomLeft,
+            fd.lvFront_BottomRight,
+            fd.lvFront_TopRight,
+            fd.lvFront_TopLeft,
           };
 
           vector<GLfloat> nor {
@@ -503,10 +540,11 @@ void GraphicalChunk::createMeshData(
             static_cast<short>(3 + elementOffset)
           };
 
-          for (auto v : vertex) {vertexData.push_back(v);}
-          for (auto n : nor) {normals.push_back(n);}
-          for (auto u : uv) {UV.push_back(u);}
-          for (auto e : el) {elementData.push_back(e);}
+          vertexData.insert(vertexData.end(), vertex.begin(), vertex.end());
+          lightData.insert(lightData.end(), lightData.begin(), lightData.end());
+          normals.insert(normals.end(), nor.begin(), nor.end());
+          UV.insert(UV.end(), uv.begin(), uv.end());
+          elementData.insert(elementData.end(), el.begin(), el.end());
 
           elementOffset += 4;
           totalNumberOfFaces++;
@@ -515,10 +553,17 @@ void GraphicalChunk::createMeshData(
         if (fd.top) {
 
           vector<GLfloat> vertex {
-            -0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz, fd.lvTop_BottomLeft,
-            0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz, fd.lvTop_BottomRight,
-            0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz, fd.lvTop_TopRight,
-            -0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz, fd.lvTop_TopLeft,
+            -0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz, //
+            0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz, //
+            0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz, //
+            -0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz, //
+          };
+
+          vector<GLfloat> light {
+            fd.lvTop_BottomLeft,
+            fd.lvTop_BottomRight,
+            fd.lvTop_TopRight,
+            fd.lvTop_TopLeft,
           };
 
           vector<GLfloat> nor {
@@ -544,10 +589,11 @@ void GraphicalChunk::createMeshData(
             static_cast<short>(3 + elementOffset)
           };
 
-          for (auto v : vertex) {vertexData.push_back(v);}
-          for (auto n : nor) {normals.push_back(n);}
-          for (auto u : uv) {UV.push_back(u);}
-          for (auto e : el) {elementData.push_back(e);}
+          vertexData.insert(vertexData.end(), vertex.begin(), vertex.end());
+          lightData.insert(lightData.end(), lightData.begin(), lightData.end());
+          normals.insert(normals.end(), nor.begin(), nor.end());
+          UV.insert(UV.end(), uv.begin(), uv.end());
+          elementData.insert(elementData.end(), el.begin(), el.end());
 
           elementOffset += 4;
           totalNumberOfFaces++;
@@ -556,10 +602,17 @@ void GraphicalChunk::createMeshData(
         if (fd.bottom) {
 
           vector<GLfloat> vertex {
-            -0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz, fd.lvBottom_BottomLeft,
-            0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz, fd.lvBottom_BottomRight,
-            0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz, fd.lvBottom_TopRight,
-            -0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz, fd.lvBottom_TopLeft,
+            -0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz, //
+            0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz, //
+            0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz, //
+            -0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz, //
+          };
+
+          vector<GLfloat> light {
+            fd.lvBottom_BottomLeft,
+            fd.lvBottom_BottomRight,
+            fd.lvBottom_TopRight,
+            fd.lvBottom_TopLeft,
           };
 
           vector<GLfloat> nor {
@@ -585,10 +638,11 @@ void GraphicalChunk::createMeshData(
             static_cast<short>(3 + elementOffset)
           };
 
-          for (auto v : vertex) {vertexData.push_back(v);}
-          for (auto n : nor) {normals.push_back(n);}
-          for (auto u : uv) {UV.push_back(u);}
-          for (auto e : el) {elementData.push_back(e);}
+          vertexData.insert(vertexData.end(), vertex.begin(), vertex.end());
+          lightData.insert(lightData.end(), lightData.begin(), lightData.end());
+          normals.insert(normals.end(), nor.begin(), nor.end());
+          UV.insert(UV.end(), uv.begin(), uv.end());
+          elementData.insert(elementData.end(), el.begin(), el.end());
 
           elementOffset += 4;
           totalNumberOfFaces++;
@@ -879,17 +933,17 @@ inline void GraphicalChunk::computeAverageHelper(
     float counter {1};
     float acc = lightValue;
     if (cLeftLeft.id != AIR && cLeftLeft_Opposite.id == AIR) {
-        acc += cLeftLeft_Opposite.lightValue;
+        acc += cLeftLeft_Opposite.sunLightValue;
         ++counter;
     }
     if (cBottomLeft.id != AIR && cBottomLeft_Opposite.id == AIR &&
             (cLeftLeft_Opposite.id == AIR ||
                     cBottomMiddle_Opposite.id == AIR)) {
-        acc += cBottomLeft_Opposite.lightValue;
+        acc += cBottomLeft_Opposite.sunLightValue;
         ++counter;
     }
     if (cBottomMiddle.id != AIR && cBottomMiddle_Opposite.id == AIR) {
-        acc += cBottomMiddle_Opposite.lightValue;
+        acc += cBottomMiddle_Opposite.sunLightValue;
         ++counter;
     }
     bottomLeft = acc / counter;
@@ -899,17 +953,17 @@ inline void GraphicalChunk::computeAverageHelper(
     counter = 1;
     acc = lightValue;
     if (cBottomMiddle.id != AIR && cBottomMiddle_Opposite.id == AIR) {
-        acc += cBottomMiddle_Opposite.lightValue;
+        acc += cBottomMiddle_Opposite.sunLightValue;
         ++counter;
     }
     if (cBottomRight.id != AIR && cBottomRight_Opposite.id == AIR &&
             (cBottomMiddle_Opposite.id == AIR ||
                     cRightRight_Opposite.id == AIR)) {
-        acc += cBottomRight_Opposite.lightValue;
+        acc += cBottomRight_Opposite.sunLightValue;
         ++counter;
     }
     if (cRightRight.id != AIR && cRightRight_Opposite.id == AIR) {
-        acc += cRightRight_Opposite.lightValue;
+        acc += cRightRight_Opposite.sunLightValue;
         ++counter;
     }
     bottomRight = acc / counter;
@@ -919,17 +973,17 @@ inline void GraphicalChunk::computeAverageHelper(
     counter = 1;
     acc = lightValue;
     if (cRightRight.id != AIR && cRightRight_Opposite.id == AIR) {
-        acc += cRightRight_Opposite.lightValue;
+        acc += cRightRight_Opposite.sunLightValue;
         ++counter;
     }
     if (cTopRight.id != AIR && cTopRight_Opposite.id == AIR &&
             (cRightRight_Opposite.id == AIR ||
                     cTopMiddle.id == AIR)) {
-        acc += cTopRight_Opposite.lightValue;
+        acc += cTopRight_Opposite.sunLightValue;
         ++counter;
     }
     if (cTopMiddle.id != AIR && cTopMiddle_Opposite.id == AIR) {
-        acc += cTopMiddle_Opposite.lightValue;
+        acc += cTopMiddle_Opposite.sunLightValue;
         ++counter;
     }
     topRight = acc / counter;
@@ -939,17 +993,17 @@ inline void GraphicalChunk::computeAverageHelper(
     counter = 1;
     acc = lightValue;
     if (cTopMiddle.id != AIR && cTopMiddle_Opposite.id == AIR) {
-        acc += cTopMiddle_Opposite.lightValue;
+        acc += cTopMiddle_Opposite.sunLightValue;
         ++counter;
     }
     if (cTopLeft.id != AIR && cTopLeft_Opposite.id == AIR &&
             (cTopMiddle_Opposite.id == AIR ||
                     cLeftLeft_Opposite.id == AIR)) {
-        acc += cTopLeft_Opposite.lightValue;
+        acc += cTopLeft_Opposite.sunLightValue;
         ++counter;
     }
     if (cLeftLeft.id != AIR && cLeftLeft_Opposite.id == AIR) {
-        acc += cLeftLeft_Opposite.lightValue;
+        acc += cLeftLeft_Opposite.sunLightValue;
         ++counter;
     }
     topLeft = acc / counter;

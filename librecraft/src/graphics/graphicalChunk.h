@@ -88,9 +88,9 @@ private:
   struct CubeFaceData {
     int id;
     bool vissible, front, back, left, right, top, bottom;
-    char lightValue;
+    char sunLightValue, otherLightValue;
 
-    // lv means lightValue
+    // lv means sunLightValue
     float lvFront_BottomLeft, lvFront_BottomRight;
     float lvFront_TopRight, lvFront_TopLeft;
 
@@ -117,6 +117,7 @@ private:
     bool transparent,
     const std::vector<std::vector<std::vector<CubeFaceData>>> &faceData,
     std::vector<GLfloat> &vertexData,
+    std::vector<GLfloat> &lightData,
     std::vector<GLfloat> &normals,
     std::vector<GLfloat> &UV,
     std::vector<short> &elementData);

@@ -8,14 +8,14 @@ std::string dataFolder = "data/";
 std::string worldMetaFile = "data/meta";
 
 namespace chunk_data {
- const unsigned GRAPHICAL_CHUNK_WIDTH = 16;
- const unsigned GRAPHICAL_CHUNK_HEIGHT = 64;
+ const int GRAPHICAL_CHUNK_WIDTH = 16;
+ const int GRAPHICAL_CHUNK_HEIGHT = 64;
 
- const unsigned CHUNK_WIDTH_AND_DEPTH = 16;
- const unsigned CHUNK_HEIGHT = 128;
+ const int CHUNK_WIDTH_AND_DEPTH = 16;
+ const int CHUNK_HEIGHT = 128;
 
  const int NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER = 6;
- const unsigned NUMBER_OF_CHUNKS_Y = 1;
+ const int NUMBER_OF_CHUNKS_Y = 1;
 }
 
 namespace cube_data {

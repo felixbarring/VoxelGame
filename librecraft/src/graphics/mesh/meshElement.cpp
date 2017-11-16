@@ -4,6 +4,9 @@
 
 namespace mesh {
 
+// TODO This class should be cleaned up, and the code duplication should be
+// possible to avoid by using templates?
+
 MeshElement::MeshElement(
     const std::vector<float> &vbd1, int vbd1Format,
     const std::vector<short> &elementData)
