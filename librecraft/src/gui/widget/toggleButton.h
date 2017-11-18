@@ -3,6 +3,7 @@
 
 #include <algorithm>
 #include <vector>
+#include <functional>
 
 #include "../../graphics/graphicsManager.h"
 #include "button.h"

@@ -2,6 +2,7 @@
 #define SRC_GUI_WIDGET_SLIDER_H_
 
 #include <memory>
+#include <functional>
 
 #include "abstractWidget.h"
 #include "../../graphics/sprite.h"

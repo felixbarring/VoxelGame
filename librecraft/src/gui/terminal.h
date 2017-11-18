@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include <memory>
+#include <functional>
 
 #include "../gui/widget/button.h"
 #include "../gui/widget/textInput.h"

@@ -9,8 +9,10 @@
 #include "../../util/input.h"
 
 #include <iostream>
+#include <functional>
 
 #include "../../graphics/graphicsManager.h"
+
 using namespace std;
 using namespace graphics;
 

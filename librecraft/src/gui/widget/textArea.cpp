@@ -1,5 +1,7 @@
 #include "textArea.h"
 
+#include <functional>
+
 #include "../../graphics/graphicsManager.h"
 #include "../../graphics/sprite.h"
 #include "../../graphics/resources.h"

@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <regex>
+#include <functional>
 
 #include "../gui/widget/textInput.h"
 #include "../util/input.h"

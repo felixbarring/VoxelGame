@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include <functional>
 
 #include "../../graphics/graphicsManager.h"
 #include "abstractWidget.h"
