@@ -1,1 +1,1 @@
-find cd ../src -name "*.h" -o -name "*.cpp" | xargs clang-format -style=Chromium
+find ../src -name "*.h" -o -name "*.cpp" | xargs clang-format -i -style=file
