@@ -230,12 +230,10 @@ void GraphicalChunk::uploadData() {
       elementData);
 
   {
-    std::vector<std::pair<std::vector<float>, int>> vobs{{vertexData, 3}, /*lightData, 1,*/ {normals, 3}, {UV, 3}};
+    std::vector<std::pair<std::vector<float>, int>> vobs{{vertexData, 3},
+      {lightData, 1}, {normals, 3}, {UV, 3}};
     m_mesh = make_unique<mesh::MeshElement>(move(vobs), elementData);
   }
-
-//  m_mesh.reset(new mesh::MeshElement(vertexData, 3, /*lightData, 1,*/ normals, 3,
-//      UV, 3, elementData));
 
   vertexData.clear();
   normals.clear();
@@ -249,12 +247,10 @@ void GraphicalChunk::uploadData() {
     m_hasTransparent = false;
 
   {
-    std::vector<std::pair<std::vector<float>, int>> vobs{{vertexData, 3}, /*lightData, 1,*/ {normals, 3}, {UV, 3}};
+    std::vector<std::pair<std::vector<float>, int>> vobs{{vertexData, 3},
+      {lightData, 1}, {normals, 3}, {UV, 3}};
     m_waterMesh = make_unique<mesh::MeshElement>(move(vobs), elementData);
   }
-
-//  m_waterMesh.reset(new mesh::MeshElement(vertexData, 3, /*lightData, 1,*/ normals,
-//      3, UV, 3, elementData));
 
   m_faceData.clear();
 }
@@ -404,7 +400,7 @@ void GraphicalChunk::createMeshData(
           };
 
           vertexData.insert(vertexData.end(), vertex.begin(), vertex.end());
-          lightData.insert(lightData.end(), lightData.begin(), lightData.end());
+          lightData.insert(lightData.end(), light.begin(), light.end());
           normals.insert(normals.end(), nor.begin(), nor.end());
           UV.insert(UV.end(), uv.begin(), uv.end());
           elementData.insert(elementData.end(), el.begin(), el.end());
@@ -452,7 +448,7 @@ void GraphicalChunk::createMeshData(
           };
 
           vertexData.insert(vertexData.end(), vertex.begin(), vertex.end());
-          lightData.insert(lightData.end(), lightData.begin(), lightData.end());
+          lightData.insert(lightData.end(), light.begin(), light.end());
           normals.insert(normals.end(), nor.begin(), nor.end());
           UV.insert(UV.end(), uv.begin(), uv.end());
           elementData.insert(elementData.end(), el.begin(), el.end());
@@ -501,7 +497,7 @@ void GraphicalChunk::createMeshData(
           };
 
           vertexData.insert(vertexData.end(), vertex.begin(), vertex.end());
-          lightData.insert(lightData.end(), lightData.begin(), lightData.end());
+          lightData.insert(lightData.end(), light.begin(), light.end());
           normals.insert(normals.end(), nor.begin(), nor.end());
           UV.insert(UV.end(), uv.begin(), uv.end());
           elementData.insert(elementData.end(), el.begin(), el.end());
@@ -550,7 +546,7 @@ void GraphicalChunk::createMeshData(
           };
 
           vertexData.insert(vertexData.end(), vertex.begin(), vertex.end());
-          lightData.insert(lightData.end(), lightData.begin(), lightData.end());
+          lightData.insert(lightData.end(), light.begin(), light.end());
           normals.insert(normals.end(), nor.begin(), nor.end());
           UV.insert(UV.end(), uv.begin(), uv.end());
           elementData.insert(elementData.end(), el.begin(), el.end());
@@ -599,7 +595,7 @@ void GraphicalChunk::createMeshData(
           };
 
           vertexData.insert(vertexData.end(), vertex.begin(), vertex.end());
-          lightData.insert(lightData.end(), lightData.begin(), lightData.end());
+          lightData.insert(lightData.end(), light.begin(), light.end());
           normals.insert(normals.end(), nor.begin(), nor.end());
           UV.insert(UV.end(), uv.begin(), uv.end());
           elementData.insert(elementData.end(), el.begin(), el.end());
@@ -648,7 +644,7 @@ void GraphicalChunk::createMeshData(
           };
 
           vertexData.insert(vertexData.end(), vertex.begin(), vertex.end());
-          lightData.insert(lightData.end(), lightData.begin(), lightData.end());
+          lightData.insert(lightData.end(), light.begin(), light.end());
           normals.insert(normals.end(), nor.begin(), nor.end());
           UV.insert(UV.end(), uv.begin(), uv.end());
           elementData.insert(elementData.end(), el.begin(), el.end());

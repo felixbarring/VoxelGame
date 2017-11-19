@@ -26,7 +26,7 @@ ChunkBatcher::ChunkBatcher(Camera &camera)
   string vertex = "#version 330 core \n"
 
     "in vec3 positionIn; \n"
-//    "in float lightIn; \n"
+    "in float lightIn; \n"
     "in vec3 normalIn; \n"
     "in vec3 texCoordIn; \n"
 
@@ -40,7 +40,7 @@ ChunkBatcher::ChunkBatcher(Camera &camera)
 
     "void main(){ \n"
     "  texCoord = vec3(texCoordIn.x, texCoordIn.y, texCoordIn.z); \n"
-    "  lightValue = 1 * sunStrenght; \n" //
+    "  lightValue = (lightIn / 16) * sunStrenght; \n"
     "  faceNormal = normalIn; \n"
     "  gl_Position =  modelViewProjection * vec4(positionIn.xyz, 1); \n"
     "} \n";
@@ -73,8 +73,8 @@ ChunkBatcher::ChunkBatcher(Camera &camera)
     "} \n";
 
   map<string, int> attributesMap{pair<string, int>("positionIn", 0),
-    /*pair<string, int>("lightIn", 1),*/ pair<string, int>("normalIn", 1),
-    pair<string, int>("texCoordIn", 2)};
+    pair<string, int>("lightIn", 1), pair<string, int>("normalIn", 2),
+    pair<string, int>("texCoordIn", 3)};
 
   m_program.reset(new ShaderProgram(vertex, fragment, attributesMap));
 
