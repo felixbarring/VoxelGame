@@ -6,12 +6,15 @@ being explained more thoroughly.
 
 ###
 
-Terrain generation
+Add Doxygen markdown files to each folder describing its purpose.
+Also add a start page.
+
+Move libnoise to a folder for src dependencies.
+
+use xml to load/store settings
 
 Fix more options being possible to change with both terminal and
 settings
-
-use xml to load/store settings
 
 Moving sun on the sky
 
