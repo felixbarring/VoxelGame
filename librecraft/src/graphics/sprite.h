@@ -13,31 +13,32 @@ namespace graphics {
 class Sprite {
 public:
 
-    Sprite(double x, double y, unsigned layer, double width, double height, texture::Texture &texture);
+  Sprite(double x, double y, unsigned layer, double width, double height,
+      texture::Texture &texture);
 
-    Sprite(double x, double y, unsigned layer, std::shared_ptr<mesh::MeshElement> mesh, texture::Texture &texture);
+  Sprite(double x, double y, unsigned layer,
+      std::shared_ptr<mesh::MeshElement> mesh, texture::Texture &texture);
 
-    void draw();
+  void draw();
 
-    Transform& getTransform();
+  Transform& getTransform();
 
-    texture::Texture& getTexture();
+  texture::Texture& getTexture();
 
-    void move(float x, float y);
+  void move(float x, float y);
 
-    void setLocation(float x, float y);
+  void setLocation(float x, float y);
 
-    int getLayer();
+  int getLayer();
 
 private:
-    Transform m_transform;
-    double m_width{};
-    double m_height{};
+  Transform m_transform;
+  double m_width{};
+  double m_height{};
 
-    std::shared_ptr<mesh::MeshElement> m_mesh;
-    texture::Texture &m_texture;
-    unsigned m_layer;
-
+  std::shared_ptr<mesh::MeshElement> m_mesh;
+  texture::Texture &m_texture;
+  unsigned m_layer;
 };
 
 } /* namespace graphics */

@@ -4,6 +4,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <iostream>
+#include <utility>
 
 #include "camera.h"
 #include "../graphics/shaderProgram.h"
@@ -103,8 +104,8 @@ CubeMap::CubeMap(texture::TextureCubeMap &texture, Camera &camera)
     0+30, 1+30, 2+30, 3+30, 4+30, 5+30,
   };
 
-  mesh = make_unique<mesh::MeshElement>(vert, 3, element);
-
+  std::vector<std::pair<std::vector<float>, int>> vbos;
+  mesh = make_unique<mesh::MeshElement>(move(vbos), element);
 }
 
 void CubeMap::setRotationValue(float value) {

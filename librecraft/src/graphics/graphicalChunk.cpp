@@ -229,8 +229,13 @@ void GraphicalChunk::uploadData() {
   createMeshData(false, m_faceData, vertexData, lightData, normals, UV,
       elementData);
 
-  m_mesh.reset(new mesh::MeshElement(vertexData, 3, /*lightData, 1,*/ normals, 3,
-      UV, 3, elementData));
+  {
+    std::vector<std::pair<std::vector<float>, int>> vobs{{vertexData, 3}, /*lightData, 1,*/ {normals, 3}, {UV, 3}};
+    m_mesh = make_unique<mesh::MeshElement>(move(vobs), elementData);
+  }
+
+//  m_mesh.reset(new mesh::MeshElement(vertexData, 3, /*lightData, 1,*/ normals, 3,
+//      UV, 3, elementData));
 
   vertexData.clear();
   normals.clear();
@@ -243,8 +248,13 @@ void GraphicalChunk::uploadData() {
   if (vertexData.empty())
     m_hasTransparent = false;
 
-  m_waterMesh.reset(new mesh::MeshElement(vertexData, 3, /*lightData, 1,*/ normals,
-      3, UV, 3, elementData));
+  {
+    std::vector<std::pair<std::vector<float>, int>> vobs{{vertexData, 3}, /*lightData, 1,*/ {normals, 3}, {UV, 3}};
+    m_waterMesh = make_unique<mesh::MeshElement>(move(vobs), elementData);
+  }
+
+//  m_waterMesh.reset(new mesh::MeshElement(vertexData, 3, /*lightData, 1,*/ normals,
+//      3, UV, 3, elementData));
 
   m_faceData.clear();
 }
@@ -333,29 +343,29 @@ void GraphicalChunk::createMeshData(
   vector<GLfloat> &UV,
   vector<short> &elementData) {
 
-  short elementOffset = 0;
-  int totalNumberOfFaces = 0;
+  short elementOffset{0};
+  int totalNumberOfFaces{0};
 
   float dx = -m_width / 2;
   float dy = -m_height / 2;
   float dz = -m_depth / 2;
 
-  for (int i = 0; i < m_width; i++) {
-    for (int j = 0; j < m_height; j++) {
-      for (int k = 0; k < m_depth; k++) {
-
+  for (int i{0}; i < m_width; ++i) {
+    for (int j{0}; j < m_height; ++j) {
+      for (int k{0}; k < m_depth; ++k) {
         CubeFaceData fd = faceData[i + 1][j + 1][k + 1];
 
         int id = fd.id;
-        if (id == AIR || (id == WATER && !transparent) || (id != WATER && transparent))
+        if (id == AIR || (id == WATER && !transparent) ||
+            (id != WATER && transparent)) {
           continue;
+        }
 
         GLfloat sideTexture = BLOCK_TEXTURES[id][SIDE_TEXTURE];
         GLfloat topTexture = BLOCK_TEXTURES[id][TOP_TEXTURE];
         GLfloat bottomTexture = BLOCK_TEXTURES[id][BOTTOM_TEXTURE];
 
         if (fd.right) {
-
           vector<GLfloat> vertex {
             0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz,
             0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz,
@@ -404,7 +414,6 @@ void GraphicalChunk::createMeshData(
         }
 
         if (fd.left) {
-
           vector<GLfloat> vertex {
             -0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz,
             -0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz,
