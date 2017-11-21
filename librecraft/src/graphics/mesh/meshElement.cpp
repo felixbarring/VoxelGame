@@ -29,7 +29,7 @@ MeshElement::MeshElement(
 
     m_vboHandels.push_back(vboHandle);
 
-    auto vbd1Format = std::get<1>(vbo);
+    int vbd1Format = std::get<1>(vbo);
 
     glEnableVertexAttribArray(i);
     glVertexAttribPointer(i, vbd1Format, GL_FLOAT, GL_FALSE, 0, (void*) 0);

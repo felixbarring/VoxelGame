@@ -231,7 +231,7 @@ void GraphicalChunk::uploadData() {
 
   {
     std::vector<std::pair<std::vector<float>, int>> vobs{{vertexData, 3},
-      {lightData, 1}, {normals, 3}, {UV, 3}};
+      {lightData, 2}, {normals, 3}, {UV, 3}};
     m_mesh = make_unique<mesh::MeshElement>(move(vobs), elementData);
   }
 
@@ -248,7 +248,7 @@ void GraphicalChunk::uploadData() {
 
   {
     std::vector<std::pair<std::vector<float>, int>> vobs{{vertexData, 3},
-      {lightData, 1}, {normals, 3}, {UV, 3}};
+      {lightData, 2}, {normals, 3}, {UV, 3}};
     m_waterMesh = make_unique<mesh::MeshElement>(move(vobs), elementData);
   }
 
@@ -370,10 +370,10 @@ void GraphicalChunk::createMeshData(
           };
 
           vector<GLfloat> light {
-            fd.lvRight_BottomLeft,
-            fd.lvRight_BottomRight,
-            fd.lvRight_TopRight,
-            fd.lvRight_TopLeft,
+            fd.lvRight_BottomLeft, 0,
+            fd.lvRight_BottomRight, 0,
+            fd.lvRight_TopRight, 0,
+            fd.lvRight_TopLeft, 0,
           };
 
           vector<GLfloat> nor {
@@ -418,10 +418,10 @@ void GraphicalChunk::createMeshData(
           };
 
           vector<GLfloat> light {
-            fd.lvLeft_BottomLeft,
-            fd.lvLeft_BottomRight,
-            fd.lvLeft_TopRight,
-            fd.lvLeft_TopLeft,
+            fd.lvLeft_BottomLeft, 0,
+            fd.lvLeft_BottomRight, 0,
+            fd.lvLeft_TopRight, 0,
+            fd.lvLeft_TopLeft, 0,
           };
 
           vector<GLfloat> nor {
@@ -467,10 +467,10 @@ void GraphicalChunk::createMeshData(
           };
 
           vector<GLfloat> light {
-            fd.lvBack_BottomLeft,
-            fd.lvBack_BottomRight,
-            fd.lvBack_TopRight,
-            fd.lvBack_TopLeft,
+            fd.lvBack_BottomLeft, 0,
+            fd.lvBack_BottomRight, 0,
+            fd.lvBack_TopRight, 0,
+            fd.lvBack_TopLeft, 0,
           };
 
           vector<GLfloat> nor {
@@ -516,10 +516,10 @@ void GraphicalChunk::createMeshData(
           };
 
           vector<GLfloat> light {
-            fd.lvFront_BottomLeft,
-            fd.lvFront_BottomRight,
-            fd.lvFront_TopRight,
-            fd.lvFront_TopLeft,
+            fd.lvFront_BottomLeft, 0,
+            fd.lvFront_BottomRight, 0,
+            fd.lvFront_TopRight, 0,
+            fd.lvFront_TopLeft, 0,
           };
 
           vector<GLfloat> nor {
@@ -565,10 +565,10 @@ void GraphicalChunk::createMeshData(
           };
 
           vector<GLfloat> light {
-            fd.lvTop_BottomLeft,
-            fd.lvTop_BottomRight,
-            fd.lvTop_TopRight,
-            fd.lvTop_TopLeft,
+            fd.lvTop_BottomLeft, 0,
+            fd.lvTop_BottomRight, 0,
+            fd.lvTop_TopRight, 0,
+            fd.lvTop_TopLeft, 0,
           };
 
           vector<GLfloat> nor {
@@ -614,10 +614,10 @@ void GraphicalChunk::createMeshData(
           };
 
           vector<GLfloat> light {
-            fd.lvBottom_BottomLeft,
-            fd.lvBottom_BottomRight,
-            fd.lvBottom_TopRight,
-            fd.lvBottom_TopLeft,
+            fd.lvBottom_BottomLeft, 0,
+            fd.lvBottom_BottomRight, 0,
+            fd.lvBottom_TopRight, 0,
+            fd.lvBottom_TopLeft, 0,
           };
 
           vector<GLfloat> nor {

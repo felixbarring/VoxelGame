@@ -137,12 +137,6 @@ namespace input_data {
 
 }
 
-namespace texture_paths {
-  // Remove THESE ?
-  std::string scout = "../resources/cubes/grass_side.png";
-  std::string scout2 = "../resources/cubes/grass_top.png";
-}
-
 namespace gui_data {
   const std::string title = "../resources/gui/title.png";
 

@@ -50,7 +50,7 @@ CubeMap::CubeMap(texture::TextureCubeMap &texture, Camera &camera)
 
   m_program = make_unique<ShaderProgram>(vertex, fragment, attributesMap);
 
-  vector<GLfloat> vert{
+  vector<GLfloat> vertices{
     -1.0f, 1.0f, -1.0f,
     -1.0f, -1.0f, -1.0f,
     1.0f, -1.0f, -1.0f,
@@ -104,7 +104,7 @@ CubeMap::CubeMap(texture::TextureCubeMap &texture, Camera &camera)
     0+30, 1+30, 2+30, 3+30, 4+30, 5+30,
   };
 
-  std::vector<std::pair<std::vector<float>, int>> vbos;
+  vector<pair<vector<float>, int>> vbos{{vertices, 3}};
   mesh = make_unique<mesh::MeshElement>(move(vbos), element);
 }
 

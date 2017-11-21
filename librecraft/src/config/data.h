@@ -115,12 +115,6 @@ namespace config {
 
   }
 
-  namespace texture_paths {
-    // Remove THESE ?
-    extern std::string scout;
-    extern std::string scout2;
-  }
-
   namespace gui_data {
     extern const std::string title;
 
