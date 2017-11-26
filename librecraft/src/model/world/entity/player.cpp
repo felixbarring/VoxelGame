@@ -10,7 +10,6 @@
 #include "../../../graphics/cubeBatcher.h"
 #include "../../../graphics/graphicsManager.h"
 #include "../../../util/voxel.h"
-
 #include "../../../util/soundPlayer.h"
 
 #include "aabb.h"
@@ -213,17 +212,16 @@ void Player::updateCameraAndTargetCube() {
       return;
     }
 
-    // TODO Remove hardcoded values
+    // TODO Remove hard coded values
     // 0.5 = half width of cube
     m_targetedCubeTransform.setLocation(selectedCube.x + 0.5,
         selectedCube.y + 0.5, selectedCube.z + 0.5);
 
     char voxelID = m_chunkManager.getCubeId(selectedCube.x, selectedCube.y,
         selectedCube.z);
-    char voxelLightValue = m_chunkManager.getVoxel(previous.x, previous.y,
-        previous.z).sunLightValue;
+    Voxel voxel{m_chunkManager.getVoxel(previous.x, previous.y, previous.z)};
     m_graphicsManager.getCubeBatcher().addBatch(voxelID,
-        m_targetedCubeTransform, voxelLightValue + 5);
+        m_targetedCubeTransform, voxel.sunLightValue + 5, voxel.otherLightValue + 5);
   }
 
 }
