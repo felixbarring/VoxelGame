@@ -4,9 +4,14 @@
 /**
  *
  */
-struct Voxel {
-  char id;
-  char lightValue;
+class Voxel {
+
+public:
+
+  // TODO These should be private and accessed by functions.
+  char id{};
+  char sunLightValue{};
+  char otherLightValue{};
 };
 
 #endif /* SRC_UTIL_VOXEL_H_ */

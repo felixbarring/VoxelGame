@@ -20,7 +20,7 @@ using chunk::CreationOptions;
 namespace terrainGen{
 
 int counter{1};
-const int maxCount{config::cube_data::LAST_CUBE_USED_FOR_BUILDING};
+const int maxCount{config::cube_data::LAST_CUBE_USED_FOR_GENERATION};
 mutex s_mutex;
 
 TerrainGenerator::TerrainGenerator(unsigned width, unsigned height,

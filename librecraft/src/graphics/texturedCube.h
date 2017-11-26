@@ -22,7 +22,7 @@ public:
 private:
 
     // unique pointer gives error?!?
-    std::shared_ptr<mesh::MeshElement> mesh;
+    std::shared_ptr<mesh::MeshElement> m_mesh;
 
     float xLocation;
     float yLocation;

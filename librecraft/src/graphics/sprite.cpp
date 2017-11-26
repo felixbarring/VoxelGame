@@ -1,7 +1,12 @@
 
 #include "sprite.h"
 
+#include <memory>
+
+using std::make_unique;
 namespace graphics {
+
+using namespace std;
 
 Sprite::Sprite(double x, double y, unsigned layer, double width, double height,
     texture::Texture &texture)
@@ -12,30 +17,31 @@ Sprite::Sprite(double x, double y, unsigned layer, double width, double height,
   , m_layer{layer}
 {
 
-  std::vector<GLfloat> vertices = {
+  vector<GLfloat> vertices = {
     static_cast<float>(-width/2.0), static_cast<float>(-height/2.0), 0.0f,
     static_cast<float>(width/2.0), static_cast<float>(-height/2.0), 0.0f,
     static_cast<float>(width/2.0), static_cast<float>(height/2.0), 0.0f,
     static_cast<float>(-width/2.0), static_cast<float>(height/2.0), 0.0f
   };
 
-  std::vector<GLfloat> texCoords = {
+  vector<GLfloat> texCoords = {
     0.0f, 0.0f,
     1.0f, 0.0f,
     1.0f, 1.0f,
     0.0f, 1.0f,
   };
 
-  std::vector<GLshort> indices = {
+  vector<GLshort> elementData = {
     0, 1, 2,
     0, 2, 3,
   };
 
-  m_mesh.reset(new mesh::MeshElement(vertices, 3, texCoords, 2, indices));
+  vector<pair<vector<float>, int>> vbos{{vertices, 3}, {texCoords, 2}};
+  m_mesh = make_unique<mesh::MeshElement>(std::move(vbos), elementData);
 }
 
 Sprite::Sprite(double x, double y, unsigned layer,
-    std::shared_ptr<mesh::MeshElement> mesh, texture::Texture &texture)
+    shared_ptr<mesh::MeshElement> mesh, texture::Texture &texture)
   : m_transform{x, y, 0}
   , m_texture(texture)
   , m_layer{layer}

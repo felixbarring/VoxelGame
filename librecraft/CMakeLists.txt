@@ -8,7 +8,7 @@ message("### Building with ${CMAKE_CXX_COMPILER_ID}")
 # -Werror
 if (WARNINGS)
   message("### Warnings on")
-  set(CMAKE_CXX_FLAGS "-std=c++14 -Wall -Wextra")
+  set(CMAKE_CXX_FLAGS "-std=c++17 -Wall -Wextra")
 else()
   message("### Warnings off")
 endif()

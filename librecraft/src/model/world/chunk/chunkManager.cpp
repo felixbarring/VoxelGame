@@ -340,8 +340,6 @@ void ChunkManager::moveChunksDown() {
 void ChunkManager::moveChunks(Direction direction) {
   vector<shared_ptr<Chunk>> chunksToDelete;
 
-  std::cout << "Moving Chunks \n";
-
   // Store the chunks that should be removed and moves the old chunks in the
   // matrix.
   if (direction == Direction::Right) {

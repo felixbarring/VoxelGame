@@ -25,7 +25,8 @@ ChunkBatcher::ChunkBatcher(Camera &camera)
   // That is, use constant strings for the variables.
   string vertex = "#version 330 core \n"
 
-    "in vec4 positionIn; \n"
+    "in vec3 positionIn; \n"
+    "in vec2 lightIn; \n"
     "in vec3 normalIn; \n"
     "in vec3 texCoordIn; \n"
 
@@ -39,7 +40,7 @@ ChunkBatcher::ChunkBatcher(Camera &camera)
 
     "void main(){ \n"
     "  texCoord = vec3(texCoordIn.x, texCoordIn.y, texCoordIn.z); \n"
-    "  lightValue = (positionIn.w / 16) * sunStrenght; \n"
+    "  lightValue = max(lightIn.x * sunStrenght, lightIn.y) / 16; \n"
     "  faceNormal = normalIn; \n"
     "  gl_Position =  modelViewProjection * vec4(positionIn.xyz, 1); \n"
     "} \n";
@@ -71,11 +72,11 @@ ChunkBatcher::ChunkBatcher(Camera &camera)
     "  color = vec4(lightSum, 1.0f) * texture(texture1, texCoord); \n"
     "} \n";
 
-  map<string, int> attributesMap{pair<string, int>("positionIn", 0), pair<
-      string, int>("normalIn", 1), pair<string, int>("texCoordIn", 2)};
+  map<string, int> attributesMap{pair<string, int>("positionIn", 0),
+    pair<string, int>("lightIn", 1), pair<string, int>("normalIn", 2),
+    pair<string, int>("texCoordIn", 3)};
 
-  m_program.reset(
-      new ShaderProgram(vertex, fragment, attributesMap));
+  m_program = make_unique<ShaderProgram>(vertex, fragment, attributesMap);
 
 }
 
@@ -84,9 +85,9 @@ ChunkBatcher::ChunkBatcher(Camera &camera)
 // ########################################################
 
 int ChunkBatcher::addBatch(int replaceId, float x, float y, float z,
-                           VoxelMatrix &data, VoxelMatrix *right,
-                           VoxelMatrix *left, VoxelMatrix *back,
-                           VoxelMatrix *front, bool hightPriority)
+  VoxelMatrix &data, VoxelMatrix *right,
+  VoxelMatrix *left, VoxelMatrix *back,
+  VoxelMatrix *front, bool hightPriority)
 {
 
   auto batch = make_shared<GraphicalChunk>(x, y, z, data, right, left, back,

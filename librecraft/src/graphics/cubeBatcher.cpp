@@ -18,7 +18,8 @@ const string normalIn = "normalIn";
 const string texCoordIn = "texCoordIn";
 
 // Uniform
-const string lightValue = "lightValue";
+const string sunLight = "lightValue";
+const string otherLight = "otherLight";
 const string sunStrength = "sunStrenght";
 const string mvp = "modelViewProjection";
 
@@ -50,7 +51,8 @@ CubeBatcher::CubeBatcher(Camera &camera)
     "in vec3 " + normalIn + "; \n"
     "in vec3 " + texCoordIn + "; \n"
 
-    "uniform float " + lightValue + "; \n"
+    "uniform float " + sunLight + "; \n"
+    "uniform float " + otherLight + "; \n"
     "uniform float " + sunStrength + "; \n"
     "uniform mat4 " + mvp + "; \n"
 
@@ -60,7 +62,7 @@ CubeBatcher::CubeBatcher(Camera &camera)
 
     "void main(){ \n"
     "  " + texCoordOut + " = " + texCoordIn + "; \n"
-    "  " + lightOut + " = (" + lightValue + " / 16) * " + sunStrength + "; \n"
+    "  " + lightOut + " = max(" + sunLight + " * " + sunStrength + ", " + otherLight + ") / 16; \n"
     "  gl_Position = " + mvp + " * vec4(" + positionIn + ", 1); \n"
     "} \n";
 
@@ -86,11 +88,11 @@ CubeBatcher::CubeBatcher(Camera &camera)
   };
 
   m_program.reset(new ShaderProgram(vertex, fragment, attributesMap));
-
 }
 
-void CubeBatcher::addBatch(char type, Transform &transform, int lightValue) {
-    m_batches.push_back(Batch(m_cubes.at(type), transform, lightValue));
+void CubeBatcher::addBatch(char type, Transform &transform, int sunLight,
+    int otherLight) {
+    m_batches.push_back(Batch(m_cubes.at(type), transform, sunLight, otherLight));
 }
 
 void CubeBatcher::draw() {
@@ -107,7 +109,8 @@ void CubeBatcher::draw() {
   m_program->setUniform1f(sunStrength, m_sunStrength);
 
   for (auto b : m_batches) {
-    m_program->setUniform1f(lightValue, b.m_lightValue);
+    m_program->setUniform1f(sunLight, b.m_sunLight);
+    m_program->setUniform1f(otherLight, b.m_otherLight);
 
     glm::mat4 modelView = m_camera.getViewMatrix() * b.m_transform.getMatrix();
     glm::mat4 modelViewProjection = m_camera.getProjectionMatrix() * modelView;
