@@ -2,7 +2,7 @@
 This is a list of TODOs that need to be completed to reach MileStone1
 ################################################################################
 
-This Milestone was created very late so it it cover a lot more features and 
+This Milestone was created very late so it cover a lot more features and 
 TODO's than are listed here. The intention should be that the milestone files
 can be used to see what has changed between versions.
 
@@ -13,7 +13,7 @@ Type: Feature
 
 Add a new cube type that can spread light similar to sunlight.
 This ligh will light up places that have higher contribution 
-the light cube than from the sun. The cube can spread light 16 
+from the light cube than from the sun. The cube can spread light 16 
 cubes far. Initial strenght is 16, and decreased with one
 for each cube away from the source.
 
@@ -26,7 +26,7 @@ Make an interesting world generation, using biomes, trees, floora, rivers etc.
 
 ###
 
-Build the game on windows
+Build the game on windows.
 
 ###
 

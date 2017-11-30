@@ -1,10 +1,2 @@
 
-Light cube
-Type: Feature
-
-Add a new cube type that can spread light similar to sunlight.
-This ligh will light up places that have higher contribution 
-the light cube than from the sun. The cube can spread light 16 
-cubes far. Initial strenght is 16, and decreased with one
-for each cube away from the source.
 
