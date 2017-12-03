@@ -25,7 +25,7 @@ Chunk::Chunk(string worldName, int x, int z,
   , m_graphicsManager{graphicsManager}
   , m_name{createChunkName(worldName)}
 {
-  for (unsigned i{0}; i < CHUNK_HEIGHT / GRAPHICAL_CHUNK_HEIGHT; ++i) {
+  for (int i{0}; i < CHUNK_HEIGHT / GRAPHICAL_CHUNK_HEIGHT; ++i) {
     m_graphicalChunksIds.push_back(-1);
     m_dirtyRegions.emplace(i);
   }
@@ -46,8 +46,8 @@ void Chunk::create(CreationOptions& options) {
 }
 
 void Chunk::doSunLightning() {
-  for (unsigned x{0}; x < CHUNK_WIDTH_AND_DEPTH; ++x) {
-    for (unsigned z{0}; z < CHUNK_WIDTH_AND_DEPTH; ++z) {
+  for (int x{0}; x < CHUNK_WIDTH_AND_DEPTH; ++x) {
+    for (int z{0}; z < CHUNK_WIDTH_AND_DEPTH; ++z) {
       vector<vec3> dummy;
       doSunLightning(dummy, x, CHUNK_HEIGHT - 1, z, true);
       m_lightsToPropagate.insert(m_lightsToPropagate.end(), dummy.begin(), dummy.end());
@@ -64,8 +64,8 @@ void Chunk::collectLightFromAllNeighbors() {
 
 void Chunk::collectLightFromRightNeighbor() {
   if (m_rightNeighbor.get()) {
-    for (unsigned j{0}; j < CHUNK_HEIGHT; ++j) {
-      for (unsigned k{0}; k < CHUNK_WIDTH_AND_DEPTH; ++k) {
+    for (int j{0}; j < CHUNK_HEIGHT; ++j) {
+      for (int k{0}; k < CHUNK_WIDTH_AND_DEPTH; ++k) {
         char lv = m_rightNeighbor->m_cubes[0][j][k].sunLightValue - 1;
         // TODO collect other light...
 
@@ -83,8 +83,8 @@ void Chunk::collectLightFromRightNeighbor() {
 
 void Chunk::collectLightFromLeftNeighbor() {
   if (m_leftNeighbor.get()) {
-    for (unsigned j{0}; j < CHUNK_HEIGHT; ++j) {
-      for (unsigned k{0}; k < CHUNK_WIDTH_AND_DEPTH; ++k) {
+    for (int j{0}; j < CHUNK_HEIGHT; ++j) {
+      for (int k{0}; k < CHUNK_WIDTH_AND_DEPTH; ++k) {
         char lv = m_leftNeighbor->m_cubes[15][j][k].sunLightValue - 1;
         if (m_leftNeighbor->m_cubes[15][j][k].id == AIR
                 && m_cubes[0][j][k].id == AIR
@@ -100,8 +100,8 @@ void Chunk::collectLightFromLeftNeighbor() {
 
 void Chunk::collectLightFromBackNeighbor() {
   if (m_backNeighbor.get()) {
-    for (unsigned i{0}; i < CHUNK_WIDTH_AND_DEPTH; ++i) {
-    for (unsigned j{0}; j < CHUNK_HEIGHT; ++j) {
+    for (int i{0}; i < CHUNK_WIDTH_AND_DEPTH; ++i) {
+    for (int j{0}; j < CHUNK_HEIGHT; ++j) {
         char lv = m_backNeighbor->m_cubes[i][j][0].sunLightValue - 1;
 
         if (m_backNeighbor->m_cubes[i][j][0].id == AIR
@@ -118,8 +118,8 @@ void Chunk::collectLightFromBackNeighbor() {
 
 void Chunk::collectLightFromFrontNeighbor() {
   if (m_frontNeighbor.get()) {
-    for (unsigned i{0}; i < CHUNK_WIDTH_AND_DEPTH; ++i) {
-      for (unsigned j{0}; j < CHUNK_HEIGHT; ++j) {
+    for (int i{0}; i < CHUNK_WIDTH_AND_DEPTH; ++i) {
+      for (int j{0}; j < CHUNK_HEIGHT; ++j) {
         char lv = m_frontNeighbor->m_cubes[i][j][15].sunLightValue - 1;
 
         if (m_frontNeighbor->m_cubes[i][j][15].id == AIR
@@ -147,7 +147,7 @@ void Chunk::propagateLights() {
 }
 
 void Chunk::forceUpdateGraphics() {
-  for (unsigned i{0}; i < CHUNK_HEIGHT / GRAPHICAL_CHUNK_HEIGHT; ++i)
+  for (int i{0}; i < CHUNK_HEIGHT / GRAPHICAL_CHUNK_HEIGHT; ++i)
     m_dirtyRegions.emplace(i);
 
   updateGraphics();
@@ -938,7 +938,7 @@ void Chunk::dePropagateSunlight(int x, int y, int z, int _lightValue) {
 }
 
 
-void Chunk::dePropagateOtherlight(int x, int y, int z, int _lightValue) {
+void Chunk::dePropagateOtherlight(int x, int y, int z/*, int _lightValue*/) {
 
   updateDirtyRegions(y);
 

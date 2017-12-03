@@ -25,7 +25,7 @@ namespace graphics {
 class CubeBatcher {
 public:
 
-    CubeBatcher(Camera &camera);
+    explicit CubeBatcher(Camera &camera);
 
     /**
      * \brief Adds a cube to be drawn in the next draw call. The batch will only

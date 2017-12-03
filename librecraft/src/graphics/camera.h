@@ -21,7 +21,7 @@ public:
      */
     Camera();
 
-    Camera(glm::vec3 vec);
+    explicit Camera(glm::vec3 vec);
 
 
     /**

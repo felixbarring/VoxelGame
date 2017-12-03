@@ -19,9 +19,9 @@ public:
 
   unsigned createId(const std::string& value);
 
-  void startTimer(unsigned id);
-
-  void stopTimer(unsigned id);
+//  void startTimer(unsigned id);
+//
+//  void stopTimer(unsigned id);
 
   void clearData();
 

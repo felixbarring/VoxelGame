@@ -23,8 +23,8 @@ int counter{1};
 const int maxCount{config::cube_data::LAST_CUBE_USED_FOR_GENERATION};
 mutex s_mutex;
 
-TerrainGenerator::TerrainGenerator(unsigned width, unsigned height,
-    unsigned depth)
+TerrainGenerator::TerrainGenerator(int width, int height,
+    int depth)
   : m_width{width}
   , m_height{height}
   , m_depth{depth}
@@ -46,11 +46,11 @@ vector<vector<vector<Voxel>>> TerrainGenerator::generateTerrain(
   vector<vector<vector<Voxel>>> cubes;
 
   // Create the voxels with default values
-  for (unsigned x{0}; x < m_width; ++x) {
+  for (int x{0}; x < m_width; ++x) {
     cubes.push_back(vector<vector<Voxel>>());
-    for (unsigned y{0}; y < m_height; ++y) {
+    for (int y{0}; y < m_height; ++y) {
       cubes[x].push_back(vector<Voxel>());
-      for (unsigned z{0}; z < m_depth; ++z) {
+      for (int z{0}; z < m_depth; ++z) {
         cubes[x][y].push_back(Voxel{config::cube_data::AIR, 0});
       }
     }
@@ -66,9 +66,9 @@ vector<vector<vector<Voxel>>> TerrainGenerator::generateTerrain(
 }
 
 void TerrainGenerator::generateFlat(vector<vector<vector<Voxel>>> &cubes) {
-  for (unsigned x{0}; x < m_width; ++x) {
-    for (unsigned z{0}; z < m_depth; ++z) {
-       for (unsigned y{0}; y < m_height; ++y) {
+  for (int x{0}; x < m_width; ++x) {
+    for (int z{0}; z < m_depth; ++z) {
+       for (int y{0}; y < m_height; ++y) {
          auto &v = cubes[x][y][z];
          if (y == 0) {
            v.id = config::cube_data::BED_ROCK;
@@ -109,8 +109,8 @@ void TerrainGenerator::generateNoneFlat(vector<vector<vector<Voxel>>> &cubes,
   int xOffsetLocation{x};
   int yOffsetLocation{y};
 
-  for (unsigned x{0}; x < m_width; ++x) {
-   for (unsigned z{0}; z < m_depth; ++z) {
+  for (int x{0}; x < m_width; ++x) {
+   for (int z{0}; z < m_depth; ++z) {
 
      double noiseValue{};
 
@@ -128,7 +128,7 @@ void TerrainGenerator::generateNoneFlat(vector<vector<vector<Voxel>>> &cubes,
 //          (yOffsetLocation + static_cast<int>(z)) / 10.0, 0.5);
 //     }
 
-     for (unsigned y{0}; y < m_height; ++y) {
+     for (int y{0}; y < m_height; ++y) {
        auto &v = cubes[x][y][z];
        if (y == 0) {
          v.id = config::cube_data::BED_ROCK;

@@ -8,7 +8,7 @@ namespace texture {
 class Texture {
 public:
 
-    Texture(const char *path);
+    explicit Texture(const char *path);
 
     void bind() const;
 

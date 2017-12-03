@@ -185,9 +185,9 @@ public:
         0.0f, 1.0f, 0.0f,
     };
 
-    GLfloat sideTexture = 1.0f; //BLOCK_TEXTURES[id][SIDE_TEXTURE];
+//    GLfloat sideTexture = 1.0f; //BLOCK_TEXTURES[id][SIDE_TEXTURE];
     GLfloat topTexture = 1.0f; //BLOCK_TEXTURES[id][TOP_TEXTURE];
-    GLfloat bottomTexture = 1.0f; //BLOCK_TEXTURES[id][BOTTOM_TEXTURE];
+//    GLfloat bottomTexture = 1.0f; //BLOCK_TEXTURES[id][BOTTOM_TEXTURE];
 
     std::vector<GLfloat> UV{
       0.0f, 0.0f, topTexture,

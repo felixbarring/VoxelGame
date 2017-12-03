@@ -19,14 +19,14 @@ unsigned Performance::createId(const string& value) {
   return s_idCounter;
 }
 
-void Performance::startTimer(unsigned id) {
-//  get<0>(m_accumulatedTime[id]).restart();
-}
-
-void Performance::stopTimer(unsigned id) {
-//  auto &p = m_accumulatedTime[id];
-//  get<1>(p) += get<0>(p).getElapsedTime().asSeconds();
-}
+//void Performance::startTimer(unsigned id) {
+////  get<0>(m_accumulatedTime[id]).restart();
+//}
+//
+//void Performance::stopTimer(unsigned id) {
+////  auto &p = m_accumulatedTime[id];
+////  get<1>(p) += get<0>(p).getElapsedTime().asSeconds();
+//}
 
 void Performance::clearData() {
 //  for_each(m_accumulatedTime.begin(), m_accumulatedTime.end(),

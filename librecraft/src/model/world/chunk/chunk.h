@@ -304,7 +304,7 @@ private:
 
 	void dePropagateSunlight(int x, int y, int z, int _lightValue = -1);
 
-	void dePropagateOtherlight(int x, int y, int z, int _lightValue = -1);
+	void dePropagateOtherlight(int x, int y, int z/*, int _lightValue = -1*/);
 
 	int highestSunLVFromNeighbors(int x, int y, int z);
 
