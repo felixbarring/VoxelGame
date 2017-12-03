@@ -6,7 +6,7 @@
 
 #include <iostream>
 
-#include "../model/world/terrainGen/libnoise/module/perlin.h"
+#include "../dependencies/libnoise/module/perlin.h"
 
 namespace demo {
 

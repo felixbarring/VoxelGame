@@ -6,11 +6,11 @@
 #include <iostream>
 
 #include "../../../config/data.h"
-#include "libnoise/module/billow.h"
-#include "libnoise/module/perlin.h"
-#include "libnoise/module/ridgedmulti.h"
-#include "libnoise/module/scalebias.h"
-#include "libnoise/module/select.h"
+#include "../../../dependencies/libnoise/module/billow.h"
+#include "../../../dependencies/libnoise/module/perlin.h"
+#include "../../../dependencies/libnoise/module/ridgedmulti.h"
+#include "../../../dependencies/libnoise/module/scalebias.h"
+#include "../../../dependencies/libnoise/module/select.h"
 
 using namespace std;
 using namespace noise;

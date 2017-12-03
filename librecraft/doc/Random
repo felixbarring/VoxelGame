@@ -6,7 +6,7 @@ being explained more thoroughly.
 
 ###
 
-Prevent the game from crashing when the player is looking outside the worl,
+Prevent the game from crashing when the player is looking outside the world,
 that is, trying to access a cube not in range.
 
 Game crashes when removing cubes quickly, something agbout glm matrix.
