@@ -61,7 +61,7 @@ public:
 	    glViewport(0, 0, WIDTH, HEIGHT);
 	    glClearColor(0.2f, 0.22f, 0.2f, 1.0f);
 
-	    std:: string vertex =
+	    std::string vertex =
 	        "#version 330 core \n"
 	        "in vec3 positionIn; \n"
 	        "in vec3 texCoordIn; \n"
@@ -140,7 +140,8 @@ public:
 	        0+8, 2+8, 3+8
 	    };
 
-	    mesh::MeshElement mesh{vertices, 3, texCoords, 3, indices};
+	    std::vector<std::pair<std::vector<float>, int>> vbos{{vertices, 3}, {texCoords, 3}};
+	    mesh::MeshElement mesh{vbos, indices};
 
 	    texture::TextureArray texture{
 	        config::cube_data::textures,

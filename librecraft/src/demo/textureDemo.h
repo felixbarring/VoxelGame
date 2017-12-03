@@ -22,8 +22,6 @@
 #include <SFML/Window.hpp>
 #include <string>
 
-using namespace sf;
-
 namespace demo
 {
 
@@ -32,6 +30,8 @@ public:
 
 	void runDemo() override
 	{
+
+		using namespace sf;
 
 	    util::FPSManager fpsManager(60);
 	    const GLuint WIDTH = 800, HEIGHT = 600;
@@ -109,8 +109,10 @@ public:
 	        1, 2, 3
 	    };
 
-	    mesh::MeshElement mesh{vertices, 2, texCoords, 2, indices};
-	    texture::Texture texture(config::texture_paths::scout.c_str());
+
+	    std::vector<std::pair<std::vector<float>, int>> vbos{{vertices, 2}, {texCoords, 2}};
+	    mesh::MeshElement mesh{vbos, indices};
+	    texture::Texture texture(config::cube_data::textures[0].c_str());
 
 	    while (window.isOpen()) {
 

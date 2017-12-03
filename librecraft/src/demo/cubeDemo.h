@@ -80,7 +80,7 @@ public:
 	        glm::vec3(0, 0, 1)    // Head is up
 	    );
 
-	    float xAmount = 0;
+//	    float xAmount = 0;
 
 	    Camera camera{};
 	    camera.setViewMatrix(std::move(cameraMatrix));

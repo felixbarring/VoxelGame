@@ -57,25 +57,25 @@ public:
 
 
     // In
-    const string positionIn = "positionIn";
-    const string normalIn = "normalIn";
-    const string texCoordIn = "texCoordIn";
+    const std::string positionIn = "positionIn";
+    const std::string normalIn = "normalIn";
+    const std::string texCoordIn = "texCoordIn";
 
     // Uniform
-    const string lightValue = "lightValue";
-    const string sunStrength = "sunStrenght";
-    const string mvp = "modelViewProjection";
+    const std::string lightValue = "lightValue";
+    const std::string sunStrength = "sunStrenght";
+    const std::string mvp = "modelViewProjection";
 
     const string arrayTexture = "arrayTexture";
 
     // Out
-    const string faceNormalOut = "faceNormal";
-    const string texCoordOut = "texCoord";
-    const string lightOut = "light";
+    const std::string faceNormalOut = "faceNormal";
+    const std::string texCoordOut = "texCoord";
+    const std::string lightOut = "light";
 
-    const string colorOut = "color";
+    const std::string colorOut = "color";
 
-    string vertex = "#version 330 core \n"
+    std::string vertex = "#version 330 core \n"
 
         "in vec3 " + positionIn + "; \n"
         "in vec3 " + normalIn + "; \n"
@@ -90,7 +90,7 @@ public:
         "  gl_Position = " + mvp + " * vec4(" + positionIn + ", 1); \n"
         "} \n";
 
-    string fragment = "#version 330 core \n"
+    std::string fragment = "#version 330 core \n"
 
         "in vec3 " + texCoordOut + "; \n"
         "uniform sampler2DArray " + arrayTexture + "; \n"
@@ -101,15 +101,15 @@ public:
             "  " + colorOut + ".w = 1.0; \n"
             "} \n";
 
-    map<string, int> attributesMap{pair<string, int>(positionIn, 0), pair<
-        string, int>(normalIn, 1), pair<string, int>(texCoordIn, 2)};
+    std::map<std::string, int> attributesMap{std::pair<std::string, int>(positionIn, 0), std::pair<
+    	std::string, int>(normalIn, 1), std::pair<std::string, int>(texCoordIn, 2)};
 
     std::unique_ptr<ShaderProgram> simpleProgram = make_unique<ShaderProgram>
       (vertex.c_str(), fragment.c_str(), attributesMap);
 
 
 
-    string shadowDepthVert = "#version 330 core \n"
+    std::string shadowDepthVert = "#version 330 core \n"
 
         "in vec3 " + positionIn + "; \n"
         "in vec3 " + normalIn + "; \n"
@@ -122,7 +122,7 @@ public:
         "  gl_Position = " + mvp + " * vec4(" + positionIn + ", 1); \n"
         "} \n";
 
-    string shadowDepthFrag = "#version 330 core \n"
+    std::string shadowDepthFrag = "#version 330 core \n"
 
         "out vec4 " + colorOut + "; \n"
         "void main() { \n"
@@ -130,7 +130,7 @@ public:
         "} \n";
 
     std::unique_ptr<ShaderProgram> shadowDepthProgram =
-        make_unique<ShaderProgram>(shadowDepthVert.c_str(),
+    		std::make_unique<ShaderProgram>(shadowDepthVert.c_str(),
             shadowDepthFrag.c_str(), attributesMap);
 
 
@@ -171,14 +171,14 @@ public:
 
     float size = 5.0f;
 
-    vector<GLfloat> vertexData{
+    std::vector<GLfloat> vertexData{
       -size, size, size, // 0
       size, size, size, // 1
       size, size, -size, // 2
       -size, size, -size, // 3
     };
 
-    vector<GLfloat> normals{
+    std::vector<GLfloat> normals{
         0.0f, 1.0f, 0.0f,
         0.0f, 1.0f, 0.0f,
         0.0f, 1.0f, 0.0f,
@@ -189,18 +189,19 @@ public:
     GLfloat topTexture = 1.0f; //BLOCK_TEXTURES[id][TOP_TEXTURE];
     GLfloat bottomTexture = 1.0f; //BLOCK_TEXTURES[id][BOTTOM_TEXTURE];
 
-    vector<GLfloat> UV{
+    std::vector<GLfloat> UV{
       0.0f, 0.0f, topTexture,
       1.0f, 0.0f, topTexture,
       1.0f, 1.0f, topTexture,
       0.0f, 1.0f, topTexture,
     };
 
-    vector<short> elementData{0, 1, 2, 0, 2, 3 };
+    std::vector<short> elementData{0, 1, 2, 0, 2, 3 };
 
     std::shared_ptr<mesh::MeshElement> mesh;
-    mesh.reset(new mesh::MeshElement(vertexData, 3, normals, 3, UV, 3,
-                                     elementData));
+
+    std::vector<std::pair<std::vector<float>, int>> vbos{{vertexData, 3}, {normals, 3}, {UV, 3}};
+    mesh.reset(new mesh::MeshElement(vbos, elementData));
     graphics::Transform floorTransform{0, -7, 0};
     graphics::ViewDirection viewDirection;
 

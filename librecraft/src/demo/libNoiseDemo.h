@@ -8,9 +8,6 @@
 
 #include "../model/world/terrainGen/libnoise/module/perlin.h"
 
-using namespace noise;
-using namespace std;
-
 namespace demo {
 
 class LibNoiseDemo : public IDemo
@@ -18,6 +15,10 @@ class LibNoiseDemo : public IDemo
 public:
 
   void runDemo() override {
+
+	using namespace noise;
+	using namespace std;
+
     module::Perlin myModule;
 
     for (double i{0.0}; i < 5.0; ++i) {
