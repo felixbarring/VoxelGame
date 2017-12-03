@@ -42,7 +42,8 @@ Instructions on how to get going.
 
 ```
 Installing dependencies on Ubuntu:
-	sudo apt-get install cmake make g++ libsfml-dev
+	sudo apt-get install cmake make g++ clang-5.0 libsfml-dev libglew-dev cppcheck 
+doxygen clang-format
 
 	Should be something similar on Fedora
 
