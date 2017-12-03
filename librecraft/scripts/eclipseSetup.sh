@@ -1,10 +1,13 @@
 #!/bin/sh
 
 cd ../..
-rm -r Eclipse
+
+if [ -d "Eclipse" ]; then
+  rm -r Eclipse
+fi
 mkdir Eclipse
 cd Eclipse
 mkdir data
 touch data/meta
-cmake -G "Eclipse CDT4 - Unix Makefiles" -DCMAKE_BUILD_TYPE=Debug -DAPPLICATION=TRUE -DDEMO=FALSE -DWARNINGS=TRUE ../librecraft
+cmake -G "Eclipse CDT4 - Unix Makefiles" -DCMAKE_BUILD_TYPE=Debug -DAPPLICATION=TRUE -DDEMO=TRUE -DWARNINGS=TRUE ../librecraft
 cd ../librecraft/scripts

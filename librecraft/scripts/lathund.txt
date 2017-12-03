@@ -9,8 +9,8 @@ The first value is the defualt one
 
 CMAKE_BUILD_TYPE: Debug | Release
 APPLICATION: TRUE | FALSE
-DEMO: FALSE | TRUE
-WARNINGS: FALSE| TRUE
+DEMO: TRUE | FALSE 
+WARNINGS: TRUE | FALSE
 
 
 Building with makefiles

@@ -5,7 +5,6 @@ project(VoxelGame)
 
 message("### Building with ${CMAKE_CXX_COMPILER_ID}")
 
-# -Werror
 if (WARNINGS)
   message("### Warnings on")
   set(CMAKE_CXX_FLAGS "-std=c++17 -Wall -Wextra")
@@ -40,7 +39,7 @@ add_subdirectory(dependencies)
 # Get Include Directories
 set (INCLUDE_DIRS 
   include
-  include/GL
+#  include/GL
   include/glm
   include/glm/gtc
   include/glm/gtx
@@ -81,13 +80,6 @@ if(DEMO)
     list(APPEND SRC_DEMO_LIST ${f})
   endforeach()
 endif()
-
-#if(WARNINGS)
-#	foreach (f ${SRC_LIST})
-#		message("${f}")
-#		SET_PROPERTY(SOURCE ${f} PROPERTY COMPILE_FLAGS "-std=c++14 -Wall -Wextra -Werror")
-#	endforeach()
-#endif()
 
 # Add executable to project
 if(APPLICATION)
