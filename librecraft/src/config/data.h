@@ -48,6 +48,8 @@ namespace config {
     extern const char SELECTED;
     extern const char LIGHT;
 
+    extern const char LOG_OAK;
+
     // Used for looping over all types, except for air.
     extern const char LAST_CUBE;
 
@@ -56,7 +58,7 @@ namespace config {
     extern const int BOTTOM_TEXTURE;
 
     // 0 = Side, 1 = Top, 2 = Bottom
-    extern const char BLOCK_TEXTURES[10][3];
+    extern const char BLOCK_TEXTURES[11][3];
 
     extern const unsigned TEXTURE_WIDTH;
     extern const unsigned TEXTURE_HEIGHT;

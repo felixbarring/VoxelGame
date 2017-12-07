@@ -47,12 +47,14 @@ private:
   void generateNoneFlat(std::vector<std::vector<std::vector<Voxel>>> &cubes,
       int x, int y);
 
+  void placeTree(std::vector<std::vector<std::vector<Voxel>>> &cubes, int x,
+      int y, int z);
+
   unsigned m_counterValue{};
 
   int m_width{};
   int m_height{};
   int m_depth{};
-
 };
 
 }

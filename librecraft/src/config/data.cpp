@@ -35,6 +35,7 @@ namespace cube_data {
  const char WATER = 7;
  const char BED_ROCK = 8;
  const char SELECTED = 9;
+ const char LOG_OAK = 10;
 
 
 // Used for looping over all types, except for air.
@@ -45,17 +46,18 @@ namespace cube_data {
  const int BOTTOM_TEXTURE = 2;
 
 // 0 = Side, 1 = Top, 2 = Bottom
- const char BLOCK_TEXTURES[10][3] {
+ const char BLOCK_TEXTURES[11][3] {
     { 0, 1, 2 }, // Grass
     { 2, 2, 2 }, // Dirt
     { 3, 3, 3 }, // Rock
     { 4, 4, 4 }, // More rock
     { 5, 5, 5 }, // Brick wall
     { 6, 6, 6 }, // Sand
-	{ 10, 10, 10}, //LIGHT
+    { 10, 10, 10}, //LIGHT
     { 7, 7, 7 }, // Water
     { 8, 8, 8 }, // Bedrock
     { 9, 9, 9 }, // Selected
+    { 11, 11, 11 }, // Log Oak
 };
 
 const unsigned TEXTURE_WIDTH = 32;
@@ -74,6 +76,7 @@ const std::vector<std::string> textures {
   "../resources/cubes/bedrock.png",
   "../resources/cubes/selected.png",
   "../resources/cubes/light.png",
+  "../resources/cubes/log_oak.png",
 };
 
 // TODO Fix better thumbnails
