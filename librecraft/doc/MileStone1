@@ -24,6 +24,21 @@ Type: Feature
 
 Make an interesting world generation, using biomes, trees, floora, rivers etc.
 
+As a first step there should be possible to have two biomes, one for dessert and
+one for grassland. Dessert only contains sand and some occasional cactuses. 
+Grassland can be plain, but also dence or sparce forest. There are also
+occasional ponds or lakes with water.
+
+###
+
+Add more block types.
+
+Type: Feature
+
+Add more block types to make the game more interesting. Use similar types as
+Minecraft, that way it is possible to use texture packs for minecraft in this
+game and avoid creating my own.
+
 ###
 
 Build the game on windows.
@@ -35,6 +50,127 @@ Type: Feature
 
 Implement so that it is possible to rename worlds and also delete 
 them. Either With boost file system, or C++ 17 file system.
+
+###
+
+Improve the HUD
+Type: Feature
+
+Add several building blocks so that the player can easily see wich he can 
+change to by pressing the change buttons. The player can change in both 
+directions and the currently selected one is highlighted by being extra large
+and in the middel.
+
+###
+
+Iventory of cubes
+Type: Feature
+
+When the player removes a cube it will automatically be
+added to an iventory. When building, only cubes in the 
+iventory can be used. There should be a GUI that provides
+a view of all the cubes that is in the players posession.
+When using a cube to build of a certain type, one of 
+the collected cubes are consumed and removed from the 
+iventory. If there are no cubes of the selected cube, 
+the player can not build. The player can select cube types 
+that should be in a quick access list that is vissible on
+the HUD. If all the cubes from a type is consumed, the cube
+type is removed from the HUD.
+
+###
+
+Removeing cube effect
+Type: Feature
+
+When a cube is removed/destroyed, there should be a particle
+effect to make it look cool. The cube will then be represented
+by a small floating cube that the player can collect by 
+colliding with. When collecting it, it be be added to the 
+iventory, thus removing a cube will not automatically add it 
+to the inventory. The particle effects should have a demo 
+shocasing it.
+
+###
+
+Explosions
+Type: Feature
+
+Implement so that an explosion from a cube position propagates and
+destroys cubes. Varying amount of cubes gets destoryed depending
+on how strong the explosion is and the cube thoughness. There 
+should be an billboard animation for the explosion effect show 
+cased in a demo. The explosion can be used by a TNT block that
+triggers the explosion when hit by the player.
+
+###
+
+Monotoring
+Type: Performance
+
+Implement a way to monitor the performance of the functions and
+keep statistics. Should be possible to compile without
+performance checks and turn of on/off at runtime with the consoll.
+
+###
+
+Demo with frustum culling
+Type: Feature
+
+Create a demo that have a vissible cube. When the cube is not in 
+the view ther eshould be printed to stdout to make it easy to
+validate that the culling works correctly.
+
+###
+
+Store Data with xml format.
+
+Type: Feature
+
+Use xml to load/store settings. Settings can thins like key bindings, settings 
+such as fov and music volume. Also store metat data for each world, like 
+generation options and the player spawn location. Add a demo that test a 
+simple way of saving/loading xml data with tinyxml2.
+
+###
+
+Load generation options. Related to the xml Feature.
+
+Type: Improvement
+
+When creating a new map, the generations setting should be saved
+and used when loading the same map. Currently when loading a 
+saved map, the default settings will be used, wich might not be
+the correct ones for theat map, causing inconsistent terrain
+generation.
+
+###
+
+Save player location. Related to the xml Feature.
+Type: Feature
+
+When exeting a world the location of the player should also be
+stored and used when loading the world again. The current chunk
+that the player i located in should be used as the center next
+time the world is loaded.
+
+###
+
+Slight lagg when loading new chunks.
+
+Type: Improvement
+
+Make sure that all heavy work is offloaded to another thread than the main one.
+
+###
+
+More Doxygen
+
+Type: Code Quality
+
+Add a start page with description about the project. Add Doxygen markdown files 
+to each folder describing its purpose. Uppdate all header files with doxygen
+comments for all public members.
 
 ###
 

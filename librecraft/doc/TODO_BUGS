@@ -27,7 +27,7 @@ should.
 
 ###
 
-Whene entering the ingame state, there is a chanse that the
+When entering the ingame state, there is a chanse that the
 shader becomes broken somehow and dont render correctly. 
 Verry annoying, and hard to see how it happens since,
 it occurs randomly. This only happens on intel, not NVIDIA.
@@ -38,6 +38,20 @@ When going back to the main menu from ingame, the music plays at 100% for a
 short moment and then starts from 0 to 100
 
 ###
+
+Prevent the game from crashing when the player is looking outside the world,
+that is, trying to access a cube not in range.
+
+###
+
+Game crashes when removing cubes quickly, something agbout glm matrix.
+only happens for light cubes it seems.
+
+###
+
+Games crashes directly after entering the ingame mode, segfault when trying
+to access a cube. Has only happend once I think.
+
 
 
 

@@ -5,52 +5,10 @@ Try out using clang tidy and clang format.
 
 ###
 
-Iventory of cubes
-Type: Feature
-
-When the player removes a cube it will automatically be
-added to an iventory. When building, only cubes in the 
-iventory can be used. There should be a GUI that provides
-a view of all the cubes that is in the players posession.
-When using a cube to build of a certain type, one of 
-the collected cubes are consumed and removed from the 
-iventory. If there are no cubes of the selected cube, 
-the player can not build. The player can select cube types 
-that should be in a quick access list that is vissible on
-the HUD. If all the cubes from a type is consumed, the cube
-type is removed from the HUD.
-
-###
-
-Removeing cube effect
-Type: Feature
-
-When a cube is removed/destroyed, there should be a particle
-effect to make it look cool. The cube will then be represented
-by a small floating cube that the player can collect by 
-colliding with. When collecting it, it be be added to the 
-iventory, thus removing a cube will not automatically add it 
-to the inventory. The particle effects should have a demo 
-shocasing it.
-
-###
-
 Loading 3D-models
 Type: Feature
 
 Create a demo showcasing how to load and render 3D models.
-
-###
-
-Explosions
-Type: Feature
-
-Implement so that an explosion from a cube position propagates and
-destroys cubes. Varying amount of cubes gets destoryed depending
-on how strong the explosion is and the cube thoughness. There 
-should be an billboard animation for the explosion effect show 
-cased in a demo. The explosion can be used by a TNT block that
-triggers the explosion when hit by the player.
 
 ###
 
@@ -78,50 +36,12 @@ chunk. All chunks that are reached this way shall be rendered.
 
 ###
 
-Monotoring
-Type: Performance
-
-Implement a way to monitor the performance of the functions and
-keep statistics. Should be possible to compile without
-performance checks and turn of on/off at runtime with the consoll.
-
-###
-
 Make the water physics better:
+
 Type: Improvement
 
 Currently the speed in water feels very off. Should be improved
 to feel more natural.
-
-###
-
-Demo with frustum culling
-Type: Feature
-
-Create a demo that have a vissible cube. When the cube is not in 
-the view ther eshould be printed to stdout to make it easy to
-validate that the culling works correctly.
-
-###
-
-Load generation options
-Type: Improvement
-
-When creating a new map, the generations setting should be saved
-and used when loading the same map. Currently when loading a 
-saved map, the default settings will be used, wich might not be
-the correct ones for theat map, causing inconsistent terrain
-generation.
-
-###
-
-Save player location
-Type: Feature
-
-When exeting a world the location of the player should also be
-stored and used when loading the world again. The current chunk
-that the player i located in should be used as the center next
-time the world is loaded.
 
 ###
 
@@ -176,28 +96,41 @@ in game to create a better atmosphere.
 
 ###
 
-Remove Singletons
-Type: Code Quality
-
-Remove all use of Singletons
-
-###
-
-Improve the HUD
-Type: Feature
-
-Add several building blocks so that the player can easily see wich he can 
-change to by pressing the change buttons. The player can change in both 
-directions and the currently selected one is highlighted by being extra large
-and in the middel.
-
-###
-
 Add a minimap
 
 Type: Feature
 
 Create a minimap that shows the details of the world from above. This can
 probably be acheived by rendering the world from above to a texture.
+
+###
+
+Player should make stepping sound when landing on the ground.
+
+Type: Improvement
+
+Currently the player makes stepping sounds when walking and when jumping.
+It would feel more natural if it also made sounds when lading on the ground
+after a jump/fall.
+
+###
+
+Build the game on windows
+
+Type: Feature
+
+Using Cmake to generate MinGW make files or maybe a code blocks project/
+visual studio.
+
+###
+
+Sort chunks before rendering.
+
+Type: Performance
+
+Sort the chunks rendering order after the distance to the player. This way 
+chunks that are father away and ocluded by another chunk will fail z-depth test 
+and hence might improve performance since no shading is needed. Should bench 
+mark this before using it.
 
 
