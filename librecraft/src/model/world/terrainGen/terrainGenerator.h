@@ -14,10 +14,14 @@ namespace terrainGen {
  *
  * The data will be made in a way that it mimics various terrain types that
  * exist in the real world in order to create an interesting world.
+ *
+ * This class is thread safe, the generateTerrain function can be called
+ * concurrently.
  */
 class TerrainGenerator {
 public:
 
+  using VoxelMatrix = std::vector<std::vector<std::vector<Voxel>>>;
   // TODO Elaborate this documentation.
 
   /**
@@ -37,24 +41,24 @@ public:
    * @param y The y coordinate of the chunk.
    * @return A matrix of voxel data.
    */
-  std::vector<std::vector<std::vector<Voxel>>> generateTerrain(
+  VoxelMatrix generateTerrain(
       chunk::CreationOptions& options, int x, int y);
 
 private:
 
-  void generateFlat(std::vector<std::vector<std::vector<Voxel>>> &cubes);
+  inline void fillWithAir(VoxelMatrix &cubes);
 
-  void generateNoneFlat(std::vector<std::vector<std::vector<Voxel>>> &cubes,
-      int x, int y);
+  inline void generateFlat(VoxelMatrix &cubes);
 
-  void placeTree(std::vector<std::vector<std::vector<Voxel>>> &cubes, int x,
-      int y, int z);
+  inline void generateNoneFlat(VoxelMatrix &cubes, int x, int y);
+
+  inline void placeTree(VoxelMatrix &cubes, int x, int y, int z);
 
   unsigned m_counterValue{};
 
-  int m_width{};
-  int m_height{};
-  int m_depth{};
+  const int m_width{};
+  const int m_height{};
+  const int m_depth{};
 };
 
 }

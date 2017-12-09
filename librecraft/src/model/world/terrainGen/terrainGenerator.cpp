@@ -23,15 +23,14 @@ int counter{1};
 const int maxCount{config::cube_data::LAST_CUBE_USED_FOR_GENERATION};
 mutex s_mutex;
 
-TerrainGenerator::TerrainGenerator(int width, int height,
-    int depth)
+TerrainGenerator::TerrainGenerator(int width, int height, int depth)
   : m_width{width}
   , m_height{height}
   , m_depth{depth}
 {
 }
 
-vector<vector<vector<Voxel>>> TerrainGenerator::generateTerrain(
+TerrainGenerator::VoxelMatrix TerrainGenerator::generateTerrain(
     CreationOptions& options,  int x, int y)
 {
   {
@@ -45,16 +44,7 @@ vector<vector<vector<Voxel>>> TerrainGenerator::generateTerrain(
 
   vector<vector<vector<Voxel>>> cubes;
 
-  // Create the voxels with default values
-  for (int x{0}; x < m_width; ++x) {
-    cubes.push_back(vector<vector<Voxel>>());
-    for (int y{0}; y < m_height; ++y) {
-      cubes[x].push_back(vector<Voxel>());
-      for (int z{0}; z < m_depth; ++z) {
-        cubes[x][y].push_back(Voxel{config::cube_data::AIR, 0});
-      }
-    }
-  }
+  fillWithAir(cubes);
 
   if (options.getFlat()) {
     generateFlat(cubes);
@@ -65,7 +55,20 @@ vector<vector<vector<Voxel>>> TerrainGenerator::generateTerrain(
   return cubes;
 }
 
-void TerrainGenerator::generateFlat(vector<vector<vector<Voxel>>> &cubes) {
+
+void TerrainGenerator::fillWithAir(VoxelMatrix &cubes) {
+  for (int x{0}; x < m_width; ++x) {
+    cubes.push_back(vector<vector<Voxel>>());
+    for (int y{0}; y < m_height; ++y) {
+      cubes[x].push_back(vector<Voxel>());
+      for (int z{0}; z < m_depth; ++z) {
+        cubes[x][y].push_back(Voxel{config::cube_data::AIR, 0});
+      }
+    }
+  }
+}
+
+void TerrainGenerator::generateFlat(VoxelMatrix &cubes) {
   for (int x{0}; x < m_width; ++x) {
     for (int z{0}; z < m_depth; ++z) {
        for (int y{0}; y < m_height; ++y) {
@@ -81,8 +84,7 @@ void TerrainGenerator::generateFlat(vector<vector<vector<Voxel>>> &cubes) {
    }
 }
 
-void TerrainGenerator::generateNoneFlat(vector<vector<vector<Voxel>>> &cubes,
-    int x, int y)
+void TerrainGenerator::generateNoneFlat(VoxelMatrix &cubes, int x, int y)
 {
   module::RidgedMulti mountainSource;
   mountainSource.SetFrequency(0.05);
@@ -162,8 +164,7 @@ void TerrainGenerator::generateNoneFlat(vector<vector<vector<Voxel>>> &cubes,
   }
 }
 
-void TerrainGenerator::placeTree(vector<vector<vector<Voxel>>> &cubes,
-    int x, int y, int z) {
+void TerrainGenerator::placeTree(VoxelMatrix &cubes, int x, int y, int z) {
   for (int i{y}; i < y + 5; ++i)
     cubes[x][i][z].id = config::cube_data::LOG_OAK;
 }
@@ -187,3 +188,5 @@ void TerrainGenerator::placeTree(vector<vector<vector<Voxel>>> &cubes,
 //       noiseValue = flat.GetValue(
 //          (xOffsetLocation + static_cast<int>(x)) / 10.0,
 //          (yOffsetLocation + static_cast<int>(z)) / 10.0, 0.5);
+
+
