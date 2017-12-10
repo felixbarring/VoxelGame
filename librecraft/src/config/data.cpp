@@ -23,8 +23,8 @@ namespace cube_data {
 
  const char GRASS = 0;
  const char DIRT = 1;
- const char ROCK = 2;
- const char MORE_ROCK = 3;
+ const char STONE = 2;
+ const char STONE_ANDESITE = 3;
  const char BRICK_WALL = 4;
  const char SAND = 5;
  const char LIGHT = 6;
@@ -65,8 +65,8 @@ const std::vector<std::string> textures {
   "../resources/cubes/grass_side.png",
   "../resources/cubes/grass_top.png",
   "../resources/cubes/dirt.png",
-  "../resources/cubes/rock.png",
-  "../resources/cubes/more_rock.png",
+  "../resources/cubes/stone.png",
+  "../resources/cubes/stone_andesite.png",
   "../resources/cubes/brick.png",
   "../resources/cubes/sand.png",
 
@@ -80,7 +80,7 @@ const std::vector<std::string> textures {
 const std::vector<std::string> thumbnails {
   "../resources/cubes/grass_side.png",
   "../resources/cubes/dirt.png",
-  "../resources/cubes/rock.png",
+  "../resources/cubes/stone.png",
   "../resources/cubes/more_rock.png",
   "../resources/cubes/brick.png",
   "../resources/cubes/sand.png",

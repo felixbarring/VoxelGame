@@ -35,8 +35,8 @@ namespace config {
 
     extern const char GRASS;
     extern const char DIRT;
-    extern const char ROCK;
-    extern const char MORE_ROCK;
+    extern const char STONE;
+    extern const char STONE_ANDESITE; // stone_andesite
     extern const char BRICK_WALL;
     extern const char SAND;
 
