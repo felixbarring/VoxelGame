@@ -56,7 +56,7 @@ namespace config {
     extern const int BOTTOM_TEXTURE;
 
     // 0 = Side, 1 = Top, 2 = Bottom
-    extern const char BLOCK_TEXTURES[10][3];
+    extern const char BLOCK_TEXTURES[18][3];
 
     extern const unsigned TEXTURE_WIDTH;
     extern const unsigned TEXTURE_HEIGHT;
