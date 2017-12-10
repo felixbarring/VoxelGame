@@ -49,17 +49,16 @@ const char LAST_CUBE_USED_FOR_BUILDING = LIGHT; // Better name needed
 
 const char WATER = 19;
 const char BED_ROCK = 20;
-const char SELECTED = 21;
 
-// Used for looping over all types, except for air.
-const char LAST_CUBE = SELECTED;
+// Used for looping over all types, except for air. water, bedrock
+const char LAST_CUBE = LIGHT;
 
 const int SIDE_TEXTURE = 0;
 const int TOP_TEXTURE = 1;
 const int BOTTOM_TEXTURE = 2;
 
 // 0 = Side, 1 = Top, 2 = Bottom
-const char BLOCK_TEXTURES[18][3] {
+const char BLOCK_TEXTURES[21][3] {
   { 0, 1, 2 }, // GRASS
   { 2, 2, 2 }, // DIRT
   { 3, 3, 3 }, // COARSE_DIRT
@@ -78,6 +77,11 @@ const char BLOCK_TEXTURES[18][3] {
   { 21, 21, 21}, // STONE_BRICK
   { 22, 23, 23}, // LOG_BIRCH
   { 24, 24, 24}, // LEAVES_BIRCH
+  { 25, 25, 25}, // LIGHT
+  { 26, 26, 26}, // WATER
+  { 27, 27, 27}, // BEDROCK
+
+  // Water, bedrock, light...
 };
 
 
@@ -126,11 +130,9 @@ const std::vector<std::string> textures {
   pre + "log_birch_top.png",
   pre + "leaves_birch.png",
 
-
+  pre + "light.png",
   pre + "water.png",
   pre + "bedrock.png",
-  pre + "selected.png",
-  pre + "light.png",
 };
 
 // TODO Fix better thumbnails
