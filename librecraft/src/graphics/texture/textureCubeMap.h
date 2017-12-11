@@ -2,26 +2,28 @@
 #define SRC_GRAPHICS_TEXTURE_TEXTURECUBEMAP_H_
 
 #include <GL/glew.h>
-#include <vector>
 #include <string>
+#include <vector>
 
 namespace texture {
 
-class TextureCubeMap {
+class TextureCubeMap
+{
 public:
+  // TODO Take all six paths as arguments!
 
-    // TODO Take all six paths as arguments!
+  TextureCubeMap(const char* right,
+                 const char* left,
+                 const char* top,
+                 const char* bottom,
+                 const char* back,
+                 const char* front);
 
-    TextureCubeMap(const char* right, const char* left, const char* top,
-            const char* bottom, const char* back, const char* front);
-
-	void bind() const;
+  void bind() const;
 
 private:
-    GLuint textureID;
-
+  GLuint textureID;
 };
-
 }
 
 #endif /* SRC_GRAPHICS_TEXTURE_TEXTURECUBEMAP_H_ */

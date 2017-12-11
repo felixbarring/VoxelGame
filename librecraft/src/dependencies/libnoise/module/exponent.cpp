@@ -24,16 +24,17 @@
 
 using namespace noise::module;
 
-Exponent::Exponent ():
-  Module (GetSourceModuleCount ()),
-  m_exponent (DEFAULT_EXPONENT)
+Exponent::Exponent()
+  : Module(GetSourceModuleCount())
+  , m_exponent(DEFAULT_EXPONENT)
 {
 }
 
-double Exponent::GetValue (double x, double y, double z) const
+double
+Exponent::GetValue(double x, double y, double z) const
 {
-  assert (m_pSourceModule[0] != NULL);
+  assert(m_pSourceModule[0] != NULL);
 
-  double value = m_pSourceModule[0]->GetValue (x, y, z);
-  return (pow (fabs ((value + 1.0) / 2.0), m_exponent) * 2.0 - 1.0);
+  double value = m_pSourceModule[0]->GetValue(x, y, z);
+  return (pow(fabs((value + 1.0) / 2.0), m_exponent) * 2.0 - 1.0);
 }

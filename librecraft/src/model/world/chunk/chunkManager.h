@@ -1,24 +1,25 @@
 #ifndef SRC_MODEL_WORLD_CHUNK_CHUNKMANAGER_H_
 #define SRC_MODEL_WORLD_CHUNK_CHUNKMANAGER_H_
 
+#include "ThreadPool.h"
 #include <memory>
 #include <vector>
-#include "ThreadPool.h"
 
-#include "chunk.h"
 #include "../../../config/data.h"
-#include "../../../util/voxel.h"
 #include "../../../util/soundPlayer.h"
+#include "../../../util/voxel.h"
+#include "chunk.h"
 
 #include "creationOptions.h"
 
 namespace chunk {
 
-class ChunkManager {
+class ChunkManager
+{
 public:
-
-  ChunkManager(CreationOptions options, util::SoundPlayer &soundPlayer,
-      graphics::GraphicsManager &graphicsManager);
+  ChunkManager(CreationOptions options,
+               util::SoundPlayer& soundPlayer,
+               graphics::GraphicsManager& graphicsManager);
 
   void createWorld();
 
@@ -57,13 +58,15 @@ public:
    */
   void setCenter(float x, float z);
 
-  bool intersectWithSolidCube(glm::vec3 origin, glm::vec3 direction,
-      glm::vec3 &intersected, glm::vec3 &previous, float searchLength);
+  bool intersectWithSolidCube(glm::vec3 origin,
+                              glm::vec3 direction,
+                              glm::vec3& intersected,
+                              glm::vec3& previous,
+                              float searchLength);
 
   void loadWorldWhenDecentered(bool value = true);
 
 private:
-
   /*
    * Checks if there is water above or on the sides, not bellow.
    */
@@ -79,7 +82,8 @@ private:
 
   void moveChunksDown();
 
-  enum class Direction {
+  enum class Direction
+  {
     Right,
     Left,
     Up,
@@ -89,28 +93,30 @@ private:
   void moveChunks(Direction direction);
 
   int m_lenghtAcrossMatrix{
-      config::chunk_data::NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * 2 + 1};
+    config::chunk_data::NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * 2 + 1
+  };
 
   std::vector<std::vector<std::vector<std::shared_ptr<Chunk>>>> m_chunks;
 
-  int m_xOffset{0};
-  int m_zOffset{0};
+  int m_xOffset{ 0 };
+  int m_zOffset{ 0 };
 
   std::string m_worldName{};
   CreationOptions m_options;
-  util::SoundPlayer &m_soundPlayer;
-  graphics::GraphicsManager &m_graphicsManager;
+  util::SoundPlayer& m_soundPlayer;
+  graphics::GraphicsManager& m_graphicsManager;
 
-  bool m_loadStoreWorldWhenPlyayerIsNotInTheCenterChunk{true}; // Good name 10/10
+  bool m_loadStoreWorldWhenPlyayerIsNotInTheCenterChunk{
+    true
+  }; // Good name 10/10
 
-  glm::vec3 m_center{4, 0, 4};
+  glm::vec3 m_center{ 4, 0, 4 };
   glm::vec3 m_intersectedCube{};
   glm::vec3 m_previousCube{};
 
   // Mutex is non movable, hence the uniqueptr
   std::unique_ptr<std::mutex> m_bussyMovingChunksMutex{};
 };
-
 }
 /* namespace chunk */
 

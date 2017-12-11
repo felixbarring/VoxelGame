@@ -8,24 +8,21 @@
 
 namespace mesh {
 
-class MeshElement: public virtual IMesh {
+class MeshElement : public virtual IMesh
+{
 public:
+  MeshElement(std::vector<std::pair<std::vector<float>, int>> vbos,
+              const std::vector<short>& elementData);
 
-  MeshElement(
-      std::vector<std::pair<std::vector<float>, int>> vbos,
-      const std::vector<short> &elementData);
+  virtual ~MeshElement();
 
-	virtual ~MeshElement();
-
-	void draw() override;
+  void draw() override;
 
 private:
-
   GLuint m_VAO;
   GLuint m_EBO;
   std::vector<GLuint> m_vboHandels;
   int m_numberOfElements;
-
 };
 
 } /* namespace mesh */

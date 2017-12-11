@@ -1,12 +1,12 @@
 #ifndef SRC_UTIL_WORLDMETA_H_
 #define SRC_UTIL_WORLDMETA_H_
 
-#include <stdio.h>
-#include <iostream>
+#include <algorithm>
 #include <fstream>
+#include <iostream>
+#include <stdio.h>
 #include <string>
 #include <vector>
-#include <algorithm>
 
 #include "../config/data.h"
 
@@ -14,8 +14,10 @@
 
 namespace world_meta {
 
-void addName(std::string name) {
-  std::vector<std::string> names{name};
+void
+addName(std::string name)
+{
+  std::vector<std::string> names{ name };
   std::ifstream inStream(config::worldMetaFile);
 
   std::string n;
@@ -23,8 +25,9 @@ void addName(std::string name) {
     names.push_back(n);
 
   inStream.close();
-  std::sort(names.begin(), names.end(),
-      [](std::string a, std::string b) -> bool {return a < b;});
+  std::sort(names.begin(),
+            names.end(),
+            [](std::string a, std::string b) -> bool { return a < b; });
 
   std::ofstream outStream(config::worldMetaFile);
 
@@ -34,7 +37,9 @@ void addName(std::string name) {
   outStream.close();
 }
 
-bool worldNameExists(std::string name) {
+bool
+worldNameExists(std::string name)
+{
   std::ifstream inStream(config::worldMetaFile);
 
   std::string n;
@@ -45,14 +50,18 @@ bool worldNameExists(std::string name) {
   return false;
 }
 
-void deleteName(const std::string& name) {
+void
+deleteName(const std::string& name)
+{
   std::vector<std::string> files;
 
   // TODO
   std::remove(name.c_str());
 }
 
-std::vector<std::string> getAllWorldNames() {
+std::vector<std::string>
+getAllWorldNames()
+{
   std::vector<std::string> names;
   std::ifstream inStream(config::worldMetaFile);
 
@@ -64,7 +73,6 @@ std::vector<std::string> getAllWorldNames() {
 
   return names;
 }
-
 }
 
 #endif /* SRC_UTIL_WORLDMETA_H_ */

@@ -1,32 +1,32 @@
 #include "game.h"
 
+#include <chrono>
+#include <future>
+#include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
-#include <iostream>
-#include <chrono>
 #include <thread>
-#include <future>
 
 #include <SFML/Audio.hpp>
 #include <SFML/Window.hpp>
 
+#include "detail/type_vec.hpp"
 #include <GL/glew.h>
 #include <glm/glm.hpp>
-#include "detail/type_vec.hpp"
 
 #include "ThreadPool.h"
 
+#include "gui/guiUtil.h"
 #include "inGame.h"
 #include "mainMenu.h"
-#include "gui/guiUtil.h"
 #include "util/soundPlayer.h"
 
-#include "graphics/fontMeshBuilder.h"
-#include "graphics/sprite.h"
-#include "graphics/resources.h"
 #include "graphics/chunkBatcher.h"
 #include "graphics/cubeBatcher.h"
+#include "graphics/fontMeshBuilder.h"
 #include "graphics/graphicsManager.h"
+#include "graphics/resources.h"
+#include "graphics/sprite.h"
 
 #include "util/checkSystem.h"
 #include "util/fpsManager.h"
@@ -45,31 +45,37 @@ using util::FPSManager;
 using namespace std;
 using namespace util;
 
-class LoadingScreen {
+class LoadingScreen
+{
 public:
-
-  LoadingScreen(FPSManager &fpsManager, sf::Window *window,
-      graphics::GraphicsManager &graphicsManager)
-      : m_fpsManager(fpsManager)
-      , m_window(window)
-      , m_graphicsManager{graphicsManager}
+  LoadingScreen(FPSManager& fpsManager,
+                sf::Window* window,
+                graphics::GraphicsManager& graphicsManager)
+    : m_fpsManager(fpsManager)
+    , m_window(window)
+    , m_graphicsManager{ graphicsManager }
   {
-    auto &res = Resources::getInstance();
-    FontMeshBuilder &fontMeshBuilder = res.getFontMeshBuilder(
-        config::font_data::fontLayout, config::font_data::fontAtlasWidth,
-        config::font_data::fontAtlasHeight);
+    auto& res = Resources::getInstance();
+    FontMeshBuilder& fontMeshBuilder =
+      res.getFontMeshBuilder(config::font_data::fontLayout,
+                             config::font_data::fontAtlasWidth,
+                             config::font_data::fontAtlasHeight);
 
-    const unsigned numberOfDots{3};
-    string dots{""};
-    for (unsigned i{0}; i <= numberOfDots; ++i) {
-      m_sprites.push_back(make_shared<Sprite>(300, 300, 10,
-              fontMeshBuilder.buldMeshForString("Loading" + dots, 80),
-              res.getTexture(config::font_data::font)));
+    const unsigned numberOfDots{ 3 };
+    string dots{ "" };
+    for (unsigned i{ 0 }; i <= numberOfDots; ++i) {
+      m_sprites.push_back(make_shared<Sprite>(
+        300,
+        300,
+        10,
+        fontMeshBuilder.buldMeshForString("Loading" + dots, 80),
+        res.getTexture(config::font_data::font)));
       dots += ".";
     }
   }
 
-  void update() {
+  void update()
+  {
     m_fpsManager.frameStart();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -81,8 +87,7 @@ public:
         m_spriteCounter = 0;
     }
 
-    m_graphicsManager.getSpriteBatcher().addBatch(
-        m_sprites[m_spriteCounter]);
+    m_graphicsManager.getSpriteBatcher().addBatch(m_sprites[m_spriteCounter]);
     m_graphicsManager.getSpriteBatcher().draw();
 
     m_fpsManager.sync();
@@ -92,22 +97,25 @@ public:
 
 private:
   vector<shared_ptr<Sprite>> m_sprites{};
-  FPSManager &m_fpsManager;
-  sf::Window *m_window;
+  FPSManager& m_fpsManager;
+  sf::Window* m_window;
 
-  graphics::GraphicsManager &m_graphicsManager;
+  graphics::GraphicsManager& m_graphicsManager;
 
-  unsigned m_spriteCounter{0};
-  const double m_timePerFrame{0.2};
-  double m_frameTime{0.0};
-
+  unsigned m_spriteCounter{ 0 };
+  const double m_timePerFrame{ 0.2 };
+  double m_frameTime{ 0.0 };
 };
 
-void Game::run() {
+void
+Game::run()
+{
   check_system::checkStuff();
 
-//  config::graphics_data::windowWidth = sf::VideoMode::getDesktopMode().width;
-//  config::graphics_data::windowHeight = sf::VideoMode::getDesktopMode().height;
+  //  config::graphics_data::windowWidth =
+  //  sf::VideoMode::getDesktopMode().width;
+  //  config::graphics_data::windowHeight =
+  //  sf::VideoMode::getDesktopMode().height;
 
   const int width = config::graphics_data::windowWidth;
   const int height = config::graphics_data::windowHeight;
@@ -124,16 +132,17 @@ void Game::run() {
 
   string windowTitle = "Voxel Game";
 
-  window = new sf::Window{sf::VideoMode(width, height), windowTitle,
-    sf::Style::Default, settings};
+  window = new sf::Window{
+    sf::VideoMode(width, height), windowTitle, sf::Style::Default, settings
+  };
 
-//  window = new sf::Window{sf::VideoMode::getDesktopMode(), windowTitle,
-//      sf::Style::Default, settings};
+  //  window = new sf::Window{sf::VideoMode::getDesktopMode(), windowTitle,
+  //      sf::Style::Default, settings};
 
   window->setMouseCursorVisible(false);
 
-//    window->setVerticalSyncEnabled(true);
-//    window->setFramerateLimit(300);
+  //    window->setVerticalSyncEnabled(true);
+  //    window->setFramerateLimit(300);
 
   Input::getInstance()->setWindow(window);
 
@@ -160,36 +169,43 @@ void Game::run() {
     window->display();
     m_fpsManager.sync();
   }
-
 }
 
-void Game::createWorld(chunk::CreationOptions options) {
-  chunk::ChunkManager chunkManager{options, m_soundPlayer, *m_graphicsmanager};
+void
+Game::createWorld(chunk::CreationOptions options)
+{
+  chunk::ChunkManager chunkManager{ options,
+                                    m_soundPlayer,
+                                    *m_graphicsmanager };
 
-  auto future = globalResources::g_threadPool.enqueue([options, &chunkManager]
-  {
-    chunkManager.createWorld();
-  });
+  auto future = globalResources::g_threadPool.enqueue(
+    [options, &chunkManager] { chunkManager.createWorld(); });
 
   LoadingScreen loadingScreen(m_fpsManager, window, *m_graphicsmanager);
 
-  std::chrono::milliseconds span{0};
+  std::chrono::milliseconds span{ 0 };
   while (future.wait_for(span) != future_status::ready)
     loadingScreen.update();
 
-  m_inGame.reset(new InGame(*this, move(chunkManager), m_soundPlayer,
-      *m_graphicsmanager, m_fpsManager));
+  m_inGame.reset(new InGame(*this,
+                            move(chunkManager),
+                            m_soundPlayer,
+                            *m_graphicsmanager,
+                            m_fpsManager));
 
   m_currentState = m_inGame;
   m_soundPlayer.stopMusic();
 }
 
-void Game::changeStateToMainMenu() {
+void
+Game::changeStateToMainMenu()
+{
   m_currentState = m_mainMenu;
   m_soundPlayer.playMusic(config::music::menuMusic);
 }
 
-void Game::quitGame() {
+void
+Game::quitGame()
+{
   m_quit = true;
 }
-

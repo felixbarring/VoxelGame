@@ -26,20 +26,21 @@
 
 using namespace noise::module;
 
-Cylinders::Cylinders ():
-  Module (GetSourceModuleCount ()),
-  m_frequency (DEFAULT_CYLINDERS_FREQUENCY)
+Cylinders::Cylinders()
+  : Module(GetSourceModuleCount())
+  , m_frequency(DEFAULT_CYLINDERS_FREQUENCY)
 {
 }
 
-double Cylinders::GetValue (double x, double y, double z) const
+double
+Cylinders::GetValue(double x, double y, double z) const
 {
   x *= m_frequency;
   z *= m_frequency;
 
-  double distFromCenter = sqrt (x * x + z * z);
-  double distFromSmallerSphere = distFromCenter - floor (distFromCenter);
+  double distFromCenter = sqrt(x * x + z * z);
+  double distFromSmallerSphere = distFromCenter - floor(distFromCenter);
   double distFromLargerSphere = 1.0 - distFromSmallerSphere;
-  double nearestDist = GetMin (distFromSmallerSphere, distFromLargerSphere);
+  double nearestDist = GetMin(distFromSmallerSphere, distFromLargerSphere);
   return 1.0 - (nearestDist * 4.0); // Puts it in the -1.0 to +1.0 range.
 }

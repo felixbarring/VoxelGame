@@ -1,16 +1,16 @@
 #ifndef SRC_GUI_TERMINAL_H_
 #define SRC_GUI_TERMINAL_H_
 
-#include <vector>
-#include <string>
-#include <memory>
 #include <functional>
+#include <memory>
+#include <string>
+#include <vector>
 
 #include "../gui/widget/button.h"
 #include "../gui/widget/textInput.h"
 #include "../gui/widget/widgetGroup.h"
-#include "widget/textArea.h"
 #include "../util/trie.h"
+#include "widget/textArea.h"
 
 namespace gui {
 
@@ -30,9 +30,9 @@ namespace gui {
  * The user should call update once each frame so that it can handle user input
  * and send callbacks.
  */
-class Terminal {
+class Terminal
+{
 public:
-
   /**
    * @brief Constructs a Terminal.
    *
@@ -43,8 +43,8 @@ public:
    *                        button.
    */
   Terminal(std::vector<std::string> commands,
-      graphics::GraphicsManager &graphicsManager,
-      std::function<void(std::vector<std::string>)> commandListener);
+           graphics::GraphicsManager& graphicsManager,
+           std::function<void(std::vector<std::string>)> commandListener);
 
   /**
    * @brief Updates the terminal.
@@ -74,51 +74,51 @@ public:
   void addLine(std::string str);
 
 private:
-
-  class History {
+  class History
+  {
   public:
-
     explicit History(unsigned maxLenght)
       : m_history(maxLenght, "")
     {
     }
 
-    void addToHistory(std::string str) {
+    void addToHistory(std::string str)
+    {
       moveAllRight();
       m_history[0] = std::move(str);
       m_historyPointer = -1;
-      m_actualElements == m_history.size() ?
-          m_actualElements : ++m_actualElements;
+      m_actualElements == m_history.size() ? m_actualElements
+                                           : ++m_actualElements;
     }
 
-    void incrementPointer() {
+    void incrementPointer()
+    {
       auto ne = m_historyPointer + 1;
       if (ne < m_history.size() && ne < m_actualElements)
         ++m_historyPointer;
     }
 
-    void decrementPointer() {
+    void decrementPointer()
+    {
       if (m_historyPointer > 0)
         --m_historyPointer;
     }
 
-    std::string& getPointedElement() {
-      return m_history[m_historyPointer];
-    }
+    std::string& getPointedElement() { return m_history[m_historyPointer]; }
 
   private:
-
-    void moveAllRight() {
+    void moveAllRight()
+    {
       for (unsigned i = m_history.size() - 1; i >= 1; --i)
         m_history[i] = m_history[i - 1];
     }
 
-    unsigned m_actualElements{0};
-    unsigned m_historyPointer{0};
+    unsigned m_actualElements{ 0 };
+    unsigned m_historyPointer{ 0 };
     std::vector<std::string> m_history;
   };
 
-  graphics::GraphicsManager &m_graphicsManager;
+  graphics::GraphicsManager& m_graphicsManager;
 
   std::function<void(std::vector<std::string>)> m_commandListener;
 
@@ -127,8 +127,8 @@ private:
 
   util::Trie m_trie{};
 
-  unsigned m_historyLenght{10};
-  History m_history{m_historyLenght};
+  unsigned m_historyLenght{ 10 };
+  History m_history{ m_historyLenght };
 
   std::vector<std::string> m_commands{};
 

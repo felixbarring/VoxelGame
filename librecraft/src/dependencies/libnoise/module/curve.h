@@ -25,173 +25,155 @@
 
 #include "../../libnoise/module/modulebase.h"
 
-namespace noise
+namespace noise {
+
+namespace module {
+
+/// @addtogroup libnoise
+/// @{
+
+/// This structure defines a control point.
+///
+/// Control points are used for defining splines.
+struct ControlPoint
 {
 
-  namespace module
-  {
+  /// The input value.
+  double inputValue;
 
-    /// @addtogroup libnoise
-    /// @{
+  /// The output value that is mapped from the input value.
+  double outputValue;
+};
 
-    /// This structure defines a control point.
-    ///
-    /// Control points are used for defining splines.
-    struct ControlPoint
-    {
+/// @addtogroup modules
+/// @{
 
-      /// The input value.
-      double inputValue;
+/// @addtogroup modifiermodules
+/// @{
 
-      /// The output value that is mapped from the input value.
-      double outputValue;
+/// Noise module that maps the output value from a source module onto an
+/// arbitrary function curve.
+///
+/// @image html modulecurve.png
+///
+/// This noise module maps the output value from the source module onto an
+/// application-defined curve.  This curve is defined by a number of
+/// <i>control points</i>; each control point has an <i>input value</i>
+/// that maps to an <i>output value</i>.  Refer to the following
+/// illustration:
+///
+/// @image html curve.png
+///
+/// To add the control points to this curve, call the AddControlPoint()
+/// method.
+///
+/// Since this curve is a cubic spline, an application must add a minimum
+/// of four control points to the curve.  If this is not done, the
+/// GetValue() method fails.  Each control point can have any input and
+/// output value, although no two control points can have the same input
+/// value.  There is no limit to the number of control points that can be
+/// added to the curve.
+///
+/// This noise module requires one source module.
+class Curve : public Module
+{
 
-    };
+public:
+  /// Constructor.
+  Curve();
 
-    /// @addtogroup modules
-    /// @{
+  /// Destructor.
+  ~Curve();
 
-    /// @addtogroup modifiermodules
-    /// @{
+  /// Adds a control point to the curve.
+  ///
+  /// @param inputValue The input value stored in the control point.
+  /// @param outputValue The output value stored in the control point.
+  ///
+  /// @pre No two control points have the same input value.
+  ///
+  /// @throw noise::ExceptionInvalidParam An invalid parameter was
+  /// specified; see the preconditions for more information.
+  ///
+  /// It does not matter which order these points are added.
+  void AddControlPoint(double inputValue, double outputValue);
 
-    /// Noise module that maps the output value from a source module onto an
-    /// arbitrary function curve.
-    ///
-    /// @image html modulecurve.png
-    ///
-    /// This noise module maps the output value from the source module onto an
-    /// application-defined curve.  This curve is defined by a number of
-    /// <i>control points</i>; each control point has an <i>input value</i>
-    /// that maps to an <i>output value</i>.  Refer to the following
-    /// illustration:
-    ///
-    /// @image html curve.png
-    ///
-    /// To add the control points to this curve, call the AddControlPoint()
-    /// method.
-    ///
-    /// Since this curve is a cubic spline, an application must add a minimum
-    /// of four control points to the curve.  If this is not done, the
-    /// GetValue() method fails.  Each control point can have any input and
-    /// output value, although no two control points can have the same input
-    /// value.  There is no limit to the number of control points that can be
-    /// added to the curve.  
-    ///
-    /// This noise module requires one source module.
-    class Curve: public Module
-    {
+  /// Deletes all the control points on the curve.
+  ///
+  /// @post All points on the curve are deleted.
+  void ClearAllControlPoints();
 
-      public:
+  /// Returns a pointer to the array of control points on the curve.
+  ///
+  /// @returns A pointer to the array of control points.
+  ///
+  /// Before calling this method, call GetControlPointCount() to
+  /// determine the number of control points in this array.
+  ///
+  /// It is recommended that an application does not store this pointer
+  /// for later use since the pointer to the array may change if the
+  /// application calls another method of this object.
+  const ControlPoint* GetControlPointArray() const { return m_pControlPoints; }
 
-        /// Constructor.
-        Curve ();
+  /// Returns the number of control points on the curve.
+  ///
+  /// @returns The number of control points on the curve.
+  int GetControlPointCount() const { return m_controlPointCount; }
 
-        /// Destructor.
-        ~Curve ();
+  virtual int GetSourceModuleCount() const { return 1; }
 
-        /// Adds a control point to the curve.
-        ///
-        /// @param inputValue The input value stored in the control point.
-        /// @param outputValue The output value stored in the control point.
-        ///
-        /// @pre No two control points have the same input value.
-        ///
-        /// @throw noise::ExceptionInvalidParam An invalid parameter was
-        /// specified; see the preconditions for more information.
-        ///
-        /// It does not matter which order these points are added.
-        void AddControlPoint (double inputValue, double outputValue);
+  virtual double GetValue(double x, double y, double z) const;
 
-        /// Deletes all the control points on the curve.
-        ///
-        /// @post All points on the curve are deleted.
-        void ClearAllControlPoints ();
+protected:
+  /// Determines the array index in which to insert the control point
+  /// into the internal control point array.
+  ///
+  /// @param inputValue The input value of the control point.
+  ///
+  /// @returns The array index in which to insert the control point.
+  ///
+  /// @pre No two control points have the same input value.
+  ///
+  /// @throw noise::ExceptionInvalidParam An invalid parameter was
+  /// specified; see the preconditions for more information.
+  ///
+  /// By inserting the control point at the returned array index, this
+  /// class ensures that the control point array is sorted by input
+  /// value.  The code that maps a value onto the curve requires a
+  /// sorted control point array.
+  int FindInsertionPos(double inputValue);
 
-        /// Returns a pointer to the array of control points on the curve.
-        ///
-        /// @returns A pointer to the array of control points.
-        ///
-        /// Before calling this method, call GetControlPointCount() to
-        /// determine the number of control points in this array.
-        ///
-        /// It is recommended that an application does not store this pointer
-        /// for later use since the pointer to the array may change if the
-        /// application calls another method of this object.
-        const ControlPoint* GetControlPointArray () const
-        {
-          return m_pControlPoints;
-        }
+  /// Inserts the control point at the specified position in the
+  /// internal control point array.
+  ///
+  /// @param insertionPos The zero-based array position in which to
+  /// insert the control point.
+  /// @param inputValue The input value stored in the control point.
+  /// @param outputValue The output value stored in the control point.
+  ///
+  /// To make room for this new control point, this method reallocates
+  /// the control point array and shifts all control points occurring
+  /// after the insertion position up by one.
+  ///
+  /// Because the curve mapping algorithm used by this noise module
+  /// requires that all control points in the array must be sorted by
+  /// input value, the new control point should be inserted at the
+  /// position in which the order is still preserved.
+  void InsertAtPos(int insertionPos, double inputValue, double outputValue);
 
-        /// Returns the number of control points on the curve.
-        ///
-        /// @returns The number of control points on the curve.
-        int GetControlPointCount () const
-        {
-          return m_controlPointCount;
-        }
+  /// Number of control points on the curve.
+  int m_controlPointCount;
 
-        virtual int GetSourceModuleCount () const
-        {
-          return 1;
-        }
+  /// Array that stores the control points.
+  ControlPoint* m_pControlPoints;
+};
 
-        virtual double GetValue (double x, double y, double z) const;
+/// @}
 
-      protected:
+/// @}
 
-        /// Determines the array index in which to insert the control point
-        /// into the internal control point array.
-        ///
-        /// @param inputValue The input value of the control point.
-        ///
-        /// @returns The array index in which to insert the control point.
-        ///
-        /// @pre No two control points have the same input value.
-        ///
-        /// @throw noise::ExceptionInvalidParam An invalid parameter was
-        /// specified; see the preconditions for more information.
-        ///
-        /// By inserting the control point at the returned array index, this
-        /// class ensures that the control point array is sorted by input
-        /// value.  The code that maps a value onto the curve requires a
-        /// sorted control point array.
-        int FindInsertionPos (double inputValue);
-
-        /// Inserts the control point at the specified position in the
-        /// internal control point array.
-        ///
-        /// @param insertionPos The zero-based array position in which to
-        /// insert the control point.
-        /// @param inputValue The input value stored in the control point.
-        /// @param outputValue The output value stored in the control point.
-        ///
-        /// To make room for this new control point, this method reallocates
-        /// the control point array and shifts all control points occurring
-        /// after the insertion position up by one.
-        ///
-        /// Because the curve mapping algorithm used by this noise module
-        /// requires that all control points in the array must be sorted by
-        /// input value, the new control point should be inserted at the
-        /// position in which the order is still preserved.
-        void InsertAtPos (int insertionPos, double inputValue,
-          double outputValue);
-
-        /// Number of control points on the curve.
-        int m_controlPointCount;
-
-        /// Array that stores the control points.
-        ControlPoint* m_pControlPoints;
-
-    };
-
-    /// @}
-
-    /// @}
-
-    /// @}
-
-  }
-
+/// @}
+}
 }
 
 #endif

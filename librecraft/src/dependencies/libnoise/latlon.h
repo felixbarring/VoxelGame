@@ -27,27 +27,26 @@
 
 #include "../libnoise/mathconsts.h"
 
-namespace noise
-{
+namespace noise {
 
-  /// @addtogroup libnoise
-  /// @{
+/// @addtogroup libnoise
+/// @{
 
-  /// Converts latitude/longitude coordinates on a unit sphere into 3D
-  /// Cartesian coordinates.
-  ///
-  /// @param lat The latitude, in degrees.
-  /// @param lon The longitude, in degrees.
-  /// @param x On exit, this parameter contains the @a x coordinate.
-  /// @param y On exit, this parameter contains the @a y coordinate.
-  /// @param z On exit, this parameter contains the @a z coordinate.
-  ///
-  /// @pre lat must range from @b -90 to @b +90.
-  /// @pre lon must range from @b -180 to @b +180.
-  void LatLonToXYZ (double lat, double lon, double& x, double& y, double& z);
+/// Converts latitude/longitude coordinates on a unit sphere into 3D
+/// Cartesian coordinates.
+///
+/// @param lat The latitude, in degrees.
+/// @param lon The longitude, in degrees.
+/// @param x On exit, this parameter contains the @a x coordinate.
+/// @param y On exit, this parameter contains the @a y coordinate.
+/// @param z On exit, this parameter contains the @a z coordinate.
+///
+/// @pre lat must range from @b -90 to @b +90.
+/// @pre lon must range from @b -180 to @b +180.
+void
+LatLonToXYZ(double lat, double lon, double& x, double& y, double& z);
 
-  /// @}
-
+/// @}
 }
 
 #endif

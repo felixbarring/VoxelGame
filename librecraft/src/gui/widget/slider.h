@@ -1,11 +1,11 @@
 #ifndef SRC_GUI_WIDGET_SLIDER_H_
 #define SRC_GUI_WIDGET_SLIDER_H_
 
-#include <memory>
 #include <functional>
+#include <memory>
 
-#include "abstractWidget.h"
 #include "../../graphics/sprite.h"
+#include "abstractWidget.h"
 
 namespace widget {
 
@@ -20,9 +20,9 @@ namespace widget {
  * it represents the value 1. It will linearly change value between these two
  * positions.
  */
-class Slider: public AbstractWidget {
+class Slider : public AbstractWidget
+{
 public:
-
   /**
    * @brief Constructs a slider instance.
    *
@@ -38,9 +38,14 @@ public:
    *              the knob will be drawn with layer + 1 and the line will be
    *              drawn with the layer value.
    */
-  Slider(int id, int x, int y, int width, int height,
-      graphics::GraphicsManager &graphicsManager,
-      std::function<void(int)> observer, int layer = 0);
+  Slider(int id,
+         int x,
+         int y,
+         int width,
+         int height,
+         graphics::GraphicsManager& graphicsManager,
+         std::function<void(int)> observer,
+         int layer = 0);
 
   virtual ~Slider() = default;
 
@@ -67,16 +72,15 @@ public:
   void update(float timePassed) override;
 
 private:
-
   std::function<void(int)> m_observer;
-  bool m_pointerInsideBorders{false};
+  bool m_pointerInsideBorders{ false };
 
   std::shared_ptr<graphics::Sprite> m_slider{};
   std::shared_ptr<graphics::Sprite> m_knob{};
 
   float m_knobPosition{};
   float m_knobWidth{};
-  bool m_grabbed{false};
+  bool m_grabbed{ false };
 };
 
 } /* namespace widget */

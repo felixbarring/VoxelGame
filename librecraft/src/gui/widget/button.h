@@ -1,9 +1,9 @@
 #ifndef SRC_GUI_WIDGET_BUTTON_H_
 #define SRC_GUI_WIDGET_BUTTON_H_
 
-#include <string>
-#include <memory>
 #include <functional>
+#include <memory>
+#include <string>
 
 #include "../../graphics/graphicsManager.h"
 #include "abstractWidget.h"
@@ -23,12 +23,18 @@ namespace widget {
  * that it is interactable by highlight it self.
  *
  */
-class Button: public AbstractWidget {
+class Button : public AbstractWidget
+{
 public:
-
-  Button(int id, int x, int y, int width, int height,
-      graphics::GraphicsManager &graphicsManager,
-      std::function<void(int)> observer, std::string name, int layer = 0);
+  Button(int id,
+         int x,
+         int y,
+         int width,
+         int height,
+         graphics::GraphicsManager& graphicsManager,
+         std::function<void(int)> observer,
+         std::string name,
+         int layer = 0);
 
   virtual ~Button() = default;
 
@@ -50,8 +56,7 @@ public:
   void trigger();
 
 protected:
-
-  bool m_pointerInsideBorders{false};
+  bool m_pointerInsideBorders{ false };
   std::string m_name;
   std::function<void(int)> m_observer;
 

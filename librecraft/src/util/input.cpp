@@ -11,42 +11,48 @@ using namespace sf;
 namespace util {
 
 Input::Input(double centerX, double centerY)
-    : m_screenCenterX(centerX)
-    , m_screenCenterY(centerY)
+  : m_screenCenterX(centerX)
+  , m_screenCenterY(centerY)
 {
 }
 
-void Input::createInstance(float centerX, float centerY) {
-  input.reset(new Input{centerX, centerY});
+void
+Input::createInstance(float centerX, float centerY)
+{
+  input.reset(new Input{ centerX, centerY });
 }
 
-std::shared_ptr<Input> Input::getInstance() {
+std::shared_ptr<Input>
+Input::getInstance()
+{
   return input;
 }
 
-void Input::updateValues() {
+void
+Input::updateValues()
+{
 
   mouseXMovement = 0.0;
   mouseYMovement = 0.0;
 
   // Keyboard
-  moveForwardPressed = Keyboard::isKeyPressed(moveForwardButton)
-      && !moveForwardActive;
+  moveForwardPressed =
+    Keyboard::isKeyPressed(moveForwardButton) && !moveForwardActive;
   moveLeftPressed = Keyboard::isKeyPressed(moveLeftButton) && !moveLeftActive;
-  moveRightPressed = Keyboard::isKeyPressed(moveRightButton)
-      && !moveRightActive;
-  moveBackwardPressed = Keyboard::isKeyPressed(moveBackwardButton)
-      && !moveBackwardActive;
+  moveRightPressed =
+    Keyboard::isKeyPressed(moveRightButton) && !moveRightActive;
+  moveBackwardPressed =
+    Keyboard::isKeyPressed(moveBackwardButton) && !moveBackwardActive;
   jumpPressed = Keyboard::isKeyPressed(jumpButton) && !jumpActive;
   goDownPressed = Keyboard::isKeyPressed(goDownButton) && !goDownActive;
 
-  eraseTextPressed = Keyboard::isKeyPressed(eraseTextButton)
-      && !eraseTextActive;
-  switchCubePressed = Keyboard::isKeyPressed(switchBuildingCube)
-      && !switchCubeActive;
+  eraseTextPressed =
+    Keyboard::isKeyPressed(eraseTextButton) && !eraseTextActive;
+  switchCubePressed =
+    Keyboard::isKeyPressed(switchBuildingCube) && !switchCubeActive;
 
-  openTerminalPressed = Keyboard::isKeyPressed(openTerminal)
-      && !openTerminalActive;
+  openTerminalPressed =
+    Keyboard::isKeyPressed(openTerminal) && !openTerminalActive;
   tabPressed = Keyboard::isKeyPressed(tab) && !tabActive;
   enterPressed = Keyboard::isKeyPressed(enter) && !enterActive;
   upPressed = Keyboard::isKeyPressed(up) && !upActive;
@@ -112,20 +118,28 @@ void Input::updateValues() {
   }
 }
 
-void Input::centerMouse() {
+void
+Input::centerMouse()
+{
   Vector2<int> vec(m_screenCenterX, m_screenCenterY);
   Mouse::setPosition(vec, *m_window);
 }
 
-void Input::lockMouse() {
+void
+Input::lockMouse()
+{
   m_mouseLocked = true;
 }
 
-void Input::unlockMouse() {
+void
+Input::unlockMouse()
+{
   m_mouseLocked = false;
 }
 
-void Input::setWindow(Window *window) {
+void
+Input::setWindow(Window* window)
+{
   m_window = window;
 }
 

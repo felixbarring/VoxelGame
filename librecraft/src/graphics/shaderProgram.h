@@ -1,24 +1,22 @@
 #ifndef SHADERPROGRAM_H
 #define SHADERPROGRAM_H
 
-#include <map>
-#include <string.h>
 #include <GL/glew.h>
 #include <glm/glm.hpp>
+#include <map>
+#include <string.h>
 
 namespace graphics {
 
-class ShaderProgram {
+class ShaderProgram
+{
 public:
-
-  ShaderProgram(
-      const std::string &vertexSource,
-      const std::string &fragmentSource,
-      const std::map<std::string, int> &mapUniforms);
+  ShaderProgram(const std::string& vertexSource,
+                const std::string& fragmentSource,
+                const std::map<std::string, int>& mapUniforms);
 
 public:
-
-// TODO Use GLuint and other correct types
+  // TODO Use GLuint and other correct types
 
   void setUniformi(std::string uniformName, GLuint value);
 
@@ -37,17 +35,15 @@ public:
   void unbind();
 
 private:
+  GLuint createVertexShader(const std::string& vertexSource);
 
-  GLuint createVertexShader(const std::string &vertexSource);
+  GLuint createFragmentShader(const std::string& fragmentSource);
 
-  GLuint createFragmentShader(const std::string &fragmentSource);
-
-  GLuint createShader(GLenum shaderType, const std::string &source);
+  GLuint createShader(GLenum shaderType, const std::string& source);
 
   GLuint programID;
   std::map<std::string, int> uniforms;
 };
-
 }
 
 #endif

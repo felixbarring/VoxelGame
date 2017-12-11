@@ -29,36 +29,39 @@ using namespace noise::module;
 
 using namespace noise;
 
-Terrace::Terrace ():
-  Module (GetSourceModuleCount ()),
-  m_controlPointCount (0),
-  m_invertTerraces (false),
-  m_pControlPoints (NULL)
+Terrace::Terrace()
+  : Module(GetSourceModuleCount())
+  , m_controlPointCount(0)
+  , m_invertTerraces(false)
+  , m_pControlPoints(NULL)
 {
 }
 
-Terrace::~Terrace ()
+Terrace::~Terrace()
 {
   delete[] m_pControlPoints;
 }
 
-void Terrace::AddControlPoint (double value)
+void
+Terrace::AddControlPoint(double value)
 {
   // Find the insertion point for the new control point and insert the new
   // point at that position.  The control point array will remain sorted by
   // value.
-  int insertionPos = FindInsertionPos (value);
-  InsertAtPos (insertionPos, value);
+  int insertionPos = FindInsertionPos(value);
+  InsertAtPos(insertionPos, value);
 }
 
-void Terrace::ClearAllControlPoints ()
+void
+Terrace::ClearAllControlPoints()
 {
   delete[] m_pControlPoints;
   m_pControlPoints = NULL;
   m_controlPointCount = 0;
 }
 
-int Terrace::FindInsertionPos (double value)
+int
+Terrace::FindInsertionPos(double value)
 {
   int insertionPos;
   for (insertionPos = 0; insertionPos < m_controlPointCount; insertionPos++) {
@@ -69,19 +72,20 @@ int Terrace::FindInsertionPos (double value)
     } else if (value == m_pControlPoints[insertionPos]) {
       // Each control point is required to contain a unique value, so throw
       // an exception.
-      throw noise::ExceptionInvalidParam ();
+      throw noise::ExceptionInvalidParam();
     }
   }
   return insertionPos;
 }
 
-double Terrace::GetValue (double x, double y, double z) const
+double
+Terrace::GetValue(double x, double y, double z) const
 {
-  assert (m_pSourceModule[0] != NULL);
-  assert (m_controlPointCount >= 2);
+  assert(m_pSourceModule[0] != NULL);
+  assert(m_controlPointCount >= 2);
 
   // Get the output value from the source module.
-  double sourceModuleValue = m_pSourceModule[0]->GetValue (x, y, z);
+  double sourceModuleValue = m_pSourceModule[0]->GetValue(x, y, z);
 
   // Find the first element in the control point array that has a value
   // larger than the output value from the source module.
@@ -94,8 +98,8 @@ double Terrace::GetValue (double x, double y, double z) const
 
   // Find the two nearest control points so that we can map their values
   // onto a quadratic curve.
-  int index0 = ClampValue (indexPos - 1, 0, m_controlPointCount - 1);
-  int index1 = ClampValue (indexPos    , 0, m_controlPointCount - 1);
+  int index0 = ClampValue(indexPos - 1, 0, m_controlPointCount - 1);
+  int index1 = ClampValue(indexPos, 0, m_controlPointCount - 1);
 
   // If some control points are missing (which occurs if the output value from
   // the source module is greater than the largest value or less than the
@@ -111,17 +115,18 @@ double Terrace::GetValue (double x, double y, double z) const
   double alpha = (sourceModuleValue - value0) / (value1 - value0);
   if (m_invertTerraces) {
     alpha = 1.0 - alpha;
-    SwapValues (value0, value1);
+    SwapValues(value0, value1);
   }
 
   // Squaring the alpha produces the terrace effect.
   alpha *= alpha;
 
   // Now perform the linear interpolation given the alpha value.
-  return LinearInterp (value0, value1, alpha);
+  return LinearInterp(value0, value1, alpha);
 }
 
-void Terrace::InsertAtPos (int insertionPos, double value)
+void
+Terrace::InsertAtPos(int insertionPos, double value)
 {
   // Make room for the new control point at the specified position within
   // the control point array.  The position is determined by the value of
@@ -144,18 +149,19 @@ void Terrace::InsertAtPos (int insertionPos, double value)
   m_pControlPoints[insertionPos] = value;
 }
 
-void Terrace::MakeControlPoints (int controlPointCount)
+void
+Terrace::MakeControlPoints(int controlPointCount)
 {
   if (controlPointCount < 2) {
-    throw noise::ExceptionInvalidParam ();
+    throw noise::ExceptionInvalidParam();
   }
 
-  ClearAllControlPoints ();
+  ClearAllControlPoints();
 
   double terraceStep = 2.0 / ((double)controlPointCount - 1.0);
   double curValue = -1.0;
   for (int i = 0; i < (int)controlPointCount; i++) {
-    AddControlPoint (curValue);
+    AddControlPoint(curValue);
     curValue += terraceStep;
   }
 }

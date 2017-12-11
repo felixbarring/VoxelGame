@@ -25,52 +25,43 @@
 
 #include "../../libnoise/module/modulebase.h"
 
-namespace noise
+namespace noise {
+
+namespace module {
+
+/// @addtogroup libnoise
+/// @{
+
+/// @addtogroup modules
+/// @{
+
+/// @addtogroup combinermodules
+/// @{
+
+/// Noise module that outputs the larger of the two output values from two
+/// source modules.
+///
+/// @image html modulemax.png
+///
+/// This noise module requires two source modules.
+class Max : public Module
 {
 
-  namespace module
-  {
+public:
+  /// Constructor.
+  Max();
 
-    /// @addtogroup libnoise
-    /// @{
+  virtual int GetSourceModuleCount() const { return 2; }
 
-    /// @addtogroup modules
-    /// @{
+  virtual double GetValue(double x, double y, double z) const;
+};
 
-    /// @addtogroup combinermodules
-    /// @{
+/// @}
 
-    /// Noise module that outputs the larger of the two output values from two
-    /// source modules.
-    ///
-    /// @image html modulemax.png
-    ///
-    /// This noise module requires two source modules.
-    class Max: public Module
-    {
+/// @}
 
-      public:
-
-        /// Constructor.
-        Max ();
-
-        virtual int GetSourceModuleCount () const
-        {
-          return 2;
-        }
-
-        virtual double GetValue (double x, double y, double z) const;
-
-    };
-
-    /// @}
-
-    /// @}
-
-    /// @}
-
-  }
-
+/// @}
+}
 }
 
 #endif

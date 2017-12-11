@@ -2,21 +2,22 @@
 #define SRC_DEMO_TOGGLEBUTTON_H_
 
 #include <algorithm>
-#include <vector>
 #include <functional>
+#include <vector>
 
 #include "../../graphics/graphicsManager.h"
 #include "button.h"
 
 namespace widget {
 
-class ToggleButton: public Button {
+class ToggleButton : public Button
+{
 public:
-
   /**
    * @brief Used to determine the visuals of the button.
    */
-  enum class Skin {
+  enum class Skin
+  {
     //!< Regular visuals representing a button with text drawn on it that can be
     //! check
     Regular,
@@ -28,10 +29,16 @@ public:
     ReadioButton
   };
 
-  ToggleButton(int id, int x, int y, int width, int height,
-      graphics::GraphicsManager &graphicsManager,
-      std::function<void(int)> observer, const std::string &name, int layer = 0,
-      Skin skin = Skin::Regular);
+  ToggleButton(int id,
+               int x,
+               int y,
+               int width,
+               int height,
+               graphics::GraphicsManager& graphicsManager,
+               std::function<void(int)> observer,
+               const std::string& name,
+               int layer = 0,
+               Skin skin = Skin::Regular);
 
   virtual ~ToggleButton() = default;
 
@@ -48,8 +55,7 @@ public:
   void update(float timePassed) override;
 
 private:
-
-  bool m_toggled{false};
+  bool m_toggled{ false };
   Skin m_skin;
 
   std::shared_ptr<graphics::Sprite> m_spriteToggled;

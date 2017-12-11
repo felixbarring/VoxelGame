@@ -3,17 +3,17 @@
 
 #include <memory>
 
-#include "texture/textureCubeMap.h"
 #include "camera.h"
 #include "mesh/meshElement.h"
 #include "shaderProgram.h"
+#include "texture/textureCubeMap.h"
 
 namespace graphics {
 
-class CubeMap {
+class CubeMap
+{
 public:
-
-  CubeMap(texture::TextureCubeMap &texture, Camera &camera);
+  CubeMap(texture::TextureCubeMap& texture, Camera& camera);
 
   void setRotationValue(float value);
 
@@ -24,16 +24,13 @@ public:
   void draw(double transparency);
 
 private:
-
   texture::TextureCubeMap m_texture;
-  Camera &m_camera;
-  float m_roatationValue{0.0f};
+  Camera& m_camera;
+  float m_roatationValue{ 0.0f };
 
   std::unique_ptr<graphics::ShaderProgram> m_program;
   std::unique_ptr<mesh::MeshElement> mesh;
-
 };
-
 }
 
 #endif /* SRC_GRAPHICS_CUBEMAP_H_ */

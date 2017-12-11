@@ -26,16 +26,17 @@
 
 using namespace noise::module;
 
-Voronoi::Voronoi ():
-  Module (GetSourceModuleCount ()),
-  m_displacement   (DEFAULT_VORONOI_DISPLACEMENT),
-  m_enableDistance (false                       ),
-  m_frequency      (DEFAULT_VORONOI_FREQUENCY   ),
-  m_seed           (DEFAULT_VORONOI_SEED        )
+Voronoi::Voronoi()
+  : Module(GetSourceModuleCount())
+  , m_displacement(DEFAULT_VORONOI_DISPLACEMENT)
+  , m_enableDistance(false)
+  , m_frequency(DEFAULT_VORONOI_FREQUENCY)
+  , m_seed(DEFAULT_VORONOI_SEED)
 {
 }
 
-double Voronoi::GetValue (double x, double y, double z) const
+double
+Voronoi::GetValue(double x, double y, double z) const
 {
   // This method could be more efficient by caching the seed values.  Fix
   // later.
@@ -44,9 +45,9 @@ double Voronoi::GetValue (double x, double y, double z) const
   y *= m_frequency;
   z *= m_frequency;
 
-  int xInt = (x > 0.0? (int)x: (int)x - 1);
-  int yInt = (y > 0.0? (int)y: (int)y - 1);
-  int zInt = (z > 0.0? (int)z: (int)z - 1);
+  int xInt = (x > 0.0 ? (int)x : (int)x - 1);
+  int yInt = (y > 0.0 ? (int)y : (int)y - 1);
+  int zInt = (z > 0.0 ? (int)z : (int)z - 1);
 
   double minDist = 2147483647.0;
   double xCandidate = 0;
@@ -62,9 +63,9 @@ double Voronoi::GetValue (double x, double y, double z) const
 
         // Calculate the position and distance to the seed point inside of
         // this unit cube.
-        double xPos = xCur + ValueNoise3D (xCur, yCur, zCur, m_seed    );
-        double yPos = yCur + ValueNoise3D (xCur, yCur, zCur, m_seed + 1);
-        double zPos = zCur + ValueNoise3D (xCur, yCur, zCur, m_seed + 2);
+        double xPos = xCur + ValueNoise3D(xCur, yCur, zCur, m_seed);
+        double yPos = yCur + ValueNoise3D(xCur, yCur, zCur, m_seed + 1);
+        double zPos = zCur + ValueNoise3D(xCur, yCur, zCur, m_seed + 2);
         double xDist = xPos - x;
         double yDist = yPos - y;
         double zDist = zPos - z;
@@ -88,15 +89,15 @@ double Voronoi::GetValue (double x, double y, double z) const
     double xDist = xCandidate - x;
     double yDist = yCandidate - y;
     double zDist = zCandidate - z;
-    value = (sqrt (xDist * xDist + yDist * yDist + zDist * zDist)
-      ) * SQRT_3 - 1.0;
+    value =
+      (sqrt(xDist * xDist + yDist * yDist + zDist * zDist)) * SQRT_3 - 1.0;
   } else {
     value = 0.0;
   }
 
   // Return the calculated distance with the displacement value applied.
-  return value + (m_displacement * (double)ValueNoise3D (
-    (int)(floor (xCandidate)),
-    (int)(floor (yCandidate)),
-    (int)(floor (zCandidate))));
+  return value +
+         (m_displacement * (double)ValueNoise3D((int)(floor(xCandidate)),
+                                                (int)(floor(yCandidate)),
+                                                (int)(floor(zCandidate))));
 }

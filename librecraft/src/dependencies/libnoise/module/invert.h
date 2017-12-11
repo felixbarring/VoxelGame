@@ -25,51 +25,42 @@
 
 #include "../../libnoise/module/modulebase.h"
 
-namespace noise
+namespace noise {
+
+namespace module {
+
+/// @addtogroup libnoise
+/// @{
+
+/// @addtogroup modules
+/// @{
+
+/// @addtogroup modifiermodules
+/// @{
+
+/// Noise module that inverts the output value from a source module.
+///
+/// @image html moduleinvert.png
+///
+/// This noise module requires one source module.
+class Invert : public Module
 {
 
-  namespace module
-  {
+public:
+  /// Constructor.
+  Invert();
 
-    /// @addtogroup libnoise
-    /// @{
+  virtual int GetSourceModuleCount() const { return 1; }
 
-    /// @addtogroup modules
-    /// @{
+  virtual double GetValue(double x, double y, double z) const;
+};
 
-    /// @addtogroup modifiermodules
-    /// @{
+/// @}
 
-    /// Noise module that inverts the output value from a source module.
-    ///
-    /// @image html moduleinvert.png
-    ///
-    /// This noise module requires one source module.
-    class Invert: public Module
-    {
+/// @}
 
-      public:
-
-        /// Constructor.
-        Invert ();
-
-        virtual int GetSourceModuleCount () const
-        {
-          return 1;
-        }
-
-        virtual double GetValue (double x, double y, double z) const;
-
-    };
-
-    /// @}
-
-    /// @}
-
-    /// @}
-
-  }
-
+/// @}
+}
 }
 
 #endif

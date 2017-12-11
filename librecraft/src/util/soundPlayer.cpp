@@ -9,11 +9,13 @@
 
 namespace util {
 
-double kek{100};
+double kek{ 100 };
 
 // Just a function that clamps the values to 0 or 100.
 // Used to prevent OpenAl errors.
-float validVolume(double volume) {
+float
+validVolume(double volume)
+{
   if (volume > 100)
     return 100;
   if (volume < 0)
@@ -21,19 +23,19 @@ float validVolume(double volume) {
   return volume;
 }
 
-void SoundPlayer::update(double time) {
+void
+SoundPlayer::update(double time)
+{
   for (auto sound = m_playingSounds.begin(); sound < m_playingSounds.end();
-        ++sound)
-  {
+       ++sound) {
     if ((*sound)->getStatus() == sf::SoundSource::Status::Stopped)
       m_playingSounds.erase(sound);
   }
 
   if (m_graduayllChange) {
-    if ((m_changeDirection == ChangeMusicVolume::DECREASE ?
-        m_changeVolume >= m_targetVolume :
-        m_changeVolume <= m_targetVolume))
-    {
+    if ((m_changeDirection == ChangeMusicVolume::DECREASE
+           ? m_changeVolume >= m_targetVolume
+           : m_changeVolume <= m_targetVolume)) {
       m_changeVolume += m_changeValue * time;
     } else {
       m_changeVolume = m_targetVolume;
@@ -45,7 +47,9 @@ void SoundPlayer::update(double time) {
   }
 }
 
-void SoundPlayer::playSound(const std::string &soundPath) {
+void
+SoundPlayer::playSound(const std::string& soundPath)
+{
 
   if (m_buffers.find(soundPath) == m_buffers.end()) {
     sf::SoundBuffer buffer;
@@ -61,7 +65,9 @@ void SoundPlayer::playSound(const std::string &soundPath) {
   m_playingSounds.push_back(std::move(sound));
 }
 
-void SoundPlayer::playMusic(const std::string &musicPath) {
+void
+SoundPlayer::playMusic(const std::string& musicPath)
+{
   auto music = std::make_shared<sf::Music>();
   if (!music->openFromFile(musicPath))
     std::cout << "Could not play music :( - " << musicPath << "\n";
@@ -72,47 +78,60 @@ void SoundPlayer::playMusic(const std::string &musicPath) {
   graduallyChangeMusicVolume(ChangeMusicVolume::INCREASE);
 }
 
-void SoundPlayer::stopMusic() {
+void
+SoundPlayer::stopMusic()
+{
   if (m_playingMusic == nullptr)
     return;
 
   graduallyChangeMusicVolume(ChangeMusicVolume::DECREASE);
 }
 
-void SoundPlayer::setMasterVolume(double value)
+void
+SoundPlayer::setMasterVolume(double value)
 {
   m_masterVolume = value;
 }
 
-double SoundPlayer::getMasterVolume() {
+double
+SoundPlayer::getMasterVolume()
+{
   return m_masterVolume;
 }
 
-void SoundPlayer::setSoundVolume(double value)
+void
+SoundPlayer::setSoundVolume(double value)
 {
   m_soundVolume = value * kek;
 }
 
-double SoundPlayer::getSoundVolume() {
+double
+SoundPlayer::getSoundVolume()
+{
   return m_soundVolume / kek;
 }
 
-void SoundPlayer::setMusicVolume(double value)
+void
+SoundPlayer::setMusicVolume(double value)
 {
   m_musicVolume = value * kek;
   if (m_playingMusic)
     m_playingMusic->setVolume(validVolume(m_musicVolume * m_masterVolume));
 }
 
-double SoundPlayer::getMusicVolume() {
+double
+SoundPlayer::getMusicVolume()
+{
   return m_musicVolume / kek;
 }
 
-void SoundPlayer::graduallyChangeMusicVolume(ChangeMusicVolume value) {
+void
+SoundPlayer::graduallyChangeMusicVolume(ChangeMusicVolume value)
+{
   m_graduayllChange = true;
   m_changeDirection = value;
 
-  static double change{20.0};
+  static double change{ 20.0 };
   if (value == ChangeMusicVolume::INCREASE) {
     m_changeValue = change;
     m_targetVolume = m_musicVolume;
@@ -124,6 +143,5 @@ void SoundPlayer::graduallyChangeMusicVolume(ChangeMusicVolume value) {
   }
   m_changeVolume = m_startVolume;
 }
-
 
 } /* namespace util */

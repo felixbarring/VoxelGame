@@ -8,28 +8,25 @@
 
 namespace graphics {
 
-class TexturedCube {
+class TexturedCube
+{
 public:
+  TexturedCube(float xOffset, float yOffset, float zOffset, int id);
 
-    TexturedCube(float xOffset, float yOffset, float zOffset, int id);
+  void draw();
 
-    void draw();
+  float getxLocation() { return xLocation; }
 
-    float getxLocation() { return xLocation; }
-
-    float getyLocation() { return yLocation; }
+  float getyLocation() { return yLocation; }
 
 private:
+  // unique pointer gives error?!?
+  std::shared_ptr<mesh::MeshElement> m_mesh;
 
-    // unique pointer gives error?!?
-    std::shared_ptr<mesh::MeshElement> m_mesh;
-
-    float xLocation;
-    float yLocation;
-    float zLocation;
-
+  float xLocation;
+  float yLocation;
+  float zLocation;
 };
-
 }
 
 #endif /* GAME_MODEL_ENTITIES_CUBE_H_ */

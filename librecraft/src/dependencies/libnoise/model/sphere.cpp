@@ -27,21 +27,22 @@
 using namespace noise;
 using namespace noise::model;
 
-Sphere::Sphere ():
-  m_pModule (NULL)
+Sphere::Sphere()
+  : m_pModule(NULL)
 {
 }
 
-Sphere::Sphere (const module::Module& module):
-  m_pModule (&module)
+Sphere::Sphere(const module::Module& module)
+  : m_pModule(&module)
 {
 }
 
-double Sphere::GetValue (double lat, double lon) const
+double
+Sphere::GetValue(double lat, double lon) const
 {
-  assert (m_pModule != NULL);
+  assert(m_pModule != NULL);
 
   double x, y, z;
-  LatLonToXYZ (lat, lon, x, y, z);
-  return m_pModule->GetValue (x, y, z);
+  LatLonToXYZ(lat, lon, x, y, z);
+  return m_pModule->GetValue(x, y, z);
 }

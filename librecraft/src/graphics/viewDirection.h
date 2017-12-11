@@ -16,9 +16,9 @@ namespace graphics {
  *  changeViewDirection and serViedDirection functions. From this information
  *  this class is responsible to compute the vectors representing those angles.
  */
-class ViewDirection {
+class ViewDirection
+{
 public:
-
   /**
    * \brief Increases the horizontal and vertical angles with the provided
    *        amount.
@@ -68,20 +68,19 @@ public:
   void setSensitivity(double x, double y);
 
 private:
-
-  double m_sensX{config::input_data::mouseSensitivityX};
-  double m_sensY{config::input_data::mouseSensitivityY};
+  double m_sensX{ config::input_data::mouseSensitivityX };
+  double m_sensY{ config::input_data::mouseSensitivityY };
 
   glm::vec3 m_direction;
   glm::vec3 m_up;
   glm::vec3 m_right;
-  glm::vec3 m_worldUp{0.0f, 1.0f, 0.0f};
+  glm::vec3 m_worldUp{ 0.0f, 1.0f, 0.0f };
 
-  double m_horizontalAngle{0.1f};
-  double m_verticalAngle{0.0f};
+  double m_horizontalAngle{ 0.1f };
+  double m_verticalAngle{ 0.0f };
 
-  double m_maxVerticalAngle{3.14 / 2.0};
-  double m_minVerticalAngle{-3.14 / 2.0};
+  double m_maxVerticalAngle{ 3.14 / 2.0 };
+  double m_minVerticalAngle{ -3.14 / 2.0 };
 };
 
 } /* namespace graphics */

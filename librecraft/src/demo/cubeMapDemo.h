@@ -4,19 +4,19 @@
 
 #include "iDemo.h"
 
-#include <string>
 #include <iostream>
+#include <string>
 
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "../graphics/camera.h"
-#include "../graphics/viewDirection.h"
-#include "../graphics/texture/textureCubeMap.h"
-#include "../util/fpsManager.h"
 #include "../graphics/cubeMap.h"
 #include "../graphics/resources.h"
+#include "../graphics/texture/textureCubeMap.h"
+#include "../graphics/viewDirection.h"
+#include "../util/fpsManager.h"
 #include "../util/input.h"
 
 #include <SFML/Window.hpp>
@@ -26,13 +26,13 @@ using graphics::Camera;
 using namespace util;
 using namespace sf;
 
-namespace demo
+namespace demo {
+
+class CubeMapDemo : public IDemo
 {
-
-class CubeMapDemo : public IDemo{
 public:
-
-  void runDemo() override {
+  void runDemo() override
+  {
     FPSManager fpsManager(100);
     const GLuint WIDTH = 800, HEIGHT = 600;
 
@@ -59,9 +59,9 @@ public:
     glViewport(0, 0, WIDTH, HEIGHT);
     glClearColor(0.2f, 0.22f, 0.2f, 1.0f);
 
-    Camera camera{0,0,0};
+    Camera camera{ 0, 0, 0 };
 
-    texture::TextureCubeMap &texture =
+    texture::TextureCubeMap& texture =
       graphics::Resources::getInstance().getTextureCubeMap(
         config::cube_map_data::cubeMap1[0],
         config::cube_map_data::cubeMap1[1],
@@ -70,7 +70,7 @@ public:
         config::cube_map_data::cubeMap1[4],
         config::cube_map_data::cubeMap1[5]);
 
-    graphics::CubeMap skybox{texture, camera};
+    graphics::CubeMap skybox{ texture, camera };
 
     graphics::ViewDirection viewDirection;
 
@@ -84,12 +84,13 @@ public:
       Input::getInstance()->updateValues();
 
       if (Input::getInstance()->escapeKeyPressed)
-          window.close();
+        window.close();
 
       viewDirection.changeViewDirection(Input::getInstance()->mouseXMovement,
-          Input::getInstance()->mouseYMovement);
-      camera.updateView(glm::vec3(0, 0, 0), viewDirection.getViewDirection(),
-          viewDirection.getUpDirection());
+                                        Input::getInstance()->mouseYMovement);
+      camera.updateView(glm::vec3(0, 0, 0),
+                        viewDirection.getViewDirection(),
+                        viewDirection.getUpDirection());
 
       skybox.draw(1.0);
 
@@ -97,9 +98,7 @@ public:
       window.display();
     }
   }
-
 };
-
 }
 
 #endif /* SRC_DEMO_CUBEMAPDEMO_H_ */

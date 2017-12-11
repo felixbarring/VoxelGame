@@ -1,12 +1,12 @@
 #ifndef SRC_MODEL_WORLD_IWORLDOBJECT_H_
 #define SRC_MODEL_WORLD_IWORLDOBJECT_H_
 
-class IWorldObject {
+class IWorldObject
+{
 
-	virtual ~IWorldObject();
+  virtual ~IWorldObject();
 
-	virtual void update(float timePassed);
-
+  virtual void update(float timePassed);
 };
 
 #endif /* SRC_MODEL_WORLD_IWORLDOBJECT_H_ */

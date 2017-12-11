@@ -11,22 +11,22 @@
 
 #include <glm/glm.hpp>
 
-#include "../graphics/spriteBatcher.h"
 #include "../graphics/fontMeshBuilder.h"
+#include "../graphics/spriteBatcher.h"
 
 #include "../util/fpsManager.h"
 #include "../util/input.h"
 
-#include "../gui/widget/selectableList.h"
-#include "../gui/widget/button.h"
-#include "../gui/widget/toggleButton.h"
-#include "../gui/widget/slider.h"
-#include "../gui/widget/label.h"
-#include "../gui/widget/textInput.h"
-#include "../gui/widget/widgetGroup.h"
-#include "../gui/widget/iWidget.h"
 #include "../gui/guiUtil.h"
 #include "../gui/mouse.h"
+#include "../gui/widget/button.h"
+#include "../gui/widget/iWidget.h"
+#include "../gui/widget/label.h"
+#include "../gui/widget/selectableList.h"
+#include "../gui/widget/slider.h"
+#include "../gui/widget/textInput.h"
+#include "../gui/widget/toggleButton.h"
+#include "../gui/widget/widgetGroup.h"
 
 #include "../config/data.h"
 
@@ -40,16 +40,16 @@ using namespace sf;
 
 namespace demo {
 
-class GuiDemo : public IDemo {
+class GuiDemo : public IDemo
+{
 public:
-
-	void runDemo() override	{
+  void runDemo() override
+  {
     util::FPSManager fpsManager(60);
     const GLuint WIDTH = 1200, HEIGHT = 600;
 
     config::graphics_data::windowWidth = WIDTH;
     config::graphics_data::windowHeight = HEIGHT;
-
 
     // create the window
     ContextSettings settings;
@@ -59,8 +59,8 @@ public:
     settings.majorVersion = 3;
     settings.minorVersion = 1;
 
-    Window window(VideoMode(WIDTH, HEIGHT), "Voxel Game", Style::Default,
-            settings);
+    Window window(
+      VideoMode(WIDTH, HEIGHT), "Voxel Game", Style::Default, settings);
 
     glewExperimental = true;
     if (glewInit() != GLEW_OK)
@@ -79,9 +79,8 @@ public:
     shared_ptr<WidgetGroup> listWidgetGroup;
 
     bool quit = false;
-    function<void(int)> observer = [&](int id)
-    {
-      switch(id) {
+    function<void(int)> observer = [&](int id) {
+      switch (id) {
         case 0: {
           currentWidgetGroup = playWidgetGroup;
           break;
@@ -114,18 +113,23 @@ public:
       cout << "A button with id: " << id << " was pressed\n";
     };
 
-
     graphics::GraphicsManager graphicsmanager{};
 
     // ########################################################################
 
-    shared_ptr<IWidget> button1(new Button{0, 325, 350, 150, 30, graphicsmanager, observer, "Play"});
-    shared_ptr<IWidget> button2(new Button{1, 325, 310, 150, 30, graphicsmanager, observer, "Settings"});
-    shared_ptr<IWidget> button3(new Button{2, 325, 270, 150, 30, graphicsmanager, observer, "Quit"});
-    shared_ptr<IWidget> button8(new Button{3, 325, 230, 150, 30, graphicsmanager, observer, "List"});
-    shared_ptr<IWidget> toggleButton(new ToggleButton{666, 325, 190, 150, 30, graphicsmanager, observer, "Toggle"});
+    shared_ptr<IWidget> button1(
+      new Button{ 0, 325, 350, 150, 30, graphicsmanager, observer, "Play" });
+    shared_ptr<IWidget> button2(new Button{
+      1, 325, 310, 150, 30, graphicsmanager, observer, "Settings" });
+    shared_ptr<IWidget> button3(
+      new Button{ 2, 325, 270, 150, 30, graphicsmanager, observer, "Quit" });
+    shared_ptr<IWidget> button8(
+      new Button{ 3, 325, 230, 150, 30, graphicsmanager, observer, "List" });
+    shared_ptr<IWidget> toggleButton(new ToggleButton{
+      666, 325, 190, 150, 30, graphicsmanager, observer, "Toggle" });
 
-    mainWidgetGroup.reset(new WidgetGroup{0, 0, 0, 800, 600, graphicsmanager});
+    mainWidgetGroup.reset(
+      new WidgetGroup{ 0, 0, 0, 800, 600, graphicsmanager });
 
     mainWidgetGroup->addWidget(button1);
     mainWidgetGroup->addWidget(button2);
@@ -135,12 +139,17 @@ public:
 
     // ########################################################################
 
-    shared_ptr<IWidget> label1(new Label{325, 390, 150, 30, " - Play - ", graphicsmanager});
-    shared_ptr<IWidget> button4(new Button{666, 325, 350, 150, 30, graphicsmanager, observer, "New World"});
-    shared_ptr<IWidget> button5(new Button{666, 325, 310, 150, 30, graphicsmanager, observer, "Load World"});
-    shared_ptr<IWidget> button6(new Button{5, 325, 270, 150, 30, graphicsmanager, observer, "Back"});
+    shared_ptr<IWidget> label1(
+      new Label{ 325, 390, 150, 30, " - Play - ", graphicsmanager });
+    shared_ptr<IWidget> button4(new Button{
+      666, 325, 350, 150, 30, graphicsmanager, observer, "New World" });
+    shared_ptr<IWidget> button5(new Button{
+      666, 325, 310, 150, 30, graphicsmanager, observer, "Load World" });
+    shared_ptr<IWidget> button6(
+      new Button{ 5, 325, 270, 150, 30, graphicsmanager, observer, "Back" });
 
-    playWidgetGroup.reset(new WidgetGroup{0, 0, 0, 800, 600, graphicsmanager});
+    playWidgetGroup.reset(
+      new WidgetGroup{ 0, 0, 0, 800, 600, graphicsmanager });
 
     playWidgetGroup->addWidget(label1);
     playWidgetGroup->addWidget(button4);
@@ -149,12 +158,16 @@ public:
 
     // ########################################################################
 
-    shared_ptr<IWidget> label2(new Label{325, 390, 150, 30, " - Settings - ", graphicsmanager});
-    textInput.reset(new TextInput{666, 325, 350, 150, 30, graphicsmanager});
-    slider.reset(new Slider{666, 325, 310, 150, 30, graphicsmanager, observer});
-    shared_ptr<IWidget> button7(new Button{6, 325, 270, 150, 30, graphicsmanager, observer, "Back"});
+    shared_ptr<IWidget> label2(
+      new Label{ 325, 390, 150, 30, " - Settings - ", graphicsmanager });
+    textInput.reset(new TextInput{ 666, 325, 350, 150, 30, graphicsmanager });
+    slider.reset(
+      new Slider{ 666, 325, 310, 150, 30, graphicsmanager, observer });
+    shared_ptr<IWidget> button7(
+      new Button{ 6, 325, 270, 150, 30, graphicsmanager, observer, "Back" });
 
-    settingsWidgetGroup.reset(new WidgetGroup{0, 0, 0, 800, 600, graphicsmanager});
+    settingsWidgetGroup.reset(
+      new WidgetGroup{ 0, 0, 0, 800, 600, graphicsmanager });
 
     settingsWidgetGroup->addWidget(label2);
     settingsWidgetGroup->addWidget(slider);
@@ -163,9 +176,11 @@ public:
 
     // ########################################################################
 
-    shared_ptr<Button> button1337(new Button(666, 325, 270, 150, 30, graphicsmanager, observer, "DERP"));
+    shared_ptr<Button> button1337(
+      new Button(666, 325, 270, 150, 30, graphicsmanager, observer, "DERP"));
 
-    shared_ptr<SelectableList> derp(new SelectableList{666, 100, 100, 600, 400, graphicsmanager, observer, 2});
+    shared_ptr<SelectableList> derp(new SelectableList{
+      666, 100, 100, 600, 400, graphicsmanager, observer, 2 });
     derp->addListItem("BLOOL");
     derp->addListItem("Jesus");
     derp->addListItem("Satan");
@@ -175,9 +190,11 @@ public:
     derp->addListItem("Satan");
     derp->addListItem("Tor");
 
-    shared_ptr<IWidget> button9(new Button{6, 325, 0, 150, 30, graphicsmanager, observer, "Back"});
+    shared_ptr<IWidget> button9(
+      new Button{ 6, 325, 0, 150, 30, graphicsmanager, observer, "Back" });
 
-    listWidgetGroup.reset(new WidgetGroup{0, 0, 0, 800, 600, graphicsmanager});
+    listWidgetGroup.reset(
+      new WidgetGroup{ 0, 0, 0, 800, 600, graphicsmanager });
     listWidgetGroup->addWidget(derp);
     listWidgetGroup->addWidget(button9);
 
@@ -192,10 +209,11 @@ public:
     input->unlockMouse();
 
     glm::mat4 matrix = gui::createVirtualToScreen(800, 600, 1200, 600);
-    glm:: mat4 matrix2 = glm::ortho(0.0f, 1200.0f, 0.0f, 600.0f, -1.0f, 1.0f) * matrix;
+    glm::mat4 matrix2 =
+      glm::ortho(0.0f, 1200.0f, 0.0f, 600.0f, -1.0f, 1.0f) * matrix;
     graphicsmanager.getSpriteBatcher().setProjection(matrix2);
 
-    gui::Mouse mouse{graphicsmanager};
+    gui::Mouse mouse{ graphicsmanager };
 
     while (!quit && window.isOpen()) {
 
@@ -222,12 +240,8 @@ public:
       while (window.pollEvent(event))
         if (event.type == sf::Event::Closed)
           window.close();
-
     }
-
-	}
-
-
+  }
 };
 
 } /* namespace demo */

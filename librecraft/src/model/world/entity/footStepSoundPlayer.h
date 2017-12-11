@@ -13,9 +13,9 @@
  * The purpose of this class is to play sound effects that represents foot
  * step in various speeds.
  */
-class FootStepSoundPlayer {
+class FootStepSoundPlayer
+{
 public:
-
   /**
    * @brief Constructs an instance of FootStepSoundPlayer.
    *
@@ -23,8 +23,8 @@ public:
    *                   play the foot steps. The strings should correspond to a
    *                   sound file.
    */
-  FootStepSoundPlayer(util::SoundPlayer &player,
-      std::vector<std::string> stepSounds);
+  FootStepSoundPlayer(util::SoundPlayer& player,
+                      std::vector<std::string> stepSounds);
 
   /**
    * @brief Plays stepping sounds at a regular interval.
@@ -58,13 +58,12 @@ public:
   void setWalkingIntervall(double value);
 
 private:
-
   std::vector<std::string> m_stepSounds{};
-  util::SoundPlayer &m_soundPlayer;
+  util::SoundPlayer& m_soundPlayer;
 
-  bool m_isWalking{false};
+  bool m_isWalking{ false };
   double m_accumulatedTime{};
-  double m_footStepDelay{0.35};
+  double m_footStepDelay{ 0.35 };
 };
 
 #endif /* SRC_MODEL_WORLD_ENTITY_FOOTSTEPSOUNDPLAYER_H_ */

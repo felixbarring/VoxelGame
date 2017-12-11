@@ -24,7 +24,7 @@
 
 using namespace noise::module;
 
-Module::Module (int sourceModuleCount)
+Module::Module(int sourceModuleCount)
 {
   m_pSourceModule = NULL;
 
@@ -40,7 +40,7 @@ Module::Module (int sourceModuleCount)
   }
 }
 
-Module::~Module ()
+Module::~Module()
 {
   delete[] m_pSourceModule;
 }

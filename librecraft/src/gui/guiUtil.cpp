@@ -2,8 +2,12 @@
 
 namespace gui {
 
-glm::mat4 createVirtualToScreen(int virtualWidth, int virtualHeight,
-    int realWidth, int realHeight) {
+glm::mat4
+createVirtualToScreen(int virtualWidth,
+                      int virtualHeight,
+                      int realWidth,
+                      int realHeight)
+{
   float matrix[16];
 
   float vW = virtualWidth;
@@ -49,12 +53,17 @@ glm::mat4 createVirtualToScreen(int virtualWidth, int virtualHeight,
   return glm::make_mat4(matrix);
 }
 
-glm::vec2 adjustMouse(int virtualWidth, int virtualHeight, int realWidth,
-    int realHeight, int mouseX, int mouseY)
+glm::vec2
+adjustMouse(int virtualWidth,
+            int virtualHeight,
+            int realWidth,
+            int realHeight,
+            int mouseX,
+            int mouseY)
 {
-  float mouseOffX{0.0};
-  float mouseOffY{0.0};
-  float mouseScale{1.0};
+  float mouseOffX{ 0.0 };
+  float mouseOffY{ 0.0 };
+  float mouseScale{ 1.0 };
 
   float vW = virtualWidth;
   float vH = virtualHeight;
@@ -76,5 +85,4 @@ glm::vec2 adjustMouse(int virtualWidth, int virtualHeight, int realWidth,
 
   return glm::vec2(mouseXAdjusted, mouseYAdjusted);
 }
-
 }

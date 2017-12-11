@@ -25,52 +25,44 @@
 
 #include "../../libnoise/module/modulebase.h"
 
-namespace noise
+namespace noise {
+
+namespace module {
+
+/// @addtogroup libnoise
+/// @{
+
+/// @addtogroup modules
+/// @{
+
+/// @defgroup modifiermodules Modifier Modules
+/// @addtogroup modifiermodules
+/// @{
+
+/// Noise module that outputs the absolute value of the output value from
+/// a source module.
+///
+/// @image html moduleabs.png
+///
+/// This noise module requires one source module.
+class Abs : public Module
 {
 
-  namespace module {
+public:
+  /// Constructor.
+  Abs();
 
-    /// @addtogroup libnoise
-    /// @{
+  virtual int GetSourceModuleCount() const { return 1; }
 
-    /// @addtogroup modules
-    /// @{
+  virtual double GetValue(double x, double y, double z) const;
+};
 
-    /// @defgroup modifiermodules Modifier Modules
-    /// @addtogroup modifiermodules
-    /// @{
+/// @}
 
-    /// Noise module that outputs the absolute value of the output value from
-    /// a source module.
-    ///
-    /// @image html moduleabs.png
-    ///
-    /// This noise module requires one source module.
-    class Abs: public Module
-    {
+/// @}
 
-      public:
-
-        /// Constructor.
-        Abs ();
-
-        virtual int GetSourceModuleCount () const
-        {
-          return 1;
-        }
-
-        virtual double GetValue (double x, double y, double z) const;
-
-    };
-
-    /// @}
-
-    /// @}
-
-    /// @}
-
-  }
-
+/// @}
+}
 }
 
 #endif

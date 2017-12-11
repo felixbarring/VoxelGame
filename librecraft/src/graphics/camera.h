@@ -13,93 +13,90 @@ namespace graphics {
  * \brief This class is used to produce the view matrix used for rendering.
  *
  */
-class Camera {
+class Camera
+{
 public:
+  /**
+   * \brief Creates a camera with position 0 for x, y, and z.
+   */
+  Camera();
 
-    /**
-     * \brief Creates a camera with position 0 for x, y, and z.
-     */
-    Camera();
+  explicit Camera(glm::vec3 vec);
 
-    explicit Camera(glm::vec3 vec);
+  /**
+   * \brief Creates a camera at the specified position.
+   *
+   * @param xPosition The x position of the camera.
+   * @param yPosition The y position of the camera.
+   * @param zPosition The z position of the camera.
+   */
+  Camera(float xPosition, float yPosition, float zPosition);
 
+  // TODO Document this...
 
-    /**
-     * \brief Creates a camera at the specified position.
-     *
-     * @param xPosition The x position of the camera.
-     * @param yPosition The y position of the camera.
-     * @param zPosition The z position of the camera.
-     */
-    Camera(float xPosition, float yPosition, float zPosition);
+  /**
+   *
+   * @param view
+   */
+  void setViewMatrix(glm::mat4 value);
 
-    // TODO Document this...
+  /**
+   *
+   * @return
+   */
+  glm::mat4 getViewMatrix();
 
-    /**
-     *
-     * @param view
-     */
-    void setViewMatrix(glm::mat4 value);
+  /**
+   *
+   */
+  void setProjectionMatrix(glm::mat4 value);
 
-    /**
-     *
-     * @return
-     */
-    glm::mat4 getViewMatrix();
+  /**
+   *
+   * @return
+   */
+  glm::mat4& getProjectionMatrix();
 
-    /**
-     *
-     */
-    void setProjectionMatrix(glm::mat4 value);
+  /**
+   *
+   * @return
+   */
+  glm::vec3& getPosition();
 
-    /**
-     *
-     * @return
-     */
-    glm::mat4& getProjectionMatrix();
+  /**
+   *
+   * @param position
+   * @param direction
+   * @param up
+   */
+  void updateView(glm::vec3 position, glm::vec3 direction, glm::vec3 up);
 
-    /**
-     *
-     * @return
-     */
-    glm::vec3& getPosition();
+  /**
+   * \brief Sets the projection matrix to use the fov specified
+   *
+   * @param value The fov that should be used. The value shall be in degrees.
+   */
+  void setFov(float value);
 
-    /**
-     *
-     * @param position
-     * @param direction
-     * @param up
-     */
-    void updateView(glm::vec3 position, glm::vec3 direction, glm::vec3 up);
-
-
-    /**
-     * \brief Sets the projection matrix to use the fov specified
-     *
-     * @param value The fov that should be used. The value shall be in degrees.
-     */
-    void setFov(float value);
-
-// ########################################################
-// Implementation #########################################
-// ########################################################
+  // ########################################################
+  // Implementation #########################################
+  // ########################################################
 
 private:
+  glm::vec3 m_position;
+  glm::vec3 m_direction;
+  glm::vec3 m_up{ 0.0f, 1.0f, 0.0f };
 
-    glm::vec3 m_position;
-    glm::vec3 m_direction;
-    glm::vec3 m_up{0.0f, 1.0f, 0.0f};
+  // TODO Update this in an intelligent way
+  float m_aspectRatio = config::graphics_data::windowWidth /
+                        static_cast<float>(config::graphics_data::windowHeight);
 
-    // TODO Update this in an intelligent way
-    float m_aspectRatio = config::graphics_data::windowWidth / static_cast<float>(config::graphics_data::windowHeight);
+  const float m_close{ 0.1f };
+  const float m_far{ 1000.0f };
 
-    const float m_close{0.1f};
-    const float m_far{1000.0f};
-
-    glm::mat4 m_projection;
-    glm::mat4 m_view;
+  glm::mat4 m_projection;
+  glm::mat4 m_view;
 };
-
 }
 
 #endif /* SRC_GRAPHICS_CAMERA_H_ */

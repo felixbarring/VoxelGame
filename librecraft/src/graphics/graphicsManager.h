@@ -14,9 +14,9 @@ namespace graphics {
 /**
  * @brief A class that is responsible of managing the graphics rendering.
  */
-class GraphicsManager {
+class GraphicsManager
+{
 public:
-
   GraphicsManager();
 
   /**
@@ -81,8 +81,8 @@ public:
 private:
   Camera m_playerCamera{};
 
-  ChunkBatcher m_chunkBatcher{m_playerCamera};
-  CubeBatcher m_cubeBatcher{m_playerCamera};
+  ChunkBatcher m_chunkBatcher{ m_playerCamera };
+  CubeBatcher m_cubeBatcher{ m_playerCamera };
   SpriteBatcher m_spriteBatcher;
 
   double m_sunStrength{};

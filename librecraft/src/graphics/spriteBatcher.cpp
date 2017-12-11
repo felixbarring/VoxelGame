@@ -1,8 +1,8 @@
 #include "spriteBatcher.h"
 
+#include <algorithm>
 #include <iostream>
 #include <map>
-#include <algorithm>
 #include <string>
 
 #include "shaderProgram.h"
@@ -11,52 +11,51 @@ using namespace std;
 
 namespace graphics {
 
-SpriteBatcher::SpriteBatcher() {
+SpriteBatcher::SpriteBatcher()
+{
   // hard coded default value
   m_projection = glm::ortho(0.0f, 800.0f, 0.0f, 600.0f, -1.0f, 1.0f);
 
-  std::string vertex =
-    "#version 330 core \n"
-    "in vec3 positionIn; \n"
-    "in vec2 texCoordIn; \n"
+  std::string vertex = "#version 330 core \n"
+                       "in vec3 positionIn; \n"
+                       "in vec2 texCoordIn; \n"
 
-    "uniform mat4 projection; \n"
+                       "uniform mat4 projection; \n"
 
-    "out vec2 texCoord; \n"
+                       "out vec2 texCoord; \n"
 
-    "void main() \n"
-    "{ \n"
-    "  gl_Position = projection * vec4(positionIn, 1.0f); \n"
-    "  texCoord = texCoordIn; \n"
-    "} \n";
+                       "void main() \n"
+                       "{ \n"
+                       "  gl_Position = projection * vec4(positionIn, 1.0f); \n"
+                       "  texCoord = texCoordIn; \n"
+                       "} \n";
 
-  std::string frag =
-    "#version 330 core \n"
-    "in vec2 texCoord; \n"
+  std::string frag = "#version 330 core \n"
+                     "in vec2 texCoord; \n"
 
-    "out vec4 color; \n"
+                     "out vec4 color; \n"
 
-    "uniform sampler2D texture1; \n"
-    "void main() \n"
-    "{ \n"
-    "  color = texture(texture1, texCoord); \n"
-    "} \n";
+                     "uniform sampler2D texture1; \n"
+                     "void main() \n"
+                     "{ \n"
+                     "  color = texture(texture1, texCoord); \n"
+                     "} \n";
 
+  map<string, int> attributesMap{ pair<string, int>("positionIn", 0),
+                                  pair<string, int>("texCoordIn", 1) };
 
-  map<string, int> attributesMap{
-    pair<string, int>("positionIn", 0),
-    pair<string, int>("texCoordIn", 1)
-  };
-
-  m_program.reset(new ShaderProgram{vertex, frag, attributesMap});
-
+  m_program.reset(new ShaderProgram{ vertex, frag, attributesMap });
 }
 
-void SpriteBatcher::addBatch(shared_ptr<Sprite> batch) {
+void
+SpriteBatcher::addBatch(shared_ptr<Sprite> batch)
+{
   m_batches.push_back(batch);
 }
 
-void SpriteBatcher::draw() {
+void
+SpriteBatcher::draw()
+{
 
   m_program->bind();
 
@@ -64,15 +63,15 @@ void SpriteBatcher::draw() {
   glEnable(GL_BLEND);
   glDisable(GL_DEPTH_TEST);
 
-  sort(m_batches.begin(), m_batches.end(),
-  [](shared_ptr<Sprite> a, shared_ptr<Sprite> b)
-  {
-    return a->getLayer() < b->getLayer();
-  });
+  sort(m_batches.begin(),
+       m_batches.end(),
+       [](shared_ptr<Sprite> a, shared_ptr<Sprite> b) {
+         return a->getLayer() < b->getLayer();
+       });
 
   m_program->setUniformli("texture1", 0);
 
-  texture::Texture *current;
+  texture::Texture* current;
 
   for (auto batch : m_batches) {
     glActiveTexture(GL_TEXTURE0);
@@ -81,7 +80,8 @@ void SpriteBatcher::draw() {
       current->bind();
     }
 
-    glm::mat4 modelViewProjection { m_projection * batch->getTransform().getMatrix() };
+    glm::mat4 modelViewProjection{ m_projection *
+                                   batch->getTransform().getMatrix() };
 
     m_program->setUniformMatrix4f("projection", modelViewProjection);
     batch->draw();
@@ -91,9 +91,10 @@ void SpriteBatcher::draw() {
   m_batches.clear();
 }
 
-void SpriteBatcher::setProjection(glm::mat4 projection) {
+void
+SpriteBatcher::setProjection(glm::mat4 projection)
+{
   m_projection = projection;
 }
-
 
 } /* namespace graphics */

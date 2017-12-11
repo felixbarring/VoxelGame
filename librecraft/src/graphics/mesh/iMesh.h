@@ -2,17 +2,15 @@
 #ifndef SRC_GRAPHICS_MESH_IMESH_H_
 #define SRC_GRAPHICS_MESH_IMESH_H_
 
-namespace mesh
+namespace mesh {
+
+class IMesh
 {
-
-class IMesh {
 public:
-	virtual ~IMesh() {}
+  virtual ~IMesh() {}
 
-	virtual void draw() = 0;
-
+  virtual void draw() = 0;
 };
-
 }
 
 #endif /* SRC_GRAPHICS_MESH_IMESH_H_ */

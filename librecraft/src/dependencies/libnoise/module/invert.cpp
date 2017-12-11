@@ -24,14 +24,15 @@
 
 using namespace noise::module;
 
-Invert::Invert ():
-  Module (GetSourceModuleCount ())
+Invert::Invert()
+  : Module(GetSourceModuleCount())
 {
 }
 
-double Invert::GetValue (double x, double y, double z) const
+double
+Invert::GetValue(double x, double y, double z) const
 {
-  assert (m_pSourceModule[0] != NULL);
+  assert(m_pSourceModule[0] != NULL);
 
-  return -(m_pSourceModule[0]->GetValue (x, y, z));
+  return -(m_pSourceModule[0]->GetValue(x, y, z));
 }

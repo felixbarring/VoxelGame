@@ -25,52 +25,43 @@
 
 #include "../../libnoise/module/modulebase.h"
 
-namespace noise
+namespace noise {
+
+namespace module {
+
+/// @addtogroup libnoise
+/// @{
+
+/// @addtogroup modules
+/// @{
+
+/// @addtogroup combinermodules
+/// @{
+
+/// Noise module that outputs the product of the two output values from
+/// two source modules.
+///
+/// @image html modulemultiply.png
+///
+/// This noise module requires two source modules.
+class Multiply : public Module
 {
 
-  namespace module
-  {
+public:
+  /// Constructor.
+  Multiply();
 
-    /// @addtogroup libnoise
-    /// @{
+  virtual int GetSourceModuleCount() const { return 2; }
 
-    /// @addtogroup modules
-    /// @{
+  virtual double GetValue(double x, double y, double z) const;
+};
 
-    /// @addtogroup combinermodules
-    /// @{
+/// @}
 
-    /// Noise module that outputs the product of the two output values from
-    /// two source modules.
-    ///
-    /// @image html modulemultiply.png
-    ///
-    /// This noise module requires two source modules.
-    class Multiply: public Module
-    {
+/// @}
 
-      public:
-
-        /// Constructor.
-        Multiply ();
-
-        virtual int GetSourceModuleCount () const
-        {
-          return 2;
-        }
-
-        virtual double GetValue (double x, double y, double z) const;
-
-    };
-
-    /// @}
-
-    /// @}
-
-    /// @}
-
-  }
-
+/// @}
+}
 }
 
 #endif

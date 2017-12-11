@@ -3,8 +3,8 @@
 
 #include "abstractWidget.h"
 
-#include <string>
 #include <memory>
+#include <string>
 
 #include "../../graphics/fontMeshBuilder.h"
 #include "../../graphics/graphicsManager.h"
@@ -12,9 +12,9 @@
 
 namespace widget {
 
-class TextInput: public AbstractWidget {
+class TextInput : public AbstractWidget
+{
 public:
-
   /**
    *
    * @param id
@@ -24,8 +24,13 @@ public:
    * @param height
    * @param layer
    */
-  TextInput(int id, int x, int y, unsigned width, int height,
-      graphics::GraphicsManager &graphicsManager, int layer = 0);
+  TextInput(int id,
+            int x,
+            int y,
+            unsigned width,
+            int height,
+            graphics::GraphicsManager& graphicsManager,
+            int layer = 0);
 
   /**
    *
@@ -62,23 +67,24 @@ public:
   void setFocus(bool value = true);
 
 private:
+  static constexpr float s_cursorWidth{ 1.0 };
+  static constexpr int s_cursorSpacing{ 4 };
 
-  static constexpr float s_cursorWidth{1.0};
-  static constexpr int s_cursorSpacing{4};
-
-  static constexpr int s_textHightDifference{5}; // The difference between the widgets and text height
+  static constexpr int s_textHightDifference{
+    5
+  }; // The difference between the widgets and text height
 
   int m_layer{};
-  bool m_hasFocus{false};
-  std::string m_input{""};
+  bool m_hasFocus{ false };
+  std::string m_input{ "" };
   unsigned m_maxInputLength;
 
-  float m_eraseDelay{0.1f};
-  float m_accumulatedEraseTime{0.0f};
+  float m_eraseDelay{ 0.1f };
+  float m_accumulatedEraseTime{ 0.0f };
 
-  float m_blinkIntervall{1.0 / 3.0}; // Blink three times / second
-  float m_blinkTime{0.0};
-  bool m_cursorVissible{true};
+  float m_blinkIntervall{ 1.0 / 3.0 }; // Blink three times / second
+  float m_blinkTime{ 0.0 };
+  bool m_cursorVissible{ true };
 
   int m_textHeight{};
 

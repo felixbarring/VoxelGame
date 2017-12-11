@@ -1,22 +1,27 @@
 #ifndef SRC_GUI_WIDGET_TEXTAREA_H_
 #define SRC_GUI_WIDGET_TEXTAREA_H_
 
+#include <functional>
+#include <list>
 #include <memory>
 #include <string>
-#include <list>
-#include <functional>
 
 #include "../../graphics/sprite.h"
 #include "abstractWidget.h"
 
 namespace widget {
 
-class TextArea: public AbstractWidget {
+class TextArea : public AbstractWidget
+{
 public:
-
-  TextArea(int id, int x, int y, int width, int height,
-      graphics::GraphicsManager &graphicsManager,
-      std::function<void(int)> observer, int layer);
+  TextArea(int id,
+           int x,
+           int y,
+           int width,
+           int height,
+           graphics::GraphicsManager& graphicsManager,
+           std::function<void(int)> observer,
+           int layer);
 
   virtual ~TextArea() = default;
 
@@ -44,18 +49,15 @@ public:
   void addLine(std::string str);
 
 private:
-
-  const unsigned m_fontHeight{20};
+  const unsigned m_fontHeight{ 20 };
 
   int m_layer;
 
   std::function<void(int)> m_observer;
 
   std::shared_ptr<graphics::Sprite> m_textArea;
-  std::list<std::pair<std::string, std::shared_ptr<graphics::Sprite>>>m_rows;
-
+  std::list<std::pair<std::string, std::shared_ptr<graphics::Sprite>>> m_rows;
 };
-
 }
 /* namespace widget */
 

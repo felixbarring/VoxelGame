@@ -25,12 +25,10 @@ namespace widget {
  *
  *  \author Felix Bärring
  */
-class IWidget {
+class IWidget
+{
 public:
-
-  virtual ~IWidget() {
-  }
-  ;
+  virtual ~IWidget(){};
 
   /**
    *  \brief Makes the Widget draw itself
@@ -79,9 +77,7 @@ public:
    * \return Whether the Widget is active or not
    */
   virtual bool isActive() = 0;
-
 };
-
 }
 
 #endif /* SRC_GUI_WIDGET_IWIDGET_H_ */

@@ -5,8 +5,24 @@
 
 namespace entity {
 
-class AABB {
+class AABB
+{
 public:
+  /**
+   *
+   * @param xMinimum
+   * @param xMaximum
+   * @param yMinimum
+   * @param yMaximum
+   * @param zMinimum
+   * @param zMaximum
+   */
+  AABB(double xMinimum,
+       double xMaximum,
+       double yMinimum,
+       double yMaximum,
+       double zMinimum,
+       double zMaximum);
 
   /**
    *
@@ -17,27 +33,19 @@ public:
    * @param zMinimum
    * @param zMaximum
    */
-  AABB(double xMinimum, double xMaximum, double yMinimum, double yMaximum,
-      double zMinimum, double zMaximum);
-
-  /**
-   *
-   * @param xMinimum
-   * @param xMaximum
-   * @param yMinimum
-   * @param yMaximum
-   * @param zMinimum
-   * @param zMaximum
-   */
-  void setBounds(double xMinimum, double xMaximum, double yMinimum,
-      double yMaximum, double zMinimum, double zMaximum);
+  void setBounds(double xMinimum,
+                 double xMaximum,
+                 double yMinimum,
+                 double yMaximum,
+                 double zMinimum,
+                 double zMaximum);
 
   /**
    *
    * @param that
    * @return
    */
-  bool intersects(const AABB &that);
+  bool intersects(const AABB& that);
 
   /**
    *
@@ -45,7 +53,7 @@ public:
    * @param velocity
    * @return
    */
-  static AABB getSweptBroadPhaseBox(AABB &box, glm::vec3 &velocity);
+  static AABB getSweptBroadPhaseBox(AABB& box, glm::vec3& velocity);
 
   /**
    *
@@ -55,11 +63,12 @@ public:
    * @param velocity
    * @return Entry time. [0, 1) is considered a collision.
    */
-  static float collisionTime(AABB &box1, AABB &box2, glm::vec3 &collisionNormal,
-      glm::vec3 &velocity);
+  static float collisionTime(AABB& box1,
+                             AABB& box2,
+                             glm::vec3& collisionNormal,
+                             glm::vec3& velocity);
 
   double m_xMin, m_xMax, m_yMin, m_yMax, m_zMin, m_zMax;
-
 };
 
 } /* namespace entity */

@@ -3,7 +3,9 @@
 
 #include <algorithm>
 
-void TimeCycle::update(float timePassed) {
+void
+TimeCycle::update(float timePassed)
+{
   if (m_paused)
     return;
 
@@ -19,8 +21,8 @@ void TimeCycle::update(float timePassed) {
     m_sunStrength = 1.0;
     m_starStrength = 0;
   } else if (m_time > m_dusk.first && m_time < m_dusk.second) {
-    m_sunStrength = 1.0
-        - (m_time - m_dusk.first) / (m_dusk.second - m_dusk.first);
+    m_sunStrength =
+      1.0 - (m_time - m_dusk.first) / (m_dusk.second - m_dusk.first);
     m_starStrength = 0;
   } else if (m_time > m_night.first && m_time < m_night.second) {
     m_sunStrength = 0.0;
@@ -29,40 +31,54 @@ void TimeCycle::update(float timePassed) {
   m_sunStrength = std::max(m_lowestSunStrength, m_sunStrength);
 
   if (m_time > m_starIncrease.first && m_time < m_starIncrease.second)
-    m_starStrength = (m_time - m_starIncrease.first)
-        / (m_starIncrease.second - m_starIncrease.first);
+    m_starStrength = (m_time - m_starIncrease.first) /
+                     (m_starIncrease.second - m_starIncrease.first);
   else if (m_time > m_starIncrease.second && m_time < m_starDecrease.first)
     m_starStrength = 1.0;
   else if (m_time > m_starDecrease.first && m_time < m_starDecrease.second)
-    m_starStrength = 1.0
-        - (m_time - m_starDecrease.first)
-            / (m_starDecrease.second - m_starDecrease.first);
+    m_starStrength = 1.0 -
+                     (m_time - m_starDecrease.first) /
+                       (m_starDecrease.second - m_starDecrease.first);
 }
 
-void TimeCycle::setTime(float time) {
+void
+TimeCycle::setTime(float time)
+{
   m_time = time;
 }
 
-float TimeCycle::getTime() {
+float
+TimeCycle::getTime()
+{
   return m_time;
 }
 
-void TimeCycle::stopCycle() {
+void
+TimeCycle::stopCycle()
+{
   m_paused = true;
 }
 
-void TimeCycle::resumeCycle() {
+void
+TimeCycle::resumeCycle()
+{
   m_paused = false;
 }
 
-double TimeCycle::getSunStrenght() {
+double
+TimeCycle::getSunStrenght()
+{
   return m_sunStrength;
 }
 
-double TimeCycle::getStarStrenght() {
+double
+TimeCycle::getStarStrenght()
+{
   return m_starStrength;
 }
 
-void TimeCycle::setTimeSpeed(double value) {
+void
+TimeCycle::setTimeSpeed(double value)
+{
   m_timeSpeed = value;
 }

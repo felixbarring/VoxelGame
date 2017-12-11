@@ -1,14 +1,14 @@
 #include "chunkManager.h"
 
-#include <math.h>
 #include <algorithm>
 #include <chrono>
-#include <limits>
 #include <iostream>
+#include <limits>
+#include <math.h>
 #include <thread>
 
-#include "../../../util/soundPlayer.h"
 #include "../../../util/globalResources.h"
+#include "../../../util/soundPlayer.h"
 
 using util::SoundPlayer;
 
@@ -23,38 +23,41 @@ using namespace globalResources;
 namespace chunk {
 
 ChunkManager::ChunkManager(CreationOptions options,
-    util::SoundPlayer &soundPlayer, graphics::GraphicsManager &graphicsManager)
-  : m_options{move(options)}
-  , m_soundPlayer{soundPlayer}
-  , m_graphicsManager{graphicsManager}
+                           util::SoundPlayer& soundPlayer,
+                           graphics::GraphicsManager& graphicsManager)
+  : m_options{ move(options) }
+  , m_soundPlayer{ soundPlayer }
+  , m_graphicsManager{ graphicsManager }
 {
   m_worldName = m_options.getName();
   m_bussyMovingChunksMutex = make_unique<mutex>();
 
-  for (int x{0}; x < m_lenghtAcrossMatrix; ++x) {
+  for (int x{ 0 }; x < m_lenghtAcrossMatrix; ++x) {
     m_chunks.push_back(vector<vector<std::shared_ptr<Chunk>>>());
-    for (int y{0}; y < config::chunk_data::NUMBER_OF_CHUNKS_Y; ++y) {
+    for (int y{ 0 }; y < config::chunk_data::NUMBER_OF_CHUNKS_Y; ++y) {
       m_chunks[x].push_back(vector<std::shared_ptr<Chunk>>());
-      for (int z{0}; z < m_lenghtAcrossMatrix; ++z) {
+      for (int z{ 0 }; z < m_lenghtAcrossMatrix; ++z) {
         m_chunks[x][y].push_back(std::shared_ptr<Chunk>());
       }
     }
   }
 }
 
-void ChunkManager::createWorld()
+void
+ChunkManager::createWorld()
 {
   const int lam = m_lenghtAcrossMatrix;
   vector<future<void>> chunkCreationFutures;
 
   // Create the Chunks
-  for (int x {0}; x < lam; ++x) {
-    for (int z{0}; z < lam; ++z) {
-      auto chunk = make_shared<Chunk>(m_worldName, x * CHUNK_WIDTH_AND_DEPTH,
-          z * CHUNK_WIDTH_AND_DEPTH, m_graphicsManager);
+  for (int x{ 0 }; x < lam; ++x) {
+    for (int z{ 0 }; z < lam; ++z) {
+      auto chunk = make_shared<Chunk>(m_worldName,
+                                      x * CHUNK_WIDTH_AND_DEPTH,
+                                      z * CHUNK_WIDTH_AND_DEPTH,
+                                      m_graphicsManager);
 
-      chunkCreationFutures.push_back(g_threadPool2.enqueue([chunk, this]
-      {
+      chunkCreationFutures.push_back(g_threadPool2.enqueue([chunk, this] {
         chunk->create(m_options);
         chunk->doSunLightning();
       }));
@@ -65,31 +68,35 @@ void ChunkManager::createWorld()
   connectChunks();
 
   // Wait for all the chunks to be generated
-  for_each(chunkCreationFutures.begin(), chunkCreationFutures.end(),
-      [](future<void> &f) {f.get();});
+  for_each(chunkCreationFutures.begin(),
+           chunkCreationFutures.end(),
+           [](future<void>& f) { f.get(); });
 
-//    vector<future<void>> updateGrapicsFutures;
+  //    vector<future<void>> updateGrapicsFutures;
 
-// TODO Should be done in parallel..
-  for (int x{0}; x < lam; ++x) {
-    for (int z{0}; z < lam; ++z) {
+  // TODO Should be done in parallel..
+  for (int x{ 0 }; x < lam; ++x) {
+    for (int z{ 0 }; z < lam; ++z) {
       m_chunks[x][0][z]->propagateLights();
       m_chunks[x][0][z]->updateGraphics(true);
     }
   }
-
 }
 
-void ChunkManager::saveWorld() {
+void
+ChunkManager::saveWorld()
+{
   const int lam = m_lenghtAcrossMatrix;
-  for (int x = 0; x < lam; x++) {
+  for (int x = 0; x < lam; ++x) {
     for (int z = 0; z < lam; z++) {
       m_chunks[x][0][z]->storeChunk();
     }
   }
 }
 
-void ChunkManager::clearWorld() {
+void
+ChunkManager::clearWorld()
+{
   const int lam = m_lenghtAcrossMatrix;
   for (int x = 0; x < lam; x++) {
     for (int z = 0; z < lam; z++) {
@@ -99,12 +106,16 @@ void ChunkManager::clearWorld() {
   }
 }
 
-void ChunkManager::update() {
+void
+ChunkManager::update()
+{
   // When/if AI is added like npc, this could be a good
   // place to update them
 }
 
-Voxel ChunkManager::getVoxel(int x, int y, int z) {
+Voxel
+ChunkManager::getVoxel(int x, int y, int z)
+{
   // Used to avoid Division every time the function is called.
   static float xD = 1.0 / CHUNK_WIDTH_AND_DEPTH;
   static float yD = 1.0 / CHUNK_HEIGHT;
@@ -125,21 +136,29 @@ Voxel ChunkManager::getVoxel(int x, int y, int z) {
   return m_chunks[chunkX][chunkY][chunkZ]->getVoxel(localX, localY, localZ);
 }
 
-char ChunkManager::getCubeId(int x, int y, int z) {
+char
+ChunkManager::getCubeId(int x, int y, int z)
+{
   return getVoxel(x, y, z).id;
 }
 
-bool ChunkManager::isSolid(int x, int y, int z) {
+bool
+ChunkManager::isSolid(int x, int y, int z)
+{
   // Will not be correct if more cubes that are not solid are added.
   return !isAirOrWater(x, y, z);
 }
 
-bool ChunkManager::isAirOrWater(int x, int y, int z) {
+bool
+ChunkManager::isAirOrWater(int x, int y, int z)
+{
   auto cubeId = getCubeId(x, y, z);
   return cubeId == AIR || cubeId == WATER;
 }
 
-void ChunkManager::removeCube(int x, int y, int z) {
+void
+ChunkManager::removeCube(int x, int y, int z)
+{
   auto voxel = getCubeId(x, y, z);
   if (voxel != BED_ROCK && voxel != WATER) {
     if (hasWaterNeighbour(x, y, z))
@@ -151,7 +170,9 @@ void ChunkManager::removeCube(int x, int y, int z) {
   }
 }
 
-void ChunkManager::setCube(int x, int y, int z, char id) {
+void
+ChunkManager::setCube(int x, int y, int z, char id)
+{
   static float xD = 1.0 / CHUNK_WIDTH_AND_DEPTH;
   static float yD = 1.0 / CHUNK_HEIGHT;
   static float zD = 1.0 / CHUNK_WIDTH_AND_DEPTH;
@@ -171,7 +192,9 @@ void ChunkManager::setCube(int x, int y, int z, char id) {
   m_soundPlayer.playSound(config::souds::cubeAdded);
 }
 
-void ChunkManager::setCenter(float x, float z) {
+void
+ChunkManager::setCenter(float x, float z)
+{
   if (!m_loadStoreWorldWhenPlyayerIsNotInTheCenterChunk)
     return;
 
@@ -190,19 +213,22 @@ void ChunkManager::setCenter(float x, float z) {
     moveChunksDown();
   else
     m_bussyMovingChunksMutex->unlock();
-
 }
 
-bool ChunkManager::intersectWithSolidCube(vec3 origin, vec3 direction,
-    vec3 &intersected, vec3 &previous, float searchLength) {
-	static const double smallNumber = 0.0001;
+bool
+ChunkManager::intersectWithSolidCube(vec3 origin,
+                                     vec3 direction,
+                                     vec3& intersected,
+                                     vec3& previous,
+                                     float searchLength)
+{
+  static const double smallNumber = 0.0001;
 
-
-	// When the player is exactly located at an integer position the selection
-	// will be wrong due to incorrect rounding of the values. The additions with
-	// a small number solves this problem. Not bulletproof but seems to work well
-	// in practice.
-	origin = origin + glm::vec3{smallNumber, smallNumber, smallNumber};
+  // When the player is exactly located at an integer position the selection
+  // will be wrong due to incorrect rounding of the values. The additions with
+  // a small number solves this problem. Not bulletproof but seems to work well
+  // in practice.
+  origin = origin + glm::vec3{ smallNumber, smallNumber, smallNumber };
 
   // Get the sign of the directions
   int signXDirection = (direction.x > 0) - (direction.x < 0);
@@ -271,7 +297,6 @@ bool ChunkManager::intersectWithSolidCube(vec3 origin, vec3 direction,
       currentCubeZ += signZDirection;
       zAxis += signZDirection;
       distanceSearched = length(multiZ * direction);
-
     }
 
     if (!isAirOrWater(currentCubeX, currentCubeY, currentCubeZ)) {
@@ -283,20 +308,25 @@ bool ChunkManager::intersectWithSolidCube(vec3 origin, vec3 direction,
   return false;
 }
 
-void ChunkManager::loadWorldWhenDecentered(bool value) {
+void
+ChunkManager::loadWorldWhenDecentered(bool value)
+{
   m_loadStoreWorldWhenPlyayerIsNotInTheCenterChunk = value;
 }
 
 // Private Methods #############################################################
 
-bool ChunkManager::hasWaterNeighbour(int x, int y, int z) {
-  return getCubeId(x + 1, y, z) == WATER || getCubeId(x - 1, y, z) == WATER
-      || getCubeId(x, y, z + 1) == WATER || getCubeId(x, y, z - 1) == WATER
-      || getCubeId(x, y + 1, z) == WATER;
+bool
+ChunkManager::hasWaterNeighbour(int x, int y, int z)
+{
+  return getCubeId(x + 1, y, z) == WATER || getCubeId(x - 1, y, z) == WATER ||
+         getCubeId(x, y, z + 1) == WATER || getCubeId(x, y, z - 1) == WATER ||
+         getCubeId(x, y + 1, z) == WATER;
 }
 
-void ChunkManager::connectChunks() {
-
+void
+ChunkManager::connectChunks()
+{
   const int lam = m_lenghtAcrossMatrix;
 
   for (int x = 0; x < lam; ++x) {
@@ -316,28 +346,38 @@ void ChunkManager::connectChunks() {
   }
 }
 
-void ChunkManager::moveChunksRight() {
+void
+ChunkManager::moveChunksRight()
+{
   m_xOffset += CHUNK_WIDTH_AND_DEPTH;
   moveChunks(Direction::Right);
 }
 
-void ChunkManager::moveChunksLeft() {
+void
+ChunkManager::moveChunksLeft()
+{
   m_xOffset -= CHUNK_WIDTH_AND_DEPTH;
   moveChunks(Direction::Left);
 }
 
-void ChunkManager::moveChunksUp() {
+void
+ChunkManager::moveChunksUp()
+{
   m_zOffset += CHUNK_WIDTH_AND_DEPTH;
   moveChunks(Direction::Up);
 }
 
-void ChunkManager::moveChunksDown() {
+void
+ChunkManager::moveChunksDown()
+{
   m_zOffset -= CHUNK_WIDTH_AND_DEPTH;
   moveChunks(Direction::Down);
 }
 
 // TODO The thread safety needs to be improved and documented.
-void ChunkManager::moveChunks(Direction direction) {
+void
+ChunkManager::moveChunks(Direction direction)
+{
   vector<shared_ptr<Chunk>> chunksToDelete;
 
   // Store the chunks that should be removed and moves the old chunks in the
@@ -388,36 +428,48 @@ void ChunkManager::moveChunks(Direction direction) {
   }
 
   // Add the chunks, they are not yet fully generated.
-  vector<shared_ptr<Chunk>> newChunks {};
+  vector<shared_ptr<Chunk>> newChunks{};
   if (direction == Direction::Right) {
     for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
       auto ch = m_chunks[0 + 1][0][i];
-      auto chunk = std::make_shared<Chunk>(m_worldName, ch->getXLocation()
-          - CHUNK_WIDTH_AND_DEPTH, ch->getZLocation(), m_graphicsManager);
+      auto chunk =
+        std::make_shared<Chunk>(m_worldName,
+                                ch->getXLocation() - CHUNK_WIDTH_AND_DEPTH,
+                                ch->getZLocation(),
+                                m_graphicsManager);
       m_chunks[0][0][i] = chunk;
       newChunks.push_back(chunk);
     }
   } else if (direction == Direction::Left) {
     for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
       auto ch = m_chunks[m_lenghtAcrossMatrix - 2][0][i];
-      auto chunk = std::make_shared<Chunk>(m_worldName, ch->getXLocation()
-          + CHUNK_WIDTH_AND_DEPTH, ch->getZLocation(), m_graphicsManager);
+      auto chunk =
+        std::make_shared<Chunk>(m_worldName,
+                                ch->getXLocation() + CHUNK_WIDTH_AND_DEPTH,
+                                ch->getZLocation(),
+                                m_graphicsManager);
       m_chunks[m_lenghtAcrossMatrix - 1][0][i] = chunk;
       newChunks.push_back(chunk);
     }
   } else if (direction == Direction::Up) {
     for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
       auto ch = m_chunks[i][0][0 + 1];
-      auto chunk = std::make_shared<Chunk>(m_worldName, ch->getXLocation(),
-          ch->getZLocation() - CHUNK_WIDTH_AND_DEPTH, m_graphicsManager);
+      auto chunk =
+        std::make_shared<Chunk>(m_worldName,
+                                ch->getXLocation(),
+                                ch->getZLocation() - CHUNK_WIDTH_AND_DEPTH,
+                                m_graphicsManager);
       m_chunks[i][0][0] = chunk;
       newChunks.push_back(chunk);
     }
   } else if (direction == Direction::Down) {
     for (int i = 0; i < m_lenghtAcrossMatrix; ++i) {
       auto ch = m_chunks[i][0][m_lenghtAcrossMatrix - 2];
-      auto chunk = std::make_shared<Chunk>(m_worldName, ch->getXLocation(),
-          ch->getZLocation() + CHUNK_WIDTH_AND_DEPTH, m_graphicsManager);
+      auto chunk =
+        std::make_shared<Chunk>(m_worldName,
+                                ch->getXLocation(),
+                                ch->getZLocation() + CHUNK_WIDTH_AND_DEPTH,
+                                m_graphicsManager);
       m_chunks[i][0][m_lenghtAcrossMatrix - 1] = chunk;
       newChunks.push_back(chunk);
     }
@@ -431,57 +483,52 @@ void ChunkManager::moveChunks(Direction direction) {
   // ##########################################################################
   // ##########################################################################
 
-
   // Off load the work on a thread pool so that the game is not blocked during
   // this lengthy task.
   g_threadPool.enqueue([this, direction, chunksToDelete, newChunks] {
 
-      // Run the creation and sunlightning work in parallel on the thread pool.
-      vector<future<void>> chunkCreationFutures {};
-      for (auto chunk : newChunks) {
-        chunkCreationFutures.push_back(g_threadPool2.enqueue([chunk, this]
-        {
-          chunk->create(m_options);
-          chunk->doSunLightning();
-        }));
-      }
-      for_each(chunkCreationFutures.begin(), chunkCreationFutures.end(),
-          [] (future<void> &f) { f.get(); });
+    // Run the creation and sunlightning work in parallel on the thread pool.
+    vector<future<void>> chunkCreationFutures{};
+    for (auto chunk : newChunks) {
+      chunkCreationFutures.push_back(g_threadPool2.enqueue([chunk, this] {
+        chunk->create(m_options);
+        chunk->doSunLightning();
+      }));
+    }
+    for_each(chunkCreationFutures.begin(),
+             chunkCreationFutures.end(),
+             [](future<void>& f) { f.get(); });
 
-      vector<future<void>> collectLightFutures {};
+    vector<future<void>> collectLightFutures{};
 
-      // Collect lights from neighbors
-      if (direction == Direction::Right) {
-        for (auto chunk : newChunks)
+    // Collect lights from neighbors
+    if (direction == Direction::Right) {
+      for (auto chunk : newChunks)
         collectLightFutures.push_back(g_threadPool2.enqueue(
-            [chunk] {chunk->collectLightFromRightNeighbor();}));
-      }
-      else if (direction == Direction::Left) {
-        for (auto chunk : newChunks)
+          [chunk] { chunk->collectLightFromRightNeighbor(); }));
+    } else if (direction == Direction::Left) {
+      for (auto chunk : newChunks)
         collectLightFutures.push_back(g_threadPool2.enqueue(
-            [chunk] {chunk->collectLightFromLeftNeighbor();}));
-      }
-      else if (direction == Direction::Up) {
-        for (auto chunk : newChunks)
+          [chunk] { chunk->collectLightFromLeftNeighbor(); }));
+    } else if (direction == Direction::Up) {
+      for (auto chunk : newChunks)
         collectLightFutures.push_back(g_threadPool2.enqueue(
-            [chunk] {chunk->collectLightFromBackNeighbor();}));
-      }
-      else if (direction == Direction::Down) {
-        for (auto chunk : newChunks)
+          [chunk] { chunk->collectLightFromBackNeighbor(); }));
+    } else if (direction == Direction::Down) {
+      for (auto chunk : newChunks)
         collectLightFutures.push_back(g_threadPool2.enqueue(
-            [chunk] {chunk->collectLightFromFrontNeighbor();}));
-      }
-      for_each(collectLightFutures.begin(), collectLightFutures.end(),
-          [] (future<void> &f) {f.get();});
+          [chunk] { chunk->collectLightFromFrontNeighbor(); }));
+    }
+    for_each(collectLightFutures.begin(),
+             collectLightFutures.end(),
+             [](future<void>& f) { f.get(); });
 
-      auto f = [&](int start)
-      {
-        vector<future<void>> updateGrapicsFutures;
-        for (unsigned i = start; i < newChunks.size(); i += 2) {
-          auto chunk = newChunks[i];
-          updateGrapicsFutures.push_back(g_threadPool2.enqueue(
-          [chunk, direction]
-          {
+    auto f = [&](int start) {
+      vector<future<void>> updateGrapicsFutures;
+      for (unsigned i = start; i < newChunks.size(); i += 2) {
+        auto chunk = newChunks[i];
+        updateGrapicsFutures.push_back(
+          g_threadPool2.enqueue([chunk, direction] {
             chunk->propagateLights();
             chunk->updateGraphics();
             if (direction == Direction::Right)
@@ -493,17 +540,17 @@ void ChunkManager::moveChunks(Direction direction) {
             if (direction == Direction::Down)
               chunk->getFrontNeighbor()->forceUpdateGraphics();
           }));
-        }
-        for_each(updateGrapicsFutures.begin(), updateGrapicsFutures.end(),
-            [] (future<void> &f) { f.get(); });
-        updateGrapicsFutures.clear();
-      };
+      }
+      for_each(updateGrapicsFutures.begin(),
+               updateGrapicsFutures.end(),
+               [](future<void>& f) { f.get(); });
+      updateGrapicsFutures.clear();
+    };
 
-      f(0);
-      f(1);
+    f(0);
+    f(1);
 
-      m_bussyMovingChunksMutex->unlock();
-    });
+    m_bussyMovingChunksMutex->unlock();
+  });
 }
-
 }

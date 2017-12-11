@@ -10,10 +10,10 @@
 
 namespace gui {
 
-class Mouse {
+class Mouse
+{
 public:
-
-  explicit Mouse(graphics::GraphicsManager &graphicsManager);
+  explicit Mouse(graphics::GraphicsManager& graphicsManager);
 
   void update();
 
@@ -24,15 +24,14 @@ public:
   void unlock();
 
 private:
-
-  graphics::GraphicsManager &m_graphicsManager;
+  graphics::GraphicsManager& m_graphicsManager;
 
   std::shared_ptr<util::Input> m_input;
-  bool m_locked{false};
+  bool m_locked{ false };
 
   std::shared_ptr<graphics::Sprite> m_sprite;
-  int m_width{10};
-  int m_height{10};
+  int m_width{ 10 };
+  int m_height{ 10 };
 };
 
 } /* namespace widget */

@@ -3,8 +3,8 @@
 
 #include <memory>
 
-#include "iGameState.h"
 #include "ThreadPool.h"
+#include "iGameState.h"
 
 #include "config/data.h"
 #include "graphics/graphicsManager.h"
@@ -17,9 +17,9 @@
 /**
  *
  */
-class Game {
+class Game
+{
 public:
-
   /**
    *
    */
@@ -42,21 +42,20 @@ public:
   void quitGame();
 
 private:
-
-  util::FPSManager m_fpsManager{config::graphics_data::fps};
+  util::FPSManager m_fpsManager{ config::graphics_data::fps };
   util::SoundPlayer m_soundPlayer{};
 
   // TODO It should be possible to not have this as a ptr.
   std::unique_ptr<graphics::GraphicsManager> m_graphicsmanager;
 
-  sf::Window *window{};
+  sf::Window* window{};
 
   std::shared_ptr<IGameState> m_mainMenu{};
   std::shared_ptr<IGameState> m_inGame{};
   std::shared_ptr<IGameState> m_currentState{};
 
-  bool m_changeStateToIngame{false};
-  bool m_quit{false};
+  bool m_changeStateToIngame{ false };
+  bool m_quit{ false };
 };
 
 #endif /* SRC_GAME_H_ */

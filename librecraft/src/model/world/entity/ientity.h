@@ -3,15 +3,13 @@
 
 namespace entity {
 
-class IEntity {
+class IEntity
+{
 public:
+  virtual ~IEntity(){};
 
-	virtual ~IEntity() {};
-
-	virtual void update(float timePassed) = 0;
-
+  virtual void update(float timePassed) = 0;
 };
-
 }
 
 #endif /* SRC_MODEL_ENTITY_IENTITY_H_ */

@@ -6,22 +6,23 @@
 
 namespace util {
 
-class Performance {
+class Performance
+{
 
   Performance();
 
 public:
-
-  Performance getInstance() {
+  Performance getInstance()
+  {
     static Performance INSTANCE;
     return INSTANCE;
   }
 
   unsigned createId(const std::string& value);
 
-//  void startTimer(unsigned id);
-//
-//  void stopTimer(unsigned id);
+  //  void startTimer(unsigned id);
+  //
+  //  void stopTimer(unsigned id);
 
   void clearData();
 
@@ -30,11 +31,9 @@ public:
   void printData();
 
 private:
-
   std::map<int, std::string> m_map{};
-//  std::vector<std::tuple<sf::Clock, double>> m_accumulatedTime{};
-//  sf::Clock m_clock{};
-
+  //  std::vector<std::tuple<sf::Clock, double>> m_accumulatedTime{};
+  //  sf::Clock m_clock{};
 };
 
 } /* namespace util */

@@ -1,8 +1,8 @@
 #ifndef SRC_GRAPHICS_SPRITEBATCHER_H_
 #define SRC_GRAPHICS_SPRITEBATCHER_H_
 
-#include <vector>
 #include <memory>
+#include <vector>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -13,26 +13,25 @@
 
 namespace graphics {
 
-class SpriteBatcher {
+class SpriteBatcher
+{
 public:
+  SpriteBatcher();
 
-    SpriteBatcher();
+  SpriteBatcher(SpriteBatcher const&) = delete;
 
-    SpriteBatcher(SpriteBatcher const&) = delete;
+  void operator=(SpriteBatcher const&) = delete;
 
-    void operator=(SpriteBatcher const&) = delete;
+  void addBatch(std::shared_ptr<Sprite> batch);
 
-    void addBatch(std::shared_ptr<Sprite> batch);
+  void draw();
 
-    void draw();
-
-    void setProjection(glm::mat4 projection);
+  void setProjection(glm::mat4 projection);
 
 private:
-
-	std::vector<std::shared_ptr<Sprite>> m_batches;
-	glm::mat4 m_projection;
-	std::shared_ptr<ShaderProgram> m_program;
+  std::vector<std::shared_ptr<Sprite>> m_batches;
+  glm::mat4 m_projection;
+  std::shared_ptr<ShaderProgram> m_program;
 };
 
 } /* namespace graphics */

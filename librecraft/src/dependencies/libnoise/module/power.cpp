@@ -23,16 +23,17 @@
 
 using namespace noise::module;
 
-Power::Power ():
-  Module (GetSourceModuleCount ())
+Power::Power()
+  : Module(GetSourceModuleCount())
 {
 }
 
-double Power::GetValue (double x, double y, double z) const
+double
+Power::GetValue(double x, double y, double z) const
 {
-  assert (m_pSourceModule[0] != NULL);
-  assert (m_pSourceModule[1] != NULL);
+  assert(m_pSourceModule[0] != NULL);
+  assert(m_pSourceModule[1] != NULL);
 
-  return pow (m_pSourceModule[0]->GetValue (x, y, z),
-    m_pSourceModule[1]->GetValue (x, y, z));
+  return pow(m_pSourceModule[0]->GetValue(x, y, z),
+             m_pSourceModule[1]->GetValue(x, y, z));
 }

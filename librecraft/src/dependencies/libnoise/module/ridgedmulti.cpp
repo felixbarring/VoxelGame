@@ -24,19 +24,20 @@
 
 using namespace noise::module;
 
-RidgedMulti::RidgedMulti ():
-  Module (GetSourceModuleCount ()),
-  m_frequency    (DEFAULT_RIDGED_FREQUENCY   ),
-  m_lacunarity   (DEFAULT_RIDGED_LACUNARITY  ),
-  m_noiseQuality (DEFAULT_RIDGED_QUALITY     ),
-  m_octaveCount  (DEFAULT_RIDGED_OCTAVE_COUNT),
-  m_seed         (DEFAULT_RIDGED_SEED)
+RidgedMulti::RidgedMulti()
+  : Module(GetSourceModuleCount())
+  , m_frequency(DEFAULT_RIDGED_FREQUENCY)
+  , m_lacunarity(DEFAULT_RIDGED_LACUNARITY)
+  , m_noiseQuality(DEFAULT_RIDGED_QUALITY)
+  , m_octaveCount(DEFAULT_RIDGED_OCTAVE_COUNT)
+  , m_seed(DEFAULT_RIDGED_SEED)
 {
-  CalcSpectralWeights ();
+  CalcSpectralWeights();
 }
 
 // Calculates the spectral weights for each octave.
-void RidgedMulti::CalcSpectralWeights ()
+void
+RidgedMulti::CalcSpectralWeights()
 {
   // This exponent parameter should be user-defined; it may be exposed in a
   // future version of libnoise.
@@ -45,21 +46,22 @@ void RidgedMulti::CalcSpectralWeights ()
   double frequency = 1.0;
   for (int i = 0; i < RIDGED_MAX_OCTAVE; i++) {
     // Compute weight for each frequency.
-    m_pSpectralWeights[i] = pow (frequency, -h);
+    m_pSpectralWeights[i] = pow(frequency, -h);
     frequency *= m_lacunarity;
   }
 }
 
 // Multifractal code originally written by F. Kenton "Doc Mojo" Musgrave,
 // 1998.  Modified by jas for use with libnoise.
-double RidgedMulti::GetValue (double x, double y, double z) const
+double
+RidgedMulti::GetValue(double x, double y, double z) const
 {
   x *= m_frequency;
   y *= m_frequency;
   z *= m_frequency;
 
   double signal = 0.0;
-  double value  = 0.0;
+  double value = 0.0;
   double weight = 1.0;
 
   // These parameters should be user-defined; they may be exposed in a
@@ -72,16 +74,16 @@ double RidgedMulti::GetValue (double x, double y, double z) const
     // Make sure that these floating-point values have the same range as a 32-
     // bit integer so that we can pass them to the coherent-noise functions.
     double nx, ny, nz;
-    nx = MakeInt32Range (x);
-    ny = MakeInt32Range (y);
-    nz = MakeInt32Range (z);
+    nx = MakeInt32Range(x);
+    ny = MakeInt32Range(y);
+    nz = MakeInt32Range(z);
 
     // Get the coherent-noise value.
     int seed = (m_seed + curOctave) & 0x7fffffff;
-    signal = GradientCoherentNoise3D (nx, ny, nz, seed, m_noiseQuality);
+    signal = GradientCoherentNoise3D(nx, ny, nz, seed, m_noiseQuality);
 
     // Make the ridges.
-    signal = fabs (signal);
+    signal = fabs(signal);
     signal = offset - signal;
 
     // Square the signal to increase the sharpness of the ridges.

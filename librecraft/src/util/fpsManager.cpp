@@ -6,16 +6,20 @@
 namespace util {
 
 FPSManager::FPSManager(int maxFPS)
-  : m_maxFPS{maxFPS}
-  , m_timePerFrame{1.0 / maxFPS}
+  : m_maxFPS{ maxFPS }
+  , m_timePerFrame{ 1.0 / maxFPS }
 {
 }
 
-void FPSManager::frameStart() {
-	m_frameStartTime = std::chrono::system_clock::now();
+void
+FPSManager::frameStart()
+{
+  m_frameStartTime = std::chrono::system_clock::now();
 }
 
-void FPSManager::sync() {
+void
+FPSManager::sync()
+{
 
   static std::chrono::milliseconds oneMilliSecond(1);
 
@@ -27,7 +31,8 @@ void FPSManager::sync() {
   // The busy waiting is used to increase the timing accuracy, we do not
   // want to start the next frame to late.
 
-  std::chrono::duration<double> tft = std::chrono::system_clock::now() - m_frameStartTime;
+  std::chrono::duration<double> tft =
+    std::chrono::system_clock::now() - m_frameStartTime;
   double totalFrameTime = tft.count();
 
   while (totalFrameTime < m_timePerFrame) {
@@ -46,12 +51,15 @@ void FPSManager::sync() {
   m_timeForLatestFrame = totalFrameTime;
 }
 
-double FPSManager::frameTime() {
+double
+FPSManager::frameTime()
+{
   return m_timeForLatestFrame;
 }
 
-int FPSManager::getFps() {
+int
+FPSManager::getFps()
+{
   return m_currentFPS;
 }
-
 }

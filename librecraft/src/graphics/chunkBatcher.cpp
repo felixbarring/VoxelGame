@@ -1,8 +1,8 @@
 #include "chunkBatcher.h"
 
 #include <algorithm>
-#include <map>
 #include <iostream>
+#include <map>
 
 #include "frustum.h"
 #include "resources.h"
@@ -13,17 +13,19 @@ using namespace glm;
 
 namespace graphics {
 
-ChunkBatcher::ChunkBatcher(Camera &camera)
-  : m_camera(camera), m_texture(
-      Resources::getInstance().getTextureArray(config::cube_data::textures,
-          config::cube_data::TEXTURE_WIDTH,
-          config::cube_data::TEXTURE_HEIGHT))
+ChunkBatcher::ChunkBatcher(Camera& camera)
+  : m_camera(camera)
+  , m_texture(Resources::getInstance().getTextureArray(
+      config::cube_data::textures,
+      config::cube_data::TEXTURE_WIDTH,
+      config::cube_data::TEXTURE_HEIGHT))
 
 {
 
   // TODO Refactor this the same way as the cubeBatcher...
   // That is, use constant strings for the variables.
-  string vertex = "#version 330 core \n"
+  string vertex =
+    "#version 330 core \n"
 
     "in vec3 positionIn; \n"
     "in vec2 lightIn; \n"
@@ -68,30 +70,38 @@ ChunkBatcher::ChunkBatcher(Camera &camera)
     "} \n "
 
     "void main(){ \n"
-    "  vec3 lightSum = vec3(lightValue, lightValue, lightValue) + (calculateDiffuse() / 2); \n"
+    "  vec3 lightSum = vec3(lightValue, lightValue, lightValue) + "
+    "(calculateDiffuse() / 2); \n"
     "  color = vec4(lightSum, 1.0f) * texture(texture1, texCoord); \n"
     "} \n";
 
-  map<string, int> attributesMap{pair<string, int>("positionIn", 0),
-    pair<string, int>("lightIn", 1), pair<string, int>("normalIn", 2),
-    pair<string, int>("texCoordIn", 3)};
+  map<string, int> attributesMap{ pair<string, int>("positionIn", 0),
+                                  pair<string, int>("lightIn", 1),
+                                  pair<string, int>("normalIn", 2),
+                                  pair<string, int>("texCoordIn", 3) };
 
   m_program = make_unique<ShaderProgram>(vertex, fragment, attributesMap);
-
 }
 
 // ########################################################
 // Member Functions########################################
 // ########################################################
 
-int ChunkBatcher::addBatch(int replaceId, float x, float y, float z,
-  VoxelMatrix &data, VoxelMatrix *right,
-  VoxelMatrix *left, VoxelMatrix *back,
-  VoxelMatrix *front, bool hightPriority)
+int
+ChunkBatcher::addBatch(int replaceId,
+                       float x,
+                       float y,
+                       float z,
+                       VoxelMatrix& data,
+                       VoxelMatrix* right,
+                       VoxelMatrix* left,
+                       VoxelMatrix* back,
+                       VoxelMatrix* front,
+                       bool hightPriority)
 {
 
-  auto batch = make_shared<GraphicalChunk>(x, y, z, data, right, left, back,
-      front);
+  auto batch =
+    make_shared<GraphicalChunk>(x, y, z, data, right, left, back, front);
 
   lock_guard<mutex> lock(m_mutex);
 
@@ -103,7 +113,9 @@ int ChunkBatcher::addBatch(int replaceId, float x, float y, float z,
   return m_idCounter;
 }
 
-void ChunkBatcher::removeBatch(int id) {
+void
+ChunkBatcher::removeBatch(int id)
+{
   lock_guard<mutex> lock(m_mutex);
   m_batchesToBeRemoved.push_back(id);
 }
@@ -111,7 +123,9 @@ void ChunkBatcher::removeBatch(int id) {
 float x = 1.0;
 int direction = 1;
 
-void ChunkBatcher::draw() {
+void
+ChunkBatcher::draw()
+{
 
   // Done on the main thread because the thread doing opengl
   // calls needs an opengl context, which the main thread does.
@@ -130,11 +144,11 @@ void ChunkBatcher::draw() {
   m_program->setUniform3f("lightDirection", x, 3.0, 0.3);
   m_program->setUniform1f("sunStrenght", m_sunStrength);
 
-//    m_program->setUniform3f("fogColor", skyColor.x, skyColor.y, skyColor.z);
+  //    m_program->setUniform3f("fogColor", skyColor.x, skyColor.y, skyColor.z);
 
   for (auto batch : m_batches) {
-    mat4 modelView = m_camera.getViewMatrix()
-        * batch.second->getTransform().getMatrix();
+    mat4 modelView =
+      m_camera.getViewMatrix() * batch.second->getTransform().getMatrix();
     mat4 modelViewProjection = m_camera.getProjectionMatrix() * modelView;
 
     m_program->setUniformMatrix4f("modelViewProjection", modelViewProjection);
@@ -151,8 +165,8 @@ void ChunkBatcher::draw() {
     if (!batch.second->hasTransparent())
       continue;
 
-    mat4 modelView = m_camera.getViewMatrix()
-        * batch.second->getTransform().getMatrix();
+    mat4 modelView =
+      m_camera.getViewMatrix() * batch.second->getTransform().getMatrix();
     mat4 modelViewProjection = m_camera.getProjectionMatrix() * modelView;
     m_program->setUniformMatrix4f("modelViewProjection", modelViewProjection);
     m_program->setUniformMatrix4f("modelView", modelView);
@@ -162,16 +176,20 @@ void ChunkBatcher::draw() {
   m_program->unbind();
 }
 
-void ChunkBatcher::setSunStrenght(double value) {
+void
+ChunkBatcher::setSunStrenght(double value)
+{
   m_sunStrength = value;
 }
 
-void ChunkBatcher::addAndRemoveBatches() {
+void
+ChunkBatcher::addAndRemoveBatches()
+{
   // Add all the batches that has high priority
   while (!m_batchesToAddHP.empty()) {
     auto batchIt = m_batchesToAddHP.begin();
-    int id{get<0>(*batchIt)};
-    int replaceId{get<1>(*batchIt)};
+    int id{ get<0>(*batchIt) };
+    int replaceId{ get<1>(*batchIt) };
 
     get<2>(*batchIt)->uploadData();
     m_batches.emplace(id, get<2>(*batchIt));
@@ -181,11 +199,12 @@ void ChunkBatcher::addAndRemoveBatches() {
       m_batchesToBeRemoved.push_back(replaceId);
   }
 
-  // Add one of the batches with none high priority that has been requested to be added.
+  // Add one of the batches with none high priority that has been requested to
+  // be added.
   if (!m_batchesToAdd.empty()) {
     auto batchIt = m_batchesToAdd.begin();
-    int id{get<0>(*batchIt)};
-    int replaceId{get<1>(*batchIt)};
+    int id{ get<0>(*batchIt) };
+    int replaceId{ get<1>(*batchIt) };
 
     get<2>(*batchIt)->uploadData();
     m_batches.emplace(id, get<2>(*batchIt));
@@ -205,7 +224,7 @@ void ChunkBatcher::addAndRemoveBatches() {
       m_batchesToBeRemoved.erase(batch);
     } else {
       // It might not have been added before it was requested to be removed.
-      bool failed{true};
+      bool failed{ true };
       for (auto b = m_batchesToAdd.begin(); b != m_batchesToAdd.end(); ++b) {
         if (get<0>(*b) == *batch) {
           m_batchesToAdd.erase(b);
@@ -219,22 +238,24 @@ void ChunkBatcher::addAndRemoveBatches() {
     }
   }
 }
-
 }
 
 // Private
 
 // TODO Fix this so that no chunks get culled when they are actually vissible
 //      Frustum frustum{modelViewProjection};
-//      bool result = frustum.isCubeInFrustum(batch.second->getxLocation(), 0, batch.second->getzLocation(), 16, 128, 16);
-////        bool result = frustum.isSphereInFrustum(vec3(batch.second->getxLocation() + 8, 64, batch.second->getzLocation() + 8), 100);
+//      bool result = frustum.isCubeInFrustum(batch.second->getxLocation(), 0,
+//      batch.second->getzLocation(), 16, 128, 16);
+////        bool result =
+/// frustum.isSphereInFrustum(vec3(batch.second->getxLocation() + 8, 64,
+/// batch.second->getzLocation() + 8), 100);
 //
 //      if (!result) {
 //          ++skippedChunks;
 //          continue;
 //      }
 
-//string vertex =
+// string vertex =
 //    "#version 330 core \n"
 //
 //    "const float density = 0.01; \n"
@@ -260,12 +281,13 @@ void ChunkBatcher::addAndRemoveBatches() {
 //
 //    "  vec4 positionView = modelView * vec4(positionIn.xyz, 1); \n"
 //    "  float distance = length(positionView.xyz); \n"
-//    "  fogFactor = clamp(exp(-pow((distance * density), gradient)), 0.0, 1.0); \n"
+//    "  fogFactor = clamp(exp(-pow((distance * density), gradient)), 0.0, 1.0);
+//    \n"
 //
 //    "  gl_Position =  modelViewProjection * vec4(positionIn.xyz, 1); \n"
 //    "} \n";
 //
-//string fragment =
+// string fragment =
 //    "#version 330 core \n"
 //
 //    "in vec3 texCoord; \n"
@@ -287,7 +309,8 @@ void ChunkBatcher::addAndRemoveBatches() {
 //
 //    "vec3 calculateDiffuse() \n "
 //    "{ \n "
-//    "  return sunStrenght * diffuseLight * materialDiffuse * max(0, dot(faceNormal, normalize(lightDirection))); \n "
+//    "  return sunStrenght * diffuseLight * materialDiffuse * max(0,
+//    dot(faceNormal, normalize(lightDirection))); \n "
 //    "} \n "
 //
 //    "void main(){ \n"
@@ -295,8 +318,9 @@ void ChunkBatcher::addAndRemoveBatches() {
 //    "  vec3 diffuse = calculateDiffuse() / 2; \n"
 //    "  color = vec4(diffuse, 1.0f) * texture(texture1, texCoord); \n"
 //
-//    "  vec4 light = vec4(lightValue, lightValue, lightValue, 1) + vec4(diffuse, 0); \n"
-//    "  color = mix(vec4(fogColor, 1.0), light * texture(texture1, texCoord), fogFactor);"
+//    "  vec4 light = vec4(lightValue, lightValue, lightValue, 1) +
+//    vec4(diffuse, 0); \n"
+//    "  color = mix(vec4(fogColor, 1.0), light * texture(texture1, texCoord),
+//    fogFactor);"
 //
 //    "} \n";
-

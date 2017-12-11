@@ -27,22 +27,24 @@
 using namespace noise;
 using namespace noise::model;
 
-Cylinder::Cylinder (): m_pModule (NULL)
+Cylinder::Cylinder()
+  : m_pModule(NULL)
 {
 }
 
-Cylinder::Cylinder (const module::Module& module):
-  m_pModule (&module)
+Cylinder::Cylinder(const module::Module& module)
+  : m_pModule(&module)
 {
 }
 
-double Cylinder::GetValue (double angle, double height) const
+double
+Cylinder::GetValue(double angle, double height) const
 {
-  assert (m_pModule != NULL);
+  assert(m_pModule != NULL);
 
   double x, y, z;
-  x = cos (angle * DEG_TO_RAD);
+  x = cos(angle * DEG_TO_RAD);
   y = height;
-  z = sin (angle * DEG_TO_RAD);
-  return m_pModule->GetValue (x, y, z);
+  z = sin(angle * DEG_TO_RAD);
+  return m_pModule->GetValue(x, y, z);
 }

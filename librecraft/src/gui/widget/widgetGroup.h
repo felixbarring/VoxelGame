@@ -1,8 +1,8 @@
 #ifndef SRC_GUI_WIDGET_WIDGETGROUP_H_
 #define SRC_GUI_WIDGET_WIDGETGROUP_H_
 
-#include <vector>
 #include <memory>
+#include <vector>
 
 #include "../../graphics/graphicsManager.h"
 #include "abstractWidget.h"
@@ -19,15 +19,20 @@ namespace widget {
  * Useful for handling groups of widgets that work together.
  *
  */
-class WidgetGroup: public AbstractWidget {
+class WidgetGroup : public AbstractWidget
+{
 public:
-
   /**
    * \brief Constructs a WidgetGroup.
    */
-  WidgetGroup(int id, int x, int y, int width, int height,
-      graphics::GraphicsManager &graphicsManager, unsigned layer = 0,
-      bool transparentBackground = true);
+  WidgetGroup(int id,
+              int x,
+              int y,
+              int width,
+              int height,
+              graphics::GraphicsManager& graphicsManager,
+              unsigned layer = 0,
+              bool transparentBackground = true);
 
   virtual ~WidgetGroup() = default;
 
@@ -56,10 +61,8 @@ public:
   void update(float timePassed) override;
 
 private:
-
   std::shared_ptr<graphics::Sprite> m_sprite;
   std::vector<std::shared_ptr<IWidget>> m_widgets;
-
 };
 
 } /* namespace widget */

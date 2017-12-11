@@ -17,9 +17,9 @@
  * can be reused and exists as more than one instance, for instance in the main
  * menu and in the ingame menu.
  */
-class Settings {
+class Settings
+{
 public:
-
   /**
    * @brief Creates an instance of this class.
    *
@@ -32,8 +32,8 @@ public:
    */
   Settings(std::shared_ptr<widget::WidgetGroup>& active,
            std::shared_ptr<widget::WidgetGroup>& parent,
-           util::SoundPlayer &soundPlayer,
-           graphics::GraphicsManager &graphicsManager);
+           util::SoundPlayer& soundPlayer,
+           graphics::GraphicsManager& graphicsManager);
 
   /**
    * @return The main widget group / the entry point of the settings.
@@ -41,12 +41,11 @@ public:
   std::shared_ptr<widget::WidgetGroup> getMainWidgetGroup() const;
 
 private:
+  util::SoundPlayer& m_soundPlayer;
+  graphics::GraphicsManager& m_graphicsManager;
 
-  util::SoundPlayer &m_soundPlayer;
-  graphics::GraphicsManager &m_graphicsManager;
-
-  std::shared_ptr<widget::WidgetGroup> &m_activeWidgetGroup;
-  std::shared_ptr<widget::WidgetGroup> &m_parentWidgetGroup;
+  std::shared_ptr<widget::WidgetGroup>& m_activeWidgetGroup;
+  std::shared_ptr<widget::WidgetGroup>& m_parentWidgetGroup;
 
   std::shared_ptr<widget::WidgetGroup> m_settingsWidgetGroup{};
 
@@ -54,7 +53,6 @@ private:
   std::shared_ptr<widget::WidgetGroup> m_inputSettingsWidgetGroup{};
   std::shared_ptr<widget::WidgetGroup> m_graphicsSettingsWidgetGroup{};
   std::shared_ptr<widget::WidgetGroup> m_audioSettingsWidgetGroup{};
-
 
   std::shared_ptr<widget::TextInput> m_mouseSensitivityInput{};
   std::shared_ptr<widget::Slider> m_mouseSensitivitySlider{};
@@ -70,7 +68,6 @@ private:
 
   std::shared_ptr<widget::Slider> m_soundVolumeSlider{};
   std::shared_ptr<widget::TextInput> m_soundVolumeInput{};
-
 
   std::shared_ptr<widget::TextInput> m_fovTextInput{};
   std::shared_ptr<widget::TextInput> m_renderDistanceInput{};

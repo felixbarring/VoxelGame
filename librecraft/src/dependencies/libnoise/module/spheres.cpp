@@ -26,21 +26,22 @@
 
 using namespace noise::module;
 
-Spheres::Spheres ():
-  Module (GetSourceModuleCount ()),
-  m_frequency (DEFAULT_SPHERES_FREQUENCY)
+Spheres::Spheres()
+  : Module(GetSourceModuleCount())
+  , m_frequency(DEFAULT_SPHERES_FREQUENCY)
 {
 }
 
-double Spheres::GetValue (double x, double y, double z) const
+double
+Spheres::GetValue(double x, double y, double z) const
 {
   x *= m_frequency;
   y *= m_frequency;
   z *= m_frequency;
 
-  double distFromCenter = sqrt (x * x + y * y + z * z);
-  double distFromSmallerSphere = distFromCenter - floor (distFromCenter);
+  double distFromCenter = sqrt(x * x + y * y + z * z);
+  double distFromSmallerSphere = distFromCenter - floor(distFromCenter);
   double distFromLargerSphere = 1.0 - distFromSmallerSphere;
-  double nearestDist = GetMin (distFromSmallerSphere, distFromLargerSphere);
+  double nearestDist = GetMin(distFromSmallerSphere, distFromLargerSphere);
   return 1.0 - (nearestDist * 4.0); // Puts it in the -1.0 to +1.0 range.
 }

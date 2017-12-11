@@ -2,8 +2,8 @@
 #define SRC_UTIL_SOUNDPLAYER_H_
 
 #include <map>
-#include <vector>
 #include <memory>
+#include <vector>
 
 #include <SFML/Audio.hpp>
 
@@ -12,21 +12,20 @@ namespace util {
 /**
  * @brief Class for managing all music and sounds.
  */
-class SoundPlayer {
+class SoundPlayer
+{
 public:
-
   SoundPlayer() = default;
 
   ~SoundPlayer() = default;
 
   SoundPlayer(SoundPlayer const&) = delete;
 
-  SoundPlayer(SoundPlayer &&) = delete;
+  SoundPlayer(SoundPlayer&&) = delete;
 
   void operator=(SoundPlayer const&) = delete;
 
-  void operator=(SoundPlayer &&) = delete;
-
+  void operator=(SoundPlayer&&) = delete;
 
   /**
    * @brief Updates the sound player.
@@ -44,14 +43,14 @@ public:
    *
    * @param soundPath The path to the sound file.
    */
-  void playSound(const std::string &soundPath);
+  void playSound(const std::string& soundPath);
 
   /**
    * @brief Plays the music specified by the argument.
    *
    * @param musicPath
    */
-  void playMusic(const std::string &musicPath);
+  void playMusic(const std::string& musicPath);
 
   /**
    * @brief Stops the music if any is currently playing.
@@ -108,9 +107,10 @@ public:
   double getMusicVolume();
 
 private:
-
-  enum class ChangeMusicVolume {
-    INCREASE, DECREASE
+  enum class ChangeMusicVolume
+  {
+    INCREASE,
+    DECREASE
   };
 
   /**
@@ -124,17 +124,17 @@ private:
   std::vector<std::unique_ptr<sf::Sound>> m_playingSounds;
   std::shared_ptr<sf::Music> m_playingMusic;
 
-  bool m_graduayllChange{false};
+  bool m_graduayllChange{ false };
   double m_changeVolume{};
-  ChangeMusicVolume m_changeDirection{ChangeMusicVolume::INCREASE};
+  ChangeMusicVolume m_changeDirection{ ChangeMusicVolume::INCREASE };
   double m_changeValue{};
   double m_targetVolume{};
   double m_startVolume{};
 
   // TODO Load these from config files...
-  double m_masterVolume{1.0};
-  double m_soundVolume{100.0};
-  double m_musicVolume{100.0};
+  double m_masterVolume{ 1.0 };
+  double m_soundVolume{ 100.0 };
+  double m_musicVolume{ 100.0 };
 };
 
 } /* namespace util */

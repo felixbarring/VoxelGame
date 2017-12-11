@@ -18,9 +18,9 @@ namespace terrainGen {
  * This class is thread safe, the generateTerrain function can be called
  * concurrently.
  */
-class TerrainGenerator {
+class TerrainGenerator
+{
 public:
-
   using VoxelMatrix = std::vector<std::vector<std::vector<Voxel>>>;
   // TODO Elaborate this documentation.
 
@@ -44,20 +44,29 @@ public:
   VoxelMatrix generateTerrain(chunk::CreationOptions& options, int x, int z);
 
 private:
+  inline void defaultFill(VoxelMatrix& cubes);
 
-  inline void defaultFill(VoxelMatrix &cubes);
+  inline void generateFlat(VoxelMatrix& cubes);
 
-  inline void generateFlat(VoxelMatrix &cubes);
+  inline void generateNoneFlat(VoxelMatrix& cubes, int x, int z);
 
-  inline void generateNoneFlat(VoxelMatrix &cubes, int x, int z);
+  inline void generateGrassLand(VoxelMatrix& cubes,
+                                double height,
+                                int xOff,
+                                int zOff,
+                                int x,
+                                int z);
 
-  inline void generateGrassLand(VoxelMatrix &cubes, double height, int xOff, int zOff, int x, int z);
+  inline void generateDessert(VoxelMatrix& cubes,
+                              double height,
+                              int xOff,
+                              int zOff,
+                              int x,
+                              int z);
 
-  inline void generateDessert(VoxelMatrix &cubes, double height, int xOff, int zOff, int x, int z);
+  inline void placeTree(VoxelMatrix& cubes, int x, int y, int z);
 
-  inline void placeTree(VoxelMatrix &cubes, int x, int y, int z);
-
-  inline bool hasTreeNeighboor(VoxelMatrix &cubes, int x, int y, int z);
+  inline bool hasTreeNeighboor(VoxelMatrix& cubes, int x, int y, int z);
 
   unsigned m_counterValue{};
 
@@ -65,9 +74,8 @@ private:
   const int m_height{};
   const int m_depth{};
 
-  const int m_seaLevel{20};
+  const int m_seaLevel{ 20 };
 };
-
 }
 
 #endif /* SRC_MODEL_WORLD_TERRAINGEN_TERRAINGENERATOR_H_ */

@@ -1,9 +1,9 @@
 
 #include "terrainGenerator.h"
 
-#include <thread>
-#include <mutex>
 #include <iostream>
+#include <mutex>
+#include <thread>
 
 #include "../../../config/data.h"
 #include "../../../dependencies/libnoise/module/billow.h"
@@ -17,22 +17,22 @@ using namespace noise;
 
 using chunk::CreationOptions;
 
-namespace terrainGen{
+namespace terrainGen {
 
-int counter{1};
-const int maxCount{config::cube_data::LAST_CUBE_USED_FOR_GENERATION};
+int counter{ 1 };
+const int maxCount{ config::cube_data::LAST_CUBE_USED_FOR_GENERATION };
 mutex s_mutex;
 
 // TODO Use the seed for something. :p
 TerrainGenerator::TerrainGenerator(int width, int height, int depth, int seed)
-  : m_width{width}
-  , m_height{height}
-  , m_depth{depth}
+  : m_width{ width }
+  , m_height{ height }
+  , m_depth{ depth }
 {
 }
 
-TerrainGenerator::VoxelMatrix TerrainGenerator::generateTerrain(
-    CreationOptions& options,  int x, int y)
+TerrainGenerator::VoxelMatrix
+TerrainGenerator::generateTerrain(CreationOptions& options, int x, int y)
 {
   {
     lock_guard<mutex> lock(s_mutex);
@@ -56,38 +56,43 @@ TerrainGenerator::VoxelMatrix TerrainGenerator::generateTerrain(
   return cubes;
 }
 
-void TerrainGenerator::defaultFill(VoxelMatrix &cubes) {
-  for (int x{0}; x < m_width; ++x) {
+void
+TerrainGenerator::defaultFill(VoxelMatrix& cubes)
+{
+  for (int x{ 0 }; x < m_width; ++x) {
     cubes.push_back(vector<vector<Voxel>>());
-    for (int y{0}; y < m_height; ++y) {
+    for (int y{ 0 }; y < m_height; ++y) {
       cubes[x].push_back(vector<Voxel>());
-      for (int z{0}; z < m_depth; ++z) {
+      for (int z{ 0 }; z < m_depth; ++z) {
         if (y == 0)
-          cubes[x][y].push_back(Voxel{config::cube_data::BED_ROCK, 0});
+          cubes[x][y].push_back(Voxel{ config::cube_data::BED_ROCK, 0 });
         else
-          cubes[x][y].push_back(Voxel{config::cube_data::AIR, 0});
+          cubes[x][y].push_back(Voxel{ config::cube_data::AIR, 0 });
       }
     }
   }
 }
 
-void TerrainGenerator::generateFlat(VoxelMatrix &cubes) {
-  for (int x{0}; x < m_width; ++x) {
-    for (int z{0}; z < m_depth; ++z) {
-       for (int y{0}; y < m_height; ++y) {
-         auto &v = cubes[x][y][z];
-         if (y == 0) {
-           v.id = config::cube_data::BED_ROCK;
-           continue;
-         }
-         if (y < 30)
-           v.id = m_counterValue;
-       }
+void
+TerrainGenerator::generateFlat(VoxelMatrix& cubes)
+{
+  for (int x{ 0 }; x < m_width; ++x) {
+    for (int z{ 0 }; z < m_depth; ++z) {
+      for (int y{ 0 }; y < m_height; ++y) {
+        auto& v = cubes[x][y][z];
+        if (y == 0) {
+          v.id = config::cube_data::BED_ROCK;
+          continue;
+        }
+        if (y < 30)
+          v.id = m_counterValue;
+      }
     }
   }
 }
 
-void TerrainGenerator::generateNoneFlat(VoxelMatrix &cubes, int x, int z)
+void
+TerrainGenerator::generateNoneFlat(VoxelMatrix& cubes, int x, int z)
 {
   module::RidgedMulti mountainSource;
   mountainSource.SetFrequency(0.05);
@@ -119,20 +124,20 @@ void TerrainGenerator::generateNoneFlat(VoxelMatrix &cubes, int x, int z)
   module::Perlin biomeType;
   biomeType.SetFrequency(0.01);
 
-  int xOffsetLocation{x};
-  int zOffsetLocation{z};
+  int xOffsetLocation{ x };
+  int zOffsetLocation{ z };
 
-  for (int x{0}; x < m_width; ++x) {
-    for (int z{0}; z < m_depth; ++z) {
+  for (int x{ 0 }; x < m_width; ++x) {
+    for (int z{ 0 }; z < m_depth; ++z) {
 
-      double height = base.GetValue(
-        (xOffsetLocation + static_cast<int>(x)) / 10.0,
-        (zOffsetLocation + static_cast<int>(z)) / 10.0, 0.5);
-
+      double height =
+        base.GetValue((xOffsetLocation + static_cast<int>(x)) / 10.0,
+                      (zOffsetLocation + static_cast<int>(z)) / 10.0,
+                      0.5);
 
       if (height - 2 < m_seaLevel) {
-        for (int i{1}; i < m_seaLevel + 2; ++i) {
-          auto &v = cubes[x][i][z];
+        for (int i{ 1 }; i < m_seaLevel + 2; ++i) {
+          auto& v = cubes[x][i][z];
 
           if (i <= m_seaLevel)
             v.id = config::cube_data::WATER;
@@ -141,32 +146,38 @@ void TerrainGenerator::generateNoneFlat(VoxelMatrix &cubes, int x, int z)
 
           if (i >= m_seaLevel && i < height)
             v.id = config::cube_data::SAND;
-
         }
         continue;
       }
 
-      double biome = biomeType.GetValue(
-        (xOffsetLocation + static_cast<int>(x)) / 10.0,
-        (zOffsetLocation + static_cast<int>(z)) / 10.0, 0.5);
+      double biome =
+        biomeType.GetValue((xOffsetLocation + static_cast<int>(x)) / 10.0,
+                           (zOffsetLocation + static_cast<int>(z)) / 10.0,
+                           0.5);
 
       // TODO Add this to biomes...
-//      double noiseValue = flat.GetValue(
-//        (xOffsetLocation + static_cast<int>(x)) / 10.0,
-//        (zOffsetLocation + static_cast<int>(z)) / 10.0, 0.5);
+      //      double noiseValue = flat.GetValue(
+      //        (xOffsetLocation + static_cast<int>(x)) / 10.0,
+      //        (zOffsetLocation + static_cast<int>(z)) / 10.0, 0.5);
 
       if (biome > 0.8) {
         generateDessert(cubes, height, xOffsetLocation, zOffsetLocation, x, z);
       } else {
-        generateGrassLand(cubes, height, xOffsetLocation, zOffsetLocation, x, z);
+        generateGrassLand(
+          cubes, height, xOffsetLocation, zOffsetLocation, x, z);
       }
-
     }
   }
 }
 
-void TerrainGenerator::generateGrassLand(VoxelMatrix &cubes, double height,
-    int xOff, int zOff, int x, int z) {
+void
+TerrainGenerator::generateGrassLand(VoxelMatrix& cubes,
+                                    double height,
+                                    int xOff,
+                                    int zOff,
+                                    int x,
+                                    int z)
+{
 
   module::Perlin tree;
   tree.SetFrequency(2);
@@ -174,34 +185,37 @@ void TerrainGenerator::generateGrassLand(VoxelMatrix &cubes, double height,
   module::Perlin treeArea;
   treeArea.SetFrequency(0.25);
 
-  for (int y{1}; y < height; ++y) {
-    auto &v = cubes[x][y][z];
+  for (int y{ 1 }; y < height; ++y) {
+    auto& v = cubes[x][y][z];
 
-    static const double stonePercentage{1.0 / 2.0};
+    static const double stonePercentage{ 1.0 / 2.0 };
     if (y < height * stonePercentage)
       v.id = config::cube_data::STONE;
     else
       v.id = config::cube_data::DIRT;
 
     if (y + 1 > height) {
-        v.id = config::cube_data::GRASS;
+      v.id = config::cube_data::GRASS;
 
-      double shouldHaveTrees = treeArea.GetValue(
-        (xOff + static_cast<int>(x)) / 10.0,
-        (zOff + static_cast<int>(z)) / 10.0, 0.5);
+      double shouldHaveTrees =
+        treeArea.GetValue((xOff + static_cast<int>(x)) / 10.0,
+                          (zOff + static_cast<int>(z)) / 10.0,
+                          0.5);
 
       if (shouldHaveTrees < 0.5)
         break;
 
-      double value = tree.GetValue(
-        (xOff + static_cast<int>(x)) / 10.0,
-        (zOff + static_cast<int>(z)) / 10.0, 0.5);
+      double value = tree.GetValue((xOff + static_cast<int>(x)) / 10.0,
+                                   (zOff + static_cast<int>(z)) / 10.0,
+                                   0.5);
 
-      bool isNotAtBorder{x > 0 && x + 1 < m_width  && z > 0 && z + 1 < m_depth};
-      bool shouldPlaceTree{value > -0.02 && value < 0.02};
+      bool isNotAtBorder{ x > 0 && x + 1 < m_width && z > 0 &&
+                          z + 1 < m_depth };
+      bool shouldPlaceTree{ value > -0.02 && value < 0.02 };
       // Short circuit is important here.
       // Does not seem to work properly :s
-      bool hasNeighboor{isNotAtBorder && hasTreeNeighboor(cubes, x, y + 1, z)};
+      bool hasNeighboor{ isNotAtBorder &&
+                         hasTreeNeighboor(cubes, x, y + 1, z) };
 
       if (isNotAtBorder && shouldPlaceTree && !hasNeighboor)
         placeTree(cubes, x, y + 1, z);
@@ -211,17 +225,25 @@ void TerrainGenerator::generateGrassLand(VoxelMatrix &cubes, double height,
   }
 }
 
-void TerrainGenerator::generateDessert(VoxelMatrix &cubes, double height,
-    int xOff, int zOff, int x, int z) {
-  for (int y{1}; y < height; ++y) {
-      auto &v = cubes[x][y][z];
+void
+TerrainGenerator::generateDessert(VoxelMatrix& cubes,
+                                  double height,
+                                  int xOff,
+                                  int zOff,
+                                  int x,
+                                  int z)
+{
+  for (int y{ 1 }; y < height; ++y) {
+    auto& v = cubes[x][y][z];
 
-      v.id = config::cube_data::SAND;
+    v.id = config::cube_data::SAND;
   }
 }
 
-void TerrainGenerator::placeTree(VoxelMatrix &cubes, int x, int y, int z) {
-  for (int i{y}; i < y + 5; ++i)
+void
+TerrainGenerator::placeTree(VoxelMatrix& cubes, int x, int y, int z)
+{
+  for (int i{ y }; i < y + 5; ++i)
     cubes[x][i][z].id = config::cube_data::LOG_BIRCH;
 
   cubes[x][y + 5][z].id = config::cube_data::LEAVES_BIRCH;
@@ -237,17 +259,16 @@ void TerrainGenerator::placeTree(VoxelMatrix &cubes, int x, int y, int z) {
   cubes[x - 1][y + 5][z - 1].id = config::cube_data::LEAVES_BIRCH;
 }
 
-bool TerrainGenerator::hasTreeNeighboor(VoxelMatrix &cubes, int x, int y,
-    int z) {
-  return
-      cubes[x][y][z + 1].id == config::cube_data::LOG_BIRCH ||
-      cubes[x][y][z - 1].id == config::cube_data::LOG_BIRCH ||
+bool
+TerrainGenerator::hasTreeNeighboor(VoxelMatrix& cubes, int x, int y, int z)
+{
+  return cubes[x][y][z + 1].id == config::cube_data::LOG_BIRCH ||
+         cubes[x][y][z - 1].id == config::cube_data::LOG_BIRCH ||
 
-      cubes[x + 1][y][z + 1].id == config::cube_data::LOG_BIRCH ||
-      cubes[x + 1][y][z - 1].id == config::cube_data::LOG_BIRCH ||
+         cubes[x + 1][y][z + 1].id == config::cube_data::LOG_BIRCH ||
+         cubes[x + 1][y][z - 1].id == config::cube_data::LOG_BIRCH ||
 
-      cubes[x - 1][y][z + 1].id == config::cube_data::LOG_BIRCH ||
-      cubes[x - 1][y][z - 1].id == config::cube_data::LOG_BIRCH;
+         cubes[x - 1][y][z + 1].id == config::cube_data::LOG_BIRCH ||
+         cubes[x - 1][y][z - 1].id == config::cube_data::LOG_BIRCH;
 }
-
 }

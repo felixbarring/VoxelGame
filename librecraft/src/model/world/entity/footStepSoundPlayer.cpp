@@ -9,14 +9,16 @@ using std::mt19937;
 using std::random_device;
 using std::uniform_int_distribution;
 
-FootStepSoundPlayer::FootStepSoundPlayer(util::SoundPlayer &player,
-    std::vector<std::string> stepSounds)
-  : m_stepSounds{stepSounds}
-  , m_soundPlayer{player}
+FootStepSoundPlayer::FootStepSoundPlayer(util::SoundPlayer& player,
+                                         std::vector<std::string> stepSounds)
+  : m_stepSounds{ stepSounds }
+  , m_soundPlayer{ player }
 {
 }
 
-void FootStepSoundPlayer::walkingActive(double time) {
+void
+FootStepSoundPlayer::walkingActive(double time)
+{
   if ((m_accumulatedTime += time) <= m_footStepDelay)
     return;
 
@@ -24,8 +26,10 @@ void FootStepSoundPlayer::walkingActive(double time) {
   playSteppingSound();
 }
 
-void FootStepSoundPlayer::playSteppingSound() {
-  static int last{-1};
+void
+FootStepSoundPlayer::playSteppingSound()
+{
+  static int last{ -1 };
   static random_device randomDevice;
   static mt19937 randomNumber(randomDevice());
   static uniform_int_distribution<int> uni(0, m_stepSounds.size() - 1);
@@ -39,6 +43,8 @@ void FootStepSoundPlayer::playSteppingSound() {
   m_soundPlayer.playSound(m_stepSounds[value]);
 }
 
-void FootStepSoundPlayer::setWalkingIntervall(double value) {
+void
+FootStepSoundPlayer::setWalkingIntervall(double value)
+{
   m_footStepDelay = value;
 }

@@ -5,21 +5,19 @@
 
 namespace texture {
 
-class Texture {
+class Texture
+{
 public:
+  explicit Texture(const char* path);
 
-    explicit Texture(const char *path);
+  void bind() const;
 
-    void bind() const;
-
-    // TODO
-    // Add functions for texture options
+  // TODO
+  // Add functions for texture options
 
 private:
-    GLuint textureID;
-
+  GLuint textureID;
 };
-
 }
 
 #endif /* SRC_GRAPHICS_TEXTURE_H_ */

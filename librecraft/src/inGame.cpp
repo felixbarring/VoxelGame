@@ -1,9 +1,9 @@
 #include "inGame.h"
 
-#include <emmintrin.h>
 #include "graphics/chunkBatcher.h"
 #include "graphics/cubeBatcher.h"
 #include "graphics/cubeMap.h"
+#include <emmintrin.h>
 
 #include "model/world/chunk/chunkManager.h"
 
@@ -25,35 +25,37 @@ using namespace widget;
 using namespace util;
 using namespace gui;
 
-InGame::InGame(Game &game, chunk::ChunkManager &&chunkManager,
-    util::SoundPlayer &soundPlayer,
-    graphics::GraphicsManager &graphicsManager,
-    util::FPSManager &fpsManager)
-  : m_game{game}
+InGame::InGame(Game& game,
+               chunk::ChunkManager&& chunkManager,
+               util::SoundPlayer& soundPlayer,
+               graphics::GraphicsManager& graphicsManager,
+               util::FPSManager& fpsManager)
+  : m_game{ game }
   , m_chunkManager(move(chunkManager))
-  , m_player{m_chunkManager, soundPlayer, graphicsManager}
+  , m_player{ m_chunkManager, soundPlayer, graphicsManager }
   , m_soundPlayer(soundPlayer)
-  , m_graphicsManager{graphicsManager}
-  , m_fpsManager{fpsManager}
-  , m_mouse{m_graphicsManager}
-  , m_settings{m_activeWidgetGroup, m_mainWidgetGroup, m_soundPlayer,
-      graphicsManager}
+  , m_graphicsManager{ graphicsManager }
+  , m_fpsManager{ fpsManager }
+  , m_mouse{ m_graphicsManager }
+  , m_settings{ m_activeWidgetGroup,
+                m_mainWidgetGroup,
+                m_soundPlayer,
+                graphicsManager }
 {
 
   // TODO Should be possible to save and load the player location.
-  double playerYLocation{80.1};
-  m_player.setLocation(
-      chunk_data::NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER
-          * chunk_data::CHUNK_WIDTH_AND_DEPTH, playerYLocation,
-      chunk_data::NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER
-          * chunk_data::CHUNK_WIDTH_AND_DEPTH);
+  double playerYLocation{ 80.1 };
+  m_player.setLocation(chunk_data::NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER *
+                         chunk_data::CHUNK_WIDTH_AND_DEPTH,
+                       playerYLocation,
+                       chunk_data::NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER *
+                         chunk_data::CHUNK_WIDTH_AND_DEPTH);
 
-  static const int startTime{100};
+  static const int startTime{ 100 };
   m_timeCycle.setTime(startTime);
 
-  auto observer = [this](int id)
-  {
-    switch(id) {
+  auto observer = [this](int id) {
+    switch (id) {
       case 0: {
         m_game.changeStateToMainMenu();
         m_state = GameState::NoOverlay;
@@ -73,15 +75,15 @@ InGame::InGame(Game &game, chunk::ChunkManager &&chunkManager,
     }
   };
 
-  shared_ptr<IWidget> button1(new Button{0, 325, 350, 150, 30,
-    m_graphicsManager, observer, "Main Menu"});
-  shared_ptr<IWidget> button2(new Button{1, 325, 310, 150, 30,
-    m_graphicsManager, observer, "Settings"});
-  shared_ptr<IWidget> button3(new Button{2, 325, 270, 150, 30,
-    m_graphicsManager, observer, "Back To Game"});
+  shared_ptr<IWidget> button1(new Button{
+    0, 325, 350, 150, 30, m_graphicsManager, observer, "Main Menu" });
+  shared_ptr<IWidget> button2(new Button{
+    1, 325, 310, 150, 30, m_graphicsManager, observer, "Settings" });
+  shared_ptr<IWidget> button3(new Button{
+    2, 325, 270, 150, 30, m_graphicsManager, observer, "Back To Game" });
 
-  m_mainWidgetGroup = make_shared<WidgetGroup>(0, 300, 260, 200, 130,
-      m_graphicsManager);
+  m_mainWidgetGroup =
+    make_shared<WidgetGroup>(0, 300, 260, 200, 130, m_graphicsManager);
 
   m_mainWidgetGroup->addWidget(button1);
   m_mainWidgetGroup->addWidget(button2);
@@ -89,12 +91,22 @@ InGame::InGame(Game &game, chunk::ChunkManager &&chunkManager,
 
   m_activeWidgetGroup = m_mainWidgetGroup;
 
-  m_crossHair.reset(new Sprite(390, 290, 0, 20, 20,
-      Resources::getInstance().getTexture(config::gui_data::crossHair)));
+  m_crossHair.reset(new Sprite(
+    390,
+    290,
+    0,
+    20,
+    20,
+    Resources::getInstance().getTexture(config::gui_data::crossHair)));
 
   for (int i = 0; i <= config::cube_data::LAST_CUBE_USED_FOR_BUILDING; ++i) {
-    m_selectedCubeThumbnails.push_back(make_shared<Sprite>(380, 5, 2, 40, 40,
-        Resources::getInstance().getTexture(config::cube_data::thumbnails[i])));
+    m_selectedCubeThumbnails.push_back(make_shared<Sprite>(
+      380,
+      5,
+      2,
+      40,
+      40,
+      Resources::getInstance().getTexture(config::cube_data::thumbnails[i])));
   }
 
   // TODO This whole console system should be reworked.
@@ -117,17 +129,19 @@ InGame::InGame(Game &game, chunk::ChunkManager &&chunkManager,
   string setTimeSpeed = "setTimeSpeed";
   string setPlayerSpeed = "setPlayerSpeed";
 
-  vector<string> commands{close, flyMode, gravityMode, turnOfMusic,
-      setMouseSensitivity, loadChunks, setTime, stopTime, resumeTime,
-      printDebugInfo, setFOV, setTimeSpeed, setPlayerSpeed};
+  vector<string> commands{
+    close,      flyMode,      gravityMode,   turnOfMusic, setMouseSensitivity,
+    loadChunks, setTime,      stopTime,      resumeTime,  printDebugInfo,
+    setFOV,     setTimeSpeed, setPlayerSpeed
+  };
 
   // TODO Does not handle all errors... fix this!
 
-  // The first string in the vector should be the command, followed by arguments.
-  auto func = [=](vector<string> arguments)
-  {
+  // The first string in the vector should be the command, followed by
+  // arguments.
+  auto func = [=](vector<string> arguments) {
     if (arguments.empty())
-    return;
+      return;
 
     auto command = arguments[0];
 
@@ -150,7 +164,7 @@ InGame::InGame(Game &game, chunk::ChunkManager &&chunkManager,
       try {
         x = stod(arguments[1].c_str());
         y = stod(arguments[2].c_str());
-      } catch (invalid_argument &e) {
+      } catch (invalid_argument& e) {
         m_terminal->addLine("Invalid arguments!");
         return;
       }
@@ -175,7 +189,7 @@ InGame::InGame(Game &game, chunk::ChunkManager &&chunkManager,
       double time;
       try {
         time = stod(arguments[1].c_str());
-      } catch (invalid_argument &e) {
+      } catch (invalid_argument& e) {
         m_terminal->addLine("Invalid arguments!");
         return;
       }
@@ -195,7 +209,7 @@ InGame::InGame(Game &game, chunk::ChunkManager &&chunkManager,
       float fov;
       try {
         fov = stod(arguments[1].c_str());
-      } catch (exception &e) {
+      } catch (exception& e) {
         m_terminal->addLine("Invalid arguments!");
         return;
       }
@@ -208,7 +222,7 @@ InGame::InGame(Game &game, chunk::ChunkManager &&chunkManager,
       double time;
       try {
         time = stod(arguments[1].c_str());
-      } catch (invalid_argument &e) {
+      } catch (invalid_argument& e) {
         m_terminal->addLine("Invalid arguments!");
         return;
       }
@@ -217,7 +231,7 @@ InGame::InGame(Game &game, chunk::ChunkManager &&chunkManager,
       try {
         double speed = stod(arguments[1].c_str());
         m_player.setSpeed(speed);
-      } catch (invalid_argument &e) {
+      } catch (invalid_argument& e) {
         m_terminal->addLine("Invalid arguments!");
         return;
       }
@@ -226,20 +240,25 @@ InGame::InGame(Game &game, chunk::ChunkManager &&chunkManager,
     }
   };
 
-  m_terminal = make_shared<gui::Terminal>(move(commands), m_graphicsManager,
-      func);
+  m_terminal =
+    make_shared<gui::Terminal>(move(commands), m_graphicsManager, func);
 
-  auto &res = Resources::getInstance();
-  FontMeshBuilder &fontMeshBuilder = res.getFontMeshBuilder(
-      font_data::fontLayout, font_data::fontAtlasWidth,
-      font_data::fontAtlasHeight);
+  auto& res = Resources::getInstance();
+  FontMeshBuilder& fontMeshBuilder =
+    res.getFontMeshBuilder(font_data::fontLayout,
+                           font_data::fontAtlasWidth,
+                           font_data::fontAtlasHeight);
 
-  m_fps.reset(new Sprite(0, 45, 10, fontMeshBuilder.buldMeshForString(
-      "FPS: " + 0, 20), res.getTexture(config::font_data::font)));
-
+  m_fps.reset(new Sprite(0,
+                         45,
+                         10,
+                         fontMeshBuilder.buldMeshForString("FPS: " + 0, 20),
+                         res.getTexture(config::font_data::font)));
 }
 
-void InGame::update(double timePassed) {
+void
+InGame::update(double timePassed)
+{
 
   auto input = Input::getInstance();
 
@@ -260,52 +279,61 @@ void InGame::update(double timePassed) {
     m_player.update(timePassed);
     m_timeCycle.update(timePassed);
 
-    m_graphicsManager.setSunStrength(
-        m_timeCycle.getSunStrenght());
+    m_graphicsManager.setSunStrength(m_timeCycle.getSunStrenght());
 
     m_graphicsManager.getSpriteBatcher().addBatch(m_crossHair);
 
-    auto &res = Resources::getInstance();
-    FontMeshBuilder &fontMeshBuilder = res.getFontMeshBuilder(
-        font_data::fontLayout, font_data::fontAtlasWidth,
-        font_data::fontAtlasHeight);
+    auto& res = Resources::getInstance();
+    FontMeshBuilder& fontMeshBuilder =
+      res.getFontMeshBuilder(font_data::fontLayout,
+                             font_data::fontAtlasWidth,
+                             font_data::fontAtlasHeight);
 
     if (m_displayDebugInfo) {
 
       vec3 dir = m_player.getViewingDirection();
-      string derp = "View direction: " + to_string(dir.x) + ", "
-          + to_string(dir.y) + ", " + to_string(dir.z);
+      string derp = "View direction: " + to_string(dir.x) + ", " +
+                    to_string(dir.y) + ", " + to_string(dir.z);
 
-      m_direction.reset(
-          new Sprite(0, 20, 10, fontMeshBuilder.buldMeshForString(derp, 20),
-              res.getTexture(config::font_data::font)));
+      m_direction.reset(new Sprite(0,
+                                   20,
+                                   10,
+                                   fontMeshBuilder.buldMeshForString(derp, 20),
+                                   res.getTexture(config::font_data::font)));
 
       // Updating the fps every frame makes it unreadable
       m_fpsDisplayCounter += timePassed;
       if (m_fpsDisplayCounter > m_fpsDisplayDelay) {
-        m_fps.reset(new Sprite(0, 45, 10, fontMeshBuilder.buldMeshForString(
-          "FPS: " + to_string(m_fpsManager.getFps()) + " Frame Time = "
-            + to_string(m_fpsManager.frameTime()), 20), res.getTexture(
-                config::font_data::font)));
+        m_fps.reset(
+          new Sprite(0,
+                     45,
+                     10,
+                     fontMeshBuilder.buldMeshForString(
+                       "FPS: " + to_string(m_fpsManager.getFps()) +
+                         " Frame Time = " + to_string(m_fpsManager.frameTime()),
+                       20),
+                     res.getTexture(config::font_data::font)));
 
         m_fpsDisplayCounter = 0;
       }
 
       m_graphicsManager.getSpriteBatcher().addBatch(m_direction);
       m_graphicsManager.getSpriteBatcher().addBatch(m_fps);
-      m_graphicsManager.getSpriteBatcher().addBatch(
-          m_lastSelecteCube);
+      m_graphicsManager.getSpriteBatcher().addBatch(m_lastSelecteCube);
     }
 
     vec3 ses = m_player.getLastSelectedCube();
-    string soos = "Last Selected: " + to_string(ses.x) + ", " + to_string(ses.y)
-        + ", " + to_string(ses.z);
+    string soos = "Last Selected: " + to_string(ses.x) + ", " +
+                  to_string(ses.y) + ", " + to_string(ses.z);
     m_lastSelecteCube.reset(
-        new Sprite(0, 70, 10, fontMeshBuilder.buldMeshForString(soos, 20),
-            res.getTexture(config::font_data::font)));
+      new Sprite(0,
+                 70,
+                 10,
+                 fontMeshBuilder.buldMeshForString(soos, 20),
+                 res.getTexture(config::font_data::font)));
 
     m_graphicsManager.getSpriteBatcher().addBatch(
-        m_selectedCubeThumbnails[m_player.getBuildingCube()]);
+      m_selectedCubeThumbnails[m_player.getBuildingCube()]);
 
   } else {
     m_mouse.unlock();
@@ -329,14 +357,12 @@ void InGame::update(double timePassed) {
   if (m_timeCycle.getStarStrenght() > 0.0) {
     // Changes so that the rotation dose not get to fast.
     const float valModifier = 0.015;
-    m_graphicsManager.getSkyMap().setRotationValue(
-        valModifier * m_timeCycle.getTime());
-    m_graphicsManager.getSkyMap().draw(
-        m_timeCycle.getStarStrenght());
+    m_graphicsManager.getSkyMap().setRotationValue(valModifier *
+                                                   m_timeCycle.getTime());
+    m_graphicsManager.getSkyMap().draw(m_timeCycle.getStarStrenght());
   }
 
   m_graphicsManager.getChunkBatcher().draw();
   m_graphicsManager.getCubeBatcher().draw();
   m_graphicsManager.getSpriteBatcher().draw();
 }
-

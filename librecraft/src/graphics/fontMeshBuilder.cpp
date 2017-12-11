@@ -1,7 +1,7 @@
 #include "fontMeshBuilder.h"
 
-#include <iostream>
 #include <fstream>
+#include <iostream>
 #include <memory>
 #include <vector>
 
@@ -11,9 +11,11 @@ namespace graphics {
 
 // TODO Remove all the 256 magic numbers!
 
-FontMeshBuilder::FontMeshBuilder(string &pathToLayout, int atlasWidth,	int atlasHeight)
-    : ATLAS_WIDTH(atlasWidth)
-    , ATLAS_HEIGHT(atlasHeight)
+FontMeshBuilder::FontMeshBuilder(string& pathToLayout,
+                                 int atlasWidth,
+                                 int atlasHeight)
+  : ATLAS_WIDTH(atlasWidth)
+  , ATLAS_HEIGHT(atlasHeight)
 {
 
   vector<string> list;
@@ -37,23 +39,23 @@ FontMeshBuilder::FontMeshBuilder(string &pathToLayout, int atlasWidth,	int atlas
     for (unsigned j = 0; j < line.size(); ++j) {
       char ch = line[j];
       if (ch != ' ') {
-          str.push_back(ch);
+        str.push_back(ch);
       }
       if (ch == ' ' || j == line.size() - 1) {
         switch (counter) {
-        case 0:
-          charD.width = stoi(str);
-          break;
-        case 1:
-          charD.height = stoi(str);
-          break;
-        case 2:
-          charD.xPosition = stoi(str);
-          break;
-        case 3:
-          charD.yPosition = stoi(str);
-          break;
-        default:
+          case 0:
+            charD.width = stoi(str);
+            break;
+          case 1:
+            charD.height = stoi(str);
+            break;
+          case 2:
+            charD.xPosition = stoi(str);
+            break;
+          case 3:
+            charD.yPosition = stoi(str);
+            break;
+          default:
             break; // ERRORS :s
         }
         counter++;
@@ -62,11 +64,11 @@ FontMeshBuilder::FontMeshBuilder(string &pathToLayout, int atlasWidth,	int atlas
       }
     }
   }
-
 }
 
-shared_ptr<mesh::MeshElement> FontMeshBuilder::buldMeshForString(
-    const string &str, float height) {
+shared_ptr<mesh::MeshElement>
+FontMeshBuilder::buldMeshForString(const string& str, float height)
+{
 
   vector<float> vertices;
   vector<float> uvCoordinates;
@@ -102,45 +104,51 @@ shared_ptr<mesh::MeshElement> FontMeshBuilder::buldMeshForString(
 
     uvCoordinates.push_back(cd.xPosition / static_cast<float>(ATLAS_WIDTH));
     uvCoordinates.push_back(((ATLAS_HEIGHT - cd.yPosition) - cd.height) /
-        static_cast<float>(ATLAS_HEIGHT));
+                            static_cast<float>(ATLAS_HEIGHT));
 
     uvCoordinates.push_back((cd.xPosition + cd.width) /
-        static_cast<float>(ATLAS_WIDTH));
+                            static_cast<float>(ATLAS_WIDTH));
     uvCoordinates.push_back(((ATLAS_HEIGHT - cd.yPosition) - cd.height) /
-        static_cast<float>(ATLAS_HEIGHT));
+                            static_cast<float>(ATLAS_HEIGHT));
 
     uvCoordinates.push_back((cd.xPosition + cd.width) /
-        static_cast<float>(ATLAS_WIDTH));
+                            static_cast<float>(ATLAS_WIDTH));
     uvCoordinates.push_back((ATLAS_HEIGHT - cd.yPosition) /
-        static_cast<float>(ATLAS_HEIGHT));
+                            static_cast<float>(ATLAS_HEIGHT));
 
     uvCoordinates.push_back(cd.xPosition / static_cast<float>(ATLAS_WIDTH));
     uvCoordinates.push_back((ATLAS_HEIGHT - cd.yPosition) /
-        static_cast<float>(ATLAS_HEIGHT));
+                            static_cast<float>(ATLAS_HEIGHT));
 
-    elements.push_back((short) (0 + loopCounter * 4));
-    elements.push_back((short) (1 + loopCounter * 4));
-    elements.push_back((short) (2 + loopCounter * 4));
-    elements.push_back((short) (0 + loopCounter * 4));
-    elements.push_back((short) (2 + loopCounter * 4));
-    elements.push_back((short) (3 + loopCounter * 4));
+    elements.push_back((short)(0 + loopCounter * 4));
+    elements.push_back((short)(1 + loopCounter * 4));
+    elements.push_back((short)(2 + loopCounter * 4));
+    elements.push_back((short)(0 + loopCounter * 4));
+    elements.push_back((short)(2 + loopCounter * 4));
+    elements.push_back((short)(3 + loopCounter * 4));
 
     ++loopCounter;
     xOffset += width;
   }
 
-
-  vector<pair<vector<float>, int>> vobs{{vertices, 3}, {uvCoordinates, 2}};
+  vector<pair<vector<float>, int>> vobs{ { vertices, 3 },
+                                         { uvCoordinates, 2 } };
   auto mesh = make_unique<mesh::MeshElement>(move(vobs), elements);
 
   return mesh;
 }
 
-float FontMeshBuilder::lenghtOfString(const std::string &str, float height) {
-    return lenghtOfStringAtChar(str, height, str.length());
+float
+FontMeshBuilder::lenghtOfString(const std::string& str, float height)
+{
+  return lenghtOfStringAtChar(str, height, str.length());
 }
 
-float FontMeshBuilder::lenghtOfStringAtChar(const std::string &str, float height, int num) {
+float
+FontMeshBuilder::lenghtOfStringAtChar(const std::string& str,
+                                      float height,
+                                      int num)
+{
   float stringSize = 0;
   for (int i = 0; i < num; ++i) {
     const CharData cd = charData[str[i]];
@@ -150,8 +158,11 @@ float FontMeshBuilder::lenghtOfStringAtChar(const std::string &str, float height
   return stringSize;
 }
 
-
-int FontMeshBuilder::splitStringAt(const std::string &str, int height, float maxLength) {
+int
+FontMeshBuilder::splitStringAt(const std::string& str,
+                               int height,
+                               float maxLength)
+{
   if (lenghtOfString(str, height) < maxLength)
     return -1;
 
@@ -166,10 +177,13 @@ int FontMeshBuilder::splitStringAt(const std::string &str, int height, float max
   return index - 1;
 }
 
-void FontMeshBuilder::printCharData() {
+void
+FontMeshBuilder::printCharData()
+{
   for (CharData cd : charData) {
     std::cout << "Width: " << cd.width << ", Height: " << cd.height
-            << ", xPosition: " << cd.xPosition << ", yPosition: " << cd.yPosition << " \n";
+              << ", xPosition: " << cd.xPosition
+              << ", yPosition: " << cd.yPosition << " \n";
   }
 }
 

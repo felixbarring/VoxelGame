@@ -13,9 +13,9 @@ namespace widget {
 /**
  * @brief A label can be used to provide information in GUIs by displaying text.
  */
-class Label: public AbstractWidget {
+class Label : public AbstractWidget
+{
 public:
-
   /**
    * @brief Constructs a Label instance.
    *
@@ -26,17 +26,20 @@ public:
    * @param name The name that will be rendered by the label.
    * @param layer The layer that the label shall be drawn at.
    */
-  Label(int x, int y, int width, int height, const std::string &name,
-      graphics::GraphicsManager &graphicsManager, unsigned layer = 0);
+  Label(int x,
+        int y,
+        int width,
+        int height,
+        const std::string& name,
+        graphics::GraphicsManager& graphicsManager,
+        unsigned layer = 0);
 
   virtual ~Label() = default;
 
   void draw() override;
 
 private:
-
   std::shared_ptr<graphics::Sprite> m_text;
-
 };
 
 } /* namespace widget */
