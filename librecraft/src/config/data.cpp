@@ -76,12 +76,11 @@ const char BLOCK_TEXTURES[21][3] {
   { 20, 20, 20}, // PLANKS
   { 21, 21, 21}, // STONE_BRICK
   { 22, 23, 23}, // LOG_BIRCH
-  { 24, 24, 24}, // LEAVES_BIRCH
+  { 1, 1, 1}, // LEAVES_BIRCH
   { 25, 25, 25}, // LIGHT
   { 26, 26, 26}, // WATER
   { 27, 27, 27}, // BEDROCK
 
-  // Water, bedrock, light...
 };
 
 

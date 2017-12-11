@@ -3,10 +3,13 @@
 #include <string>
 #include <exception>
 #include <iostream>
+#include <experimental/filesystem>
 
 #include "game.h"
 
 int main() {
+
+  std::experimental::filesystem::path();
 
   try {
     Game game;

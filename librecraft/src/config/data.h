@@ -35,10 +35,23 @@ namespace config {
 
     extern const char GRASS;
     extern const char DIRT;
+    extern const char COARSE_DIRT;
     extern const char STONE;
-    extern const char STONE_ANDESITE; // stone_andesite
+    extern const char STONE_ANDESITE;
     extern const char BRICK_WALL;
     extern const char SAND;
+    extern const char CACTUS;
+    extern const char COAL;
+    extern const char COAL_ORE;
+    extern const char COBBLESTONE;
+    extern const char END_BRICKS;
+    extern const char END_STONE;
+    extern const char GRAVEL;
+    extern const char PLANKS;
+    extern const char STONE_BRICK;
+    extern const char LOG_BIRCH;
+    extern const char LEAVES_BIRCH;
+    extern const char LIGHT;
 
     extern const char LAST_CUBE_USED_FOR_GENERATION;
     extern const char LAST_CUBE_USED_FOR_BUILDING;
@@ -47,6 +60,8 @@ namespace config {
     extern const char BED_ROCK;
     extern const char SELECTED;
     extern const char LIGHT;
+
+    extern const char LOG_OAK;
 
     // Used for looping over all types, except for air.
     extern const char LAST_CUBE;
