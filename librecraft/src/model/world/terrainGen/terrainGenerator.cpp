@@ -23,7 +23,8 @@ int counter{1};
 const int maxCount{config::cube_data::LAST_CUBE_USED_FOR_GENERATION};
 mutex s_mutex;
 
-TerrainGenerator::TerrainGenerator(int width, int height, int depth)
+// TODO Use the seed for something. :p
+TerrainGenerator::TerrainGenerator(int width, int height, int depth, int seed)
   : m_width{width}
   , m_height{height}
   , m_depth{depth}
@@ -82,8 +83,8 @@ void TerrainGenerator::generateFlat(VoxelMatrix &cubes) {
          if (y < 30)
            v.id = m_counterValue;
        }
-     }
-   }
+    }
+  }
 }
 
 void TerrainGenerator::generateNoneFlat(VoxelMatrix &cubes, int x, int z)
@@ -116,7 +117,7 @@ void TerrainGenerator::generateNoneFlat(VoxelMatrix &cubes, int x, int z)
   base.SetBias(25);
 
   module::Perlin biomeType;
-  biomeType.SetFrequency(0.25);
+  biomeType.SetFrequency(0.01);
 
   int xOffsetLocation{x};
   int zOffsetLocation{z};
@@ -149,11 +150,12 @@ void TerrainGenerator::generateNoneFlat(VoxelMatrix &cubes, int x, int z)
         (xOffsetLocation + static_cast<int>(x)) / 10.0,
         (zOffsetLocation + static_cast<int>(z)) / 10.0, 0.5);
 
+      // TODO Add this to biomes...
 //      double noiseValue = flat.GetValue(
 //        (xOffsetLocation + static_cast<int>(x)) / 10.0,
 //        (zOffsetLocation + static_cast<int>(z)) / 10.0, 0.5);
 
-      if (biome > 0.5) {
+      if (biome > 0.8) {
         generateDessert(cubes, height, xOffsetLocation, zOffsetLocation, x, z);
       } else {
         generateGrassLand(cubes, height, xOffsetLocation, zOffsetLocation, x, z);
@@ -169,22 +171,39 @@ void TerrainGenerator::generateGrassLand(VoxelMatrix &cubes, double height,
   module::Perlin tree;
   tree.SetFrequency(2);
 
+  module::Perlin treeArea;
+  treeArea.SetFrequency(0.25);
+
   for (int y{1}; y < height; ++y) {
     auto &v = cubes[x][y][z];
-    v.id = config::cube_data::DIRT;
+
+    static const double stonePercentage{1.0 / 2.0};
+    if (y < height * stonePercentage)
+      v.id = config::cube_data::STONE;
+    else
+      v.id = config::cube_data::DIRT;
 
     if (y + 1 > height) {
         v.id = config::cube_data::GRASS;
+
+      double shouldHaveTrees = treeArea.GetValue(
+        (xOff + static_cast<int>(x)) / 10.0,
+        (zOff + static_cast<int>(z)) / 10.0, 0.5);
+
+      if (shouldHaveTrees < 0.5)
+        break;
 
       double value = tree.GetValue(
         (xOff + static_cast<int>(x)) / 10.0,
         (zOff + static_cast<int>(z)) / 10.0, 0.5);
 
-      // TODO Only place a tree if there is no tree in close distance like
-      // about 3 cubes.
+      bool isNotAtBorder{x > 0 && x + 1 < m_width  && z > 0 && z + 1 < m_depth};
+      bool shouldPlaceTree{value > -0.02 && value < 0.02};
+      // Short circuit is important here.
+      // Does not seem to work properly :s
+      bool hasNeighboor{isNotAtBorder && hasTreeNeighboor(cubes, x, y + 1, z)};
 
-      if (x > 0 && x + 1 < m_width  && z > 0 && z + 1 < m_depth &&
-          value > -0.02 && value < 0.02)
+      if (isNotAtBorder && shouldPlaceTree && !hasNeighboor)
         placeTree(cubes, x, y + 1, z);
 
       break;
@@ -218,5 +237,17 @@ void TerrainGenerator::placeTree(VoxelMatrix &cubes, int x, int y, int z) {
   cubes[x - 1][y + 5][z - 1].id = config::cube_data::LEAVES_BIRCH;
 }
 
+bool TerrainGenerator::hasTreeNeighboor(VoxelMatrix &cubes, int x, int y,
+    int z) {
+  return
+      cubes[x][y][z + 1].id == config::cube_data::LOG_BIRCH ||
+      cubes[x][y][z - 1].id == config::cube_data::LOG_BIRCH ||
+
+      cubes[x + 1][y][z + 1].id == config::cube_data::LOG_BIRCH ||
+      cubes[x + 1][y][z - 1].id == config::cube_data::LOG_BIRCH ||
+
+      cubes[x - 1][y][z + 1].id == config::cube_data::LOG_BIRCH ||
+      cubes[x - 1][y][z - 1].id == config::cube_data::LOG_BIRCH;
 }
 
+}
