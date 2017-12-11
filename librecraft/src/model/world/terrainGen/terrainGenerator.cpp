@@ -118,7 +118,6 @@ void TerrainGenerator::generateNoneFlat(VoxelMatrix &cubes, int x, int y)
 
     double noiseValue{};
 
-
     double value = biomeType.GetValue(
     (xOffsetLocation + static_cast<int>(x)) / 10.0,
     (yOffsetLocation + static_cast<int>(z)) / 10.0, 0.5);
@@ -128,8 +127,6 @@ void TerrainGenerator::generateNoneFlat(VoxelMatrix &cubes, int x, int y)
     } else {
       m_counterValue = config::cube_data::DIRT;
     }
-
-
 
     noiseValue = flat.GetValue(
       (xOffsetLocation + static_cast<int>(x)) / 10.0,
@@ -144,9 +141,13 @@ void TerrainGenerator::generateNoneFlat(VoxelMatrix &cubes, int x, int y)
 
       if (y > 5 && y < 10)
         v.id = config::cube_data::WATER;
-      if (y < noiseValue) {
+
+      if (y < noiseValue)
         v.id = m_counterValue;
-      } else if(y < noiseValue + 5 && value < 0) {
+
+//      if (y + 1 > noiseValue)
+//        v.id = config::cube_data::GRASS;
+      if(y > noiseValue && y < noiseValue + 5 && value < 0) {
         double value = tree.GetValue(
                 (xOffsetLocation + static_cast<int>(x)) / 10.0,
                 (yOffsetLocation + static_cast<int>(z)) / 10.0, 0.5);
@@ -154,22 +155,35 @@ void TerrainGenerator::generateNoneFlat(VoxelMatrix &cubes, int x, int y)
         // TODO Only place a tree if there is no tree in close distance like
         // about 3 cubes.
 
-        if (value > -0.02 && value < 0.02)
+        if (x > 0 && x + 1 < m_width  && z > 0 && z + 1 < m_depth && value > -0.02 && value < 0.02)
           placeTree(cubes, x, y, z);
 
         break;
       }
-     }
-   }
+    }
+    }
   }
 }
 
 void TerrainGenerator::placeTree(VoxelMatrix &cubes, int x, int y, int z) {
   for (int i{y}; i < y + 5; ++i)
-    cubes[x][i][z].id = config::cube_data::LOG_OAK;
+    cubes[x][i][z].id = config::cube_data::LOG_BIRCH;
+
+  cubes[x][y + 5][z + 1].id = config::cube_data::LEAVES_BIRCH;
+  cubes[x][y + 5][z - 1].id = config::cube_data::LEAVES_BIRCH;
+
+  cubes[x + 1][y + 5][z].id = config::cube_data::LEAVES_BIRCH;
+  cubes[x + 1][y + 5][z + 1].id = config::cube_data::LEAVES_BIRCH;
+  cubes[x + 1][y + 5][z - 1].id = config::cube_data::LEAVES_BIRCH;
+
+  cubes[x - 1][y + 5][z].id = config::cube_data::LEAVES_BIRCH;
+  cubes[x - 1][y + 5][z + 1].id = config::cube_data::LEAVES_BIRCH;
+  cubes[x - 1][y + 5][z - 1].id = config::cube_data::LEAVES_BIRCH;
 }
 
 }
+
+// Sea..
 
 // Grassland
   // Sparse forest

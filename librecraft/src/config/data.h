@@ -35,10 +35,23 @@ namespace config {
 
     extern const char GRASS;
     extern const char DIRT;
-    extern const char ROCK;
-    extern const char MORE_ROCK;
+    extern const char COARSE_DIRT;
+    extern const char STONE;
+    extern const char STONE_ANDESITE;
     extern const char BRICK_WALL;
     extern const char SAND;
+    extern const char CACTUS;
+    extern const char COAL;
+    extern const char COAL_ORE;
+    extern const char COBBLESTONE;
+    extern const char END_BRICKS;
+    extern const char END_STONE;
+    extern const char GRAVEL;
+    extern const char PLANKS;
+    extern const char STONE_BRICK;
+    extern const char LOG_BIRCH;
+    extern const char LEAVES_BIRCH;
+    extern const char LIGHT;
 
     extern const char LAST_CUBE_USED_FOR_GENERATION;
     extern const char LAST_CUBE_USED_FOR_BUILDING;
@@ -58,7 +71,7 @@ namespace config {
     extern const int BOTTOM_TEXTURE;
 
     // 0 = Side, 1 = Top, 2 = Bottom
-    extern const char BLOCK_TEXTURES[11][3];
+    extern const char BLOCK_TEXTURES[21][3];
 
     extern const unsigned TEXTURE_WIDTH;
     extern const unsigned TEXTURE_HEIGHT;

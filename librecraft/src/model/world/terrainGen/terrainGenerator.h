@@ -41,8 +41,7 @@ public:
    * @param y The y coordinate of the chunk.
    * @return A matrix of voxel data.
    */
-  VoxelMatrix generateTerrain(
-      chunk::CreationOptions& options, int x, int y);
+  VoxelMatrix generateTerrain(chunk::CreationOptions& options, int x, int y);
 
 private:
 

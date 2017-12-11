@@ -6,34 +6,6 @@ being explained more thoroughly.
 
 ###
 
-Prevent the game from crashing when the player is looking outside the world,
-that is, trying to access a cube not in range.
-
-Game crashes when removing cubes quickly, something agbout glm matrix.
-only happens for light cubes it seems.
-
-Games crashes directly after entering the ingame mode, segfault when trying
-to access a cube
-
-Bunch of graphics buggs with light propagation when loading
-a new world
-
-Light propagate/depropagate is not correct for otherLight
-
-Add Doxygen markdown files to each folder describing its purpose.
-Also add a start page.
-
-Slight lagg when loading new chunks
-
-Build the game on windows
-
-Add a feature so that a player can record how to build a house and then
-create it in another place directly.
-
-Move libnoise to a folder for src dependencies.
-
-use xml to load/store settings
-
 Fix more options being possible to change with both terminal and
 settings
 
@@ -47,9 +19,4 @@ Fix so that the terminal can show all possible settings
 Add cool post processing effects demo
 
 Improve gui when world is dark
-
-Sort the chunks rendering order after the distance to the
-player. This way chunks that are father away and ocluded
-by another chunk will fail z-depth test and hence might
-improve performance since no shading is needed.
 
