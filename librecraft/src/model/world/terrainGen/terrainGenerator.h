@@ -38,18 +38,22 @@ public:
    *
    * @param options The options controlling how the terrain should be generated.
    * @param x The x coordinate of the chunk.
-   * @param y The y coordinate of the chunk.
+   * @param z The z coordinate of the chunk.
    * @return A matrix of voxel data.
    */
-  VoxelMatrix generateTerrain(chunk::CreationOptions& options, int x, int y);
+  VoxelMatrix generateTerrain(chunk::CreationOptions& options, int x, int z);
 
 private:
 
-  inline void fillWithAir(VoxelMatrix &cubes);
+  inline void defaultFill(VoxelMatrix &cubes);
 
   inline void generateFlat(VoxelMatrix &cubes);
 
-  inline void generateNoneFlat(VoxelMatrix &cubes, int x, int y);
+  inline void generateNoneFlat(VoxelMatrix &cubes, int x, int z);
+
+  inline void generateGrassLand(VoxelMatrix &cubes, double height, int xOff, int zOff, int x, int z);
+
+  inline void generateDessert(VoxelMatrix &cubes, double height, int xOff, int zOff, int x, int z);
 
   inline void placeTree(VoxelMatrix &cubes, int x, int y, int z);
 
@@ -58,6 +62,8 @@ private:
   const int m_width{};
   const int m_height{};
   const int m_depth{};
+
+  const int m_seaLevel{20};
 };
 
 }

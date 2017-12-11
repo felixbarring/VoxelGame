@@ -44,7 +44,7 @@ TerrainGenerator::VoxelMatrix TerrainGenerator::generateTerrain(
 
   vector<vector<vector<Voxel>>> cubes;
 
-  fillWithAir(cubes);
+  defaultFill(cubes);
 
   if (options.getFlat()) {
     generateFlat(cubes);
@@ -55,14 +55,16 @@ TerrainGenerator::VoxelMatrix TerrainGenerator::generateTerrain(
   return cubes;
 }
 
-
-void TerrainGenerator::fillWithAir(VoxelMatrix &cubes) {
+void TerrainGenerator::defaultFill(VoxelMatrix &cubes) {
   for (int x{0}; x < m_width; ++x) {
     cubes.push_back(vector<vector<Voxel>>());
     for (int y{0}; y < m_height; ++y) {
       cubes[x].push_back(vector<Voxel>());
       for (int z{0}; z < m_depth; ++z) {
-        cubes[x][y].push_back(Voxel{config::cube_data::AIR, 0});
+        if (y == 0)
+          cubes[x][y].push_back(Voxel{config::cube_data::BED_ROCK, 0});
+        else
+          cubes[x][y].push_back(Voxel{config::cube_data::AIR, 0});
       }
     }
   }
@@ -84,7 +86,7 @@ void TerrainGenerator::generateFlat(VoxelMatrix &cubes) {
    }
 }
 
-void TerrainGenerator::generateNoneFlat(VoxelMatrix &cubes, int x, int y)
+void TerrainGenerator::generateNoneFlat(VoxelMatrix &cubes, int x, int z)
 {
   module::RidgedMulti mountainSource;
   mountainSource.SetFrequency(0.05);
@@ -95,7 +97,6 @@ void TerrainGenerator::generateNoneFlat(VoxelMatrix &cubes, int x, int y)
   mountain.SetBias(40);
   mountain.SetScale(30);
 
-
   module::Billow flatSource;
   flatSource.SetFrequency(0.1);
 
@@ -104,64 +105,104 @@ void TerrainGenerator::generateNoneFlat(VoxelMatrix &cubes, int x, int y)
   flat.SetScale(3);
   flat.SetBias(20);
 
-  module::Perlin biomeType;
-  biomeType.SetFrequency(0.05);
+  module::Perlin baseSource;
+  baseSource.SetOctaveCount(4);
+  baseSource.SetFrequency (0.1);
+  baseSource.SetPersistence (0.5);
 
-  module::Perlin tree;
+  module::ScaleBias base;
+  base.SetSourceModule(0, baseSource);
+  base.SetScale(30);
+  base.SetBias(20);
+
+  module::Perlin biomeType;
   biomeType.SetFrequency(0.025);
 
   int xOffsetLocation{x};
-  int yOffsetLocation{y};
+  int zOffsetLocation{z};
 
   for (int x{0}; x < m_width; ++x) {
     for (int z{0}; z < m_depth; ++z) {
 
-    double noiseValue{};
+      double height = base.GetValue(
+        (xOffsetLocation + static_cast<int>(x)) / 10.0,
+        (zOffsetLocation + static_cast<int>(z)) / 10.0, 0.5);
 
-    double value = biomeType.GetValue(
-    (xOffsetLocation + static_cast<int>(x)) / 10.0,
-    (yOffsetLocation + static_cast<int>(z)) / 10.0, 0.5);
 
-    if (value > 0) {
-      m_counterValue = config::cube_data::SAND;
-    } else {
-      m_counterValue = config::cube_data::DIRT;
-    }
+      if (height - 2 < m_seaLevel) {
+        for (int i{1}; i < m_seaLevel + 2; ++i) {
+          auto &v = cubes[x][i][z];
 
-    noiseValue = flat.GetValue(
-      (xOffsetLocation + static_cast<int>(x)) / 10.0,
-      (yOffsetLocation + static_cast<int>(z)) / 10.0, 0.5);
+          if (i <= m_seaLevel)
+            v.id = config::cube_data::WATER;
+          if (i < height)
+            v.id = config::cube_data::DIRT;
 
-    for (int y{0}; y < m_height; ++y) {
-      auto &v = cubes[x][y][z];
-      if (y == 0) {
-        v.id = config::cube_data::BED_ROCK;
+          if (i >= m_seaLevel && i < height)
+            v.id = config::cube_data::SAND;
+
+        }
         continue;
       }
 
-      if (y > 5 && y < 10)
-        v.id = config::cube_data::WATER;
 
-      if (y < noiseValue)
-        v.id = m_counterValue;
+
+      double biome = biomeType.GetValue(
+        (xOffsetLocation + static_cast<int>(x)) / 10.0,
+        (zOffsetLocation + static_cast<int>(z)) / 10.0, 0.5);
+
+//      double noiseValue = flat.GetValue(
+//        (xOffsetLocation + static_cast<int>(x)) / 10.0,
+//        (zOffsetLocation + static_cast<int>(z)) / 10.0, 0.5);
+
+      if (biome > 0) {
+        generateDessert(cubes, height, xOffsetLocation, zOffsetLocation, x, z);
+      } else {
+        generateGrassLand(cubes, height, xOffsetLocation, zOffsetLocation, x, z);
+      }
+
+//    if (y < m_seaLevel)
+//      v.id = config::cube_data::WATER;
+
+    }
+  }
+}
+
+void TerrainGenerator::generateGrassLand(VoxelMatrix &cubes, double height,
+    int xOff, int zOff, int x, int z) {
+
+  module::Perlin tree;
+  tree.SetFrequency(0.025);
+
+  for (int y{1}; y < height; ++y) {
+    auto &v = cubes[x][y][z];
+
+    v.id = config::cube_data::DIRT;
 
 //      if (y + 1 > noiseValue)
 //        v.id = config::cube_data::GRASS;
-      if(y > noiseValue && y < noiseValue + 5 && value < 0) {
-        double value = tree.GetValue(
-                (xOffsetLocation + static_cast<int>(x)) / 10.0,
-                (yOffsetLocation + static_cast<int>(z)) / 10.0, 0.5);
+//    if(y > height && y < height + 5) {
+//      double value = tree.GetValue(
+//              (xOff + static_cast<int>(x)) / 10.0,
+//              (zOff + static_cast<int>(z)) / 10.0, 0.5);
+//
+//      // TODO Only place a tree if there is no tree in close distance like
+//      // about 3 cubes.
+//
+//      if (x > 0 && x + 1 < m_width  && z > 0 && z + 1 < m_depth && value > -0.02 && value < 0.02)
+//        placeTree(cubes, x, y, z);
+//
+//      break;
+//    }
+  }
+}
 
-        // TODO Only place a tree if there is no tree in close distance like
-        // about 3 cubes.
+void TerrainGenerator::generateDessert(VoxelMatrix &cubes, double height,
+    int xOff, int zOff, int x, int z) {
+  for (int y{1}; y < height; ++y) {
+      auto &v = cubes[x][y][z];
 
-        if (x > 0 && x + 1 < m_width  && z > 0 && z + 1 < m_depth && value > -0.02 && value < 0.02)
-          placeTree(cubes, x, y, z);
-
-        break;
-      }
-    }
-    }
+      v.id = config::cube_data::SAND;
   }
 }
 
