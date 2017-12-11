@@ -133,4 +133,26 @@ chunks that are father away and ocluded by another chunk will fail z-depth test
 and hence might improve performance since no shading is needed. Should bench 
 mark this before using it.
 
+###
+
+Load generation options. Related to the xml Feature.
+
+Type: Improvement
+
+When creating a new map, the generations setting should be saved
+and used when loading the same map. Currently when loading a 
+saved map, the default settings will be used, wich might not be
+the correct ones for theat map, causing inconsistent terrain
+generation.
+
+###
+
+Save player location. Related to the xml Feature.
+Type: Feature
+
+When exeting a world the location of the player should also be
+stored and used when loading the world again. The current chunk
+that the player i located in should be used as the center next
+time the world is loaded.
+
 
