@@ -76,7 +76,7 @@ SpriteBatcher::draw()
 
   texture::Texture* current;
 
-  for (auto batch : m_batches) {
+  for (Sprite* batch : m_batches) {
     glActiveTexture(GL_TEXTURE0);
     if (&batch->getTexture() != current) {
       current = &batch->getTexture();

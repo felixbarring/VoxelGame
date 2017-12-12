@@ -6,6 +6,10 @@ being explained more thoroughly.
 
 ###
 
+Game randomly crashes when loading big number of chunks, more than 7*2 +1
+More likely to happen when moving fast. Seems to be when loading new chunks.
+Debugger gives no good stack trace.
+
 Water is rendered with strange light color some times
 
 Game crashes when looking at bedrock, vector out of bounds...

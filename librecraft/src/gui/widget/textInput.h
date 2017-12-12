@@ -70,9 +70,8 @@ private:
   static constexpr float s_cursorWidth{ 1.0 };
   static constexpr int s_cursorSpacing{ 4 };
 
-  static constexpr int s_textHightDifference{
-    5
-  }; // The difference between the widgets and text height
+  // The difference between the widgets and text height
+  static constexpr int s_textHightDifference{ 5 };
 
   int m_layer{};
   bool m_hasFocus{ false };
@@ -88,9 +87,9 @@ private:
 
   int m_textHeight{};
 
-  std::shared_ptr<graphics::Sprite> m_background;
-  std::shared_ptr<graphics::Sprite> m_cursor;
-  std::shared_ptr<graphics::Sprite> m_text;
+  std::unique_ptr<graphics::Sprite> m_background;
+  std::unique_ptr<graphics::Sprite> m_cursor;
+  std::unique_ptr<graphics::Sprite> m_text;
 };
 
 } /* namespace widget */

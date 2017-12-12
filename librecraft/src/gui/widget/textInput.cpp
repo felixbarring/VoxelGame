@@ -32,23 +32,23 @@ TextInput::TextInput(int id,
   , m_maxInputLength{ width }
   , m_textHeight{ height - s_textHightDifference }
 {
+  Resources& res = Resources::getInstance();
 
-  auto& res = Resources::getInstance();
-
-  m_background = make_shared<Sprite>(
+  m_background = make_unique<Sprite>(
     x, y, m_layer, width, height, res.getTexture(solidBlack));
-  m_cursor = make_shared<Sprite>(x,
+  m_cursor = make_unique<Sprite>(x,
                                  y + s_cursorSpacing,
                                  m_layer + 1,
                                  1,
                                  height - 2 * s_cursorSpacing,
                                  res.getTexture(solidWhite));
 
-  auto& fontMeshBuilder =
+  FontMeshBuilder& fontMeshBuilder =
     res.getFontMeshBuilder(fontLayout, fontAtlasWidth, fontAtlasHeight);
 
-  auto fontMesh = fontMeshBuilder.buldMeshForString(m_input, m_textHeight);
-  m_text = make_shared<Sprite>(x,
+  shared_ptr<mesh::MeshElement> fontMesh =
+      fontMeshBuilder.buldMeshForString(m_input, m_textHeight);
+  m_text = make_unique<Sprite>(x,
                                y + s_textHightDifference,
                                layer + 1,
                                move(fontMesh),
@@ -61,11 +61,12 @@ TextInput::setString(string str)
   Resources& res = Resources::getInstance();
   m_input = str;
 
-  auto& fontMeshBuilder =
+  FontMeshBuilder& fontMeshBuilder =
     res.getFontMeshBuilder(fontLayout, fontAtlasWidth, fontAtlasHeight);
 
-  auto fontMesh = fontMeshBuilder.buldMeshForString(m_input, m_textHeight);
-  m_text = make_shared<Sprite>(m_xCoordinate,
+  shared_ptr<mesh::MeshElement> fontMesh =
+      fontMeshBuilder.buldMeshForString(m_input, m_textHeight);
+  m_text = make_unique<Sprite>(m_xCoordinate,
                                m_yCoordinate + s_textHightDifference,
                                m_layer + 1,
                                fontMesh,
@@ -125,7 +126,7 @@ TextInput::update(float timePassed)
 
     auto fontMesh = fontMeshBuilder.buldMeshForString(
       m_input, m_height - s_textHightDifference);
-    m_text = make_shared<Sprite>(m_xCoordinate,
+    m_text = make_unique<Sprite>(m_xCoordinate,
                                  m_yCoordinate + s_textHightDifference,
                                  m_layer + 1,
                                  move(fontMesh),
@@ -149,7 +150,7 @@ TextInput::update(float timePassed)
 
       auto fontMesh = fontMeshBuilder.buldMeshForString(
         m_input, m_height - s_textHightDifference);
-      m_text = make_shared<Sprite>(m_xCoordinate,
+      m_text = make_unique<Sprite>(m_xCoordinate,
                                    m_yCoordinate + s_textHightDifference,
                                    m_layer + 1,
                                    fontMesh,

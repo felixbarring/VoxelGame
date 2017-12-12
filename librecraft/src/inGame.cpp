@@ -111,9 +111,6 @@ InGame::InGame(Game& game,
 
   // TODO This whole console system should be reworked.
   // TODO Refactor
-  // TODO Refactor
-  // TODO Refactor
-  // TODO Refactor
 
   string close = "close";
   string flyMode = "flyMode";
@@ -291,6 +288,8 @@ InGame::update(double timePassed)
 
     if (m_displayDebugInfo) {
 
+      // TODO Refactor this to its own class or something.
+
       vec3 dir = m_player.getViewingDirection();
       string derp = "View direction: " + to_string(dir.x) + ", " +
                     to_string(dir.y) + ", " + to_string(dir.z);
@@ -317,20 +316,21 @@ InGame::update(double timePassed)
         m_fpsDisplayCounter = 0;
       }
 
+      vec3 ses = m_player.getLastSelectedCube();
+      string soos = "Last Selected: " + to_string(ses.x) + ", " +
+                    to_string(ses.y) + ", " + to_string(ses.z);
+      m_lastSelecteCube.reset(
+        new Sprite(0,
+                   70,
+                   10,
+                   fontMeshBuilder.buldMeshForString(soos, 20),
+                   res.getTexture(config::font_data::font)));
+
+      // This seems to rely on that it was previously shared_ptr ...
       m_graphicsManager.getSpriteBatcher().addBatch(*m_direction);
       m_graphicsManager.getSpriteBatcher().addBatch(*m_fps);
       m_graphicsManager.getSpriteBatcher().addBatch(*m_lastSelecteCube);
     }
-
-    vec3 ses = m_player.getLastSelectedCube();
-    string soos = "Last Selected: " + to_string(ses.x) + ", " +
-                  to_string(ses.y) + ", " + to_string(ses.z);
-    m_lastSelecteCube.reset(
-      new Sprite(0,
-                 70,
-                 10,
-                 fontMeshBuilder.buldMeshForString(soos, 20),
-                 res.getTexture(config::font_data::font)));
 
     m_graphicsManager.getSpriteBatcher().addBatch(
       *m_selectedCubeThumbnails[m_player.getBuildingCube()]);
@@ -356,7 +356,7 @@ InGame::update(double timePassed)
 
   if (m_timeCycle.getStarStrenght() > 0.0) {
     // Changes so that the rotation dose not get to fast.
-    const float valModifier = 0.015;
+    static const double valModifier{0.015};
     m_graphicsManager.getSkyMap().setRotationValue(valModifier *
                                                    m_timeCycle.getTime());
     m_graphicsManager.getSkyMap().draw(m_timeCycle.getStarStrenght());
