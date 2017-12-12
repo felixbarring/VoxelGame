@@ -66,12 +66,12 @@ Button::draw()
   SpriteBatcher& spriteBatcher{ m_graphicsManager.getSpriteBatcher() };
 
   if (m_pointerInsideBorders) {
-    spriteBatcher.addBatch(m_sprite);
-    spriteBatcher.addBatch(m_text);
-    spriteBatcher.addBatch(m_highlight);
+    spriteBatcher.addBatch(*m_sprite);
+    spriteBatcher.addBatch(*m_text);
+    spriteBatcher.addBatch(*m_highlight);
   } else {
-    spriteBatcher.addBatch(m_sprite);
-    spriteBatcher.addBatch(m_text);
+    spriteBatcher.addBatch(*m_sprite);
+    spriteBatcher.addBatch(*m_text);
   }
 }
 

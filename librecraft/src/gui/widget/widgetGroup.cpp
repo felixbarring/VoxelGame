@@ -58,7 +58,7 @@ WidgetGroup::addWidget(std::vector<shared_ptr<IWidget>> widgets)
 void
 WidgetGroup::draw()
 {
-  m_graphicsManager.getSpriteBatcher().addBatch(m_sprite);
+  m_graphicsManager.getSpriteBatcher().addBatch(*m_sprite);
   for (auto widget : m_widgets)
     widget->draw();
 }

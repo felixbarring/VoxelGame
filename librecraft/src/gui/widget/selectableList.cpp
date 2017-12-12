@@ -107,7 +107,7 @@ SelectableList::reset()
 void
 SelectableList::draw()
 {
-  m_graphicsManager.getSpriteBatcher().addBatch(m_sprite);
+  m_graphicsManager.getSpriteBatcher().addBatch(*m_sprite);
   for (auto b : m_buttons)
     b->draw();
 }

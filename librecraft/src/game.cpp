@@ -87,7 +87,7 @@ public:
         m_spriteCounter = 0;
     }
 
-    m_graphicsManager.getSpriteBatcher().addBatch(m_sprites[m_spriteCounter]);
+    m_graphicsManager.getSpriteBatcher().addBatch(*m_sprites[m_spriteCounter]);
     m_graphicsManager.getSpriteBatcher().draw();
 
     m_fpsManager.sync();

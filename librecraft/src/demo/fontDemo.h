@@ -77,7 +77,7 @@ public:
 
       glClear(GL_COLOR_BUFFER_BIT);
 
-      graphicsManager.getSpriteBatcher().addBatch(sprite);
+      graphicsManager.getSpriteBatcher().addBatch(*sprite);
       graphicsManager.getSpriteBatcher().draw();
 
       fpsManager.sync();

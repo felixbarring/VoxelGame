@@ -42,7 +42,7 @@ Label::Label(int x,
 void
 Label::draw()
 {
-  m_graphicsManager.getSpriteBatcher().addBatch(m_text);
+  m_graphicsManager.getSpriteBatcher().addBatch(*m_text);
 }
 
 } /* namespace demo */

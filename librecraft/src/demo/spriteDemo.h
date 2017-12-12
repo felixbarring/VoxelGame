@@ -98,9 +98,9 @@ public:
 
       glClear(GL_COLOR_BUFFER_BIT);
 
-      graphicsmanager.getSpriteBatcher().addBatch(sprite);
-      graphicsmanager.getSpriteBatcher().addBatch(sprite2);
-      graphicsmanager.getSpriteBatcher().addBatch(sprite3);
+      graphicsmanager.getSpriteBatcher().addBatch(*sprite);
+      graphicsmanager.getSpriteBatcher().addBatch(*sprite2);
+      graphicsmanager.getSpriteBatcher().addBatch(*sprite3);
 
       graphicsmanager.getSpriteBatcher().draw();
 

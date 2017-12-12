@@ -52,7 +52,7 @@ Mouse::update()
 void
 Mouse::draw()
 {
-  m_graphicsManager.getSpriteBatcher().addBatch(m_sprite);
+  m_graphicsManager.getSpriteBatcher().addBatch(*m_sprite);
 }
 
 void

@@ -26,7 +26,7 @@ Image::Image(double x,
 void
 Image::draw()
 {
-  m_graphicsManager.getSpriteBatcher().addBatch(m_sprite);
+  m_graphicsManager.getSpriteBatcher().addBatch(*m_sprite);
 }
 
 } /* namespace gui */

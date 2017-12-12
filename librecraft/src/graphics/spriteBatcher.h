@@ -22,16 +22,16 @@ public:
 
   void operator=(SpriteBatcher const&) = delete;
 
-  void addBatch(std::shared_ptr<Sprite> batch);
+  void addBatch(Sprite& batch);
 
   void draw();
 
   void setProjection(glm::mat4 projection);
 
 private:
-  std::vector<std::shared_ptr<Sprite>> m_batches;
+  std::vector<Sprite*> m_batches;
   glm::mat4 m_projection;
-  std::shared_ptr<ShaderProgram> m_program;
+  std::unique_ptr<ShaderProgram> m_program;
 };
 
 } /* namespace graphics */

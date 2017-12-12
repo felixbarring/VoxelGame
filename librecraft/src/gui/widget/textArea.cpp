@@ -39,10 +39,10 @@ void
 TextArea::draw()
 {
   SpriteBatcher& spriteBatcher{ m_graphicsManager.getSpriteBatcher() };
-  spriteBatcher.addBatch(m_textArea);
+  spriteBatcher.addBatch(*m_textArea);
 
   for (auto& s : m_rows)
-    spriteBatcher.addBatch(s.second);
+    spriteBatcher.addBatch(*s.second);
 }
 
 void

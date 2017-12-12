@@ -63,8 +63,8 @@ Slider::getValue()
 void
 Slider::draw()
 {
-  m_graphicsManager.getSpriteBatcher().addBatch(m_slider);
-  m_graphicsManager.getSpriteBatcher().addBatch(m_knob);
+  m_graphicsManager.getSpriteBatcher().addBatch(*m_slider);
+  m_graphicsManager.getSpriteBatcher().addBatch(*m_knob);
 }
 
 void

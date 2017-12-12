@@ -85,12 +85,12 @@ TextInput::getString()
 void
 TextInput::draw()
 {
-  m_graphicsManager.getSpriteBatcher().addBatch(m_background);
+  m_graphicsManager.getSpriteBatcher().addBatch(*m_background);
 
   if (m_cursorVissible && m_hasFocus)
-    m_graphicsManager.getSpriteBatcher().addBatch(m_cursor);
+    m_graphicsManager.getSpriteBatcher().addBatch(*m_cursor);
 
-  m_graphicsManager.getSpriteBatcher().addBatch(m_text);
+  m_graphicsManager.getSpriteBatcher().addBatch(*m_text);
 }
 
 void

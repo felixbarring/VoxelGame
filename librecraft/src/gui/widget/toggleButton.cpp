@@ -116,12 +116,12 @@ ToggleButton::setToggled()
 void
 ToggleButton::draw()
 {
-  m_graphicsManager.getSpriteBatcher().addBatch(m_toggled ? m_spriteToggled
-                                                          : m_sprite);
-  m_graphicsManager.getSpriteBatcher().addBatch(m_text);
+  m_graphicsManager.getSpriteBatcher().addBatch(m_toggled ? *m_spriteToggled
+                                                          : *m_sprite);
+  m_graphicsManager.getSpriteBatcher().addBatch(*m_text);
 
   if (m_skin == Skin::Regular && m_pointerInsideBorders)
-    m_graphicsManager.getSpriteBatcher().addBatch(m_highlight);
+    m_graphicsManager.getSpriteBatcher().addBatch(*m_highlight);
 }
 
 void

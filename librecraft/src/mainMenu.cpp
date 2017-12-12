@@ -19,9 +19,9 @@ using namespace gui;
 MainMenu::MainMenu(Game& game,
                    SoundPlayer& soundPlayer,
                    graphics::GraphicsManager& graphicsManager)
-  : m_game(game)
-  , m_soundPlayer(soundPlayer)
-  , m_graphicsManager(graphicsManager)
+  : m_game{ game }
+  , m_soundPlayer{ soundPlayer }
+  , m_graphicsManager{ graphicsManager }
   , m_mouse{ m_graphicsManager }
   , m_settings{ m_activeWidgetGroup,
                 m_mainWidgetGroup,
