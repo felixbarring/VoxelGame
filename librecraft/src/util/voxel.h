@@ -9,9 +9,9 @@ class Voxel
 
 public:
   // TODO These should be private and accessed by functions.
-  char id{};
-  char sunLightValue{};
-  char otherLightValue{};
+  char m_id{};
+  char m_sunLightValue{};
+  char m_m_otherLightValue{};
 };
 
 #endif /* SRC_UTIL_VOXEL_H_ */

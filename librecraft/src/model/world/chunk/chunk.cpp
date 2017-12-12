@@ -78,13 +78,13 @@ Chunk::collectLightFromRightNeighbor()
   if (m_rightNeighbor.get()) {
     for (int j{ 0 }; j < CHUNK_HEIGHT; ++j) {
       for (int k{ 0 }; k < CHUNK_WIDTH_AND_DEPTH; ++k) {
-        char lv = m_rightNeighbor->m_cubes[0][j][k].sunLightValue - 1;
+        char lv = m_rightNeighbor->m_cubes[0][j][k].m_sunLightValue - 1;
         // TODO collect other light...
 
-        if (m_rightNeighbor->m_cubes[0][j][k].id == AIR &&
-            m_cubes[15][j][k].id == AIR &&
-            lv > m_cubes[15][j][k].sunLightValue) {
-          m_cubes[15][j][k].sunLightValue = lv;
+        if (m_rightNeighbor->m_cubes[0][j][k].m_id == AIR &&
+            m_cubes[15][j][k].m_id == AIR &&
+            lv > m_cubes[15][j][k].m_sunLightValue) {
+          m_cubes[15][j][k].m_sunLightValue = lv;
           m_lightsToPropagate.push_back(vec3(15, j, k));
         }
       }
@@ -98,10 +98,10 @@ Chunk::collectLightFromLeftNeighbor()
   if (m_leftNeighbor.get()) {
     for (int j{ 0 }; j < CHUNK_HEIGHT; ++j) {
       for (int k{ 0 }; k < CHUNK_WIDTH_AND_DEPTH; ++k) {
-        char lv = m_leftNeighbor->m_cubes[15][j][k].sunLightValue - 1;
-        if (m_leftNeighbor->m_cubes[15][j][k].id == AIR &&
-            m_cubes[0][j][k].id == AIR && lv > m_cubes[0][j][k].sunLightValue) {
-          m_cubes[0][j][k].sunLightValue = lv;
+        char lv = m_leftNeighbor->m_cubes[15][j][k].m_sunLightValue - 1;
+        if (m_leftNeighbor->m_cubes[15][j][k].m_id == AIR &&
+            m_cubes[0][j][k].m_id == AIR && lv > m_cubes[0][j][k].m_sunLightValue) {
+          m_cubes[0][j][k].m_sunLightValue = lv;
           m_lightsToPropagate.push_back(vec3(0, j, k));
         }
       }
@@ -115,12 +115,12 @@ Chunk::collectLightFromBackNeighbor()
   if (m_backNeighbor.get()) {
     for (int i{ 0 }; i < CHUNK_WIDTH_AND_DEPTH; ++i) {
       for (int j{ 0 }; j < CHUNK_HEIGHT; ++j) {
-        char lv = m_backNeighbor->m_cubes[i][j][0].sunLightValue - 1;
+        char lv = m_backNeighbor->m_cubes[i][j][0].m_sunLightValue - 1;
 
-        if (m_backNeighbor->m_cubes[i][j][0].id == AIR &&
-            m_cubes[i][j][15].id == AIR &&
-            lv > m_cubes[i][j][15].sunLightValue) {
-          m_cubes[i][j][15].sunLightValue = lv;
+        if (m_backNeighbor->m_cubes[i][j][0].m_id == AIR &&
+            m_cubes[i][j][15].m_id == AIR &&
+            lv > m_cubes[i][j][15].m_sunLightValue) {
+          m_cubes[i][j][15].m_sunLightValue = lv;
           m_lightsToPropagate.push_back(vec3(i, j, 15));
         }
       }
@@ -134,11 +134,11 @@ Chunk::collectLightFromFrontNeighbor()
   if (m_frontNeighbor.get()) {
     for (int i{ 0 }; i < CHUNK_WIDTH_AND_DEPTH; ++i) {
       for (int j{ 0 }; j < CHUNK_HEIGHT; ++j) {
-        char lv = m_frontNeighbor->m_cubes[i][j][15].sunLightValue - 1;
+        char lv = m_frontNeighbor->m_cubes[i][j][15].m_sunLightValue - 1;
 
-        if (m_frontNeighbor->m_cubes[i][j][15].id == AIR &&
-            m_cubes[i][j][0].id == AIR && lv > m_cubes[i][j][0].sunLightValue) {
-          m_cubes[i][j][0].sunLightValue = lv;
+        if (m_frontNeighbor->m_cubes[i][j][15].m_id == AIR &&
+            m_cubes[i][j][0].m_id == AIR && lv > m_cubes[i][j][0].m_sunLightValue) {
+          m_cubes[i][j][0].m_sunLightValue = lv;
           m_lightsToPropagate.push_back(vec3(i, j, 0));
         }
       }
@@ -217,12 +217,12 @@ void
 Chunk::setCube(int x, int y, int z, char id)
 {
   // We can not change bedrock!
-  if (m_cubes[x][y][z].id == BED_ROCK)
+  if (m_cubes[x][y][z].m_id == BED_ROCK)
     return;
 
   Voxel& voxel = m_cubes[x][y][z];
-  int replacedId = voxel.id;
-  voxel.id = id;
+  int replacedId = voxel.m_id;
+  voxel.m_id = id;
 
   // If we removed a cube
   if (id == AIR || id == WATER) {
@@ -267,7 +267,7 @@ Chunk::storeChunk()
   for (int x = 0; x < m_width; x++) {
     for (int y = 0; y < m_height; y++) {
       for (int z = 0; z < m_depth; z++) {
-        outStream << to_string(m_cubes[x][y][z].id) << "\n";
+        outStream << to_string(m_cubes[x][y][z].m_id) << "\n";
       }
     }
   }
@@ -284,8 +284,6 @@ Chunk::createChunkName(std::string worldName)
 void
 Chunk::loadChunk()
 {
-  m_isDirty = false;
-
   vector<string> list;
   string line;
   ifstream inStream;
@@ -320,7 +318,7 @@ Chunk::loadChunk()
 void
 Chunk::generateChunk(CreationOptions& options)
 {
-  m_isDirty = true;
+//  m_isDirty = true;
 
   terrainGen::TerrainGenerator generator{
     config::chunk_data::CHUNK_WIDTH_AND_DEPTH,
@@ -456,12 +454,12 @@ Chunk::updateLightningCubeRemoved(Voxel& voxel, int x, int y, int z)
 
   } else {
     int highestSLV = std::max(highestSunLVFromNeighbors(x, y, z) - 1, 0);
-    voxel.sunLightValue = highestSLV;
+    voxel.m_sunLightValue = highestSLV;
     propagateSunLight(x, y, z);
   }
 
   int highestOLV = std::max(highestOtherLVFromNeighbors(x, y, z) - 1, 0);
-  voxel.otherLightValue = highestOLV;
+  voxel.m_otherLightValue = highestOLV;
   propagateOtherLight(x, y, z);
 
   updateGraphics(true);
@@ -473,7 +471,7 @@ Chunk::updateLightningCubeAdded(int x, int y, int z)
 {
   if (isInDirectSunlight(x, y, z)) {
     for (int i = y; i >= 0; --i)
-      m_cubes[x][i][z].sunLightValue = 0;
+      m_cubes[x][i][z].m_sunLightValue = 0;
 
     for (int i = y; i >= 0; --i)
       dePropagateSunlight(x, i, z, 15);
@@ -481,8 +479,8 @@ Chunk::updateLightningCubeAdded(int x, int y, int z)
   dePropagateSunlight(x, y, z);
 
   Voxel& v{ m_cubes[x][y][z] };
-  if (v.id == LIGHT) {
-    v.otherLightValue = 16;
+  if (v.m_id == LIGHT) {
+    v.m_otherLightValue = 16;
     propagateOtherLight(x, y, z);
   } else {
     dePropagateOtherlight(x, y, z);
@@ -536,11 +534,11 @@ Chunk::doSunLightning(vector<vec3>& lightPropagate,
   for (int i = y; i >= 0; --i) {
     auto& cube = m_cubes[x][i][z];
 
-    if (cube.id == AIR || cube.id == WATER) {
-      if (cube.id == WATER && lightValue > 0)
+    if (cube.m_id == AIR || cube.m_id == WATER) {
+      if (cube.m_id == WATER && lightValue > 0)
         lightValue -= 2;
 
-      cube.sunLightValue = lightValue;
+      cube.m_sunLightValue = lightValue;
       if (useVec)
         lightPropagate.push_back(vec3(x, i, z));
 
@@ -554,7 +552,7 @@ void
 Chunk::propagateSunLight(int x, int y, int z)
 {
   Voxel& voxel = m_cubes[x][y][z];
-  int lvInitial = voxel.sunLightValue - 1;
+  int lvInitial = voxel.m_sunLightValue - 1;
   vector<vec3> newPropagates;
 
   // ########################################################################
@@ -564,8 +562,8 @@ Chunk::propagateSunLight(int x, int y, int z)
   for (int i = x + 1; lv > 0; ++i) {
     if (i < m_width) {
       Voxel& v = m_cubes[i][y][z];
-      if (v.id == AIR && v.sunLightValue < lv) {
-        v.sunLightValue = lv;
+      if (v.m_id == AIR && v.m_sunLightValue < lv) {
+        v.m_sunLightValue = lv;
         newPropagates.push_back(vec3(i, y, z));
         --lv;
         updateDirtyRegions(y);
@@ -573,10 +571,10 @@ Chunk::propagateSunLight(int x, int y, int z)
         break;
       }
     } else {
-      if (m_rightNeighbor && m_rightNeighbor->m_cubes[0][y][z].id == AIR &&
-          m_rightNeighbor->m_cubes[0][y][z].sunLightValue < lv) {
+      if (m_rightNeighbor && m_rightNeighbor->m_cubes[0][y][z].m_id == AIR &&
+          m_rightNeighbor->m_cubes[0][y][z].m_sunLightValue < lv) {
 
-        m_rightNeighbor->m_cubes[0][y][z].sunLightValue = lv;
+        m_rightNeighbor->m_cubes[0][y][z].m_sunLightValue = lv;
         m_rightNeighbor->propagateSunLight(0, y, z);
       }
       break;
@@ -588,8 +586,8 @@ Chunk::propagateSunLight(int x, int y, int z)
   for (int i = x - 1; lv > 0; --i) {
     if (i >= 0) {
       Voxel& v = m_cubes[i][y][z];
-      if (v.id == AIR && v.sunLightValue < lv) {
-        v.sunLightValue = lv;
+      if (v.m_id == AIR && v.m_sunLightValue < lv) {
+        v.m_sunLightValue = lv;
         newPropagates.push_back(vec3(i, y, z));
         --lv;
         updateDirtyRegions(y);
@@ -598,10 +596,10 @@ Chunk::propagateSunLight(int x, int y, int z)
       }
     } else {
       if (m_leftNeighbor &&
-          m_leftNeighbor->m_cubes[m_width - 1][y][z].id == AIR &&
-          m_leftNeighbor->m_cubes[m_width - 1][y][z].sunLightValue < lv) {
+          m_leftNeighbor->m_cubes[m_width - 1][y][z].m_id == AIR &&
+          m_leftNeighbor->m_cubes[m_width - 1][y][z].m_sunLightValue < lv) {
 
-        m_leftNeighbor->m_cubes[m_width - 1][y][z].sunLightValue = lv;
+        m_leftNeighbor->m_cubes[m_width - 1][y][z].m_sunLightValue = lv;
         m_leftNeighbor->propagateSunLight(m_width - 1, y, z);
       }
       break;
@@ -614,8 +612,8 @@ Chunk::propagateSunLight(int x, int y, int z)
   lv = lvInitial;
   for (int i = y + 1; i < m_height; ++i) {
     Voxel& v = m_cubes[x][i][z];
-    if (v.id == AIR && v.sunLightValue < lv) {
-      v.sunLightValue = lv;
+    if (v.m_id == AIR && v.m_sunLightValue < lv) {
+      v.m_sunLightValue = lv;
       newPropagates.push_back(vec3(x, i, z));
       --lv;
       updateDirtyRegions(y);
@@ -628,8 +626,8 @@ Chunk::propagateSunLight(int x, int y, int z)
   lv = lvInitial;
   for (int i = y - 1; i >= 0; --i) {
     Voxel& v = m_cubes[x][i][z];
-    if (v.id == AIR && v.sunLightValue < lv) {
-      v.sunLightValue = lv;
+    if (v.m_id == AIR && v.m_sunLightValue < lv) {
+      v.m_sunLightValue = lv;
       newPropagates.push_back(vec3(x, i, z));
       --lv;
       updateDirtyRegions(y);
@@ -645,8 +643,8 @@ Chunk::propagateSunLight(int x, int y, int z)
   for (int i = z + 1; lv > 0; ++i) {
     if (i < m_depth) {
       Voxel& v = m_cubes[x][y][i];
-      if (v.id == AIR && v.sunLightValue < lv) {
-        v.sunLightValue = lv;
+      if (v.m_id == AIR && v.m_sunLightValue < lv) {
+        v.m_sunLightValue = lv;
         newPropagates.push_back(vec3(x, y, i));
         --lv;
         updateDirtyRegions(y);
@@ -654,9 +652,9 @@ Chunk::propagateSunLight(int x, int y, int z)
         break;
       }
     } else {
-      if (m_backNeighbor && m_backNeighbor->m_cubes[x][y][0].id == AIR &&
-          m_backNeighbor->m_cubes[x][y][0].sunLightValue < lv) {
-        m_backNeighbor->m_cubes[x][y][0].sunLightValue = lv;
+      if (m_backNeighbor && m_backNeighbor->m_cubes[x][y][0].m_id == AIR &&
+          m_backNeighbor->m_cubes[x][y][0].m_sunLightValue < lv) {
+        m_backNeighbor->m_cubes[x][y][0].m_sunLightValue = lv;
         m_backNeighbor->propagateSunLight(x, y, 0);
       }
       break;
@@ -668,8 +666,8 @@ Chunk::propagateSunLight(int x, int y, int z)
   for (int i = z - 1; lv > 0; --i) {
     if (i >= 0) {
       Voxel& v = m_cubes[x][y][i];
-      if (v.id == AIR && v.sunLightValue < lv) {
-        v.sunLightValue = lv;
+      if (v.m_id == AIR && v.m_sunLightValue < lv) {
+        v.m_sunLightValue = lv;
         newPropagates.push_back(vec3(x, y, i));
         --lv;
         updateDirtyRegions(y);
@@ -678,9 +676,9 @@ Chunk::propagateSunLight(int x, int y, int z)
       }
     } else {
       if (m_frontNeighbor &&
-          m_frontNeighbor->m_cubes[x][y][m_depth - 1].id == AIR &&
-          m_frontNeighbor->m_cubes[x][y][m_depth - 1].sunLightValue < lv) {
-        m_frontNeighbor->m_cubes[x][y][m_depth - 1].sunLightValue = lv;
+          m_frontNeighbor->m_cubes[x][y][m_depth - 1].m_id == AIR &&
+          m_frontNeighbor->m_cubes[x][y][m_depth - 1].m_sunLightValue < lv) {
+        m_frontNeighbor->m_cubes[x][y][m_depth - 1].m_sunLightValue = lv;
         m_frontNeighbor->propagateSunLight(x, y, m_depth - 1);
       }
       break;
@@ -696,7 +694,7 @@ void
 Chunk::propagateOtherLight(int x, int y, int z)
 {
   Voxel& voxel = m_cubes[x][y][z];
-  int lvInitial = voxel.otherLightValue - 1;
+  int lvInitial = voxel.m_otherLightValue - 1;
 
   if (lvInitial <= 0)
     return;
@@ -710,8 +708,8 @@ Chunk::propagateOtherLight(int x, int y, int z)
   for (int i = x + 1; lv > 0; ++i) {
     if (i < m_width) {
       Voxel& v = m_cubes[i][y][z];
-      if (v.id == AIR && v.otherLightValue < lv) {
-        v.otherLightValue = lv;
+      if (v.m_id == AIR && v.m_otherLightValue < lv) {
+        v.m_otherLightValue = lv;
         newPropagates.push_back(vec3(i, y, z));
         --lv;
         updateDirtyRegions(y);
@@ -719,10 +717,10 @@ Chunk::propagateOtherLight(int x, int y, int z)
         break;
       }
     } else {
-      if (m_rightNeighbor && m_rightNeighbor->m_cubes[0][y][z].id == AIR &&
-          m_rightNeighbor->m_cubes[0][y][z].otherLightValue < lv) {
+      if (m_rightNeighbor && m_rightNeighbor->m_cubes[0][y][z].m_id == AIR &&
+          m_rightNeighbor->m_cubes[0][y][z].m_otherLightValue < lv) {
 
-        m_rightNeighbor->m_cubes[0][y][z].otherLightValue = lv;
+        m_rightNeighbor->m_cubes[0][y][z].m_otherLightValue = lv;
         m_rightNeighbor->propagateOtherLight(0, y, z);
       }
       break;
@@ -734,8 +732,8 @@ Chunk::propagateOtherLight(int x, int y, int z)
   for (int i = x - 1; lv > 0; --i) {
     if (i >= 0) {
       Voxel& v = m_cubes[i][y][z];
-      if (v.id == AIR && v.otherLightValue < lv) {
-        v.otherLightValue = lv;
+      if (v.m_id == AIR && v.m_otherLightValue < lv) {
+        v.m_otherLightValue = lv;
         newPropagates.push_back(vec3(i, y, z));
         --lv;
         updateDirtyRegions(y);
@@ -744,10 +742,10 @@ Chunk::propagateOtherLight(int x, int y, int z)
       }
     } else {
       if (m_leftNeighbor &&
-          m_leftNeighbor->m_cubes[m_width - 1][y][z].id == AIR &&
-          m_leftNeighbor->m_cubes[m_width - 1][y][z].otherLightValue < lv) {
+          m_leftNeighbor->m_cubes[m_width - 1][y][z].m_id == AIR &&
+          m_leftNeighbor->m_cubes[m_width - 1][y][z].m_otherLightValue < lv) {
 
-        m_leftNeighbor->m_cubes[m_width - 1][y][z].otherLightValue = lv;
+        m_leftNeighbor->m_cubes[m_width - 1][y][z].m_otherLightValue = lv;
         m_leftNeighbor->propagateOtherLight(m_width - 1, y, z);
       }
       break;
@@ -760,8 +758,8 @@ Chunk::propagateOtherLight(int x, int y, int z)
   lv = lvInitial;
   for (int i = y + 1; i < m_height; ++i) {
     Voxel& v = m_cubes[x][i][z];
-    if (v.id == AIR && v.otherLightValue < lv) {
-      v.otherLightValue = lv;
+    if (v.m_id == AIR && v.m_otherLightValue < lv) {
+      v.m_otherLightValue = lv;
       newPropagates.push_back(vec3(x, i, z));
       --lv;
       updateDirtyRegions(y);
@@ -774,8 +772,8 @@ Chunk::propagateOtherLight(int x, int y, int z)
   lv = lvInitial;
   for (int i = y - 1; i >= 0; --i) {
     Voxel& v = m_cubes[x][i][z];
-    if (v.id == AIR && v.otherLightValue < lv) {
-      v.otherLightValue = lv;
+    if (v.m_id == AIR && v.m_otherLightValue < lv) {
+      v.m_otherLightValue = lv;
       newPropagates.push_back(vec3(x, i, z));
       --lv;
       updateDirtyRegions(y);
@@ -791,8 +789,8 @@ Chunk::propagateOtherLight(int x, int y, int z)
   for (int i = z + 1; lv > 0; ++i) {
     if (i < m_depth) {
       Voxel& v = m_cubes[x][y][i];
-      if (v.id == AIR && v.otherLightValue < lv) {
-        v.otherLightValue = lv;
+      if (v.m_id == AIR && v.m_otherLightValue < lv) {
+        v.m_otherLightValue = lv;
         newPropagates.push_back(vec3(x, y, i));
         --lv;
         updateDirtyRegions(y);
@@ -800,9 +798,9 @@ Chunk::propagateOtherLight(int x, int y, int z)
         break;
       }
     } else {
-      if (m_backNeighbor && m_backNeighbor->m_cubes[x][y][0].id == AIR &&
-          m_backNeighbor->m_cubes[x][y][0].otherLightValue < lv) {
-        m_backNeighbor->m_cubes[x][y][0].otherLightValue = lv;
+      if (m_backNeighbor && m_backNeighbor->m_cubes[x][y][0].m_id == AIR &&
+          m_backNeighbor->m_cubes[x][y][0].m_otherLightValue < lv) {
+        m_backNeighbor->m_cubes[x][y][0].m_otherLightValue = lv;
         m_backNeighbor->propagateOtherLight(x, y, 0);
       }
       break;
@@ -814,8 +812,8 @@ Chunk::propagateOtherLight(int x, int y, int z)
   for (int i = z - 1; lv > 0; --i) {
     if (i >= 0) {
       Voxel& v = m_cubes[x][y][i];
-      if (v.id == AIR && v.otherLightValue < lv) {
-        v.otherLightValue = lv;
+      if (v.m_id == AIR && v.m_otherLightValue < lv) {
+        v.m_otherLightValue = lv;
         newPropagates.push_back(vec3(x, y, i));
         --lv;
         updateDirtyRegions(y);
@@ -824,9 +822,9 @@ Chunk::propagateOtherLight(int x, int y, int z)
       }
     } else {
       if (m_frontNeighbor &&
-          m_frontNeighbor->m_cubes[x][y][m_depth - 1].id == AIR &&
-          m_frontNeighbor->m_cubes[x][y][m_depth - 1].otherLightValue < lv) {
-        m_frontNeighbor->m_cubes[x][y][m_depth - 1].otherLightValue = lv;
+          m_frontNeighbor->m_cubes[x][y][m_depth - 1].m_id == AIR &&
+          m_frontNeighbor->m_cubes[x][y][m_depth - 1].m_otherLightValue < lv) {
+        m_frontNeighbor->m_cubes[x][y][m_depth - 1].m_otherLightValue = lv;
         m_frontNeighbor->propagateOtherLight(x, y, m_depth - 1);
       }
       break;
@@ -849,28 +847,28 @@ Chunk::dePropagateSunlight(int x, int y, int z, int _lightValue)
 {
   Voxel& voxel = m_cubes[x][y][z];
 
-  int lightValue = voxel.sunLightValue;
+  int lightValue = voxel.m_sunLightValue;
   ;
   if (_lightValue != -1)
     lightValue = _lightValue;
 
-  voxel.sunLightValue = 0;
+  voxel.m_sunLightValue = 0;
   updateDirtyRegions(y);
 
   // ########################################################################
 
   // Right
   if (x < m_width - 1) {
-    if (m_cubes[x + 1][y][z].id == AIR &&
-        m_cubes[x + 1][y][z].sunLightValue < lightValue &&
+    if (m_cubes[x + 1][y][z].m_id == AIR &&
+        m_cubes[x + 1][y][z].m_sunLightValue < lightValue &&
         highestSunLVFromNeighbors(x + 1, y, z) <= lightValue) {
       dePropagateSunlight(x + 1, y, z);
     } else
       propagateSunLight(x + 1, y, z);
 
   } else if (x == m_width - 1) {
-    if (m_rightNeighbor && m_rightNeighbor->m_cubes[0][y][z].id == AIR &&
-        m_rightNeighbor->m_cubes[0][y][z].sunLightValue < lightValue &&
+    if (m_rightNeighbor && m_rightNeighbor->m_cubes[0][y][z].m_id == AIR &&
+        m_rightNeighbor->m_cubes[0][y][z].m_sunLightValue < lightValue &&
         m_rightNeighbor->highestSunLVFromNeighbors(0, y, z) <= lightValue) {
       m_rightNeighbor->dePropagateSunlight(0, y, z);
     } else
@@ -879,8 +877,8 @@ Chunk::dePropagateSunlight(int x, int y, int z, int _lightValue)
 
   // Left
   if (x > 0) {
-    if (m_cubes[x - 1][y][z].id == AIR &&
-        m_cubes[x - 1][y][z].sunLightValue < lightValue &&
+    if (m_cubes[x - 1][y][z].m_id == AIR &&
+        m_cubes[x - 1][y][z].m_sunLightValue < lightValue &&
         highestSunLVFromNeighbors(x - 1, y, z) <= lightValue) {
       dePropagateSunlight(x - 1, y, z);
     } else
@@ -888,8 +886,8 @@ Chunk::dePropagateSunlight(int x, int y, int z, int _lightValue)
 
   } else if (x == 0) {
     if (m_leftNeighbor &&
-        m_leftNeighbor->m_cubes[m_width - 1][y][z].id == AIR &&
-        m_leftNeighbor->m_cubes[m_width - 1][y][z].sunLightValue < lightValue &&
+        m_leftNeighbor->m_cubes[m_width - 1][y][z].m_id == AIR &&
+        m_leftNeighbor->m_cubes[m_width - 1][y][z].m_sunLightValue < lightValue &&
         m_leftNeighbor->highestSunLVFromNeighbors(m_width - 1, y, z) <=
           lightValue) {
       m_leftNeighbor->dePropagateSunlight(m_width - 1, y, z);
@@ -901,8 +899,8 @@ Chunk::dePropagateSunlight(int x, int y, int z, int _lightValue)
 
   // Up
   if (y < m_height - 1) {
-    if (m_cubes[x][y + 1][z].id == AIR &&
-        m_cubes[x][y + 1][z].sunLightValue < lightValue &&
+    if (m_cubes[x][y + 1][z].m_id == AIR &&
+        m_cubes[x][y + 1][z].m_sunLightValue < lightValue &&
         highestSunLVFromNeighbors(x, y + 1, z) <= lightValue) {
       dePropagateSunlight(x, y + 1, z);
     } else
@@ -911,8 +909,8 @@ Chunk::dePropagateSunlight(int x, int y, int z, int _lightValue)
 
   // Down
   if (_lightValue == -1 && y > 0) {
-    if (m_cubes[x][y - 1][z].id == AIR &&
-        m_cubes[x][y - 1][z].sunLightValue < lightValue &&
+    if (m_cubes[x][y - 1][z].m_id == AIR &&
+        m_cubes[x][y - 1][z].m_sunLightValue < lightValue &&
         highestSunLVFromNeighbors(x, y - 1, z) <= lightValue) {
       dePropagateSunlight(x, y - 1, z);
     } else
@@ -923,8 +921,8 @@ Chunk::dePropagateSunlight(int x, int y, int z, int _lightValue)
 
   // Backwards
   if (z < m_depth - 1) {
-    if (m_cubes[x][y][z + 1].id == AIR &&
-        m_cubes[x][y][z + 1].sunLightValue < lightValue &&
+    if (m_cubes[x][y][z + 1].m_id == AIR &&
+        m_cubes[x][y][z + 1].m_sunLightValue < lightValue &&
         highestSunLVFromNeighbors(x, y, z + 1) <= lightValue) {
       dePropagateSunlight(x, y, z + 1);
     } else
@@ -932,8 +930,8 @@ Chunk::dePropagateSunlight(int x, int y, int z, int _lightValue)
 
   } else if (z == m_depth - 1) {
 
-    if (m_backNeighbor && m_backNeighbor->m_cubes[x][y][0].id == AIR &&
-        m_backNeighbor->m_cubes[x][y][0].sunLightValue < lightValue &&
+    if (m_backNeighbor && m_backNeighbor->m_cubes[x][y][0].m_id == AIR &&
+        m_backNeighbor->m_cubes[x][y][0].m_sunLightValue < lightValue &&
         m_backNeighbor->highestSunLVFromNeighbors(x, y, 0) <= lightValue) {
       m_backNeighbor->dePropagateSunlight(x, y, 0);
     } else
@@ -942,8 +940,8 @@ Chunk::dePropagateSunlight(int x, int y, int z, int _lightValue)
 
   // Forwards
   if (z > 0) {
-    if (m_cubes[x][y][z - 1].id == AIR &&
-        m_cubes[x][y][z - 1].sunLightValue < lightValue &&
+    if (m_cubes[x][y][z - 1].m_id == AIR &&
+        m_cubes[x][y][z - 1].m_sunLightValue < lightValue &&
         highestSunLVFromNeighbors(x, y, z - 1) <= lightValue) {
       dePropagateSunlight(x, y, z - 1);
     } else
@@ -951,8 +949,8 @@ Chunk::dePropagateSunlight(int x, int y, int z, int _lightValue)
 
   } else if (z == 0) {
     if (m_frontNeighbor &&
-        m_frontNeighbor->m_cubes[x][y][m_depth - 1].id == AIR &&
-        m_frontNeighbor->m_cubes[x][y][m_depth - 1].sunLightValue <
+        m_frontNeighbor->m_cubes[x][y][m_depth - 1].m_id == AIR &&
+        m_frontNeighbor->m_cubes[x][y][m_depth - 1].m_sunLightValue <
           lightValue &&
         m_frontNeighbor->highestSunLVFromNeighbors(x, y, m_depth - 1) <=
           lightValue) {
@@ -977,24 +975,24 @@ Chunk::dePropagateOtherlight(int x, int y, int z /*, int _lightValue*/)
     vec3 current = depropagates.front();
     depropagates.pop();
     Voxel& voxel = m_cubes[current.x][current.y][current.z];
-    char lightValue{ voxel.otherLightValue };
-    voxel.otherLightValue = 0;
+    char lightValue{ voxel.m_otherLightValue };
+    voxel.m_otherLightValue = 0;
 
     // Right
     if (current.x + 1 < m_width) {
       Voxel& v{ m_cubes[current.x + 1][current.y][current.z] };
-      if (v.id == AIR) {
-        if (v.otherLightValue != 0 && v.otherLightValue <= lightValue) {
+      if (v.m_id == AIR) {
+        if (v.m_otherLightValue != 0 && v.m_otherLightValue <= lightValue) {
           depropagates.emplace(current.x + 1, current.y, current.z);
-        } else if (v.otherLightValue >= lightValue) {
+        } else if (v.m_otherLightValue >= lightValue) {
           propagates.push_back({ current.x + 1, current.y, current.z });
         }
       }
     } else {
       if (m_rightNeighbor) {
         Voxel& v{ m_rightNeighbor->m_cubes[0][current.y][current.z] };
-        if (v.id == AIR) {
-          if (v.otherLightValue != 0 && v.otherLightValue <= lightValue) {
+        if (v.m_id == AIR) {
+          if (v.m_otherLightValue != 0 && v.m_otherLightValue <= lightValue) {
             m_rightNeighbor->dePropagateOtherlight(0, current.y, current.z);
           }
         }
@@ -1004,18 +1002,18 @@ Chunk::dePropagateOtherlight(int x, int y, int z /*, int _lightValue*/)
     // Left
     if (current.x - 1 >= 0) {
       Voxel& v{ m_cubes[current.x - 1][current.y][current.z] };
-      if (v.id == AIR) {
-        if (v.otherLightValue != 0 && v.otherLightValue <= lightValue) {
+      if (v.m_id == AIR) {
+        if (v.m_otherLightValue != 0 && v.m_otherLightValue <= lightValue) {
           depropagates.emplace(current.x - 1, current.y, current.z);
-        } else if (v.otherLightValue >= lightValue) {
+        } else if (v.m_otherLightValue >= lightValue) {
           propagates.push_back({ current.x - 1, current.y, current.z });
         }
       }
     } else {
       if (m_leftNeighbor) {
         Voxel& v{ m_leftNeighbor->m_cubes[m_width - 1][current.y][current.z] };
-        if (v.id == AIR) {
-          if (v.otherLightValue != 0 && v.otherLightValue <= lightValue) {
+        if (v.m_id == AIR) {
+          if (v.m_otherLightValue != 0 && v.m_otherLightValue <= lightValue) {
             m_leftNeighbor->dePropagateOtherlight(
               m_width - 1, current.y, current.z);
           }
@@ -1026,10 +1024,10 @@ Chunk::dePropagateOtherlight(int x, int y, int z /*, int _lightValue*/)
     // Up
     if (current.y + 1 < m_height) {
       Voxel& v{ m_cubes[current.x][current.y + 1][current.z] };
-      if (v.id == AIR) {
-        if (v.otherLightValue != 0 && v.otherLightValue <= lightValue) {
+      if (v.m_id == AIR) {
+        if (v.m_otherLightValue != 0 && v.m_otherLightValue <= lightValue) {
           depropagates.emplace(current.x, current.y + 1, current.z);
-        } else if (v.otherLightValue >= lightValue) {
+        } else if (v.m_otherLightValue >= lightValue) {
           propagates.push_back({ current.x, current.y + 1, current.z });
         }
       }
@@ -1038,10 +1036,10 @@ Chunk::dePropagateOtherlight(int x, int y, int z /*, int _lightValue*/)
     // Down
     if (current.y - 1 >= 0) {
       Voxel& v{ m_cubes[current.x][current.y - 1][current.z] };
-      if (v.id == AIR) {
-        if (v.otherLightValue != 0 && v.otherLightValue <= lightValue) {
+      if (v.m_id == AIR) {
+        if (v.m_otherLightValue != 0 && v.m_otherLightValue <= lightValue) {
           depropagates.emplace(current.x, current.y - 1, current.z);
-        } else if (v.otherLightValue >= lightValue) {
+        } else if (v.m_otherLightValue >= lightValue) {
           propagates.push_back({ current.x, current.y - 1, current.z });
         }
       }
@@ -1050,18 +1048,18 @@ Chunk::dePropagateOtherlight(int x, int y, int z /*, int _lightValue*/)
     // Backwards
     if (current.z + 1 > 0) {
       Voxel& v{ m_cubes[current.x][current.y][current.z + 1] };
-      if (v.id == AIR) {
-        if (v.otherLightValue != 0 && v.otherLightValue <= lightValue) {
+      if (v.m_id == AIR) {
+        if (v.m_otherLightValue != 0 && v.m_otherLightValue <= lightValue) {
           depropagates.emplace(current.x, current.y, current.z + 1);
-        } else if (v.otherLightValue >= lightValue) {
+        } else if (v.m_otherLightValue >= lightValue) {
           propagates.push_back({ current.x, current.y, current.z + 1 });
         }
       }
     } else {
       if (m_backNeighbor) {
         Voxel& v{ m_cubes[current.x][current.y][0] };
-        if (v.id == AIR) {
-          if (v.otherLightValue != 0 && v.otherLightValue <= lightValue) {
+        if (v.m_id == AIR) {
+          if (v.m_otherLightValue != 0 && v.m_otherLightValue <= lightValue) {
             m_backNeighbor->dePropagateOtherlight(current.x, current.y, 0);
           }
         }
@@ -1071,18 +1069,18 @@ Chunk::dePropagateOtherlight(int x, int y, int z /*, int _lightValue*/)
     // Forward
     if (current.z - 1 >= 0) {
       Voxel& v{ m_cubes[current.x][current.y][current.z - 1] };
-      if (v.id == AIR) {
-        if (v.otherLightValue != 0 && v.otherLightValue <= lightValue) {
+      if (v.m_id == AIR) {
+        if (v.m_otherLightValue != 0 && v.m_otherLightValue <= lightValue) {
           depropagates.emplace(current.x, current.y, current.z - 1);
-        } else if (v.otherLightValue >= lightValue) {
+        } else if (v.m_otherLightValue >= lightValue) {
           propagates.push_back({ current.x, current.y, current.z - 1 });
         }
       }
     } else {
       if (m_frontNeighbor) {
         Voxel& v{ m_cubes[current.x][current.y][m_depth - 1] };
-        if (v.id == AIR) {
-          if (v.otherLightValue != 0 && v.otherLightValue <= lightValue) {
+        if (v.m_id == AIR) {
+          if (v.m_otherLightValue != 0 && v.m_otherLightValue <= lightValue) {
             m_frontNeighbor->dePropagateOtherlight(
               current.x, current.y, m_depth - 1);
           }
@@ -1101,28 +1099,28 @@ Chunk::highestSunLVFromNeighbors(int x, int y, int z)
   int highestValue = -1;
 
   Voxel* v = getVoxel2(x + 1, y, z);
-  if (v && v->sunLightValue > highestValue)
-    highestValue = v->sunLightValue;
+  if (v && v->m_sunLightValue > highestValue)
+    highestValue = v->m_sunLightValue;
 
   v = getVoxel2(x - 1, y, z);
-  if (v && v->sunLightValue > highestValue)
-    highestValue = v->sunLightValue;
+  if (v && v->m_sunLightValue > highestValue)
+    highestValue = v->m_sunLightValue;
 
   v = getVoxel2(x, y + 1, z);
-  if (v && v->sunLightValue > highestValue)
-    highestValue = v->sunLightValue;
+  if (v && v->m_sunLightValue > highestValue)
+    highestValue = v->m_sunLightValue;
 
   v = getVoxel2(x, y - 1, z);
-  if (v && v->sunLightValue > highestValue)
-    highestValue = v->sunLightValue;
+  if (v && v->m_sunLightValue > highestValue)
+    highestValue = v->m_sunLightValue;
 
   v = getVoxel2(x, y, z + 1);
-  if (v && v->sunLightValue > highestValue)
-    highestValue = v->sunLightValue;
+  if (v && v->m_sunLightValue > highestValue)
+    highestValue = v->m_sunLightValue;
 
   v = getVoxel2(x, y, z - 1);
-  if (v && v->sunLightValue > highestValue)
-    highestValue = v->sunLightValue;
+  if (v && v->m_sunLightValue > highestValue)
+    highestValue = v->m_sunLightValue;
 
   return highestValue;
 }
@@ -1133,28 +1131,28 @@ Chunk::highestOtherLVFromNeighbors(int x, int y, int z)
   int highestValue = -1;
 
   Voxel* v = getVoxel2(x + 1, y, z);
-  if (v && v->otherLightValue > highestValue)
-    highestValue = v->otherLightValue;
+  if (v && v->m_otherLightValue > highestValue)
+    highestValue = v->m_otherLightValue;
 
   v = getVoxel2(x - 1, y, z);
-  if (v && v->otherLightValue > highestValue)
-    highestValue = v->otherLightValue;
+  if (v && v->m_otherLightValue > highestValue)
+    highestValue = v->m_otherLightValue;
 
   v = getVoxel2(x, y + 1, z);
-  if (v && v->otherLightValue > highestValue)
-    highestValue = v->otherLightValue;
+  if (v && v->m_otherLightValue > highestValue)
+    highestValue = v->m_otherLightValue;
 
   v = getVoxel2(x, y - 1, z);
-  if (v && v->otherLightValue > highestValue)
-    highestValue = v->otherLightValue;
+  if (v && v->m_otherLightValue > highestValue)
+    highestValue = v->m_otherLightValue;
 
   v = getVoxel2(x, y, z + 1);
-  if (v && v->otherLightValue > highestValue)
-    highestValue = v->otherLightValue;
+  if (v && v->m_otherLightValue > highestValue)
+    highestValue = v->m_otherLightValue;
 
   v = getVoxel2(x, y, z - 1);
-  if (v && v->otherLightValue > highestValue)
-    highestValue = v->otherLightValue;
+  if (v && v->m_otherLightValue > highestValue)
+    highestValue = v->m_otherLightValue;
 
   return highestValue;
 }
@@ -1163,7 +1161,7 @@ bool
 Chunk::isInDirectSunlight(int x, int y, int z)
 {
   if (y < m_height)
-    return getVoxel(x, y + 1, z).sunLightValue == m_directSunlight;
+    return getVoxel(x, y + 1, z).m_sunLightValue == m_directSunlight;
 
   return false;
 }

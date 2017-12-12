@@ -139,7 +139,7 @@ ChunkManager::getVoxel(int x, int y, int z)
 char
 ChunkManager::getCubeId(int x, int y, int z)
 {
-  return getVoxel(x, y, z).id;
+  return getVoxel(x, y, z).m_id;
 }
 
 bool

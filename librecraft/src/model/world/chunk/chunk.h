@@ -306,7 +306,7 @@ private:
 
   graphics::GraphicsManager& m_graphicsManager;
 
-  bool m_isDirty{ true };
+  bool m_isDirty{ false };
 
   std::string m_name{};
 

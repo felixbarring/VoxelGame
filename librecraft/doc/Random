@@ -6,6 +6,12 @@ being explained more thoroughly.
 
 ###
 
+Figure out a wasy of not storing air.
+
+Only save chunks to file if they are modified from when they were generated.
+
+TODO Fix memory usage. Memory usage is very high.
+
 Game randomly crashes when loading big number of chunks, more than 7*2 +1
 More likely to happen when moving fast. Seems to be when loading new chunks.
 Debugger gives no good stack trace.

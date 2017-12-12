@@ -246,8 +246,8 @@ Player::updateCameraAndTargetCube()
     Voxel voxel{ m_chunkManager.getVoxel(previous.x, previous.y, previous.z) };
     m_graphicsManager.getCubeBatcher().addBatch(voxelID,
                                                 m_targetedCubeTransform,
-                                                voxel.sunLightValue + 5,
-                                                voxel.otherLightValue + 5);
+                                                voxel.m_sunLightValue + 5,
+                                                voxel.m_otherLightValue + 5);
   }
 }
 
