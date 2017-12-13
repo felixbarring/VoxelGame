@@ -14,8 +14,7 @@ namespace graphics {
 /**
  * @brief A class that is responsible of managing the graphics rendering.
  */
-class GraphicsManager
-{
+class GraphicsManager {
 public:
   GraphicsManager();
 

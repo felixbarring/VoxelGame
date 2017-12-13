@@ -19,8 +19,7 @@ namespace widget {
  * Useful for handling groups of widgets that work together.
  *
  */
-class WidgetGroup : public AbstractWidget
-{
+class WidgetGroup : public AbstractWidget {
 public:
   /**
    * \brief Constructs a WidgetGroup.

@@ -13,8 +13,7 @@
 
 namespace graphics {
 
-class SpriteBatcher
-{
+class SpriteBatcher {
 public:
   SpriteBatcher();
 

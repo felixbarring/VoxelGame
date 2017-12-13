@@ -7,8 +7,7 @@ using namespace sf;
 
 namespace texture {
 
-Texture::Texture(const char* path)
-{
+Texture::Texture(const char* path) {
   glGenTextures(1, &textureID);
   glBindTexture(GL_TEXTURE_2D, textureID);
 
@@ -40,8 +39,7 @@ Texture::Texture(const char* path)
 }
 
 void
-Texture::bind() const
-{
+Texture::bind() const {
   glBindTexture(GL_TEXTURE_2D, textureID);
 }
 }

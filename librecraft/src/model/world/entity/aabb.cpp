@@ -16,8 +16,7 @@ AABB::AABB(double xMinimum,
   , m_yMin{ yMinimum }
   , m_yMax{ yMaximum }
   , m_zMin{ zMinimum }
-  , m_zMax{ zMaximum }
-{
+  , m_zMax{ zMaximum } {
 }
 
 void
@@ -26,8 +25,7 @@ AABB::setBounds(double xMinimum,
                 double yMinimum,
                 double yMaximum,
                 double zMinimum,
-                double zMaximum)
-{
+                double zMaximum) {
 
   m_xMin = xMinimum;
   m_xMax = xMaximum;
@@ -38,8 +36,7 @@ AABB::setBounds(double xMinimum,
 }
 
 bool
-AABB::intersects(const AABB& that)
-{
+AABB::intersects(const AABB& that) {
   return ((this->m_xMin >= that.m_xMin && this->m_xMin <= that.m_xMax) ||
           (this->m_xMax >= that.m_xMin && this->m_xMax <= that.m_xMax)) &&
          ((this->m_yMin >= that.m_yMin && this->m_yMin <= that.m_yMax) ||
@@ -49,8 +46,7 @@ AABB::intersects(const AABB& that)
 }
 
 AABB
-AABB::getSweptBroadPhaseBox(AABB& box, glm::vec3& velocity)
-{
+AABB::getSweptBroadPhaseBox(AABB& box, glm::vec3& velocity) {
   float xMin, xMax, yMin, yMax, zMin, zMax;
 
   if (velocity.x > 0.0f) {
@@ -84,8 +80,7 @@ float
 AABB::collisionTime(AABB& box1,
                     AABB& box2,
                     glm::vec3& collisionNormal,
-                    glm::vec3& velocity)
-{
+                    glm::vec3& velocity) {
 
   float xEntryDistance, yEntryDistance, zEntryDistance;
   float xExitDistance, yExitDistance, zExitDistance;

@@ -9,8 +9,7 @@
  *
  * Things that are affected by the time of day includes: sunStrength.
  */
-class TimeCycle
-{
+class TimeCycle {
 public:
   /**
    * @brief Updates the TimeCycle state.

@@ -4,10 +4,10 @@
 
 namespace mesh {
 
-class IMesh
-{
+class IMesh {
 public:
-  virtual ~IMesh() {}
+  virtual ~IMesh() {
+  }
 
   virtual void draw() = 0;
 };

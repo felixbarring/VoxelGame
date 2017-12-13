@@ -5,15 +5,13 @@ using namespace config;
 namespace graphics {
 
 void
-ViewDirection::changeViewDirection(float horizontal, float vertical)
-{
+ViewDirection::changeViewDirection(float horizontal, float vertical) {
   setViewDirection(m_horizontalAngle + horizontal * m_sensX,
                    m_verticalAngle + vertical * m_sensY);
 }
 
 void
-ViewDirection::setViewDirection(float horizontal, float vertical)
-{
+ViewDirection::setViewDirection(float horizontal, float vertical) {
   m_horizontalAngle = horizontal;
   m_verticalAngle = vertical;
 
@@ -33,26 +31,22 @@ ViewDirection::setViewDirection(float horizontal, float vertical)
 }
 
 glm::vec3
-ViewDirection::getViewDirection()
-{
+ViewDirection::getViewDirection() {
   return m_direction;
 }
 
 glm::vec3
-ViewDirection::getUpDirection()
-{
+ViewDirection::getUpDirection() {
   return m_up;
 }
 
 glm::vec3
-ViewDirection::getRightDirection()
-{
+ViewDirection::getRightDirection() {
   return m_right;
 }
 
 void
-ViewDirection::setSensitivity(double x, double y)
-{
+ViewDirection::setSensitivity(double x, double y) {
   m_sensX = x;
   m_sensY = y;
 }

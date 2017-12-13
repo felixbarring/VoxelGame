@@ -12,8 +12,7 @@ namespace util {
  *  @brief This class provides functionality to limit and monitor the frames
  *         per second (FPS).
  */
-class FPSManager
-{
+class FPSManager {
 public:
   /**
    * @brief Constructs an instance of the FPSManager class.

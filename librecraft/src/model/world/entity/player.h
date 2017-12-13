@@ -18,8 +18,7 @@
 
 namespace entity {
 
-class Player : public IEntity
-{
+class Player : public IEntity {
 public:
   Player(chunk::ChunkManager& chunkManager,
          util::SoundPlayer& soundPlayer,
@@ -35,7 +34,9 @@ public:
 
   glm::vec3 getLastSelectedCube();
 
-  int getBuildingCube() { return m_cubeUsedForBuilding; }
+  int getBuildingCube() {
+    return m_cubeUsedForBuilding;
+  }
 
   void setSpeed(double value);
 

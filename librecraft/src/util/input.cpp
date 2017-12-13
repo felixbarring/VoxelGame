@@ -12,25 +12,21 @@ namespace util {
 
 Input::Input(double centerX, double centerY)
   : m_screenCenterX(centerX)
-  , m_screenCenterY(centerY)
-{
+  , m_screenCenterY(centerY) {
 }
 
 void
-Input::createInstance(float centerX, float centerY)
-{
+Input::createInstance(float centerX, float centerY) {
   input.reset(new Input{ centerX, centerY });
 }
 
 std::shared_ptr<Input>
-Input::getInstance()
-{
+Input::getInstance() {
   return input;
 }
 
 void
-Input::updateValues()
-{
+Input::updateValues() {
 
   mouseXMovement = 0.0;
   mouseYMovement = 0.0;
@@ -119,27 +115,23 @@ Input::updateValues()
 }
 
 void
-Input::centerMouse()
-{
+Input::centerMouse() {
   Vector2<int> vec(m_screenCenterX, m_screenCenterY);
   Mouse::setPosition(vec, *m_window);
 }
 
 void
-Input::lockMouse()
-{
+Input::lockMouse() {
   m_mouseLocked = true;
 }
 
 void
-Input::unlockMouse()
-{
+Input::unlockMouse() {
   m_mouseLocked = false;
 }
 
 void
-Input::setWindow(Window* window)
-{
+Input::setWindow(Window* window) {
   m_window = window;
 }
 

@@ -27,8 +27,7 @@ ChunkManager::ChunkManager(CreationOptions options,
                            graphics::GraphicsManager& graphicsManager)
   : m_options{ move(options) }
   , m_soundPlayer{ soundPlayer }
-  , m_graphicsManager{ graphicsManager }
-{
+  , m_graphicsManager{ graphicsManager } {
   m_worldName = m_options.getName();
   m_bussyMovingChunksMutex = make_unique<mutex>();
 
@@ -44,8 +43,7 @@ ChunkManager::ChunkManager(CreationOptions options,
 }
 
 void
-ChunkManager::createWorld()
-{
+ChunkManager::createWorld() {
   const int lam = m_lenghtAcrossMatrix;
   vector<future<void>> chunkCreationFutures;
 
@@ -84,8 +82,7 @@ ChunkManager::createWorld()
 }
 
 void
-ChunkManager::saveWorld()
-{
+ChunkManager::saveWorld() {
   const int lam = m_lenghtAcrossMatrix;
   for (int x = 0; x < lam; ++x) {
     for (int z = 0; z < lam; z++) {
@@ -95,8 +92,7 @@ ChunkManager::saveWorld()
 }
 
 void
-ChunkManager::clearWorld()
-{
+ChunkManager::clearWorld() {
   const int lam = m_lenghtAcrossMatrix;
   for (int x = 0; x < lam; x++) {
     for (int z = 0; z < lam; z++) {
@@ -107,15 +103,13 @@ ChunkManager::clearWorld()
 }
 
 void
-ChunkManager::update()
-{
+ChunkManager::update() {
   // When/if AI is added like npc, this could be a good
   // place to update them
 }
 
 Voxel
-ChunkManager::getVoxel(int x, int y, int z)
-{
+ChunkManager::getVoxel(int x, int y, int z) {
   // Used to avoid Division every time the function is called.
   static float xD = 1.0 / CHUNK_WIDTH_AND_DEPTH;
   static float yD = 1.0 / CHUNK_HEIGHT;
@@ -137,28 +131,24 @@ ChunkManager::getVoxel(int x, int y, int z)
 }
 
 char
-ChunkManager::getCubeId(int x, int y, int z)
-{
-  return getVoxel(x, y, z).m_id;
+ChunkManager::getCubeId(int x, int y, int z) {
+  return getVoxel(x, y, z).getId();
 }
 
 bool
-ChunkManager::isSolid(int x, int y, int z)
-{
+ChunkManager::isSolid(int x, int y, int z) {
   // Will not be correct if more cubes that are not solid are added.
   return !isAirOrWater(x, y, z);
 }
 
 bool
-ChunkManager::isAirOrWater(int x, int y, int z)
-{
+ChunkManager::isAirOrWater(int x, int y, int z) {
   auto cubeId = getCubeId(x, y, z);
   return cubeId == AIR || cubeId == WATER;
 }
 
 void
-ChunkManager::removeCube(int x, int y, int z)
-{
+ChunkManager::removeCube(int x, int y, int z) {
   auto voxel = getCubeId(x, y, z);
   if (voxel != BED_ROCK && voxel != WATER) {
     if (hasWaterNeighbour(x, y, z))
@@ -171,8 +161,7 @@ ChunkManager::removeCube(int x, int y, int z)
 }
 
 void
-ChunkManager::setCube(int x, int y, int z, char id)
-{
+ChunkManager::setCube(int x, int y, int z, char id) {
   static float xD = 1.0 / CHUNK_WIDTH_AND_DEPTH;
   static float yD = 1.0 / CHUNK_HEIGHT;
   static float zD = 1.0 / CHUNK_WIDTH_AND_DEPTH;
@@ -193,8 +182,7 @@ ChunkManager::setCube(int x, int y, int z, char id)
 }
 
 void
-ChunkManager::setCenter(float x, float z)
-{
+ChunkManager::setCenter(float x, float z) {
   if (!m_loadStoreWorldWhenPlyayerIsNotInTheCenterChunk)
     return;
 
@@ -220,8 +208,7 @@ ChunkManager::intersectWithSolidCube(vec3 origin,
                                      vec3 direction,
                                      vec3& intersected,
                                      vec3& previous,
-                                     float searchLength)
-{
+                                     float searchLength) {
   static const double smallNumber = 0.0001;
 
   // When the player is exactly located at an integer position the selection
@@ -309,24 +296,21 @@ ChunkManager::intersectWithSolidCube(vec3 origin,
 }
 
 void
-ChunkManager::loadWorldWhenDecentered(bool value)
-{
+ChunkManager::loadWorldWhenDecentered(bool value) {
   m_loadStoreWorldWhenPlyayerIsNotInTheCenterChunk = value;
 }
 
 // Private Methods #############################################################
 
 bool
-ChunkManager::hasWaterNeighbour(int x, int y, int z)
-{
+ChunkManager::hasWaterNeighbour(int x, int y, int z) {
   return getCubeId(x + 1, y, z) == WATER || getCubeId(x - 1, y, z) == WATER ||
          getCubeId(x, y, z + 1) == WATER || getCubeId(x, y, z - 1) == WATER ||
          getCubeId(x, y + 1, z) == WATER;
 }
 
 void
-ChunkManager::connectChunks()
-{
+ChunkManager::connectChunks() {
   const int lam = m_lenghtAcrossMatrix;
 
   for (int x = 0; x < lam; ++x) {
@@ -347,37 +331,32 @@ ChunkManager::connectChunks()
 }
 
 void
-ChunkManager::moveChunksRight()
-{
+ChunkManager::moveChunksRight() {
   m_xOffset += CHUNK_WIDTH_AND_DEPTH;
   moveChunks(Direction::Right);
 }
 
 void
-ChunkManager::moveChunksLeft()
-{
+ChunkManager::moveChunksLeft() {
   m_xOffset -= CHUNK_WIDTH_AND_DEPTH;
   moveChunks(Direction::Left);
 }
 
 void
-ChunkManager::moveChunksUp()
-{
+ChunkManager::moveChunksUp() {
   m_zOffset += CHUNK_WIDTH_AND_DEPTH;
   moveChunks(Direction::Up);
 }
 
 void
-ChunkManager::moveChunksDown()
-{
+ChunkManager::moveChunksDown() {
   m_zOffset -= CHUNK_WIDTH_AND_DEPTH;
   moveChunks(Direction::Down);
 }
 
 // TODO The thread safety needs to be improved and documented.
 void
-ChunkManager::moveChunks(Direction direction)
-{
+ChunkManager::moveChunks(Direction direction) {
   vector<shared_ptr<Chunk>> chunksToDelete;
 
   // Store the chunks that should be removed and moves the old chunks in the

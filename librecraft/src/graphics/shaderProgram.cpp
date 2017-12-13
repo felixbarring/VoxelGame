@@ -15,8 +15,7 @@ namespace graphics {
 
 ShaderProgram::ShaderProgram(const string& vertexSource,
                              const string& fragmentSource,
-                             const map<string, int>& attributes)
-{
+                             const map<string, int>& attributes) {
   // Create the shaders
   GLuint vertexID = createVertexShader(vertexSource);
   GLuint fragmentID = createFragmentShader(fragmentSource);
@@ -121,20 +120,17 @@ ShaderProgram::ShaderProgram(const string& vertexSource,
 }
 
 GLuint
-ShaderProgram::createVertexShader(const string& source)
-{
+ShaderProgram::createVertexShader(const string& source) {
   return createShader(GL_VERTEX_SHADER, source);
 }
 
 GLuint
-ShaderProgram::createFragmentShader(const string& source)
-{
+ShaderProgram::createFragmentShader(const string& source) {
   return createShader(GL_FRAGMENT_SHADER, source);
 }
 
 GLuint
-ShaderProgram::createShader(GLenum shaderType, const string& source)
-{
+ShaderProgram::createShader(GLenum shaderType, const string& source) {
   GLuint shaderID = glCreateShader(shaderType);
 
   char const* shaderSourcePointer = source.c_str();
@@ -156,52 +152,44 @@ ShaderProgram::createShader(GLenum shaderType, const string& source)
 }
 
 void
-ShaderProgram::setUniformi(string uniformName, GLuint value)
-{
+ShaderProgram::setUniformi(string uniformName, GLuint value) {
   glUniform1ui(uniforms.find(uniformName)->second, value);
 }
 
 void
-ShaderProgram::setUniform1f(string uniformName, float value)
-{
+ShaderProgram::setUniform1f(string uniformName, float value) {
   glUniform1f(uniforms.find(uniformName)->second, value);
 }
 
 void
-ShaderProgram::setUniform3f(string uniformName, float x, float y, float z)
-{
+ShaderProgram::setUniform3f(string uniformName, float x, float y, float z) {
   glUniform3f(uniforms.find(uniformName)->second, x, y, z);
 }
 
 void
-ShaderProgram::setUniformMatrix3f(string uniformName, glm::mat3& matrix)
-{
+ShaderProgram::setUniformMatrix3f(string uniformName, glm::mat3& matrix) {
   glUniformMatrix3fv(
     uniforms.find(uniformName)->second, 1, GL_FALSE, &matrix[0][0]);
 }
 
 void
-ShaderProgram::setUniformMatrix4f(string uniformName, glm::mat4& matrix)
-{
+ShaderProgram::setUniformMatrix4f(string uniformName, glm::mat4& matrix) {
   glUniformMatrix4fv(
     uniforms.find(uniformName)->second, 1, GL_FALSE, &matrix[0][0]);
 }
 
 void
-ShaderProgram::setUniformli(string uniformName, GLuint value)
-{
+ShaderProgram::setUniformli(string uniformName, GLuint value) {
   glUniform1i(uniforms.find(uniformName)->second, value);
 }
 
 void
-ShaderProgram::bind()
-{
+ShaderProgram::bind() {
   glUseProgram(programID);
 }
 
 void
-ShaderProgram::unbind()
-{
+ShaderProgram::unbind() {
   glUseProgram(0);
 }
 }

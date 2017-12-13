@@ -9,8 +9,7 @@ namespace util {
 static unsigned s_idCounter = 0;
 
 unsigned
-Performance::createId(const string& value)
-{
+Performance::createId(const string& value) {
 
   // Check if the value in the map equals the string argument value.
   //    auto res = m_map.find(value);
@@ -31,21 +30,18 @@ Performance::createId(const string& value)
 //}
 
 void
-Performance::clearData()
-{
+Performance::clearData() {
   //  for_each(m_accumulatedTime.begin(), m_accumulatedTime.end(),
   //      [](tuple<sf::Clock, double> &t) { get<1>(t) = 0; });
 }
 
 void
-Performance::loggData()
-{
+Performance::loggData() {
   // TODO Implement :-)
 }
 
 void
-Performance::printData()
-{
+Performance::printData() {
   //  for_each(m_accumulatedTime.begin(), m_accumulatedTime.end(),
   //      [] (tuple<sf::Clock, double>&)
   //      {

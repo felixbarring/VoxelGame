@@ -18,8 +18,7 @@ namespace graphics {
 
 CubeMap::CubeMap(texture::TextureCubeMap& texture, Camera& camera)
   : m_texture{ texture }
-  , m_camera{ camera }
-{
+  , m_camera{ camera } {
 
   string vertex = "#version 330 core \n"
                   "in vec3 positionIn; \n"
@@ -81,14 +80,12 @@ CubeMap::CubeMap(texture::TextureCubeMap& texture, Camera& camera)
 }
 
 void
-CubeMap::setRotationValue(float value)
-{
+CubeMap::setRotationValue(float value) {
   m_roatationValue = value;
 }
 
 void
-CubeMap::draw(double transparency)
-{
+CubeMap::draw(double transparency) {
   m_program->bind();
 
   glEnable(GL_BLEND);

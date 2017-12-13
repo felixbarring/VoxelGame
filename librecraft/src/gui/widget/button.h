@@ -23,8 +23,7 @@ namespace widget {
  * that it is interactable by highlight it self.
  *
  */
-class Button : public AbstractWidget
-{
+class Button : public AbstractWidget {
 public:
   Button(int id,
          int x,

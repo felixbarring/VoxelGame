@@ -10,14 +10,12 @@
 
 namespace widget {
 
-class ToggleButton : public Button
-{
+class ToggleButton : public Button {
 public:
   /**
    * @brief Used to determine the visuals of the button.
    */
-  enum class Skin
-  {
+  enum class Skin {
     //!< Regular visuals representing a button with text drawn on it that can be
     //! check
     Regular,

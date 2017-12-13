@@ -4,10 +4,10 @@
 
 namespace demo {
 
-class IDemo
-{
+class IDemo {
 public:
-  virtual ~IDemo() {}
+  virtual ~IDemo() {
+  }
 
   virtual void runDemo() = 0;
 };

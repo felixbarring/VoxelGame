@@ -19,8 +19,7 @@ Label::Label(int x,
              const string& name,
              graphics::GraphicsManager& graphicsManager,
              unsigned layer)
-  : AbstractWidget(1, x, y, width, height, graphicsManager)
-{
+  : AbstractWidget(1, x, y, width, height, graphicsManager) {
 
   auto& res = Resources::getInstance();
 
@@ -40,8 +39,7 @@ Label::Label(int x,
 }
 
 void
-Label::draw()
-{
+Label::draw() {
   m_graphicsManager.getSpriteBatcher().addBatch(*m_text);
 }
 

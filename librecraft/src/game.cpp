@@ -45,16 +45,14 @@ using util::FPSManager;
 using namespace std;
 using namespace util;
 
-class LoadingScreen
-{
+class LoadingScreen {
 public:
   LoadingScreen(FPSManager& fpsManager,
                 sf::Window* window,
                 graphics::GraphicsManager& graphicsManager)
     : m_fpsManager(fpsManager)
     , m_window(window)
-    , m_graphicsManager{ graphicsManager }
-  {
+    , m_graphicsManager{ graphicsManager } {
     auto& res = Resources::getInstance();
     FontMeshBuilder& fontMeshBuilder =
       res.getFontMeshBuilder(config::font_data::fontLayout,
@@ -74,8 +72,7 @@ public:
     }
   }
 
-  void update()
-  {
+  void update() {
     m_fpsManager.frameStart();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -108,8 +105,7 @@ private:
 };
 
 void
-Game::run()
-{
+Game::run() {
   check_system::checkStuff();
 
   //  config::graphics_data::windowWidth =
@@ -172,8 +168,7 @@ Game::run()
 }
 
 void
-Game::createWorld(chunk::CreationOptions options)
-{
+Game::createWorld(chunk::CreationOptions options) {
   chunk::ChunkManager chunkManager{ options,
                                     m_soundPlayer,
                                     *m_graphicsmanager };
@@ -198,14 +193,12 @@ Game::createWorld(chunk::CreationOptions options)
 }
 
 void
-Game::changeStateToMainMenu()
-{
+Game::changeStateToMainMenu() {
   m_currentState = m_mainMenu;
   m_soundPlayer.playMusic(config::music::menuMusic);
 }
 
 void
-Game::quitGame()
-{
+Game::quitGame() {
   m_quit = true;
 }

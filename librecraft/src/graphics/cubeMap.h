@@ -10,8 +10,7 @@
 
 namespace graphics {
 
-class CubeMap
-{
+class CubeMap {
 public:
   CubeMap(texture::TextureCubeMap& texture, Camera& camera);
 

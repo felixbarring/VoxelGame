@@ -17,11 +17,9 @@ using namespace graphics;
 
 namespace demo {
 
-class ShadowMapDemo : public IDemo
-{
+class ShadowMapDemo : public IDemo {
 public:
-  void runDemo() override
-  {
+  void runDemo() override {
 
     util::FPSManager fpsManager(100);
     const int width{ 800 };

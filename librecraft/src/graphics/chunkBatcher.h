@@ -24,8 +24,7 @@ namespace graphics {
  * and saves work that must be done on a thread that has an opengl context for
  * in queues that the draw function will be responsible for handling.
  */
-class ChunkBatcher
-{
+class ChunkBatcher {
 public:
   ChunkBatcher(Camera& camera);
 

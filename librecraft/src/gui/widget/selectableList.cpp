@@ -32,8 +32,7 @@ SelectableList::SelectableList(int id,
                    width,
                    height,
                    graphicsManager)
-  , m_layer{ layer + 1 }
-{
+  , m_layer{ layer + 1 } {
   this->m_observer = observer;
 
   auto& res = Resources::getInstance();
@@ -47,8 +46,7 @@ SelectableList::SelectableList(int id,
 }
 
 void
-SelectableList::addListItem(std::string item)
-{
+SelectableList::addListItem(std::string item) {
 
   // TODO Do not add item that already exists.
 
@@ -75,20 +73,18 @@ SelectableList::addListItem(std::string item)
   m_buttons.push_back(std::move(button));
 }
 
-void SelectableList::deleteListItem(std::string)
-{
+void
+SelectableList::deleteListItem(std::string) {
   // TODO Implement
 }
 
 void
-SelectableList::clear()
-{
+SelectableList::clear() {
   m_buttons.clear();
 }
 
 std::string
-SelectableList::getSelectedListItem()
-{
+SelectableList::getSelectedListItem() {
   if (m_currentlyToggled && m_currentlyToggled->isToggled())
     return m_currentlyToggled->getName();
 
@@ -96,8 +92,7 @@ SelectableList::getSelectedListItem()
 }
 
 void
-SelectableList::reset()
-{
+SelectableList::reset() {
   if (m_currentlyToggled && m_currentlyToggled->isToggled())
     m_currentlyToggled->toggle();
 
@@ -105,23 +100,20 @@ SelectableList::reset()
 }
 
 void
-SelectableList::draw()
-{
+SelectableList::draw() {
   m_graphicsManager.getSpriteBatcher().addBatch(*m_sprite);
   for (auto b : m_buttons)
     b->draw();
 }
 
 void
-SelectableList::update(float timePassed)
-{
+SelectableList::update(float timePassed) {
   for (auto b : m_buttons)
     b->update(timePassed);
 }
 
 shared_ptr<ToggleButton>
-SelectableList::getButtonWithId(int id)
-{
+SelectableList::getButtonWithId(int id) {
   for (auto b : m_buttons) {
     if (b->getId() == id)
       return b;

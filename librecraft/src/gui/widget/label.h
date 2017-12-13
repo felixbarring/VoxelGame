@@ -13,8 +13,7 @@ namespace widget {
 /**
  * @brief A label can be used to provide information in GUIs by displaying text.
  */
-class Label : public AbstractWidget
-{
+class Label : public AbstractWidget {
 public:
   /**
    * @brief Constructs a Label instance.

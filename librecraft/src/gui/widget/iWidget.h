@@ -25,8 +25,7 @@ namespace widget {
  *
  *  \author Felix Bärring
  */
-class IWidget
-{
+class IWidget {
 public:
   virtual ~IWidget(){};
 

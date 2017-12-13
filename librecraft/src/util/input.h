@@ -9,8 +9,7 @@
 
 namespace util {
 
-class Input
-{
+class Input {
 
   Input(double centerX, double centerY);
 

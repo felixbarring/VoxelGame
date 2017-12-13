@@ -5,8 +5,7 @@
 
 namespace entity {
 
-class AABB
-{
+class AABB {
 public:
   /**
    *

@@ -8,8 +8,7 @@
 
 namespace mesh {
 
-class MeshElement : public virtual IMesh
-{
+class MeshElement : public virtual IMesh {
 public:
   MeshElement(std::vector<std::pair<std::vector<float>, int>> vbos,
               const std::vector<short>& elementData);

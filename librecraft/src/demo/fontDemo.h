@@ -28,11 +28,9 @@ using namespace sf;
 
 namespace demo {
 
-class FontDemo : public IDemo
-{
+class FontDemo : public IDemo {
 public:
-  void runDemo() override
-  {
+  void runDemo() override {
     util::FPSManager fpsManager(60);
     const GLuint WIDTH = 800, HEIGHT = 600;
 

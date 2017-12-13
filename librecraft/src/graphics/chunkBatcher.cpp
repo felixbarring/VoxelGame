@@ -97,8 +97,7 @@ ChunkBatcher::addBatch(int replaceId,
                        VoxelMatrix* left,
                        VoxelMatrix* back,
                        VoxelMatrix* front,
-                       bool hightPriority)
-{
+                       bool hightPriority) {
 
   auto batch =
     make_shared<GraphicalChunk>(x, y, z, data, right, left, back, front);
@@ -114,8 +113,7 @@ ChunkBatcher::addBatch(int replaceId,
 }
 
 void
-ChunkBatcher::removeBatch(int id)
-{
+ChunkBatcher::removeBatch(int id) {
   lock_guard<mutex> lock(m_mutex);
   m_batchesToBeRemoved.push_back(id);
 }
@@ -124,8 +122,7 @@ float x = 1.0;
 int direction = 1;
 
 void
-ChunkBatcher::draw()
-{
+ChunkBatcher::draw() {
 
   // Done on the main thread because the thread doing opengl
   // calls needs an opengl context, which the main thread does.
@@ -177,14 +174,12 @@ ChunkBatcher::draw()
 }
 
 void
-ChunkBatcher::setSunStrenght(double value)
-{
+ChunkBatcher::setSunStrenght(double value) {
   m_sunStrength = value;
 }
 
 void
-ChunkBatcher::addAndRemoveBatches()
-{
+ChunkBatcher::addAndRemoveBatches() {
   // Add all the batches that has high priority
   while (!m_batchesToAddHP.empty()) {
     auto batchIt = m_batchesToAddHP.begin();

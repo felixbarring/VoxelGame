@@ -7,8 +7,7 @@
 #include "game.h"
 
 int
-main()
-{
+main() {
   try {
     Game game;
     game.run();

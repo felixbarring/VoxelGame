@@ -7,8 +7,7 @@
 
 namespace texture {
 
-class TextureArray
-{
+class TextureArray {
 public:
   TextureArray(std::vector<std::string> paths, unsigned width, unsigned height);
 

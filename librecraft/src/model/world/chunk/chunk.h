@@ -18,8 +18,7 @@ using std::vector;
 
 namespace chunk {
 
-class Chunk
-{
+class Chunk {
 public:
   /**
    * Creates a chunk. The function create needs to be called to complete the
@@ -151,12 +150,16 @@ public:
   /**
    * @return The x location of the Chunk
    */
-  int getXLocation() { return m_xLocation; }
+  int getXLocation() {
+    return m_xLocation;
+  }
 
   /**
    * @return The z location of the Chunk
    */
-  int getZLocation() { return m_zLocation; }
+  int getZLocation() {
+    return m_zLocation;
+  }
 
   /**
    * Returns a Voxel at the specified location.
@@ -191,8 +194,7 @@ public:
    * Sets the right neighbor of this Chunk
    * @param chunk The new right Chunk
    */
-  void setRightNeighbor(std::shared_ptr<Chunk> chunk)
-  {
+  void setRightNeighbor(std::shared_ptr<Chunk> chunk) {
     m_rightNeighbor = chunk;
   }
 
@@ -200,14 +202,15 @@ public:
    * Sets the left neighbor of this Chunk
    * @param chunk The new left neighbor
    */
-  void setLeftNeighbor(std::shared_ptr<Chunk> chunk) { m_leftNeighbor = chunk; }
+  void setLeftNeighbor(std::shared_ptr<Chunk> chunk) {
+    m_leftNeighbor = chunk;
+  }
 
   /**
    * Sets the front neighbor of this Chunk
    * @param chunk The new front neighbor
    */
-  void setFrontNeighbor(std::shared_ptr<Chunk> chunk)
-  {
+  void setFrontNeighbor(std::shared_ptr<Chunk> chunk) {
     m_frontNeighbor = chunk;
   }
 
@@ -215,27 +218,37 @@ public:
    * Sets the back neighbor of this Chunk
    * @param chunk The new back neighbor
    */
-  void setBackNeighbor(std::shared_ptr<Chunk> chunk) { m_backNeighbor = chunk; }
+  void setBackNeighbor(std::shared_ptr<Chunk> chunk) {
+    m_backNeighbor = chunk;
+  }
 
   /**
    * @return The right neighbor
    */
-  std::shared_ptr<Chunk> getRightNeighbor() { return m_rightNeighbor; }
+  std::shared_ptr<Chunk> getRightNeighbor() {
+    return m_rightNeighbor;
+  }
 
   /**
    * @return The left neighbor
    */
-  std::shared_ptr<Chunk> getLeftNeighbor() { return m_leftNeighbor; }
+  std::shared_ptr<Chunk> getLeftNeighbor() {
+    return m_leftNeighbor;
+  }
 
   /**
    * @return The front neighbor
    */
-  std::shared_ptr<Chunk> getFrontNeighbor() { return m_frontNeighbor; }
+  std::shared_ptr<Chunk> getFrontNeighbor() {
+    return m_frontNeighbor;
+  }
 
   /**
    * @return The back neighbor
    */
-  std::shared_ptr<Chunk> getBackNeighbor() { return m_backNeighbor; }
+  std::shared_ptr<Chunk> getBackNeighbor() {
+    return m_backNeighbor;
+  }
 
   /**
    * Used when a chunk should be removed from memory. Clears all pointers from

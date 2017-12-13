@@ -9,8 +9,7 @@ using namespace std;
 
 namespace graphics {
 
-GraphicsManager::GraphicsManager()
-{
+GraphicsManager::GraphicsManager() {
   texture::TextureCubeMap& texture =
     graphics::Resources::getInstance().getTextureCubeMap(
       config::cube_map_data::cubeMap1[0],
@@ -24,54 +23,46 @@ GraphicsManager::GraphicsManager()
 }
 
 void
-GraphicsManager::setSunStrength(float value)
-{
+GraphicsManager::setSunStrength(float value) {
   m_chunkBatcher.setSunStrenght(value);
   m_cubeBatcher.setSunStrenght(value);
   m_sunStrength = value;
 }
 
 Camera&
-GraphicsManager::getPlayerCamera()
-{
+GraphicsManager::getPlayerCamera() {
   return m_playerCamera;
 }
 
 ChunkBatcher&
-GraphicsManager::getChunkBatcher()
-{
+GraphicsManager::getChunkBatcher() {
   return m_chunkBatcher;
 }
 
 CubeBatcher&
-GraphicsManager::getCubeBatcher()
-{
+GraphicsManager::getCubeBatcher() {
   return m_cubeBatcher;
 }
 
 SpriteBatcher&
-GraphicsManager::getSpriteBatcher()
-{
+GraphicsManager::getSpriteBatcher() {
   return m_spriteBatcher;
 }
 
 CubeMap&
-GraphicsManager::getSkyMap()
-{
+GraphicsManager::getSkyMap() {
   return *m_skyBox;
 }
 
 void
-GraphicsManager::clearScreen()
-{
+GraphicsManager::clearScreen() {
   glm::vec3 skyColor = config::graphics_data::skyColor;
   glClearColor(skyColor.x, skyColor.y, skyColor.z, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void
-GraphicsManager::clearScreenSunDependent()
-{
+GraphicsManager::clearScreenSunDependent() {
   glm::vec3 skyColor{ config::graphics_data::skyColor };
   glm::vec3 dark{ 0, 0, 0 };
   skyColor = glm::mix(dark, skyColor, m_sunStrength);

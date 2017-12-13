@@ -16,8 +16,7 @@ namespace graphics {
  *  changeViewDirection and serViedDirection functions. From this information
  *  this class is responsible to compute the vectors representing those angles.
  */
-class ViewDirection
-{
+class ViewDirection {
 public:
   /**
    * \brief Increases the horizontal and vertical angles with the provided

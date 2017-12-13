@@ -14,8 +14,7 @@ double kek{ 100 };
 // Just a function that clamps the values to 0 or 100.
 // Used to prevent OpenAl errors.
 float
-validVolume(double volume)
-{
+validVolume(double volume) {
   if (volume > 100)
     return 100;
   if (volume < 0)
@@ -24,8 +23,7 @@ validVolume(double volume)
 }
 
 void
-SoundPlayer::update(double time)
-{
+SoundPlayer::update(double time) {
   for (auto sound = m_playingSounds.begin(); sound < m_playingSounds.end();
        ++sound) {
     if ((*sound)->getStatus() == sf::SoundSource::Status::Stopped)
@@ -48,8 +46,7 @@ SoundPlayer::update(double time)
 }
 
 void
-SoundPlayer::playSound(const std::string& soundPath)
-{
+SoundPlayer::playSound(const std::string& soundPath) {
 
   if (m_buffers.find(soundPath) == m_buffers.end()) {
     sf::SoundBuffer buffer;
@@ -66,8 +63,7 @@ SoundPlayer::playSound(const std::string& soundPath)
 }
 
 void
-SoundPlayer::playMusic(const std::string& musicPath)
-{
+SoundPlayer::playMusic(const std::string& musicPath) {
   auto music = std::make_shared<sf::Music>();
   if (!music->openFromFile(musicPath))
     std::cout << "Could not play music :( - " << musicPath << "\n";
@@ -79,8 +75,7 @@ SoundPlayer::playMusic(const std::string& musicPath)
 }
 
 void
-SoundPlayer::stopMusic()
-{
+SoundPlayer::stopMusic() {
   if (m_playingMusic == nullptr)
     return;
 
@@ -88,46 +83,39 @@ SoundPlayer::stopMusic()
 }
 
 void
-SoundPlayer::setMasterVolume(double value)
-{
+SoundPlayer::setMasterVolume(double value) {
   m_masterVolume = value;
 }
 
 double
-SoundPlayer::getMasterVolume()
-{
+SoundPlayer::getMasterVolume() {
   return m_masterVolume;
 }
 
 void
-SoundPlayer::setSoundVolume(double value)
-{
+SoundPlayer::setSoundVolume(double value) {
   m_soundVolume = value * kek;
 }
 
 double
-SoundPlayer::getSoundVolume()
-{
+SoundPlayer::getSoundVolume() {
   return m_soundVolume / kek;
 }
 
 void
-SoundPlayer::setMusicVolume(double value)
-{
+SoundPlayer::setMusicVolume(double value) {
   m_musicVolume = value * kek;
   if (m_playingMusic)
     m_playingMusic->setVolume(validVolume(m_musicVolume * m_masterVolume));
 }
 
 double
-SoundPlayer::getMusicVolume()
-{
+SoundPlayer::getMusicVolume() {
   return m_musicVolume / kek;
 }
 
 void
-SoundPlayer::graduallyChangeMusicVolume(ChangeMusicVolume value)
-{
+SoundPlayer::graduallyChangeMusicVolume(ChangeMusicVolume value) {
   m_graduayllChange = true;
   m_changeDirection = value;
 

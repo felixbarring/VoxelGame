@@ -25,8 +25,7 @@ ToggleButton::ToggleButton(int id,
                            int layer,
                            Skin skin)
   : Button(id, x, y, width, height, graphicsManager, observer, name, layer)
-  , m_skin{ skin }
-{
+  , m_skin{ skin } {
   auto& res = Resources::getInstance();
 
   FontMeshBuilder& fontMeshBuilder =
@@ -90,32 +89,27 @@ ToggleButton::ToggleButton(int id,
 }
 
 bool
-ToggleButton::isToggled()
-{
+ToggleButton::isToggled() {
   return m_toggled;
 }
 
 void
-ToggleButton::toggle()
-{
+ToggleButton::toggle() {
   m_toggled = !m_toggled;
 }
 
 void
-ToggleButton::setUntoggled()
-{
+ToggleButton::setUntoggled() {
   m_toggled = false;
 }
 
 void
-ToggleButton::setToggled()
-{
+ToggleButton::setToggled() {
   m_toggled = true;
 }
 
 void
-ToggleButton::draw()
-{
+ToggleButton::draw() {
   m_graphicsManager.getSpriteBatcher().addBatch(m_toggled ? *m_spriteToggled
                                                           : *m_sprite);
   m_graphicsManager.getSpriteBatcher().addBatch(*m_text);
@@ -125,8 +119,7 @@ ToggleButton::draw()
 }
 
 void
-ToggleButton::update(float)
-{
+ToggleButton::update(float) {
   shared_ptr<util::Input> input = util::Input::getInstance();
   m_pointerInsideBorders =
     isInsideBorders(input->mouseVirtualAdjustedX, input->mouseVirtualAdjustedY);

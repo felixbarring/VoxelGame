@@ -37,8 +37,7 @@ CubeBatcher::CubeBatcher(Camera& camera)
   , m_texture(graphics::Resources::getInstance().getTextureArray(
       config::cube_data::textures,
       config::cube_data::TEXTURE_WIDTH,
-      config::cube_data::TEXTURE_HEIGHT))
-{
+      config::cube_data::TEXTURE_HEIGHT)) {
 
   for (int i = 0; i <= config::cube_data::LAST_CUBE + 1; i++)
     m_cubes.push_back(TexturedCube{ 2, 0, -1.0f, i });
@@ -110,14 +109,12 @@ void
 CubeBatcher::addBatch(char type,
                       Transform& transform,
                       int sunLight,
-                      int otherLight)
-{
+                      int otherLight) {
   m_batches.push_back(Batch(m_cubes.at(type), transform, sunLight, otherLight));
 }
 
 void
-CubeBatcher::draw()
-{
+CubeBatcher::draw() {
 
   m_program->bind();
 
@@ -145,8 +142,7 @@ CubeBatcher::draw()
 }
 
 void
-CubeBatcher::setSunStrenght(float value)
-{
+CubeBatcher::setSunStrenght(float value) {
   m_sunStrength = value;
 }
 

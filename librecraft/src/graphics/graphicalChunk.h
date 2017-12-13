@@ -15,8 +15,7 @@ namespace graphics {
 /**
  *
  */
-class GraphicalChunk
-{
+class GraphicalChunk {
 public:
   /**
    *
@@ -86,8 +85,7 @@ public:
   float getzLocation();
 
 private:
-  struct CubeFaceData
-  {
+  struct CubeFaceData {
     int id;
     bool vissible, front, back, left, right, top, bottom;
     char sunLightValue, otherLightValue;
@@ -202,8 +200,7 @@ private:
     float& bottomRight,
     float& topRight,
     float& topLeft,
-    std::vector<std::vector<std::vector<CubeFaceData>>>& faceData)
-  {
+    std::vector<std::vector<std::vector<CubeFaceData>>>& faceData) {
 
     CubeFaceData& cBottomLeft = faceData[x][y - 1][z + 1];
     CubeFaceData& cBottomLeft_Right = faceData[x + 1][y - 1][z + 1];
@@ -230,8 +227,7 @@ private:
     CubeFaceData& cLeftLeft_Right = faceData[x + 1][y][z + 1];
 
     if
-      constexpr(sunLight)
-      {
+      constexpr(sunLight) {
         computeAverageHelper<true>(lightValue,
                                    cLeftLeft,
                                    cLeftLeft_Right,
@@ -289,8 +285,7 @@ private:
     float& bottomRight,
     float& topRight,
     float& topLeft,
-    std::vector<std::vector<std::vector<CubeFaceData>>>& faceData)
-  {
+    std::vector<std::vector<std::vector<CubeFaceData>>>& faceData) {
 
     CubeFaceData& cBottomLeft = faceData[x][y - 1][z - 1];
     CubeFaceData& cBottomLeft_Left = faceData[x - 1][y - 1][z - 1];
@@ -317,8 +312,7 @@ private:
     CubeFaceData& cLeftLeft_Left = faceData[x - 1][y][z - 1];
 
     if
-      constexpr(sunLight)
-      {
+      constexpr(sunLight) {
         computeAverageHelper<true>(lightValue,
                                    cLeftLeft,
                                    cLeftLeft_Left,
@@ -376,8 +370,7 @@ private:
     float& bottomRight,
     float& topRight,
     float& topLeft,
-    std::vector<std::vector<std::vector<CubeFaceData>>>& faceData)
-  {
+    std::vector<std::vector<std::vector<CubeFaceData>>>& faceData) {
 
     CubeFaceData& cBottomLeft = faceData[x - 1][y][z + 1];
     CubeFaceData& cBottomLeft_Top = faceData[x - 1][y + 1][z + 1];
@@ -404,8 +397,7 @@ private:
     CubeFaceData& cLeftLeft_Top = faceData[x - 1][y + 1][z];
 
     if
-      constexpr(sunLight)
-      {
+      constexpr(sunLight) {
         computeAverageHelper<true>(lightValue,
                                    cLeftLeft,
                                    cLeftLeft_Top,
@@ -463,8 +455,7 @@ private:
     float& bottomRight,
     float& topRight,
     float& topLeft,
-    std::vector<std::vector<std::vector<CubeFaceData>>>& faceData)
-  {
+    std::vector<std::vector<std::vector<CubeFaceData>>>& faceData) {
 
     CubeFaceData& cBottomLeft = faceData[x - 1][y][z - 1];
     CubeFaceData& cBottomLeft_Bottom = faceData[x - 1][y - 1][z - 1];
@@ -491,8 +482,7 @@ private:
     CubeFaceData& cLeftLeft_Bottom = faceData[x - 1][y - 1][z];
 
     if
-      constexpr(sunLight)
-      {
+      constexpr(sunLight) {
         computeAverageHelper<true>(lightValue,
                                    cLeftLeft,
                                    cLeftLeft_Bottom,
@@ -550,8 +540,7 @@ private:
     float& bottomRight,
     float& topRight,
     float& topLeft,
-    std::vector<std::vector<std::vector<CubeFaceData>>>& faceData)
-  {
+    std::vector<std::vector<std::vector<CubeFaceData>>>& faceData) {
 
     CubeFaceData& cBottomLeft = faceData[x + 1][y - 1][z];
     CubeFaceData& cBottomLeft_Back = faceData[x + 1][y - 1][z - 1];
@@ -578,8 +567,7 @@ private:
     CubeFaceData& cLeftLeft_Back = faceData[x + 1][y][z - 1];
 
     if
-      constexpr(sunLight)
-      {
+      constexpr(sunLight) {
         computeAverageHelper<true>(lightValue,
                                    cLeftLeft,
                                    cLeftLeft_Back,
@@ -637,8 +625,7 @@ private:
     float& bottomRight,
     float& topRight,
     float& topLeft,
-    std::vector<std::vector<std::vector<CubeFaceData>>>& faceData)
-  {
+    std::vector<std::vector<std::vector<CubeFaceData>>>& faceData) {
 
     CubeFaceData& cBottomLeft = faceData[x - 1][y - 1][z];
     CubeFaceData& cBottomLeft_Front = faceData[x - 1][y - 1][z + 1];
@@ -665,8 +652,7 @@ private:
     CubeFaceData& cLeftLeft_Front = faceData[x - 1][y][z + 1];
 
     if
-      constexpr(sunLight)
-      {
+      constexpr(sunLight) {
         computeAverageHelper<true>(lightValue,
                                    cLeftLeft,
                                    cLeftLeft_Front,
@@ -735,8 +721,7 @@ private:
                             float& bottomLeft,
                             float& bottomRight,
                             float& topRight,
-                            float& topLeft)
-  {
+                            float& topLeft) {
 
     using namespace config::cube_data;
     // ###########################################################################
@@ -745,7 +730,9 @@ private:
     float acc = lightValue;
     if (cLeftLeft.id != AIR && cLeftLeft_Opposite.id == AIR) {
       if
-        constexpr(sunLight) { acc += cLeftLeft_Opposite.sunLightValue; }
+        constexpr(sunLight) {
+          acc += cLeftLeft_Opposite.sunLightValue;
+        }
       else {
         acc += cLeftLeft_Opposite.otherLightValue;
       }
@@ -754,7 +741,9 @@ private:
     if (cBottomLeft.id != AIR && cBottomLeft_Opposite.id == AIR &&
         (cLeftLeft_Opposite.id == AIR || cBottomMiddle_Opposite.id == AIR)) {
       if
-        constexpr(sunLight) { acc += cBottomLeft_Opposite.sunLightValue; }
+        constexpr(sunLight) {
+          acc += cBottomLeft_Opposite.sunLightValue;
+        }
       else {
         acc += cBottomLeft_Opposite.otherLightValue;
       }
@@ -762,7 +751,9 @@ private:
     }
     if (cBottomMiddle.id != AIR && cBottomMiddle_Opposite.id == AIR) {
       if
-        constexpr(sunLight) { acc += cBottomMiddle_Opposite.sunLightValue; }
+        constexpr(sunLight) {
+          acc += cBottomMiddle_Opposite.sunLightValue;
+        }
       else {
         acc += cBottomMiddle_Opposite.otherLightValue;
       }
@@ -776,7 +767,9 @@ private:
     acc = lightValue;
     if (cBottomMiddle.id != AIR && cBottomMiddle_Opposite.id == AIR) {
       if
-        constexpr(sunLight) { acc += cBottomMiddle_Opposite.sunLightValue; }
+        constexpr(sunLight) {
+          acc += cBottomMiddle_Opposite.sunLightValue;
+        }
       else {
         acc += cBottomMiddle_Opposite.otherLightValue;
       }
@@ -785,7 +778,9 @@ private:
     if (cBottomRight.id != AIR && cBottomRight_Opposite.id == AIR &&
         (cBottomMiddle_Opposite.id == AIR || cRightRight_Opposite.id == AIR)) {
       if
-        constexpr(sunLight) { acc += cBottomRight_Opposite.sunLightValue; }
+        constexpr(sunLight) {
+          acc += cBottomRight_Opposite.sunLightValue;
+        }
       else {
         acc += cBottomRight_Opposite.otherLightValue;
       }
@@ -793,7 +788,9 @@ private:
     }
     if (cRightRight.id != AIR && cRightRight_Opposite.id == AIR) {
       if
-        constexpr(sunLight) { acc += cRightRight_Opposite.sunLightValue; }
+        constexpr(sunLight) {
+          acc += cRightRight_Opposite.sunLightValue;
+        }
       else {
         acc += cRightRight_Opposite.otherLightValue;
       }
@@ -807,7 +804,9 @@ private:
     acc = lightValue;
     if (cRightRight.id != AIR && cRightRight_Opposite.id == AIR) {
       if
-        constexpr(sunLight) { acc += cRightRight_Opposite.sunLightValue; }
+        constexpr(sunLight) {
+          acc += cRightRight_Opposite.sunLightValue;
+        }
       else {
         acc += cRightRight_Opposite.otherLightValue;
       }
@@ -816,7 +815,9 @@ private:
     if (cTopRight.id != AIR && cTopRight_Opposite.id == AIR &&
         (cRightRight_Opposite.id == AIR || cTopMiddle.id == AIR)) {
       if
-        constexpr(sunLight) { acc += cTopRight_Opposite.sunLightValue; }
+        constexpr(sunLight) {
+          acc += cTopRight_Opposite.sunLightValue;
+        }
       else {
         acc += cTopRight_Opposite.otherLightValue;
       }
@@ -824,7 +825,9 @@ private:
     }
     if (cTopMiddle.id != AIR && cTopMiddle_Opposite.id == AIR) {
       if
-        constexpr(sunLight) { acc += cTopMiddle_Opposite.sunLightValue; }
+        constexpr(sunLight) {
+          acc += cTopMiddle_Opposite.sunLightValue;
+        }
       else {
         acc += cTopMiddle_Opposite.otherLightValue;
       }
@@ -838,7 +841,9 @@ private:
     acc = lightValue;
     if (cTopMiddle.id != AIR && cTopMiddle_Opposite.id == AIR) {
       if
-        constexpr(sunLight) { acc += cTopMiddle_Opposite.sunLightValue; }
+        constexpr(sunLight) {
+          acc += cTopMiddle_Opposite.sunLightValue;
+        }
       else {
         acc += cTopMiddle_Opposite.otherLightValue;
       }
@@ -847,7 +852,9 @@ private:
     if (cTopLeft.id != AIR && cTopLeft_Opposite.id == AIR &&
         (cTopMiddle_Opposite.id == AIR || cLeftLeft_Opposite.id == AIR)) {
       if
-        constexpr(sunLight) { acc += cTopLeft_Opposite.sunLightValue; }
+        constexpr(sunLight) {
+          acc += cTopLeft_Opposite.sunLightValue;
+        }
       else {
         acc += cTopLeft_Opposite.otherLightValue;
       }
@@ -855,7 +862,9 @@ private:
     }
     if (cLeftLeft.id != AIR && cLeftLeft_Opposite.id == AIR) {
       if
-        constexpr(sunLight) { acc += cLeftLeft_Opposite.sunLightValue; }
+        constexpr(sunLight) {
+          acc += cLeftLeft_Opposite.sunLightValue;
+        }
       else {
         acc += cLeftLeft_Opposite.otherLightValue;
       }

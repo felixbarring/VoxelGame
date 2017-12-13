@@ -8,8 +8,7 @@
 
 namespace graphics {
 
-class ShaderProgram
-{
+class ShaderProgram {
 public:
   ShaderProgram(const std::string& vertexSource,
                 const std::string& fragmentSource,

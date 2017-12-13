@@ -7,19 +7,16 @@ namespace util {
 
 FPSManager::FPSManager(int maxFPS)
   : m_maxFPS{ maxFPS }
-  , m_timePerFrame{ 1.0 / maxFPS }
-{
+  , m_timePerFrame{ 1.0 / maxFPS } {
 }
 
 void
-FPSManager::frameStart()
-{
+FPSManager::frameStart() {
   m_frameStartTime = std::chrono::system_clock::now();
 }
 
 void
-FPSManager::sync()
-{
+FPSManager::sync() {
 
   static std::chrono::milliseconds oneMilliSecond(1);
 
@@ -52,14 +49,12 @@ FPSManager::sync()
 }
 
 double
-FPSManager::frameTime()
-{
+FPSManager::frameTime() {
   return m_timeForLatestFrame;
 }
 
 int
-FPSManager::getFps()
-{
+FPSManager::getFps() {
   return m_currentFPS;
 }
 }

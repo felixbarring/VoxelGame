@@ -11,8 +11,7 @@ namespace util {
 namespace check_system {
 
 static void
-checkStuff()
-{
+checkStuff() {
 
   int maxLayers;
   glGetIntegerv(GL_MAX_ARRAY_TEXTURE_LAYERS, &maxLayers);

@@ -24,8 +24,7 @@ Slider::Slider(int id,
                graphics::GraphicsManager& graphicsManager,
                std::function<void(int)> observer,
                int layer)
-  : AbstractWidget(id, x, y, width, height, graphicsManager)
-{
+  : AbstractWidget(id, x, y, width, height, graphicsManager) {
 
   this->m_observer = observer;
   m_knobPosition = x;
@@ -48,28 +47,24 @@ Slider::Slider(int id,
 }
 
 void
-Slider::setValue(double value)
-{
+Slider::setValue(double value) {
   m_knobPosition = value * (m_width - m_knobWidth) + this->m_xCoordinate;
   m_knob->setLocation(m_knobPosition, this->m_yCoordinate);
 }
 
 double
-Slider::getValue()
-{
+Slider::getValue() {
   return (m_knobPosition - this->m_xCoordinate) / (m_width - m_knobWidth);
 }
 
 void
-Slider::draw()
-{
+Slider::draw() {
   m_graphicsManager.getSpriteBatcher().addBatch(*m_slider);
   m_graphicsManager.getSpriteBatcher().addBatch(*m_knob);
 }
 
 void
-Slider::update(float)
-{
+Slider::update(float) {
   shared_ptr<Input> input = Input::getInstance();
   m_pointerInsideBorders =
     isInsideBorders(input->mouseVirtualAdjustedX, input->mouseVirtualAdjustedY);

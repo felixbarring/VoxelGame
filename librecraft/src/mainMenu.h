@@ -28,8 +28,7 @@
  * internal logic of the main menu. Logic involves changing settings, creating
  * new worlds, loading existing ones and quitting the game.
  */
-class MainMenu : public IGameState
-{
+class MainMenu : public IGameState {
 public:
   /**
    * @brief Creates an instance of the MainMenu.

@@ -17,8 +17,7 @@ namespace widget {
 /**
  * @brief
  */
-class SelectableList : public AbstractWidget
-{
+class SelectableList : public AbstractWidget {
 public:
   /**
    * @brief Constructs a selectable list.

@@ -30,8 +30,7 @@ namespace gui {
  * The user should call update once each frame so that it can handle user input
  * and send callbacks.
  */
-class Terminal
-{
+class Terminal {
 public:
   /**
    * @brief Constructs a Terminal.
@@ -74,16 +73,13 @@ public:
   void addLine(std::string str);
 
 private:
-  class History
-  {
+  class History {
   public:
     explicit History(unsigned maxLenght)
-      : m_history(maxLenght, "")
-    {
+      : m_history(maxLenght, "") {
     }
 
-    void addToHistory(std::string str)
-    {
+    void addToHistory(std::string str) {
       moveAllRight();
       m_history[0] = std::move(str);
       m_historyPointer = -1;
@@ -91,24 +87,23 @@ private:
                                            : ++m_actualElements;
     }
 
-    void incrementPointer()
-    {
+    void incrementPointer() {
       auto ne = m_historyPointer + 1;
       if (ne < m_history.size() && ne < m_actualElements)
         ++m_historyPointer;
     }
 
-    void decrementPointer()
-    {
+    void decrementPointer() {
       if (m_historyPointer > 0)
         --m_historyPointer;
     }
 
-    std::string& getPointedElement() { return m_history[m_historyPointer]; }
+    std::string& getPointedElement() {
+      return m_history[m_historyPointer];
+    }
 
   private:
-    void moveAllRight()
-    {
+    void moveAllRight() {
       for (unsigned i = m_history.size() - 1; i >= 1; --i)
         m_history[i] = m_history[i - 1];
     }

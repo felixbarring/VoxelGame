@@ -40,8 +40,7 @@ InGame::InGame(Game& game,
   , m_settings{ m_activeWidgetGroup,
                 m_mainWidgetGroup,
                 m_soundPlayer,
-                graphicsManager }
-{
+                graphicsManager } {
 
   // TODO Should be possible to save and load the player location.
   double playerYLocation{ chunk_data::CHUNK_HEIGHT - 10.1 };
@@ -254,8 +253,7 @@ InGame::InGame(Game& game,
 }
 
 void
-InGame::update(double timePassed)
-{
+InGame::update(double timePassed) {
 
   auto input = Input::getInstance();
 
@@ -356,7 +354,7 @@ InGame::update(double timePassed)
 
   if (m_timeCycle.getStarStrenght() > 0.0) {
     // Changes so that the rotation dose not get to fast.
-    static const double valModifier{0.015};
+    static const double valModifier{ 0.015 };
     m_graphicsManager.getSkyMap().setRotationValue(valModifier *
                                                    m_timeCycle.getTime());
     m_graphicsManager.getSkyMap().draw(m_timeCycle.getStarStrenght());

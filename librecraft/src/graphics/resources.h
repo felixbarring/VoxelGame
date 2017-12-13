@@ -15,8 +15,7 @@
 
 namespace graphics {
 
-class Resources
-{
+class Resources {
 private:
   Resources(){};
 
@@ -25,8 +24,7 @@ private:
   void operator=(Resources const&) = delete;
 
 public:
-  static Resources& getInstance()
-  {
+  static Resources& getInstance() {
     static Resources instance;
     return instance;
   }

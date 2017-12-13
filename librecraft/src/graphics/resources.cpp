@@ -8,8 +8,7 @@ using namespace texture;
 namespace graphics {
 
 Texture&
-Resources::getTexture(const string& path)
-{
+Resources::getTexture(const string& path) {
   auto it = textures.find(path);
 
   if (it == textures.end())
@@ -21,8 +20,7 @@ Resources::getTexture(const string& path)
 TextureArray&
 Resources::getTextureArray(const vector<string>& textures,
                            unsigned width,
-                           unsigned height)
-{
+                           unsigned height) {
   auto it = textureArraysMap.find(textures.at(0));
 
   if (it == textureArraysMap.end())
@@ -38,8 +36,7 @@ Resources::getTextureCubeMap(string& right,
                              string& top,
                              string& bottom,
                              string& back,
-                             string& front)
-{
+                             string& front) {
   auto it = textureCubeMaps.find(right);
 
   if (it == textureCubeMaps.end())
@@ -57,8 +54,7 @@ Resources::getTextureCubeMap(string& right,
 FontMeshBuilder&
 Resources::getFontMeshBuilder(string& pathToLayout,
                               int atlasWidth,
-                              int atlasHeight)
-{
+                              int atlasHeight) {
   auto it = fontMeshBuilders.find(pathToLayout);
 
   if (it == fontMeshBuilders.end())

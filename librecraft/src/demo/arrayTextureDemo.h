@@ -26,11 +26,9 @@
 
 namespace demo {
 
-class ArrayTextureDemo : public IDemo
-{
+class ArrayTextureDemo : public IDemo {
 public:
-  void runDemo() override
-  {
+  void runDemo() override {
     util::FPSManager fpsManager(60);
 
     int WIDTH = 800;

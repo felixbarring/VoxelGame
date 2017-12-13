@@ -20,8 +20,7 @@ WidgetGroup::WidgetGroup(int id,
                          graphics::GraphicsManager& graphicsManager,
                          unsigned layer,
                          bool transparentBackground)
-  : AbstractWidget(id, x, y, width, height, graphicsManager)
-{
+  : AbstractWidget(id, x, y, width, height, graphicsManager) {
   if (transparentBackground) {
     m_sprite.reset(new Sprite{ static_cast<double>(x),
                                static_cast<double>(y),
@@ -42,30 +41,26 @@ WidgetGroup::WidgetGroup(int id,
 }
 
 void
-WidgetGroup::addWidget(shared_ptr<IWidget> widget)
-{
+WidgetGroup::addWidget(shared_ptr<IWidget> widget) {
   m_widgets.push_back(widget);
 }
 
 void
-WidgetGroup::addWidget(std::vector<shared_ptr<IWidget>> widgets)
-{
+WidgetGroup::addWidget(std::vector<shared_ptr<IWidget>> widgets) {
   for_each(widgets.begin(), widgets.end(), [this](shared_ptr<IWidget> w) {
     m_widgets.push_back(w);
   });
 }
 
 void
-WidgetGroup::draw()
-{
+WidgetGroup::draw() {
   m_graphicsManager.getSpriteBatcher().addBatch(*m_sprite);
   for (auto widget : m_widgets)
     widget->draw();
 }
 
 void
-WidgetGroup::update(float timePassed)
-{
+WidgetGroup::update(float timePassed) {
   for (auto widget : m_widgets)
     widget->update(timePassed);
 }

@@ -13,8 +13,7 @@ using graphics::Resources;
 
 namespace gui {
 
-class Mouse
-{
+class Mouse {
 public:
   explicit Mouse(graphics::GraphicsManager& graphicsManager);
 
@@ -35,12 +34,13 @@ private:
   int m_width{ 10 };
   int m_height{ 10 };
 
-  graphics::Sprite m_sprite{0,
-    0,
-    100,
-    static_cast<double>(m_width),
-    static_cast<double>(m_height),
-    Resources::getInstance().getTexture(config::gui_data::mouse)};
+  graphics::Sprite m_sprite{ 0,
+                             0,
+                             100,
+                             static_cast<double>(m_width),
+                             static_cast<double>(m_height),
+                             Resources::getInstance().getTexture(
+                               config::gui_data::mouse) };
 };
 
 } /* namespace widget */

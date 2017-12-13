@@ -13,12 +13,10 @@ using namespace std;
  * @brief Trie class that supports adding strings and giving the best auto
  *        complete on those string for a given sequence.
  */
-class Trie
-{
+class Trie {
 public:
   Trie()
-    : m_root{ std::make_unique<TrieNode>('-', false) }
-  {
+    : m_root{ std::make_unique<TrieNode>('-', false) } {
   }
 
   /**
@@ -26,8 +24,7 @@ public:
    *
    * @param value The string that will be added
    */
-  void addString(std::string value)
-  {
+  void addString(std::string value) {
 
     if (value.empty())
       return;
@@ -59,8 +56,7 @@ public:
    *         starts with the value. The longest common substring if there are
    *         more than one string that contains the value.
    */
-  std::string getFirstWordWithSequence(const std::string& value)
-  {
+  std::string getFirstWordWithSequence(const std::string& value) {
 
     TrieNode* node = m_root.get();
     for (auto c : value) {
@@ -84,24 +80,22 @@ public:
   }
 
 private:
-  class TrieNode
-  {
+  class TrieNode {
   public:
     TrieNode(char ch, bool isEnd)
       : m_ch(ch)
-      , m_isEnd(isEnd)
-    {
+      , m_isEnd(isEnd) {
     }
 
-    char getValue() { return m_ch; }
+    char getValue() {
+      return m_ch;
+    }
 
-    void addChild(std::unique_ptr<TrieNode> node)
-    {
+    void addChild(std::unique_ptr<TrieNode> node) {
       m_children.push_back(std::move(node));
     }
 
-    TrieNode* getChild(char c)
-    {
+    TrieNode* getChild(char c) {
       for (auto& child : m_children) {
         if (child->m_ch == c)
           return child.get();
@@ -109,17 +103,20 @@ private:
       return nullptr;
     }
 
-    TrieNode* getSingleChild()
-    {
+    TrieNode* getSingleChild() {
       if (m_children.size() == 1)
         return m_children[0].get();
 
       return nullptr;
     }
 
-    unsigned getNumberOfChildren() { return m_children.size(); }
+    unsigned getNumberOfChildren() {
+      return m_children.size();
+    }
 
-    bool isEndChild() { return m_isEnd; }
+    bool isEndChild() {
+      return m_isEnd;
+    }
 
   private:
     const char m_ch{};

@@ -5,8 +5,7 @@
 
 namespace texture {
 
-class Texture
-{
+class Texture {
 public:
   explicit Texture(const char* path);
 

@@ -18,8 +18,7 @@ TextureCubeMap::TextureCubeMap(const char* right,
                                const char* top,
                                const char* bottom,
                                const char* back,
-                               const char* front)
-{
+                               const char* front) {
 
   glGenTextures(1, &textureID);
   glActiveTexture(GL_TEXTURE0);
@@ -58,8 +57,7 @@ TextureCubeMap::TextureCubeMap(const char* right,
 }
 
 void
-TextureCubeMap::bind() const
-{
+TextureCubeMap::bind() const {
   glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
 }
 }

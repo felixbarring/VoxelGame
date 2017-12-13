@@ -11,8 +11,7 @@
 
 namespace widget {
 
-class TextArea : public AbstractWidget
-{
+class TextArea : public AbstractWidget {
 public:
   TextArea(int id,
            int x,

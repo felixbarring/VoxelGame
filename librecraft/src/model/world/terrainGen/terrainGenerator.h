@@ -18,8 +18,7 @@ namespace terrainGen {
  * This class is thread safe, the generateTerrain function can be called
  * concurrently.
  */
-class TerrainGenerator
-{
+class TerrainGenerator {
 public:
   using VoxelMatrix = std::vector<std::vector<std::vector<Voxel>>>;
   // TODO Elaborate this documentation.

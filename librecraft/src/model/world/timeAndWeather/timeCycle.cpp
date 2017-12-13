@@ -4,8 +4,7 @@
 #include <algorithm>
 
 void
-TimeCycle::update(float timePassed)
-{
+TimeCycle::update(float timePassed) {
   if (m_paused)
     return;
 
@@ -42,43 +41,36 @@ TimeCycle::update(float timePassed)
 }
 
 void
-TimeCycle::setTime(float time)
-{
+TimeCycle::setTime(float time) {
   m_time = time;
 }
 
 float
-TimeCycle::getTime()
-{
+TimeCycle::getTime() {
   return m_time;
 }
 
 void
-TimeCycle::stopCycle()
-{
+TimeCycle::stopCycle() {
   m_paused = true;
 }
 
 void
-TimeCycle::resumeCycle()
-{
+TimeCycle::resumeCycle() {
   m_paused = false;
 }
 
 double
-TimeCycle::getSunStrenght()
-{
+TimeCycle::getSunStrenght() {
   return m_sunStrength;
 }
 
 double
-TimeCycle::getStarStrenght()
-{
+TimeCycle::getStarStrenght() {
   return m_starStrength;
 }
 
 void
-TimeCycle::setTimeSpeed(double value)
-{
+TimeCycle::setTimeSpeed(double value) {
   m_timeSpeed = value;
 }

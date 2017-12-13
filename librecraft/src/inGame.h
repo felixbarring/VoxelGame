@@ -27,8 +27,7 @@
  *
  * Updates the inagme state, controls the HUD and the GUI.
  */
-class InGame : public IGameState
-{
+class InGame : public IGameState {
 public:
   /**
    * @brief Creates an instance of the InGame class.
@@ -52,12 +51,7 @@ public:
   void update(double timePassed) override;
 
 private:
-  enum class GameState
-  {
-    NoOverlay,
-    OverlayMenu,
-    Terminal
-  };
+  enum class GameState { NoOverlay, OverlayMenu, Terminal };
 
   GameState m_state = GameState::NoOverlay;
   std::shared_ptr<gui::Terminal> m_terminal;

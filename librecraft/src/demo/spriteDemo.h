@@ -33,11 +33,9 @@
 #include "../graphics/graphicsManager.h"
 namespace demo {
 
-class SpriteDemo : public IDemo
-{
+class SpriteDemo : public IDemo {
 public:
-  void runDemo() override
-  {
+  void runDemo() override {
 
     util::FPSManager fpsManager(60);
     const GLuint WIDTH = 800, HEIGHT = 600;

@@ -11,8 +11,7 @@ namespace texture {
 
 TextureArray::TextureArray(std::vector<std::string> paths,
                            unsigned width,
-                           unsigned height)
-{
+                           unsigned height) {
   GLsizei layerCount = paths.size();
 
   glGenTextures(1, &textureID);
@@ -73,8 +72,7 @@ TextureArray::TextureArray(std::vector<std::string> paths,
 }
 
 void
-TextureArray::bind() const
-{
+TextureArray::bind() const {
   glBindTexture(GL_TEXTURE_2D_ARRAY, textureID);
 }
 }

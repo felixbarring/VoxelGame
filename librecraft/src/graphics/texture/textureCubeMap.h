@@ -7,8 +7,7 @@
 
 namespace texture {
 
-class TextureCubeMap
-{
+class TextureCubeMap {
 public:
   // TODO Take all six paths as arguments!
 

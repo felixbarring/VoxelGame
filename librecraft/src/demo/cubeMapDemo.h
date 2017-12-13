@@ -28,11 +28,9 @@ using namespace sf;
 
 namespace demo {
 
-class CubeMapDemo : public IDemo
-{
+class CubeMapDemo : public IDemo {
 public:
-  void runDemo() override
-  {
+  void runDemo() override {
     FPSManager fpsManager(100);
     const GLuint WIDTH = 800, HEIGHT = 600;
 

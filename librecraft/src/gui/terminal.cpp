@@ -16,8 +16,7 @@ Terminal::Terminal(vector<string> commands,
                    graphics::GraphicsManager& graphicsManager,
                    function<void(vector<string>)> commandListener)
   : m_graphicsManager{ graphicsManager }
-  , m_commands(commands)
-{
+  , m_commands(commands) {
 
   for (auto command : commands)
     m_trie.addString(command);
@@ -75,8 +74,7 @@ Terminal::Terminal(vector<string> commands,
 }
 
 void
-Terminal::update(float timePassed)
-{
+Terminal::update(float timePassed) {
   m_widgets->update(timePassed);
 
   if (util::Input::getInstance()->tabPressed) {
@@ -99,14 +97,12 @@ Terminal::update(float timePassed)
 }
 
 void
-Terminal::draw()
-{
+Terminal::draw() {
   m_widgets->draw();
 }
 
 void
-Terminal::addLine(string str)
-{
+Terminal::addLine(string str) {
   m_textArea->addLine(move(str));
 }
 

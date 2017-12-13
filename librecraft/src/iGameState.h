@@ -1,8 +1,7 @@
 #ifndef SRC_IGAMESTATE_H_
 #define SRC_IGAMESTATE_H_
 
-class IGameState
-{
+class IGameState {
 public:
   virtual ~IGameState() = default;
 

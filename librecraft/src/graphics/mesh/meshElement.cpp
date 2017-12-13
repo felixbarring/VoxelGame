@@ -7,8 +7,7 @@ namespace mesh {
 // TODO Maybe this class should have a function that returns an attribute map.
 
 MeshElement::MeshElement(std::vector<std::pair<std::vector<float>, int>> vbos,
-                         const std::vector<short>& elementData)
-{
+                         const std::vector<short>& elementData) {
   m_numberOfElements = elementData.size();
   const static int FLOAT_SIZE = (sizeof(float));
   const static int SHORT_SIZE = (sizeof(short));
@@ -48,8 +47,7 @@ MeshElement::MeshElement(std::vector<std::pair<std::vector<float>, int>> vbos,
   glBindVertexArray(0);
 }
 
-MeshElement::~MeshElement()
-{
+MeshElement::~MeshElement() {
   glDeleteVertexArrays(1, &m_VAO);
   for (GLuint handel : m_vboHandels)
     glDeleteBuffers(1, &handel);
@@ -58,8 +56,7 @@ MeshElement::~MeshElement()
 }
 
 void
-MeshElement::draw()
-{
+MeshElement::draw() {
   glBindVertexArray(m_VAO);
 
   for (unsigned i{ 0 }; i < m_vboHandels.size(); ++i)

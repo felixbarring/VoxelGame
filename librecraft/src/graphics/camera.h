@@ -13,8 +13,7 @@ namespace graphics {
  * \brief This class is used to produce the view matrix used for rendering.
  *
  */
-class Camera
-{
+class Camera {
 public:
   /**
    * \brief Creates a camera with position 0 for x, y, and z.

@@ -20,8 +20,7 @@ namespace widget {
  * The x and y location is the left bottom corner of the widget.
  *
  */
-class AbstractWidget : public IWidget
-{
+class AbstractWidget : public IWidget {
 public:
   /**
    * \brief Constructs a AbstractWidget.

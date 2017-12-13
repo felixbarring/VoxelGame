@@ -1,8 +1,7 @@
 #ifndef SRC_MODEL_WORLD_IWORLDOBJECT_H_
 #define SRC_MODEL_WORLD_IWORLDOBJECT_H_
 
-class IWorldObject
-{
+class IWorldObject {
 
   virtual ~IWorldObject();
 

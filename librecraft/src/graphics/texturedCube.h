@@ -8,16 +8,19 @@
 
 namespace graphics {
 
-class TexturedCube
-{
+class TexturedCube {
 public:
   TexturedCube(float xOffset, float yOffset, float zOffset, int id);
 
   void draw();
 
-  float getxLocation() { return xLocation; }
+  float getxLocation() {
+    return xLocation;
+  }
 
-  float getyLocation() { return yLocation; }
+  float getyLocation() {
+    return yLocation;
+  }
 
 private:
   // unique pointer gives error?!?

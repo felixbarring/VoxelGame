@@ -17,8 +17,7 @@
  * can be reused and exists as more than one instance, for instance in the main
  * menu and in the ingame menu.
  */
-class Settings
-{
+class Settings {
 public:
   /**
    * @brief Creates an instance of this class.

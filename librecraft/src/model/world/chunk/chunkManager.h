@@ -14,8 +14,7 @@
 
 namespace chunk {
 
-class ChunkManager
-{
+class ChunkManager {
 public:
   ChunkManager(CreationOptions options,
                util::SoundPlayer& soundPlayer,
@@ -82,13 +81,7 @@ private:
 
   void moveChunksDown();
 
-  enum class Direction
-  {
-    Right,
-    Left,
-    Up,
-    Down
-  };
+  enum class Direction { Right, Left, Up, Down };
 
   void moveChunks(Direction direction);
 

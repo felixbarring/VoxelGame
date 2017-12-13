@@ -3,8 +3,7 @@
 
 namespace entity {
 
-class IEntity
-{
+class IEntity {
 public:
   virtual ~IEntity(){};
 

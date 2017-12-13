@@ -21,8 +21,7 @@ Settings::Settings(std::shared_ptr<widget::WidgetGroup>& active,
   : m_soundPlayer(soundPlayer)
   , m_graphicsManager(graphicsManager)
   , m_activeWidgetGroup{ active }
-  , m_parentWidgetGroup{ parent }
-{
+  , m_parentWidgetGroup{ parent } {
   // ########################################################################
 
   {
@@ -265,7 +264,6 @@ Settings::Settings(std::shared_ptr<widget::WidgetGroup>& active,
 }
 
 shared_ptr<WidgetGroup>
-Settings::getMainWidgetGroup() const
-{
+Settings::getMainWidgetGroup() const {
   return m_settingsWidgetGroup;
 }

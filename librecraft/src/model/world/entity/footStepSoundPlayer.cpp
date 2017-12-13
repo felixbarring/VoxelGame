@@ -12,13 +12,11 @@ using std::uniform_int_distribution;
 FootStepSoundPlayer::FootStepSoundPlayer(util::SoundPlayer& player,
                                          std::vector<std::string> stepSounds)
   : m_stepSounds{ stepSounds }
-  , m_soundPlayer{ player }
-{
+  , m_soundPlayer{ player } {
 }
 
 void
-FootStepSoundPlayer::walkingActive(double time)
-{
+FootStepSoundPlayer::walkingActive(double time) {
   if ((m_accumulatedTime += time) <= m_footStepDelay)
     return;
 
@@ -27,8 +25,7 @@ FootStepSoundPlayer::walkingActive(double time)
 }
 
 void
-FootStepSoundPlayer::playSteppingSound()
-{
+FootStepSoundPlayer::playSteppingSound() {
   static int last{ -1 };
   static random_device randomDevice;
   static mt19937 randomNumber(randomDevice());
@@ -44,7 +41,6 @@ FootStepSoundPlayer::playSteppingSound()
 }
 
 void
-FootStepSoundPlayer::setWalkingIntervall(double value)
-{
+FootStepSoundPlayer::setWalkingIntervall(double value) {
   m_footStepDelay = value;
 }

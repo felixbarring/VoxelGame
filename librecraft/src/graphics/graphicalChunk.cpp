@@ -28,8 +28,7 @@ GraphicalChunk::GraphicalChunk(double _x,
   , m_zLocation{ _z }
   , transform{ _x + m_width / 2 + 0.5f,
                _y + m_height / 2 + 0.5f,
-               _z + m_depth / 2 + 0.5f }
-{
+               _z + m_depth / 2 + 0.5f } {
 
   // The face data will be one bigger in each direction.
   // This is to make it possible to compare voxels with
@@ -44,9 +43,9 @@ GraphicalChunk::GraphicalChunk(double _x,
         Voxel* voxel = getVoxel(
           x - 1, y - 1 + m_yLocation, z - 1, data, right, left, back, front);
         if (voxel) {
-          cube.id = voxel->m_id;
-          cube.sunLightValue = voxel->m_sunLightValue;
-          cube.otherLightValue = voxel->m_otherLightValue;
+          cube.id = voxel->getId();
+          cube.sunLightValue = voxel->getSunLightValue();
+          cube.otherLightValue = voxel->getOtherLightValue();
         } else {
           cube.id = AIR;
           cube.sunLightValue = 0;
@@ -334,8 +333,7 @@ GraphicalChunk::GraphicalChunk(double _x,
 // ########################################################
 
 void
-GraphicalChunk::uploadData()
-{
+GraphicalChunk::uploadData() {
   vector<GLfloat> vertexData;
   vector<GLfloat> lightData;
   vector<GLfloat> normals;
@@ -374,44 +372,37 @@ GraphicalChunk::uploadData()
 }
 
 void
-GraphicalChunk::drawNoneTransparent()
-{
+GraphicalChunk::drawNoneTransparent() {
   m_mesh->draw();
 }
 
 void
-GraphicalChunk::drawTransparent()
-{
+GraphicalChunk::drawTransparent() {
   m_waterMesh->draw();
 }
 
 bool
-GraphicalChunk::hasTransparent()
-{
+GraphicalChunk::hasTransparent() {
   return m_hasTransparent;
 }
 
 Transform&
-GraphicalChunk::getTransform()
-{
+GraphicalChunk::getTransform() {
   return transform;
 }
 
 float
-GraphicalChunk::getxLocation()
-{
+GraphicalChunk::getxLocation() {
   return m_xLocation;
 }
 
 float
-GraphicalChunk::getyLocation()
-{
+GraphicalChunk::getyLocation() {
   return m_yLocation;
 }
 
 float
-GraphicalChunk::getzLocation()
-{
+GraphicalChunk::getzLocation() {
   return m_zLocation;
 }
 
@@ -426,8 +417,7 @@ GraphicalChunk::getVoxel(int x,
                          vector<vector<vector<Voxel>>>* right,
                          vector<vector<vector<Voxel>>>* left,
                          vector<vector<vector<Voxel>>>* back,
-                         vector<vector<vector<Voxel>>>* front)
-{
+                         vector<vector<vector<Voxel>>>* front) {
 
   if (y >= config::chunk_data::CHUNK_HEIGHT || y < 0)
     return nullptr;
@@ -473,8 +463,7 @@ GraphicalChunk::createMeshData(
   vector<GLfloat>& lightData,
   vector<GLfloat>& normals,
   vector<GLfloat>& UV,
-  vector<short>& elementData)
-{
+  vector<short>& elementData) {
 
   short elementOffset{ 0 };
   int totalNumberOfFaces{ 0 };
@@ -767,8 +756,7 @@ GraphicalChunk::doAORight(
   int x,
   int y,
   int z,
-  std::vector<std::vector<std::vector<CubeFaceData>>>& faceData)
-{
+  std::vector<std::vector<std::vector<CubeFaceData>>>& faceData) {
 
   CubeFaceData v;
 
@@ -827,8 +815,7 @@ GraphicalChunk::doAOLeft(
   int x,
   int y,
   int z,
-  std::vector<std::vector<std::vector<CubeFaceData>>>& faceData)
-{
+  std::vector<std::vector<std::vector<CubeFaceData>>>& faceData) {
 
   CubeFaceData v;
 
@@ -887,8 +874,7 @@ GraphicalChunk::doAOFront(
   int x,
   int y,
   int z,
-  std::vector<std::vector<std::vector<CubeFaceData>>>& faceData)
-{
+  std::vector<std::vector<std::vector<CubeFaceData>>>& faceData) {
 
   CubeFaceData v;
 
@@ -947,8 +933,7 @@ GraphicalChunk::doAOBack(
   int x,
   int y,
   int z,
-  std::vector<std::vector<std::vector<CubeFaceData>>>& faceData)
-{
+  std::vector<std::vector<std::vector<CubeFaceData>>>& faceData) {
 
   CubeFaceData v;
 
@@ -1007,8 +992,7 @@ GraphicalChunk::doAOTop(
   int x,
   int y,
   int z,
-  std::vector<std::vector<std::vector<CubeFaceData>>>& faceData)
-{
+  std::vector<std::vector<std::vector<CubeFaceData>>>& faceData) {
 
   CubeFaceData v;
 
@@ -1067,8 +1051,7 @@ GraphicalChunk::doAOBottom(
   int x,
   int y,
   int z,
-  std::vector<std::vector<std::vector<CubeFaceData>>>& faceData)
-{
+  std::vector<std::vector<std::vector<CubeFaceData>>>& faceData) {
 
   float bottomLeft = 0;
   CubeFaceData v = faceData[x - 1][y - 1][z];

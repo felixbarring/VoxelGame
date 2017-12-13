@@ -12,8 +12,7 @@ Image::Image(double x,
              double height,
              const std::string& image,
              graphics::GraphicsManager& graphicsManager)
-  : m_graphicsManager{ graphicsManager }
-{
+  : m_graphicsManager{ graphicsManager } {
   m_sprite.reset(new graphics::Sprite{
     x,
     y,
@@ -24,8 +23,7 @@ Image::Image(double x,
 }
 
 void
-Image::draw()
-{
+Image::draw() {
   m_graphicsManager.getSpriteBatcher().addBatch(*m_sprite);
 }
 

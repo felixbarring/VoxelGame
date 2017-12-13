@@ -8,8 +8,7 @@
 
 namespace gui {
 
-class Image
-{
+class Image {
 public:
   Image(double x,
         double y,

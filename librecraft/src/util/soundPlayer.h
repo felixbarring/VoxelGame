@@ -12,8 +12,7 @@ namespace util {
 /**
  * @brief Class for managing all music and sounds.
  */
-class SoundPlayer
-{
+class SoundPlayer {
 public:
   SoundPlayer() = default;
 
@@ -107,11 +106,7 @@ public:
   double getMusicVolume();
 
 private:
-  enum class ChangeMusicVolume
-  {
-    INCREASE,
-    DECREASE
-  };
+  enum class ChangeMusicVolume { INCREASE, DECREASE };
 
   /**
    * @brief Changes the volume of the currently playing music.

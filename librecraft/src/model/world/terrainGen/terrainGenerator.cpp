@@ -27,13 +27,11 @@ mutex s_mutex;
 TerrainGenerator::TerrainGenerator(int width, int height, int depth, int seed)
   : m_width{ width }
   , m_height{ height }
-  , m_depth{ depth }
-{
+  , m_depth{ depth } {
 }
 
 TerrainGenerator::VoxelMatrix
-TerrainGenerator::generateTerrain(CreationOptions& options, int x, int y)
-{
+TerrainGenerator::generateTerrain(CreationOptions& options, int x, int y) {
   {
     lock_guard<mutex> lock(s_mutex);
     if (options.differentCubesForEachChunk())
@@ -57,8 +55,7 @@ TerrainGenerator::generateTerrain(CreationOptions& options, int x, int y)
 }
 
 void
-TerrainGenerator::defaultFill(VoxelMatrix& cubes)
-{
+TerrainGenerator::defaultFill(VoxelMatrix& cubes) {
   for (int x{ 0 }; x < m_width; ++x) {
     cubes.push_back(vector<vector<Voxel>>());
     for (int y{ 0 }; y < m_height; ++y) {
@@ -74,26 +71,24 @@ TerrainGenerator::defaultFill(VoxelMatrix& cubes)
 }
 
 void
-TerrainGenerator::generateFlat(VoxelMatrix& cubes)
-{
+TerrainGenerator::generateFlat(VoxelMatrix& cubes) {
   for (int x{ 0 }; x < m_width; ++x) {
     for (int z{ 0 }; z < m_depth; ++z) {
       for (int y{ 0 }; y < m_height; ++y) {
         auto& v = cubes[x][y][z];
         if (y == 0) {
-          v.m_id = config::cube_data::BED_ROCK;
+          v.setId(config::cube_data::BED_ROCK);
           continue;
         }
         if (y < 30)
-          v.m_id = m_counterValue;
+          v.setId(m_counterValue);
       }
     }
   }
 }
 
 void
-TerrainGenerator::generateNoneFlat(VoxelMatrix& cubes, int x, int z)
-{
+TerrainGenerator::generateNoneFlat(VoxelMatrix& cubes, int x, int z) {
   module::RidgedMulti mountainSource;
   mountainSource.SetFrequency(0.05);
   mountainSource.SetOctaveCount(3);
@@ -140,12 +135,12 @@ TerrainGenerator::generateNoneFlat(VoxelMatrix& cubes, int x, int z)
           auto& v = cubes[x][i][z];
 
           if (i <= m_seaLevel)
-            v.m_id = config::cube_data::WATER;
+            v.setId(config::cube_data::WATER);
           if (i < height)
-            v.m_id = config::cube_data::DIRT;
+            v.setId(config::cube_data::DIRT);
 
           if (i >= m_seaLevel && i < height)
-            v.m_id = config::cube_data::SAND;
+            v.setId(config::cube_data::SAND);
         }
         continue;
       }
@@ -176,8 +171,7 @@ TerrainGenerator::generateGrassLand(VoxelMatrix& cubes,
                                     int xOff,
                                     int zOff,
                                     int x,
-                                    int z)
-{
+                                    int z) {
 
   module::Perlin tree;
   tree.SetFrequency(2);
@@ -190,12 +184,12 @@ TerrainGenerator::generateGrassLand(VoxelMatrix& cubes,
 
     static const double stonePercentage{ 1.0 / 2.0 };
     if (y < height * stonePercentage)
-      v.m_id = config::cube_data::STONE;
+      v.setId(config::cube_data::STONE);
     else
-      v.m_id = config::cube_data::DIRT;
+      v.setId(config::cube_data::DIRT);
 
     if (y + 1 > height) {
-      v.m_id = config::cube_data::GRASS;
+      v.setId(config::cube_data::GRASS);
 
       double shouldHaveTrees =
         treeArea.GetValue((xOff + static_cast<int>(x)) / 10.0,
@@ -231,44 +225,41 @@ TerrainGenerator::generateDessert(VoxelMatrix& cubes,
                                   int xOff,
                                   int zOff,
                                   int x,
-                                  int z)
-{
+                                  int z) {
   for (int y{ 1 }; y < height; ++y) {
     auto& v = cubes[x][y][z];
 
-    v.m_id = config::cube_data::SAND;
+    v.setId(config::cube_data::SAND);
   }
 }
 
 void
-TerrainGenerator::placeTree(VoxelMatrix& cubes, int x, int y, int z)
-{
+TerrainGenerator::placeTree(VoxelMatrix& cubes, int x, int y, int z) {
   for (int i{ y }; i < y + 5; ++i)
-    cubes[x][i][z].m_id = config::cube_data::LOG_BIRCH;
+    cubes[x][i][z].setId(config::cube_data::LOG_BIRCH);
 
-  cubes[x][y + 5][z].m_id = config::cube_data::LEAVES_BIRCH;
-  cubes[x][y + 5][z + 1].m_id = config::cube_data::LEAVES_BIRCH;
-  cubes[x][y + 5][z - 1].m_id = config::cube_data::LEAVES_BIRCH;
+  cubes[x][y + 5][z].setId(config::cube_data::LEAVES_BIRCH);
+  cubes[x][y + 5][z + 1].setId(config::cube_data::LEAVES_BIRCH);
+  cubes[x][y + 5][z - 1].setId(config::cube_data::LEAVES_BIRCH);
 
-  cubes[x + 1][y + 5][z].m_id = config::cube_data::LEAVES_BIRCH;
-  cubes[x + 1][y + 5][z + 1].m_id = config::cube_data::LEAVES_BIRCH;
-  cubes[x + 1][y + 5][z - 1].m_id = config::cube_data::LEAVES_BIRCH;
+  cubes[x + 1][y + 5][z].setId(config::cube_data::LEAVES_BIRCH);
+  cubes[x + 1][y + 5][z + 1].setId(config::cube_data::LEAVES_BIRCH);
+  cubes[x + 1][y + 5][z - 1].setId(config::cube_data::LEAVES_BIRCH);
 
-  cubes[x - 1][y + 5][z].m_id = config::cube_data::LEAVES_BIRCH;
-  cubes[x - 1][y + 5][z + 1].m_id = config::cube_data::LEAVES_BIRCH;
-  cubes[x - 1][y + 5][z - 1].m_id = config::cube_data::LEAVES_BIRCH;
+  cubes[x - 1][y + 5][z].setId(config::cube_data::LEAVES_BIRCH);
+  cubes[x - 1][y + 5][z + 1].setId(config::cube_data::LEAVES_BIRCH);
+  cubes[x - 1][y + 5][z - 1].setId(config::cube_data::LEAVES_BIRCH);
 }
 
 bool
-TerrainGenerator::hasTreeNeighboor(VoxelMatrix& cubes, int x, int y, int z)
-{
-  return cubes[x][y][z + 1].m_id == config::cube_data::LOG_BIRCH ||
-         cubes[x][y][z - 1].m_id == config::cube_data::LOG_BIRCH ||
+TerrainGenerator::hasTreeNeighboor(VoxelMatrix& cubes, int x, int y, int z) {
+  return cubes[x][y][z + 1].getId() == config::cube_data::LOG_BIRCH ||
+         cubes[x][y][z - 1].getId() == config::cube_data::LOG_BIRCH ||
 
-         cubes[x + 1][y][z + 1].m_id == config::cube_data::LOG_BIRCH ||
-         cubes[x + 1][y][z - 1].m_id == config::cube_data::LOG_BIRCH ||
+         cubes[x + 1][y][z + 1].getId() == config::cube_data::LOG_BIRCH ||
+         cubes[x + 1][y][z - 1].getId() == config::cube_data::LOG_BIRCH ||
 
-         cubes[x - 1][y][z + 1].m_id == config::cube_data::LOG_BIRCH ||
-         cubes[x - 1][y][z - 1].m_id == config::cube_data::LOG_BIRCH;
+         cubes[x - 1][y][z + 1].getId() == config::cube_data::LOG_BIRCH ||
+         cubes[x - 1][y][z - 1].getId() == config::cube_data::LOG_BIRCH;
 }
 }

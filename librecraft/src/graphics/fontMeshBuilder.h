@@ -23,8 +23,7 @@ namespace graphics {
 /**
  * \class FontMeshBuilder
  */
-class FontMeshBuilder
-{
+class FontMeshBuilder {
 public:
   FontMeshBuilder(std::string& pathToLayout, int atlasWidth, int atlasHeight);
 
@@ -61,8 +60,7 @@ public:
 private:
   void printCharData();
 
-  struct CharData
-  {
+  struct CharData {
     int width;
     int height;
 

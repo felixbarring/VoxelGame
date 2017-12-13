@@ -10,8 +10,7 @@ namespace graphics {
  * object the position and rotation
  *        around x, y, and z axles.
  */
-class Transform
-{
+class Transform {
 public:
   /**
    * \brief Creates a transform matrix at the the specified location with no

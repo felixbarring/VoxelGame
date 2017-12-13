@@ -12,8 +12,7 @@
 
 namespace widget {
 
-class TextInput : public AbstractWidget
-{
+class TextInput : public AbstractWidget {
 public:
   /**
    *

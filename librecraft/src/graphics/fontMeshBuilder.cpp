@@ -15,8 +15,7 @@ FontMeshBuilder::FontMeshBuilder(string& pathToLayout,
                                  int atlasWidth,
                                  int atlasHeight)
   : ATLAS_WIDTH(atlasWidth)
-  , ATLAS_HEIGHT(atlasHeight)
-{
+  , ATLAS_HEIGHT(atlasHeight) {
 
   vector<string> list;
   ifstream in_stream;
@@ -67,8 +66,7 @@ FontMeshBuilder::FontMeshBuilder(string& pathToLayout,
 }
 
 shared_ptr<mesh::MeshElement>
-FontMeshBuilder::buldMeshForString(const string& str, float height)
-{
+FontMeshBuilder::buldMeshForString(const string& str, float height) {
 
   vector<float> vertices;
   vector<float> uvCoordinates;
@@ -139,16 +137,14 @@ FontMeshBuilder::buldMeshForString(const string& str, float height)
 }
 
 float
-FontMeshBuilder::lenghtOfString(const std::string& str, float height)
-{
+FontMeshBuilder::lenghtOfString(const std::string& str, float height) {
   return lenghtOfStringAtChar(str, height, str.length());
 }
 
 float
 FontMeshBuilder::lenghtOfStringAtChar(const std::string& str,
                                       float height,
-                                      int num)
-{
+                                      int num) {
   float stringSize = 0;
   for (int i = 0; i < num; ++i) {
     const CharData cd = charData[str[i]];
@@ -161,8 +157,7 @@ FontMeshBuilder::lenghtOfStringAtChar(const std::string& str,
 int
 FontMeshBuilder::splitStringAt(const std::string& str,
                                int height,
-                               float maxLength)
-{
+                               float maxLength) {
   if (lenghtOfString(str, height) < maxLength)
     return -1;
 
@@ -178,8 +173,7 @@ FontMeshBuilder::splitStringAt(const std::string& str,
 }
 
 void
-FontMeshBuilder::printCharData()
-{
+FontMeshBuilder::printCharData() {
   for (CharData cd : charData) {
     std::cout << "Width: " << cd.width << ", Height: " << cd.height
               << ", xPosition: " << cd.xPosition

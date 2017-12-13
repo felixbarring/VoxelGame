@@ -10,11 +10,9 @@
 
 namespace demo {
 
-class LibNoiseDemo : public IDemo
-{
+class LibNoiseDemo : public IDemo {
 public:
-  void runDemo() override
-  {
+  void runDemo() override {
 
     using namespace noise;
     using namespace std;

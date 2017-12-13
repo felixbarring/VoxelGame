@@ -6,14 +6,12 @@
 
 namespace util {
 
-class Performance
-{
+class Performance {
 
   Performance();
 
 public:
-  Performance getInstance()
-  {
+  Performance getInstance() {
     static Performance INSTANCE;
     return INSTANCE;
   }

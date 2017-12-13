@@ -17,8 +17,7 @@
 /**
  *
  */
-class Game
-{
+class Game {
 public:
   /**
    *

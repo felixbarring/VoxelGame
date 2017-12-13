@@ -16,14 +16,12 @@ namespace gui {
 
 Mouse::Mouse(graphics::GraphicsManager& graphicsManager)
   : m_graphicsManager{ graphicsManager }
-  , m_input{ util::Input::getInstance() }
-{
+  , m_input{ util::Input::getInstance() } {
 }
 
 void
-Mouse::update()
-{
-  double y{m_input->mouseYPosition - config::graphics_data::windowHeight};
+Mouse::update() {
+  double y{ m_input->mouseYPosition - config::graphics_data::windowHeight };
   if (y < 0)
     y = -y;
   else
@@ -43,21 +41,18 @@ Mouse::update()
 }
 
 void
-Mouse::draw()
-{
+Mouse::draw() {
   m_graphicsManager.getSpriteBatcher().addBatch(m_sprite);
 }
 
 void
-Mouse::lock()
-{
+Mouse::lock() {
   m_input->lockMouse();
   m_locked = true;
 }
 
 void
-Mouse::unlock()
-{
+Mouse::unlock() {
   m_input->unlockMouse();
   m_locked = false;
 }

@@ -13,8 +13,7 @@
  * The purpose of this class is to play sound effects that represents foot
  * step in various speeds.
  */
-class FootStepSoundPlayer
-{
+class FootStepSoundPlayer {
 public:
   /**
    * @brief Constructs an instance of FootStepSoundPlayer.

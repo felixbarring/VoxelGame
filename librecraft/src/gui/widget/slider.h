@@ -20,8 +20,7 @@ namespace widget {
  * it represents the value 1. It will linearly change value between these two
  * positions.
  */
-class Slider : public AbstractWidget
-{
+class Slider : public AbstractWidget {
 public:
   /**
    * @brief Constructs a slider instance.

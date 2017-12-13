@@ -15,8 +15,7 @@ namespace graphics {
 TexturedCube::TexturedCube(float xOffset, float yOffset, float zOffset, int id)
   : xLocation{ xOffset }
   , yLocation{ yOffset }
-  , zLocation{ zOffset }
-{
+  , zLocation{ zOffset } {
 
   float size = 0.51f;
 
@@ -232,8 +231,7 @@ TexturedCube::TexturedCube(float xOffset, float yOffset, float zOffset, int id)
 }
 
 void
-TexturedCube::draw()
-{
+TexturedCube::draw() {
   m_mesh->draw();
 }
 }

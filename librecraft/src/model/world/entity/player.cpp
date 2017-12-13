@@ -30,13 +30,11 @@ Player::Player(chunk::ChunkManager& chunkManager,
                graphics::GraphicsManager& graphicsManager)
   : m_chunkManager{ chunkManager }
   , m_stepPlayer{ soundPlayer, config::souds::footStepSounds }
-  , m_graphicsManager{ graphicsManager }
-{
+  , m_graphicsManager{ graphicsManager } {
 }
 
 void
-Player::update(float timePassed)
-{
+Player::update(float timePassed) {
   updateIsOnGround();
   updateSpeed(timePassed);
   handlePhysics();
@@ -49,38 +47,32 @@ Player::update(float timePassed)
 }
 
 void
-Player::setLocation(float x, float y, float z)
-{
+Player::setLocation(float x, float y, float z) {
   m_location = vec3(x, y, z);
 }
 
 void
-Player::turnGravityOff(bool value)
-{
+Player::turnGravityOff(bool value) {
   m_gravitiyOn = !value;
 }
 
 vec3
-Player::getViewingDirection()
-{
+Player::getViewingDirection() {
   return m_viewDirection.getViewDirection();
 }
 
 glm::vec3
-Player::getLastSelectedCube()
-{
+Player::getLastSelectedCube() {
   return m_lastSelecteCube;
 }
 
 void
-Player::setSpeed(double value)
-{
+Player::setSpeed(double value) {
   m_movementSpeed = value;
 }
 
 void
-Player::updateSpeed(float timePassed)
-{
+Player::updateSpeed(float timePassed) {
   auto input = Input::getInstance();
   m_viewDirection.changeViewDirection(input->mouseXMovement,
                                       input->mouseYMovement);
@@ -164,8 +156,7 @@ Player::updateSpeed(float timePassed)
 }
 
 void
-Player::handlePhysics()
-{
+Player::handlePhysics() {
   vector<tuple<float, int, vec3>> collisions;
   intersected(m_frameSpeed, collisions);
 
@@ -203,8 +194,7 @@ Player::handlePhysics()
 }
 
 void
-Player::updateCameraAndTargetCube()
-{
+Player::updateCameraAndTargetCube() {
   shared_ptr<Input> input = Input::getInstance();
 
   m_graphicsManager.getPlayerCamera().updateView(
@@ -246,22 +236,21 @@ Player::updateCameraAndTargetCube()
     Voxel voxel{ m_chunkManager.getVoxel(previous.x, previous.y, previous.z) };
     m_graphicsManager.getCubeBatcher().addBatch(voxelID,
                                                 m_targetedCubeTransform,
-                                                voxel.m_sunLightValue + 5,
-                                                voxel.m_otherLightValue + 5);
+                                                voxel.getSunLightValue() + 5,
+                                                voxel.getOtherLightValue() + 5);
   }
 }
 
 void
-Player::updateIsOnGround()
-{
+Player::updateIsOnGround() {
   vector<tuple<float, int, vec3>> collisions;
   intersected(vec3(0, -0.1, 0), collisions);
   m_isOnGround = !collisions.empty();
 }
 
 void
-Player::intersected(vec3 movement, vector<tuple<float, int, vec3>>& collisions)
-{
+Player::intersected(vec3 movement,
+                    vector<tuple<float, int, vec3>>& collisions) {
 
   AABB start = createAABB();
 
@@ -295,8 +284,7 @@ Player::intersected(vec3 movement, vector<tuple<float, int, vec3>>& collisions)
 }
 
 bool
-Player::isInWater()
-{
+Player::isInWater() {
   //   Fix hardcoded shit...
   AABB box{ m_location.x - 0.4, m_location.x + 0.4, m_location.y - 1.5,
             m_location.y + 0.1, m_location.z - 0.4, m_location.z + 0.4 };
@@ -322,8 +310,7 @@ Player::isInWater()
 }
 
 AABB
-Player::createAABB()
-{
+Player::createAABB() {
   return {
     m_location.x - m_width / 2,    m_location.x + m_width / 2,
     m_location.y - m_cameraHeight, m_location.y + m_height - m_cameraHeight,

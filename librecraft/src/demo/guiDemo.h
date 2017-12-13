@@ -40,11 +40,9 @@ using namespace sf;
 
 namespace demo {
 
-class GuiDemo : public IDemo
-{
+class GuiDemo : public IDemo {
 public:
-  void runDemo() override
-  {
+  void runDemo() override {
     util::FPSManager fpsManager(60);
     const GLuint WIDTH = 1200, HEIGHT = 600;
 

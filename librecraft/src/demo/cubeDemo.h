@@ -31,11 +31,9 @@ using graphics::Camera;
 
 namespace demo {
 
-class CubeDemo : public IDemo
-{
+class CubeDemo : public IDemo {
 public:
-  void runDemo() override
-  {
+  void runDemo() override {
 
     util::FPSManager fpsManager(100);
     int WIDTH = 800;

@@ -30,8 +30,7 @@ TextInput::TextInput(int id,
   : AbstractWidget(id, x, y, width, height, graphicsManager)
   , m_layer{ layer }
   , m_maxInputLength{ width }
-  , m_textHeight{ height - s_textHightDifference }
-{
+  , m_textHeight{ height - s_textHightDifference } {
   Resources& res = Resources::getInstance();
 
   m_background = make_unique<Sprite>(
@@ -47,7 +46,7 @@ TextInput::TextInput(int id,
     res.getFontMeshBuilder(fontLayout, fontAtlasWidth, fontAtlasHeight);
 
   shared_ptr<mesh::MeshElement> fontMesh =
-      fontMeshBuilder.buldMeshForString(m_input, m_textHeight);
+    fontMeshBuilder.buldMeshForString(m_input, m_textHeight);
   m_text = make_unique<Sprite>(x,
                                y + s_textHightDifference,
                                layer + 1,
@@ -56,8 +55,7 @@ TextInput::TextInput(int id,
 }
 
 void
-TextInput::setString(string str)
-{
+TextInput::setString(string str) {
   Resources& res = Resources::getInstance();
   m_input = str;
 
@@ -65,7 +63,7 @@ TextInput::setString(string str)
     res.getFontMeshBuilder(fontLayout, fontAtlasWidth, fontAtlasHeight);
 
   shared_ptr<mesh::MeshElement> fontMesh =
-      fontMeshBuilder.buldMeshForString(m_input, m_textHeight);
+    fontMeshBuilder.buldMeshForString(m_input, m_textHeight);
   m_text = make_unique<Sprite>(m_xCoordinate,
                                m_yCoordinate + s_textHightDifference,
                                m_layer + 1,
@@ -78,14 +76,12 @@ TextInput::setString(string str)
 }
 
 string
-TextInput::getString()
-{
+TextInput::getString() {
   return m_input;
 }
 
 void
-TextInput::draw()
-{
+TextInput::draw() {
   m_graphicsManager.getSpriteBatcher().addBatch(*m_background);
 
   if (m_cursorVissible && m_hasFocus)
@@ -95,8 +91,7 @@ TextInput::draw()
 }
 
 void
-TextInput::update(float timePassed)
-{
+TextInput::update(float timePassed) {
   shared_ptr<Input> input = Input::getInstance();
 
   // Blinking cursor
@@ -164,8 +159,7 @@ TextInput::update(float timePassed)
 }
 
 void
-TextInput::setFocus(bool value)
-{
+TextInput::setFocus(bool value) {
   m_hasFocus = value;
 }
 

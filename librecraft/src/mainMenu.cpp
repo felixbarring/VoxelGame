@@ -26,8 +26,7 @@ MainMenu::MainMenu(Game& game,
   , m_settings{ m_activeWidgetGroup,
                 m_mainWidgetGroup,
                 m_soundPlayer,
-                m_graphicsManager }
-{
+                m_graphicsManager } {
 
   glm::mat4 matrix = gui::createVirtualToScreen(
     config::graphics_data::virtualWidth,
@@ -385,8 +384,7 @@ MainMenu::MainMenu(Game& game,
 }
 
 void
-MainMenu::update(double timePassed)
-{
+MainMenu::update(double timePassed) {
   shared_ptr<util::Input> input = util::Input::getInstance();
 
   m_mouse.unlock();
@@ -404,8 +402,7 @@ MainMenu::update(double timePassed)
 }
 
 string
-randomName()
-{
+randomName() {
 
   static vector<string> names{ "Dank World", "Bloxel", "Sees",  "Soos",
                                "Satan",      "Shrek",  "Memus", "Adventure",

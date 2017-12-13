@@ -24,11 +24,9 @@
 
 namespace demo {
 
-class TextureDemo : public IDemo
-{
+class TextureDemo : public IDemo {
 public:
-  void runDemo() override
-  {
+  void runDemo() override {
 
     using namespace sf;
 

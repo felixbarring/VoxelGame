@@ -22,8 +22,7 @@ namespace graphics {
  *  batch function. The sunstrength can be set to affect how bright color the
  *  batches will have.
  *  */
-class CubeBatcher
-{
+class CubeBatcher {
 public:
   explicit CubeBatcher(Camera& camera);
 
@@ -61,8 +60,7 @@ public:
   void setSunStrenght(float value);
 
 private:
-  class Batch
-  {
+  class Batch {
   public:
     Batch(TexturedCube& cube,
           Transform& transform,
@@ -71,8 +69,7 @@ private:
       : m_cube{ cube }
       , m_transform{ transform }
       , m_sunLight{ lightValue }
-      , m_otherLight{ otherLight }
-    {
+      , m_otherLight{ otherLight } {
     }
 
     TexturedCube& m_cube;

@@ -9,8 +9,7 @@
 
 namespace graphics {
 
-class Sprite
-{
+class Sprite {
 public:
   Sprite(double x,
          double y,
