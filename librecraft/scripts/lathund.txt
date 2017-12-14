@@ -36,15 +36,13 @@ And then just import it with your ide.
 
 Tools
 
-# Used to count lines of code
-find . -name "*.h" -or -name "*.cpp" | xargs wc -l
-
 lizard
 cppcheck --enable=all src/
 clang-tidy -checks='*' file.cpp --
 
 valgrind
-callgrind
-gcov
-gprof
+callgrind + kcachegrind
+	valgrind --tool=callgrind ./build/VoxelGame
+massiff + massif-visualizer
+  valgrind --tool=massiff ./build/VoxelGame
 
