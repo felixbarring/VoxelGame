@@ -45,3 +45,14 @@ Minecraft, that way it is possible to use texture packs for minecraft in this
 game and avoid creating my own.
 
 ###
+
+World Generation
+Type: Feature
+
+Make an interesting world generation, using biomes, trees, floora, rivers etc.
+
+As a first step there should be one grassland biome. Grassland can be plain, 
+but also dence or sparce forest. There are also occasional ponds or lakes with 
+water.
+
+###

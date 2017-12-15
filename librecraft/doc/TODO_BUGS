@@ -52,6 +52,19 @@ only happens for light cubes it seems.
 Games crashes directly after entering the ingame mode, segfault when trying
 to access a cube. Has only happend once I think.
 
+###
+
+There might be some bad memory accesses. Valgrind crashes when it is run
+with player.updatePhisics(). It seems it has something to do with acessing 
+voxels.
+
+###
+
+Game crashes when looking at bedrock, vector out of bounds.
+
+###
+
+Game crashes when trying to access history in terminal.
 
 
 

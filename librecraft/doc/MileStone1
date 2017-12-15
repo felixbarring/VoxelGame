@@ -24,10 +24,9 @@ Type: Feature
 
 Make an interesting world generation, using biomes, trees, floora, rivers etc.
 
-As a first step there should be possible to have two biomes, one for dessert and
-one for grassland. Dessert only contains sand and some occasional cactuses. 
-Grassland can be plain, but also dence or sparce forest. There are also
-occasional ponds or lakes with water.
+As a first step there should be one grassland biome. Grassland can be plain, 
+but also dence or sparce forest. There are also occasional ponds or lakes with 
+water.
 
 ###
 
@@ -38,6 +37,26 @@ Type: Feature
 Add more block types to make the game more interesting. Use similar types as
 Minecraft, that way it is possible to use texture packs for minecraft in this
 game and avoid creating my own.
+
+###
+
+Reduce memory use for graphical chunk.
+Type: Performance
+
+Graphical chunk usses a massive amount of memmory when creating the meshes.
+About 2 gig when creating a small world. When the graphics are finished
+the memory goes back to 2Mib wich is quite okay IMO.Found this out by using 
+Valgrind massif. The size when creating a graphical chunk should not need to
+be much bigger than a normal chunk.
+
+###
+
+Reduce the voxel size to 2 bytes.
+
+Type: Performance
+
+Instead of storing the light values in 2 bytes, the can share by using 4 bits 
+each. Need to use bitmasking and shifting to accomplish.
 
 ###
 
