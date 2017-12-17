@@ -117,7 +117,7 @@ private:
 
   std::map<std::string, sf::SoundBuffer> m_buffers;
   std::vector<std::unique_ptr<sf::Sound>> m_playingSounds;
-  std::shared_ptr<sf::Music> m_playingMusic;
+  std::unique_ptr<sf::Music> m_playingMusic;
 
   bool m_graduayllChange{ false };
   double m_changeVolume{};

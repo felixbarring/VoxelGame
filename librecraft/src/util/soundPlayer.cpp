@@ -9,7 +9,7 @@
 
 namespace util {
 
-double kek{ 100 };
+double volumeScaler{ 100 };
 
 // Just a function that clamps the values to 0 or 100.
 // Used to prevent OpenAl errors.
@@ -47,7 +47,6 @@ SoundPlayer::update(double time) {
 
 void
 SoundPlayer::playSound(const std::string& soundPath) {
-
   if (m_buffers.find(soundPath) == m_buffers.end()) {
     sf::SoundBuffer buffer;
     if (!buffer.loadFromFile(soundPath))
@@ -57,19 +56,20 @@ SoundPlayer::playSound(const std::string& soundPath) {
 
   auto sound = std::make_unique<sf::Sound>();
   sound->setBuffer((*m_buffers.find(soundPath)).second);
-  sound->play();
   sound->setVolume(validVolume(m_soundVolume * m_masterVolume));
+  sound->play();
   m_playingSounds.push_back(std::move(sound));
 }
 
 void
 SoundPlayer::playMusic(const std::string& musicPath) {
-  auto music = std::make_shared<sf::Music>();
+  auto music = std::make_unique<sf::Music>();
   if (!music->openFromFile(musicPath))
     std::cout << "Could not play music :( - " << musicPath << "\n";
-  music->play();
-  music->setVolume(validVolume(m_musicVolume * m_masterVolume));
-  m_playingMusic = music;
+  m_playingMusic = move(music);
+
+  m_playingMusic->setVolume(validVolume(m_musicVolume * m_masterVolume));
+  m_playingMusic->play();
 
   graduallyChangeMusicVolume(ChangeMusicVolume::INCREASE);
 }
@@ -94,24 +94,24 @@ SoundPlayer::getMasterVolume() {
 
 void
 SoundPlayer::setSoundVolume(double value) {
-  m_soundVolume = value * kek;
+  m_soundVolume = value * volumeScaler;
 }
 
 double
 SoundPlayer::getSoundVolume() {
-  return m_soundVolume / kek;
+  return m_soundVolume / volumeScaler;
 }
 
 void
 SoundPlayer::setMusicVolume(double value) {
-  m_musicVolume = value * kek;
+  m_musicVolume = value * volumeScaler;
   if (m_playingMusic)
     m_playingMusic->setVolume(validVolume(m_musicVolume * m_masterVolume));
 }
 
 double
 SoundPlayer::getMusicVolume() {
-  return m_musicVolume / kek;
+  return m_musicVolume / volumeScaler;
 }
 
 void
