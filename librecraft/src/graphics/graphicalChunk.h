@@ -12,6 +12,8 @@
 
 namespace graphics {
 
+using Matrix = std::vector<std::vector<std::vector<Voxel>>>;
+
 /**
  *
  */
@@ -31,11 +33,11 @@ public:
   GraphicalChunk(double x,
                  double y,
                  double z,
-                 std::vector<std::vector<std::vector<Voxel>>>& data,
-                 std::vector<std::vector<std::vector<Voxel>>>* right,
-                 std::vector<std::vector<std::vector<Voxel>>>* left,
-                 std::vector<std::vector<std::vector<Voxel>>>* back,
-                 std::vector<std::vector<std::vector<Voxel>>>* front);
+                 Matrix& data,
+                 Matrix* right,
+                 Matrix* left,
+                 Matrix* back,
+                 Matrix* front);
 
   /**
    * Creates the meshes that will be used for rendering. This function must be
@@ -85,110 +87,108 @@ public:
   float getzLocation();
 
 private:
-  struct CubeFaceData {
+
+  struct Face {
     int id;
-    bool vissible, front, back, left, right, top, bottom;
-    char sunLightValue, otherLightValue;
-
-    // lv means sunLightValue
-    float lvFront_BottomLeft, lvFront_BottomRight;
-    float lvFront_TopRight, lvFront_TopLeft;
-
-    float lvBack_BottomLeft, lvBack_BottomRight;
-    float lvBack_TopRight, lvBack_TopLeft;
-
-    float lvLeft_BottomLeft, lvLeft_BottomRight;
-    float lvLeft_TopRight, lvLeft_TopLeft;
-
-    float lvRight_BottomLeft, lvRight_BottomRight;
-    float lvRight_TopRight, lvRight_TopLeft;
-
-    float lvTop_BottomLeft, lvTop_BottomRight;
-    float lvTop_TopRight, lvTop_TopLeft;
-
-    float lvBottom_BottomLeft, lvBottom_BottomRight;
-    float lvBottom_TopRight, lvBottom_TopLeft;
-
-    // olv means otherLightValue
-    float olvFront_BottomLeft, olvFront_BottomRight;
-    float olvFront_TopRight, olvFront_TopLeft;
-
-    float olvBack_BottomLeft, olvBack_BottomRight;
-    float olvBack_TopRight, olvBack_TopLeft;
-
-    float olvLeft_BottomLeft, olvLeft_BottomRight;
-    float olvLeft_TopRight, olvLeft_TopLeft;
-
-    float olvRight_BottomLeft, olvRight_BottomRight;
-    float olvRight_TopRight, olvRight_TopLeft;
-
-    float olvTop_BottomLeft, olvTop_BottomRight;
-    float olvTop_TopRight, olvTop_TopLeft;
-
-    float olvBottom_BottomLeft, olvBottom_BottomRight;
-    float olvBottom_TopRight, olvBottom_TopLeft;
+    float lvBottomLeft, lvBottomRight;
+    float lvTopRight, lvTopLeft;
   };
 
-  Voxel* getVoxel(
-    int x,
-    int y,
-    int z,
-    std::vector<std::vector<std::vector<CubeFaceData>>>& faceData);
+//  struct CubeFaceData {
+//    int id;
+//    bool vissible, front, back, left, right, top, bottom;
+//    char sunLightValue, otherLightValue;
+//
+//    // lv means sunLightValue
+//    float lvFront_BottomLeft, lvFront_BottomRight;
+//    float lvFront_TopRight, lvFront_TopLeft;
+//
+//    float lvBack_BottomLeft, lvBack_BottomRight;
+//    float lvBack_TopRight, lvBack_TopLeft;
+//
+//    float lvLeft_BottomLeft, lvLeft_BottomRight;
+//    float lvLeft_TopRight, lvLeft_TopLeft;
+//
+//    float lvRight_BottomLeft, lvRight_BottomRight;
+//    float lvRight_TopRight, lvRight_TopLeft;
+//
+//    float lvTop_BottomLeft, lvTop_BottomRight;
+//    float lvTop_TopRight, lvTop_TopLeft;
+//
+//    float lvBottom_BottomLeft, lvBottom_BottomRight;
+//    float lvBottom_TopRight, lvBottom_TopLeft;
+//
+//    // olv means otherLightValue
+//    float olvFront_BottomLeft, olvFront_BottomRight;
+//    float olvFront_TopRight, olvFront_TopLeft;
+//
+//    float olvBack_BottomLeft, olvBack_BottomRight;
+//    float olvBack_TopRight, olvBack_TopLeft;
+//
+//    float olvLeft_BottomLeft, olvLeft_BottomRight;
+//    float olvLeft_TopRight, olvLeft_TopLeft;
+//
+//    float olvRight_BottomLeft, olvRight_BottomRight;
+//    float olvRight_TopRight, olvRight_TopLeft;
+//
+//    float olvTop_BottomLeft, olvTop_BottomRight;
+//    float olvTop_TopRight, olvTop_TopLeft;
+//
+//    float olvBottom_BottomLeft, olvBottom_BottomRight;
+//    float olvBottom_TopRight, olvBottom_TopLeft;
+//  };
 
   void createMeshData(
     bool transparent,
-    const std::vector<std::vector<std::vector<CubeFaceData>>>& faceData,
+    const std::vector<std::vector<std::vector<Face>>>& faceData,
     std::vector<GLfloat>& vertexData,
     std::vector<GLfloat>& lightData,
     std::vector<GLfloat>& normals,
     std::vector<GLfloat>& UV,
     std::vector<short>& elementData);
 
-  void doAORight(CubeFaceData& cf,
+  void doAORight(
                  int x,
                  int y,
-                 int z,
-                 std::vector<std::vector<std::vector<CubeFaceData>>>& faceData);
+                 int z,);
 
-  void doAOLeft(CubeFaceData& cf,
+  void doAOLeft(
                 int x,
                 int y,
                 int z,
-                std::vector<std::vector<std::vector<CubeFaceData>>>& faceData);
+);
 
-  void doAOFront(CubeFaceData& cf,
+  void doAOFront(
                  int x,
                  int y,
                  int z,
-                 std::vector<std::vector<std::vector<CubeFaceData>>>& faceData);
+);
 
-  void doAOBack(CubeFaceData& cf,
+  void doAOBack(
                 int x,
                 int y,
                 int z,
-                std::vector<std::vector<std::vector<CubeFaceData>>>& faceData);
+);
 
-  void doAOTop(CubeFaceData& cf,
-               int x,
+  void doAOTop(int x,
                int y,
                int z,
-               std::vector<std::vector<std::vector<CubeFaceData>>>& faceData);
+);
 
   void doAOBottom(
-    CubeFaceData& cf,
     int x,
     int y,
     int z,
-    std::vector<std::vector<std::vector<CubeFaceData>>>& faceData);
+);
 
   Voxel* getVoxel(int x,
                   int y,
                   int z,
-                  std::vector<std::vector<std::vector<Voxel>>>& data,
-                  std::vector<std::vector<std::vector<Voxel>>>* right,
-                  std::vector<std::vector<std::vector<Voxel>>>* left,
-                  std::vector<std::vector<std::vector<Voxel>>>* back,
-                  std::vector<std::vector<std::vector<Voxel>>>* front);
+                  Matrix& data,
+                  Matrix* right,
+                  Matrix* left,
+                  Matrix* back,
+                  Matrix* front);
 
   template<bool sunLight>
   void computeAverageRight(
@@ -200,31 +200,31 @@ private:
     float& bottomRight,
     float& topRight,
     float& topLeft,
-    std::vector<std::vector<std::vector<CubeFaceData>>>& faceData) {
+    std::vector<std::vector<std::vector<Face>>>& faceData) {
 
-    CubeFaceData& cBottomLeft = faceData[x][y - 1][z + 1];
-    CubeFaceData& cBottomLeft_Right = faceData[x + 1][y - 1][z + 1];
+    Face& cBottomLeft = faceData[x][y - 1][z + 1];
+    Face& cBottomLeft_Right = faceData[x + 1][y - 1][z + 1];
 
-    CubeFaceData& cBottomMiddle = faceData[x][y - 1][z];
-    CubeFaceData& cBottomMiddle_Right = faceData[x + 1][y - 1][z];
+    Face& cBottomMiddle = faceData[x][y - 1][z];
+    Face& cBottomMiddle_Right = faceData[x + 1][y - 1][z];
 
-    CubeFaceData& cBottomRight = faceData[x][y - 1][z - 1];
-    CubeFaceData& cBottomRight_Right = faceData[x + 1][y - 1][z - 1];
+    Face& cBottomRight = faceData[x][y - 1][z - 1];
+    Face& cBottomRight_Right = faceData[x + 1][y - 1][z - 1];
 
-    CubeFaceData& cRightRight = faceData[x][y][z - 1];
-    CubeFaceData& cRightRight_Right = faceData[x + 1][y][z - 1];
+    Face& cRightRight = faceData[x][y][z - 1];
+    Face& cRightRight_Right = faceData[x + 1][y][z - 1];
 
-    CubeFaceData& cTopRight = faceData[x][y + 1][z - 1];
-    CubeFaceData& cTopRight_Right = faceData[x + 1][y + 1][z - 1];
+    Face& cTopRight = faceData[x][y + 1][z - 1];
+    Face& cTopRight_Right = faceData[x + 1][y + 1][z - 1];
 
-    CubeFaceData& cTopMiddle = faceData[x][y + 1][z];
-    CubeFaceData& cTopMiddle_Right = faceData[x + 1][y + 1][z];
+    Face& cTopMiddle = faceData[x][y + 1][z];
+    Face& cTopMiddle_Right = faceData[x + 1][y + 1][z];
 
-    CubeFaceData& cTopLeft = faceData[x][y + 1][z + 1];
-    CubeFaceData& cTopLeft_Right = faceData[x + 1][y + 1][z + 1];
+    Face& cTopLeft = faceData[x][y + 1][z + 1];
+    Face& cTopLeft_Right = faceData[x + 1][y + 1][z + 1];
 
-    CubeFaceData& cLeftLeft = faceData[x][y][z + 1];
-    CubeFaceData& cLeftLeft_Right = faceData[x + 1][y][z + 1];
+    Face& cLeftLeft = faceData[x][y][z + 1];
+    Face& cLeftLeft_Right = faceData[x + 1][y][z + 1];
 
     if
       constexpr(sunLight) {
@@ -873,7 +873,7 @@ private:
     topLeft = acc / counter;
   }
 
-  std::vector<std::vector<std::vector<CubeFaceData>>> m_faceData;
+  std::vector<std::vector<std::vector<Face>>> m_faceData;
 
   std::unique_ptr<mesh::MeshElement> m_mesh;
   std::unique_ptr<mesh::MeshElement> m_waterMesh;
@@ -889,6 +889,12 @@ private:
   int m_depth = config::chunk_data::GRAPHICAL_CHUNK_WIDTH;
 
   Transform transform;
+
+  Matrix& m_center;
+  Matrix* m_right;
+  Matrix* m_left;
+  Matrix* m_back;
+  Matrix* m_front;
 };
 
 } /* graphics namespace */

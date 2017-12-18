@@ -38,7 +38,7 @@ public:
   /**
    * \brief Adds a widget to this group.
    *
-   * All other functinos in this class will act on the Widgets
+   * All other functions in this class will act on the Widgets
    * added by this function.
    *
    * \param widget The widget that will be added to this group
@@ -48,7 +48,7 @@ public:
   /**
    * \brief Adds a vector of widgets to this group.
    *
-   * All other functinos in this class will act on the Widgets
+   * All other functions in this class will act on the Widgets
    * added by this function.
    *
    * @param widgets The widgets that shall be added to this group

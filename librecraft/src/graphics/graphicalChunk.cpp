@@ -28,48 +28,54 @@ GraphicalChunk::GraphicalChunk(double _x,
   , m_zLocation{ _z }
   , transform{ _x + m_width / 2 + 0.5f,
                _y + m_height / 2 + 0.5f,
-               _z + m_depth / 2 + 0.5f } {
+               _z + m_depth / 2 + 0.5f },
+  m_center{data},
+  m_right{right},
+  m_left{left},
+  m_back{back},
+  m_front{front},
+  {
 
   // The face data will be one bigger in each direction.
   // This is to make it possible to compare voxels with
   // neighbors in other chunks.
-  for (int x{ 0 }; x < m_width + 2; ++x) {
-    m_faceData.push_back(vector<vector<CubeFaceData>>());
-    for (int y{ 0 }; y < m_height + 2; ++y) {
-      m_faceData[x].push_back(vector<CubeFaceData>());
-      for (int z{ 0 }; z < m_depth + 2; ++z) {
-        CubeFaceData cube;
-
-        Voxel* voxel = getVoxel(
-          x - 1, y - 1 + m_yLocation, z - 1, data, right, left, back, front);
-        if (voxel) {
-          cube.id = voxel->getId();
-          cube.sunLightValue = voxel->getSunLightValue();
-          cube.otherLightValue = voxel->getOtherLightValue();
-        } else {
-          cube.id = AIR;
-          cube.sunLightValue = 0;
-          cube.otherLightValue = 0;
-        }
-
-        cube.front = false;
-        cube.back = false;
-        cube.left = false;
-        cube.right = false;
-        cube.top = false;
-        cube.bottom = false;
-
-        m_faceData[x][y].push_back(cube);
-      }
-    }
-  }
+//  for (int x{ 0 }; x < m_width + 2; ++x) {
+//    m_faceData.push_back(vector<vector<CubeFaceData>>());
+//    for (int y{ 0 }; y < m_height + 2; ++y) {
+//      m_faceData[x].push_back(vector<CubeFaceData>());
+//      for (int z{ 0 }; z < m_depth + 2; ++z) {
+//        CubeFaceData cube;
+//
+//        Voxel* voxel = getVoxel(
+//          x - 1, y - 1 + m_yLocation, z - 1, data, right, left, back, front);
+//        if (voxel) {
+//          cube.id = voxel->getId();
+//          cube.sunLightValue = voxel->getSunLightValue();
+//          cube.otherLightValue = voxel->getOtherLightValue();
+//        } else {
+//          cube.id = AIR;
+//          cube.sunLightValue = 0;
+//          cube.otherLightValue = 0;
+//        }
+//
+//        cube.front = false;
+//        cube.back = false;
+//        cube.left = false;
+//        cube.right = false;
+//        cube.top = false;
+//        cube.bottom = false;
+//
+//        m_faceData[x][y].push_back(cube);
+//      }
+//    }
+//  }
 
   // Remove faces and compute lightning
   for (int x{ 0 }; x < m_width; ++x) {
     for (int y{ 0 }; y < m_height; ++y) {
       for (int k{ 0 }; k < m_depth; ++k) {
 
-        CubeFaceData& current = m_faceData[x + 1][y + 1][k + 1];
+        Voxel* current = getVoxel(data, x + 1, y + 1, k + 1);
         if (current.id == AIR)
           continue;
 
