@@ -181,14 +181,7 @@ private:
     int z,
 );
 
-  Voxel* getVoxel(int x,
-                  int y,
-                  int z,
-                  Matrix& data,
-                  Matrix* right,
-                  Matrix* left,
-                  Matrix* back,
-                  Matrix* front);
+  Voxel* getVoxel(int x, int y, int z);
 
   template<bool sunLight>
   void computeAverageRight(

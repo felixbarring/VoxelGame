@@ -419,11 +419,7 @@ Voxel*
 GraphicalChunk::getVoxel(int x,
                          int y,
                          int z,
-                         vector<vector<vector<Voxel>>>& data,
-                         vector<vector<vector<Voxel>>>* right,
-                         vector<vector<vector<Voxel>>>* left,
-                         vector<vector<vector<Voxel>>>* back,
-                         vector<vector<vector<Voxel>>>* front) {
+                         ) {
 
   if (y >= config::chunk_data::CHUNK_HEIGHT || y < 0)
     return nullptr;
@@ -757,354 +753,332 @@ GraphicalChunk::createMeshData(
 int AOFactor{ 4 };
 
 void
-GraphicalChunk::doAORight(
-  CubeFaceData& cf,
-  int x,
-  int y,
-  int z,
-  std::vector<std::vector<std::vector<CubeFaceData>>>& faceData) {
-
-  CubeFaceData v;
-
+GraphicalChunk::doAORight(int x, int y, int z) {
   float bottomLeft = 0;
-  v = faceData[x + 1][y][z + 1];
-  if (v.id != AIR)
+  Voxel* v = getVoxel(x + 1, y, z + 1);
+  if (v && v->getId() != AIR)
     ++bottomLeft;
-  v = faceData[x + 1][y - 1][z + 1];
-  if (v.id != AIR)
+  v = getVoxel(x + 1, y - 1, z + 1);
+  if (v && v->getId() != AIR)
     ++bottomLeft;
-  v = faceData[x + 1][y - 1][z];
-  if (v.id != AIR)
+  v = getVoxel(x + 1, y - 1, z);
+  if (v && v->getId() != AIR)
     ++bottomLeft;
-  cf.lvRight_BottomLeft -= min<float>(2.0, bottomLeft) * AOFactor;
+
+//  cf.lvRight_BottomLeft -= min<float>(2.0, bottomLeft) * AOFactor;
 
   float bottomRight = 0;
-  v = faceData[x + 1][y - 1][z];
-  if (v.id != AIR)
+  v = getVoxel(x + 1, y - 1, z);
+  if (v && v->getId() != AIR)
     ++bottomRight;
-  v = faceData[x + 1][y - 1][z - 1];
-  if (v.id != AIR)
+  v = getVoxel(x + 1, y - 1, z - 1);
+  if (v && v->getId() != AIR)
     ++bottomRight;
-  v = faceData[x + 1][y][z - 1];
-  if (v.id != AIR)
+  v = getVoxel(x + 1, y, z - 1);
+  if (v && v->getId() != AIR)
     ++bottomRight;
-  cf.lvRight_BottomRight -= min<float>(2.0, bottomRight) * AOFactor;
+
+//  cf.lvRight_BottomRight -= min<float>(2.0, bottomRight) * AOFactor;
 
   float topRight = 0;
-  v = faceData[x + 1][y][z - 1];
-  if (v.id != AIR)
+  v = getVoxel(x + 1, y, z - 1);
+  if (v && v->getId() != AIR)
     ++topRight;
-  v = faceData[x + 1][y + 1][z - 1];
-  if (v.id != AIR)
+  v = getVoxel(x + 1, y + 1, z - 1);
+  if (v && v->getId() != AIR)
     ++topRight;
-  v = faceData[x + 1][y + 1][z];
-  if (v.id != AIR)
+  v = getVoxel(x + 1, y + 1, z);
+  if (v && v->getId() != AIR)
     ++topRight;
-  cf.lvRight_TopRight -= min<float>(2.0, topRight) * AOFactor;
+
+//  cf.lvRight_TopRight -= min<float>(2.0, topRight) * AOFactor;
 
   float topLeft = 0;
-  v = faceData[x + 1][y + 1][z];
-  if (v.id != AIR)
+  v = getVoxel(x + 1, y + 1, z);
+  if (v && v->getId() != AIR)
     ++topLeft;
-  v = faceData[x + 1][y + 1][z + 1];
-  if (v.id != AIR)
+  v = getVoxel(x + 1, y + 1, z + 1);
+  if (v && v->getId() != AIR)
     ++topLeft;
-  v = faceData[x + 1][y][z + 1];
-  if (v.id != AIR)
+  v = getVoxel(x + 1, y, z + 1);
+  if (v && v->getId() != AIR)
     ++topLeft;
-  cf.lvRight_TopLeft -= min<float>(2.0, topLeft) * AOFactor;
+
+//  cf.lvRight_TopLeft -= min<float>(2.0, topLeft) * AOFactor;
 }
 
 void
-GraphicalChunk::doAOLeft(
-  CubeFaceData& cf,
-  int x,
-  int y,
-  int z,
-  std::vector<std::vector<std::vector<CubeFaceData>>>& faceData) {
-
-  CubeFaceData v;
-
+GraphicalChunk::doAOLeft(int x, int y, int z) {
   float bottomLeft = 0;
-  v = faceData[x - 1][y][z - 1];
-  if (v.id != AIR)
+  Voxel* v = getVoxel(x - 1, y, z - 1);
+  if (v && v->getId() != AIR)
     ++bottomLeft;
-  v = faceData[x - 1][y - 1][z - 1];
-  if (v.id != AIR)
+  v = getVoxel(x - 1, y - 1, z - 1);
+  if (v && v->getId() != AIR)
     ++bottomLeft;
-  v = faceData[x - 1][y - 1][z];
-  if (v.id != AIR)
+  v = getVoxel(x - 1, y - 1, z);
+  if (v && v->getId() != AIR)
     ++bottomLeft;
-  cf.lvLeft_BottomLeft -= min<float>(2.0, bottomLeft) * AOFactor;
+
+//  cf.lvLeft_BottomLeft -= min<float>(2.0, bottomLeft) * AOFactor;
 
   float bottomRight = 0;
-  v = faceData[x - 1][y - 1][z];
-  if (v.id != AIR)
+  v = getVoxel(x - 1, y - 1, z);
+  if (v && v->getId() != AIR)
     ++bottomRight;
-  v = faceData[x - 1][y - 1][z + 1];
-  if (v.id != AIR)
+  v = getVoxel(x - 1, y - 1,z + 1);
+  if (v && v->getId() != AIR)
     ++bottomRight;
-  v = faceData[x - 1][y][z + 1];
-  if (v.id != AIR)
+  v = getVoxel(x - 1, y, z + 1);
+  if (v && v->getId() != AIR)
     ++bottomRight;
-  cf.lvLeft_BottomRight -= min<float>(2.0, bottomRight) * AOFactor;
+
+//  cf.lvLeft_BottomRight -= min<float>(2.0, bottomRight) * AOFactor;
 
   float topRight = 0;
-  v = faceData[x - 1][y][z + 1];
-  if (v.id != AIR)
+  v = getVoxel(x - 1, y, z + 1);
+  if (v && v->getId() != AIR)
     ++topRight;
-  v = faceData[x - 1][y + 1][z + 1];
-  if (v.id != AIR)
+  v = getVoxel(x - 1, y + 1, z + 1);
+  if (v && v->getId() != AIR)
     ++topRight;
-  v = faceData[x - 1][y + 1][z];
-  if (v.id != AIR)
+  v = getVoxel(x - 1, y + 1, z);
+  if (v && v->getId() != AIR)
     ++topRight;
-  cf.lvLeft_TopRight -= min<float>(2.0, topRight) * AOFactor;
+
+//  cf.lvLeft_TopRight -= min<float>(2.0, topRight) * AOFactor;
 
   char topLeft = 0;
-  v = faceData[x - 1][y + 1][z];
-  if (v.id != AIR)
+  v = getVoxel(x - 1, y + 1, z);
+  if (v && v->getId() != AIR)
     ++topLeft;
-  v = faceData[x - 1][y + 1][z - 1];
-  if (v.id != AIR)
+  v = getVoxel(x - 1, y + 1, z - 1);
+  if (v && v->getId() != AIR)
     ++topLeft;
-  v = faceData[x - 1][y][z - 1];
-  if (v.id != AIR)
+  v = getVoxel(x - 1, y, z - 1);
+  if (v && v->getId() != AIR)
     ++topLeft;
-  cf.lvLeft_TopLeft -= topLeft * AOFactor;
+
+//  cf.lvLeft_TopLeft -= topLeft * AOFactor;
 }
 
 void
-GraphicalChunk::doAOFront(
-  CubeFaceData& cf,
-  int x,
-  int y,
-  int z,
-  std::vector<std::vector<std::vector<CubeFaceData>>>& faceData) {
-
-  CubeFaceData v;
-
+GraphicalChunk::doAOFront(int x, int y, int z) {
   float bottomLeft = 0;
-  v = faceData[x - 1][y][z + 1];
-  if (v.id != AIR)
+  Voxel* v = getVoxel(x - 1, y, z + 1);
+  if (v && v->getId() != AIR)
     ++bottomLeft;
-  v = faceData[x - 1][y - 1][z + 1];
-  if (v.id != AIR)
+  v = getVoxel(x - 1, y - 1, z + 1);
+  if (v && v->getId() != AIR)
     ++bottomLeft;
-  v = faceData[x][y - 1][z + 1];
-  if (v.id != AIR)
+  v = getVoxel(x, y - 1, z + 1);
+  if (v && v->getId() != AIR)
     ++bottomLeft;
-  cf.lvFront_BottomLeft -= min<float>(2.0, bottomLeft) * AOFactor;
+
+//  cf.lvFront_BottomLeft -= min<float>(2.0, bottomLeft) * AOFactor;
 
   float bottomRight = 0;
-  v = faceData[x][y - 1][z + 1];
-  if (v.id != AIR)
+  v = getVoxel(x, y - 1, z + 1);
+  if (v && v->getId() != AIR)
     ++bottomRight;
-  v = faceData[x + 1][y - 1][z + 1];
-  if (v.id != AIR)
+  v = getVoxel(x + 1, y - 1, z + 1);
+  if (v && v->getId() != AIR)
     ++bottomRight;
-  v = faceData[x + 1][y][z + 1];
-  if (v.id != AIR)
+  v = getVoxel(x + 1, y, z + 1);
+  if (v && v->getId() != AIR)
     ++bottomRight;
-  cf.lvFront_BottomRight -= min<float>(2.0, bottomRight) * AOFactor;
+
+//  cf.lvFront_BottomRight -= min<float>(2.0, bottomRight) * AOFactor;
 
   float topRight = 0;
-  v = faceData[x + 1][y][z + 1];
-  if (v.id != AIR)
+  v = getVoxel(x + 1, y, z + 1);
+  if (v && v->getId() != AIR)
     ++topRight;
-  v = faceData[x + 1][y + 1][z + 1];
-  if (v.id != AIR)
+  v = getVoxel(x + 1, y + 1, z + 1);
+  if (v && v->getId()!= AIR)
     ++topRight;
-  v = faceData[x][y + 1][z + 1];
-  if (v.id != AIR)
+  v = getVoxel(x, y + 1, z + 1);
+  if (v && v->getId() != AIR)
     ++topRight;
-  cf.lvFront_TopRight -= min<float>(2.0, topRight) * AOFactor;
+
+//  cf.lvFront_TopRight -= min<float>(2.0, topRight) * AOFactor;
 
   float topLeft = 0;
-  v = faceData[x][y + 1][z + 1];
-  if (v.id != AIR)
+  v = getVoxel(x, y + 1, z + 1);
+  if (v && v->getId() != AIR)
     ++topLeft;
-  v = faceData[x - 1][y + 1][z + 1];
-  if (v.id != AIR)
+  v = getVoxel(x - 1, y + 1, z + 1);
+  if (v && v->getId() != AIR)
     ++topLeft;
-  v = faceData[x - 1][y][z + 1];
-  if (v.id != AIR)
+  v = getVoxel(x - 1, y, z + 1);
+  if (v && v->getId() != AIR)
     ++topLeft;
-  cf.lvFront_TopLeft -= min<float>(2.0, topLeft) * AOFactor;
+
+//  cf.lvFront_TopLeft -= min<float>(2.0, topLeft) * AOFactor;
 }
 
 void
-GraphicalChunk::doAOBack(
-  CubeFaceData& cf,
-  int x,
-  int y,
-  int z,
-  std::vector<std::vector<std::vector<CubeFaceData>>>& faceData) {
-
-  CubeFaceData v;
-
+GraphicalChunk::doAOBack(int x, int y, int z) {
   float bottomLeft = 0;
-  v = faceData[x + 1][y][z - 1];
-  if (v.id != AIR)
+  Voxel* v = getVoxel(x + 1, y, z - 1);
+  if (v && v->getId() != AIR)
     ++bottomLeft;
-  v = faceData[x + 1][y - 1][z - 1];
-  if (v.id != AIR)
+  v = getVoxel(x + 1, y - 1, z - 1);
+  if (v && v->getId() != AIR)
     ++bottomLeft;
-  v = faceData[x][y - 1][z - 1];
-  if (v.id != AIR)
+  v = getVoxel(x, y - 1, z - 1);
+  if (v && v->getId() != AIR)
     ++bottomLeft;
-  cf.lvBack_BottomLeft -= min<float>(2.0, bottomLeft) * AOFactor;
+
+//  cf.lvBack_BottomLeft -= min<float>(2.0, bottomLeft) * AOFactor;
 
   float bottomRight = 0;
-  v = faceData[x][y - 1][z - 1];
-  if (v.id != AIR)
+  v = getVoxel(x, y - 1, z - 1);
+  if (v && v->getId() != AIR)
     ++bottomRight;
-  v = faceData[x - 1][y - 1][z - 1];
-  if (v.id != AIR)
+  v = getVoxel(x - 1, y - 1, z - 1);
+  if (v && v->getId() != AIR)
     ++bottomRight;
-  v = faceData[x - 1][y][z - 1];
-  if (v.id != AIR)
+  v = getVoxel(x - 1, y, z - 1);
+  if (v && v->getId() != AIR)
     ++bottomRight;
-  cf.lvBack_BottomRight -= min<float>(2.0, bottomRight) * AOFactor;
+
+//  cf.lvBack_BottomRight -= min<float>(2.0, bottomRight) * AOFactor;
 
   float topRight = 0;
-  v = faceData[x - 1][y][z - 1];
-  if (v.id != AIR)
+  v = getVoxel(x - 1, y, z - 1);
+  if (v && v->getId() != AIR)
     ++topRight;
-  v = faceData[x - 1][y + 1][z - 1];
-  if (v.id != AIR)
+  v = getVoxel(x - 1, y + 1, z - 1);
+  if (v && v->getId() != AIR)
     ++topRight;
-  v = faceData[x][y + 1][z - 1];
-  if (v.id != AIR)
+  v = getVoxel(x, y + 1, z - 1);
+  if (v && v->getId() != AIR)
     ++topRight;
-  cf.lvBack_TopRight -= min<float>(2.0, topRight) * AOFactor;
+
+//  cf.lvBack_TopRight -= min<float>(2.0, topRight) * AOFactor;
 
   float topLeft = 0;
-  v = faceData[x][y + 1][z - 1];
-  if (v.id != AIR)
+  v = getVoxel(x, y + 1, z - 1);
+  if (v && v->getId() != AIR)
     ++topLeft;
-  v = faceData[x + 1][y + 1][z - 1];
-  if (v.id != AIR)
+  v = getVoxel(x + 1, y + 1, z - 1);
+  if (v && v->getId() != AIR)
     ++topLeft;
-  v = faceData[x + 1][y][z - 1];
-  if (v.id != AIR)
+  v = getVoxel(x + 1, y, z - 1);
+  if (v && v->getId() != AIR)
     ++topLeft;
-  cf.lvBack_TopLeft -= min<float>(2.0, topLeft) * AOFactor;
+
+//  cf.lvBack_TopLeft -= min<float>(2.0, topLeft) * AOFactor;
 }
 
 void
-GraphicalChunk::doAOTop(
-  CubeFaceData& cf,
-  int x,
-  int y,
-  int z,
-  std::vector<std::vector<std::vector<CubeFaceData>>>& faceData) {
-
-  CubeFaceData v;
-
+GraphicalChunk::doAOTop(int x, int y, int z) {
   float bottomLeft = 0;
-  v = faceData[x - 1][y + 1][z];
-  if (v.id != AIR)
+  Voxel* v = getVoxel(x - 1, y + 1, z);
+  if (v && v->getId() != AIR)
     ++bottomLeft;
-  v = faceData[x - 1][y + 1][z + 1];
-  if (v.id != AIR)
+  v = getVoxel(x - 1, y + 1, z + 1);
+  if (v && v->getId() != AIR)
     ++bottomLeft;
-  v = faceData[x][y + 1][z + 1];
-  if (v.id != AIR)
+  v = getVoxel(x, y + 1, z + 1);
+  if (v && v->getId() != AIR)
     ++bottomLeft;
-  cf.lvTop_BottomLeft -= min<float>(2.0, bottomLeft) * AOFactor;
+
+//  cf.lvTop_BottomLeft -= min<float>(2.0, bottomLeft) * AOFactor;
 
   float bottomRight = 0;
-  v = faceData[x][y + 1][z + 1];
-  if (v.id != AIR)
+  v = getVoxel(x, y + 1, z + 1);
+  if (v && v->getId() != AIR)
     ++bottomRight;
-  v = faceData[x + 1][y + 1][z + 1];
-  if (v.id != AIR)
+  v = getVoxel(x + 1, y + 1, z + 1);
+  if (v && v->getId() != AIR)
     ++bottomRight;
-  v = faceData[x + 1][y + 1][z];
-  if (v.id != AIR)
+  v = getVoxel(x + 1, y + 1, z);
+  if (v && v->getId() != AIR)
     ++bottomRight;
-  cf.lvTop_BottomRight -= min<float>(2.0, bottomRight) * AOFactor;
+
+//  cf.lvTop_BottomRight -= min<float>(2.0, bottomRight) * AOFactor;
 
   float topRight = 0;
-  v = faceData[x + 1][y + 1][z];
-  if (v.id != AIR)
+  v = getVoxel(x + 1, y + 1, z);
+  if (v && v->getId() != AIR)
     ++topRight;
-  v = faceData[x + 1][y + 1][z - 1];
-  if (v.id != AIR)
+  v = getVoxel(x + 1, y + 1, z - 1);
+  if (v && v->getId() != AIR)
     ++topRight;
-  v = faceData[x][y + 1][z - 1];
-  if (v.id != AIR)
+  v = getVoxel(x, y + 1, z - 1);
+  if (v && v->getId() != AIR)
     ++topRight;
-  cf.lvTop_TopRight -= min<float>(2.0, topRight) * AOFactor;
+
+//  cf.lvTop_TopRight -= min<float>(2.0, topRight) * AOFactor;
 
   float topLeft = 0;
-  v = faceData[x][y + 1][z - 1];
-  if (v.id != AIR)
+  v = getVoxel(x, y + 1, z - 1);
+  if (v && v->getId() != AIR)
     ++topLeft;
-  v = faceData[x - 1][y + 1][z - 1];
-  if (v.id != AIR)
+  v = getVoxel(x - 1, y + 1, z - 1);
+  if (v && v->getId() != AIR)
     ++topLeft;
-  v = faceData[x - 1][y + 1][z];
-  if (v.id != AIR)
+  v = getVoxel(x - 1, y + 1, z);
+  if (v && v->getId() != AIR)
     ++topLeft;
-  cf.lvTop_TopLeft -= min<float>(2.0, topLeft) * AOFactor;
+
+//  cf.lvTop_TopLeft -= min<float>(2.0, topLeft) * AOFactor;
 }
 
 void
-GraphicalChunk::doAOBottom(
-  CubeFaceData& cf,
-  int x,
-  int y,
-  int z,
-  std::vector<std::vector<std::vector<CubeFaceData>>>& faceData) {
-
+GraphicalChunk::doAOBottom(int x, int y, int z) {
   float bottomLeft = 0;
-  CubeFaceData v = faceData[x - 1][y - 1][z];
-  if (v.id != AIR)
+  Voxel* v = getVoxel(x - 1, y - 1, z);
+  if (v && v->getId() != AIR)
     ++bottomLeft;
-  v = faceData[x - 1][y - 1][z - 1];
-  if (v.id != AIR)
+  v = getVoxel(x - 1, y - 1, z - 1);
+  if (v && v->getId() != AIR)
     ++bottomLeft;
-  v = faceData[x][y - 1][z - 1];
-  if (v.id != AIR)
+  v = getVoxel(x, y - 1, z - 1);
+  if (v && v->getId() != AIR)
     ++bottomLeft;
-  cf.lvBottom_BottomLeft -= min<float>(2.0, bottomLeft) * AOFactor;
+
+  //cf.lvBottom_BottomLeft -= min<float>(2.0, bottomLeft) * AOFactor;
 
   float bottomRight = 0;
-  v = faceData[x][y - 1][z - 1];
-  if (v.id != AIR)
+  v = getVoxel(x, y - 1, z - 1);
+  if (v && v->getId() != AIR)
     ++bottomRight;
-  v = faceData[x + 1][y - 1][z - 1];
-  if (v.id != AIR)
+  v = getVoxel(x + 1, y - 1, z - 1);
+  if (v && v->getId() != AIR)
     ++bottomRight;
-  v = faceData[x + 1][y - 1][z];
-  if (v.id != AIR)
+  v = getVoxel(x + 1, y - 1, z);
+  if (v && v->getId() != AIR)
     ++bottomRight;
-  cf.lvBottom_BottomRight -= min<float>(2.0, bottomRight) * AOFactor;
+
+//  cf.lvBottom_BottomRight -= min<float>(2.0, bottomRight) * AOFactor;
 
   float topRight = 0;
-  v = faceData[x + 1][y - 1][z];
-  if (v.id != AIR)
+  v = getVoxel(x + 1, y - 1, z);
+  if (v && v->getId() != AIR)
     ++topRight;
-  v = faceData[x + 1][y - 1][z + 1];
-  if (v.id != AIR)
+  v = getVoxel(x + 1, y - 1, z + 1);
+  if (v && v->getId() != AIR)
     ++topRight;
-  v = faceData[x][y - 1][z + 1];
-  if (v.id != AIR)
+  v = getVoxel(x, y - 1, z + 1);
+  if (v && v->getId() != AIR)
     ++topRight;
-  cf.lvBottom_TopRight -= min<float>(2.0, topRight) * AOFactor;
+
+//  cf.lvBottom_TopRight -= min<float>(2.0, topRight) * AOFactor;
 
   float topLeft = 0;
-  v = faceData[x][y - 1][z + 1];
-  if (v.id != AIR)
+  v = getVoxel(x, y - 1, z + 1);
+  if (v && v->getId() != AIR)
     ++topLeft;
-  v = faceData[x - 1][y - 1][z + 1];
-  if (v.id != AIR)
+  v = getVoxel(x - 1, y - 1, z + 1);
+  if (v && v->getId() != AIR)
     ++topLeft;
-  v = faceData[x - 1][y - 1][z];
-  if (v.id != AIR)
+  v = getVoxel(x - 1, y - 1, z);
+  if (v && v->getId() != AIR)
     ++topLeft;
-  cf.lvBottom_TopLeft -= min<float>(2.0, topLeft) * AOFactor;
+
+  //  cf.lvBottom_TopLeft -= min<float>(2.0, topLeft) * AOFactor;
 }
 }
