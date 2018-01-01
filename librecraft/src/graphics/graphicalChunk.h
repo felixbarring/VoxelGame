@@ -140,49 +140,46 @@ private:
 
   void createMeshData(
     bool transparent,
-    const std::vector<std::vector<std::vector<Face>>>& faceData,
     std::vector<GLfloat>& vertexData,
     std::vector<GLfloat>& lightData,
     std::vector<GLfloat>& normals,
     std::vector<GLfloat>& UV,
     std::vector<short>& elementData);
 
-  void doAORight(
-                 int x,
-                 int y,
-                 int z,);
+  void doAORight(int x, int y, int z);
 
   void doAOLeft(
                 int x,
                 int y,
-                int z,
+                int z
 );
 
   void doAOFront(
                  int x,
                  int y,
-                 int z,
+                 int z
 );
 
   void doAOBack(
                 int x,
                 int y,
-                int z,
+                int z
 );
 
   void doAOTop(int x,
                int y,
-               int z,
+               int z
 );
 
   void doAOBottom(
     int x,
     int y,
-    int z,
+    int z
 );
 
   Voxel* getVoxel(int x, int y, int z);
 
+  /*
   template<bool sunLight>
   void computeAverageRight(
     int lightValue,
@@ -865,6 +862,7 @@ private:
     }
     topLeft = acc / counter;
   }
+  */
 
   std::vector<std::vector<std::vector<Face>>> m_faceData;
 
@@ -883,7 +881,7 @@ private:
 
   Transform transform;
 
-  Matrix& m_center;
+  Matrix& m_data;
   Matrix* m_right;
   Matrix* m_left;
   Matrix* m_back;

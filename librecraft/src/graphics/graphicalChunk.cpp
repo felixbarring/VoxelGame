@@ -15,9 +15,7 @@ namespace graphics {
 bool useSmoothShading{ true };
 // TODO Make it possible to turn of AO
 
-GraphicalChunk::GraphicalChunk(double _x,
-                               double _y,
-                               double _z,
+GraphicalChunk::GraphicalChunk(double _x, double _y, double _z,
                                vector<vector<vector<Voxel>>>& data,
                                vector<vector<vector<Voxel>>>* right,
                                vector<vector<vector<Voxel>>>* left,
@@ -28,48 +26,15 @@ GraphicalChunk::GraphicalChunk(double _x,
   , m_zLocation{ _z }
   , transform{ _x + m_width / 2 + 0.5f,
                _y + m_height / 2 + 0.5f,
-               _z + m_depth / 2 + 0.5f },
-  m_center{data},
-  m_right{right},
-  m_left{left},
-  m_back{back},
-  m_front{front},
+               _z + m_depth / 2 + 0.5f }
+  , m_data{data}
+  , m_right{right}
+  , m_left{left}
+  , m_back{back}
+  , m_front{front}
   {
 
-  // The face data will be one bigger in each direction.
-  // This is to make it possible to compare voxels with
-  // neighbors in other chunks.
-//  for (int x{ 0 }; x < m_width + 2; ++x) {
-//    m_faceData.push_back(vector<vector<CubeFaceData>>());
-//    for (int y{ 0 }; y < m_height + 2; ++y) {
-//      m_faceData[x].push_back(vector<CubeFaceData>());
-//      for (int z{ 0 }; z < m_depth + 2; ++z) {
-//        CubeFaceData cube;
-//
-//        Voxel* voxel = getVoxel(
-//          x - 1, y - 1 + m_yLocation, z - 1, data, right, left, back, front);
-//        if (voxel) {
-//          cube.id = voxel->getId();
-//          cube.sunLightValue = voxel->getSunLightValue();
-//          cube.otherLightValue = voxel->getOtherLightValue();
-//        } else {
-//          cube.id = AIR;
-//          cube.sunLightValue = 0;
-//          cube.otherLightValue = 0;
-//        }
-//
-//        cube.front = false;
-//        cube.back = false;
-//        cube.left = false;
-//        cube.right = false;
-//        cube.top = false;
-//        cube.bottom = false;
-//
-//        m_faceData[x][y].push_back(cube);
-//      }
-//    }
-//  }
-
+/*
   // Remove faces and compute lightning
   for (int x{ 0 }; x < m_width; ++x) {
     for (int y{ 0 }; y < m_height; ++y) {
@@ -332,6 +297,8 @@ GraphicalChunk::GraphicalChunk(double _x,
       }
     }
   }
+
+*/
 }
 
 // ########################################################
@@ -346,8 +313,7 @@ GraphicalChunk::uploadData() {
   vector<GLfloat> UV;
   vector<short> elementData;
 
-  createMeshData(
-    false, m_faceData, vertexData, lightData, normals, UV, elementData);
+  createMeshData(false, vertexData, lightData, normals, UV, elementData);
 
   {
     std::vector<std::pair<std::vector<float>, int>> vobs{
@@ -361,8 +327,7 @@ GraphicalChunk::uploadData() {
   UV.clear();
   elementData.clear();
 
-  createMeshData(
-    true, m_faceData, vertexData, lightData, normals, UV, elementData);
+  createMeshData(true, vertexData, lightData, normals, UV, elementData);
 
   if (vertexData.empty())
     m_hasTransparent = false;
@@ -416,51 +381,55 @@ GraphicalChunk::getzLocation() {
 // If there is no neighbor, nullptr will be returned
 // Trying to get a voxel that is not adjacent to this chunk is an error
 Voxel*
-GraphicalChunk::getVoxel(int x,
-                         int y,
-                         int z,
-                         ) {
+GraphicalChunk::getVoxel(int x, int y, int z) {
 
   if (y >= config::chunk_data::CHUNK_HEIGHT || y < 0)
     return nullptr;
 
   if (x < m_width && x >= 0 && z < m_depth && z >= 0) {
-    return &data[x][y][z];
+    return &m_data[x][y][z];
   } else if (x == m_width && (z < m_depth && z >= 0)) {
 
-    if (right != nullptr)
-      return &((*right)[0][y][z]);
+    if (m_right != nullptr)
+      return &((*m_right)[0][y][z]);
     else
       return nullptr;
 
   } else if (x == -1 && (z < m_depth && z >= 0)) {
 
-    if (left != nullptr)
-      return &((*left)[m_width - 1][y][z]);
+    if (m_left != nullptr)
+      return &((*m_left)[m_width - 1][y][z]);
     else
       return nullptr;
 
   } else if (z == m_depth && (x < m_width && x >= 0)) {
 
-    if (back != nullptr)
-      return &((*back)[x][y][0]);
+    if (m_back != nullptr)
+      return &((*m_back)[x][y][0]);
     else
       return nullptr;
 
   } else if (z == -1 && (x < m_width && x >= 0)) {
 
-    if (front != nullptr)
-      return &((*front)[x][y][m_depth - 1]);
+    if (m_front != nullptr)
+      return &((*m_front)[x][y][m_depth - 1]);
     else
       return nullptr;
   }
   return nullptr;
 }
 
+bool
+isAirOrWater(int id ) {
+  return id == AIR || id == WATER;
+}
+
 void
 GraphicalChunk::createMeshData(
   bool transparent,
-  const vector<vector<vector<CubeFaceData>>>& faceData,
+
+//  const vector<vector<vector<CubeFaceData>>>& faceData,
+
   vector<GLfloat>& vertexData,
   vector<GLfloat>& lightData,
   vector<GLfloat>& normals,
@@ -474,33 +443,41 @@ GraphicalChunk::createMeshData(
   float dy = -m_height / 2;
   float dz = -m_depth / 2;
 
-  for (int i{ 0 }; i < m_width; ++i) {
-    for (int j{ 0 }; j < m_height; ++j) {
-      for (int k{ 0 }; k < m_depth; ++k) {
-        CubeFaceData fd = faceData[i + 1][j + 1][k + 1];
+  for (int i{ 0 }; i <= m_width; ++i) {
+    for (int j{ 0 }; j <= m_height; ++j) {
+      for (int k{ 0 }; k <= m_depth; ++k) {
+        Voxel* fd = getVoxel(i + 1, j + 1, k + 1);
+        if (!fd)
+          continue;
 
-        int id = fd.id;
+        int id = fd->getId();
         if (id == AIR || (id == WATER && !transparent) ||
             (id != WATER && transparent)) {
           continue;
         }
 
+        // TODO These can be normal int's right?
         GLfloat sideTexture = BLOCK_TEXTURES[id][SIDE_TEXTURE];
         GLfloat topTexture = BLOCK_TEXTURES[id][TOP_TEXTURE];
         GLfloat bottomTexture = BLOCK_TEXTURES[id][BOTTOM_TEXTURE];
 
-        if (fd.right) {
+        Voxel* right = getVoxel(i + 1, j, k);
+        if (right && !isAirOrWater(right->getId())) {
           vector<GLfloat> vertex{
-            0.5f + i + dx,  -0.5f + j + dy, 0.5f + k + dz, 0.5f + i + dx,
-            -0.5f + j + dy, -0.5f + k + dz, 0.5f + i + dx, 0.5f + j + dy,
-            -0.5f + k + dz, 0.5f + i + dx,  0.5f + j + dy, 0.5f + k + dz,
+            0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz,  //
+            0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz, //
+            0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz,  //
+            0.5f + i + dx,  0.5f + j + dy, 0.5f + k + dz,  //
           };
 
           vector<GLfloat> light{
-            fd.lvRight_BottomLeft,  fd.olvRight_BottomLeft,
-            fd.lvRight_BottomRight, fd.olvRight_BottomRight,
-            fd.lvRight_TopRight,    fd.olvRight_TopRight,
-            fd.lvRight_TopLeft,     fd.olvRight_TopLeft,
+            // TODO Do work here...
+            0.5f, 0.5f, 0.5f, 0.5f,
+            0.5f, 0.5f, 0.5f, 0.5f,
+//            fd.lvRight_BottomLeft,  fd.olvRight_BottomLeft,
+//            fd.lvRight_BottomRight, fd.olvRight_BottomRight,
+//            fd.lvRight_TopRight,    fd.olvRight_TopRight,
+//            fd.lvRight_TopLeft,     fd.olvRight_TopLeft,
           };
 
           vector<GLfloat> nor{
@@ -531,26 +508,33 @@ GraphicalChunk::createMeshData(
           elementData.insert(elementData.end(), el.begin(), el.end());
 
           elementOffset += 4;
-          totalNumberOfFaces++;
+          ++totalNumberOfFaces;
         }
 
-        if (fd.left) {
+        Voxel* left = getVoxel(i - 1, j, k);
+        if (left && !isAirOrWater(left->getId())) {
           vector<GLfloat> vertex{
-            -0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz, -0.5f + i + dx,
-            -0.5f + j + dy, 0.5f + k + dz,  -0.5f + i + dx, 0.5f + j + dy,
-            0.5f + k + dz,  -0.5f + i + dx, 0.5f + j + dy,  -0.5f + k + dz,
+            -0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz, //
+            -0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz,  //
+            -0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz,   //
+            -0.5f + i + dx, 0.5f + j + dy,  -0.5f + k + dz, //
           };
 
           vector<GLfloat> light{
-            fd.lvLeft_BottomLeft,  fd.olvLeft_BottomLeft,
-            fd.lvLeft_BottomRight, fd.olvLeft_BottomRight,
-            fd.lvLeft_TopRight,    fd.olvLeft_TopRight,
-            fd.lvLeft_TopLeft,     fd.olvLeft_TopLeft,
+            // TODO Do work here...
+            0.5f, 0.5f, 0.5f, 0.5f,
+            0.5f, 0.5f, 0.5f, 0.5f,
+//            fd.lvLeft_BottomLeft,  fd.olvLeft_BottomLeft,
+//            fd.lvLeft_BottomRight, fd.olvLeft_BottomRight,
+//            fd.lvLeft_TopRight,    fd.olvLeft_TopRight,
+//            fd.lvLeft_TopLeft,     fd.olvLeft_TopLeft,
           };
 
           vector<GLfloat> nor{
-            -1.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f,
-            -1.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f,
+            -1.0f, 0.0f, 0.0f, //
+            -1.0f, 0.0f, 0.0f, //
+            -1.0f, 0.0f, 0.0f, //
+            -1.0f, 0.0f, 0.0f, //
           };
 
           vector<GLfloat> uv{
@@ -574,10 +558,11 @@ GraphicalChunk::createMeshData(
           elementData.insert(elementData.end(), el.begin(), el.end());
 
           elementOffset += 4;
-          totalNumberOfFaces++;
+          ++totalNumberOfFaces;
         }
 
-        if (fd.back) {
+        Voxel* back = getVoxel(i, j, k + 1);
+        if (back && !isAirOrWater(back->getId())) {
 
           vector<GLfloat> vertex{
             0.5f + i + dx,  -0.5f + j + dy, -0.5f + k + dz, //
@@ -587,15 +572,19 @@ GraphicalChunk::createMeshData(
           };
 
           vector<GLfloat> light{
-            fd.lvBack_BottomLeft,  fd.olvBack_BottomLeft,
-            fd.lvBack_BottomRight, fd.olvBack_BottomRight,
-            fd.lvBack_TopRight,    fd.olvBack_TopRight,
-            fd.lvBack_TopLeft,     fd.olvBack_TopLeft,
+            0.5f, 0.5f, 0.5f, 0.5f,
+            0.5f, 0.5f, 0.5f, 0.5f,
+//            fd.lvBack_BottomLeft,  fd.olvBack_BottomLeft,
+//            fd.lvBack_BottomRight, fd.olvBack_BottomRight,
+//            fd.lvBack_TopRight,    fd.olvBack_TopRight,
+//            fd.lvBack_TopLeft,     fd.olvBack_TopLeft,
           };
 
           vector<GLfloat> nor{
-            0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f,
-            0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+            0.0f, 0.0f, 1.0f, //
+            0.0f, 0.0f, 1.0f, //
+            0.0f, 0.0f, 1.0f, //
+            0.0f, 0.0f, 1.0f, //
           };
 
           vector<GLfloat> uv{
@@ -619,10 +608,11 @@ GraphicalChunk::createMeshData(
           elementData.insert(elementData.end(), el.begin(), el.end());
 
           elementOffset += 4;
-          totalNumberOfFaces++;
+          ++totalNumberOfFaces;
         }
 
-        if (fd.front) {
+        Voxel* front = getVoxel(i, j, k - 1);
+        if (front && !isAirOrWater(front->getId())) {
 
           vector<GLfloat> vertex{
             -0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz, //
@@ -632,14 +622,20 @@ GraphicalChunk::createMeshData(
           };
 
           vector<GLfloat> light{
-            fd.lvFront_BottomLeft,  fd.olvFront_BottomLeft,
-            fd.lvFront_BottomRight, fd.olvFront_BottomRight,
-            fd.lvFront_TopRight,    fd.olvFront_TopRight,
-            fd.lvFront_TopLeft,     fd.olvFront_TopLeft,
+            0.5f, 0.5f, 0.5f, 0.5f,
+            0.5f, 0.5f, 0.5f, 0.5f,
+//            fd.lvFront_BottomLeft,  fd.olvFront_BottomLeft,
+//            fd.lvFront_BottomRight, fd.olvFront_BottomRight,
+//            fd.lvFront_TopRight,    fd.olvFront_TopRight,
+//            fd.lvFront_TopLeft,     fd.olvFront_TopLeft,
           };
 
-          vector<GLfloat> nor{ 0.0f, 0.0f, -1.0f, 0.0f, 0.0f, -1.0f,
-                               0.0f, 0.0f, -1.0f, 0.0f, 0.0f, -1.0f };
+          vector<GLfloat> nor{
+            0.0f, 0.0f, -1.0f, //
+            0.0f, 0.0f, -1.0f, //
+            0.0f, 0.0f, -1.0f, //
+            0.0f, 0.0f, -1.0f  //
+                               };
 
           vector<GLfloat> uv{
             0.0f, 0.0f, static_cast<GLfloat>(sideTexture),
@@ -662,10 +658,11 @@ GraphicalChunk::createMeshData(
           elementData.insert(elementData.end(), el.begin(), el.end());
 
           elementOffset += 4;
-          totalNumberOfFaces++;
+          ++totalNumberOfFaces;
         }
 
-        if (fd.top) {
+        Voxel* top = getVoxel(i, j + 1, k);
+        if (top && !isAirOrWater(top->getId())) {
 
           vector<GLfloat> vertex{
             -0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz,  //
@@ -675,13 +672,20 @@ GraphicalChunk::createMeshData(
           };
 
           vector<GLfloat> light{
-            fd.lvTop_BottomLeft,   fd.olvTop_BottomLeft, fd.lvTop_BottomRight,
-            fd.olvTop_BottomRight, fd.lvTop_TopRight,    fd.olvTop_TopRight,
-            fd.lvTop_TopLeft,      fd.olvTop_TopLeft,
+            0.5f, 0.5f, 0.5f, 0.5f,
+            0.5f, 0.5f, 0.5f, 0.5f,
+//            fd.lvTop_BottomLeft,   fd.olvTop_BottomLeft, fd.lvTop_BottomRight,
+//            fd.olvTop_BottomRight, fd.lvTop_TopRight,    fd.olvTop_TopRight,
+//            fd.lvTop_TopLeft,      fd.olvTop_TopLeft,
           };
 
-          vector<GLfloat> nor{ 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
-                               0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f };
+          vector<GLfloat> nor{
+                               0.0f, 1.0f, 0.0f, //
+                               0.0f, 1.0f, 0.0f, //
+                               0.0f, 1.0f, 0.0f, //
+                               0.0f, 1.0f, 0.0f  //
+          };
+
 
           vector<GLfloat> uv{ 0.0f, 0.0f, static_cast<GLfloat>(topTexture),
                               1.0f, 0.0f, static_cast<GLfloat>(topTexture),
@@ -702,10 +706,11 @@ GraphicalChunk::createMeshData(
           elementData.insert(elementData.end(), el.begin(), el.end());
 
           elementOffset += 4;
-          totalNumberOfFaces++;
+          ++totalNumberOfFaces;
         }
 
-        if (fd.bottom) {
+        Voxel* bottom = getVoxel(i, j - 1, k);
+        if (bottom && isAirOrWater(bottom->getId())) {
 
           vector<GLfloat> vertex{
             -0.5f + i + dx, -0.5f + j + dy, -0.5f + k + dz, //
@@ -715,14 +720,19 @@ GraphicalChunk::createMeshData(
           };
 
           vector<GLfloat> light{
-            fd.lvBottom_BottomLeft,  fd.olvBottom_BottomLeft,
-            fd.lvBottom_BottomRight, fd.olvBottom_BottomRight,
-            fd.lvBottom_TopRight,    fd.olvBottom_TopRight,
-            fd.lvBottom_TopLeft,     fd.olvBottom_TopLeft,
+            0.5f, 0.5f, 0.5f, 0.5f,
+            0.5f, 0.5f, 0.5f, 0.5f,
+//            fd.lvBottom_BottomLeft,  fd.olvBottom_BottomLeft,
+//            fd.lvBottom_BottomRight, fd.olvBottom_BottomRight,
+//            fd.lvBottom_TopRight,    fd.olvBottom_TopRight,
+//            fd.lvBottom_TopLeft,     fd.olvBottom_TopLeft,
           };
 
-          vector<GLfloat> nor{ 0.0f, -1.0f, 0.0f, 0.0f, -1.0f, 0.0f,
-                               0.0f, -1.0f, 0.0f, 0.0f, -1.0f, 0.0f };
+          vector<GLfloat> nor{ 0.0f, -1.0f, 0.0f, //
+                               0.0f, -1.0f, 0.0f, //
+                               0.0f, -1.0f, 0.0f, //
+                               0.0f, -1.0f, 0.0f  //
+                               };
 
           vector<GLfloat> uv{ 0.0f, 0.0f, static_cast<GLfloat>(bottomTexture),
                               1.0f, 0.0f, static_cast<GLfloat>(bottomTexture),
@@ -743,7 +753,7 @@ GraphicalChunk::createMeshData(
           elementData.insert(elementData.end(), el.begin(), el.end());
 
           elementOffset += 4;
-          totalNumberOfFaces++;
+          ++totalNumberOfFaces;
         }
       }
     }
