@@ -6,6 +6,8 @@ being explained more thoroughly.
 
 ###
 
+Light depropagation for sun light does not work anymore wtf.
+
 Figure out a way of reducing chunk size by removing unecessary air.
 
 TODO Fix memory usage. Memory usage is very high.
@@ -25,4 +27,6 @@ Fix so that the terminal can show all possible settings
 Add cool post processing effects demo
 
 Improve gui when world is dark
+
+
 
