@@ -88,98 +88,28 @@ public:
 
 private:
 
-  struct Face {
-    int id;
-    float lvBottomLeft, lvBottomRight;
-    float lvTopRight, lvTopLeft;
-  };
-
-//  struct CubeFaceData {
-//    int id;
-//    bool vissible, front, back, left, right, top, bottom;
-//    char sunLightValue, otherLightValue;
-//
-//    // lv means sunLightValue
-//    float lvFront_BottomLeft, lvFront_BottomRight;
-//    float lvFront_TopRight, lvFront_TopLeft;
-//
-//    float lvBack_BottomLeft, lvBack_BottomRight;
-//    float lvBack_TopRight, lvBack_TopLeft;
-//
-//    float lvLeft_BottomLeft, lvLeft_BottomRight;
-//    float lvLeft_TopRight, lvLeft_TopLeft;
-//
-//    float lvRight_BottomLeft, lvRight_BottomRight;
-//    float lvRight_TopRight, lvRight_TopLeft;
-//
-//    float lvTop_BottomLeft, lvTop_BottomRight;
-//    float lvTop_TopRight, lvTop_TopLeft;
-//
-//    float lvBottom_BottomLeft, lvBottom_BottomRight;
-//    float lvBottom_TopRight, lvBottom_TopLeft;
-//
-//    // olv means otherLightValue
-//    float olvFront_BottomLeft, olvFront_BottomRight;
-//    float olvFront_TopRight, olvFront_TopLeft;
-//
-//    float olvBack_BottomLeft, olvBack_BottomRight;
-//    float olvBack_TopRight, olvBack_TopLeft;
-//
-//    float olvLeft_BottomLeft, olvLeft_BottomRight;
-//    float olvLeft_TopRight, olvLeft_TopLeft;
-//
-//    float olvRight_BottomLeft, olvRight_BottomRight;
-//    float olvRight_TopRight, olvRight_TopLeft;
-//
-//    float olvTop_BottomLeft, olvTop_BottomRight;
-//    float olvTop_TopRight, olvTop_TopLeft;
-//
-//    float olvBottom_BottomLeft, olvBottom_BottomRight;
-//    float olvBottom_TopRight, olvBottom_TopLeft;
-//  };
-
-  void createMeshData(
-    bool transparent,
-    std::vector<GLfloat>& vertexData,
-    std::vector<GLfloat>& lightData,
-    std::vector<GLfloat>& normals,
-    std::vector<GLfloat>& UV,
-    std::vector<short>& elementData);
+  void createMeshData(bool transparent,
+      std::vector<GLfloat>& vertexData,
+      std::vector<GLfloat>& lightData,
+      std::vector<GLfloat>& normals,
+      std::vector<GLfloat>& UV,
+      std::vector<short>& elementData);
 
   void doAORight(int x, int y, int z);
 
-  void doAOLeft(
-                int x,
-                int y,
-                int z
-);
+  void doAOLeft(int x, int y, int z);
 
-  void doAOFront(
-                 int x,
-                 int y,
-                 int z
-);
+  void doAOFront(int x, int y, int z);
 
-  void doAOBack(
-                int x,
-                int y,
-                int z
-);
+  void doAOBack(int x, int y, int z);
 
-  void doAOTop(int x,
-               int y,
-               int z
-);
+  void doAOTop(int x, int y, int z);
 
-  void doAOBottom(
-    int x,
-    int y,
-    int z
-);
+  void doAOBottom(int x, int y, int z);
 
   Voxel* getVoxel(int x, int y, int z);
 
-  /*
+/*
   template<bool sunLight>
   void computeAverageRight(
     int lightValue,
@@ -863,8 +793,6 @@ private:
     topLeft = acc / counter;
   }
   */
-
-  std::vector<std::vector<std::vector<Face>>> m_faceData;
 
   std::unique_ptr<mesh::MeshElement> m_mesh;
   std::unique_ptr<mesh::MeshElement> m_waterMesh;
