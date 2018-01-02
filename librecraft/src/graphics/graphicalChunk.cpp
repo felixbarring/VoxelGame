@@ -187,10 +187,9 @@ GraphicalChunk::createMeshData(
           continue;
         }
 
-        // TODO These can be normal int's right?
-        GLfloat sideTexture = BLOCK_TEXTURES[id][SIDE_TEXTURE];
-        GLfloat topTexture = BLOCK_TEXTURES[id][TOP_TEXTURE];
-        GLfloat bottomTexture = BLOCK_TEXTURES[id][BOTTOM_TEXTURE];
+        int sideTexture = BLOCK_TEXTURES[id][SIDE_TEXTURE];
+        int topTexture = BLOCK_TEXTURES[id][TOP_TEXTURE];
+        int bottomTexture = BLOCK_TEXTURES[id][BOTTOM_TEXTURE];
 
         Voxel* right = getVoxel(i + 1, j, k);
         if (right && isAirOrWater(right->getId())) {
@@ -201,13 +200,14 @@ GraphicalChunk::createMeshData(
             0.5f + i + dx,  0.5f + j + dy, 0.5f + k + dz,  //
           };
 
+          float sun = right->getSunLightValue();
+          Lights lights{sun, sun, sun, sun};
+          doAORight(i, j, k, lights);
           vector<GLfloat> light{
-            16.0f, 16.0f, 16.0f, 16.0f,
-            16.0f, 16.0f, 16.0f, 16.0f,
-//            fd.lvRight_BottomLeft,  fd.olvRight_BottomLeft,
-//            fd.lvRight_BottomRight, fd.olvRight_BottomRight,
-//            fd.lvRight_TopRight,    fd.olvRight_TopRight,
-//            fd.lvRight_TopLeft,     fd.olvRight_TopLeft,
+            lights.bottomLeft, 0.0f,
+            lights.bottomRight, 0.0f,
+            lights.topRight, 0.0f,
+            lights.topLeft, 0.0f,
           };
 
           vector<GLfloat> nor{
@@ -250,13 +250,14 @@ GraphicalChunk::createMeshData(
             -0.5f + i + dx, 0.5f + j + dy,  -0.5f + k + dz, //
           };
 
+          float sun = left->getSunLightValue();
+          Lights lights{sun, sun, sun, sun};
+          doAOLeft(i, j, k, lights);
           vector<GLfloat> light{
-            16.0f, 16.0f, 16.0f, 16.0f,
-            16.0f, 16.0f, 16.0f, 16.0f,
-//            fd.lvLeft_BottomLeft,  fd.olvLeft_BottomLeft,
-//            fd.lvLeft_BottomRight, fd.olvLeft_BottomRight,
-//            fd.lvLeft_TopRight,    fd.olvLeft_TopRight,
-//            fd.lvLeft_TopLeft,     fd.olvLeft_TopLeft,
+            lights.bottomLeft, 0.0f,
+            lights.bottomRight, 0.0f,
+            lights.topRight, 0.0f,
+            lights.topLeft, 0.0f,
           };
 
           vector<GLfloat> nor{
@@ -301,13 +302,14 @@ GraphicalChunk::createMeshData(
             0.5f + i + dx,  0.5f + j + dy,  -0.5f + k + dz, //
           };
 
+          float sun = back->getSunLightValue();
+          Lights lights{sun, sun, sun, sun};
+          doAOBack(i, j, k, lights);
           vector<GLfloat> light{
-            16.0f, 16.0f, 16.0f, 16.0f,
-            16.0f, 16.0f, 16.0f, 16.0f,
-//            fd.lvBack_BottomLeft,  fd.olvBack_BottomLeft,
-//            fd.lvBack_BottomRight, fd.olvBack_BottomRight,
-//            fd.lvBack_TopRight,    fd.olvBack_TopRight,
-//            fd.lvBack_TopLeft,     fd.olvBack_TopLeft,
+            lights.bottomLeft, 0.0f,
+            lights.bottomRight, 0.0f,
+            lights.topRight, 0.0f,
+            lights.topLeft, 0.0f,
           };
 
           vector<GLfloat> nor{
@@ -351,13 +353,14 @@ GraphicalChunk::createMeshData(
             -0.5f + i + dx, 0.5f + j + dy,  0.5f + k + dz, //
           };
 
+          float sun = front->getSunLightValue();
+          Lights lights{sun, sun, sun, sun};
+          doAOFront(i, j, k, lights);
           vector<GLfloat> light{
-            16.0f, 16.0f, 16.0f, 16.0f,
-            16.0f, 16.0f, 16.0f, 16.0f,
-//            fd.lvFront_BottomLeft,  fd.olvFront_BottomLeft,
-//            fd.lvFront_BottomRight, fd.olvFront_BottomRight,
-//            fd.lvFront_TopRight,    fd.olvFront_TopRight,
-//            fd.lvFront_TopLeft,     fd.olvFront_TopLeft,
+            lights.bottomLeft, 0.0f,
+            lights.bottomRight, 0.0f,
+            lights.topRight, 0.0f,
+            lights.topLeft, 0.0f,
           };
 
           vector<GLfloat> nor{
@@ -401,12 +404,14 @@ GraphicalChunk::createMeshData(
             -0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz, //
           };
 
+          float sun = top->getSunLightValue();
+          Lights lights{sun, sun, sun, sun};
+          doAOTop(i, j, k, lights);
           vector<GLfloat> light{
-            16.0f, 16.0f, 16.0f, 16.0f,
-            16.0f, 16.0f, 16.0f, 16.0f,
-//            fd.lvTop_BottomLeft,   fd.olvTop_BottomLeft, fd.lvTop_BottomRight,
-//            fd.olvTop_BottomRight, fd.lvTop_TopRight,    fd.olvTop_TopRight,
-//            fd.lvTop_TopLeft,      fd.olvTop_TopLeft,
+            lights.bottomLeft, 0.0f,
+            lights.bottomRight, 0.0f,
+            lights.topRight, 0.0f,
+            lights.topLeft, 0.0f,
           };
 
           vector<GLfloat> nor{
@@ -449,13 +454,14 @@ GraphicalChunk::createMeshData(
             -0.5f + i + dx, -0.5f + j + dy, 0.5f + k + dz,  //
           };
 
+          float sun = bottom->getSunLightValue();
+          Lights lights{sun, sun, sun, sun};
+          doAOBottom(i, j, k, lights);
           vector<GLfloat> light{
-            16.0f, 16.0f, 16.0f, 16.0f,
-            16.0f, 16.0f, 16.0f, 16.0f,
-//            fd.lvBottom_BottomLeft,  fd.olvBottom_BottomLeft,
-//            fd.lvBottom_BottomRight, fd.olvBottom_BottomRight,
-//            fd.lvBottom_TopRight,    fd.olvBottom_TopRight,
-//            fd.lvBottom_TopLeft,     fd.olvBottom_TopLeft,
+            lights.bottomLeft, 0.0f,
+            lights.bottomRight, 0.0f,
+            lights.topRight, 0.0f,
+            lights.topLeft, 0.0f,
           };
 
           vector<GLfloat> nor{ 0.0f, -1.0f, 0.0f, //
@@ -493,7 +499,7 @@ GraphicalChunk::createMeshData(
 int AOFactor{ 4 };
 
 void
-GraphicalChunk::doAORight(int x, int y, int z) {
+GraphicalChunk::doAORight(int x, int y, int z, Lights& lights) {
   float bottomLeft = 0;
   Voxel* v = getVoxel(x + 1, y, z + 1);
   if (v && v->getId() != AIR)
@@ -505,7 +511,7 @@ GraphicalChunk::doAORight(int x, int y, int z) {
   if (v && v->getId() != AIR)
     ++bottomLeft;
 
-//  cf.lvRight_BottomLeft -= min<float>(2.0, bottomLeft) * AOFactor;
+  lights.bottomLeft -= min<float>(2.0, bottomLeft) * AOFactor;
 
   float bottomRight = 0;
   v = getVoxel(x + 1, y - 1, z);
@@ -518,7 +524,7 @@ GraphicalChunk::doAORight(int x, int y, int z) {
   if (v && v->getId() != AIR)
     ++bottomRight;
 
-//  cf.lvRight_BottomRight -= min<float>(2.0, bottomRight) * AOFactor;
+  lights.bottomRight -= min<float>(2.0, bottomRight) * AOFactor;
 
   float topRight = 0;
   v = getVoxel(x + 1, y, z - 1);
@@ -531,7 +537,7 @@ GraphicalChunk::doAORight(int x, int y, int z) {
   if (v && v->getId() != AIR)
     ++topRight;
 
-//  cf.lvRight_TopRight -= min<float>(2.0, topRight) * AOFactor;
+  lights.topRight -= min<float>(2.0, topRight) * AOFactor;
 
   float topLeft = 0;
   v = getVoxel(x + 1, y + 1, z);
@@ -544,11 +550,11 @@ GraphicalChunk::doAORight(int x, int y, int z) {
   if (v && v->getId() != AIR)
     ++topLeft;
 
-//  cf.lvRight_TopLeft -= min<float>(2.0, topLeft) * AOFactor;
+  lights.topLeft -= min<float>(2.0, topLeft) * AOFactor;
 }
 
 void
-GraphicalChunk::doAOLeft(int x, int y, int z) {
+GraphicalChunk::doAOLeft(int x, int y, int z, Lights& lights) {
   float bottomLeft = 0;
   Voxel* v = getVoxel(x - 1, y, z - 1);
   if (v && v->getId() != AIR)
@@ -560,7 +566,7 @@ GraphicalChunk::doAOLeft(int x, int y, int z) {
   if (v && v->getId() != AIR)
     ++bottomLeft;
 
-//  cf.lvLeft_BottomLeft -= min<float>(2.0, bottomLeft) * AOFactor;
+  lights.bottomLeft -= min<float>(2.0, bottomLeft) * AOFactor;
 
   float bottomRight = 0;
   v = getVoxel(x - 1, y - 1, z);
@@ -573,7 +579,7 @@ GraphicalChunk::doAOLeft(int x, int y, int z) {
   if (v && v->getId() != AIR)
     ++bottomRight;
 
-//  cf.lvLeft_BottomRight -= min<float>(2.0, bottomRight) * AOFactor;
+  lights.bottomRight -= min<float>(2.0, bottomRight) * AOFactor;
 
   float topRight = 0;
   v = getVoxel(x - 1, y, z + 1);
@@ -586,7 +592,7 @@ GraphicalChunk::doAOLeft(int x, int y, int z) {
   if (v && v->getId() != AIR)
     ++topRight;
 
-//  cf.lvLeft_TopRight -= min<float>(2.0, topRight) * AOFactor;
+  lights.topRight -= min<float>(2.0, topRight) * AOFactor;
 
   char topLeft = 0;
   v = getVoxel(x - 1, y + 1, z);
@@ -599,11 +605,11 @@ GraphicalChunk::doAOLeft(int x, int y, int z) {
   if (v && v->getId() != AIR)
     ++topLeft;
 
-//  cf.lvLeft_TopLeft -= topLeft * AOFactor;
+  lights.topLeft -= topLeft * AOFactor;
 }
 
 void
-GraphicalChunk::doAOFront(int x, int y, int z) {
+GraphicalChunk::doAOFront(int x, int y, int z, Lights& lights) {
   float bottomLeft = 0;
   Voxel* v = getVoxel(x - 1, y, z + 1);
   if (v && v->getId() != AIR)
@@ -615,7 +621,7 @@ GraphicalChunk::doAOFront(int x, int y, int z) {
   if (v && v->getId() != AIR)
     ++bottomLeft;
 
-//  cf.lvFront_BottomLeft -= min<float>(2.0, bottomLeft) * AOFactor;
+  lights.bottomLeft -= min<float>(2.0, bottomLeft) * AOFactor;
 
   float bottomRight = 0;
   v = getVoxel(x, y - 1, z + 1);
@@ -628,7 +634,7 @@ GraphicalChunk::doAOFront(int x, int y, int z) {
   if (v && v->getId() != AIR)
     ++bottomRight;
 
-//  cf.lvFront_BottomRight -= min<float>(2.0, bottomRight) * AOFactor;
+  lights.bottomRight -= min<float>(2.0, bottomRight) * AOFactor;
 
   float topRight = 0;
   v = getVoxel(x + 1, y, z + 1);
@@ -641,7 +647,7 @@ GraphicalChunk::doAOFront(int x, int y, int z) {
   if (v && v->getId() != AIR)
     ++topRight;
 
-//  cf.lvFront_TopRight -= min<float>(2.0, topRight) * AOFactor;
+  lights.topRight -= min<float>(2.0, topRight) * AOFactor;
 
   float topLeft = 0;
   v = getVoxel(x, y + 1, z + 1);
@@ -654,11 +660,11 @@ GraphicalChunk::doAOFront(int x, int y, int z) {
   if (v && v->getId() != AIR)
     ++topLeft;
 
-//  cf.lvFront_TopLeft -= min<float>(2.0, topLeft) * AOFactor;
+  lights.topLeft -= min<float>(2.0, topLeft) * AOFactor;
 }
 
 void
-GraphicalChunk::doAOBack(int x, int y, int z) {
+GraphicalChunk::doAOBack(int x, int y, int z, Lights& lights) {
   float bottomLeft = 0;
   Voxel* v = getVoxel(x + 1, y, z - 1);
   if (v && v->getId() != AIR)
@@ -670,7 +676,7 @@ GraphicalChunk::doAOBack(int x, int y, int z) {
   if (v && v->getId() != AIR)
     ++bottomLeft;
 
-//  cf.lvBack_BottomLeft -= min<float>(2.0, bottomLeft) * AOFactor;
+  lights.bottomLeft -= min<float>(2.0, bottomLeft) * AOFactor;
 
   float bottomRight = 0;
   v = getVoxel(x, y - 1, z - 1);
@@ -683,7 +689,7 @@ GraphicalChunk::doAOBack(int x, int y, int z) {
   if (v && v->getId() != AIR)
     ++bottomRight;
 
-//  cf.lvBack_BottomRight -= min<float>(2.0, bottomRight) * AOFactor;
+  lights.bottomRight -= min<float>(2.0, bottomRight) * AOFactor;
 
   float topRight = 0;
   v = getVoxel(x - 1, y, z - 1);
@@ -696,7 +702,7 @@ GraphicalChunk::doAOBack(int x, int y, int z) {
   if (v && v->getId() != AIR)
     ++topRight;
 
-//  cf.lvBack_TopRight -= min<float>(2.0, topRight) * AOFactor;
+  lights.topRight -= min<float>(2.0, topRight) * AOFactor;
 
   float topLeft = 0;
   v = getVoxel(x, y + 1, z - 1);
@@ -709,11 +715,11 @@ GraphicalChunk::doAOBack(int x, int y, int z) {
   if (v && v->getId() != AIR)
     ++topLeft;
 
-//  cf.lvBack_TopLeft -= min<float>(2.0, topLeft) * AOFactor;
+  lights.topLeft -= min<float>(2.0, topLeft) * AOFactor;
 }
 
 void
-GraphicalChunk::doAOTop(int x, int y, int z) {
+GraphicalChunk::doAOTop(int x, int y, int z, GraphicalChunk::Lights& lights) {
   float bottomLeft = 0;
   Voxel* v = getVoxel(x - 1, y + 1, z);
   if (v && v->getId() != AIR)
@@ -725,7 +731,7 @@ GraphicalChunk::doAOTop(int x, int y, int z) {
   if (v && v->getId() != AIR)
     ++bottomLeft;
 
-//  cf.lvTop_BottomLeft -= min<float>(2.0, bottomLeft) * AOFactor;
+  lights.bottomLeft -= min<float>(2.0, bottomLeft) * AOFactor;
 
   float bottomRight = 0;
   v = getVoxel(x, y + 1, z + 1);
@@ -738,7 +744,7 @@ GraphicalChunk::doAOTop(int x, int y, int z) {
   if (v && v->getId() != AIR)
     ++bottomRight;
 
-//  cf.lvTop_BottomRight -= min<float>(2.0, bottomRight) * AOFactor;
+  lights.bottomRight -= min<float>(2.0, bottomRight) * AOFactor;
 
   float topRight = 0;
   v = getVoxel(x + 1, y + 1, z);
@@ -751,7 +757,7 @@ GraphicalChunk::doAOTop(int x, int y, int z) {
   if (v && v->getId() != AIR)
     ++topRight;
 
-//  cf.lvTop_TopRight -= min<float>(2.0, topRight) * AOFactor;
+  lights.topRight -= min<float>(2.0, topRight) * AOFactor;
 
   float topLeft = 0;
   v = getVoxel(x, y + 1, z - 1);
@@ -764,11 +770,11 @@ GraphicalChunk::doAOTop(int x, int y, int z) {
   if (v && v->getId() != AIR)
     ++topLeft;
 
-//  cf.lvTop_TopLeft -= min<float>(2.0, topLeft) * AOFactor;
+  lights.topLeft -= min<float>(2.0, topLeft) * AOFactor;
 }
 
 void
-GraphicalChunk::doAOBottom(int x, int y, int z) {
+GraphicalChunk::doAOBottom(int x, int y, int z, Lights& lights) {
   float bottomLeft = 0;
   Voxel* v = getVoxel(x - 1, y - 1, z);
   if (v && v->getId() != AIR)
@@ -780,7 +786,7 @@ GraphicalChunk::doAOBottom(int x, int y, int z) {
   if (v && v->getId() != AIR)
     ++bottomLeft;
 
-  //cf.lvBottom_BottomLeft -= min<float>(2.0, bottomLeft) * AOFactor;
+  lights.bottomLeft -= min<float>(2.0, bottomLeft) * AOFactor;
 
   float bottomRight = 0;
   v = getVoxel(x, y - 1, z - 1);
@@ -793,7 +799,7 @@ GraphicalChunk::doAOBottom(int x, int y, int z) {
   if (v && v->getId() != AIR)
     ++bottomRight;
 
-//  cf.lvBottom_BottomRight -= min<float>(2.0, bottomRight) * AOFactor;
+  lights.bottomRight -= min<float>(2.0, bottomRight) * AOFactor;
 
   float topRight = 0;
   v = getVoxel(x + 1, y - 1, z);
@@ -806,7 +812,7 @@ GraphicalChunk::doAOBottom(int x, int y, int z) {
   if (v && v->getId() != AIR)
     ++topRight;
 
-//  cf.lvBottom_TopRight -= min<float>(2.0, topRight) * AOFactor;
+  lights.topRight -= min<float>(2.0, topRight) * AOFactor;
 
   float topLeft = 0;
   v = getVoxel(x, y - 1, z + 1);
@@ -819,7 +825,7 @@ GraphicalChunk::doAOBottom(int x, int y, int z) {
   if (v && v->getId() != AIR)
     ++topLeft;
 
-  //  cf.lvBottom_TopLeft -= min<float>(2.0, topLeft) * AOFactor;
+  lights.topLeft -= min<float>(2.0, topLeft) * AOFactor;
 }
 }
 
@@ -1088,3 +1094,4 @@ GraphicalChunk::doAOBottom(int x, int y, int z) {
     }
   }
   */
+

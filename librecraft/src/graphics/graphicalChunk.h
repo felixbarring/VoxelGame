@@ -95,17 +95,33 @@ private:
       std::vector<GLfloat>& UV,
       std::vector<short>& elementData);
 
-  void doAORight(int x, int y, int z);
+  class Lights {
+  public:
+    Lights(float _bottomLeft, float _bottomRight, float _topRight, float _topLeft)
+      : bottomLeft{_bottomLeft }
+      , bottomRight{ _bottomRight }
+      , topRight{_topRight }
+      , topLeft{ _topLeft }
+      {
+      }
 
-  void doAOLeft(int x, int y, int z);
+    float bottomLeft{};
+    float bottomRight{};
+    float topRight{};
+    float topLeft{};
+  };
 
-  void doAOFront(int x, int y, int z);
+  void doAORight(int x, int y, int z, Lights& lights);
 
-  void doAOBack(int x, int y, int z);
+  void doAOLeft(int x, int y, int z, Lights& lights);
 
-  void doAOTop(int x, int y, int z);
+  void doAOFront(int x, int y, int z, Lights& lights);
 
-  void doAOBottom(int x, int y, int z);
+  void doAOBack(int x, int y, int z, Lights& lights);
+
+  void doAOTop(int x, int y, int z, Lights& lights);
+
+  void doAOBottom(int x, int y, int z, Lights& lights);
 
   Voxel* getVoxel(int x, int y, int z);
 
