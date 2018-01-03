@@ -32,7 +32,7 @@ Voxel::getId() {
 void
 Voxel::setSunLightValue(char value) {
   assert(value <= config::graphics_data::directSunlightValue);
-  m_lightValues |= (value & 0x0F);
+  m_lightValues = value;
 }
 
 char
@@ -43,7 +43,7 @@ Voxel::getSunLightValue() {
 void
 Voxel::setOtherLightValue(char value) {
   assert(value <= config::graphics_data::directSunlightValue);
-  m_otherLight |= (value & 0x0F);
+  m_otherLight = value;
 }
 
 char
