@@ -19,6 +19,7 @@ using Matrix = std::vector<std::vector<std::vector<Voxel>>>;
  */
 class GraphicalChunk {
 public:
+
   /**
    *
    * @param x
@@ -88,12 +89,16 @@ public:
 
 private:
 
-  void createMeshData(bool transparent,
-      std::vector<GLfloat>& vertexData,
-      std::vector<GLfloat>& lightData,
-      std::vector<GLfloat>& normals,
-      std::vector<GLfloat>& UV,
-      std::vector<short>& elementData);
+  class MeshData {
+  public:
+    std::vector<GLfloat> vertexData{};
+    std::vector<GLfloat> lightData{};
+    std::vector<GLfloat> normals{};
+    std::vector<GLfloat> UV{};
+    std::vector<short> elementData{};
+  };
+
+  MeshData createMeshData(bool transparent);
 
   class Lights {
   public:
@@ -809,6 +814,10 @@ private:
     topLeft = acc / counter;
   }
   */
+
+  static const int meshData{0};
+  static const int wateterMeshData{1};
+  std::vector<MeshData> m_meshData{};
 
   std::unique_ptr<mesh::MeshElement> m_mesh;
   std::unique_ptr<mesh::MeshElement> m_waterMesh;

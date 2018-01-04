@@ -400,7 +400,7 @@ ChunkManager::moveChunks(Direction direction) {
   // ##########################################################################
 
   // Destroy the chunks that are outside the matrix.
-  for (auto chunk : chunksToDelete) {
+  for (auto &chunk : chunksToDelete) {
     chunk->removeAllNeighbors();
     chunk->storeChunk();
     chunk.reset();

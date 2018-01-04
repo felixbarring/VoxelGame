@@ -33,6 +33,9 @@ GraphicalChunk::GraphicalChunk(double _x, double _y, double _z,
   , m_back{back}
   , m_front{front}
 {
+
+  m_meshData.push_back(createMeshData(false));
+  m_meshData.push_back(createMeshData(false));
 }
 
 // ########################################################
@@ -41,39 +44,26 @@ GraphicalChunk::GraphicalChunk(double _x, double _y, double _z,
 
 void
 GraphicalChunk::uploadData() {
-  vector<GLfloat> vertexData;
-  vector<GLfloat> lightData;
-  vector<GLfloat> normals;
-  vector<GLfloat> UV;
-  vector<short> elementData;
-
-  createMeshData(
-    false, vertexData, lightData, normals, UV, elementData);
-
   {
     std::vector<std::pair<std::vector<float>, int>> vobs{
-      { vertexData, 3 }, { lightData, 2 }, { normals, 3 }, { UV, 3 }
+      { m_meshData[meshData].vertexData, 3 }, { m_meshData[meshData].lightData, 2 },
+      { m_meshData[meshData].normals, 3 }, { m_meshData[meshData].UV, 3 }
     };
-    m_mesh = make_unique<mesh::MeshElement>(move(vobs), elementData);
+    m_mesh = make_unique<mesh::MeshElement>(move(vobs), m_meshData[meshData].elementData);
   }
 
-  vertexData.clear();
-  normals.clear();
-  UV.clear();
-  elementData.clear();
-
-  createMeshData(
-    true, vertexData, lightData, normals, UV, elementData);
-
-  if (vertexData.empty())
+  if (m_meshData[wateterMeshData].vertexData.empty())
     m_hasTransparent = false;
 
   {
     std::vector<std::pair<std::vector<float>, int>> vobs{
-      { vertexData, 3 }, { lightData, 2 }, { normals, 3 }, { UV, 3 }
+      { m_meshData[wateterMeshData].vertexData, 3 }, { m_meshData[wateterMeshData].lightData, 2 },
+      { m_meshData[wateterMeshData].normals, 3 }, {m_meshData[wateterMeshData]. UV, 3 }
     };
-    m_waterMesh = make_unique<mesh::MeshElement>(move(vobs), elementData);
+    m_waterMesh = make_unique<mesh::MeshElement>(move(vobs),
+        m_meshData[wateterMeshData].elementData);
   }
+  m_meshData.clear();
 }
 
 void
@@ -116,36 +106,35 @@ GraphicalChunk::getzLocation() {
 // Trying to get a voxel that is not adjacent to this chunk is an error
 Voxel*
 GraphicalChunk::getVoxel(int x, int y, int z) {
-
   if (y >= config::chunk_data::CHUNK_HEIGHT || y < 0)
     return nullptr;
 
-  if (x < m_width && x >= 0 && z < m_depth && z >= 0) {
+  if (x < m_width && x >= 0 && (z < m_depth && z >= 0)) {
     return &m_data[x][y][z];
   } else if (x == m_width && (z < m_depth && z >= 0)) {
 
-    if (m_right != nullptr)
+    if (m_right)
       return &((*m_right)[0][y][z]);
     else
       return nullptr;
 
   } else if (x == -1 && (z < m_depth && z >= 0)) {
 
-    if (m_left != nullptr)
+    if (m_left )
       return &((*m_left)[m_width - 1][y][z]);
     else
       return nullptr;
 
   } else if (z == m_depth && (x < m_width && x >= 0)) {
 
-    if (m_back != nullptr)
+    if (m_back)
       return &((*m_back)[x][y][0]);
     else
       return nullptr;
 
   } else if (z == -1 && (x < m_width && x >= 0)) {
 
-    if (m_front != nullptr)
+    if (m_front)
       return &((*m_front)[x][y][m_depth - 1]);
     else
       return nullptr;
@@ -158,14 +147,14 @@ isAirOrWater(int id ) {
   return id == AIR || id == WATER;
 }
 
-void
-GraphicalChunk::createMeshData(
-  bool transparent,
-  vector<GLfloat>& vertexData,
-  vector<GLfloat>& lightData,
-  vector<GLfloat>& normals,
-  vector<GLfloat>& UV,
-  vector<short>& elementData) {
+GraphicalChunk::MeshData
+GraphicalChunk::createMeshData(bool transparent) {
+  MeshData meshData{};
+  std::vector<GLfloat>& vertexData = meshData.vertexData;
+  std::vector<GLfloat>& lightData = meshData.lightData;
+  std::vector<GLfloat>& normals = meshData.normals;
+  std::vector<GLfloat>& UV = meshData.UV;
+  std::vector<short>& elementData = meshData.elementData;
 
   short elementOffset{ 0 };
   int totalNumberOfFaces{ 0 };
@@ -203,11 +192,16 @@ GraphicalChunk::createMeshData(
           float sun = right->getSunLightValue();
           Lights lights{sun, sun, sun, sun};
           doAORight(i, j, k, lights);
+
+          float other = right->getOtherLightValue();
+          Lights otherLights{other, other, other, other};
+          doAORight(i, j, k, otherLights);
+
           vector<GLfloat> light{
-            lights.bottomLeft, 0.0f,
-            lights.bottomRight, 0.0f,
-            lights.topRight, 0.0f,
-            lights.topLeft, 0.0f,
+            lights.bottomLeft, otherLights.bottomLeft,
+            lights.bottomRight, otherLights.bottomRight,
+            lights.topRight, otherLights.topRight,
+            lights.topLeft, otherLights.topLeft,
           };
 
           vector<GLfloat> nor{
@@ -253,11 +247,16 @@ GraphicalChunk::createMeshData(
           float sun = left->getSunLightValue();
           Lights lights{sun, sun, sun, sun};
           doAOLeft(i, j, k, lights);
+
+          float other = left->getOtherLightValue();
+          Lights otherLights{other, other, other, other};
+          doAOLeft(i, j, k, otherLights);
+
           vector<GLfloat> light{
-            lights.bottomLeft, 0.0f,
-            lights.bottomRight, 0.0f,
-            lights.topRight, 0.0f,
-            lights.topLeft, 0.0f,
+            lights.bottomLeft, otherLights.bottomLeft,
+            lights.bottomRight, otherLights.bottomRight,
+            lights.topRight, otherLights.topRight,
+            lights.topLeft, otherLights.topLeft,
           };
 
           vector<GLfloat> nor{
@@ -291,7 +290,6 @@ GraphicalChunk::createMeshData(
           ++totalNumberOfFaces;
         }
 
-        // TODO Back front not really correct?
         Voxel* back = getVoxel(i, j, k - 1);
         if (back && isAirOrWater(back->getId())) {
 
@@ -305,11 +303,16 @@ GraphicalChunk::createMeshData(
           float sun = back->getSunLightValue();
           Lights lights{sun, sun, sun, sun};
           doAOBack(i, j, k, lights);
+
+          float other = back->getOtherLightValue();
+          Lights otherLights{other, other, other, other};
+          doAOBack(i, j, k, otherLights);
+
           vector<GLfloat> light{
-            lights.bottomLeft, 0.0f,
-            lights.bottomRight, 0.0f,
-            lights.topRight, 0.0f,
-            lights.topLeft, 0.0f,
+            lights.bottomLeft, otherLights.bottomLeft,
+            lights.bottomRight, otherLights.bottomRight,
+            lights.topRight, otherLights.topRight,
+            lights.topLeft, otherLights.topLeft,
           };
 
           vector<GLfloat> nor{
@@ -356,11 +359,16 @@ GraphicalChunk::createMeshData(
           float sun = front->getSunLightValue();
           Lights lights{sun, sun, sun, sun};
           doAOFront(i, j, k, lights);
+
+          float other = front->getOtherLightValue();
+          Lights otherLights{other, other, other, other};
+          doAOFront(i, j, k, otherLights);
+
           vector<GLfloat> light{
-            lights.bottomLeft, 0.0f,
-            lights.bottomRight, 0.0f,
-            lights.topRight, 0.0f,
-            lights.topLeft, 0.0f,
+            lights.bottomLeft, otherLights.bottomLeft,
+            lights.bottomRight, otherLights.bottomRight,
+            lights.topRight, otherLights.topRight,
+            lights.topLeft, otherLights.topLeft,
           };
 
           vector<GLfloat> nor{
@@ -407,11 +415,16 @@ GraphicalChunk::createMeshData(
           float sun = top->getSunLightValue();
           Lights lights{sun, sun, sun, sun};
           doAOTop(i, j, k, lights);
+
+          float other = top->getOtherLightValue();
+          Lights otherLights{other, other, other, other};
+          doAOTop(i, j, k, otherLights);
+
           vector<GLfloat> light{
-            lights.bottomLeft, 0.0f,
-            lights.bottomRight, 0.0f,
-            lights.topRight, 0.0f,
-            lights.topLeft, 0.0f,
+            lights.bottomLeft, otherLights.bottomLeft,
+            lights.bottomRight, otherLights.bottomRight,
+            lights.topRight, otherLights.topRight,
+            lights.topLeft, otherLights.topLeft,
           };
 
           vector<GLfloat> nor{
@@ -457,11 +470,16 @@ GraphicalChunk::createMeshData(
           float sun = bottom->getSunLightValue();
           Lights lights{sun, sun, sun, sun};
           doAOBottom(i, j, k, lights);
+
+          float other = bottom->getOtherLightValue();
+          Lights otherLights{other, other, other, other};
+          doAOBottom(i, j, k, otherLights);
+
           vector<GLfloat> light{
-            lights.bottomLeft, 0.0f,
-            lights.bottomRight, 0.0f,
-            lights.topRight, 0.0f,
-            lights.topLeft, 0.0f,
+            lights.bottomLeft, otherLights.bottomLeft,
+            lights.bottomRight, otherLights.bottomRight,
+            lights.topRight, otherLights.topRight,
+            lights.topLeft, otherLights.topLeft,
           };
 
           vector<GLfloat> nor{ 0.0f, -1.0f, 0.0f, //
@@ -494,6 +512,7 @@ GraphicalChunk::createMeshData(
       }
     }
   }
+  return meshData;
 }
 
 int AOFactor{ 4 };
@@ -828,7 +847,6 @@ GraphicalChunk::doAOBottom(int x, int y, int z, Lights& lights) {
   lights.topLeft -= min<float>(2.0, topLeft) * AOFactor;
 }
 }
-
 
 /*
   // Remove faces and compute lightning
