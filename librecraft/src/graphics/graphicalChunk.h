@@ -15,12 +15,23 @@ namespace graphics {
 using Matrix = std::vector<std::vector<std::vector<Voxel>>>;
 
 /**
+ * @brief Creates a graphical representation of a chunk.
  *
+ * This can then be rendered with the two functions drawNoneTransparent and
+ * drawTransparent. After calling the constructor, the uploadData functions
+ * must be called.
  */
 class GraphicalChunk {
 public:
 
   /**
+   * @brief Creates an instance of the GraphicalChunk.
+   *
+   * It will create data that should be uploaded with uploadData. This
+   * constructor only reads from the parameters and it is thus safe to run this
+   * in parallel as long as the provided arguments are not changed by some other
+   * thread. The work done for creating the mesh data can be considered to be
+   * big, so its a good idea to run it in parallel.
    *
    * @param x
    * @param y
@@ -41,49 +52,52 @@ public:
                  Matrix* front);
 
   /**
-   * Creates the meshes that will be used for rendering. This function must be
-   * called from the main thread that has the opengl context. Forgetting to
-   * call this function before draw is an error. Should only be done once.
+   * @brief Uploads the mesh data to the Graphics Card.
+   *
+   * Uploads the data for the meshes, this data was created by the constructor.
+   * This function must be called from the main thread that has the opengl
+   * context. Forgetting to call this function before a draw is an error. Should
+   * only be done once.
    */
   void uploadData();
 
   /**
-   *
+   * @brief Draws the mesh with none transparent faces.
    */
   void drawNoneTransparent();
 
   /**
-   *
+   * @brief Draws the mesh with transparent faces such as water.
    */
   void drawTransparent();
 
   /**
-   *
-   * @return
+   * @return If there is any transparent part to render.
    */
   bool hasTransparent();
 
   /**
    *
-   * @return
+   * @return The transform for this GraphicalChunk, should be used to crate
+   *         the correct transform matrixes.
    */
   Transform& getTransform();
 
   /**
    *
-   * @return
+   * @return Returns the x location of the GraphicalChunk.
    */
   float getxLocation();
 
   /**
    *
-   * @return
+   * @return Returns the y location of the GraphicalChunk.
    */
   float getyLocation();
 
   /**
    *
-   * @return
+   * @return Returns the z location of the GraphicalChunk.
    */
   float getzLocation();
 
@@ -828,9 +842,9 @@ private:
   double m_yLocation;
   double m_zLocation;
 
-  int m_width = config::chunk_data::GRAPHICAL_CHUNK_WIDTH;
-  int m_height = config::chunk_data::GRAPHICAL_CHUNK_HEIGHT;
-  int m_depth = config::chunk_data::GRAPHICAL_CHUNK_WIDTH;
+  const int m_width{config::chunk_data::GRAPHICAL_CHUNK_WIDTH};
+  const int m_height{config::chunk_data::GRAPHICAL_CHUNK_HEIGHT};
+  const int m_depth{config::chunk_data::GRAPHICAL_CHUNK_WIDTH};
 
   Transform transform;
 
