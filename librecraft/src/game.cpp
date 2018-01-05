@@ -158,6 +158,9 @@ Game::run() {
   while (!m_quit && window->isOpen()) {
     m_fpsManager.frameStart();
 
+    shared_ptr<util::Input> input = util::Input::getInstance();
+    input->updateValues();
+
     auto frameTime = m_fpsManager.frameTime();
     m_soundPlayer.update(frameTime);
 
@@ -179,8 +182,14 @@ Game::createWorld(chunk::CreationOptions options) {
   LoadingScreen loadingScreen(m_fpsManager, window, *m_graphicsmanager);
 
   std::chrono::milliseconds span{ 0 };
-  while (future.wait_for(span) != future_status::ready)
+  while (future.wait_for(span) != future_status::ready) {
     loadingScreen.update();
+    // Done to prevent the window to be grayed out like if the application
+    // has stopped responding even though it works correctly. Seems like
+    // there is some kind of watch dog on Ubuntu checking this anyway.
+    shared_ptr<util::Input> input = util::Input::getInstance();
+    input->updateValues();
+  }
 
   m_inGame.reset(new InGame(*this,
                             move(chunkManager),

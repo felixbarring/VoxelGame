@@ -388,7 +388,6 @@ MainMenu::update(double timePassed) {
   shared_ptr<util::Input> input = util::Input::getInstance();
 
   m_mouse.unlock();
-  input->updateValues();
   m_mouse.update();
   m_mouse.draw();
 

@@ -269,7 +269,6 @@ InGame::update(double timePassed) {
 
   if (m_state == GameState::NoOverlay) {
     m_mouse.lock();
-    input->updateValues();
     m_mouse.update();
     m_player.update(timePassed);
     m_timeCycle.update(timePassed);
@@ -335,7 +334,6 @@ InGame::update(double timePassed) {
 
   } else {
     m_mouse.unlock();
-    input->updateValues();
     m_mouse.update();
     m_mouse.draw();
   }
