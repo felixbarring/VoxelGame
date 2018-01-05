@@ -35,12 +35,8 @@ GraphicalChunk::GraphicalChunk(double _x, double _y, double _z,
 {
 
   m_meshData.push_back(createMeshData(false));
-  m_meshData.push_back(createMeshData(false));
+  m_meshData.push_back(createMeshData(true));
 }
-
-// ########################################################
-// Member Functions########################################
-// ########################################################
 
 void
 GraphicalChunk::uploadData() {
@@ -179,6 +175,64 @@ GraphicalChunk::createMeshData(bool transparent) {
         int sideTexture = BLOCK_TEXTURES[id][SIDE_TEXTURE];
         int topTexture = BLOCK_TEXTURES[id][TOP_TEXTURE];
         int bottomTexture = BLOCK_TEXTURES[id][BOTTOM_TEXTURE];
+
+        // This is copy pasted, should be done in a better way?
+        if (id == WATER) {
+          Voxel* top = getVoxel(i, j + 1, k);
+          if (top && top->getId() == AIR) {
+
+            vector<GLfloat> vertex{
+              -0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz,  //
+              0.5f + i + dx,  0.5f + j + dy, 0.5f + k + dz,  //
+              0.5f + i + dx,  0.5f + j + dy, -0.5f + k + dz, //
+              -0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz, //
+            };
+
+            float sun = top->getSunLightValue();
+            Lights lights{sun, sun, sun, sun};
+            doAOTop(i, j, k, lights);
+
+            float other = top->getOtherLightValue();
+            Lights otherLights{other, other, other, other};
+            doAOTop(i, j, k, otherLights);
+
+            vector<GLfloat> light{
+              lights.bottomLeft, otherLights.bottomLeft,
+              lights.bottomRight, otherLights.bottomRight,
+              lights.topRight, otherLights.topRight,
+              lights.topLeft, otherLights.topLeft,
+            };
+
+            vector<GLfloat> nor{
+              0.0f, 1.0f, 0.0f, //
+              0.0f, 1.0f, 0.0f, //
+              0.0f, 1.0f, 0.0f, //
+              0.0f, 1.0f, 0.0f  //
+            };
+
+            vector<GLfloat> uv{ 0.0f, 0.0f, static_cast<GLfloat>(topTexture),
+                                1.0f, 0.0f, static_cast<GLfloat>(topTexture),
+                                1.0f, 1.0f, static_cast<GLfloat>(topTexture),
+                                0.0f, 1.0f, static_cast<GLfloat>(topTexture) };
+
+            vector<short> el{ static_cast<short>(0 + elementOffset),
+                              static_cast<short>(1 + elementOffset),
+                              static_cast<short>(2 + elementOffset),
+                              static_cast<short>(0 + elementOffset),
+                              static_cast<short>(2 + elementOffset),
+                              static_cast<short>(3 + elementOffset) };
+
+            vertexData.insert(vertexData.end(), vertex.begin(), vertex.end());
+            lightData.insert(lightData.end(), light.begin(), light.end());
+            normals.insert(normals.end(), nor.begin(), nor.end());
+            UV.insert(UV.end(), uv.begin(), uv.end());
+            elementData.insert(elementData.end(), el.begin(), el.end());
+
+            elementOffset += 4;
+            ++totalNumberOfFaces;
+          }
+          continue;
+        }
 
         Voxel* right = getVoxel(i + 1, j, k);
         if (right && isAirOrWater(right->getId())) {
@@ -428,10 +482,10 @@ GraphicalChunk::createMeshData(bool transparent) {
           };
 
           vector<GLfloat> nor{
-                               0.0f, 1.0f, 0.0f, //
-                               0.0f, 1.0f, 0.0f, //
-                               0.0f, 1.0f, 0.0f, //
-                               0.0f, 1.0f, 0.0f  //
+            0.0f, 1.0f, 0.0f, //
+            0.0f, 1.0f, 0.0f, //
+            0.0f, 1.0f, 0.0f, //
+            0.0f, 1.0f, 0.0f  //
           };
 
 
@@ -482,16 +536,19 @@ GraphicalChunk::createMeshData(bool transparent) {
             lights.topLeft, otherLights.topLeft,
           };
 
-          vector<GLfloat> nor{ 0.0f, -1.0f, 0.0f, //
-                               0.0f, -1.0f, 0.0f, //
-                               0.0f, -1.0f, 0.0f, //
-                               0.0f, -1.0f, 0.0f  //
-                               };
+          vector<GLfloat> nor{
+            0.0f, -1.0f, 0.0f, //
+            0.0f, -1.0f, 0.0f, //
+            0.0f, -1.0f, 0.0f, //
+            0.0f, -1.0f, 0.0f  //
+          };
 
-          vector<GLfloat> uv{ 0.0f, 0.0f, static_cast<GLfloat>(bottomTexture),
-                              1.0f, 0.0f, static_cast<GLfloat>(bottomTexture),
-                              1.0f, 1.0f, static_cast<GLfloat>(bottomTexture),
-                              0.0f, 1.0f, static_cast<GLfloat>(bottomTexture) };
+          vector<GLfloat> uv{
+            0.0f, 0.0f, static_cast<GLfloat>(bottomTexture),
+            1.0f, 0.0f, static_cast<GLfloat>(bottomTexture),
+            1.0f, 1.0f, static_cast<GLfloat>(bottomTexture),
+            0.0f, 1.0f, static_cast<GLfloat>(bottomTexture)
+          };
 
           vector<short> el{ static_cast<short>(0 + elementOffset),
                             static_cast<short>(1 + elementOffset),
@@ -846,6 +903,7 @@ GraphicalChunk::doAOBottom(int x, int y, int z, Lights& lights) {
 
   lights.topLeft -= min<float>(2.0, topLeft) * AOFactor;
 }
+
 }
 
 /*
