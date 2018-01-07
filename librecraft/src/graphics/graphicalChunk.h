@@ -353,7 +353,7 @@ private:
     Voxel* cLeftLeft = getVoxel(x - 1, y, z);
     Voxel* cLeftLeft_Bottom = getVoxel(x - 1, y - 1, z);
 
-    computeAverageHelper<true>(lightValue,
+    computeAverageHelper<sunLight>(lightValue,
                                cLeftLeft,
                                cLeftLeft_Bottom,
                                cBottomLeft,
@@ -411,7 +411,7 @@ private:
     Voxel* cLeftLeft = getVoxel(x + 1, y, z);
     Voxel* cLeftLeft_Back = getVoxel(x + 1, y, z - 1);
 
-    computeAverageHelper<true>(lightValue,
+    computeAverageHelper<sunLight>(lightValue,
                                cLeftLeft,
                                cLeftLeft_Back,
                                cBottomLeft,
@@ -469,7 +469,7 @@ private:
     Voxel* cLeftLeft = getVoxel(x - 1, y, z);
     Voxel* cLeftLeft_Front = getVoxel(x - 1, y, z + 1);
 
-    computeAverageHelper<true>(lightValue,
+    computeAverageHelper<sunLight>(lightValue,
                                cLeftLeft,
                                cLeftLeft_Front,
                                cBottomLeft,
@@ -520,7 +520,7 @@ private:
 
     float counter{ 1 };
     float acc = lightValue;
-    if (cLeftLeft->getId() != AIR && cLeftLeft_Opposite->getId() == AIR) {
+    if (cLeftLeft && cLeftLeft_Opposite && cLeftLeft->getId() != AIR && cLeftLeft_Opposite->getId() == AIR) {
       if
         constexpr(sunLight) {
           acc += cLeftLeft_Opposite->getSunLightValue();
@@ -530,7 +530,7 @@ private:
       }
       ++counter;
     }
-    if (cBottomLeft->getId() != AIR && cBottomLeft_Opposite->getId() == AIR &&
+    if (cBottomLeft && cBottomLeft_Opposite && cBottomLeft->getId() != AIR && cBottomLeft_Opposite->getId() == AIR &&
         (cLeftLeft_Opposite->getId() == AIR || cBottomMiddle_Opposite->getId() == AIR)) {
       if
         constexpr(sunLight) {
@@ -541,7 +541,7 @@ private:
       }
       ++counter;
     }
-    if (cBottomMiddle->getId() != AIR && cBottomMiddle_Opposite->getId() == AIR) {
+    if (cBottomMiddle && cBottomMiddle_Opposite && cBottomMiddle->getId() != AIR && cBottomMiddle_Opposite->getId() == AIR) {
       if
         constexpr(sunLight) {
           acc += cBottomMiddle_Opposite->getSunLightValue();
@@ -557,7 +557,7 @@ private:
 
     counter = 1;
     acc = lightValue;
-    if (cBottomMiddle->getId() != AIR && cBottomMiddle_Opposite->getId() == AIR) {
+    if (cBottomMiddle && cBottomMiddle_Opposite && cBottomMiddle->getId() != AIR && cBottomMiddle_Opposite->getId() == AIR) {
       if
         constexpr(sunLight) {
           acc += cBottomMiddle_Opposite->getSunLightValue();
@@ -567,7 +567,7 @@ private:
       }
       ++counter;
     }
-    if (cBottomRight->getId() != AIR && cBottomRight_Opposite->getId() == AIR &&
+    if (cBottomRight && cBottomRight_Opposite && cBottomRight->getId() != AIR && cBottomRight_Opposite->getId() == AIR &&
         (cBottomMiddle_Opposite->getId() == AIR || cRightRight_Opposite->getId() == AIR)) {
       if
         constexpr(sunLight) {
@@ -578,7 +578,7 @@ private:
       }
       ++counter;
     }
-    if (cRightRight->getId() != AIR && cRightRight_Opposite->getId() == AIR) {
+    if (cRightRight && cRightRight_Opposite && cRightRight->getId() != AIR && cRightRight_Opposite->getId() == AIR) {
       if
         constexpr(sunLight) {
           acc += cRightRight_Opposite->getSunLightValue();
@@ -594,7 +594,7 @@ private:
 
     counter = 1;
     acc = lightValue;
-    if (cRightRight->getId() != AIR && cRightRight_Opposite->getId() == AIR) {
+    if (cRightRight && cRightRight_Opposite && cRightRight->getId() != AIR && cRightRight_Opposite->getId() == AIR) {
       if
         constexpr(sunLight) {
           acc += cRightRight_Opposite->getSunLightValue();
@@ -604,7 +604,7 @@ private:
       }
       ++counter;
     }
-    if (cTopRight->getId() != AIR && cTopRight_Opposite->getId() == AIR &&
+    if (cTopRight && cTopRight_Opposite && cTopRight->getId() != AIR && cTopRight_Opposite->getId() == AIR &&
         (cRightRight_Opposite->getId() == AIR || cTopMiddle->getId() == AIR)) {
       if
         constexpr(sunLight) {
@@ -615,7 +615,7 @@ private:
       }
       ++counter;
     }
-    if (cTopMiddle->getId() != AIR && cTopMiddle_Opposite->getId() == AIR) {
+    if (cTopMiddle && cTopMiddle_Opposite && cTopMiddle->getId() != AIR && cTopMiddle_Opposite->getId() == AIR) {
       if
         constexpr(sunLight) {
           acc += cTopMiddle_Opposite->getSunLightValue();
@@ -631,7 +631,7 @@ private:
 
     counter = 1;
     acc = lightValue;
-    if (cTopMiddle->getId() != AIR && cTopMiddle_Opposite->getId() == AIR) {
+    if (cTopMiddle && cTopMiddle_Opposite && cTopMiddle->getId() != AIR && cTopMiddle_Opposite->getId() == AIR) {
       if
         constexpr(sunLight) {
           acc += cTopMiddle_Opposite->getSunLightValue();
@@ -641,7 +641,7 @@ private:
       }
       ++counter;
     }
-    if (cTopLeft->getId() != AIR && cTopLeft_Opposite->getId() == AIR &&
+    if (cTopLeft && cTopLeft_Opposite && cTopLeft->getId() != AIR && cTopLeft_Opposite->getId() == AIR &&
         (cTopMiddle_Opposite->getId() == AIR || cLeftLeft_Opposite->getId() == AIR)) {
       if
         constexpr(sunLight) {
@@ -652,7 +652,7 @@ private:
       }
       ++counter;
     }
-    if (cLeftLeft->getId() != AIR && cLeftLeft_Opposite->getId() == AIR) {
+    if (cLeftLeft && cLeftLeft_Opposite && cLeftLeft->getId() != AIR && cLeftLeft_Opposite->getId() == AIR) {
       if
         constexpr(sunLight) {
           acc += cLeftLeft_Opposite->getSunLightValue();

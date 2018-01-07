@@ -6,7 +6,10 @@ being explained more thoroughly.
 
 ###
 
-Imiplement UDP server/client for multiplayer.
+Add so that is is possible to turn on/off AO and light smoothening on the fly
+with a console command.
+
+Implement UDP server/client for multiplayer.
 
 Fix more options being possible to change with both terminal and
 settings

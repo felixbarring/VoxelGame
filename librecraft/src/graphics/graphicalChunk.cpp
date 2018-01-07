@@ -13,6 +13,7 @@ using namespace config::cube_data;
 namespace graphics {
 
 bool useSmoothShading{ true };
+bool useAO{ true };
 // TODO Make it possible to turn of AO
 
 GraphicalChunk::GraphicalChunk(double _x, double _y, double _z,
@@ -102,7 +103,11 @@ GraphicalChunk::getzLocation() {
 // Trying to get a voxel that is not adjacent to this chunk is an error
 Voxel*
 GraphicalChunk::getVoxel(int x, int y, int z) {
-  if (y >= config::chunk_data::CHUNK_HEIGHT || y < 0)
+  bool outsideYRand{y >= config::chunk_data::CHUNK_HEIGHT || y < 0};
+  bool outsideXRange{x < 0 || x >= m_width};
+  bool outsideZRange{z < 0 && z >= m_depth};
+
+  if (outsideYRand || (outsideXRange && outsideZRange))
     return nullptr;
 
   if (x < m_width && x >= 0 && (z < m_depth && z >= 0)) {
@@ -166,7 +171,7 @@ GraphicalChunk::createMeshData(bool transparent) {
         if (!fd)
           continue;
 
-        int id = fd->getId();
+        int id{fd->getId()};
         if (id == AIR || (id == WATER && !transparent) ||
             (id != WATER && transparent)) {
           continue;
@@ -195,6 +200,22 @@ GraphicalChunk::createMeshData(bool transparent) {
             float other = top->getOtherLightValue();
             Lights otherLights{other, other, other, other};
             doAOTop(i, j, k, otherLights);
+
+            if (useSmoothShading) {
+              computeAverageTop<true>(fd->getSunLightValue(),
+                                        i, j, k,
+                                        lights.bottomLeft,
+                                        lights.bottomRight,
+                                        lights.topRight,
+                                        lights.topLeft);
+
+              computeAverageTop<false>(fd->getOtherLightValue(),
+                                         i, j, k,
+                                         otherLights.bottomLeft,
+                                         otherLights.bottomRight,
+                                         otherLights.topRight,
+                                         otherLights.topLeft);
+            }
 
             vector<GLfloat> light{
               lights.bottomLeft, otherLights.bottomLeft,
@@ -251,6 +272,22 @@ GraphicalChunk::createMeshData(bool transparent) {
           Lights otherLights{other, other, other, other};
           doAORight(i, j, k, otherLights);
 
+          if (useSmoothShading) {
+            computeAverageRight<true>(fd->getSunLightValue(),
+                                      i, j, k,
+                                      lights.bottomLeft,
+                                      lights.bottomRight,
+                                      lights.topRight,
+                                      lights.topLeft);
+
+            computeAverageRight<false>(fd->getOtherLightValue(),
+                                       i, j, k,
+                                       otherLights.bottomLeft,
+                                       otherLights.bottomRight,
+                                       otherLights.topRight,
+                                       otherLights.topLeft);
+          }
+
           vector<GLfloat> light{
             lights.bottomLeft, otherLights.bottomLeft,
             lights.bottomRight, otherLights.bottomRight,
@@ -305,6 +342,22 @@ GraphicalChunk::createMeshData(bool transparent) {
           float other = left->getOtherLightValue();
           Lights otherLights{other, other, other, other};
           doAOLeft(i, j, k, otherLights);
+
+          if (useSmoothShading) {
+            computeAverageLeft<true>(fd->getSunLightValue(),
+                                      i, j, k,
+                                      lights.bottomLeft,
+                                      lights.bottomRight,
+                                      lights.topRight,
+                                      lights.topLeft);
+
+            computeAverageLeft<false>(fd->getOtherLightValue(),
+                                       i, j, k,
+                                       otherLights.bottomLeft,
+                                       otherLights.bottomRight,
+                                       otherLights.topRight,
+                                       otherLights.topLeft);
+          }
 
           vector<GLfloat> light{
             lights.bottomLeft, otherLights.bottomLeft,
@@ -362,6 +415,22 @@ GraphicalChunk::createMeshData(bool transparent) {
           Lights otherLights{other, other, other, other};
           doAOBack(i, j, k, otherLights);
 
+          if (useSmoothShading) {
+            computeAverageBack<true>(fd->getSunLightValue(),
+                                      i, j, k,
+                                      lights.bottomLeft,
+                                      lights.bottomRight,
+                                      lights.topRight,
+                                      lights.topLeft);
+
+            computeAverageBack<false>(fd->getOtherLightValue(),
+                                       i, j, k,
+                                       otherLights.bottomLeft,
+                                       otherLights.bottomRight,
+                                       otherLights.topRight,
+                                       otherLights.topLeft);
+          }
+
           vector<GLfloat> light{
             lights.bottomLeft, otherLights.bottomLeft,
             lights.bottomRight, otherLights.bottomRight,
@@ -417,6 +486,22 @@ GraphicalChunk::createMeshData(bool transparent) {
           float other = front->getOtherLightValue();
           Lights otherLights{other, other, other, other};
           doAOFront(i, j, k, otherLights);
+
+          if (useSmoothShading) {
+            computeAverageFront<true>(fd->getSunLightValue(),
+                                      i, j, k,
+                                      lights.bottomLeft,
+                                      lights.bottomRight,
+                                      lights.topRight,
+                                      lights.topLeft);
+
+            computeAverageFront<false>(fd->getOtherLightValue(),
+                                       i, j, k,
+                                       otherLights.bottomLeft,
+                                       otherLights.bottomRight,
+                                       otherLights.topRight,
+                                       otherLights.topLeft);
+          }
 
           vector<GLfloat> light{
             lights.bottomLeft, otherLights.bottomLeft,
@@ -474,6 +559,22 @@ GraphicalChunk::createMeshData(bool transparent) {
           Lights otherLights{other, other, other, other};
           doAOTop(i, j, k, otherLights);
 
+          if (useSmoothShading) {
+            computeAverageTop<true>(fd->getSunLightValue(),
+                                      i, j, k,
+                                      lights.bottomLeft,
+                                      lights.bottomRight,
+                                      lights.topRight,
+                                      lights.topLeft);
+
+            computeAverageTop<false>(fd->getOtherLightValue(),
+                                       i, j, k,
+                                       otherLights.bottomLeft,
+                                       otherLights.bottomRight,
+                                       otherLights.topRight,
+                                       otherLights.topLeft);
+          }
+
           vector<GLfloat> light{
             lights.bottomLeft, otherLights.bottomLeft,
             lights.bottomRight, otherLights.bottomRight,
@@ -528,6 +629,22 @@ GraphicalChunk::createMeshData(bool transparent) {
           float other = bottom->getOtherLightValue();
           Lights otherLights{other, other, other, other};
           doAOBottom(i, j, k, otherLights);
+
+          if (useSmoothShading) {
+            computeAverageBottom<true>(fd->getSunLightValue(),
+                                      i, j, k,
+                                      lights.bottomLeft,
+                                      lights.bottomRight,
+                                      lights.topRight,
+                                      lights.topLeft);
+
+            computeAverageBottom<false>(fd->getOtherLightValue(),
+                                       i, j, k,
+                                       otherLights.bottomLeft,
+                                       otherLights.bottomRight,
+                                       otherLights.topRight,
+                                       otherLights.topLeft);
+          }
 
           vector<GLfloat> light{
             lights.bottomLeft, otherLights.bottomLeft,

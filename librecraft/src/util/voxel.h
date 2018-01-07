@@ -29,7 +29,7 @@ public:
   Voxel(char id, char sun);
 
   /**
-   * @brief Cretes a voxel with the specified id, sunlight, and otherlight.
+   * @brief Creates a voxel with the specified id, sunlight, and otherlight.
    *
    * @param id The id value
    * @param sun The sunlight value
@@ -46,7 +46,7 @@ public:
 
   /**
    *
-   * @return The ig value
+   * @return The id value
    */
   char getId();
 
