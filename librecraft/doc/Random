@@ -6,11 +6,7 @@ being explained more thoroughly.
 
 ###
 
-Figure out a way of reducing chunk size by removing unecessary air.
-
-TODO Fix memory usage. Memory usage is very high.
-
-Water is rendered with strange light color some times
+Imiplement UDP server/client for multiplayer.
 
 Fix more options being possible to change with both terminal and
 settings
@@ -26,6 +22,6 @@ Add cool post processing effects demo
 
 Improve gui when world is dark
 
-wheather effects such as rain, thunder, clouds etc
+Wheather effects such as rain, thunder, clouds etc
 
 

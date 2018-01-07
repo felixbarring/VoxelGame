@@ -9,12 +9,12 @@ std::string worldMetaFile = "data/meta";
 namespace chunk_data {
 
 const int GRAPHICAL_CHUNK_WIDTH = 16;
-const int GRAPHICAL_CHUNK_HEIGHT = 64;
+const int GRAPHICAL_CHUNK_HEIGHT = 128;
 
 const int CHUNK_WIDTH_AND_DEPTH = 16;
-const int CHUNK_HEIGHT = 64;
+const int CHUNK_HEIGHT = 128;
 
-const int NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER = 3;
+const int NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER = 5;
 const int NUMBER_OF_CHUNKS_Y = 1;
 }
 

@@ -144,7 +144,6 @@ private:
 
   Voxel* getVoxel(int x, int y, int z);
 
-/*
   template<bool sunLight>
   void computeAverageRight(
     int lightValue,
@@ -154,80 +153,53 @@ private:
     float& bottomLeft,
     float& bottomRight,
     float& topRight,
-    float& topLeft,
-    std::vector<std::vector<std::vector<Face>>>& faceData) {
+    float& topLeft) {
 
-    Face& cBottomLeft = faceData[x][y - 1][z + 1];
-    Face& cBottomLeft_Right = faceData[x + 1][y - 1][z + 1];
+    Voxel* cBottomLeft = getVoxel(x, y - 1, z + 1);
+    Voxel* cBottomLeft_Right = getVoxel(x + 1, y - 1,z + 1);
 
-    Face& cBottomMiddle = faceData[x][y - 1][z];
-    Face& cBottomMiddle_Right = faceData[x + 1][y - 1][z];
+    Voxel* cBottomMiddle = getVoxel(x, y - 1, z);
+    Voxel* cBottomMiddle_Right = getVoxel(x + 1, y - 1, z);
 
-    Face& cBottomRight = faceData[x][y - 1][z - 1];
-    Face& cBottomRight_Right = faceData[x + 1][y - 1][z - 1];
+    Voxel* cBottomRight = getVoxel(x, y - 1, z - 1);
+    Voxel* cBottomRight_Right = getVoxel(x + 1, y - 1, z - 1);
 
-    Face& cRightRight = faceData[x][y][z - 1];
-    Face& cRightRight_Right = faceData[x + 1][y][z - 1];
+    Voxel* cRightRight = getVoxel(x, y, z - 1);
+    Voxel* cRightRight_Right = getVoxel(x + 1, y, z - 1);
 
-    Face& cTopRight = faceData[x][y + 1][z - 1];
-    Face& cTopRight_Right = faceData[x + 1][y + 1][z - 1];
+    Voxel* cTopRight = getVoxel(x, y + 1, z - 1);
+    Voxel* cTopRight_Right = getVoxel(x + 1, y + 1, z - 1);
 
-    Face& cTopMiddle = faceData[x][y + 1][z];
-    Face& cTopMiddle_Right = faceData[x + 1][y + 1][z];
+    Voxel* cTopMiddle = getVoxel(x, y + 1, z);
+    Voxel* cTopMiddle_Right = getVoxel(x + 1, y + 1, z);
 
-    Face& cTopLeft = faceData[x][y + 1][z + 1];
-    Face& cTopLeft_Right = faceData[x + 1][y + 1][z + 1];
+    Voxel* cTopLeft = getVoxel(x, y + 1, z + 1);
+    Voxel* cTopLeft_Right = getVoxel(x + 1, y + 1, z + 1);
 
-    Face& cLeftLeft = faceData[x][y][z + 1];
-    Face& cLeftLeft_Right = faceData[x + 1][y][z + 1];
+    Voxel* cLeftLeft = getVoxel(x, y, z + 1);
+    Voxel* cLeftLeft_Right = getVoxel(x + 1, y, z + 1);
 
-    if
-      constexpr(sunLight) {
-        computeAverageHelper<true>(lightValue,
-                                   cLeftLeft,
-                                   cLeftLeft_Right,
-                                   cBottomLeft,
-                                   cBottomLeft_Right,
-                                   cBottomMiddle,
-                                   cBottomMiddle_Right,
-                                   cBottomRight,
-                                   cBottomRight_Right,
-                                   cRightRight,
-                                   cRightRight_Right,
-                                   cTopRight,
-                                   cTopRight_Right,
-                                   cTopMiddle,
-                                   cTopMiddle_Right,
-                                   cTopLeft,
-                                   cTopLeft_Right,
-                                   bottomLeft,
-                                   bottomRight,
-                                   topRight,
-                                   topLeft);
-      }
-    else {
-      computeAverageHelper<false>(lightValue,
-                                  cLeftLeft,
-                                  cLeftLeft_Right,
-                                  cBottomLeft,
-                                  cBottomLeft_Right,
-                                  cBottomMiddle,
-                                  cBottomMiddle_Right,
-                                  cBottomRight,
-                                  cBottomRight_Right,
-                                  cRightRight,
-                                  cRightRight_Right,
-                                  cTopRight,
-                                  cTopRight_Right,
-                                  cTopMiddle,
-                                  cTopMiddle_Right,
-                                  cTopLeft,
-                                  cTopLeft_Right,
-                                  bottomLeft,
-                                  bottomRight,
-                                  topRight,
-                                  topLeft);
-    }
+    computeAverageHelper<sunLight>(lightValue,
+                               cLeftLeft,
+                               cLeftLeft_Right,
+                               cBottomLeft,
+                               cBottomLeft_Right,
+                               cBottomMiddle,
+                               cBottomMiddle_Right,
+                               cBottomRight,
+                               cBottomRight_Right,
+                               cRightRight,
+                               cRightRight_Right,
+                               cTopRight,
+                               cTopRight_Right,
+                               cTopMiddle,
+                               cTopMiddle_Right,
+                               cTopLeft,
+                               cTopLeft_Right,
+                               bottomLeft,
+                               bottomRight,
+                               topRight,
+                               topLeft);
   }
 
   template<bool sunLight>
@@ -239,80 +211,53 @@ private:
     float& bottomLeft,
     float& bottomRight,
     float& topRight,
-    float& topLeft,
-    std::vector<std::vector<std::vector<CubeFaceData>>>& faceData) {
+    float& topLeft) {
 
-    CubeFaceData& cBottomLeft = faceData[x][y - 1][z - 1];
-    CubeFaceData& cBottomLeft_Left = faceData[x - 1][y - 1][z - 1];
+    Voxel* cBottomLeft = getVoxel(x, y - 1, z - 1);
+    Voxel* cBottomLeft_Left = getVoxel(x - 1, y - 1, z - 1);
 
-    CubeFaceData& cBottomMiddle = faceData[x][y - 1][z];
-    CubeFaceData& cBottomMiddle_Left = faceData[x - 1][y - 1][z];
+    Voxel* cBottomMiddle = getVoxel(x, y - 1, z);
+    Voxel* cBottomMiddle_Left = getVoxel(x - 1, y - 1, z);
 
-    CubeFaceData& cBottomRight = faceData[x][y - 1][z + 1];
-    CubeFaceData& cBottomRight_Left = faceData[x - 1][y - 1][z + 1];
+    Voxel* cBottomRight = getVoxel(x, y - 1, z + 1);
+    Voxel* cBottomRight_Left = getVoxel(x - 1, y - 1, z + 1);
 
-    CubeFaceData& cRightRight = faceData[x][y][z + 1];
-    CubeFaceData& cRightRight_Left = faceData[x - 1][y][z + 1];
+    Voxel* cRightRight = getVoxel(x, y, z + 1);
+    Voxel* cRightRight_Left = getVoxel(x - 1, y, z + 1);
 
-    CubeFaceData& cTopRight = faceData[x][y + 1][z + 1];
-    CubeFaceData& cTopRight_Left = faceData[x - 1][y + 1][z + 1];
+    Voxel* cTopRight = getVoxel(x, y + 1, z + 1);
+    Voxel* cTopRight_Left = getVoxel(x - 1, y + 1, z + 1);
 
-    CubeFaceData& cTopMiddle = faceData[x][y + 1][z];
-    CubeFaceData& cTopMiddle_Left = faceData[x - 1][y + 1][z];
+    Voxel* cTopMiddle = getVoxel(x, y + 1, z);
+    Voxel* cTopMiddle_Left = getVoxel(x - 1, y + 1, z);
 
-    CubeFaceData& cTopLeft = faceData[x][y + 1][z - 1];
-    CubeFaceData& cTopLeft_Left = faceData[x - 1][y + 1][z - 1];
+    Voxel* cTopLeft = getVoxel(x, y + 1, z - 1);
+    Voxel* cTopLeft_Left = getVoxel(x - 1, y + 1, z - 1);
 
-    CubeFaceData& cLeftLeft = faceData[x][y][z - 1];
-    CubeFaceData& cLeftLeft_Left = faceData[x - 1][y][z - 1];
+    Voxel* cLeftLeft = getVoxel(x, y, z - 1);
+    Voxel* cLeftLeft_Left = getVoxel(x - 1, y, z - 1);
 
-    if
-      constexpr(sunLight) {
-        computeAverageHelper<true>(lightValue,
-                                   cLeftLeft,
-                                   cLeftLeft_Left,
-                                   cBottomLeft,
-                                   cBottomLeft_Left,
-                                   cBottomMiddle,
-                                   cBottomMiddle_Left,
-                                   cBottomRight,
-                                   cBottomRight_Left,
-                                   cRightRight,
-                                   cRightRight_Left,
-                                   cTopRight,
-                                   cTopRight_Left,
-                                   cTopMiddle,
-                                   cTopMiddle_Left,
-                                   cTopLeft,
-                                   cTopLeft_Left,
-                                   bottomLeft,
-                                   bottomRight,
-                                   topRight,
-                                   topLeft);
-      }
-    else {
-      computeAverageHelper<false>(lightValue,
-                                  cLeftLeft,
-                                  cLeftLeft_Left,
-                                  cBottomLeft,
-                                  cBottomLeft_Left,
-                                  cBottomMiddle,
-                                  cBottomMiddle_Left,
-                                  cBottomRight,
-                                  cBottomRight_Left,
-                                  cRightRight,
-                                  cRightRight_Left,
-                                  cTopRight,
-                                  cTopRight_Left,
-                                  cTopMiddle,
-                                  cTopMiddle_Left,
-                                  cTopLeft,
-                                  cTopLeft_Left,
-                                  bottomLeft,
-                                  bottomRight,
-                                  topRight,
-                                  topLeft);
-    }
+    computeAverageHelper<sunLight>(lightValue,
+                               cLeftLeft,
+                               cLeftLeft_Left,
+                               cBottomLeft,
+                               cBottomLeft_Left,
+                               cBottomMiddle,
+                               cBottomMiddle_Left,
+                               cBottomRight,
+                               cBottomRight_Left,
+                               cRightRight,
+                               cRightRight_Left,
+                               cTopRight,
+                               cTopRight_Left,
+                               cTopMiddle,
+                               cTopMiddle_Left,
+                               cTopLeft,
+                               cTopLeft_Left,
+                               bottomLeft,
+                               bottomRight,
+                               topRight,
+                               topLeft);
   }
 
   template<bool sunLight>
@@ -324,80 +269,53 @@ private:
     float& bottomLeft,
     float& bottomRight,
     float& topRight,
-    float& topLeft,
-    std::vector<std::vector<std::vector<CubeFaceData>>>& faceData) {
+    float& topLeft) {
 
-    CubeFaceData& cBottomLeft = faceData[x - 1][y][z + 1];
-    CubeFaceData& cBottomLeft_Top = faceData[x - 1][y + 1][z + 1];
+    Voxel* cBottomLeft = getVoxel(x - 1, y, z + 1);
+    Voxel* cBottomLeft_Top = getVoxel(x - 1, y + 1, z + 1);
 
-    CubeFaceData& cBottomMiddle = faceData[x][y][z + 1];
-    CubeFaceData& cBottomMiddle_Top = faceData[x][y + 1][z + 1];
+    Voxel* cBottomMiddle = getVoxel(x, y, z + 1);
+    Voxel* cBottomMiddle_Top = getVoxel(x, y + 1, z + 1);
 
-    CubeFaceData& cBottomRight = faceData[x + 1][y][z + 1];
-    CubeFaceData& cBottomRight_Top = faceData[x + 1][y + 1][z + 1];
+    Voxel* cBottomRight = getVoxel(x + 1, y, z + 1);
+    Voxel* cBottomRight_Top = getVoxel(x + 1, y + 1, z + 1);
 
-    CubeFaceData& cRightRight = faceData[x + 1][y][z];
-    CubeFaceData& cRightRight_Top = faceData[x + 1][y + 1][z];
+    Voxel* cRightRight = getVoxel(x + 1, y, z);
+    Voxel* cRightRight_Top = getVoxel(x + 1, y + 1, z);
 
-    CubeFaceData& cTopRight = faceData[x + 1][y][z - 1];
-    CubeFaceData& cTopRight_Top = faceData[x + 1][y + 1][z - 1];
+    Voxel* cTopRight = getVoxel(x + 1, y, z - 1);
+    Voxel* cTopRight_Top = getVoxel(x + 1, y + 1, z - 1);
 
-    CubeFaceData& cTopMiddle = faceData[x][y][z - 1];
-    CubeFaceData& cTopMiddle_Top = faceData[x][y + 1][z - 1];
+    Voxel* cTopMiddle = getVoxel(x, y, z - 1);
+    Voxel* cTopMiddle_Top = getVoxel(x, y + 1, z - 1);
 
-    CubeFaceData& cTopLeft = faceData[x - 1][y][z - 1];
-    CubeFaceData& cTopLeft_Top = faceData[x - 1][y + 1][z - 1];
+    Voxel* cTopLeft = getVoxel(x - 1, y, z - 1);
+    Voxel* cTopLeft_Top = getVoxel(x - 1, y + 1, z - 1);
 
-    CubeFaceData& cLeftLeft = faceData[x - 1][y][z];
-    CubeFaceData& cLeftLeft_Top = faceData[x - 1][y + 1][z];
+    Voxel* cLeftLeft = getVoxel(x - 1, y, z);
+    Voxel* cLeftLeft_Top = getVoxel(x - 1, y + 1, z);
 
-    if
-      constexpr(sunLight) {
-        computeAverageHelper<true>(lightValue,
-                                   cLeftLeft,
-                                   cLeftLeft_Top,
-                                   cBottomLeft,
-                                   cBottomLeft_Top,
-                                   cBottomMiddle,
-                                   cBottomMiddle_Top,
-                                   cBottomRight,
-                                   cBottomRight_Top,
-                                   cRightRight,
-                                   cRightRight_Top,
-                                   cTopRight,
-                                   cTopRight_Top,
-                                   cTopMiddle,
-                                   cTopMiddle_Top,
-                                   cTopLeft,
-                                   cTopLeft_Top,
-                                   bottomLeft,
-                                   bottomRight,
-                                   topRight,
-                                   topLeft);
-      }
-    else {
-      computeAverageHelper<false>(lightValue,
-                                  cLeftLeft,
-                                  cLeftLeft_Top,
-                                  cBottomLeft,
-                                  cBottomLeft_Top,
-                                  cBottomMiddle,
-                                  cBottomMiddle_Top,
-                                  cBottomRight,
-                                  cBottomRight_Top,
-                                  cRightRight,
-                                  cRightRight_Top,
-                                  cTopRight,
-                                  cTopRight_Top,
-                                  cTopMiddle,
-                                  cTopMiddle_Top,
-                                  cTopLeft,
-                                  cTopLeft_Top,
-                                  bottomLeft,
-                                  bottomRight,
-                                  topRight,
-                                  topLeft);
-    }
+    computeAverageHelper<sunLight>(lightValue,
+                               cLeftLeft,
+                               cLeftLeft_Top,
+                               cBottomLeft,
+                               cBottomLeft_Top,
+                               cBottomMiddle,
+                               cBottomMiddle_Top,
+                               cBottomRight,
+                               cBottomRight_Top,
+                               cRightRight,
+                               cRightRight_Top,
+                               cTopRight,
+                               cTopRight_Top,
+                               cTopMiddle,
+                               cTopMiddle_Top,
+                               cTopLeft,
+                               cTopLeft_Top,
+                               bottomLeft,
+                               bottomRight,
+                               topRight,
+                               topLeft);
   }
 
   template<bool sunLight>
@@ -409,80 +327,53 @@ private:
     float& bottomLeft,
     float& bottomRight,
     float& topRight,
-    float& topLeft,
-    std::vector<std::vector<std::vector<CubeFaceData>>>& faceData) {
+    float& topLeft) {
 
-    CubeFaceData& cBottomLeft = faceData[x - 1][y][z - 1];
-    CubeFaceData& cBottomLeft_Bottom = faceData[x - 1][y - 1][z - 1];
+    Voxel* cBottomLeft = getVoxel(x - 1, y, z - 1);
+    Voxel* cBottomLeft_Bottom = getVoxel(x - 1, y - 1, z - 1);
 
-    CubeFaceData& cBottomMiddle = faceData[x][y][z - 1];
-    CubeFaceData& cBottomMiddle_Bottom = faceData[x][y - 1][z - 1];
+    Voxel* cBottomMiddle = getVoxel(x, y, z - 1);
+    Voxel* cBottomMiddle_Bottom = getVoxel(x, y - 1, z - 1);
 
-    CubeFaceData& cBottomRight = faceData[x + 1][y][z - 1];
-    CubeFaceData& cBottomRight_Bottom = faceData[x + 1][y - 1][z - 1];
+    Voxel* cBottomRight = getVoxel(x + 1, y, z - 1);
+    Voxel* cBottomRight_Bottom = getVoxel(x + 1, y - 1, z - 1);
 
-    CubeFaceData& cRightRight = faceData[x + 1][y][z];
-    CubeFaceData& cRightRight_Bottom = faceData[x + 1][y - 1][z];
+    Voxel* cRightRight = getVoxel(x + 1, y, z);
+    Voxel* cRightRight_Bottom = getVoxel(x + 1, y - 1, z);
 
-    CubeFaceData& cTopRight = faceData[x + 1][y][z + 1];
-    CubeFaceData& cTopRight_Bottom = faceData[x + 1][y - 1][z + 1];
+    Voxel* cTopRight = getVoxel(x + 1, y, z + 1);
+    Voxel* cTopRight_Bottom = getVoxel(x + 1, y - 1, z + 1);
 
-    CubeFaceData& cTopMiddle = faceData[x][y][z + 1];
-    CubeFaceData& cTopMiddle_Bottom = faceData[x][y - 1][z + 1];
+    Voxel* cTopMiddle = getVoxel(x, y, z + 1);
+    Voxel* cTopMiddle_Bottom = getVoxel(x, y - 1,z + 1);
 
-    CubeFaceData& cTopLeft = faceData[x - 1][y][z + 1];
-    CubeFaceData& cTopLeft_Bottom = faceData[x - 1][y - 1][z + 1];
+    Voxel* cTopLeft = getVoxel(x - 1, y, z + 1);
+    Voxel* cTopLeft_Bottom = getVoxel(x - 1, y - 1, z + 1);
 
-    CubeFaceData& cLeftLeft = faceData[x - 1][y][z];
-    CubeFaceData& cLeftLeft_Bottom = faceData[x - 1][y - 1][z];
+    Voxel* cLeftLeft = getVoxel(x - 1, y, z);
+    Voxel* cLeftLeft_Bottom = getVoxel(x - 1, y - 1, z);
 
-    if
-      constexpr(sunLight) {
-        computeAverageHelper<true>(lightValue,
-                                   cLeftLeft,
-                                   cLeftLeft_Bottom,
-                                   cBottomLeft,
-                                   cBottomLeft_Bottom,
-                                   cBottomMiddle,
-                                   cBottomMiddle_Bottom,
-                                   cBottomRight,
-                                   cBottomRight_Bottom,
-                                   cRightRight,
-                                   cRightRight_Bottom,
-                                   cTopRight,
-                                   cTopRight_Bottom,
-                                   cTopMiddle,
-                                   cTopMiddle_Bottom,
-                                   cTopLeft,
-                                   cTopLeft_Bottom,
-                                   bottomLeft,
-                                   bottomRight,
-                                   topRight,
-                                   topLeft);
-      }
-    else {
-      computeAverageHelper<false>(lightValue,
-                                  cLeftLeft,
-                                  cLeftLeft_Bottom,
-                                  cBottomLeft,
-                                  cBottomLeft_Bottom,
-                                  cBottomMiddle,
-                                  cBottomMiddle_Bottom,
-                                  cBottomRight,
-                                  cBottomRight_Bottom,
-                                  cRightRight,
-                                  cRightRight_Bottom,
-                                  cTopRight,
-                                  cTopRight_Bottom,
-                                  cTopMiddle,
-                                  cTopMiddle_Bottom,
-                                  cTopLeft,
-                                  cTopLeft_Bottom,
-                                  bottomLeft,
-                                  bottomRight,
-                                  topRight,
-                                  topLeft);
-    }
+    computeAverageHelper<true>(lightValue,
+                               cLeftLeft,
+                               cLeftLeft_Bottom,
+                               cBottomLeft,
+                               cBottomLeft_Bottom,
+                               cBottomMiddle,
+                               cBottomMiddle_Bottom,
+                               cBottomRight,
+                               cBottomRight_Bottom,
+                               cRightRight,
+                               cRightRight_Bottom,
+                               cTopRight,
+                               cTopRight_Bottom,
+                               cTopMiddle,
+                               cTopMiddle_Bottom,
+                               cTopLeft,
+                               cTopLeft_Bottom,
+                               bottomLeft,
+                               bottomRight,
+                               topRight,
+                               topLeft);
   }
 
   template<bool sunLight>
@@ -494,80 +385,53 @@ private:
     float& bottomLeft,
     float& bottomRight,
     float& topRight,
-    float& topLeft,
-    std::vector<std::vector<std::vector<CubeFaceData>>>& faceData) {
+    float& topLeft) {
 
-    CubeFaceData& cBottomLeft = faceData[x + 1][y - 1][z];
-    CubeFaceData& cBottomLeft_Back = faceData[x + 1][y - 1][z - 1];
+    Voxel* cBottomLeft = getVoxel(x + 1, y - 1, z);
+    Voxel* cBottomLeft_Back = getVoxel(x + 1, y - 1, z - 1);
 
-    CubeFaceData& cBottomMiddle = faceData[x][y - 1][z];
-    CubeFaceData& cBottomMiddle_Back = faceData[x][y - 1][z - 1];
+    Voxel* cBottomMiddle = getVoxel(x, y - 1, z);
+    Voxel* cBottomMiddle_Back = getVoxel(x, y - 1, z - 1);
 
-    CubeFaceData& cBottomRight = faceData[x - 1][y - 1][z];
-    CubeFaceData& cBottomRight_Back = faceData[x - 1][y - 1][z - 1];
+    Voxel* cBottomRight = getVoxel(x - 1, y - 1, z);
+    Voxel* cBottomRight_Back = getVoxel(x - 1, y - 1, z - 1);
 
-    CubeFaceData& cRightRight = faceData[x - 1][y][z];
-    CubeFaceData& cRightRight_Back = faceData[x - 1][y][z - 1];
+    Voxel* cRightRight = getVoxel(x - 1, y, z);
+    Voxel* cRightRight_Back = getVoxel(x - 1, y, z - 1);
 
-    CubeFaceData& cTopRight = faceData[x - 1][y + 1][z];
-    CubeFaceData& cTopRight_Back = faceData[x - 1][y + 1][z - 1];
+    Voxel* cTopRight = getVoxel(x - 1, y + 1, z);
+    Voxel* cTopRight_Back = getVoxel(x - 1, y + 1, z - 1);
 
-    CubeFaceData& cTopMiddle = faceData[x][y + 1][z];
-    CubeFaceData& cTopMiddle_Back = faceData[x][y + 1][z - 1];
+    Voxel* cTopMiddle = getVoxel(x, y + 1, z);
+    Voxel* cTopMiddle_Back = getVoxel(x, y + 1, z - 1);
 
-    CubeFaceData& cTopLeft = faceData[x + 1][y + 1][z];
-    CubeFaceData& cTopLeft_Back = faceData[x + 1][y + 1][z - 1];
+    Voxel* cTopLeft = getVoxel(x + 1, y + 1, z);
+    Voxel* cTopLeft_Back = getVoxel(x + 1, y + 1, z - 1);
 
-    CubeFaceData& cLeftLeft = faceData[x + 1][y][z];
-    CubeFaceData& cLeftLeft_Back = faceData[x + 1][y][z - 1];
+    Voxel* cLeftLeft = getVoxel(x + 1, y, z);
+    Voxel* cLeftLeft_Back = getVoxel(x + 1, y, z - 1);
 
-    if
-      constexpr(sunLight) {
-        computeAverageHelper<true>(lightValue,
-                                   cLeftLeft,
-                                   cLeftLeft_Back,
-                                   cBottomLeft,
-                                   cBottomLeft_Back,
-                                   cBottomMiddle,
-                                   cBottomMiddle_Back,
-                                   cBottomRight,
-                                   cBottomRight_Back,
-                                   cRightRight,
-                                   cRightRight_Back,
-                                   cTopRight,
-                                   cTopRight_Back,
-                                   cTopMiddle,
-                                   cTopMiddle_Back,
-                                   cTopLeft,
-                                   cTopLeft_Back,
-                                   bottomLeft,
-                                   bottomRight,
-                                   topRight,
-                                   topLeft);
-      }
-    else {
-      computeAverageHelper<false>(lightValue,
-                                  cLeftLeft,
-                                  cLeftLeft_Back,
-                                  cBottomLeft,
-                                  cBottomLeft_Back,
-                                  cBottomMiddle,
-                                  cBottomMiddle_Back,
-                                  cBottomRight,
-                                  cBottomRight_Back,
-                                  cRightRight,
-                                  cRightRight_Back,
-                                  cTopRight,
-                                  cTopRight_Back,
-                                  cTopMiddle,
-                                  cTopMiddle_Back,
-                                  cTopLeft,
-                                  cTopLeft_Back,
-                                  bottomLeft,
-                                  bottomRight,
-                                  topRight,
-                                  topLeft);
-    }
+    computeAverageHelper<true>(lightValue,
+                               cLeftLeft,
+                               cLeftLeft_Back,
+                               cBottomLeft,
+                               cBottomLeft_Back,
+                               cBottomMiddle,
+                               cBottomMiddle_Back,
+                               cBottomRight,
+                               cBottomRight_Back,
+                               cRightRight,
+                               cRightRight_Back,
+                               cTopRight,
+                               cTopRight_Back,
+                               cTopMiddle,
+                               cTopMiddle_Back,
+                               cTopLeft,
+                               cTopLeft_Back,
+                               bottomLeft,
+                               bottomRight,
+                               topRight,
+                               topLeft);
   }
 
   template<bool sunLight>
@@ -579,100 +443,73 @@ private:
     float& bottomLeft,
     float& bottomRight,
     float& topRight,
-    float& topLeft,
-    std::vector<std::vector<std::vector<CubeFaceData>>>& faceData) {
+    float& topLeft) {
 
-    CubeFaceData& cBottomLeft = faceData[x - 1][y - 1][z];
-    CubeFaceData& cBottomLeft_Front = faceData[x - 1][y - 1][z + 1];
+    Voxel* cBottomLeft = getVoxel(x - 1, y - 1, z);
+    Voxel* cBottomLeft_Front = getVoxel(x - 1, y - 1, z + 1);
 
-    CubeFaceData& cBottomMiddle = faceData[x][y - 1][z];
-    CubeFaceData& cBottomMiddle_Front = faceData[x][y - 1][z + 1];
+    Voxel* cBottomMiddle = getVoxel(x, y - 1, z);
+    Voxel* cBottomMiddle_Front = getVoxel(x, y - 1, z + 1);
 
-    CubeFaceData& cBottomRight = faceData[x + 1][y - 1][z];
-    CubeFaceData& cBottomRight_Front = faceData[x + 1][y - 1][z + 1];
+    Voxel* cBottomRight = getVoxel(x + 1, y - 1, z);
+    Voxel* cBottomRight_Front = getVoxel(x + 1, y - 1, z + 1);
 
-    CubeFaceData& cRightRight = faceData[x + 1][y][z];
-    CubeFaceData& cRightRight_Front = faceData[x + 1][y][z + 1];
+    Voxel* cRightRight = getVoxel(x + 1, y, z);
+    Voxel* cRightRight_Front = getVoxel(x + 1, y, z + 1);
 
-    CubeFaceData& cTopRight = faceData[x + 1][y + 1][z];
-    CubeFaceData& cTopRight_Front = faceData[x + 1][y + 1][z + 1];
+    Voxel* cTopRight = getVoxel(x + 1, y + 1, z);
+    Voxel* cTopRight_Front = getVoxel(x + 1, y + 1, z + 1);
 
-    CubeFaceData& cTopMiddle = faceData[x][y + 1][z];
-    CubeFaceData& cTopMiddle_Front = faceData[x][y + 1][z + 1];
+    Voxel* cTopMiddle = getVoxel(x, y + 1, z);
+    Voxel* cTopMiddle_Front = getVoxel(x, y + 1, z + 1);
 
-    CubeFaceData& cTopLeft = faceData[x - 1][y + 1][z];
-    CubeFaceData& cTopLeft_Front = faceData[x - 1][y + 1][z + 1];
+    Voxel* cTopLeft = getVoxel(x - 1, y + 1, z);
+    Voxel* cTopLeft_Front = getVoxel(x - 1, y + 1, z + 1);
 
-    CubeFaceData& cLeftLeft = faceData[x - 1][y][z];
-    CubeFaceData& cLeftLeft_Front = faceData[x - 1][y][z + 1];
+    Voxel* cLeftLeft = getVoxel(x - 1, y, z);
+    Voxel* cLeftLeft_Front = getVoxel(x - 1, y, z + 1);
 
-    if
-      constexpr(sunLight) {
-        computeAverageHelper<true>(lightValue,
-                                   cLeftLeft,
-                                   cLeftLeft_Front,
-                                   cBottomLeft,
-                                   cBottomLeft_Front,
-                                   cBottomMiddle,
-                                   cBottomMiddle_Front,
-                                   cBottomRight,
-                                   cBottomRight_Front,
-                                   cRightRight,
-                                   cRightRight_Front,
-                                   cTopRight,
-                                   cTopRight_Front,
-                                   cTopMiddle,
-                                   cTopMiddle_Front,
-                                   cTopLeft,
-                                   cTopLeft_Front,
-                                   bottomLeft,
-                                   bottomRight,
-                                   topRight,
-                                   topLeft);
-      }
-    else {
-      computeAverageHelper<false>(lightValue,
-                                  cLeftLeft,
-                                  cLeftLeft_Front,
-                                  cBottomLeft,
-                                  cBottomLeft_Front,
-                                  cBottomMiddle,
-                                  cBottomMiddle_Front,
-                                  cBottomRight,
-                                  cBottomRight_Front,
-                                  cRightRight,
-                                  cRightRight_Front,
-                                  cTopRight,
-                                  cTopRight_Front,
-                                  cTopMiddle,
-                                  cTopMiddle_Front,
-                                  cTopLeft,
-                                  cTopLeft_Front,
-                                  bottomLeft,
-                                  bottomRight,
-                                  topRight,
-                                  topLeft);
-    }
+    computeAverageHelper<true>(lightValue,
+                               cLeftLeft,
+                               cLeftLeft_Front,
+                               cBottomLeft,
+                               cBottomLeft_Front,
+                               cBottomMiddle,
+                               cBottomMiddle_Front,
+                               cBottomRight,
+                               cBottomRight_Front,
+                               cRightRight,
+                               cRightRight_Front,
+                               cTopRight,
+                               cTopRight_Front,
+                               cTopMiddle,
+                               cTopMiddle_Front,
+                               cTopLeft,
+                               cTopLeft_Front,
+                               bottomLeft,
+                               bottomRight,
+                               topRight,
+                               topLeft);
   }
 
   template<bool sunLight>
   void computeAverageHelper(int lightValue,
-                            const CubeFaceData& cLeftLeft,
-                            const CubeFaceData& cLeftLeft_Opposite,
-                            const CubeFaceData& cBottomLeft,
-                            const CubeFaceData& cBottomLeft_Opposite,
-                            const CubeFaceData& cBottomMiddle,
-                            const CubeFaceData& cBottomMiddle_Opposite,
-                            const CubeFaceData& cBottomRight,
-                            const CubeFaceData& cBottomRight_Opposite,
-                            const CubeFaceData& cRightRight,
-                            const CubeFaceData& cRightRight_Opposite,
-                            const CubeFaceData& cTopRight,
-                            const CubeFaceData& cTopRight_Opposite,
-                            const CubeFaceData& cTopMiddle,
-                            const CubeFaceData& cTopMiddle_Opposite,
-                            const CubeFaceData& cTopLeft,
-                            const CubeFaceData& cTopLeft_Opposite,
+                            Voxel* cLeftLeft,
+                            Voxel* cLeftLeft_Opposite,
+                            Voxel* cBottomLeft,
+                            Voxel* cBottomLeft_Opposite,
+                            Voxel* cBottomMiddle,
+                            Voxel* cBottomMiddle_Opposite,
+                            Voxel* cBottomRight,
+                            Voxel* cBottomRight_Opposite,
+                            Voxel* cRightRight,
+                            Voxel* cRightRight_Opposite,
+                            Voxel* cTopRight,
+                            Voxel* cTopRight_Opposite,
+                            Voxel* cTopMiddle,
+                            Voxel* cTopMiddle_Opposite,
+                            Voxel* cTopLeft,
+                            Voxel* cTopLeft_Opposite,
                             float& bottomLeft,
                             float& bottomRight,
                             float& topRight,
@@ -683,34 +520,34 @@ private:
 
     float counter{ 1 };
     float acc = lightValue;
-    if (cLeftLeft.id != AIR && cLeftLeft_Opposite.id == AIR) {
+    if (cLeftLeft->getId() != AIR && cLeftLeft_Opposite->getId() == AIR) {
       if
         constexpr(sunLight) {
-          acc += cLeftLeft_Opposite.sunLightValue;
+          acc += cLeftLeft_Opposite->getSunLightValue();
         }
       else {
-        acc += cLeftLeft_Opposite.otherLightValue;
+        acc += cLeftLeft_Opposite->getOtherLightValue();
       }
       ++counter;
     }
-    if (cBottomLeft.id != AIR && cBottomLeft_Opposite.id == AIR &&
-        (cLeftLeft_Opposite.id == AIR || cBottomMiddle_Opposite.id == AIR)) {
+    if (cBottomLeft->getId() != AIR && cBottomLeft_Opposite->getId() == AIR &&
+        (cLeftLeft_Opposite->getId() == AIR || cBottomMiddle_Opposite->getId() == AIR)) {
       if
         constexpr(sunLight) {
-          acc += cBottomLeft_Opposite.sunLightValue;
+          acc += cBottomLeft_Opposite->getSunLightValue();
         }
       else {
-        acc += cBottomLeft_Opposite.otherLightValue;
+        acc += cBottomLeft_Opposite->getOtherLightValue();
       }
       ++counter;
     }
-    if (cBottomMiddle.id != AIR && cBottomMiddle_Opposite.id == AIR) {
+    if (cBottomMiddle->getId() != AIR && cBottomMiddle_Opposite->getId() == AIR) {
       if
         constexpr(sunLight) {
-          acc += cBottomMiddle_Opposite.sunLightValue;
+          acc += cBottomMiddle_Opposite->getSunLightValue();
         }
       else {
-        acc += cBottomMiddle_Opposite.otherLightValue;
+        acc += cBottomMiddle_Opposite->getOtherLightValue();
       }
       ++counter;
     }
@@ -720,34 +557,34 @@ private:
 
     counter = 1;
     acc = lightValue;
-    if (cBottomMiddle.id != AIR && cBottomMiddle_Opposite.id == AIR) {
+    if (cBottomMiddle->getId() != AIR && cBottomMiddle_Opposite->getId() == AIR) {
       if
         constexpr(sunLight) {
-          acc += cBottomMiddle_Opposite.sunLightValue;
+          acc += cBottomMiddle_Opposite->getSunLightValue();
         }
       else {
-        acc += cBottomMiddle_Opposite.otherLightValue;
+        acc += cBottomMiddle_Opposite->getOtherLightValue();
       }
       ++counter;
     }
-    if (cBottomRight.id != AIR && cBottomRight_Opposite.id == AIR &&
-        (cBottomMiddle_Opposite.id == AIR || cRightRight_Opposite.id == AIR)) {
+    if (cBottomRight->getId() != AIR && cBottomRight_Opposite->getId() == AIR &&
+        (cBottomMiddle_Opposite->getId() == AIR || cRightRight_Opposite->getId() == AIR)) {
       if
         constexpr(sunLight) {
-          acc += cBottomRight_Opposite.sunLightValue;
+          acc += cBottomRight_Opposite->getSunLightValue();
         }
       else {
-        acc += cBottomRight_Opposite.otherLightValue;
+        acc += cBottomRight_Opposite->getOtherLightValue();
       }
       ++counter;
     }
-    if (cRightRight.id != AIR && cRightRight_Opposite.id == AIR) {
+    if (cRightRight->getId() != AIR && cRightRight_Opposite->getId() == AIR) {
       if
         constexpr(sunLight) {
-          acc += cRightRight_Opposite.sunLightValue;
+          acc += cRightRight_Opposite->getSunLightValue();
         }
       else {
-        acc += cRightRight_Opposite.otherLightValue;
+        acc += cRightRight_Opposite->getOtherLightValue();
       }
       ++counter;
     }
@@ -757,34 +594,34 @@ private:
 
     counter = 1;
     acc = lightValue;
-    if (cRightRight.id != AIR && cRightRight_Opposite.id == AIR) {
+    if (cRightRight->getId() != AIR && cRightRight_Opposite->getId() == AIR) {
       if
         constexpr(sunLight) {
-          acc += cRightRight_Opposite.sunLightValue;
+          acc += cRightRight_Opposite->getSunLightValue();
         }
       else {
-        acc += cRightRight_Opposite.otherLightValue;
+        acc += cRightRight_Opposite->getOtherLightValue();
       }
       ++counter;
     }
-    if (cTopRight.id != AIR && cTopRight_Opposite.id == AIR &&
-        (cRightRight_Opposite.id == AIR || cTopMiddle.id == AIR)) {
+    if (cTopRight->getId() != AIR && cTopRight_Opposite->getId() == AIR &&
+        (cRightRight_Opposite->getId() == AIR || cTopMiddle->getId() == AIR)) {
       if
         constexpr(sunLight) {
-          acc += cTopRight_Opposite.sunLightValue;
+          acc += cTopRight_Opposite->getSunLightValue();
         }
       else {
-        acc += cTopRight_Opposite.otherLightValue;
+        acc += cTopRight_Opposite->getOtherLightValue();
       }
       ++counter;
     }
-    if (cTopMiddle.id != AIR && cTopMiddle_Opposite.id == AIR) {
+    if (cTopMiddle->getId() != AIR && cTopMiddle_Opposite->getId() == AIR) {
       if
         constexpr(sunLight) {
-          acc += cTopMiddle_Opposite.sunLightValue;
+          acc += cTopMiddle_Opposite->getSunLightValue();
         }
       else {
-        acc += cTopMiddle_Opposite.otherLightValue;
+        acc += cTopMiddle_Opposite->getOtherLightValue();
       }
       ++counter;
     }
@@ -794,40 +631,39 @@ private:
 
     counter = 1;
     acc = lightValue;
-    if (cTopMiddle.id != AIR && cTopMiddle_Opposite.id == AIR) {
+    if (cTopMiddle->getId() != AIR && cTopMiddle_Opposite->getId() == AIR) {
       if
         constexpr(sunLight) {
-          acc += cTopMiddle_Opposite.sunLightValue;
+          acc += cTopMiddle_Opposite->getSunLightValue();
         }
       else {
-        acc += cTopMiddle_Opposite.otherLightValue;
+        acc += cTopMiddle_Opposite->getOtherLightValue();
       }
       ++counter;
     }
-    if (cTopLeft.id != AIR && cTopLeft_Opposite.id == AIR &&
-        (cTopMiddle_Opposite.id == AIR || cLeftLeft_Opposite.id == AIR)) {
+    if (cTopLeft->getId() != AIR && cTopLeft_Opposite->getId() == AIR &&
+        (cTopMiddle_Opposite->getId() == AIR || cLeftLeft_Opposite->getId() == AIR)) {
       if
         constexpr(sunLight) {
-          acc += cTopLeft_Opposite.sunLightValue;
+          acc += cTopLeft_Opposite->getSunLightValue();
         }
       else {
-        acc += cTopLeft_Opposite.otherLightValue;
+        acc += cTopLeft_Opposite->getOtherLightValue();
       }
       ++counter;
     }
-    if (cLeftLeft.id != AIR && cLeftLeft_Opposite.id == AIR) {
+    if (cLeftLeft->getId() != AIR && cLeftLeft_Opposite->getId() == AIR) {
       if
         constexpr(sunLight) {
-          acc += cLeftLeft_Opposite.sunLightValue;
+          acc += cLeftLeft_Opposite->getSunLightValue();
         }
       else {
-        acc += cLeftLeft_Opposite.otherLightValue;
+        acc += cLeftLeft_Opposite->getOtherLightValue();
       }
       ++counter;
     }
     topLeft = acc / counter;
   }
-  */
 
   static const int meshData{0};
   static const int wateterMeshData{1};
