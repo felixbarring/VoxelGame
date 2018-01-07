@@ -19,3 +19,22 @@ each. Need to use bitmasking and shifting to accomplish.
 
 ###
 
+Prevent the game from crashing when the player is looking outside the world,
+that is, trying to access a cube not in range.
+
+###
+
+There might be some bad memory accesses. Valgrind crashes when it is run
+with player.updatePhisics(). It seems it has something to do with acessing 
+voxels.
+
+###
+
+Game crashes when looking at bedrock, vector out of bounds.
+
+###
+
+Game crashes when trying to access history in terminal.
+
+
+

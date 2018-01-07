@@ -6,14 +6,6 @@ being explained more thoroughly.
 
 ###
 
-Light depropagation for sun light does not work anymore wtf.
-
-Figure out a way of reducing chunk size by removing unecessary air.
-
-TODO Fix memory usage. Memory usage is very high.
-
-Water is rendered with strange light color some times
-
 Fix more options being possible to change with both terminal and
 settings
 

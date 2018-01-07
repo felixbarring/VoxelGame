@@ -39,11 +39,6 @@ short moment and then starts from 0 to 100
 
 ###
 
-Prevent the game from crashing when the player is looking outside the world,
-that is, trying to access a cube not in range.
-
-###
-
 Game crashes when removing cubes quickly, something agbout glm matrix.
 only happens for light cubes it seems.
 
@@ -58,13 +53,6 @@ There might be some bad memory accesses. Valgrind crashes when it is run
 with player.updatePhisics(). It seems it has something to do with acessing 
 voxels.
 
-###
-
-Game crashes when looking at bedrock, vector out of bounds.
-
-###
-
-Game crashes when trying to access history in terminal.
 
 
 

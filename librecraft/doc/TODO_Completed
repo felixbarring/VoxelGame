@@ -56,3 +56,11 @@ but also dence or sparce forest. There are also occasional ponds or lakes with
 water.
 
 ###
+
+Slight lagg when loading new chunks.
+
+Type: Improvement
+
+Make sure that all heavy work is offloaded to another thread than the main one.
+
+###
