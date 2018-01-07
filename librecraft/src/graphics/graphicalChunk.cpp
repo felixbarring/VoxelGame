@@ -12,7 +12,7 @@ using namespace config::cube_data;
 
 namespace graphics {
 
-bool useSmoothShading{ true };
+bool useSmoothShading{ false };
 bool useAO{ true };
 // TODO Make it possible to turn of AO
 
@@ -195,11 +195,15 @@ GraphicalChunk::createMeshData(bool transparent) {
 
             float sun = top->getSunLightValue();
             Lights lights{sun, sun, sun, sun};
-            doAOTop(i, j, k, lights);
+
+            if (useAO)
+              doAOTop(i, j, k, lights);
 
             float other = top->getOtherLightValue();
             Lights otherLights{other, other, other, other};
-            doAOTop(i, j, k, otherLights);
+
+            if (useAO)
+              doAOTop(i, j, k, otherLights);
 
             if (useSmoothShading) {
               computeAverageTop<true>(fd->getSunLightValue(),
@@ -266,11 +270,13 @@ GraphicalChunk::createMeshData(bool transparent) {
 
           float sun = right->getSunLightValue();
           Lights lights{sun, sun, sun, sun};
-          doAORight(i, j, k, lights);
+          if (useAO)
+            doAORight(i, j, k, lights);
 
           float other = right->getOtherLightValue();
           Lights otherLights{other, other, other, other};
-          doAORight(i, j, k, otherLights);
+          if (useAO)
+            doAORight(i, j, k, otherLights);
 
           if (useSmoothShading) {
             computeAverageRight<true>(fd->getSunLightValue(),
@@ -337,11 +343,13 @@ GraphicalChunk::createMeshData(bool transparent) {
 
           float sun = left->getSunLightValue();
           Lights lights{sun, sun, sun, sun};
-          doAOLeft(i, j, k, lights);
+          if (useAO)
+            doAOLeft(i, j, k, lights);
 
           float other = left->getOtherLightValue();
           Lights otherLights{other, other, other, other};
-          doAOLeft(i, j, k, otherLights);
+          if (useAO)
+            doAOLeft(i, j, k, otherLights);
 
           if (useSmoothShading) {
             computeAverageLeft<true>(fd->getSunLightValue(),
@@ -409,11 +417,13 @@ GraphicalChunk::createMeshData(bool transparent) {
 
           float sun = back->getSunLightValue();
           Lights lights{sun, sun, sun, sun};
-          doAOBack(i, j, k, lights);
+          if (useAO)
+            doAOBack(i, j, k, lights);
 
           float other = back->getOtherLightValue();
           Lights otherLights{other, other, other, other};
-          doAOBack(i, j, k, otherLights);
+          if (useAO)
+            doAOBack(i, j, k, otherLights);
 
           if (useSmoothShading) {
             computeAverageBack<true>(fd->getSunLightValue(),
@@ -481,11 +491,13 @@ GraphicalChunk::createMeshData(bool transparent) {
 
           float sun = front->getSunLightValue();
           Lights lights{sun, sun, sun, sun};
-          doAOFront(i, j, k, lights);
+          if (useAO)
+            doAOFront(i, j, k, lights);
 
           float other = front->getOtherLightValue();
           Lights otherLights{other, other, other, other};
-          doAOFront(i, j, k, otherLights);
+          if (useAO)
+            doAOFront(i, j, k, otherLights);
 
           if (useSmoothShading) {
             computeAverageFront<true>(fd->getSunLightValue(),
@@ -553,11 +565,13 @@ GraphicalChunk::createMeshData(bool transparent) {
 
           float sun = top->getSunLightValue();
           Lights lights{sun, sun, sun, sun};
-          doAOTop(i, j, k, lights);
+          if (useAO)
+            doAOTop(i, j, k, lights);
 
           float other = top->getOtherLightValue();
           Lights otherLights{other, other, other, other};
-          doAOTop(i, j, k, otherLights);
+          if (useAO)
+            doAOTop(i, j, k, otherLights);
 
           if (useSmoothShading) {
             computeAverageTop<true>(fd->getSunLightValue(),
@@ -624,11 +638,13 @@ GraphicalChunk::createMeshData(bool transparent) {
 
           float sun = bottom->getSunLightValue();
           Lights lights{sun, sun, sun, sun};
-          doAOBottom(i, j, k, lights);
+          if (useAO)
+            doAOBottom(i, j, k, lights);
 
           float other = bottom->getOtherLightValue();
           Lights otherLights{other, other, other, other};
-          doAOBottom(i, j, k, otherLights);
+          if (useAO)
+            doAOBottom(i, j, k, otherLights);
 
           if (useSmoothShading) {
             computeAverageBottom<true>(fd->getSunLightValue(),
@@ -1022,269 +1038,4 @@ GraphicalChunk::doAOBottom(int x, int y, int z, Lights& lights) {
 }
 
 }
-
-/*
-  // Remove faces and compute lightning
-  for (int x{ 0 }; x < m_width; ++x) {
-    for (int y{ 0 }; y < m_height; ++y) {
-      for (int k{ 0 }; k < m_depth; ++k) {
-
-        CubeFaceData& current = m_faceData[x + 1][y + 1][k + 1];
-        if (current.id == AIR)
-          continue;
-
-        if (current.id == WATER) {
-          if (m_faceData[x + 1][y + 2][k + 1].id == AIR) {
-            current.top = true;
-            current.lvTop_BottomLeft = 5;
-            current.lvTop_BottomRight = 5;
-            current.lvTop_TopRight = 5;
-            current.lvTop_TopLeft = 5;
-          }
-          continue;
-        }
-
-        // X ###################################################################
-        CubeFaceData cd;
-        cd = m_faceData[x + 2][y + 1][k + 1];
-        if (cd.id == AIR || cd.id == WATER) {
-          current.right = true;
-
-          if (useSmoothShading) {
-            computeAverageRight<true>(cd.sunLightValue,
-                                      x + 1,
-                                      y + 1,
-                                      k + 1,
-                                      current.lvRight_BottomLeft,
-                                      current.lvRight_BottomRight,
-                                      current.lvRight_TopRight,
-                                      current.lvRight_TopLeft,
-                                      m_faceData);
-
-            computeAverageRight<false>(cd.otherLightValue,
-                                       x + 1,
-                                       y + 1,
-                                       k + 1,
-                                       current.olvRight_BottomLeft,
-                                       current.olvRight_BottomRight,
-                                       current.olvRight_TopRight,
-                                       current.olvRight_TopLeft,
-                                       m_faceData);
-
-          } else {
-            current.lvRight_BottomLeft = cd.sunLightValue;
-            current.lvRight_BottomRight = cd.sunLightValue;
-            current.lvRight_TopRight = cd.sunLightValue;
-            current.lvRight_TopLeft = cd.sunLightValue;
-
-            current.olvRight_BottomLeft = cd.otherLightValue;
-            current.olvRight_BottomRight = cd.otherLightValue;
-            current.olvRight_TopRight = cd.otherLightValue;
-            current.olvRight_TopLeft = cd.otherLightValue;
-          }
-
-          doAORight(current, x + 1, y + 1, k + 1, m_faceData);
-        }
-
-        cd = m_faceData[x][y + 1][k + 1];
-        if (cd.id == AIR || cd.id == WATER) {
-          current.left = true;
-
-          if (useSmoothShading) {
-            computeAverageLeft<true>(cd.sunLightValue,
-                                     x + 1,
-                                     y + 1,
-                                     k + 1,
-                                     current.lvLeft_BottomLeft,
-                                     current.lvLeft_BottomRight,
-                                     current.lvLeft_TopRight,
-                                     current.lvLeft_TopLeft,
-                                     m_faceData);
-
-            computeAverageLeft<false>(cd.otherLightValue,
-                                      x + 1,
-                                      y + 1,
-                                      k + 1,
-                                      current.olvLeft_BottomLeft,
-                                      current.olvLeft_BottomRight,
-                                      current.olvLeft_TopRight,
-                                      current.olvLeft_TopLeft,
-                                      m_faceData);
-          } else {
-            current.lvLeft_BottomLeft = cd.sunLightValue;
-            current.lvLeft_BottomRight = cd.sunLightValue;
-            current.lvLeft_TopRight = cd.sunLightValue;
-            current.lvLeft_TopLeft = cd.sunLightValue;
-
-            current.lvLeft_BottomLeft = cd.otherLightValue;
-            current.lvLeft_BottomRight = cd.otherLightValue;
-            current.lvLeft_TopRight = cd.otherLightValue;
-            current.lvLeft_TopLeft = cd.otherLightValue;
-          }
-
-          doAOLeft(current, x + 1, y + 1, k + 1, m_faceData);
-        }
-
-        // Z ###################################################################
-
-        cd = m_faceData[x + 1][y + 1][k + 2];
-        if (cd.id == AIR || cd.id == WATER) {
-          current.front = true;
-
-          if (useSmoothShading) {
-            computeAverageFront<true>(cd.sunLightValue,
-                                      x + 1,
-                                      y + 1,
-                                      k + 1,
-                                      current.lvFront_BottomLeft,
-                                      current.lvFront_BottomRight,
-                                      current.lvFront_TopRight,
-                                      current.lvFront_TopLeft,
-                                      m_faceData);
-
-            computeAverageFront<false>(cd.otherLightValue,
-                                       x + 1,
-                                       y + 1,
-                                       k + 1,
-                                       current.olvFront_BottomLeft,
-                                       current.olvFront_BottomRight,
-                                       current.olvFront_TopRight,
-                                       current.olvFront_TopLeft,
-                                       m_faceData);
-          } else {
-            current.lvFront_BottomLeft = cd.sunLightValue;
-            current.lvFront_BottomRight = cd.sunLightValue;
-            current.lvFront_TopRight = cd.sunLightValue;
-            current.lvFront_TopLeft = cd.sunLightValue;
-
-            current.olvFront_BottomLeft = cd.otherLightValue;
-            current.olvFront_BottomRight = cd.otherLightValue;
-            current.olvFront_TopRight = cd.otherLightValue;
-            current.olvFront_TopLeft = cd.otherLightValue;
-          }
-          doAOFront(current, x + 1, y + 1, k + 1, m_faceData);
-        }
-
-        cd = m_faceData[x + 1][y + 1][k];
-        if (cd.id == AIR || cd.id == WATER) {
-          current.back = true;
-
-          if (useSmoothShading) {
-            computeAverageBack<true>(cd.sunLightValue,
-                                     x + 1,
-                                     y + 1,
-                                     k + 1,
-                                     current.lvBack_BottomLeft,
-                                     current.lvBack_BottomRight,
-                                     current.lvBack_TopRight,
-                                     current.lvBack_TopLeft,
-                                     m_faceData);
-
-            computeAverageBack<false>(cd.otherLightValue,
-                                      x + 1,
-                                      y + 1,
-                                      k + 1,
-                                      current.olvBack_BottomLeft,
-                                      current.olvBack_BottomRight,
-                                      current.olvBack_TopRight,
-                                      current.olvBack_TopLeft,
-                                      m_faceData);
-
-          } else {
-            current.lvBack_BottomLeft = cd.sunLightValue;
-            current.lvBack_BottomRight = cd.sunLightValue;
-            current.lvBack_TopRight = cd.sunLightValue;
-            current.lvBack_TopLeft = cd.sunLightValue;
-
-            current.olvBack_BottomLeft = cd.otherLightValue;
-            current.olvBack_BottomRight = cd.otherLightValue;
-            current.olvBack_TopRight = cd.otherLightValue;
-            current.olvBack_TopLeft = cd.otherLightValue;
-          }
-
-          doAOBack(current, x + 1, y + 1, k + 1, m_faceData);
-        }
-        // Y ###################################################################
-
-        cd = m_faceData[x + 1][y + 2][k + 1];
-        if (cd.id == AIR || cd.id == WATER) {
-          current.top = true;
-
-          if (useSmoothShading) {
-            computeAverageTop<true>(cd.sunLightValue,
-                                    x + 1,
-                                    y + 1,
-                                    k + 1,
-                                    current.lvTop_BottomLeft,
-                                    current.lvTop_BottomRight,
-                                    current.lvTop_TopRight,
-                                    current.lvTop_TopLeft,
-                                    m_faceData);
-
-            computeAverageTop<false>(cd.otherLightValue,
-                                     x + 1,
-                                     y + 1,
-                                     k + 1,
-                                     current.olvTop_BottomLeft,
-                                     current.olvTop_BottomRight,
-                                     current.olvTop_TopRight,
-                                     current.olvTop_TopLeft,
-                                     m_faceData);
-          } else {
-            current.lvTop_BottomLeft = cd.sunLightValue;
-            current.lvTop_BottomRight = cd.sunLightValue;
-            current.lvTop_TopRight = cd.sunLightValue;
-            current.lvTop_TopLeft = cd.sunLightValue;
-
-            current.olvTop_BottomLeft = cd.otherLightValue;
-            current.olvTop_BottomRight = cd.otherLightValue;
-            current.olvTop_TopRight = cd.otherLightValue;
-            current.olvTop_TopLeft = cd.otherLightValue;
-          }
-
-          doAOTop(current, x + 1, y + 1, k + 1, m_faceData);
-        }
-
-        cd = m_faceData[x + 1][y][k + 1];
-        if (cd.id == AIR || cd.id == WATER) {
-          current.bottom = true;
-
-          if (useSmoothShading) {
-            computeAverageBottom<true>(cd.sunLightValue,
-                                       x + 1,
-                                       y + 1,
-                                       k + 1,
-                                       current.lvBottom_BottomLeft,
-                                       current.lvBottom_BottomRight,
-                                       current.lvBottom_TopRight,
-                                       current.lvBottom_TopLeft,
-                                       m_faceData);
-
-            computeAverageBottom<false>(cd.otherLightValue,
-                                        x + 1,
-                                        y + 1,
-                                        k + 1,
-                                        current.olvBottom_BottomLeft,
-                                        current.olvBottom_BottomRight,
-                                        current.olvBottom_TopRight,
-                                        current.olvBottom_TopLeft,
-                                        m_faceData);
-          } else {
-            current.lvBottom_BottomLeft = cd.sunLightValue;
-            current.lvBottom_BottomRight = cd.sunLightValue;
-            current.lvBottom_TopRight = cd.sunLightValue;
-            current.lvBottom_TopLeft = cd.sunLightValue;
-
-            current.olvBottom_BottomLeft = cd.otherLightValue;
-            current.olvBottom_BottomRight = cd.otherLightValue;
-            current.olvBottom_TopRight = cd.otherLightValue;
-            current.olvBottom_TopLeft = cd.otherLightValue;
-          }
-
-          doAOBottom(current, x + 1, y + 1, k + 1, m_faceData);
-        }
-      }
-    }
-  }
-  */
 
