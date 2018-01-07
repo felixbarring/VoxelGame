@@ -82,7 +82,7 @@ private:
     void addToHistory(std::string str) {
       moveAllRight();
       m_history[0] = std::move(str);
-      m_historyPointer = -1;
+      m_historyPointer = 0;
       m_actualElements == m_history.size() ? m_actualElements
                                            : ++m_actualElements;
     }
@@ -98,13 +98,17 @@ private:
         --m_historyPointer;
     }
 
-    std::string& getPointedElement() {
+    const std::string& getPointedElement() const {
       return m_history[m_historyPointer];
+    }
+
+    int getHistorySize() const {
+      return m_history.size();
     }
 
   private:
     void moveAllRight() {
-      for (unsigned i = m_history.size() - 1; i >= 1; --i)
+      for (long unsigned i{m_history.size() - 1}; i >= 1; --i)
         m_history[i] = m_history[i - 1];
     }
 

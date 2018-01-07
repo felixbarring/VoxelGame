@@ -81,7 +81,7 @@ private:
 
   double m_timeSpeed{ 1.0 };
   const double m_dayLength{ 600 };
-  const double m_lowestSunStrength{ 0.1 };
+  const double m_lowestSunStrength{ 0.02 };
 
   bool m_paused{ false };
 

@@ -18,8 +18,8 @@ Terminal::Terminal(vector<string> commands,
   : m_graphicsManager{ graphicsManager }
   , m_commands(commands) {
 
-  for (auto command : commands)
-    m_trie.addString(command);
+  for (string command : commands)
+    m_trie.addString(move(command));
 
   m_commandListener = commandListener;
 
@@ -27,7 +27,7 @@ Terminal::Terminal(vector<string> commands,
 
     switch (id) {
       case 2: {
-        auto str = m_textInput->getString();
+        string str = m_textInput->getString();
         m_textArea->addLine(str);
         m_history.addToHistory(str);
 
@@ -44,9 +44,7 @@ Terminal::Terminal(vector<string> commands,
         break;
       }
       case 3: {
-        auto arg = vector<string>{};
-        arg.push_back("close");
-        m_commandListener(arg);
+        m_commandListener({"close"});
         // Hack, we lose focus when clicking on close. Next time terminal is
         // opened there is no focus. Fixed by this hack :p
         m_textInput->setFocus();
@@ -78,8 +76,8 @@ Terminal::update(float timePassed) {
   m_widgets->update(timePassed);
 
   if (util::Input::getInstance()->tabPressed) {
-    auto str = m_textInput->getString();
-    auto autoComplete = m_trie.getFirstWordWithSequence(str);
+    string str{m_textInput->getString()};
+    string autoComplete{m_trie.getFirstWordWithSequence(str)};
     if (!autoComplete.empty())
       m_textInput->setString(autoComplete);
   }
@@ -88,11 +86,13 @@ Terminal::update(float timePassed) {
   }
   if (util::Input::getInstance()->upPressed) {
     m_history.incrementPointer();
-    m_textInput->setString(m_history.getPointedElement());
+    if (m_history.getHistorySize())
+      m_textInput->setString(m_history.getPointedElement());
   }
   if (util::Input::getInstance()->downPressed) {
     m_history.decrementPointer();
-    m_textInput->setString(m_history.getPointedElement());
+    if (m_history.getHistorySize())
+      m_textInput->setString(m_history.getPointedElement());
   }
 }
 
