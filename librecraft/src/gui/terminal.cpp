@@ -28,6 +28,8 @@ Terminal::Terminal(vector<string> commands,
     switch (id) {
       case 2: {
         string str = m_textInput->getString();
+        if (str == "")
+          break;
         m_textArea->addLine(str);
         m_history.addToHistory(str);
 
@@ -86,13 +88,11 @@ Terminal::update(float timePassed) {
   }
   if (util::Input::getInstance()->upPressed) {
     m_history.incrementPointer();
-    if (m_history.getHistorySize())
-      m_textInput->setString(m_history.getPointedElement());
+    m_textInput->setString(m_history.getPointedElement());
   }
   if (util::Input::getInstance()->downPressed) {
     m_history.decrementPointer();
-    if (m_history.getHistorySize())
-      m_textInput->setString(m_history.getPointedElement());
+    m_textInput->setString(m_history.getPointedElement());
   }
 }
 

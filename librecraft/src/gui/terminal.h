@@ -81,14 +81,13 @@ private:
 
     void addToHistory(std::string str) {
       moveAllRight();
-      m_history[0] = std::move(str);
+      m_history[1] = std::move(str);
       m_historyPointer = 0;
-      m_actualElements == m_history.size() ? m_actualElements
-                                           : ++m_actualElements;
+      ++m_actualElements;
     }
 
     void incrementPointer() {
-      auto ne = m_historyPointer + 1;
+      unsigned ne = m_historyPointer + 1;
       if (ne < m_history.size() && ne < m_actualElements)
         ++m_historyPointer;
     }
@@ -102,19 +101,15 @@ private:
       return m_history[m_historyPointer];
     }
 
-    int getHistorySize() const {
-      return m_history.size();
-    }
-
   private:
     void moveAllRight() {
       for (long unsigned i{m_history.size() - 1}; i >= 1; --i)
         m_history[i] = m_history[i - 1];
     }
 
-    unsigned m_actualElements{ 0 };
+    unsigned m_actualElements{ 1 };
     unsigned m_historyPointer{ 0 };
-    std::vector<std::string> m_history;
+    std::vector<std::string> m_history{""};
   };
 
   graphics::GraphicsManager& m_graphicsManager;
