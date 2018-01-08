@@ -30,7 +30,7 @@ FontMeshBuilder::FontMeshBuilder(string& pathToLayout,
 
   // The first line in the file is just a comment, hence the + 1
   for (int i = 0 + 1; i < 256 + 1; ++i) {
-    string line = list.at(i);
+    string line = list[i];
 
     CharData charD;
     int counter = 0;

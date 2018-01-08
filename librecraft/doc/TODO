@@ -33,7 +33,6 @@ frustum, then step into the next child node of the current node,
 which will have another node representing a volume, or a 
 chunk. All chunks that are reached this way shall be rendered.
 
-
 ###
 
 Make the water physics better:

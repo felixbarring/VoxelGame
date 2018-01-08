@@ -32,9 +32,4 @@ voxels.
 
 Game crashes when looking at bedrock, vector out of bounds.
 
-###
-
-Game crashes when trying to access history in terminal.
-
-
 

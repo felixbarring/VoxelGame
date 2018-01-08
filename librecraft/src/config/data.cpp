@@ -49,7 +49,7 @@ const char WATER = 19;
 const char BED_ROCK = 20;
 
 // Used for looping over all types, except for air. water, bedrock
-const char LAST_CUBE = LIGHT;
+const char LAST_CUBE = BED_ROCK;
 
 const int SIDE_TEXTURE = 0;
 const int TOP_TEXTURE = 1;

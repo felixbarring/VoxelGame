@@ -42,6 +42,7 @@ CubeBatcher::CubeBatcher(Camera& camera)
   for (int i = 0; i <= config::cube_data::LAST_CUBE + 1; i++)
     m_cubes.push_back(TexturedCube{ 2, 0, -1.0f, i });
 
+  // TODO Fix the indentation here lol
   string vertex = "#version 330 core \n"
 
                   "in vec3 " +
@@ -110,7 +111,7 @@ CubeBatcher::addBatch(char type,
                       Transform& transform,
                       int sunLight,
                       int otherLight) {
-  m_batches.push_back(Batch(m_cubes.at(type), transform, sunLight, otherLight));
+  m_batches.push_back(Batch(m_cubes[type], transform, sunLight, otherLight));
 }
 
 void

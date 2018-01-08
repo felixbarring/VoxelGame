@@ -64,3 +64,9 @@ Type: Improvement
 Make sure that all heavy work is offloaded to another thread than the main one.
 
 ###
+
+Game crashes when trying to access history in terminal.
+
+###
+
+

@@ -21,13 +21,13 @@ TextureArray&
 Resources::getTextureArray(const vector<string>& textures,
                            unsigned width,
                            unsigned height) {
-  auto it = textureArraysMap.find(textures.at(0));
+  auto it = textureArraysMap.find(textures[0]);
 
   if (it == textureArraysMap.end())
     textureArraysMap.insert(
-      make_pair(textures.at(0), TextureArray{ textures, width, height }));
+      make_pair(textures[0], TextureArray{ textures, width, height }));
 
-  return textureArraysMap.at(textures.at(0));
+  return textureArraysMap.at(textures[0]);
 }
 
 TextureCubeMap&
