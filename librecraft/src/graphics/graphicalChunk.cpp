@@ -34,7 +34,6 @@ GraphicalChunk::GraphicalChunk(double _x, double _y, double _z,
   , m_back{back}
   , m_front{front}
 {
-
   m_meshData.push_back(createMeshData(false));
   m_meshData.push_back(createMeshData(true));
 }
@@ -105,35 +104,38 @@ Voxel*
 GraphicalChunk::getVoxel(int x, int y, int z) {
   bool outsideYRand{y >= config::chunk_data::CHUNK_HEIGHT || y < 0};
   bool outsideXRange{x < 0 || x >= m_width};
-  bool outsideZRange{z < 0 && z >= m_depth};
+  bool outsideZRange{z < 0 || z >= m_depth};
 
+  // TODO
+  // We already handle this...
+  // Maybe remove the complicated code and use the new way :-)
   if (outsideYRand || (outsideXRange && outsideZRange))
     return nullptr;
 
-  if (x < m_width && x >= 0 && (z < m_depth && z >= 0)) {
+  if ((x < m_width && x >= 0) && (z < m_depth && z >= 0)) {
     return &m_data[x][y][z];
-  } else if (x == m_width && (z < m_depth && z >= 0)) {
+  } else if (x == m_width) {
 
     if (m_right)
       return &((*m_right)[0][y][z]);
     else
       return nullptr;
 
-  } else if (x == -1 && (z < m_depth && z >= 0)) {
+  } else if (x == -1) {
 
     if (m_left )
       return &((*m_left)[m_width - 1][y][z]);
     else
       return nullptr;
 
-  } else if (z == m_depth && (x < m_width && x >= 0)) {
+  } else if (z == m_depth) {
 
     if (m_back)
       return &((*m_back)[x][y][0]);
     else
       return nullptr;
 
-  } else if (z == -1 && (x < m_width && x >= 0)) {
+  } else if (z == -1) {
 
     if (m_front)
       return &((*m_front)[x][y][m_depth - 1]);

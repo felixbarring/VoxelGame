@@ -33,14 +33,14 @@ public:
    * thread. The work done for creating the mesh data can be considered to be
    * big, so its a good idea to run it in parallel.
    *
-   * @param x
-   * @param y
-   * @param z
-   * @param data
-   * @param right
-   * @param left
-   * @param back
-   * @param front
+   * @param x The x location of the chunk.
+   * @param y The y location of the chunk.
+   * @param z The z location of the chunk.
+   * @param data The data for the chunk that this GraphicalChunk represents.
+   * @param right Data for the right neighbor, if no neighbor use nullptr.
+   * @param left Data for the left neighbor, if no neighbor use nullptr.
+   * @param back Data for the back neighbor, if no neighbor use nullptr.
+   * @param front Data for the front neighbor, if no neighbor use nullptr.
    */
   GraphicalChunk(double x,
                  double y,
