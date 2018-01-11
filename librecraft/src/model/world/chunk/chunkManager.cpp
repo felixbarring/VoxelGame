@@ -149,7 +149,7 @@ ChunkManager::isAirOrWater(int x, int y, int z) {
 
 void
 ChunkManager::removeCube(int x, int y, int z) {
-  auto voxel = getCubeId(x, y, z);
+  char voxel = getCubeId(x, y, z);
   if (voxel != BED_ROCK && voxel != WATER) {
     if (hasWaterNeighbour(x, y, z))
       setCube(x, y, z, WATER);
@@ -400,7 +400,7 @@ ChunkManager::moveChunks(Direction direction) {
   // ##########################################################################
 
   // Destroy the chunks that are outside the matrix.
-  for (auto chunk : chunksToDelete) {
+  for (auto &chunk : chunksToDelete) {
     chunk->removeAllNeighbors();
     chunk->storeChunk();
     chunk.reset();

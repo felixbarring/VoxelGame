@@ -7,8 +7,7 @@ namespace graphics {
 
 /**
  * \brief A convenience class that handles the transform matrix for a graphical
- * object the position and rotation
- *        around x, y, and z axles.
+ * object the position and rotation around x, y, and z axles.
  */
 class Transform {
 public:

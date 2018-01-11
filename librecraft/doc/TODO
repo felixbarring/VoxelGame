@@ -167,5 +167,13 @@ should be used.
 
 ###
 
+Reduce the number of share_ptr's.
+
+Type: Code Quality
+
+The shared pointers have been overused. There should instead be a well thought 
+out ownership of objects than hoping that shared_ptr magically solves the 
+memory management.
+
 
 

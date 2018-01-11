@@ -6,6 +6,13 @@ being explained more thoroughly.
 
 ###
 
+Investigate imgui and see if it can be used :-)
+
+Add so that is is possible to turn on/off AO and light smoothening on the fly
+with a console command.
+
+Implement UDP server/client for multiplayer.
+
 Fix more options being possible to change with both terminal and
 settings
 
@@ -19,5 +26,7 @@ Fix so that the terminal can show all possible settings
 Add cool post processing effects demo
 
 Improve gui when world is dark
+
+Wheather effects such as rain, thunder, clouds etc
 
 
