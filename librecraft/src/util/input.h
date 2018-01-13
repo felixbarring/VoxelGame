@@ -72,8 +72,11 @@ public:
   bool eraseTextPressed{ false };
   bool eraseTextActive{ false };
 
-  bool switchCubeActive{ false };
-  bool switchCubePressed{ false };
+  bool increaseCubeActive{ false };
+  bool increaseCubePressed{ false };
+
+  bool decreaseCubeActive{ false };
+  bool decreaseCubePressed{ false };
 
   bool tabPressed{ false };
   bool tabActive{ false };

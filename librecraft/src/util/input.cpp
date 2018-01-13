@@ -44,8 +44,10 @@ Input::updateValues() {
 
   eraseTextPressed =
     Keyboard::isKeyPressed(eraseTextButton) && !eraseTextActive;
-  switchCubePressed =
-    Keyboard::isKeyPressed(switchBuildingCube) && !switchCubeActive;
+  increaseCubePressed =
+    Keyboard::isKeyPressed(increaseBuildingCube) && !increaseCubeActive;
+  decreaseCubePressed =
+      Keyboard::isKeyPressed(decreaseBuildingCube) && !decreaseCubeActive;
 
   openTerminalPressed =
     Keyboard::isKeyPressed(openTerminal) && !openTerminalActive;
@@ -69,7 +71,8 @@ Input::updateValues() {
   goDownActive = Keyboard::isKeyPressed(goDownButton);
 
   eraseTextActive = Keyboard::isKeyPressed(eraseTextButton);
-  switchCubeActive = Keyboard::isKeyPressed(switchBuildingCube);
+  increaseCubeActive = Keyboard::isKeyPressed(increaseBuildingCube);
+  decreaseCubeActive = Keyboard::isKeyPressed(decreaseBuildingCube);
 
   openTerminalActive = Keyboard::isKeyPressed(openTerminal);
   tabActive = Keyboard::isKeyPressed(tab);

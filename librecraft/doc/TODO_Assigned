@@ -1,15 +1,4 @@
 
-Reduce memory use for graphical chunk.
-Type: Performance
-
-Graphical chunk usses a massive amount of memmory when creating the meshes.
-About 2 gig when creating a small world. When the graphics are finished
-the memory goes back to 2Mib wich is quite okay IMO.Found this out by using 
-Valgrind massif. The size when creating a graphical chunk should not need to
-be much bigger than a normal chunk.
-
-###
-
 Reduce the voxel size to 2 bytes.
 
 Type: Performance
@@ -30,6 +19,12 @@ voxels.
 
 ###
 
-Game crashes when looking at bedrock, vector out of bounds.
+Improve the HUD
+Type: Feature
 
+Add several building blocks so that the player can easily see wich he can 
+change to by pressing the change buttons. The player can change in both 
+directions and the currently selected one is highlighted by being extra large
+and in the middel.
 
+###

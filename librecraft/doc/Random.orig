@@ -6,12 +6,8 @@ being explained more thoroughly.
 
 ###
 
-Restrict so that the player can not move outside the world, maybe limit it so
-that he/she can not move long enoughe to reach the chunks that can be updated
-concurrently.
-
-Fix so that smooth lightning works again
-
+<<<<<<< HEAD
+=======
 Investigate imgui and see if it can be used :-)
 
 Add so that is is possible to turn on/off AO and light smoothening on the fly
@@ -19,6 +15,7 @@ with a console command.
 
 Implement UDP server/client for multiplayer.
 
+>>>>>>> featureReduceMemoryGraphicalChunk
 Fix more options being possible to change with both terminal and
 settings
 
@@ -34,5 +31,4 @@ Add cool post processing effects demo
 Improve gui when world is dark
 
 Wheather effects such as rain, thunder, clouds etc
-
 

@@ -90,13 +90,13 @@ InGame::InGame(Game& game,
 
   m_activeWidgetGroup = m_mainWidgetGroup;
 
-  m_crossHair.reset(new Sprite(
+  m_crossHair = make_shared<Sprite>(
     390,
     290,
     0,
     20,
     20,
-    Resources::getInstance().getTexture(config::gui_data::crossHair)));
+    Resources::getInstance().getTexture(config::gui_data::crossHair));
 
   for (int i = 0; i <= config::cube_data::LAST_CUBE_USED_FOR_BUILDING; ++i) {
     m_selectedCubeThumbnails.push_back(make_shared<Sprite>(
@@ -245,11 +245,11 @@ InGame::InGame(Game& game,
                            font_data::fontAtlasWidth,
                            font_data::fontAtlasHeight);
 
-  m_fps.reset(new Sprite(0,
+  m_fps = make_shared<Sprite>(0,
                          45,
                          10,
                          fontMeshBuilder.buldMeshForString("FPS: " + 0, 20),
-                         res.getTexture(config::font_data::font)));
+                         res.getTexture(config::font_data::font));
 }
 
 void

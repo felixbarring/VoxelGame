@@ -184,7 +184,8 @@ sf::Keyboard::Key goDownButton = sf::Keyboard::LShift;
 
 sf::Keyboard::Key eraseTextButton = sf::Keyboard::BackSpace;
 
-sf::Keyboard::Key switchBuildingCube = sf::Keyboard::E;
+sf::Keyboard::Key increaseBuildingCube = sf::Keyboard::E;
+sf::Keyboard::Key decreaseBuildingCube = sf::Keyboard::Q;
 
 sf::Keyboard::Key openTerminal = sf::Keyboard::T;
 sf::Keyboard::Key tab = sf::Keyboard::Tab;

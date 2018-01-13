@@ -112,7 +112,8 @@ extern sf::Keyboard::Key goDownButton;
 
 extern sf::Keyboard::Key eraseTextButton;
 
-extern sf::Keyboard::Key switchBuildingCube;
+extern sf::Keyboard::Key increaseBuildingCube;
+extern sf::Keyboard::Key decreaseBuildingCube;
 
 extern sf::Keyboard::Key openTerminal;
 extern sf::Keyboard::Key tab;

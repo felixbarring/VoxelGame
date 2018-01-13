@@ -110,9 +110,12 @@ Player::updateSpeed(float timePassed) {
     m_speed.z = normalizedMD.z;
   }
 
-  if (input->switchCubePressed &&
+  if (input->increaseCubePressed &&
       ++m_cubeUsedForBuilding > config::cube_data::LAST_CUBE_USED_FOR_BUILDING)
     m_cubeUsedForBuilding = 0;
+
+  if (input->decreaseCubePressed && --m_cubeUsedForBuilding < 0)
+    m_cubeUsedForBuilding = config::cube_data::LAST_CUBE_USED_FOR_BUILDING;
 
   float waterFactor = 1.0;
 
