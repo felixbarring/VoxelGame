@@ -99,12 +99,22 @@ InGame::InGame(Game& game,
     Resources::getInstance().getTexture(config::gui_data::crossHair));
 
   for (int i = 0; i <= config::cube_data::LAST_CUBE_USED_FOR_BUILDING; ++i) {
-    m_selectedCubeThumbnails.push_back(make_shared<Sprite>(
+    m_cubeThumbnails.push_back(make_shared<Sprite>(
       380,
       5,
       2,
       40,
       40,
+      Resources::getInstance().getTexture(config::cube_data::thumbnails[i])));
+  }
+
+  for (int i = 0; i <= config::cube_data::LAST_CUBE_USED_FOR_BUILDING; ++i) {
+    m_smallThumbnails.push_back(make_shared<Sprite>(
+      0,
+      0,
+      2,
+      30,
+      30,
       Resources::getInstance().getTexture(config::cube_data::thumbnails[i])));
   }
 
@@ -130,8 +140,6 @@ InGame::InGame(Game& game,
     loadChunks, setTime,      stopTime,      resumeTime,  printDebugInfo,
     setFOV,     setTimeSpeed, setPlayerSpeed
   };
-
-  // TODO Does not handle all errors... fix this!
 
   // The first string in the vector should be the command, followed by
   // arguments.
@@ -330,7 +338,22 @@ InGame::update(double timePassed) {
     }
 
     m_graphicsManager.getSpriteBatcher().addBatch(
-      *m_selectedCubeThumbnails[m_player.getBuildingCube()]);
+      *m_cubeThumbnails[m_player.getBuildingCube()]);
+
+    int numberofThunbnails{5};
+    for (int i{0}; i < numberofThunbnails; ++i) {
+      shared_ptr<Sprite> sprite = m_smallThumbnails[i];
+      int xLocation = i * 35 + (380 - (35 * numberofThunbnails));
+      sprite->setLocation(xLocation, 5);
+      m_graphicsManager.getSpriteBatcher().addBatch(*sprite);
+    }
+
+    for (int i{0}; i < numberofThunbnails; ++i) {
+      shared_ptr<Sprite> sprite = m_smallThumbnails[i + numberofThunbnails];
+      int xLocation = i * 35 + (380 + 40 + 5);
+      sprite->setLocation(xLocation, 5);
+      m_graphicsManager.getSpriteBatcher().addBatch(*sprite);
+    }
 
   } else {
     m_mouse.unlock();

@@ -85,7 +85,8 @@ private:
   std::shared_ptr<graphics::Sprite> m_fps;
   std::shared_ptr<graphics::Sprite> m_lastSelecteCube;
 
-  std::vector<std::shared_ptr<graphics::Sprite>> m_selectedCubeThumbnails;
+  std::vector<std::shared_ptr<graphics::Sprite>> m_cubeThumbnails;
+  std::vector<std::shared_ptr<graphics::Sprite>> m_smallThumbnails;
 };
 
 #endif /* SRC_INGAME_H_ */

@@ -6,6 +6,8 @@ being explained more thoroughly.
 
 ###
 
+Need water filling.
+
 Restrict so that the player can not move outside the world, maybe limit it so
 that he/she can not move long enoughe to reach the chunks that can be updated
 concurrently.
