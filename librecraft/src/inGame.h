@@ -17,6 +17,7 @@
 #include "graphics/cubeMap.h"
 #include "graphics/resources.h"
 #include "graphics/sprite.h"
+#include "gui/CubeBar.h"
 #include "gui/mouse.h"
 #include "gui/terminal.h"
 #include "model/world/timeAndWeather/timeCycle.h"
@@ -85,8 +86,8 @@ private:
   std::shared_ptr<graphics::Sprite> m_fps;
   std::shared_ptr<graphics::Sprite> m_lastSelecteCube;
 
-  std::vector<std::shared_ptr<graphics::Sprite>> m_cubeThumbnails;
-  std::vector<std::shared_ptr<graphics::Sprite>> m_smallThumbnails;
+  gui::CubeBar m_cubeBar;
+
 };
 
 #endif /* SRC_INGAME_H_ */

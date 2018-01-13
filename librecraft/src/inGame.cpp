@@ -40,7 +40,8 @@ InGame::InGame(Game& game,
   , m_settings{ m_activeWidgetGroup,
                 m_mainWidgetGroup,
                 m_soundPlayer,
-                graphicsManager } {
+                graphicsManager }
+  , m_cubeBar{ graphicsManager } {
 
   // TODO Should be possible to save and load the player location.
   double playerYLocation{ chunk_data::CHUNK_HEIGHT - 10.1 };
@@ -97,26 +98,6 @@ InGame::InGame(Game& game,
     20,
     20,
     Resources::getInstance().getTexture(config::gui_data::crossHair));
-
-  for (int i = 0; i <= config::cube_data::LAST_CUBE_USED_FOR_BUILDING; ++i) {
-    m_cubeThumbnails.push_back(make_shared<Sprite>(
-      380,
-      5,
-      2,
-      40,
-      40,
-      Resources::getInstance().getTexture(config::cube_data::thumbnails[i])));
-  }
-
-  for (int i = 0; i <= config::cube_data::LAST_CUBE_USED_FOR_BUILDING; ++i) {
-    m_smallThumbnails.push_back(make_shared<Sprite>(
-      0,
-      0,
-      2,
-      30,
-      30,
-      Resources::getInstance().getTexture(config::cube_data::thumbnails[i])));
-  }
 
   // TODO This whole console system should be reworked.
   // TODO Refactor
@@ -337,30 +318,7 @@ InGame::update(double timePassed) {
       m_graphicsManager.getSpriteBatcher().addBatch(*m_lastSelecteCube);
     }
 
-    int cubeUsed{m_player.getBuildingCube()};
-    m_graphicsManager.getSpriteBatcher().addBatch(
-      *m_cubeThumbnails[cubeUsed]);
-
-    int numberofThunbnails{5};
-    for (int i{0}; i < numberofThunbnails; ++i) {
-      int current{cubeUsed - (numberofThunbnails - i)};
-      if (current < 0)
-        current += (config::cube_data::LAST_CUBE_USED_FOR_BUILDING + 1);
-      shared_ptr<Sprite> sprite = m_smallThumbnails[current];
-      int xLocation = i * 35 + (380 - (35 * numberofThunbnails));
-      sprite->setLocation(xLocation, 5);
-      m_graphicsManager.getSpriteBatcher().addBatch(*sprite);
-    }
-
-    for (int i{0}; i < numberofThunbnails; ++i) {
-      int current{cubeUsed + i + 1};
-      if (current > config::cube_data::LAST_CUBE_USED_FOR_BUILDING)
-        current -= (config::cube_data::LAST_CUBE_USED_FOR_BUILDING + 1);
-      shared_ptr<Sprite> sprite = m_smallThumbnails[current];
-      int xLocation = i * 35 + (380 + 40 + 5);
-      sprite->setLocation(xLocation, 5);
-      m_graphicsManager.getSpriteBatcher().addBatch(*sprite);
-    }
+    m_cubeBar.update(m_player.getBuildingCube());
 
   } else {
     m_mouse.unlock();
