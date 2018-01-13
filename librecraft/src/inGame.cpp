@@ -337,19 +337,26 @@ InGame::update(double timePassed) {
       m_graphicsManager.getSpriteBatcher().addBatch(*m_lastSelecteCube);
     }
 
+    int cubeUsed{m_player.getBuildingCube()};
     m_graphicsManager.getSpriteBatcher().addBatch(
-      *m_cubeThumbnails[m_player.getBuildingCube()]);
+      *m_cubeThumbnails[cubeUsed]);
 
     int numberofThunbnails{5};
     for (int i{0}; i < numberofThunbnails; ++i) {
-      shared_ptr<Sprite> sprite = m_smallThumbnails[i];
+      int current{cubeUsed - (numberofThunbnails - i)};
+      if (current < 0)
+        current += (config::cube_data::LAST_CUBE_USED_FOR_BUILDING + 1);
+      shared_ptr<Sprite> sprite = m_smallThumbnails[current];
       int xLocation = i * 35 + (380 - (35 * numberofThunbnails));
       sprite->setLocation(xLocation, 5);
       m_graphicsManager.getSpriteBatcher().addBatch(*sprite);
     }
 
     for (int i{0}; i < numberofThunbnails; ++i) {
-      shared_ptr<Sprite> sprite = m_smallThumbnails[i + numberofThunbnails];
+      int current{cubeUsed + i + 1};
+      if (current > config::cube_data::LAST_CUBE_USED_FOR_BUILDING)
+        current -= (config::cube_data::LAST_CUBE_USED_FOR_BUILDING + 1);
+      shared_ptr<Sprite> sprite = m_smallThumbnails[current];
       int xLocation = i * 35 + (380 + 40 + 5);
       sprite->setLocation(xLocation, 5);
       m_graphicsManager.getSpriteBatcher().addBatch(*sprite);

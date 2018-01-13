@@ -75,7 +75,7 @@ private:
   bool m_gravitiyOn{ true };
   bool m_isOnGround{ false };
 
-  float m_flySpeed = 8;
+  float m_flySpeed{ 8 };
 
   glm::vec3 m_speed{ 0, 0, 0 };
   glm::vec3 m_frameSpeed{};

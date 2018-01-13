@@ -110,6 +110,7 @@ Player::updateSpeed(float timePassed) {
     m_speed.z = normalizedMD.z;
   }
 
+  // TODO Why are these in this function?!?
   if (input->increaseCubePressed &&
       ++m_cubeUsedForBuilding > config::cube_data::LAST_CUBE_USED_FOR_BUILDING)
     m_cubeUsedForBuilding = 0;
