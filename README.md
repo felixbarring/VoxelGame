@@ -19,7 +19,7 @@ make this possible, components such as rendering, collision detection, and
 procedural terrain generation must be implemented. Other components
 that can be relevant are: artificial intelligence and multi-player.
 
-[My Bachelor Thesis](here https://gupea.ub.gu.se/handle/2077/39606) 
+[My Bachelor Thesis](https://gupea.ub.gu.se/handle/2077/39606) 
 was about creating a voxel game engine in Java using OpengGL, together
 with five other students. Although we were successful with reaching our goals,
 there were several aspects of the implementation that I think could have been
