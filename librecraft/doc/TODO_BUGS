@@ -20,6 +20,14 @@ The shading between the voxels are not completly correct.
 
 ###
 
+AO is not completly correct
+
+###
+
+Various other lightning bugs
+
+###
+
 Graphical chunk not removed.
 
 Some times the graphical chunks does not get removed when they 

@@ -82,4 +82,16 @@ be much bigger than a normal chunk.
 
 Game crashes when looking at bedrock, vector out of bounds.
 
+###
+
+Improve the HUD
+Type: Feature
+
+Add several building blocks so that the player can easily see wich he can 
+change to by pressing the change buttons. The player can change in both 
+directions and the currently selected one is highlighted by being extra large
+and in the middel.
+
+###
+
 

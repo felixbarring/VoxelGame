@@ -6,6 +6,8 @@ The game currently uses the working title "Librecraft".
 
 ![alt tag](doc/images/house.png)
 
+[Taiga Kanban Board](https://tree.taiga.io/project/felixbarring-voxelgame/kanban)
+
 ## Background
 
 The purpose of this project is to create voxel based game, similar to
@@ -16,7 +18,6 @@ make this possible, components such as rendering, collision detection, and
 procedural terrain generation must be implemented. Other components
 that can be relevant are: artificial intelligence and multi-player.
 
-### Motivation and Background
 My Bachelor Thesis (available here https://gupea.ub.gu.se/handle/2077/39606) 
 was about creating a voxel game engine in Java using OpengGL, together
 with five other students. Although we were successful with reaching our goals,
@@ -34,7 +35,7 @@ AI, Audio, and GUIs will hopefully be implemented.
 
 ## Building
 
-Cmake and SFML needs to be installed.
+Cmake, SFML, compilers etc needs to be installed.
 Currently only tested on my Ubuntu machine and a Fedora.
 Instructions for Windows will likely come sometime in the future.
 
@@ -51,5 +52,6 @@ Buiding:
 	git clone --recursive https://github.com/felixbarring/VoxelGame
 	cd VoxelGame/scripts
 	bash setupBuild.sh	
-	bash build.sh
+	bash setupBuildRelease.sh
 ```
+
