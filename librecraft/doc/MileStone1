@@ -124,15 +124,6 @@ triggers the explosion when hit by the player.
 
 ###
 
-Monotoring
-Type: Performance
-
-Implement a way to monitor the performance of the functions and
-keep statistics. Should be possible to compile without
-performance checks and turn of on/off at runtime with the consoll.
-
-###
-
 Demo with frustum culling
 Type: Feature
 
