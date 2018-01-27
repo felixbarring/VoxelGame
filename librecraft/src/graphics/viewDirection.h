@@ -10,7 +10,7 @@
 namespace graphics {
 
 /**
- *  \brief This class represents view direction vector.
+ *  @brief This class represents view direction vector.
  *
  *  The user can set and change the view direction angles with the
  *  changeViewDirection and serViedDirection functions. From this information
@@ -19,7 +19,7 @@ namespace graphics {
 class ViewDirection {
 public:
   /**
-   * \brief Increases the horizontal and vertical angles with the provided
+   * @brief Increases the horizontal and vertical angles with the provided
    *        amount.
    *
    * @param horizontal The amount that the horizontal angle should be increased.
@@ -28,7 +28,7 @@ public:
   void changeViewDirection(float horizontal, float vertical);
 
   /**
-   * \brief Set the horizontal and vertical angles.
+   * @brief Set the horizontal and vertical angles.
    *
    * @param horizontal The new horizontal angle.
    * @param vertical The new vertical angle.
@@ -42,7 +42,7 @@ public:
   glm::vec3 getViewDirection();
 
   /**
-   * \brief Returns the vector that is considered upwards and with a 90* angle
+   * @brief Returns the vector that is considered upwards and with a 90* angle
    *        to the viewDirection.
    *
    * @return The direction pointing upwards.
@@ -50,7 +50,7 @@ public:
   glm::vec3 getUpDirection();
 
   /**
-   * \brief Returns the vector that is considered right and with a 90* angle to
+   * @brief Returns the vector that is considered right and with a 90* angle to
    * the viewDirection.
    *
    * @return The direction pointing to the right.
@@ -58,7 +58,7 @@ public:
   glm::vec3 getRightDirection();
 
   /**
-   * \brief Sets the sensitivity used to as a multiplier when changing the view
+   * @brief Sets the sensitivity used to as a multiplier when changing the view
    * direction in changeViewDirection.
    *
    * @param x The new sensitivity for the horizontal changes.

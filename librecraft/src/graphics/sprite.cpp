@@ -2,26 +2,15 @@
 #include "sprite.h"
 
 #include <memory>
+#include <vector>
 
-using std::make_unique;
 namespace graphics {
 
 using namespace std;
 
-Sprite::Sprite(double x,
-               double y,
-               unsigned layer,
-               double width,
-               double height,
-               texture::Texture& texture)
-  : m_transform{x + width / 2, y + height / 2, 0}
-  , m_width{width}
-  , m_height{height}
-  , m_texture(texture)
-  , m_layer{layer} {
-
+unique_ptr<mesh::MeshElement> createMesh(int width, int height) {
   // clang-format off
-  vector<GLfloat> vertices = {
+  std::vector<GLfloat> vertices = {
     static_cast<float>(-width / 2.0), static_cast<float>(-height / 2.0), 0.0f,
     static_cast<float>(width / 2.0),  static_cast<float>(-height / 2.0), 0.0f,
     static_cast<float>(width / 2.0),  static_cast<float>(height / 2.0),  0.0f,
@@ -35,11 +24,24 @@ Sprite::Sprite(double x,
   vector<GLshort> elementData = {
     0, 1, 2, 0, 2, 3,
   };
-
   // clang-format on
 
   vector<pair<vector<float>, int>> vbos{{vertices, 3}, {texCoords, 2}};
-  m_mesh = make_unique<mesh::MeshElement>(std::move(vbos), elementData);
+  return make_unique<mesh::MeshElement>(std::move(vbos), elementData);
+}
+
+Sprite::Sprite(double x,
+               double y,
+               unsigned layer,
+               double width,
+               double height,
+               texture::Texture& texture)
+  : m_transform{x + width / 2, y + height / 2, 0}
+  , m_width{width}
+  , m_height{height}
+  , m_mesh{createMesh(width, height)}
+  , m_texture(texture)
+  , m_layer{layer} {
 }
 
 Sprite::Sprite(double x,
@@ -50,7 +52,7 @@ Sprite::Sprite(double x,
   : m_transform{x, y, 0}
   , m_texture(texture)
   , m_layer{layer} {
-  m_mesh = mesh;
+  m_mesh = std::move(mesh);
 }
 
 void

@@ -16,10 +16,7 @@ using namespace std;
 
 namespace graphics {
 
-CubeMap::CubeMap(texture::TextureCubeMap& texture, Camera& camera)
-  : m_texture{texture}
-  , m_camera{camera} {
-
+ShaderProgram createShaderProgram() {
   // clang-format off
   string vertex =
       "#version 330 core \n"
@@ -49,12 +46,11 @@ CubeMap::CubeMap(texture::TextureCubeMap& texture, Camera& camera)
   // clang-format on
 
   map<string, int> attributesMap{{"positionIn", 0}};
+  return ShaderProgram(vertex, fragment, move(attributesMap));
+}
 
-  m_program = make_unique<ShaderProgram>(vertex, fragment, attributesMap);
-
+mesh::MeshElement createMesh() {
   // clang-format off
-  // TODO Fix manual fomatting here.
-
   vector<GLfloat> vertices{
     -1.0f, 1.0f,  -1.0f, -1.0f, -1.0f, -1.0f, 1.0f,  -1.0f, -1.0f,
     1.0f,  -1.0f, -1.0f, 1.0f,  1.0f,  -1.0f, -1.0f, 1.0f,  -1.0f,
@@ -76,16 +72,24 @@ CubeMap::CubeMap(texture::TextureCubeMap& texture, Camera& camera)
   };
 
   vector<short> element{
-    0,      1,      2,      3,      4,      5,      0 + 6,  1 + 6,  2 + 6,
-    3 + 6,  4 + 6,  5 + 6,  0 + 12, 1 + 12, 2 + 12, 3 + 12, 4 + 12, 5 + 12,
-
-    0 + 18, 1 + 18, 2 + 18, 3 + 18, 4 + 18, 5 + 18, 0 + 24, 1 + 24, 2 + 24,
-    3 + 24, 4 + 24, 5 + 24, 0 + 30, 1 + 30, 2 + 30, 3 + 30, 4 + 30, 5 + 30,
+    0,      1,      2,      3,      4,      5,
+    0 + 6,  1 + 6,  2 + 6,  3 + 6,  4 + 6,  5 + 6,
+    0 + 12, 1 + 12, 2 + 12, 3 + 12, 4 + 12, 5 + 12,
+    0 + 18, 1 + 18, 2 + 18, 3 + 18, 4 + 18, 5 + 18,
+    0 + 24, 1 + 24, 2 + 24, 3 + 24, 4 + 24, 5 + 24,
+    0 + 30, 1 + 30, 2 + 30, 3 + 30, 4 + 30, 5 + 30,
   };
   // clang-format on
 
   vector<pair<vector<float>, int>> vbos{{vertices, 3}};
-  mesh = make_unique<mesh::MeshElement>(move(vbos), element);
+  return mesh::MeshElement(vbos, element);
+}
+
+CubeMap::CubeMap(texture::TextureCubeMap& texture, Camera& camera)
+  : m_texture{texture}
+  , m_camera{camera}
+  , m_program{createShaderProgram()}
+  , m_mesh{createMesh()}{
 }
 
 void
@@ -95,7 +99,7 @@ CubeMap::setRotationValue(float value) {
 
 void
 CubeMap::draw(double transparency) {
-  m_program->bind();
+  m_program.bind();
 
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -106,11 +110,11 @@ CubeMap::draw(double transparency) {
 
   glm::mat4 modelViewProjection = m_camera.getProjectionMatrix() * view;
 
-  m_program->setUniformMatrix4f("mvp", modelViewProjection);
-  m_program->setUniform1f("transparency", transparency);
+  m_program.setUniformMatrix4f("mvp", modelViewProjection);
+  m_program.setUniform1f("transparency", transparency);
   m_texture.bind();
-  mesh->draw();
+  m_mesh.draw();
 
-  m_program->unbind();
+  m_program.unbind();
 }
 }

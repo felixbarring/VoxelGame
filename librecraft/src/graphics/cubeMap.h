@@ -27,8 +27,8 @@ private:
   Camera& m_camera;
   float m_roatationValue{0.0f};
 
-  std::unique_ptr<graphics::ShaderProgram> m_program;
-  std::unique_ptr<mesh::MeshElement> mesh;
+  graphics::ShaderProgram m_program;
+  mesh::MeshElement m_mesh;
 };
 }
 

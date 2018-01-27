@@ -10,7 +10,7 @@ namespace graphics {
 
 class TexturedCube {
 public:
-  TexturedCube(int id);
+  explicit TexturedCube(int id);
 
   void draw();
 

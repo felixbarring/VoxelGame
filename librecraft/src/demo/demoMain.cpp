@@ -14,7 +14,7 @@
 #include "textureDemo.h"
 
 int
-main(int argc, char* argv[]) {
+main(int, char* argv[]) {
   try {
     std::string str = argv[1];
 

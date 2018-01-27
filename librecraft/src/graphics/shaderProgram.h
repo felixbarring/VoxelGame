@@ -14,7 +14,6 @@ public:
                 const std::string& fragmentSource,
                 const std::map<std::string, int>& mapUniforms);
 
-public:
   // TODO Use GLuint and other correct types
 
   void setUniformi(std::string uniformName, GLuint value);

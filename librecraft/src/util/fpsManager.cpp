@@ -16,7 +16,6 @@ FPSManager::frameStart() {
 
 void
 FPSManager::sync() {
-
   static std::chrono::milliseconds oneMilliSecond(1);
 
   // Sleep the thread if we are running fast to save computer power.
