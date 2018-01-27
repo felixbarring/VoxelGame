@@ -323,7 +323,7 @@ private:
 
   std::string m_name{};
 
-  const int m_directSunlight = config::graphics_data::directSunlightValue;
+  const char m_directSunlight = config::graphics_data::directSunlightValue;
 
   const int m_width = config::chunk_data::CHUNK_WIDTH_AND_DEPTH;
   const int m_height = config::chunk_data::CHUNK_HEIGHT;

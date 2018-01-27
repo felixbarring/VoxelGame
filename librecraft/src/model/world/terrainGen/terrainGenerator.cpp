@@ -27,7 +27,8 @@ mutex s_mutex;
 TerrainGenerator::TerrainGenerator(int width, int height, int depth, int seed)
   : m_width{ width }
   , m_height{ height }
-  , m_depth{ depth } {
+  , m_depth{ depth }
+  , m_seed{ seed }{
 }
 
 TerrainGenerator::VoxelMatrix
@@ -156,7 +157,7 @@ TerrainGenerator::generateNoneFlat(VoxelMatrix& cubes, int x, int z) {
       //        (zOffsetLocation + static_cast<int>(z)) / 10.0, 0.5);
 
       if (biome > 0.8) {
-        generateDessert(cubes, height, xOffsetLocation, zOffsetLocation, x, z);
+        generateDessert(cubes, height/*, xOffsetLocation, zOffsetLocation*/, x, z);
       } else {
         generateGrassLand(
           cubes, height, xOffsetLocation, zOffsetLocation, x, z);
@@ -222,8 +223,8 @@ TerrainGenerator::generateGrassLand(VoxelMatrix& cubes,
 void
 TerrainGenerator::generateDessert(VoxelMatrix& cubes,
                                   double height,
-                                  int xOff,
-                                  int zOff,
+                                  //int xOff,
+                                  //int zOff,
                                   int x,
                                   int z) {
   for (int y{ 1 }; y < height; ++y) {

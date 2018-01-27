@@ -11,7 +11,7 @@ const int smallThumbnailWidth{30};
 const int spacing{5};
 const int smallThumbnailWidhtWithSpacing{smallThumbnailWidth + spacing};
 const int layer{2};
-const int selectedXLocation{config::graphics_data::virtualWidth / 2 - thumbnailWidth / 2};
+const int selectedXLocation{static_cast<int>(config::graphics_data::virtualWidth / 2 - thumbnailWidth / 2)};
 const int numberOfThunbnails{5};
 
 CubeBar::CubeBar(GraphicsManager& graphicsManager)

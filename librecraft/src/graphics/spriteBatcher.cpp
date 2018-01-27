@@ -67,7 +67,7 @@ SpriteBatcher::draw() {
 
   m_program->setUniformli("texture1", 0);
 
-  texture::Texture* current;
+  texture::Texture* current{nullptr};
 
   for (Sprite* batch : m_batches) {
     glActiveTexture(GL_TEXTURE0);

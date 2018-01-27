@@ -11,7 +11,7 @@ using std::uniform_int_distribution;
 
 FootStepSoundPlayer::FootStepSoundPlayer(util::SoundPlayer& player,
                                          std::vector<std::string> stepSounds)
-  : m_stepSounds{ stepSounds }
+  : m_stepSounds{ move(stepSounds) }
   , m_soundPlayer{ player } {
 }
 
