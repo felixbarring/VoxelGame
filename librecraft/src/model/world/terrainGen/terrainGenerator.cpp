@@ -79,7 +79,7 @@ TerrainGenerator::generateFlat(VoxelMatrix& cubes) {
   for (int x{0}; x < m_width; ++x) {
     for (int z{0}; z < m_depth; ++z) {
       for (int y{0}; y < m_height; ++y) {
-        auto& v = cubes[x][y][z];
+        Voxel& v = cubes[x][y][z];
         if (y == 0) {
           v.setId(config::cube_data::BED_ROCK);
           continue;
@@ -136,7 +136,7 @@ TerrainGenerator::generateNoneFlat(VoxelMatrix& cubes, int x, int z) {
 
       if (height - 2 < m_seaLevel) {
         for (int i{1}; i < m_seaLevel + 2; ++i) {
-          auto& v = cubes[x][i][z];
+          Voxel& v = cubes[x][i][z];
 
           if (i <= m_seaLevel)
             v.setId(config::cube_data::WATER);
@@ -185,7 +185,7 @@ TerrainGenerator::generateGrassLand(VoxelMatrix& cubes,
   treeArea.SetFrequency(0.25);
 
   for (int y{1}; y < height; ++y) {
-    auto& v = cubes[x][y][z];
+    Voxel& v = cubes[x][y][z];
 
     static const double stonePercentage{1.0 / 2.0};
     if (y < height * stonePercentage)
@@ -230,7 +230,7 @@ TerrainGenerator::generateDessert(VoxelMatrix& cubes,
                                   int x,
                                   int z) {
   for (int y{1}; y < height; ++y) {
-    auto& v = cubes[x][y][z];
+    Voxel& v = cubes[x][y][z];
 
     v.setId(config::cube_data::SAND);
   }

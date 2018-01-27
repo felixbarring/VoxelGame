@@ -30,7 +30,7 @@ addName(std::string name) {
 
   std::ofstream outStream(config::worldMetaFile);
 
-  for (auto nn : names)
+  for (std::string& nn : names)
     outStream << nn << "\n";
 
   outStream.close();

@@ -4,6 +4,7 @@
 #include <chrono>
 #include <iostream>
 #include <iterator>
+#include <memory>
 
 #include "globalResources.h"
 
@@ -54,7 +55,7 @@ SoundPlayer::playSound(const std::string& soundPath) {
     m_buffers.emplace(soundPath, std::move(buffer));
   }
 
-  auto sound = std::make_unique<sf::Sound>();
+  std::unique_ptr<sf::Sound> sound = std::make_unique<sf::Sound>();
   sound->setBuffer((*m_buffers.find(soundPath)).second);
   sound->setVolume(validVolume(m_soundVolume * m_masterVolume));
   sound->play();

@@ -31,14 +31,14 @@ public:
 
     TrieNode* node = m_root.get();
     for (unsigned i = 0; i < value.size(); ++i) {
-      auto c = value[i];
+      char c = value[i];
       TrieNode* child = node->getChild(c);
       if (child) {
         node = child;
         continue;
       }
-      auto newNode = std::make_unique<TrieNode>(c, i == value.size() - 1);
-      auto* tmp = newNode.get();
+      std::unique_ptr<TrieNode> newNode = std::make_unique<TrieNode>(c, i == value.size() - 1);
+      TrieNode* tmp = newNode.get();
       node->addChild(std::move(newNode));
       node = tmp;
     }
@@ -59,7 +59,7 @@ public:
   std::string getFirstWordWithSequence(const std::string& value) {
 
     TrieNode* node = m_root.get();
-    for (auto c : value) {
+    for (char c : value) {
       TrieNode* child = node->getChild(c);
       if (!child)
         return string();
@@ -68,7 +68,7 @@ public:
     }
 
     std::string result = value;
-    while (auto child = node->getSingleChild()) {
+    while (TrieNode* child = node->getSingleChild()) {
       result += child->getValue();
       node = child;
 
@@ -96,7 +96,7 @@ private:
     }
 
     TrieNode* getChild(char c) {
-      for (auto& child : m_children) {
+      for (std::unique_ptr<TrieNode>& child : m_children) {
         if (child->m_ch == c)
           return child.get();
       }

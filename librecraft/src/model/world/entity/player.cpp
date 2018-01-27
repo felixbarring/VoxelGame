@@ -73,7 +73,7 @@ Player::setSpeed(double value) {
 
 void
 Player::updateSpeed(float timePassed) {
-  auto input = Input::getInstance();
+  shared_ptr<Input> input = Input::getInstance();
   m_viewDirection.changeViewDirection(input->mouseXMovement,
                                       input->mouseYMovement);
 
@@ -175,8 +175,8 @@ Player::handlePhysics() {
     //        auto c = collisions[0];
     //        auto time = get<0>(collisions[0]);
 
-    float derp = 1.0; // / 5.0;
-    auto separationVec = derp * -std::get<2>(collisions[0]);
+    float derp{1.0}; // / 5.0;
+    vec3 separationVec{derp * -std::get<2>(collisions[0])};
 
     // TODO Fix the incorrect collision responses...
     // When colliding, the entire speed in the direction of the collision normal
@@ -278,7 +278,7 @@ Player::intersected(vec3 movement,
 
         AABB cube{i, i + 1.0, j, j + 1.0, k, k + 1};
         vec3 normal;
-        auto cubeId = m_chunkManager.getCubeId(i, j, k);
+        char cubeId = m_chunkManager.getCubeId(i, j, k);
         if (!(cubeId == cube_data::AIR || cubeId == cube_data::WATER)) {
           vec3 vec;
           float time = AABB::collisionTime(start, cube, vec, movement);
@@ -312,7 +312,7 @@ Player::isInWater() {
   for (int i = xStart; i <= xEnd; i++) {
     for (int j = yStart; j <= yEnd; j++) {
       for (int k = zStart; k <= zEnd; k++) {
-        auto cubeId = m_chunkManager.getCubeId(i, j, k);
+        char cubeId = m_chunkManager.getCubeId(i, j, k);
         if (cubeId != WATER)
           return false;
       }

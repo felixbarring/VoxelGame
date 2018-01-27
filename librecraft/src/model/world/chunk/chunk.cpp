@@ -33,7 +33,7 @@ Chunk::Chunk(string worldName,
 }
 
 Chunk::~Chunk() {
-  for (auto graphicalChunk : m_graphicalChunksIds)
+  for (int graphicalChunk : m_graphicalChunksIds)
     m_graphicsManager.getChunkBatcher().removeBatch(graphicalChunk);
 }
 
@@ -141,12 +141,12 @@ Chunk::collectLightFromFrontNeighbor() {
 
 void
 Chunk::propagateLights() {
-  for (auto& l : m_lightsToPropagate)
+  for (vec3& l : m_lightsToPropagate)
     propagateSunLight(l.x, l.y, l.z);
 
   m_lightsToPropagate.clear(); // Is This okay?!?
 
-  for (auto& l : m_otherLightSources)
+  for (vec3& l : m_otherLightSources)
     propagateOtherLight(l.x, l.y, l.z);
 
   m_otherLightSources.clear();
@@ -179,8 +179,8 @@ Chunk::updateGraphics(bool highPriority) {
   if (m_backNeighbor)
     back = &(m_backNeighbor->m_cubes);
 
-  for (auto i : m_dirtyRegions) {
-    auto derp =
+  for (int i : m_dirtyRegions) {
+    int derp =
       m_graphicsManager.getChunkBatcher().addBatch(m_graphicalChunksIds[i],
                                                    m_xLocation,
                                                    i * GRAPHICAL_CHUNK_HEIGHT,
@@ -359,7 +359,7 @@ Chunk::updateLightningCubeRemoved(Voxel& voxel, int x, int y, int z) {
   if (isInDirectSunlight(x, y, z)) {
     vector<vec3> lightPropagate;
     doSunLightning(lightPropagate, x, y, z);
-    for (auto v : lightPropagate)
+    for (vec3& v : lightPropagate)
       propagateSunLight(v.x, v.y, v.z);
 
   } else {
@@ -439,7 +439,7 @@ Chunk::doSunLightning(vector<vec3>& lightPropagate,
   // Each step in water reduces the light strength by one.
   int lightValue{m_directSunlight};
   for (int i = y; i >= 0; --i) {
-    auto& cube = m_cubes[x][i][z];
+    Voxel& cube = m_cubes[x][i][z];
 
     if (cube.getId() == AIR || cube.getId() == WATER) {
       if (cube.getId() == WATER && lightValue > 0)
@@ -1002,7 +1002,7 @@ Chunk::dePropagateOtherlight(int x, int y, int z /*, int _lightValue*/) {
     }
   }
 
-  for (auto& p : propagates)
+  for (vec3& p : propagates)
     propagateOtherLight(p.x, p.y, p.z);
 }
 
