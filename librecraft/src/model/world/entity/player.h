@@ -56,33 +56,33 @@ private:
 
   entity::AABB createAABB();
 
-  glm::vec3 m_location{ 0, 0, 0 }; // The location of the camera
+  glm::vec3 m_location{0, 0, 0}; // The location of the camera
 
   chunk::ChunkManager& m_chunkManager;
   FootStepSoundPlayer m_stepPlayer;
   graphics::GraphicsManager& m_graphicsManager;
 
-  float m_width{ 0.8 };
-  float m_height{ 1.7 };
-  float m_depth{ 0.8 };
-  float m_cameraHeight{ 1.5 };
+  float m_width{0.8};
+  float m_height{1.7};
+  float m_depth{0.8};
+  float m_cameraHeight{1.5};
 
-  float m_gravity{ 30 };
-  float m_jumpSpeed{ 12 };
-  int m_selectCubeDistance{ 5 };
-  float m_movementSpeed{ 8 };
+  float m_gravity{30};
+  float m_jumpSpeed{12};
+  int m_selectCubeDistance{5};
+  float m_movementSpeed{8};
 
-  bool m_gravitiyOn{ true };
-  bool m_isOnGround{ false };
+  bool m_gravitiyOn{true};
+  bool m_isOnGround{false};
 
-  float m_flySpeed{ 8 };
+  float m_flySpeed{8};
 
-  glm::vec3 m_speed{ 0, 0, 0 };
+  glm::vec3 m_speed{0, 0, 0};
   glm::vec3 m_frameSpeed{};
   glm::vec3 m_lastSelecteCube{};
   graphics::ViewDirection m_viewDirection{};
-  graphics::Transform m_targetedCubeTransform{ 0, 0, 0 };
-  int m_cubeUsedForBuilding{ 0 };
+  graphics::Transform m_targetedCubeTransform{0, 0, 0};
+  int m_cubeUsedForBuilding{0};
 };
 
 } /* namespace entity */

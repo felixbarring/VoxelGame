@@ -13,11 +13,15 @@ using namespace config::cube_data;
 namespace graphics {
 
 TexturedCube::TexturedCube(float xOffset, float yOffset, float zOffset, int id)
-  : xLocation{ xOffset }
-  , yLocation{ yOffset }
-  , zLocation{ zOffset } {
+  : xLocation{xOffset}
+  , yLocation{yOffset}
+  , zLocation{zOffset} {
 
   float size = 0.51f;
+
+  // clang-format off
+
+  // TODO Fix formatting here.
 
   vector<GLfloat> vertexData{
     // Front
@@ -224,9 +228,9 @@ TexturedCube::TexturedCube(float xOffset, float yOffset, float zOffset, int id)
     0 + 16, 2 + 16, 3 + 16, 0 + 20, 1 + 20, 2 + 20, 0 + 20, 2 + 20, 3 + 20,
   };
 
-  vector<pair<vector<float>, int>> vobs{ { vertexData, 3 },
-                                         { normals, 3 },
-                                         { UV, 3 } };
+  // clang-format on
+
+  vector<pair<vector<float>, int>> vobs{{vertexData, 3}, {normals, 3}, {UV, 3}};
   m_mesh = make_unique<mesh::MeshElement>(move(vobs), elementData);
 }
 

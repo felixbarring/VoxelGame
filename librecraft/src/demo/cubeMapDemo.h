@@ -57,7 +57,7 @@ public:
     glViewport(0, 0, WIDTH, HEIGHT);
     glClearColor(0.2f, 0.22f, 0.2f, 1.0f);
 
-    Camera camera{ 0, 0, 0 };
+    Camera camera{0, 0, 0};
 
     texture::TextureCubeMap& texture =
       graphics::Resources::getInstance().getTextureCubeMap(
@@ -68,7 +68,7 @@ public:
         config::cube_map_data::cubeMap1[4],
         config::cube_map_data::cubeMap1[5]);
 
-    graphics::CubeMap skybox{ texture, camera };
+    graphics::CubeMap skybox{texture, camera};
 
     graphics::ViewDirection viewDirection;
 

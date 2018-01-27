@@ -15,13 +15,13 @@ using namespace graphics;
 namespace gui {
 
 Mouse::Mouse(graphics::GraphicsManager& graphicsManager)
-  : m_graphicsManager{ graphicsManager }
-  , m_input{ util::Input::getInstance() } {
+  : m_graphicsManager{graphicsManager}
+  , m_input{util::Input::getInstance()} {
 }
 
 void
 Mouse::update() {
-  double y{ m_input->mouseYPosition - config::graphics_data::windowHeight };
+  double y{m_input->mouseYPosition - config::graphics_data::windowHeight};
   if (y < 0)
     y = -y;
   else

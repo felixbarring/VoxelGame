@@ -70,11 +70,11 @@ private:
 
   TimeCycle m_timeCycle;
 
-  bool m_displayDebugInfo{ false };
+  bool m_displayDebugInfo{false};
 
-  double m_fpsDisplayCounter{ 0 };
+  double m_fpsDisplayCounter{0};
   // The fps should only be drawn 5 times/second
-  double m_fpsDisplayDelay{ 1.0 / 5.0 };
+  double m_fpsDisplayDelay{1.0 / 5.0};
 
   Settings m_settings;
 
@@ -87,7 +87,6 @@ private:
   std::shared_ptr<graphics::Sprite> m_lastSelecteCube;
 
   gui::CubeBar m_cubeBar;
-
 };
 
 #endif /* SRC_INGAME_H_ */

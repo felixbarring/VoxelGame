@@ -9,12 +9,12 @@ Voxel::Voxel() {
 }
 
 Voxel::Voxel(char id, char sun)
-  : m_id{ id } {
+  : m_id{id} {
   setSunLightValue(sun);
 }
 
 Voxel::Voxel(char id, char sun, char other)
-  : m_id{ id } {
+  : m_id{id} {
   setSunLightValue(sun);
   setOtherLightValue(other);
 }

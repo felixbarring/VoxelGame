@@ -63,13 +63,13 @@ private:
   std::chrono::time_point<std::chrono::system_clock> m_frameStartTime;
 
   double m_timePerFrame{};
-  const double m_mili{ 0.001 };
+  const double m_mili{0.001};
 
-  double m_timer{ 0 };
-  double m_totalTimed{ 0 };
+  double m_timer{0};
+  double m_totalTimed{0};
 
-  int m_currentFPS{ 0 };
-  double m_timeForLatestFrame{ 0 };
+  int m_currentFPS{0};
+  double m_timeForLatestFrame{0};
 
   //  sf::Clock m_clock{};
 };

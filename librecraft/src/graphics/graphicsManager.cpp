@@ -63,8 +63,8 @@ GraphicsManager::clearScreen() {
 
 void
 GraphicsManager::clearScreenSunDependent() {
-  glm::vec3 skyColor{ config::graphics_data::skyColor };
-  glm::vec3 dark{ 0, 0, 0 };
+  glm::vec3 skyColor{config::graphics_data::skyColor};
+  glm::vec3 dark{0, 0, 0};
   skyColor = glm::mix(dark, skyColor, m_sunStrength);
   glClearColor(skyColor.x, skyColor.y, skyColor.z, 1.0f);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

@@ -15,7 +15,7 @@ namespace gui {
 Terminal::Terminal(vector<string> commands,
                    graphics::GraphicsManager& graphicsManager,
                    function<void(vector<string>)> commandListener)
-  : m_graphicsManager{ graphicsManager }
+  : m_graphicsManager{graphicsManager}
   , m_commands(commands) {
 
   for (string command : commands)

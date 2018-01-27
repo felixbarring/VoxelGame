@@ -20,8 +20,8 @@ Settings::Settings(std::shared_ptr<widget::WidgetGroup>& active,
                    graphics::GraphicsManager& graphicsManager)
   : m_soundPlayer(soundPlayer)
   , m_graphicsManager(graphicsManager)
-  , m_activeWidgetGroup{ active }
-  , m_parentWidgetGroup{ parent } {
+  , m_activeWidgetGroup{active}
+  , m_parentWidgetGroup{parent} {
   // ########################################################################
 
   {
@@ -62,7 +62,7 @@ Settings::Settings(std::shared_ptr<widget::WidgetGroup>& active,
       make_shared<WidgetGroup>(0, 300, 180, 200, 210, m_graphicsManager);
 
     m_settingsWidgetGroup->addWidget(
-      { label, button1, button2, button3, button4, button5 });
+      {label, button1, button2, button3, button4, button5});
   }
 
   // ########################################################################
@@ -111,7 +111,7 @@ Settings::Settings(std::shared_ptr<widget::WidgetGroup>& active,
 
     // TODO Refactor?
     shared_ptr<IWidget> label(
-      new Label{ 325, 390, 150, 30, " - Input - ", m_graphicsManager });
+      new Label{325, 390, 150, 30, " - Input - ", m_graphicsManager});
 
     m_mouseSensitivitySlider = make_shared<Slider>(
       1, 125 + 100, 310, 150, 30, m_graphicsManager, observer, 1);
@@ -126,11 +126,11 @@ Settings::Settings(std::shared_ptr<widget::WidgetGroup>& active,
     m_inputSettingsWidgetGroup =
       make_shared<WidgetGroup>(0, 100, 100, 600, 250, m_graphicsManager);
 
-    m_inputSettingsWidgetGroup->addWidget({ label,
-                                            m_mouseSensitivityInput,
-                                            m_mouseSensitivitySlider,
-                                            button1,
-                                            button2 });
+    m_inputSettingsWidgetGroup->addWidget({label,
+                                           m_mouseSensitivityInput,
+                                           m_mouseSensitivitySlider,
+                                           button1,
+                                           button2});
   }
 
   // ########################################################################
@@ -182,15 +182,15 @@ Settings::Settings(std::shared_ptr<widget::WidgetGroup>& active,
     m_graphicsSettingsWidgetGroup =
       make_shared<WidgetGroup>(0, 100, 100, 600, 250, m_graphicsManager);
 
-    m_graphicsSettingsWidgetGroup->addWidget({ label1,
-                                               label2,
-                                               m_fovSlider,
-                                               m_fovTextInput,
-                                               label3,
-                                               m_renderDistanceSlider,
-                                               m_renderDistanceInput,
-                                               button1,
-                                               button2 });
+    m_graphicsSettingsWidgetGroup->addWidget({label1,
+                                              label2,
+                                              m_fovSlider,
+                                              m_fovTextInput,
+                                              label3,
+                                              m_renderDistanceSlider,
+                                              m_renderDistanceInput,
+                                              button1,
+                                              button2});
   }
 
   // ########################################################################
@@ -248,18 +248,18 @@ Settings::Settings(std::shared_ptr<widget::WidgetGroup>& active,
 
     m_audioSettingsWidgetGroup =
       make_shared<WidgetGroup>(0, 200, 120, 400, 230, m_graphicsManager);
-    m_audioSettingsWidgetGroup->addWidget({ label1,
-                                            button1,
-                                            button2,
-                                            m_masterVolumeSlider,
-                                            m_masterVolumeInput,
-                                            m_musicVolumeSlider,
-                                            m_musicVolumeInput,
-                                            m_soundVolumeSlider,
-                                            m_soundVolumeInput,
-                                            label2,
-                                            label3,
-                                            label4 });
+    m_audioSettingsWidgetGroup->addWidget({label1,
+                                           button1,
+                                           button2,
+                                           m_masterVolumeSlider,
+                                           m_masterVolumeInput,
+                                           m_musicVolumeSlider,
+                                           m_musicVolumeInput,
+                                           m_soundVolumeSlider,
+                                           m_soundVolumeInput,
+                                           label2,
+                                           label3,
+                                           label4});
   }
 }
 

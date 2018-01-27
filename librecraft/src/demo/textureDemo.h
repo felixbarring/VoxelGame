@@ -79,8 +79,7 @@ public:
 
     std::map<std::string, int> attributesMap{
       std::pair<std::string, int>("positionIn", 0),
-      std::pair<std::string, int>("texCoordIn", 1)
-    };
+      std::pair<std::string, int>("texCoordIn", 1)};
 
     graphics::ShaderProgram program(vertex, frag, attributesMap);
 
@@ -88,14 +87,14 @@ public:
       -0.4f, -0.4f, 0.4f, -0.4f, 0.4f, 0.4f, -0.4f, 0.4f,
     };
 
-    std::vector<GLfloat> texCoords = { 0.0f, 0.0f, 1.0f, 0.0f,
-                                       1.0f, 1.0f, 0.0f, 1.0f };
+    std::vector<GLfloat> texCoords = {
+      0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f};
 
-    std::vector<GLshort> indices = { 0, 1, 3, 1, 2, 3 };
+    std::vector<GLshort> indices = {0, 1, 3, 1, 2, 3};
 
-    std::vector<std::pair<std::vector<float>, int>> vbos{ { vertices, 2 },
-                                                          { texCoords, 2 } };
-    mesh::MeshElement mesh{ vbos, indices };
+    std::vector<std::pair<std::vector<float>, int>> vbos{{vertices, 2},
+                                                         {texCoords, 2}};
+    mesh::MeshElement mesh{vbos, indices};
     texture::Texture texture(config::cube_data::textures[0].c_str());
 
     while (window.isOpen()) {

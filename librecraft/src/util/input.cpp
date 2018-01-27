@@ -17,7 +17,7 @@ Input::Input(double centerX, double centerY)
 
 void
 Input::createInstance(float centerX, float centerY) {
-  input.reset(new Input{ centerX, centerY });
+  input.reset(new Input{centerX, centerY});
 }
 
 std::shared_ptr<Input>
@@ -47,7 +47,7 @@ Input::updateValues() {
   increaseCubePressed =
     Keyboard::isKeyPressed(increaseBuildingCube) && !increaseCubeActive;
   decreaseCubePressed =
-      Keyboard::isKeyPressed(decreaseBuildingCube) && !decreaseCubeActive;
+    Keyboard::isKeyPressed(decreaseBuildingCube) && !decreaseCubeActive;
 
   openTerminalPressed =
     Keyboard::isKeyPressed(openTerminal) && !openTerminalActive;

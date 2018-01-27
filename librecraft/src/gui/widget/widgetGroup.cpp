@@ -22,13 +22,13 @@ WidgetGroup::WidgetGroup(int id,
                          bool transparentBackground)
   : AbstractWidget(id, x, y, width, height, graphicsManager) {
   if (transparentBackground) {
-    m_sprite.reset(new Sprite{ static_cast<double>(x),
-                               static_cast<double>(y),
-                               layer,
-                               static_cast<double>(width),
-                               static_cast<double>(height),
-                               Resources::getInstance().getTexture(
-                                 config::gui_data::transparentGuiBox) });
+    m_sprite.reset(new Sprite{static_cast<double>(x),
+                              static_cast<double>(y),
+                              layer,
+                              static_cast<double>(width),
+                              static_cast<double>(height),
+                              Resources::getInstance().getTexture(
+                                config::gui_data::transparentGuiBox)});
   } else {
     m_sprite.reset(new Sprite{
       static_cast<double>(x),
@@ -36,7 +36,7 @@ WidgetGroup::WidgetGroup(int id,
       layer,
       static_cast<double>(width),
       static_cast<double>(height),
-      Resources::getInstance().getTexture(config::gui_data::guiBox) });
+      Resources::getInstance().getTexture(config::gui_data::guiBox)});
   }
 }
 

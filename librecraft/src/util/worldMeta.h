@@ -16,7 +16,7 @@ namespace world_meta {
 
 void
 addName(std::string name) {
-  std::vector<std::string> names{ name };
+  std::vector<std::string> names{name};
   std::ifstream inStream(config::worldMetaFile);
 
   std::string n;

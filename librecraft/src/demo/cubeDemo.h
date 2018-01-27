@@ -64,10 +64,10 @@ public:
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
 
-    graphics::Transform transform1{ 0, 0, -5.0f };
-    graphics::Transform transform2{ 2, 0, -5.0f };
-    graphics::Transform transform3{ 4, 0, -5.0f };
-    graphics::Transform transform4{ 6, 0, -5.0f };
+    graphics::Transform transform1{0, 0, -5.0f};
+    graphics::Transform transform2{2, 0, -5.0f};
+    graphics::Transform transform3{4, 0, -5.0f};
+    graphics::Transform transform4{6, 0, -5.0f};
 
     float aspectRatio = WIDTH / HEIGHT;
     glm::mat4 projection = glm::perspective(80.0f, aspectRatio, 0.1f, 100.0f);
@@ -83,7 +83,7 @@ public:
     Camera camera{};
     camera.setViewMatrix(std::move(cameraMatrix));
     camera.setProjectionMatrix(std::move(projection));
-    graphics::CubeBatcher batcher{ camera };
+    graphics::CubeBatcher batcher{camera};
 
     while (window.isOpen()) {
       fpsManager.frameStart();

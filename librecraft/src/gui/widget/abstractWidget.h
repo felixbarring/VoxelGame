@@ -78,7 +78,7 @@ protected:
 
   graphics::GraphicsManager& m_graphicsManager;
 
-  bool m_active{ true };
+  bool m_active{true};
   const int m_id;
   int m_xCoordinate, m_yCoordinate;
   const int m_width, m_height;

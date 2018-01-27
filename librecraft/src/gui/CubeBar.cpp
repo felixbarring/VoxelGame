@@ -11,12 +11,12 @@ const int smallThumbnailWidth{30};
 const int spacing{5};
 const int smallThumbnailWidhtWithSpacing{smallThumbnailWidth + spacing};
 const int layer{2};
-const int selectedXLocation{static_cast<int>(config::graphics_data::virtualWidth / 2 - thumbnailWidth / 2)};
+const int selectedXLocation{static_cast<int>(
+  config::graphics_data::virtualWidth / 2 - thumbnailWidth / 2)};
 const int numberOfThunbnails{5};
 
 CubeBar::CubeBar(GraphicsManager& graphicsManager)
-  : m_graphicsManager{graphicsManager}
-{
+  : m_graphicsManager{graphicsManager} {
   for (int i = 0; i <= config::cube_data::LAST_CUBE_USED_FOR_BUILDING; ++i) {
     m_cubeThumbnails.push_back(make_shared<Sprite>(
       selectedXLocation,
@@ -48,8 +48,9 @@ CubeBar::update(int selectedCube) {
     if (current < 0)
       current += (config::cube_data::LAST_CUBE_USED_FOR_BUILDING + 1);
     shared_ptr<Sprite> sprite = m_smallThumbnails[current];
-    int xLocation = i * smallThumbnailWidhtWithSpacing + (selectedXLocation -
-        (smallThumbnailWidhtWithSpacing * numberOfThunbnails));
+    int xLocation = i * smallThumbnailWidhtWithSpacing +
+                    (selectedXLocation -
+                     (smallThumbnailWidhtWithSpacing * numberOfThunbnails));
     sprite->setLocation(xLocation, yPlacement);
     m_graphicsManager.getSpriteBatcher().addBatch(*sprite);
   }
@@ -60,10 +61,9 @@ CubeBar::update(int selectedCube) {
       current -= (config::cube_data::LAST_CUBE_USED_FOR_BUILDING + 1);
     shared_ptr<Sprite> sprite = m_smallThumbnails[current];
     int xLocation = i * smallThumbnailWidhtWithSpacing +
-        (selectedXLocation + thumbnailWidth + spacing);
+                    (selectedXLocation + thumbnailWidth + spacing);
     sprite->setLocation(xLocation, yPlacement);
     m_graphicsManager.getSpriteBatcher().addBatch(*sprite);
   }
 }
-
 }

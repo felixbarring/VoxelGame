@@ -25,17 +25,17 @@ namespace chunk {
 ChunkManager::ChunkManager(CreationOptions options,
                            util::SoundPlayer& soundPlayer,
                            graphics::GraphicsManager& graphicsManager)
-  : m_options{ move(options) }
-  , m_soundPlayer{ soundPlayer }
-  , m_graphicsManager{ graphicsManager } {
+  : m_options{move(options)}
+  , m_soundPlayer{soundPlayer}
+  , m_graphicsManager{graphicsManager} {
   m_worldName = m_options.getName();
   m_bussyMovingChunksMutex = make_unique<mutex>();
 
-  for (int x{ 0 }; x < m_lenghtAcrossMatrix; ++x) {
+  for (int x{0}; x < m_lenghtAcrossMatrix; ++x) {
     m_chunks.push_back(vector<vector<std::shared_ptr<Chunk>>>());
-    for (int y{ 0 }; y < config::chunk_data::NUMBER_OF_CHUNKS_Y; ++y) {
+    for (int y{0}; y < config::chunk_data::NUMBER_OF_CHUNKS_Y; ++y) {
       m_chunks[x].push_back(vector<std::shared_ptr<Chunk>>());
-      for (int z{ 0 }; z < m_lenghtAcrossMatrix; ++z) {
+      for (int z{0}; z < m_lenghtAcrossMatrix; ++z) {
         m_chunks[x][y].push_back(std::shared_ptr<Chunk>());
       }
     }
@@ -48,8 +48,8 @@ ChunkManager::createWorld() {
   vector<future<void>> chunkCreationFutures;
 
   // Create the Chunks
-  for (int x{ 0 }; x < lam; ++x) {
-    for (int z{ 0 }; z < lam; ++z) {
+  for (int x{0}; x < lam; ++x) {
+    for (int z{0}; z < lam; ++z) {
       auto chunk = make_shared<Chunk>(m_worldName,
                                       x * CHUNK_WIDTH_AND_DEPTH,
                                       z * CHUNK_WIDTH_AND_DEPTH,
@@ -73,8 +73,8 @@ ChunkManager::createWorld() {
   //    vector<future<void>> updateGrapicsFutures;
 
   // TODO Should be done in parallel..
-  for (int x{ 0 }; x < lam; ++x) {
-    for (int z{ 0 }; z < lam; ++z) {
+  for (int x{0}; x < lam; ++x) {
+    for (int z{0}; z < lam; ++z) {
       m_chunks[x][0][z]->propagateLights();
       m_chunks[x][0][z]->updateGraphics(true);
     }
@@ -215,7 +215,7 @@ ChunkManager::intersectWithSolidCube(vec3 origin,
   // will be wrong due to incorrect rounding of the values. The additions with
   // a small number solves this problem. Not bulletproof but seems to work well
   // in practice.
-  origin = origin + glm::vec3{ smallNumber, smallNumber, smallNumber };
+  origin = origin + glm::vec3{smallNumber, smallNumber, smallNumber};
 
   // Get the sign of the directions
   int signXDirection = (direction.x > 0) - (direction.x < 0);
@@ -400,7 +400,7 @@ ChunkManager::moveChunks(Direction direction) {
   // ##########################################################################
 
   // Destroy the chunks that are outside the matrix.
-  for (auto &chunk : chunksToDelete) {
+  for (auto& chunk : chunksToDelete) {
     chunk->removeAllNeighbors();
     chunk->storeChunk();
     chunk.reset();

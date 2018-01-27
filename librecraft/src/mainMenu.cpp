@@ -19,14 +19,14 @@ using namespace gui;
 MainMenu::MainMenu(Game& game,
                    SoundPlayer& soundPlayer,
                    graphics::GraphicsManager& graphicsManager)
-  : m_game{ game }
-  , m_soundPlayer{ soundPlayer }
-  , m_graphicsManager{ graphicsManager }
-  , m_mouse{ m_graphicsManager }
-  , m_settings{ m_activeWidgetGroup,
-                m_mainWidgetGroup,
-                m_soundPlayer,
-                m_graphicsManager } {
+  : m_game{game}
+  , m_soundPlayer{soundPlayer}
+  , m_graphicsManager{graphicsManager}
+  , m_mouse{m_graphicsManager}
+  , m_settings{m_activeWidgetGroup,
+               m_mainWidgetGroup,
+               m_soundPlayer,
+               m_graphicsManager} {
 
   glm::mat4 matrix = gui::createVirtualToScreen(
     config::graphics_data::virtualWidth,
@@ -77,7 +77,7 @@ MainMenu::MainMenu(Game& game,
 
     m_mainWidgetGroup =
       make_shared<WidgetGroup>(-1, 300, 260, 200, 130, m_graphicsManager);
-    m_mainWidgetGroup->addWidget({ label, button1, button2, button3 });
+    m_mainWidgetGroup->addWidget({label, button1, button2, button3});
   }
 
   // ########################################################################
@@ -109,7 +109,7 @@ MainMenu::MainMenu(Game& game,
     m_playWidgetGroup =
       make_shared<WidgetGroup>(-1, 300, 260, 200, 130, m_graphicsManager);
 
-    m_playWidgetGroup->addWidget({ label, button1, button2, button3 });
+    m_playWidgetGroup->addWidget({label, button1, button2, button3});
   }
 
   // ########################################################################
@@ -122,7 +122,7 @@ MainMenu::MainMenu(Game& game,
           break;
         }
         case 1: {
-          string name{ m_textInput3->getString() };
+          string name{m_textInput3->getString()};
           if (name.size()) {
             if (!world_meta::worldNameExists(name)) {
               world_meta::addName(name);
@@ -172,7 +172,7 @@ MainMenu::MainMenu(Game& game,
       make_shared<WidgetGroup>(0, 200, 120, 400, 270, m_graphicsManager);
 
     m_newWorldWidgetGroup->addWidget(
-      { label1, label2, m_textInput3, button1, button2, button3, button4 });
+      {label1, label2, m_textInput3, button1, button2, button3, button4});
   }
 
   // ########################################################################
@@ -268,7 +268,7 @@ MainMenu::MainMenu(Game& game,
       make_shared<WidgetGroup>(0, 200, 120, 400, 270, m_graphicsManager);
 
     m_newWorldWidgetGroupAdvanced->addWidget(
-      { label1, button1, button2, button3, button4, button5, button6 });
+      {label1, button1, button2, button3, button4, button5, button6});
   }
 
   // ########################################################################
@@ -325,7 +325,7 @@ MainMenu::MainMenu(Game& game,
       m_worldList->addListItem(s);
 
     m_loadWorldWidgetGroup->addWidget(
-      { label, button1, button2, button3, button4, m_worldList });
+      {label, button1, button2, button3, button4, m_worldList});
   }
 
   // ########################################################################
@@ -350,7 +350,7 @@ MainMenu::MainMenu(Game& game,
     m_errorEmptyName =
       make_shared<WidgetGroup>(0, 200, 250, 400, 45, m_graphicsManager, 3);
 
-    m_errorEmptyName->addWidget({ label, button });
+    m_errorEmptyName->addWidget({label, button});
   }
 
   // ########################################################################
@@ -375,7 +375,7 @@ MainMenu::MainMenu(Game& game,
     m_errorUsedName =
       make_shared<WidgetGroup>(0, 200, 250, 400, 45, m_graphicsManager, 3);
 
-    m_errorUsedName->addWidget({ label, button });
+    m_errorUsedName->addWidget({label, button});
   }
 
   // ########################################################################
@@ -403,10 +403,17 @@ MainMenu::update(double timePassed) {
 string
 randomName() {
 
-  static vector<string> names{ "Dank World", "Bloxel", "Sees",  "Soos",
-                               "Satan",      "Shrek",  "Memus", "Adventure",
-                               "Swoosh",     "Blool" };
-  static int last{ -1 };
+  static vector<string> names{"Dank World",
+                              "Bloxel",
+                              "Sees",
+                              "Soos",
+                              "Satan",
+                              "Shrek",
+                              "Memus",
+                              "Adventure",
+                              "Swoosh",
+                              "Blool"};
+  static int last{-1};
 
   static random_device randomDevice;
   static mt19937 randomNumber(randomDevice());

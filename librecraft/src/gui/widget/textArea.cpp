@@ -21,7 +21,7 @@ TextArea::TextArea(int id,
                    std::function<void(int)> observer,
                    int layer)
   : AbstractWidget(id, x, y, width, height, graphicsManager)
-  , m_layer{ layer } {
+  , m_layer{layer} {
   this->m_observer = observer;
   auto& res = Resources::getInstance();
 
@@ -36,7 +36,7 @@ TextArea::TextArea(int id,
 
 void
 TextArea::draw() {
-  SpriteBatcher& spriteBatcher{ m_graphicsManager.getSpriteBatcher() };
+  SpriteBatcher& spriteBatcher{m_graphicsManager.getSpriteBatcher()};
   spriteBatcher.addBatch(*m_textArea);
 
   for (auto& s : m_rows)

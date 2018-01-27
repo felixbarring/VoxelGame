@@ -72,14 +72,14 @@ public:
 
 private:
   std::function<void(int)> m_observer;
-  bool m_pointerInsideBorders{ false };
+  bool m_pointerInsideBorders{false};
 
   std::shared_ptr<graphics::Sprite> m_slider{};
   std::shared_ptr<graphics::Sprite> m_knob{};
 
   float m_knobPosition{};
   float m_knobWidth{};
-  bool m_grabbed{ false };
+  bool m_grabbed{false};
 };
 
 } /* namespace widget */

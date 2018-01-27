@@ -28,9 +28,9 @@ namespace entity {
 Player::Player(chunk::ChunkManager& chunkManager,
                util::SoundPlayer& soundPlayer,
                graphics::GraphicsManager& graphicsManager)
-  : m_chunkManager{ chunkManager }
-  , m_stepPlayer{ soundPlayer, config::souds::footStepSounds }
-  , m_graphicsManager{ graphicsManager } {
+  : m_chunkManager{chunkManager}
+  , m_stepPlayer{soundPlayer, config::souds::footStepSounds}
+  , m_graphicsManager{graphicsManager} {
 }
 
 void
@@ -80,7 +80,7 @@ Player::updateSpeed(float timePassed) {
   m_speed.x = 0;
   m_speed.z = 0;
 
-  vec3 movementDirection{ 0.0f, 0.0f, 0.0f };
+  vec3 movementDirection{0.0f, 0.0f, 0.0f};
 
   if (input->moveForwardActive || input->moveBackwardActive) {
     float directionSign = 1.0f;
@@ -222,8 +222,12 @@ Player::updateCameraAndTargetCube() {
       return;
     } else if (input->action2Pressed) {
       AABB playerAAABB = createAABB();
-      AABB cubeAABB{ previous.x,     previous.x + 1, previous.y,
-                     previous.y + 1, previous.z,     previous.z + 1 };
+      AABB cubeAABB{previous.x,
+                    previous.x + 1,
+                    previous.y,
+                    previous.y + 1,
+                    previous.z,
+                    previous.z + 1};
       if (!playerAAABB.intersects(cubeAABB))
         m_chunkManager.setCube(
           previous.x, previous.y, previous.z, m_cubeUsedForBuilding);
@@ -237,7 +241,7 @@ Player::updateCameraAndTargetCube() {
 
     char voxelID =
       m_chunkManager.getCubeId(selectedCube.x, selectedCube.y, selectedCube.z);
-    Voxel voxel{ m_chunkManager.getVoxel(previous.x, previous.y, previous.z) };
+    Voxel voxel{m_chunkManager.getVoxel(previous.x, previous.y, previous.z)};
     m_graphicsManager.getCubeBatcher().addBatch(voxelID,
                                                 m_targetedCubeTransform,
                                                 voxel.getSunLightValue() + 5,
@@ -272,7 +276,7 @@ Player::intersected(vec3 movement,
     for (double j = yStart; j <= yEnd; ++j) {
       for (double k = zStart; k <= zEnd; ++k) {
 
-        AABB cube{ i, i + 1.0, j, j + 1.0, k, k + 1 };
+        AABB cube{i, i + 1.0, j, j + 1.0, k, k + 1};
         vec3 normal;
         auto cubeId = m_chunkManager.getCubeId(i, j, k);
         if (!(cubeId == cube_data::AIR || cubeId == cube_data::WATER)) {
@@ -290,8 +294,12 @@ Player::intersected(vec3 movement,
 bool
 Player::isInWater() {
   //   Fix hardcoded shit...
-  AABB box{ m_location.x - 0.4, m_location.x + 0.4, m_location.y - 1.5,
-            m_location.y + 0.1, m_location.z - 0.4, m_location.z + 0.4 };
+  AABB box{m_location.x - 0.4,
+           m_location.x + 0.4,
+           m_location.y - 1.5,
+           m_location.y + 0.1,
+           m_location.z - 0.4,
+           m_location.z + 0.4};
 
   int xStart = floor(box.m_xMin);
   int yStart = floor(box.m_yMin);
@@ -315,11 +323,12 @@ Player::isInWater() {
 
 AABB
 Player::createAABB() {
-  return {
-    m_location.x - m_width / 2,    m_location.x + m_width / 2,
-    m_location.y - m_cameraHeight, m_location.y + m_height - m_cameraHeight,
-    m_location.z - m_width / 2,    m_location.z + m_width / 2
-  };
+  return {m_location.x - m_width / 2,
+          m_location.x + m_width / 2,
+          m_location.y - m_cameraHeight,
+          m_location.y + m_height - m_cameraHeight,
+          m_location.z - m_width / 2,
+          m_location.z + m_width / 2};
 }
 
 } /* namespace entity */

@@ -59,9 +59,9 @@ adjustMouse(int virtualWidth,
             int realHeight,
             int mouseX,
             int mouseY) {
-  float mouseOffX{ 0.0 };
-  float mouseOffY{ 0.0 };
-  float mouseScale{ 1.0 };
+  float mouseOffX{0.0};
+  float mouseOffY{0.0};
+  float mouseScale{1.0};
 
   float vW = virtualWidth;
   float vH = virtualHeight;

@@ -48,7 +48,7 @@ public:
   void addLine(std::string str);
 
 private:
-  const unsigned m_fontHeight{ 20 };
+  const unsigned m_fontHeight{20};
 
   int m_layer;
 

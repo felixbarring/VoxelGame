@@ -54,7 +54,7 @@ private:
   gui::Mouse m_mouse;
 
   Settings m_settings;
-  bool m_inSettings{ false };
+  bool m_inSettings{false};
 
   chunk::CreationOptions m_options;
 

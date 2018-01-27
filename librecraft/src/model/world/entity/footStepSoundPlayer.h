@@ -60,9 +60,9 @@ private:
   std::vector<std::string> m_stepSounds{};
   util::SoundPlayer& m_soundPlayer;
 
-  bool m_isWalking{ false };
+  bool m_isWalking{false};
   double m_accumulatedTime{};
-  double m_footStepDelay{ 0.35 };
+  double m_footStepDelay{0.35};
 };
 
 #endif /* SRC_MODEL_WORLD_ENTITY_FOOTSTEPSOUNDPLAYER_H_ */

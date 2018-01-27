@@ -61,6 +61,8 @@ public:
     glViewport(0, 0, WIDTH, HEIGHT);
     glClearColor(0.2f, 0.22f, 0.2f, 1.0f);
 
+    // clang-format off
+
     std::string vertex =
       "#version 330 core \n"
       "in vec3 positionIn; \n"
@@ -74,16 +76,17 @@ public:
       "  texCoord = vec3(texCoordIn.x, 1.0 - texCoordIn.y, texCoordIn.z); \n"
       "} \n";
 
-    std::string frag = "#version 330 core \n"
-                       "in vec3 texCoord; \n"
+    std::string frag =
+        "#version 330 core \n"
+        "in vec3 texCoord; \n"
 
-                       "out vec4 color; \n"
+        "out vec4 color; \n"
 
-                       "uniform sampler2DArray texture1; \n"
-                       "void main() \n"
-                       "{ \n"
-                       "  color = texture(texture1, texCoord); \n"
-                       "} \n";
+        "uniform sampler2DArray texture1; \n"
+        "void main() \n"
+        "{ \n"
+        "  color = texture(texture1, texCoord); \n"
+        "} \n";
 
     std::map<std::string, int> attributesMap{
       std::pair<std::string, int>("positionIn", 0),
@@ -116,13 +119,15 @@ public:
 
                                      0 + 8, 1 + 8, 2 + 8, 0 + 8, 2 + 8, 3 + 8 };
 
-    std::vector<std::pair<std::vector<float>, int>> vbos{ { vertices, 3 },
-                                                          { texCoords, 3 } };
-    mesh::MeshElement mesh{ vbos, indices };
+    // clang-format on
 
-    texture::TextureArray texture{ config::cube_data::textures,
-                                   config::cube_data::TEXTURE_WIDTH,
-                                   config::cube_data::TEXTURE_HEIGHT };
+    std::vector<std::pair<std::vector<float>, int>> vbos{{vertices, 3},
+                                                         {texCoords, 3}};
+    mesh::MeshElement mesh{vbos, indices};
+
+    texture::TextureArray texture{config::cube_data::textures,
+                                  config::cube_data::TEXTURE_WIDTH,
+                                  config::cube_data::TEXTURE_HEIGHT};
 
     while (window.isOpen()) {
 

@@ -12,28 +12,29 @@ using namespace config::cube_data;
 
 namespace graphics {
 
-bool useSmoothShading{ false };
-bool useAO{ true };
+bool useSmoothShading{false};
+bool useAO{true};
 // TODO Make it possible to turn of AO
 
-GraphicalChunk::GraphicalChunk(double _x, double _y, double _z,
+GraphicalChunk::GraphicalChunk(double _x,
+                               double _y,
+                               double _z,
                                Matrix& data,
                                Matrix* right,
                                Matrix* left,
                                Matrix* back,
                                Matrix* front)
-  : m_xLocation{ _x }
-  , m_yLocation{ _y }
-  , m_zLocation{ _z }
-  , transform{ _x + m_width / 2 + 0.5f,
-               _y + m_height / 2 + 0.5f,
-               _z + m_depth / 2 + 0.5f }
+  : m_xLocation{_x}
+  , m_yLocation{_y}
+  , m_zLocation{_z}
+  , transform{_x + m_width / 2 + 0.5f,
+              _y + m_height / 2 + 0.5f,
+              _z + m_depth / 2 + 0.5f}
   , m_data{data}
   , m_right{right}
   , m_left{left}
   , m_back{back}
-  , m_front{front}
-{
+  , m_front{front} {
   m_meshData.push_back(createMeshData(false));
   m_meshData.push_back(createMeshData(true));
 }
@@ -42,10 +43,12 @@ void
 GraphicalChunk::uploadData() {
   {
     std::vector<std::pair<std::vector<float>, int>> vobs{
-      { m_meshData[meshData].vertexData, 3 }, { m_meshData[meshData].lightData, 2 },
-      { m_meshData[meshData].normals, 3 }, { m_meshData[meshData].UV, 3 }
-    };
-    m_mesh = make_unique<mesh::MeshElement>(move(vobs), m_meshData[meshData].elementData);
+      {m_meshData[meshData].vertexData, 3},
+      {m_meshData[meshData].lightData, 2},
+      {m_meshData[meshData].normals, 3},
+      {m_meshData[meshData].UV, 3}};
+    m_mesh = make_unique<mesh::MeshElement>(move(vobs),
+                                            m_meshData[meshData].elementData);
   }
 
   if (m_meshData[wateterMeshData].vertexData.empty())
@@ -53,11 +56,12 @@ GraphicalChunk::uploadData() {
 
   {
     std::vector<std::pair<std::vector<float>, int>> vobs{
-      { m_meshData[wateterMeshData].vertexData, 3 }, { m_meshData[wateterMeshData].lightData, 2 },
-      { m_meshData[wateterMeshData].normals, 3 }, {m_meshData[wateterMeshData]. UV, 3 }
-    };
-    m_waterMesh = make_unique<mesh::MeshElement>(move(vobs),
-        m_meshData[wateterMeshData].elementData);
+      {m_meshData[wateterMeshData].vertexData, 3},
+      {m_meshData[wateterMeshData].lightData, 2},
+      {m_meshData[wateterMeshData].normals, 3},
+      {m_meshData[wateterMeshData].UV, 3}};
+    m_waterMesh = make_unique<mesh::MeshElement>(
+      move(vobs), m_meshData[wateterMeshData].elementData);
   }
   m_meshData.clear();
 }
@@ -123,7 +127,7 @@ GraphicalChunk::getVoxel(int x, int y, int z) {
 
   } else if (x == -1) {
 
-    if (m_left )
+    if (m_left)
       return &((*m_left)[m_width - 1][y][z]);
     else
       return nullptr;
@@ -146,9 +150,11 @@ GraphicalChunk::getVoxel(int x, int y, int z) {
 }
 
 bool
-isAirOrWater(int id ) {
+isAirOrWater(int id) {
   return id == AIR || id == WATER;
 }
+
+// clang-format off
 
 GraphicalChunk::MeshData
 GraphicalChunk::createMeshData(bool transparent) {
@@ -707,7 +713,9 @@ GraphicalChunk::createMeshData(bool transparent) {
   return meshData;
 }
 
-int AOFactor{ 4 };
+// clang-format on
+
+int AOFactor{4};
 
 void
 GraphicalChunk::doAORight(int x, int y, int z, Lights& lights) {
@@ -783,7 +791,7 @@ GraphicalChunk::doAOLeft(int x, int y, int z, Lights& lights) {
   v = getVoxel(x - 1, y - 1, z);
   if (v && v->getId() != AIR)
     ++bottomRight;
-  v = getVoxel(x - 1, y - 1,z + 1);
+  v = getVoxel(x - 1, y - 1, z + 1);
   if (v && v->getId() != AIR)
     ++bottomRight;
   v = getVoxel(x - 1, y, z + 1);
@@ -852,7 +860,7 @@ GraphicalChunk::doAOFront(int x, int y, int z, Lights& lights) {
   if (v && v->getId() != AIR)
     ++topRight;
   v = getVoxel(x + 1, y + 1, z + 1);
-  if (v && v->getId()!= AIR)
+  if (v && v->getId() != AIR)
     ++topRight;
   v = getVoxel(x, y + 1, z + 1);
   if (v && v->getId() != AIR)
@@ -1038,6 +1046,4 @@ GraphicalChunk::doAOBottom(int x, int y, int z, Lights& lights) {
 
   lights.topLeft -= min<float>(2.0, topLeft) * AOFactor;
 }
-
 }
-

@@ -37,9 +37,9 @@ public:
   }
 
 private:
-  std::string m_name{ "Error Name" };
-  bool m_flat{ false };
-  bool m_differentCubeForEachChunk{ true };
+  std::string m_name{"Error Name"};
+  bool m_flat{false};
+  bool m_differentCubeForEachChunk{true};
 };
 }
 

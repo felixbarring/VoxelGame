@@ -15,11 +15,9 @@ class CubeBar {
 public:
   CubeBar(graphics::GraphicsManager& graphicsManager);
 
-
   void update(int selectedCube);
 
 private:
-
   graphics::GraphicsManager& m_graphicsManager;
   std::vector<std::shared_ptr<graphics::Sprite>> m_cubeThumbnails;
   std::vector<std::shared_ptr<graphics::Sprite>> m_smallThumbnails;

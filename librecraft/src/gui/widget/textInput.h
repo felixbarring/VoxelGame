@@ -66,23 +66,23 @@ public:
   void setFocus(bool value = true);
 
 private:
-  static constexpr float s_cursorWidth{ 1.0 };
-  static constexpr int s_cursorSpacing{ 4 };
+  static constexpr float s_cursorWidth{1.0};
+  static constexpr int s_cursorSpacing{4};
 
   // The difference between the widgets and text height
-  static constexpr int s_textHightDifference{ 5 };
+  static constexpr int s_textHightDifference{5};
 
   int m_layer{};
-  bool m_hasFocus{ false };
-  std::string m_input{ "" };
+  bool m_hasFocus{false};
+  std::string m_input{""};
   unsigned m_maxInputLength;
 
-  float m_eraseDelay{ 0.1f };
-  float m_accumulatedEraseTime{ 0.0f };
+  float m_eraseDelay{0.1f};
+  float m_accumulatedEraseTime{0.0f};
 
-  float m_blinkIntervall{ 1.0 / 3.0 }; // Blink three times / second
-  float m_blinkTime{ 0.0 };
-  bool m_cursorVissible{ true };
+  float m_blinkIntervall{1.0 / 3.0}; // Blink three times / second
+  float m_blinkTime{0.0};
+  bool m_cursorVissible{true};
 
   int m_textHeight{};
 

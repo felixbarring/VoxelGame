@@ -16,7 +16,7 @@ using namespace std;
 class Trie {
 public:
   Trie()
-    : m_root{ std::make_unique<TrieNode>('-', false) } {
+    : m_root{std::make_unique<TrieNode>('-', false)} {
   }
 
   /**

@@ -7,11 +7,12 @@ using namespace sf;
 
 namespace texture {
 
-static GLuint targets[] = {
-  GL_TEXTURE_CUBE_MAP_POSITIVE_X, GL_TEXTURE_CUBE_MAP_NEGATIVE_X,
-  GL_TEXTURE_CUBE_MAP_POSITIVE_Y, GL_TEXTURE_CUBE_MAP_NEGATIVE_Y,
-  GL_TEXTURE_CUBE_MAP_POSITIVE_Z, GL_TEXTURE_CUBE_MAP_NEGATIVE_Z
-};
+static GLuint targets[] = {GL_TEXTURE_CUBE_MAP_POSITIVE_X,
+                           GL_TEXTURE_CUBE_MAP_NEGATIVE_X,
+                           GL_TEXTURE_CUBE_MAP_POSITIVE_Y,
+                           GL_TEXTURE_CUBE_MAP_NEGATIVE_Y,
+                           GL_TEXTURE_CUBE_MAP_POSITIVE_Z,
+                           GL_TEXTURE_CUBE_MAP_NEGATIVE_Z};
 
 TextureCubeMap::TextureCubeMap(const char* right,
                                const char* left,
@@ -31,7 +32,7 @@ TextureCubeMap::TextureCubeMap(const char* right,
   glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
   glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
-  std::vector<const char*> paths{ right, left, top, bottom, back, front };
+  std::vector<const char*> paths{right, left, top, bottom, back, front};
 
   Image image;
 

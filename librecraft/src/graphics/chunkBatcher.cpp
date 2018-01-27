@@ -24,6 +24,8 @@ ChunkBatcher::ChunkBatcher(Camera& camera)
 
   // TODO Refactor this the same way as the cubeBatcher...
   // That is, use constant strings for the variables.
+
+  // clang-format off
   string vertex =
     "#version 330 core \n"
 
@@ -75,10 +77,12 @@ ChunkBatcher::ChunkBatcher(Camera& camera)
     "  color = vec4(lightSum, 1.0f) * texture(texture1, texCoord); \n"
     "} \n";
 
-  map<string, int> attributesMap{ pair<string, int>("positionIn", 0),
-                                  pair<string, int>("lightIn", 1),
-                                  pair<string, int>("normalIn", 2),
-                                  pair<string, int>("texCoordIn", 3) };
+  // clang-format on
+
+  map<string, int> attributesMap{pair<string, int>("positionIn", 0),
+                                 pair<string, int>("lightIn", 1),
+                                 pair<string, int>("normalIn", 2),
+                                 pair<string, int>("texCoordIn", 3)};
 
   m_program = make_unique<ShaderProgram>(vertex, fragment, attributesMap);
 }
@@ -183,8 +187,8 @@ ChunkBatcher::addAndRemoveBatches() {
   // Add all the batches that has high priority
   while (!m_batchesToAddHP.empty()) {
     auto batchIt = m_batchesToAddHP.begin();
-    int id{ get<0>(*batchIt) };
-    int replaceId{ get<1>(*batchIt) };
+    int id{get<0>(*batchIt)};
+    int replaceId{get<1>(*batchIt)};
 
     get<2>(*batchIt)->uploadData();
     m_batches.emplace(id, get<2>(*batchIt));
@@ -198,8 +202,8 @@ ChunkBatcher::addAndRemoveBatches() {
   // be added.
   if (!m_batchesToAdd.empty()) {
     auto batchIt = m_batchesToAdd.begin();
-    int id{ get<0>(*batchIt) };
-    int replaceId{ get<1>(*batchIt) };
+    int id{get<0>(*batchIt)};
+    int replaceId{get<1>(*batchIt)};
 
     get<2>(*batchIt)->uploadData();
     m_batches.emplace(id, get<2>(*batchIt));
@@ -219,7 +223,7 @@ ChunkBatcher::addAndRemoveBatches() {
       m_batchesToBeRemoved.erase(batch);
     } else {
       // It might not have been added before it was requested to be removed.
-      bool failed{ true };
+      bool failed{true};
       for (auto b = m_batchesToAdd.begin(); b != m_batchesToAdd.end(); ++b) {
         if (get<0>(*b) == *batch) {
           m_batchesToAdd.erase(b);

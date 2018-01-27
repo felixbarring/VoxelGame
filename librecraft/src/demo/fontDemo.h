@@ -54,10 +54,10 @@ public:
     glViewport(0, 0, WIDTH, HEIGHT);
     glClearColor(0.2f, 0.22f, 0.2f, 1.0f);
 
-    texture::Texture fontAtlas{ config::font_data::font.c_str() };
-    graphics::FontMeshBuilder fontBuilder{ config::font_data::fontLayout,
-                                           config::font_data::fontAtlasWidth,
-                                           config::font_data::fontAtlasHeight };
+    texture::Texture fontAtlas{config::font_data::font.c_str()};
+    graphics::FontMeshBuilder fontBuilder{config::font_data::fontLayout,
+                                          config::font_data::fontAtlasWidth,
+                                          config::font_data::fontAtlasHeight};
 
     std::shared_ptr<mesh::MeshElement> mesh =
       fontBuilder.buldMeshForString("Hello World", 50);

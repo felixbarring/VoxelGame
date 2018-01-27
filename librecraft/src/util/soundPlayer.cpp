@@ -9,7 +9,7 @@
 
 namespace util {
 
-double volumeScaler{ 100 };
+double volumeScaler{100};
 
 // Just a function that clamps the values to 0 or 100.
 // Used to prevent OpenAl errors.
@@ -119,7 +119,7 @@ SoundPlayer::graduallyChangeMusicVolume(ChangeMusicVolume value) {
   m_graduayllChange = true;
   m_changeDirection = value;
 
-  static double change{ 20.0 };
+  static double change{20.0};
   if (value == ChangeMusicVolume::INCREASE) {
     m_changeValue = change;
     m_targetVolume = m_musicVolume;

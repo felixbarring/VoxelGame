@@ -66,10 +66,10 @@ private:
           Transform& transform,
           int lightValue,
           int otherLight)
-      : m_cube{ cube }
-      , m_transform{ transform }
-      , m_sunLight{ lightValue }
-      , m_otherLight{ otherLight } {
+      : m_cube{cube}
+      , m_transform{transform}
+      , m_sunLight{lightValue}
+      , m_otherLight{otherLight} {
     }
 
     TexturedCube& m_cube;
@@ -83,7 +83,7 @@ private:
   std::vector<Batch> m_batches;
   std::vector<TexturedCube> m_cubes;
 
-  float m_sunStrength{ 1.0 };
+  float m_sunStrength{1.0};
 
   std::unique_ptr<ShaderProgram> m_program;
   texture::TextureArray& m_texture;

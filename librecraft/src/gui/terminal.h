@@ -107,8 +107,8 @@ private:
         m_history[i] = m_history[i - 1];
     }
 
-    unsigned m_actualElements{ 1 };
-    unsigned m_historyPointer{ 0 };
+    unsigned m_actualElements{1};
+    unsigned m_historyPointer{0};
     std::vector<std::string> m_history{""};
   };
 
@@ -121,8 +121,8 @@ private:
 
   util::Trie m_trie{};
 
-  unsigned m_historyLenght{ 10 };
-  History m_history{ m_historyLenght };
+  unsigned m_historyLenght{10};
+  History m_history{m_historyLenght};
 
   std::vector<std::string> m_commands{};
 

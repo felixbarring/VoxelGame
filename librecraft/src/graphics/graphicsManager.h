@@ -80,8 +80,8 @@ public:
 private:
   Camera m_playerCamera{};
 
-  ChunkBatcher m_chunkBatcher{ m_playerCamera };
-  CubeBatcher m_cubeBatcher{ m_playerCamera };
+  ChunkBatcher m_chunkBatcher{m_playerCamera};
+  CubeBatcher m_cubeBatcher{m_playerCamera};
   SpriteBatcher m_spriteBatcher;
 
   double m_sunStrength{};

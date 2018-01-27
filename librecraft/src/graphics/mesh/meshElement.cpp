@@ -15,7 +15,7 @@ MeshElement::MeshElement(std::vector<std::pair<std::vector<float>, int>> vbos,
   glGenVertexArrays(1, &m_VAO);
   glBindVertexArray(m_VAO);
 
-  int i{ 0 };
+  int i{0};
   for (auto vbo : vbos) {
     GLuint vboHandle;
     glGenBuffers(1, &vboHandle);
@@ -59,7 +59,7 @@ void
 MeshElement::draw() {
   glBindVertexArray(m_VAO);
 
-  for (unsigned i{ 0 }; i < m_vboHandels.size(); ++i)
+  for (unsigned i{0}; i < m_vboHandels.size(); ++i)
     glEnableVertexAttribArray(i);
 
   glDrawElements(GL_TRIANGLES, m_numberOfElements, GL_UNSIGNED_SHORT, 0);

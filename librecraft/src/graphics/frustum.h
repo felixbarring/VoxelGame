@@ -144,8 +144,12 @@ public:
   }
 
 private:
-  std::vector<glm::vec4> m_planes{ glm::vec4{}, glm::vec4{}, glm::vec4{},
-                                   glm::vec4{}, glm::vec4{}, glm::vec4{} };
+  std::vector<glm::vec4> m_planes{glm::vec4{},
+                                  glm::vec4{},
+                                  glm::vec4{},
+                                  glm::vec4{},
+                                  glm::vec4{},
+                                  glm::vec4{}};
 };
 
 #endif /* SRC_GRAPHICS_FRUSTUM_H_ */

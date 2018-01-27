@@ -87,10 +87,10 @@ private:
   std::function<void(int)> m_observer;
   unsigned m_layer;
 
-  int idCounter{ 0 };
+  int idCounter{0};
   std::vector<std::shared_ptr<ToggleButton>> m_buttons;
 
-  std::shared_ptr<ToggleButton> m_currentlyToggled{ nullptr };
+  std::shared_ptr<ToggleButton> m_currentlyToggled{nullptr};
 
   std::shared_ptr<graphics::Sprite> m_sprite;
   std::shared_ptr<graphics::Sprite> m_highlight;

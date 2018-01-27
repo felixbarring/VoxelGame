@@ -25,7 +25,7 @@ ToggleButton::ToggleButton(int id,
                            int layer,
                            Skin skin)
   : Button(id, x, y, width, height, graphicsManager, observer, name, layer)
-  , m_skin{ skin } {
+  , m_skin{skin} {
   auto& res = Resources::getInstance();
 
   FontMeshBuilder& fontMeshBuilder =

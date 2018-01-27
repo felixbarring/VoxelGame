@@ -25,7 +25,7 @@ public:
 private:
   texture::TextureCubeMap m_texture;
   Camera& m_camera;
-  float m_roatationValue{ 0.0f };
+  float m_roatationValue{0.0f};
 
   std::unique_ptr<graphics::ShaderProgram> m_program;
   std::unique_ptr<mesh::MeshElement> mesh;

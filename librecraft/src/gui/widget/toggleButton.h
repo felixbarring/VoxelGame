@@ -53,7 +53,7 @@ public:
   void update(float timePassed) override;
 
 private:
-  bool m_toggled{ false };
+  bool m_toggled{false};
   Skin m_skin;
 
   std::shared_ptr<graphics::Sprite> m_spriteToggled;

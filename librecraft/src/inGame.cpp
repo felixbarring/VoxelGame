@@ -30,28 +30,28 @@ InGame::InGame(Game& game,
                util::SoundPlayer& soundPlayer,
                graphics::GraphicsManager& graphicsManager,
                util::FPSManager& fpsManager)
-  : m_game{ game }
+  : m_game{game}
   , m_chunkManager(move(chunkManager))
-  , m_player{ m_chunkManager, soundPlayer, graphicsManager }
+  , m_player{m_chunkManager, soundPlayer, graphicsManager}
   , m_soundPlayer(soundPlayer)
-  , m_graphicsManager{ graphicsManager }
-  , m_fpsManager{ fpsManager }
-  , m_mouse{ m_graphicsManager }
-  , m_settings{ m_activeWidgetGroup,
-                m_mainWidgetGroup,
-                m_soundPlayer,
-                graphicsManager }
-  , m_cubeBar{ graphicsManager } {
+  , m_graphicsManager{graphicsManager}
+  , m_fpsManager{fpsManager}
+  , m_mouse{m_graphicsManager}
+  , m_settings{m_activeWidgetGroup,
+               m_mainWidgetGroup,
+               m_soundPlayer,
+               graphicsManager}
+  , m_cubeBar{graphicsManager} {
 
   // TODO Should be possible to save and load the player location.
-  double playerYLocation{ chunk_data::CHUNK_HEIGHT - 10.1 };
+  double playerYLocation{chunk_data::CHUNK_HEIGHT - 10.1};
   m_player.setLocation(chunk_data::NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER *
                          chunk_data::CHUNK_WIDTH_AND_DEPTH,
                        playerYLocation,
                        chunk_data::NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER *
                          chunk_data::CHUNK_WIDTH_AND_DEPTH);
 
-  static const int startTime{ 100 };
+  static const int startTime{100};
   m_timeCycle.setTime(startTime);
 
   auto observer = [this](int id) {
@@ -75,12 +75,12 @@ InGame::InGame(Game& game,
     }
   };
 
-  shared_ptr<IWidget> button1(new Button{
-    0, 325, 350, 150, 30, m_graphicsManager, observer, "Main Menu" });
-  shared_ptr<IWidget> button2(new Button{
-    1, 325, 310, 150, 30, m_graphicsManager, observer, "Settings" });
+  shared_ptr<IWidget> button1(
+    new Button{0, 325, 350, 150, 30, m_graphicsManager, observer, "Main Menu"});
+  shared_ptr<IWidget> button2(
+    new Button{1, 325, 310, 150, 30, m_graphicsManager, observer, "Settings"});
   shared_ptr<IWidget> button3(new Button{
-    2, 325, 270, 150, 30, m_graphicsManager, observer, "Back To Game" });
+    2, 325, 270, 150, 30, m_graphicsManager, observer, "Back To Game"});
 
   m_mainWidgetGroup =
     make_shared<WidgetGroup>(0, 300, 260, 200, 130, m_graphicsManager);
@@ -116,11 +116,19 @@ InGame::InGame(Game& game,
   string setTimeSpeed = "setTimeSpeed";
   string setPlayerSpeed = "setPlayerSpeed";
 
-  vector<string> commands{
-    close,      flyMode,      gravityMode,   turnOfMusic, setMouseSensitivity,
-    loadChunks, setTime,      stopTime,      resumeTime,  printDebugInfo,
-    setFOV,     setTimeSpeed, setPlayerSpeed
-  };
+  vector<string> commands{close,
+                          flyMode,
+                          gravityMode,
+                          turnOfMusic,
+                          setMouseSensitivity,
+                          loadChunks,
+                          setTime,
+                          stopTime,
+                          resumeTime,
+                          printDebugInfo,
+                          setFOV,
+                          setTimeSpeed,
+                          setPlayerSpeed};
 
   // The first string in the vector should be the command, followed by
   // arguments.
@@ -234,11 +242,12 @@ InGame::InGame(Game& game,
                            font_data::fontAtlasWidth,
                            font_data::fontAtlasHeight);
 
-  m_fps = make_shared<Sprite>(0,
-                         45,
-                         10,
-                         fontMeshBuilder.buldMeshForString("FPS: " + 0, 20),
-                         res.getTexture(config::font_data::font));
+  m_fps =
+    make_shared<Sprite>(0,
+                        45,
+                        10,
+                        fontMeshBuilder.buldMeshForString("FPS: " + 0, 20),
+                        res.getTexture(config::font_data::font));
 }
 
 void
@@ -340,7 +349,7 @@ InGame::update(double timePassed) {
 
   if (m_timeCycle.getStarStrenght() > 0.0) {
     // Changes so that the rotation dose not get to fast.
-    static const double valModifier{ 0.015 };
+    static const double valModifier{0.015};
     m_graphicsManager.getSkyMap().setRotationValue(valModifier *
                                                    m_timeCycle.getTime());
     m_graphicsManager.getSkyMap().draw(m_timeCycle.getStarStrenght());

@@ -17,35 +17,43 @@ using namespace std;
 namespace graphics {
 
 CubeMap::CubeMap(texture::TextureCubeMap& texture, Camera& camera)
-  : m_texture{ texture }
-  , m_camera{ camera } {
+  : m_texture{texture}
+  , m_camera{camera} {
 
-  string vertex = "#version 330 core \n"
-                  "in vec3 positionIn; \n"
-                  "uniform mat4 mvp; \n"
-                  "out vec3 texCoord; \n"
-                  "void main() \n"
-                  "{ \n"
-                  "  vec4 pos = mvp * vec4(positionIn, 1.0); \n"
-                  "  gl_Position = pos.xyww; \n"
-                  "  texCoord = positionIn; \n"
-                  "} \n";
+  // clang-format off
+  string vertex =
+      "#version 330 core \n"
+      "in vec3 positionIn; \n"
+      "uniform mat4 mvp; \n"
+      "out vec3 texCoord; \n"
+      "void main() \n"
+      "{ \n"
+      "  vec4 pos = mvp * vec4(positionIn, 1.0); \n"
+      "  gl_Position = pos.xyww; \n"
+      "  texCoord = positionIn; \n"
+      "} \n";
 
-  string fragment = "#version 330 core \n"
-                    "in vec3 texCoord; \n"
-                    "uniform samplerCube skybox; \n"
-                    "uniform float transparency; \n"
-                    "out vec4 color; \n"
-                    "void main() \n"
-                    "{ \n"
-                    "  vec4 tempColor = texture(skybox, texCoord); \n"
-                    "  tempColor.w = tempColor.w * transparency; \n"
-                    "  color = tempColor; \n"
-                    "} \n";
+  string fragment =
+      "#version 330 core \n"
+      "in vec3 texCoord; \n"
+      "uniform samplerCube skybox; \n"
+      "uniform float transparency; \n"
+      "out vec4 color; \n"
+      "void main() \n"
+      "{ \n"
+      "  vec4 tempColor = texture(skybox, texCoord); \n"
+      "  tempColor.w = tempColor.w * transparency; \n"
+      "  color = tempColor; \n"
+      "} \n";
 
-  map<string, int> attributesMap{ { "positionIn", 0 } };
+  // clang-format on
+
+  map<string, int> attributesMap{{"positionIn", 0}};
 
   m_program = make_unique<ShaderProgram>(vertex, fragment, attributesMap);
+
+  // clang-format off
+  // TODO Fix manual fomatting here.
 
   vector<GLfloat> vertices{
     -1.0f, 1.0f,  -1.0f, -1.0f, -1.0f, -1.0f, 1.0f,  -1.0f, -1.0f,
@@ -74,8 +82,9 @@ CubeMap::CubeMap(texture::TextureCubeMap& texture, Camera& camera)
     0 + 18, 1 + 18, 2 + 18, 3 + 18, 4 + 18, 5 + 18, 0 + 24, 1 + 24, 2 + 24,
     3 + 24, 4 + 24, 5 + 24, 0 + 30, 1 + 30, 2 + 30, 3 + 30, 4 + 30, 5 + 30,
   };
+  // clang-format on
 
-  vector<pair<vector<float>, int>> vbos{ { vertices, 3 } };
+  vector<pair<vector<float>, int>> vbos{{vertices, 3}};
   mesh = make_unique<mesh::MeshElement>(move(vbos), element);
 }
 

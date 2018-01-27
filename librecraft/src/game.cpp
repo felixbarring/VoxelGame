@@ -52,16 +52,16 @@ public:
                 graphics::GraphicsManager& graphicsManager)
     : m_fpsManager(fpsManager)
     , m_window(window)
-    , m_graphicsManager{ graphicsManager } {
+    , m_graphicsManager{graphicsManager} {
     auto& res = Resources::getInstance();
     FontMeshBuilder& fontMeshBuilder =
       res.getFontMeshBuilder(config::font_data::fontLayout,
                              config::font_data::fontAtlasWidth,
                              config::font_data::fontAtlasHeight);
 
-    const unsigned numberOfDots{ 3 };
-    string dots{ "" };
-    for (unsigned i{ 0 }; i <= numberOfDots; ++i) {
+    const unsigned numberOfDots{3};
+    string dots{""};
+    for (unsigned i{0}; i <= numberOfDots; ++i) {
       m_sprites.push_back(make_shared<Sprite>(
         300,
         300,
@@ -99,9 +99,9 @@ private:
 
   graphics::GraphicsManager& m_graphicsManager;
 
-  unsigned m_spriteCounter{ 0 };
-  const double m_timePerFrame{ 0.2 };
-  double m_frameTime{ 0.0 };
+  unsigned m_spriteCounter{0};
+  const double m_timePerFrame{0.2};
+  double m_frameTime{0.0};
 };
 
 void
@@ -129,8 +129,7 @@ Game::run() {
   string windowTitle = "Voxel Game";
 
   window = new sf::Window{
-    sf::VideoMode(width, height), windowTitle, sf::Style::Default, settings
-  };
+    sf::VideoMode(width, height), windowTitle, sf::Style::Default, settings};
 
   //  window = new sf::Window{sf::VideoMode::getDesktopMode(), windowTitle,
   //      sf::Style::Default, settings};
@@ -172,16 +171,14 @@ Game::run() {
 
 void
 Game::createWorld(chunk::CreationOptions options) {
-  chunk::ChunkManager chunkManager{ options,
-                                    m_soundPlayer,
-                                    *m_graphicsmanager };
+  chunk::ChunkManager chunkManager{options, m_soundPlayer, *m_graphicsmanager};
 
   auto future = globalResources::g_threadPool.enqueue(
     [options, &chunkManager] { chunkManager.createWorld(); });
 
   LoadingScreen loadingScreen(m_fpsManager, window, *m_graphicsmanager);
 
-  std::chrono::milliseconds span{ 0 };
+  std::chrono::milliseconds span{0};
   while (future.wait_for(span) != future_status::ready) {
     loadingScreen.update();
     // Done to prevent the window to be grayed out like if the application

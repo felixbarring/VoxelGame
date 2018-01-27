@@ -119,17 +119,17 @@ private:
   std::vector<std::unique_ptr<sf::Sound>> m_playingSounds;
   std::unique_ptr<sf::Music> m_playingMusic;
 
-  bool m_graduayllChange{ false };
+  bool m_graduayllChange{false};
   double m_changeVolume{};
-  ChangeMusicVolume m_changeDirection{ ChangeMusicVolume::INCREASE };
+  ChangeMusicVolume m_changeDirection{ChangeMusicVolume::INCREASE};
   double m_changeValue{};
   double m_targetVolume{};
   double m_startVolume{};
 
   // TODO Load these from config files...
-  double m_masterVolume{ 1.0 };
-  double m_soundVolume{ 100.0 };
-  double m_musicVolume{ 100.0 };
+  double m_masterVolume{1.0};
+  double m_soundVolume{100.0};
+  double m_musicVolume{100.0};
 };
 
 } /* namespace util */

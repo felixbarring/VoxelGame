@@ -29,7 +29,7 @@ Button::Button(int id,
                int layer)
   : AbstractWidget(id, x, y, width, height, graphicsManager)
   , m_name(name)
-  , m_observer{ observer } {
+  , m_observer{observer} {
   auto& res = Resources::getInstance();
 
   m_sprite.reset(new Sprite(
@@ -60,7 +60,7 @@ Button::getName() {
 
 void
 Button::draw() {
-  SpriteBatcher& spriteBatcher{ m_graphicsManager.getSpriteBatcher() };
+  SpriteBatcher& spriteBatcher{m_graphicsManager.getSpriteBatcher()};
 
   if (m_pointerInsideBorders) {
     spriteBatcher.addBatch(*m_sprite);
@@ -74,7 +74,7 @@ Button::draw() {
 
 void
 Button::update(float) {
-  shared_ptr<Input> input{ Input::getInstance() };
+  shared_ptr<Input> input{Input::getInstance()};
 
   m_pointerInsideBorders =
     isInsideBorders(input->mouseVirtualAdjustedX, input->mouseVirtualAdjustedY);

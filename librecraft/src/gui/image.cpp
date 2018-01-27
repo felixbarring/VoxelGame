@@ -12,14 +12,14 @@ Image::Image(double x,
              double height,
              const std::string& image,
              graphics::GraphicsManager& graphicsManager)
-  : m_graphicsManager{ graphicsManager } {
-  m_sprite.reset(new graphics::Sprite{
-    x,
-    y,
-    0,
-    width,
-    height,
-    graphics::Resources::getInstance().getTexture(image) });
+  : m_graphicsManager{graphicsManager} {
+  m_sprite.reset(
+    new graphics::Sprite{x,
+                         y,
+                         0,
+                         width,
+                         height,
+                         graphics::Resources::getInstance().getTexture(image)});
 }
 
 void

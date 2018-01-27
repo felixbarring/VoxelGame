@@ -23,7 +23,6 @@ using Matrix = std::vector<std::vector<std::vector<Voxel>>>;
  */
 class GraphicalChunk {
 public:
-
   /**
    * @brief Creates an instance of the GraphicalChunk.
    *
@@ -102,7 +101,6 @@ public:
   float getzLocation();
 
 private:
-
   class MeshData {
   public:
     std::vector<GLfloat> vertexData{};
@@ -116,13 +114,15 @@ private:
 
   class Lights {
   public:
-    Lights(float _bottomLeft, float _bottomRight, float _topRight, float _topLeft)
-      : bottomLeft{_bottomLeft }
-      , bottomRight{ _bottomRight }
-      , topRight{_topRight }
-      , topLeft{ _topLeft }
-      {
-      }
+    Lights(float _bottomLeft,
+           float _bottomRight,
+           float _topRight,
+           float _topLeft)
+      : bottomLeft{_bottomLeft}
+      , bottomRight{_bottomRight}
+      , topRight{_topRight}
+      , topLeft{_topLeft} {
+    }
 
     float bottomLeft{};
     float bottomRight{};
@@ -144,6 +144,7 @@ private:
 
   Voxel* getVoxel(int x, int y, int z);
 
+  // clang-format off
   template<bool sunLight>
   void computeAverageRight(
     int lightValue,
@@ -664,6 +665,7 @@ private:
     }
     topLeft = acc / counter;
   }
+  // clang-format on
 
   static const int meshData{0};
   static const int wateterMeshData{1};
@@ -672,7 +674,7 @@ private:
   std::unique_ptr<mesh::MeshElement> m_mesh;
   std::unique_ptr<mesh::MeshElement> m_waterMesh;
 
-  bool m_hasTransparent{ true };
+  bool m_hasTransparent{true};
 
   double m_xLocation;
   double m_yLocation;

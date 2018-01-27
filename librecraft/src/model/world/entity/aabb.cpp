@@ -11,12 +11,12 @@ AABB::AABB(double xMinimum,
            double yMaximum,
            double zMinimum,
            double zMaximum)
-  : m_xMin{ xMinimum }
-  , m_xMax{ xMaximum }
-  , m_yMin{ yMinimum }
-  , m_yMax{ yMaximum }
-  , m_zMin{ zMinimum }
-  , m_zMax{ zMaximum } {
+  : m_xMin{xMinimum}
+  , m_xMax{xMaximum}
+  , m_yMin{yMinimum}
+  , m_yMax{yMaximum}
+  , m_zMin{zMinimum}
+  , m_zMax{zMaximum} {
 }
 
 void
@@ -73,7 +73,7 @@ AABB::getSweptBroadPhaseBox(AABB& box, glm::vec3& velocity) {
     zMax = box.m_zMax;
   }
 
-  return AABB{ xMin, xMax, yMin, yMax, zMin, zMax };
+  return AABB{xMin, xMax, yMin, yMax, zMin, zMax};
 }
 
 float

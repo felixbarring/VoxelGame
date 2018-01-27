@@ -22,11 +22,11 @@ Chunk::Chunk(string worldName,
              int x,
              int z,
              graphics::GraphicsManager& graphicsManager)
-  : m_xLocation{ x }
-  , m_zLocation{ z }
-  , m_graphicsManager{ graphicsManager }
-  , m_name{ createChunkName(worldName) } {
-  for (int i{ 0 }; i < CHUNK_HEIGHT / GRAPHICAL_CHUNK_HEIGHT; ++i) {
+  : m_xLocation{x}
+  , m_zLocation{z}
+  , m_graphicsManager{graphicsManager}
+  , m_name{createChunkName(worldName)} {
+  for (int i{0}; i < CHUNK_HEIGHT / GRAPHICAL_CHUNK_HEIGHT; ++i) {
     m_graphicalChunksIds.push_back(-1);
     m_dirtyRegions.emplace(i);
   }
@@ -49,8 +49,8 @@ Chunk::create(CreationOptions& options) {
 
 void
 Chunk::doSunLightning() {
-  for (int x{ 0 }; x < CHUNK_WIDTH_AND_DEPTH; ++x) {
-    for (int z{ 0 }; z < CHUNK_WIDTH_AND_DEPTH; ++z) {
+  for (int x{0}; x < CHUNK_WIDTH_AND_DEPTH; ++x) {
+    for (int z{0}; z < CHUNK_WIDTH_AND_DEPTH; ++z) {
       vector<vec3> dummy;
       doSunLightning(dummy, x, CHUNK_HEIGHT - 1, z, true);
       m_lightsToPropagate.insert(
@@ -70,8 +70,8 @@ Chunk::collectLightFromAllNeighbors() {
 void
 Chunk::collectLightFromRightNeighbor() {
   if (m_rightNeighbor.get()) {
-    for (int j{ 0 }; j < CHUNK_HEIGHT; ++j) {
-      for (int k{ 0 }; k < CHUNK_WIDTH_AND_DEPTH; ++k) {
+    for (int j{0}; j < CHUNK_HEIGHT; ++j) {
+      for (int k{0}; k < CHUNK_WIDTH_AND_DEPTH; ++k) {
         char lv = m_rightNeighbor->m_cubes[0][j][k].getSunLightValue() - 1;
         // TODO collect other light...
 
@@ -89,8 +89,8 @@ Chunk::collectLightFromRightNeighbor() {
 void
 Chunk::collectLightFromLeftNeighbor() {
   if (m_leftNeighbor.get()) {
-    for (int j{ 0 }; j < CHUNK_HEIGHT; ++j) {
-      for (int k{ 0 }; k < CHUNK_WIDTH_AND_DEPTH; ++k) {
+    for (int j{0}; j < CHUNK_HEIGHT; ++j) {
+      for (int k{0}; k < CHUNK_WIDTH_AND_DEPTH; ++k) {
         char lv = m_leftNeighbor->m_cubes[15][j][k].getSunLightValue() - 1;
         if (m_leftNeighbor->m_cubes[15][j][k].getId() == AIR &&
             m_cubes[0][j][k].getId() == AIR &&
@@ -106,8 +106,8 @@ Chunk::collectLightFromLeftNeighbor() {
 void
 Chunk::collectLightFromBackNeighbor() {
   if (m_backNeighbor.get()) {
-    for (int i{ 0 }; i < CHUNK_WIDTH_AND_DEPTH; ++i) {
-      for (int j{ 0 }; j < CHUNK_HEIGHT; ++j) {
+    for (int i{0}; i < CHUNK_WIDTH_AND_DEPTH; ++i) {
+      for (int j{0}; j < CHUNK_HEIGHT; ++j) {
         char lv = m_backNeighbor->m_cubes[i][j][0].getSunLightValue() - 1;
 
         if (m_backNeighbor->m_cubes[i][j][0].getId() == AIR &&
@@ -124,8 +124,8 @@ Chunk::collectLightFromBackNeighbor() {
 void
 Chunk::collectLightFromFrontNeighbor() {
   if (m_frontNeighbor.get()) {
-    for (int i{ 0 }; i < CHUNK_WIDTH_AND_DEPTH; ++i) {
-      for (int j{ 0 }; j < CHUNK_HEIGHT; ++j) {
+    for (int i{0}; i < CHUNK_WIDTH_AND_DEPTH; ++i) {
+      for (int j{0}; j < CHUNK_HEIGHT; ++j) {
         char lv = m_frontNeighbor->m_cubes[i][j][15].getSunLightValue() - 1;
 
         if (m_frontNeighbor->m_cubes[i][j][15].getId() == AIR &&
@@ -154,7 +154,7 @@ Chunk::propagateLights() {
 
 void
 Chunk::forceUpdateGraphics() {
-  for (int i{ 0 }; i < CHUNK_HEIGHT / GRAPHICAL_CHUNK_HEIGHT; ++i)
+  for (int i{0}; i < CHUNK_HEIGHT / GRAPHICAL_CHUNK_HEIGHT; ++i)
     m_dirtyRegions.emplace(i);
 
   updateGraphics();
@@ -289,10 +289,10 @@ Chunk::loadChunk() {
         char voxelId = std::stoi(list[counter]);
         ++counter;
         if (voxelId == LIGHT) {
-          m_cubes[i][j].push_back(Voxel{ voxelId, 0, m_directSunlight });
+          m_cubes[i][j].push_back(Voxel{voxelId, 0, m_directSunlight});
           m_otherLightSources.push_back(vec3(i, j, k));
         } else {
-          m_cubes[i][j].push_back(Voxel{ voxelId, 0, 0 });
+          m_cubes[i][j].push_back(Voxel{voxelId, 0, 0});
         }
       }
     }
@@ -304,8 +304,7 @@ Chunk::generateChunk(CreationOptions& options) {
   terrainGen::TerrainGenerator generator{
     config::chunk_data::CHUNK_WIDTH_AND_DEPTH,
     config::chunk_data::CHUNK_HEIGHT,
-    config::chunk_data::CHUNK_WIDTH_AND_DEPTH
-  };
+    config::chunk_data::CHUNK_WIDTH_AND_DEPTH};
   m_cubes = generator.generateTerrain(options, m_xLocation, m_zLocation);
 }
 
@@ -388,7 +387,7 @@ Chunk::updateLightningCubeAdded(int x, int y, int z) {
   }
   dePropagateSunlight(x, y, z);
 
-  Voxel& v{ m_cubes[x][y][z] };
+  Voxel& v{m_cubes[x][y][z]};
   if (v.getId() == LIGHT) {
     v.setOtherLightValue(m_directSunlight);
     propagateOtherLight(x, y, z);
@@ -438,7 +437,7 @@ Chunk::doSunLightning(vector<vec3>& lightPropagate,
                       bool useVec) {
   // Sun lightning, only air and water gets light.
   // Each step in water reduces the light strength by one.
-  int lightValue{ m_directSunlight };
+  int lightValue{m_directSunlight};
   for (int i = y; i >= 0; --i) {
     auto& cube = m_cubes[x][i][z];
 
@@ -879,23 +878,23 @@ Chunk::dePropagateOtherlight(int x, int y, int z /*, int _lightValue*/) {
     vec3 current = depropagates.front();
     depropagates.pop();
     Voxel& voxel = m_cubes[current.x][current.y][current.z];
-    char lightValue{ voxel.getOtherLightValue() };
+    char lightValue{voxel.getOtherLightValue()};
     voxel.setOtherLightValue(0);
 
     // Right
     if (current.x + 1 < m_width) {
-      Voxel& v{ m_cubes[current.x + 1][current.y][current.z] };
+      Voxel& v{m_cubes[current.x + 1][current.y][current.z]};
       if (v.getId() == AIR) {
         if (v.getOtherLightValue() != 0 &&
             v.getOtherLightValue() <= lightValue) {
           depropagates.emplace(current.x + 1, current.y, current.z);
         } else if (v.getOtherLightValue() >= lightValue) {
-          propagates.push_back({ current.x + 1, current.y, current.z });
+          propagates.push_back({current.x + 1, current.y, current.z});
         }
       }
     } else {
       if (m_rightNeighbor) {
-        Voxel& v{ m_rightNeighbor->m_cubes[0][current.y][current.z] };
+        Voxel& v{m_rightNeighbor->m_cubes[0][current.y][current.z]};
         if (v.getId() == AIR) {
           if (v.getOtherLightValue() != 0 &&
               v.getOtherLightValue() <= lightValue) {
@@ -907,18 +906,18 @@ Chunk::dePropagateOtherlight(int x, int y, int z /*, int _lightValue*/) {
 
     // Left
     if (current.x - 1 >= 0) {
-      Voxel& v{ m_cubes[current.x - 1][current.y][current.z] };
+      Voxel& v{m_cubes[current.x - 1][current.y][current.z]};
       if (v.getId() == AIR) {
         if (v.getOtherLightValue() != 0 &&
             v.getOtherLightValue() <= lightValue) {
           depropagates.emplace(current.x - 1, current.y, current.z);
         } else if (v.getOtherLightValue() >= lightValue) {
-          propagates.push_back({ current.x - 1, current.y, current.z });
+          propagates.push_back({current.x - 1, current.y, current.z});
         }
       }
     } else {
       if (m_leftNeighbor) {
-        Voxel& v{ m_leftNeighbor->m_cubes[m_width - 1][current.y][current.z] };
+        Voxel& v{m_leftNeighbor->m_cubes[m_width - 1][current.y][current.z]};
         if (v.getId() == AIR) {
           if (v.getOtherLightValue() != 0 &&
               v.getOtherLightValue() <= lightValue) {
@@ -931,44 +930,44 @@ Chunk::dePropagateOtherlight(int x, int y, int z /*, int _lightValue*/) {
 
     // Up
     if (current.y + 1 < m_height) {
-      Voxel& v{ m_cubes[current.x][current.y + 1][current.z] };
+      Voxel& v{m_cubes[current.x][current.y + 1][current.z]};
       if (v.getId() == AIR) {
         if (v.getOtherLightValue() != 0 &&
             v.getOtherLightValue() <= lightValue) {
           depropagates.emplace(current.x, current.y + 1, current.z);
         } else if (v.getOtherLightValue() >= lightValue) {
-          propagates.push_back({ current.x, current.y + 1, current.z });
+          propagates.push_back({current.x, current.y + 1, current.z});
         }
       }
     }
 
     // Down
     if (current.y - 1 >= 0) {
-      Voxel& v{ m_cubes[current.x][current.y - 1][current.z] };
+      Voxel& v{m_cubes[current.x][current.y - 1][current.z]};
       if (v.getId() == AIR) {
         if (v.getOtherLightValue() != 0 &&
             v.getOtherLightValue() <= lightValue) {
           depropagates.emplace(current.x, current.y - 1, current.z);
         } else if (v.getOtherLightValue() >= lightValue) {
-          propagates.push_back({ current.x, current.y - 1, current.z });
+          propagates.push_back({current.x, current.y - 1, current.z});
         }
       }
     }
 
     // Backwards
     if (current.z + 1 > 0) {
-      Voxel& v{ m_cubes[current.x][current.y][current.z + 1] };
+      Voxel& v{m_cubes[current.x][current.y][current.z + 1]};
       if (v.getId() == AIR) {
         if (v.getOtherLightValue() != 0 &&
             v.getOtherLightValue() <= lightValue) {
           depropagates.emplace(current.x, current.y, current.z + 1);
         } else if (v.getOtherLightValue() >= lightValue) {
-          propagates.push_back({ current.x, current.y, current.z + 1 });
+          propagates.push_back({current.x, current.y, current.z + 1});
         }
       }
     } else {
       if (m_backNeighbor) {
-        Voxel& v{ m_cubes[current.x][current.y][0] };
+        Voxel& v{m_cubes[current.x][current.y][0]};
         if (v.getId() == AIR) {
           if (v.getOtherLightValue() != 0 &&
               v.getOtherLightValue() <= lightValue) {
@@ -980,18 +979,18 @@ Chunk::dePropagateOtherlight(int x, int y, int z /*, int _lightValue*/) {
 
     // Forward
     if (current.z - 1 >= 0) {
-      Voxel& v{ m_cubes[current.x][current.y][current.z - 1] };
+      Voxel& v{m_cubes[current.x][current.y][current.z - 1]};
       if (v.getId() == AIR) {
         if (v.getOtherLightValue() != 0 &&
             v.getOtherLightValue() <= lightValue) {
           depropagates.emplace(current.x, current.y, current.z - 1);
         } else if (v.getOtherLightValue() >= lightValue) {
-          propagates.push_back({ current.x, current.y, current.z - 1 });
+          propagates.push_back({current.x, current.y, current.z - 1});
         }
       }
     } else {
       if (m_frontNeighbor) {
-        Voxel& v{ m_cubes[current.x][current.y][m_depth - 1] };
+        Voxel& v{m_cubes[current.x][current.y][m_depth - 1]};
         if (v.getId() == AIR) {
           if (v.getOtherLightValue() != 0 &&
               v.getOtherLightValue() <= lightValue) {

@@ -86,13 +86,12 @@ private:
   void moveChunks(Direction direction);
 
   int m_lenghtAcrossMatrix{
-    config::chunk_data::NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * 2 + 1
-  };
+    config::chunk_data::NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * 2 + 1};
 
   std::vector<std::vector<std::vector<std::shared_ptr<Chunk>>>> m_chunks;
 
-  int m_xOffset{ 0 };
-  int m_zOffset{ 0 };
+  int m_xOffset{0};
+  int m_zOffset{0};
 
   std::string m_worldName{};
   CreationOptions m_options;
@@ -100,10 +99,9 @@ private:
   graphics::GraphicsManager& m_graphicsManager;
 
   bool m_loadStoreWorldWhenPlyayerIsNotInTheCenterChunk{
-    true
-  }; // Good name 10/10
+    true}; // Good name 10/10
 
-  glm::vec3 m_center{ 4, 0, 4 };
+  glm::vec3 m_center{4, 0, 4};
   glm::vec3 m_intersectedCube{};
   glm::vec3 m_previousCube{};
 

@@ -58,8 +58,8 @@ private:
 
   inline void generateDessert(VoxelMatrix& cubes,
                               double height,
-                              //int xOff,
-                              //int zOff,
+                              // int xOff,
+                              // int zOff,
                               int x,
                               int z);
 
@@ -75,7 +75,7 @@ private:
 
   const int m_seed{};
 
-  const int m_seaLevel{ 20 };
+  const int m_seaLevel{20};
 };
 }
 

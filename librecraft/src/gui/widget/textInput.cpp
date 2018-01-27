@@ -28,9 +28,9 @@ TextInput::TextInput(int id,
                      graphics::GraphicsManager& graphicsManager,
                      int layer)
   : AbstractWidget(id, x, y, width, height, graphicsManager)
-  , m_layer{ layer }
-  , m_maxInputLength{ width }
-  , m_textHeight{ height - s_textHightDifference } {
+  , m_layer{layer}
+  , m_maxInputLength{width}
+  , m_textHeight{height - s_textHightDifference} {
   Resources& res = Resources::getInstance();
 
   m_background = make_unique<Sprite>(

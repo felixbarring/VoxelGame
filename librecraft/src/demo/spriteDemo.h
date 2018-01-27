@@ -62,31 +62,31 @@ public:
     glClearColor(0.2f, 0.22f, 0.2f, 1.0f);
 
     std::shared_ptr<graphics::Sprite> sprite(
-      new graphics::Sprite{ 200,
-                            200,
-                            0,
-                            200,
-                            200,
-                            graphics::Resources::getInstance().getTexture(
-                              config::cube_data::textures[0]) });
+      new graphics::Sprite{200,
+                           200,
+                           0,
+                           200,
+                           200,
+                           graphics::Resources::getInstance().getTexture(
+                             config::cube_data::textures[0])});
 
     std::shared_ptr<graphics::Sprite> sprite2(
-      new graphics::Sprite{ 300,
-                            300,
-                            0,
-                            200,
-                            200,
-                            graphics::Resources::getInstance().getTexture(
-                              config::cube_data::textures[1]) });
+      new graphics::Sprite{300,
+                           300,
+                           0,
+                           200,
+                           200,
+                           graphics::Resources::getInstance().getTexture(
+                             config::cube_data::textures[1])});
 
     std::shared_ptr<graphics::Sprite> sprite3(
-      new graphics::Sprite{ 600,
-                            200,
-                            0,
-                            200,
-                            200,
-                            graphics::Resources::getInstance().getTexture(
-                              config::cube_data::textures[2]) });
+      new graphics::Sprite{600,
+                           200,
+                           0,
+                           200,
+                           200,
+                           graphics::Resources::getInstance().getTexture(
+                             config::cube_data::textures[2])});
 
     graphics::GraphicsManager graphicsmanager{};
 

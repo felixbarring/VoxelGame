@@ -135,13 +135,13 @@ private:
 
   Camera& m_camera;
 
-  int m_idCounter{ 0 };
+  int m_idCounter{0};
   std::map<int, std::shared_ptr<GraphicalChunk>> m_batches{};
 
-  double m_sunStrength{ 1 };
+  double m_sunStrength{1};
   std::mutex m_mutex{};
 
-  static constexpr int noRemove{ -1 };
+  static constexpr int noRemove{-1};
 
   using batches =
     std::vector<std::tuple<int, int, std::shared_ptr<GraphicalChunk>>>;

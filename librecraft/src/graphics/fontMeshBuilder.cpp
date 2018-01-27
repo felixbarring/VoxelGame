@@ -129,8 +129,7 @@ FontMeshBuilder::buldMeshForString(const string& str, float height) {
     xOffset += width;
   }
 
-  vector<pair<vector<float>, int>> vobs{ { vertices, 3 },
-                                         { uvCoordinates, 2 } };
+  vector<pair<vector<float>, int>> vobs{{vertices, 3}, {uvCoordinates, 2}};
   auto mesh = make_unique<mesh::MeshElement>(move(vobs), elements);
 
   return mesh;

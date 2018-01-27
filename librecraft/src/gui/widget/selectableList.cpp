@@ -32,7 +32,7 @@ SelectableList::SelectableList(int id,
                    width,
                    height,
                    graphicsManager)
-  , m_layer{ layer + 1 } {
+  , m_layer{layer + 1} {
   this->m_observer = observer;
 
   auto& res = Resources::getInstance();

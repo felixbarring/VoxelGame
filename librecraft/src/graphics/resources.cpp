@@ -12,7 +12,7 @@ Resources::getTexture(const string& path) {
   auto it = textures.find(path);
 
   if (it == textures.end())
-    textures.insert(make_pair(path, Texture{ path.c_str() }));
+    textures.insert(make_pair(path, Texture{path.c_str()}));
 
   return textures.at(path);
 }
@@ -25,7 +25,7 @@ Resources::getTextureArray(const vector<string>& textures,
 
   if (it == textureArraysMap.end())
     textureArraysMap.insert(
-      make_pair(textures[0], TextureArray{ textures, width, height }));
+      make_pair(textures[0], TextureArray{textures, width, height}));
 
   return textureArraysMap.at(textures[0]);
 }
@@ -41,12 +41,12 @@ Resources::getTextureCubeMap(string& right,
 
   if (it == textureCubeMaps.end())
     textureCubeMaps.insert(make_pair(right,
-                                     TextureCubeMap{ right.c_str(),
-                                                     left.c_str(),
-                                                     top.c_str(),
-                                                     bottom.c_str(),
-                                                     back.c_str(),
-                                                     front.c_str() }));
+                                     TextureCubeMap{right.c_str(),
+                                                    left.c_str(),
+                                                    top.c_str(),
+                                                    bottom.c_str(),
+                                                    back.c_str(),
+                                                    front.c_str()}));
 
   return textureCubeMaps.at(right);
 }
@@ -59,7 +59,7 @@ Resources::getFontMeshBuilder(string& pathToLayout,
 
   if (it == fontMeshBuilders.end())
     fontMeshBuilders.insert(make_pair(
-      pathToLayout, FontMeshBuilder{ pathToLayout, atlasWidth, atlasHeight }));
+      pathToLayout, FontMeshBuilder{pathToLayout, atlasWidth, atlasHeight}));
 
   return fontMeshBuilders.at(pathToLayout);
 }

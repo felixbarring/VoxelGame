@@ -55,7 +55,7 @@ public:
   void trigger();
 
 protected:
-  bool m_pointerInsideBorders{ false };
+  bool m_pointerInsideBorders{false};
   std::string m_name;
   std::function<void(int)> m_observer;
 
