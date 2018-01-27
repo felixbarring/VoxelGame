@@ -53,7 +53,6 @@ private:
   std::shared_ptr<IGameState> m_inGame{};
   std::shared_ptr<IGameState> m_currentState{};
 
-  bool m_changeStateToIngame{false};
   bool m_quit{false};
 };
 

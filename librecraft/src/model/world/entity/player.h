@@ -62,10 +62,10 @@ private:
   FootStepSoundPlayer m_stepPlayer;
   graphics::GraphicsManager& m_graphicsManager;
 
-  float m_width{0.8};
-  float m_height{1.7};
-  float m_depth{0.8};
-  float m_cameraHeight{1.5};
+  const float m_width{0.8};
+  const float m_height{1.7};
+  const float m_depth{0.8};
+  const float m_cameraHeight{1.5};
 
   float m_gravity{30};
   float m_jumpSpeed{12};

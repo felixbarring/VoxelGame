@@ -10,25 +10,12 @@ namespace graphics {
 
 class TexturedCube {
 public:
-  TexturedCube(float xOffset, float yOffset, float zOffset, int id);
+  TexturedCube(int id);
 
   void draw();
 
-  float getxLocation() {
-    return xLocation;
-  }
-
-  float getyLocation() {
-    return yLocation;
-  }
-
 private:
-  // unique pointer gives error?!?
-  std::shared_ptr<mesh::MeshElement> m_mesh;
-
-  float xLocation;
-  float yLocation;
-  float zLocation;
+  std::unique_ptr<mesh::MeshElement> m_mesh;
 };
 }
 

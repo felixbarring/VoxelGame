@@ -60,7 +60,7 @@ private:
   std::vector<std::string> m_stepSounds{};
   util::SoundPlayer& m_soundPlayer;
 
-  bool m_isWalking{false};
+  //  bool m_isWalking{false};
   double m_accumulatedTime{};
   double m_footStepDelay{0.35};
 };

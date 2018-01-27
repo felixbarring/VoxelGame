@@ -29,6 +29,9 @@ TerrainGenerator::TerrainGenerator(int width, int height, int depth, int seed)
   , m_height{height}
   , m_depth{depth}
   , m_seed{seed} {
+
+  int kek = m_seed; // Dummy to prevent unused warnings :-)
+  ++kek;
 }
 
 TerrainGenerator::VoxelMatrix

@@ -327,8 +327,8 @@ Player::createAABB() {
           m_location.x + m_width / 2,
           m_location.y - m_cameraHeight,
           m_location.y + m_height - m_cameraHeight,
-          m_location.z - m_width / 2,
-          m_location.z + m_width / 2};
+          m_location.z - m_depth / 2,
+          m_location.z + m_depth / 2};
 }
 
 } /* namespace entity */

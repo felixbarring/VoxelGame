@@ -40,7 +40,7 @@ CubeBatcher::CubeBatcher(Camera& camera)
       config::cube_data::TEXTURE_HEIGHT)) {
 
   for (int i = 0; i <= config::cube_data::LAST_CUBE + 1; i++)
-    m_cubes.push_back(TexturedCube{2, 0, -1.0f, i});
+    m_cubes.push_back(TexturedCube{/*2, 0, -1.0f, */ i});
 
   // clang-format off
 

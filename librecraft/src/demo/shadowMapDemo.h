@@ -161,10 +161,10 @@ public:
                            glm::vec3(0.0f, 0.0f, 1.0f));
 
     int someCubeType{1}; // TODO replace with constant
-    TexturedCube cube1{0.0, 0.0, 0.0, someCubeType};
+    TexturedCube cube1{/*0.0, 0.0, 0.0,*/ someCubeType};
     graphics::Transform transform1{0.0, 0.0, 0.0};
 
-    float size = 5.0f;
+    float size{5.0f};
 
     // clang-format off
 

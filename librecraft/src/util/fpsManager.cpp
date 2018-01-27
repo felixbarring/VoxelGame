@@ -6,8 +6,7 @@
 namespace util {
 
 FPSManager::FPSManager(int maxFPS)
-  : m_maxFPS{maxFPS}
-  , m_timePerFrame{1.0 / maxFPS} {
+  : m_timePerFrame{1.0 / maxFPS} {
 }
 
 void
