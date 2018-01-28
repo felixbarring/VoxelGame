@@ -109,7 +109,7 @@ CubeBatcher::draw() {
 
   m_program->setUniform1f(sunStrength, m_sunStrength);
 
-  for (auto b : m_batches) {
+  for (Batch b : m_batches) {
     m_program->setUniform1f(sunLight, b.m_sunLight);
     m_program->setUniform1f(otherLight, b.m_otherLight);
 

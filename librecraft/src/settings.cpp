@@ -45,17 +45,17 @@ Settings::Settings(std::shared_ptr<widget::WidgetGroup>& active,
       }
     };
 
-    auto label = make_shared<Label>(
+    shared_ptr<Label> label = make_shared<Label>(
       325, 390, 150, 30, " - Settings - ", m_graphicsManager);
-    auto button1 = make_shared<Button>(
+    shared_ptr<Button> button1 = make_shared<Button>(
       0, 325, 350, 150, 30, m_graphicsManager, observer, "Game");
-    auto button2 = make_shared<Button>(
+    shared_ptr<Button> button2 = make_shared<Button>(
       1, 325, 310, 150, 30, m_graphicsManager, observer, "Input");
-    auto button3 = make_shared<Button>(
+    shared_ptr<Button> button3 = make_shared<Button>(
       2, 325, 270, 150, 30, m_graphicsManager, observer, "Graphics");
-    auto button4 = make_shared<Button>(
+    shared_ptr<Button> button4 = make_shared<Button>(
       3, 325, 230, 150, 30, m_graphicsManager, observer, "Audio");
-    auto button5 = make_shared<Button>(
+    shared_ptr<Button> button5 = make_shared<Button>(
       4, 325, 190, 150, 30, m_graphicsManager, observer, "Back");
 
     m_settingsWidgetGroup =
@@ -76,9 +76,9 @@ Settings::Settings(std::shared_ptr<widget::WidgetGroup>& active,
       }
     };
 
-    auto label =
+    shared_ptr<Label> label =
       make_shared<Label>(325, 390, 150, 30, " - Game - ", m_graphicsManager);
-    auto button = make_shared<Button>(
+    shared_ptr<Button> button = make_shared<Button>(
       0, 325, 230, 150, 30, m_graphicsManager, observer, "Back");
 
     m_gameSettingsWidgetGroup =
@@ -118,9 +118,9 @@ Settings::Settings(std::shared_ptr<widget::WidgetGroup>& active,
     m_mouseSensitivityInput = make_shared<TextInput>(
       666, 125 + 100, 270, 150, 30, m_graphicsManager, 1);
 
-    auto button1 = make_shared<Button>(
+    shared_ptr<Button> button1 = make_shared<Button>(
       0, 245, 130, 150, 30, m_graphicsManager, observer, "Save", 1);
-    auto button2 = make_shared<Button>(
+    shared_ptr<Button> button2 = make_shared<Button>(
       0, 400, 130, 150, 30, m_graphicsManager, observer, "Cancel", 1);
 
     m_inputSettingsWidgetGroup =
@@ -156,9 +156,9 @@ Settings::Settings(std::shared_ptr<widget::WidgetGroup>& active,
       }
     };
 
-    auto label1 = make_shared<Label>(
+    shared_ptr<Label> label1 = make_shared<Label>(
       325, 390, 150, 30, " - Graphics - ", m_graphicsManager);
-    auto label2 =
+    shared_ptr<Label> label2 =
       make_shared<Label>(30 + 100, 310, 80, 20, "FOV:", m_graphicsManager, 1);
 
     m_fovSlider = make_shared<Slider>(
@@ -166,7 +166,7 @@ Settings::Settings(std::shared_ptr<widget::WidgetGroup>& active,
     m_fovTextInput = make_shared<TextInput>(
       666, 285 + 100, 310, 100, 30, m_graphicsManager, 1);
 
-    auto label3 = make_shared<Label>(
+    shared_ptr<Label> label3 = make_shared<Label>(
       30 + 100, 270, 80, 20, "Render Distance:", m_graphicsManager, 1);
 
     m_renderDistanceSlider = make_shared<Slider>(
@@ -174,9 +174,9 @@ Settings::Settings(std::shared_ptr<widget::WidgetGroup>& active,
     m_renderDistanceInput =
       make_shared<TextInput>(-1, 285 + 100, 270, 100, 30, m_graphicsManager, 1);
 
-    auto button1 = make_shared<Button>(
+    shared_ptr<Button> button1 = make_shared<Button>(
       0, 245, 130, 150, 30, m_graphicsManager, observer, "Save", 1);
-    auto button2 = make_shared<Button>(
+    shared_ptr<Button> button2 = make_shared<Button>(
       1, 400, 130, 150, 30, m_graphicsManager, observer, "Cancel", 1);
 
     m_graphicsSettingsWidgetGroup =
@@ -214,10 +214,10 @@ Settings::Settings(std::shared_ptr<widget::WidgetGroup>& active,
       }
     };
 
-    auto label1 =
+    shared_ptr<Label> label1 =
       make_shared<Label>(325, 390, 150, 30, " - Audio - ", m_graphicsManager);
 
-    auto label2 = make_shared<Label>(
+    shared_ptr<Label> label2 = make_shared<Label>(
       230, 310, 80, 20, "Master Volume:", m_graphicsManager, 1);
     m_masterVolumeSlider =
       make_shared<Slider>(2, 325, 310, 150, 30, m_graphicsManager, observer, 1);
@@ -225,7 +225,7 @@ Settings::Settings(std::shared_ptr<widget::WidgetGroup>& active,
     m_masterVolumeInput =
       make_shared<TextInput>(666, 485, 310, 50, 30, m_graphicsManager, 1);
 
-    auto label3 = make_shared<Label>(
+    shared_ptr<Label> label3 = make_shared<Label>(
       230, 270, 80, 20, "Music Volume:", m_graphicsManager, 1);
     m_musicVolumeSlider =
       make_shared<Slider>(2, 325, 270, 150, 30, m_graphicsManager, observer, 1);
@@ -233,7 +233,7 @@ Settings::Settings(std::shared_ptr<widget::WidgetGroup>& active,
     m_musicVolumeInput =
       make_shared<TextInput>(666, 485, 270, 50, 30, m_graphicsManager, 1);
 
-    auto label4 = make_shared<Label>(
+    shared_ptr<Label> label4 = make_shared<Label>(
       230, 230, 80, 20, "Sound Volume:", m_graphicsManager, 1);
     m_soundVolumeSlider =
       make_shared<Slider>(2, 325, 230, 150, 30, m_graphicsManager, observer, 1);
@@ -241,9 +241,9 @@ Settings::Settings(std::shared_ptr<widget::WidgetGroup>& active,
     m_soundVolumeInput =
       make_shared<TextInput>(666, 485, 230, 50, 30, m_graphicsManager, 1);
 
-    auto button1 = make_shared<Button>(
+    shared_ptr<Button> button1 = make_shared<Button>(
       0, 245, 130, 150, 30, m_graphicsManager, observer, "Save", 1);
-    auto button2 = make_shared<Button>(
+    shared_ptr<Button> button2 = make_shared<Button>(
       1, 400, 130, 150, 30, m_graphicsManager, observer, "Cancel", 1);
 
     m_audioSettingsWidgetGroup =

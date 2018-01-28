@@ -10,6 +10,8 @@
 
 namespace util {
 
+using namespace std;
+
 double volumeScaler{100};
 
 // Just a function that clamps the values to 0 or 100.
@@ -25,8 +27,8 @@ validVolume(double volume) {
 
 void
 SoundPlayer::update(double time) {
-  for (auto sound = m_playingSounds.begin(); sound < m_playingSounds.end();
-       ++sound) {
+  for (vector<unique_ptr<sf::Sound>>::iterator sound =
+      m_playingSounds.begin(); sound < m_playingSounds.end(); ++sound) {
     if ((*sound)->getStatus() == sf::SoundSource::Status::Stopped)
       m_playingSounds.erase(sound);
   }
@@ -47,26 +49,26 @@ SoundPlayer::update(double time) {
 }
 
 void
-SoundPlayer::playSound(const std::string& soundPath) {
+SoundPlayer::playSound(const string& soundPath) {
   if (m_buffers.find(soundPath) == m_buffers.end()) {
     sf::SoundBuffer buffer;
     if (!buffer.loadFromFile(soundPath))
-      std::cout << "Could not play sound :( - " << soundPath << "\n";
-    m_buffers.emplace(soundPath, std::move(buffer));
+      cout << "Could not play sound :( - " << soundPath << "\n";
+    m_buffers.emplace(soundPath, move(buffer));
   }
 
-  std::unique_ptr<sf::Sound> sound = std::make_unique<sf::Sound>();
+  unique_ptr<sf::Sound> sound = make_unique<sf::Sound>();
   sound->setBuffer((*m_buffers.find(soundPath)).second);
   sound->setVolume(validVolume(m_soundVolume * m_masterVolume));
   sound->play();
-  m_playingSounds.push_back(std::move(sound));
+  m_playingSounds.push_back(move(sound));
 }
 
 void
-SoundPlayer::playMusic(const std::string& musicPath) {
-  auto music = std::make_unique<sf::Music>();
+SoundPlayer::playMusic(const string& musicPath) {
+  unique_ptr<sf::Music> music = make_unique<sf::Music>();
   if (!music->openFromFile(musicPath))
-    std::cout << "Could not play music :( - " << musicPath << "\n";
+    cout << "Could not play music :( - " << musicPath << "\n";
   m_playingMusic = move(music);
 
   m_playingMusic->setVolume(validVolume(m_musicVolume * m_masterVolume));
@@ -124,11 +126,11 @@ SoundPlayer::graduallyChangeMusicVolume(ChangeMusicVolume value) {
   if (value == ChangeMusicVolume::INCREASE) {
     m_changeValue = change;
     m_targetVolume = m_musicVolume;
-    m_startVolume = std::max(0.0, m_changeVolume);
+    m_startVolume = max(0.0, m_changeVolume);
   } else {
     m_changeValue = -change;
     m_targetVolume = 0.0;
-    m_startVolume = std::min(m_musicVolume, m_changeVolume);
+    m_startVolume = min(m_musicVolume, m_changeVolume);
   }
   m_changeVolume = m_startVolume;
 }

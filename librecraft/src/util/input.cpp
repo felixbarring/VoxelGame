@@ -87,7 +87,7 @@ Input::updateValues() {
   action2Active = Mouse::isButtonPressed(action2Button);
 
   if (m_mouseLocked) {
-    auto ve = Mouse::getPosition(*m_window);
+    Vector2i ve = Mouse::getPosition(*m_window);
     double mouseXOffset = ve.x;
     double mouseYOffset = ve.y;
 
@@ -95,7 +95,7 @@ Input::updateValues() {
     mouseYMovement = m_screenCenterY - mouseYOffset;
     centerMouse();
   } else {
-    auto vec = Mouse::getPosition(*m_window);
+    Vector2i vec = Mouse::getPosition(*m_window);
     mouseXPosition = vec.x;
     mouseYPosition = vec.y;
   }

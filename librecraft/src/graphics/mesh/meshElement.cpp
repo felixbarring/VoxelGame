@@ -1,6 +1,7 @@
 #include "meshElement.h"
 
 #include <iostream>
+#include <vector>
 
 namespace mesh {
 
@@ -16,7 +17,7 @@ MeshElement::MeshElement(std::vector<std::pair<std::vector<float>, int>> vbos,
   glBindVertexArray(m_VAO);
 
   int i{0};
-  for (auto vbo : vbos) {
+  for (std::pair<std::vector<float>, int> vbo : vbos) {
     GLuint vboHandle;
     glGenBuffers(1, &vboHandle);
     glBindBuffer(GL_ARRAY_BUFFER, vboHandle);

@@ -103,7 +103,7 @@ ChunkBatcher::addBatch(int replaceId,
                        VoxelMatrix* front,
                        bool hightPriority) {
 
-  auto batch =
+  shared_ptr<GraphicalChunk> batch =
     make_shared<GraphicalChunk>(x, y, z, data, right, left, back, front);
 
   lock_guard<mutex> lock(m_mutex);
@@ -147,7 +147,7 @@ ChunkBatcher::draw() {
 
   //    m_program->setUniform3f("fogColor", skyColor.x, skyColor.y, skyColor.z);
 
-  for (auto batch : m_batches) {
+  for (pair<const int,shared_ptr<GraphicalChunk>> batch : m_batches) {
     mat4 modelView =
       m_camera.getViewMatrix() * batch.second->getTransform().getMatrix();
     mat4 modelViewProjection = m_camera.getProjectionMatrix() * modelView;
@@ -162,7 +162,7 @@ ChunkBatcher::draw() {
 
   // TODO Reuse matrixes
   // A second pass to draw the water/transparent stuffs
-  for (auto batch : m_batches) {
+  for (pair<const int,shared_ptr<GraphicalChunk>> batch : m_batches) {
     if (!batch.second->hasTransparent())
       continue;
 
@@ -186,7 +186,8 @@ void
 ChunkBatcher::addAndRemoveBatches() {
   // Add all the batches that has high priority
   while (!m_batchesToAddHP.empty()) {
-    auto batchIt = m_batchesToAddHP.begin();
+    vector<tuple<int , int, shared_ptr<GraphicalChunk>>>::iterator batchIt =
+        m_batchesToAddHP.begin();
     int id{get<0>(*batchIt)};
     int replaceId{get<1>(*batchIt)};
 
@@ -201,7 +202,8 @@ ChunkBatcher::addAndRemoveBatches() {
   // Add one of the batches with none high priority that has been requested to
   // be added.
   if (!m_batchesToAdd.empty()) {
-    auto batchIt = m_batchesToAdd.begin();
+    vector<tuple<int , int, shared_ptr<GraphicalChunk>>>::iterator batchIt =
+        m_batchesToAdd.begin();
     int id{get<0>(*batchIt)};
     int replaceId{get<1>(*batchIt)};
 
@@ -215,8 +217,9 @@ ChunkBatcher::addAndRemoveBatches() {
 
   // Remove all of the batches that has been requested to be removed.
   while (!m_batchesToBeRemoved.empty()) {
-    auto batch = m_batchesToBeRemoved.begin();
-    auto batchIt = m_batches.find(*batch);
+    vector<int, allocator<int>>::iterator batch = m_batchesToBeRemoved.begin();
+    std::map<int, shared_ptr<GraphicalChunk>>::iterator batchIt =
+        m_batches.find(*batch);
 
     if (batchIt != m_batches.end()) {
       m_batches.erase(batchIt);
@@ -224,7 +227,8 @@ ChunkBatcher::addAndRemoveBatches() {
     } else {
       // It might not have been added before it was requested to be removed.
       bool failed{true};
-      for (auto b = m_batchesToAdd.begin(); b != m_batchesToAdd.end(); ++b) {
+      for (std::vector<tuple<int,int,shared_ptr<GraphicalChunk>>>::iterator
+          b = m_batchesToAdd.begin(); b != m_batchesToAdd.end(); ++b) {
         if (get<0>(*b) == *batch) {
           m_batchesToAdd.erase(b);
           m_batchesToBeRemoved.erase(batch);

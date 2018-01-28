@@ -29,7 +29,7 @@ ShaderProgram::ShaderProgram(const string& vertexSource,
   glAttachShader(programID, fragmentID);
 
   // Create locations for all the attributes
-  for (auto attribute : attributes) {
+  for (pair<const string, int> attribute : attributes) {
 
     //		cout << "Attributes: " << attributes.size() << "\n";
     //		cout << "Attribute = " << attribute.second << " " <<
