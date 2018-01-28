@@ -66,16 +66,17 @@ public:
       "  texCoord = vec2(texCoordIn.x, 1.0 - texCoordIn.y); \n"
       "} \n";
 
-    std::string frag = "#version 330 core \n"
-                       "in vec2 texCoord; \n"
+    std::string frag =
+        "#version 330 core \n"
+        "in vec2 texCoord; \n"
 
-                       "out vec4 color; \n"
+        "out vec4 color; \n"
 
-                       "uniform sampler2D texture1; \n"
-                       "void main() \n"
-                       "{ \n"
-                       "  color = texture(texture1, texCoord); \n"
-                       "} \n";
+        "uniform sampler2D texture1; \n"
+        "void main() \n"
+        "{ \n"
+        "  color = texture(texture1, texCoord); \n"
+        "} \n";
 
     std::map<std::string, int> attributesMap{
       std::pair<std::string, int>("positionIn", 0),
@@ -121,6 +122,7 @@ public:
     }
   }
 };
+
 }
 
 #endif /* SRC_DEMO_TEXTUREDEMO_H_ */

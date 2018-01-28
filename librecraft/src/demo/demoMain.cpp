@@ -12,6 +12,7 @@
 #include "shadowMapDemo.h"
 #include "spriteDemo.h"
 #include "textureDemo.h"
+#include "xmlDemo.h"
 
 int
 main(int, char* argv[]) {
@@ -45,6 +46,9 @@ main(int, char* argv[]) {
     } else if (str == "libNoiseDemo") {
       demo::LibNoiseDemo libNoiseDemo;
       libNoiseDemo.runDemo();
+    } else if (str == "xmlDemo") {
+      demo::XmlDemo xmlDemo;
+      xmlDemo.runDemo();
     }
 
   } catch (std::exception& e) {
