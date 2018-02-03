@@ -32,6 +32,7 @@
 #include "util/fpsManager.h"
 #include "util/globalResources.h"
 #include "util/input.h"
+#include "util/settingsPersistence.h"
 
 using graphics::ChunkBatcher;
 using graphics::CubeBatcher;
@@ -108,10 +109,19 @@ void
 Game::run() {
   check_system::checkStuff();
 
-  //  config::graphics_data::windowWidth =
-  //  sf::VideoMode::getDesktopMode().width;
-  //  config::graphics_data::windowHeight =
-  //  sf::VideoMode::getDesktopMode().height;
+  {
+    SettingsPersistence settingsPersistence{};
+    settingsPersistence.loadSettings();
+  }
+
+  bool useFullscreen{false};
+
+  if (useFullscreen) {
+    config::graphics_data::windowWidth =
+    sf::VideoMode::getDesktopMode().width;
+    config::graphics_data::windowHeight =
+    sf::VideoMode::getDesktopMode().height;
+  }
 
   const int width = config::graphics_data::windowWidth;
   const int height = config::graphics_data::windowHeight;
@@ -128,16 +138,15 @@ Game::run() {
 
   string windowTitle = "Voxel Game";
 
-  window = new sf::Window{
-    sf::VideoMode(width, height), windowTitle, sf::Style::Default, settings};
-
-  //  window = new sf::Window{sf::VideoMode::getDesktopMode(), windowTitle,
-  //      sf::Style::Default, settings};
+  if (useFullscreen) {
+  window = new sf::Window{sf::VideoMode::getDesktopMode(), windowTitle,
+      sf::Style::Default, settings};
+  } else {
+    window = new sf::Window{
+      sf::VideoMode(width, height), windowTitle, sf::Style::Default, settings};
+  }
 
   window->setMouseCursorVisible(false);
-
-  //    window->setVerticalSyncEnabled(true);
-  //    window->setFramerateLimit(300);
 
   Input::getInstance()->setWindow(window);
 
@@ -167,6 +176,9 @@ Game::run() {
     window->display();
     m_fpsManager.sync();
   }
+
+  SettingsPersistence settingsPersistence{};
+  settingsPersistence.storeSettings();
 }
 
 void

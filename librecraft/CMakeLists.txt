@@ -14,6 +14,7 @@ endif()
 
 if(CMAKE_BUILD_TYPE MATCHES Debug)
   message("### Debug build.")
+	add_definitions(-O0)
 elseif(CMAKE_BUILD_TYPE MATCHES Release)
   message("### Release build. Using -03 optimization")
   add_definitions(-O3)

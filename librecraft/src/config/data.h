@@ -19,6 +19,7 @@ namespace config {
 
 extern std::string dataFolder;
 extern std::string worldMetaFile;
+extern std::string settingsFile;
 
 namespace chunk_data {
 extern const int GRAPHICAL_CHUNK_WIDTH;
@@ -89,7 +90,7 @@ extern int fps;
 extern int windowWidth;
 extern int windowHeight;
 
-extern float fov; // degree to radians
+extern float fov;
 
 extern float virtualWidth;
 extern float virtualHeight;

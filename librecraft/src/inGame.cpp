@@ -207,6 +207,7 @@ InGame::InGame(Game& game,
         return;
       }
       m_graphicsManager.getPlayerCamera().setFov(fov);
+      config::graphics_data::fov = fov;
     } else if (command == setTimeSpeed) {
       if (arguments.size() < 2) {
         m_terminal->addLine("Too few arguments!");

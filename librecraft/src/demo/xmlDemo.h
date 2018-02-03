@@ -2,11 +2,11 @@
 #ifndef SOURCE_DIRECTORY__SRC_DEMO_XMLDEMO_H_
 #define SOURCE_DIRECTORY__SRC_DEMO_XMLDEMO_H_
 
-#include <string>
 #include <iostream>
+#include <string>
 
-#include "iDemo.h"
 #include "../dependencies/tinyXml2/tinyxml2.h"
+#include "iDemo.h"
 
 using std::string;
 
@@ -14,7 +14,6 @@ namespace demo {
 
 class XmlDemo : public IDemo {
 public:
-
   void runDemo() override {
     using namespace std;
     using namespace tinyxml2;
@@ -44,9 +43,9 @@ public:
 
       XMLElement* listElement{doc.NewElement(elementList.c_str())};
       listElement->SetAttribute(elementListAttribute1.c_str(),
-          elementListAttribute1Value.c_str());
+                                elementListAttribute1Value.c_str());
       listElement->SetAttribute(elementListAttribute2.c_str(),
-          elementListAttribute2Value.c_str());
+                                elementListAttribute2Value.c_str());
 
       for (int i{0}; i < 5; ++i) {
         XMLElement* pListElement{doc.NewElement(elementItem.c_str())};
@@ -86,7 +85,8 @@ public:
       cout << "Attribute 1 for list is: " + attribute1 << endl;
       cout << "Attribute 2 for list is: " + attribute2 << endl;
 
-      XMLElement* listItemElement{listElement->FirstChildElement(elementItem.c_str())};
+      XMLElement* listItemElement{
+        listElement->FirstChildElement(elementItem.c_str())};
 
       vector<int> items{};
 
@@ -95,14 +95,12 @@ public:
         listItemElement->QueryIntText(&value);
         items.push_back(value);
         cout << value << endl;
-        listItemElement = listItemElement->NextSiblingElement(elementItem.c_str());
+        listItemElement =
+          listItemElement->NextSiblingElement(elementItem.c_str());
       }
     }
-
   }
-
 };
-
 }
 
 #endif /* SOURCE_DIRECTORY__SRC_DEMO_XMLDEMO_H_ */

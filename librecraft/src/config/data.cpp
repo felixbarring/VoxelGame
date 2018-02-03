@@ -5,6 +5,7 @@ namespace config {
 
 std::string dataFolder = "data/";
 std::string worldMetaFile = "data/meta";
+std::string settingsFile = "data/settings.xml";
 
 namespace chunk_data {
 
