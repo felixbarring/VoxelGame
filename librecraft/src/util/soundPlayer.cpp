@@ -27,8 +27,9 @@ validVolume(double volume) {
 
 void
 SoundPlayer::update(double time) {
-  for (vector<unique_ptr<sf::Sound>>::iterator sound =
-      m_playingSounds.begin(); sound < m_playingSounds.end(); ++sound) {
+  for (vector<unique_ptr<sf::Sound>>::iterator sound = m_playingSounds.begin();
+       sound < m_playingSounds.end();
+       ++sound) {
     if ((*sound)->getStatus() == sf::SoundSource::Status::Stopped)
       m_playingSounds.erase(sound);
   }

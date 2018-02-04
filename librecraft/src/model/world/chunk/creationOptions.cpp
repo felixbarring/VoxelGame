@@ -1,13 +1,14 @@
 
 #include "creationOptions.h"
 
-#include <iostream>
-#include "../../../dependencies/tinyXml2/tinyxml2.h"
 #include "../../../config/data.h"
+#include "../../../dependencies/tinyXml2/tinyxml2.h"
+#include <iostream>
 
 namespace chunk {
 
-std::string createFileName(std::string& name) {
+std::string
+createFileName(std::string& name) {
   return config::dataFolder + name + ".xml";
 }
 
@@ -32,7 +33,8 @@ CreationOptions::CreationOptions(std::string name)
     }
 
     {
-      tinyxml2::XMLElement* different{root->FirstChildElement("different_cube_for_each_chunk")};
+      tinyxml2::XMLElement* different{
+        root->FirstChildElement("different_cube_for_each_chunk")};
       std::string value(different->GetText());
       m_differentCubeForEachChunk = value == "true";
     }
@@ -62,7 +64,8 @@ CreationOptions::CreationOptions(std::string name, bool flat, bool different)
     }
 
     {
-      tinyxml2::XMLElement* different{doc.NewElement("different_cube_for_each_chunk")};
+      tinyxml2::XMLElement* different{
+        doc.NewElement("different_cube_for_each_chunk")};
       different->SetText(config::graphics_data::fullScreen);
       root->InsertEndChild(different);
     }
@@ -89,6 +92,4 @@ bool
 CreationOptions::differentCubesForEachChunk() {
   return m_differentCubeForEachChunk;
 }
-
 }
-

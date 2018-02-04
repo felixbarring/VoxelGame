@@ -51,9 +51,9 @@ ChunkManager::createWorld() {
   for (int x{0}; x < lam; ++x) {
     for (int z{0}; z < lam; ++z) {
       shared_ptr<Chunk> chunk = make_shared<Chunk>(m_worldName,
-                                      x * CHUNK_WIDTH_AND_DEPTH,
-                                      z * CHUNK_WIDTH_AND_DEPTH,
-                                      m_graphicsManager);
+                                                   x * CHUNK_WIDTH_AND_DEPTH,
+                                                   z * CHUNK_WIDTH_AND_DEPTH,
+                                                   m_graphicsManager);
 
       chunkCreationFutures.push_back(g_threadPool2.enqueue([chunk, this] {
         chunk->create(m_options);
@@ -156,7 +156,7 @@ ChunkManager::removeCube(int x, int y, int z) {
     else
       setCube(x, y, z, AIR);
 
-    m_soundPlayer.playSound(config::souds::cubeRemoved);
+    m_soundPlayer.playSound(config::audio::cubeRemoved);
   }
 }
 
@@ -178,7 +178,7 @@ ChunkManager::setCube(int x, int y, int z, char id) {
   int localZ = z % CHUNK_WIDTH_AND_DEPTH;
 
   m_chunks[chunkX][chunkY][chunkZ]->setCube(localX, localY, localZ, id);
-  m_soundPlayer.playSound(config::souds::cubeAdded);
+  m_soundPlayer.playSound(config::audio::cubeAdded);
 }
 
 void

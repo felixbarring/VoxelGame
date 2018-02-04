@@ -201,11 +201,8 @@ Game::createWorld(chunk::CreationOptions options) {
     input->updateValues();
   }
 
-  m_inGame = make_shared<InGame>(*this,
-                            move(chunkManager),
-                            m_soundPlayer,
-                            *m_graphicsmanager,
-                            m_fpsManager);
+  m_inGame = make_shared<InGame>(
+    *this, move(chunkManager), m_soundPlayer, *m_graphicsmanager, m_fpsManager);
 
   m_currentState = m_inGame;
   m_soundPlayer.stopMusic();

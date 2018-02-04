@@ -9,7 +9,7 @@ namespace graphics {
 
 Texture&
 Resources::getTexture(const string& path) {
-  std::map<string,Texture,less<string>>::iterator it = textures.find(path);
+  std::map<string, Texture, less<string>>::iterator it = textures.find(path);
 
   if (it == textures.end())
     textures.insert(make_pair(path, Texture{path.c_str()}));
@@ -21,7 +21,8 @@ TextureArray&
 Resources::getTextureArray(const vector<string>& textures,
                            unsigned width,
                            unsigned height) {
-  std::map<string,TextureArray>::iterator it = textureArraysMap.find(textures[0]);
+  std::map<string, TextureArray>::iterator it =
+    textureArraysMap.find(textures[0]);
 
   if (it == textureArraysMap.end())
     textureArraysMap.insert(
@@ -37,7 +38,7 @@ Resources::getTextureCubeMap(string& right,
                              string& bottom,
                              string& back,
                              string& front) {
-  std::map<string,TextureCubeMap>::iterator it = textureCubeMaps.find(right);
+  std::map<string, TextureCubeMap>::iterator it = textureCubeMaps.find(right);
 
   if (it == textureCubeMaps.end())
     textureCubeMaps.insert(make_pair(right,
@@ -55,7 +56,8 @@ FontMeshBuilder&
 Resources::getFontMeshBuilder(string& pathToLayout,
                               int atlasWidth,
                               int atlasHeight) {
-  std::map<string,FontMeshBuilder>::iterator it = fontMeshBuilders.find(pathToLayout);
+  std::map<string, FontMeshBuilder>::iterator it =
+    fontMeshBuilders.find(pathToLayout);
 
   if (it == fontMeshBuilders.end())
     fontMeshBuilders.insert(make_pair(

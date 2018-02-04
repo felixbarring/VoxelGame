@@ -16,7 +16,8 @@ using namespace std;
 
 namespace graphics {
 
-ShaderProgram createShaderProgram() {
+ShaderProgram
+createShaderProgram() {
   // clang-format off
   string vertex =
       "#version 330 core \n"
@@ -49,7 +50,8 @@ ShaderProgram createShaderProgram() {
   return ShaderProgram(vertex, fragment, move(attributesMap));
 }
 
-mesh::MeshElement createMesh() {
+mesh::MeshElement
+createMesh() {
   // clang-format off
   vector<GLfloat> vertices{
     -1.0f, 1.0f,  -1.0f, -1.0f, -1.0f, -1.0f, 1.0f,  -1.0f, -1.0f,
@@ -89,7 +91,7 @@ CubeMap::CubeMap(texture::TextureCubeMap& texture, Camera& camera)
   : m_texture{texture}
   , m_camera{camera}
   , m_program{createShaderProgram()}
-  , m_mesh{createMesh()}{
+  , m_mesh{createMesh()} {
 }
 
 void

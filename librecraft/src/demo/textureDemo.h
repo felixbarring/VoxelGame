@@ -53,6 +53,8 @@ public:
     glViewport(0, 0, WIDTH, HEIGHT);
     glClearColor(0.2f, 0.22f, 0.2f, 1.0f);
 
+    // clang-format off
+
     std::string vertex =
       "#version 330 core \n"
       "in vec2 positionIn; \n"
@@ -77,6 +79,8 @@ public:
         "{ \n"
         "  color = texture(texture1, texCoord); \n"
         "} \n";
+
+    // clang-format on
 
     std::map<std::string, int> attributesMap{
       std::pair<std::string, int>("positionIn", 0),
@@ -122,7 +126,6 @@ public:
     }
   }
 };
-
 }
 
 #endif /* SRC_DEMO_TEXTUREDEMO_H_ */

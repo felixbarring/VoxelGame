@@ -187,7 +187,6 @@ extern const std::string menuMusic;
 extern double maserVolume;
 extern double musicVolume;
 extern double soundVolume;
-
 }
 }
 

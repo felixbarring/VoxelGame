@@ -200,11 +200,15 @@ Settings::Settings(std::shared_ptr<widget::WidgetGroup>& active,
     auto observer = [this](int id) {
       switch (id) {
         case 0: {
-          m_soundPlayer.setMasterVolume(m_masterVolumeSlider->getValue());
 
-          m_soundPlayer.setMusicVolume(m_musicVolumeSlider->getValue());
+          using namespace config::audio;
+          maserVolume = m_masterVolumeSlider->getValue();
+          musicVolume = m_musicVolumeSlider->getValue();
+          soundVolume = m_soundVolumeSlider->getValue();
 
-          m_soundPlayer.setSoundVolume(m_soundVolumeSlider->getValue());
+          m_soundPlayer.setMasterVolume(maserVolume);
+          m_soundPlayer.setMusicVolume(musicVolume);
+          m_soundPlayer.setSoundVolume(soundVolume);
           break;
         }
         case 1: {

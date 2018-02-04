@@ -129,8 +129,8 @@ MainMenu::MainMenu(Game& game,
             if (!world_meta::worldNameExists(name)) {
               world_meta::addName(name);
 
-              m_game.createWorld(CreationOptions{name, button1->isToggled(),
-                button3->isToggled()});
+              m_game.createWorld(CreationOptions{
+                name, button1->isToggled(), button3->isToggled()});
 
               m_soundPlayer.stopMusic();
 
@@ -283,7 +283,7 @@ MainMenu::MainMenu(Game& game,
         }
         case 2: {
           if (m_worldList->getSelectedListItem().size()) {
-            string name {m_worldList->getSelectedListItem()};
+            string name{m_worldList->getSelectedListItem()};
 
             // TODO Load options.
             // TODO The options need to be the same as when the map was created.

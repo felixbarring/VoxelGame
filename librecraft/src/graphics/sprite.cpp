@@ -8,7 +8,8 @@ namespace graphics {
 
 using namespace std;
 
-unique_ptr<mesh::MeshElement> createMesh(int width, int height) {
+unique_ptr<mesh::MeshElement>
+createMesh(int width, int height) {
   // clang-format off
   std::vector<GLfloat> vertices = {
     static_cast<float>(-width / 2.0), static_cast<float>(-height / 2.0), 0.0f,

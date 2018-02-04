@@ -7,6 +7,8 @@
 
 #include <SFML/Audio.hpp>
 
+#include "../config/data.h"
+
 namespace util {
 
 /**
@@ -127,9 +129,9 @@ private:
   double m_startVolume{};
 
   // TODO Load these from config files...
-  double m_masterVolume{1.0};
-  double m_soundVolume{100.0};
-  double m_musicVolume{100.0};
+  double m_masterVolume{config::audio::maserVolume};
+  double m_soundVolume{config::audio::soundVolume};
+  double m_musicVolume{config::audio::musicVolume};
 };
 
 } /* namespace util */

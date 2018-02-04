@@ -10,7 +10,6 @@ namespace chunk {
  */
 class CreationOptions {
 public:
-
   CreationOptions(std::string name);
 
   CreationOptions(std::string name, bool flat, bool different);
@@ -22,7 +21,6 @@ public:
   bool differentCubesForEachChunk();
 
 private:
-
   std::string m_name{"Error Name"};
   bool m_flat{false};
   bool m_differentCubeForEachChunk{true};

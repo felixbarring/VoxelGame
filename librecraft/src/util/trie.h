@@ -37,7 +37,8 @@ public:
         node = child;
         continue;
       }
-      std::unique_ptr<TrieNode> newNode = std::make_unique<TrieNode>(c, i == value.size() - 1);
+      std::unique_ptr<TrieNode> newNode =
+        std::make_unique<TrieNode>(c, i == value.size() - 1);
       TrieNode* tmp = newNode.get();
       node->addChild(std::move(newNode));
       node = tmp;

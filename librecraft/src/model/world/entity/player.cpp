@@ -29,7 +29,7 @@ Player::Player(chunk::ChunkManager& chunkManager,
                util::SoundPlayer& soundPlayer,
                graphics::GraphicsManager& graphicsManager)
   : m_chunkManager{chunkManager}
-  , m_stepPlayer{soundPlayer, config::souds::footStepSounds}
+  , m_stepPlayer{soundPlayer, config::audio::footStepSounds}
   , m_graphicsManager{graphicsManager} {
 }
 
