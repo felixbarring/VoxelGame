@@ -10,33 +10,19 @@ namespace chunk {
  */
 class CreationOptions {
 public:
-  CreationOptions() = default;
 
-  void setName(std::string value) {
-    m_name = std::move(value);
-  }
+  CreationOptions(std::string name);
 
-  std::string& getName() {
-    return m_name;
-  }
+  CreationOptions(std::string name, bool flat, bool different);
 
-  void setFlat(bool value) {
-    m_flat = value;
-  }
+  std::string& getName();
 
-  bool getFlat() const {
-    return m_flat;
-  }
+  bool getFlat() const;
 
-  void setDifferencBubesForEachChunk(bool value) {
-    m_differentCubeForEachChunk = value;
-  }
-
-  bool differentCubesForEachChunk() {
-    return m_differentCubeForEachChunk;
-  }
+  bool differentCubesForEachChunk();
 
 private:
+
   std::string m_name{"Error Name"};
   bool m_flat{false};
   bool m_differentCubeForEachChunk{true};

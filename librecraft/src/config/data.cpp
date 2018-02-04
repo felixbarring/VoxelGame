@@ -159,6 +159,8 @@ const std::vector<std::string> thumbnails{
 namespace graphics_data {
 int fps = 100;
 
+bool fullScreen = false;
+
 int windowWidth = 1500;
 int windowHeight = 800;
 
@@ -252,7 +254,7 @@ const int cubeMap1Width = 2048;
 const int cubeMap1Height = 2048;
 }
 
-namespace souds {
+namespace audio {
 const std::string buttonPressed = "../resources/sound/button.wav";
 const std::string cubeAdded = "../resources/sound/cube_place.wav";
 const std::string cubeRemoved = "../resources/sound/cube_remove.wav";
@@ -268,9 +270,11 @@ const std::vector<std::string> footStepSounds{
   "../resources/sound/steps/step8.ogg",
   "../resources/sound/steps/step9.ogg",
   "../resources/sound/steps/step10.ogg"};
-}
 
-namespace music {
 const std::string menuMusic = "../resources/music/Continue Life.ogg";
+
+double maserVolume = 1.0;
+double musicVolume = 100.0;
+double soundVolume = 100.0;
 }
 }

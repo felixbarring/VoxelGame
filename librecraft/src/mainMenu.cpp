@@ -7,9 +7,11 @@
 #include "config/data.h"
 #include "graphics/graphicsManager.h"
 #include "gui/terminal.h"
+#include "model/world/chunk/creationOptions.h"
 #include "util/soundPlayer.h"
 #include "util/worldMeta.h"
 
+using chunk::CreationOptions;
 using util::SoundPlayer;
 
 using namespace std;
@@ -52,7 +54,7 @@ MainMenu::MainMenu(Game& game,
 
   {
     auto observer = [this](int id) {
-      m_soundPlayer.playSound(config::souds::buttonPressed);
+      m_soundPlayer.playSound(config::audio::buttonPressed);
       switch (id) {
         case 0:
           m_activeWidgetGroup = m_playWidgetGroup;
@@ -126,8 +128,9 @@ MainMenu::MainMenu(Game& game,
           if (name.size()) {
             if (!world_meta::worldNameExists(name)) {
               world_meta::addName(name);
-              m_options.setName(name);
-              m_game.createWorld(m_options);
+
+              m_game.createWorld(CreationOptions{name, button1->isToggled(),
+                button3->isToggled()});
 
               m_soundPlayer.stopMusic();
 
@@ -181,25 +184,21 @@ MainMenu::MainMenu(Game& game,
     auto observer = [this](int id) {
       switch (id) {
         case 0: {
-          m_options.setFlat(true);
           button1->setToggled();
           button2->setUntoggled();
           break;
         }
         case 1: {
-          m_options.setFlat(false);
           button1->setUntoggled();
           button2->setToggled();
           break;
         }
         case 2: {
-          m_options.setDifferencBubesForEachChunk(true);
           button3->setToggled();
           button4->setUntoggled();
           break;
         }
         case 3: {
-          m_options.setDifferencBubesForEachChunk(false);
           button3->setUntoggled();
           button4->setToggled();
           break;
@@ -284,23 +283,24 @@ MainMenu::MainMenu(Game& game,
         }
         case 2: {
           if (m_worldList->getSelectedListItem().size()) {
-            string name = m_worldList->getSelectedListItem();
-            m_options.setName(name);
+            string name {m_worldList->getSelectedListItem()};
 
+            // TODO Load options.
             // TODO The options need to be the same as when the map was created.
             // TODO Implement so its possible to save and load options for a
             // map.
 
-            m_game.createWorld(m_options);
+            m_game.createWorld(CreationOptions{name});
             m_soundPlayer.stopMusic();
             m_activeWidgetGroup = m_mainWidgetGroup;
             m_worldList->reset();
           }
           break;
         }
-        case 3:
+        case 3: {
           m_activeWidgetGroup = m_playWidgetGroup;
           break;
+        }
       }
     };
 

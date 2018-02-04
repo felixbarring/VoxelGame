@@ -117,10 +117,9 @@ Game::run() {
   bool useFullscreen{false};
 
   if (useFullscreen) {
-    config::graphics_data::windowWidth =
-    sf::VideoMode::getDesktopMode().width;
+    config::graphics_data::windowWidth = sf::VideoMode::getDesktopMode().width;
     config::graphics_data::windowHeight =
-    sf::VideoMode::getDesktopMode().height;
+      sf::VideoMode::getDesktopMode().height;
   }
 
   const int width = config::graphics_data::windowWidth;
@@ -139,8 +138,10 @@ Game::run() {
   string windowTitle = "Voxel Game";
 
   if (useFullscreen) {
-  window = new sf::Window{sf::VideoMode::getDesktopMode(), windowTitle,
-      sf::Style::Default, settings};
+    window = new sf::Window{sf::VideoMode::getDesktopMode(),
+                            windowTitle,
+                            sf::Style::Default,
+                            settings};
   } else {
     window = new sf::Window{
       sf::VideoMode(width, height), windowTitle, sf::Style::Default, settings};
@@ -196,15 +197,15 @@ Game::createWorld(chunk::CreationOptions options) {
     // Done to prevent the window to be grayed out like if the application
     // has stopped responding even though it works correctly. Seems like
     // there is some kind of watch dog on Ubuntu checking this anyway.
-    shared_ptr<util::Input> input = util::Input::getInstance();
+    shared_ptr<util::Input> input{util::Input::getInstance()};
     input->updateValues();
   }
 
-  m_inGame.reset(new InGame(*this,
+  m_inGame = make_shared<InGame>(*this,
                             move(chunkManager),
                             m_soundPlayer,
                             *m_graphicsmanager,
-                            m_fpsManager));
+                            m_fpsManager);
 
   m_currentState = m_inGame;
   m_soundPlayer.stopMusic();
@@ -213,7 +214,7 @@ Game::createWorld(chunk::CreationOptions options) {
 void
 Game::changeStateToMainMenu() {
   m_currentState = m_mainMenu;
-  m_soundPlayer.playMusic(config::music::menuMusic);
+  m_soundPlayer.playMusic(config::audio::menuMusic);
 }
 
 void

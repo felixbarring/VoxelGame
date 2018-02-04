@@ -87,6 +87,8 @@ extern const std::vector<std::string> thumbnails;
 namespace graphics_data {
 extern int fps;
 
+extern bool fullScreen;
+
 extern int windowWidth;
 extern int windowHeight;
 
@@ -173,16 +175,19 @@ extern const int cubeMap1Width;
 extern const int cubeMap1Height;
 }
 
-namespace souds {
+namespace audio {
 extern const std::string buttonPressed;
 extern const std::string cubeAdded;
 extern const std::string cubeRemoved;
 
 extern const std::vector<std::string> footStepSounds;
-}
 
-namespace music {
 extern const std::string menuMusic;
+
+extern double maserVolume;
+extern double musicVolume;
+extern double soundVolume;
+
 }
 }
 

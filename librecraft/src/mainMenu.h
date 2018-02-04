@@ -55,8 +55,6 @@ private:
 
   Settings m_settings;
 
-  chunk::CreationOptions m_options;
-
   std::unique_ptr<gui::Image> m_title{};
   std::shared_ptr<widget::SelectableList> m_worldList{};
 
