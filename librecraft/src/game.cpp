@@ -114,7 +114,7 @@ Game::run() {
     settingsPersistence.loadSettings();
   }
 
-  bool useFullscreen{false};
+  bool useFullscreen{config::graphics_data::fullScreen};
 
   if (useFullscreen) {
     config::graphics_data::windowWidth = sf::VideoMode::getDesktopMode().width;

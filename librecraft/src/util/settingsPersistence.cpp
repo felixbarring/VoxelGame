@@ -34,7 +34,7 @@ SettingsPersistence::loadSettings() {
     {
       XMLElement* fullScreen{graphicsData->FirstChildElement("fullScreen")};
       string value{fullScreen->GetText()};
-      graphics_data::fps = value == "true";
+      graphics_data::fullScreen = value == "true";
     }
 
     {
