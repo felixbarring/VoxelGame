@@ -93,14 +93,14 @@ TerrainGenerator::generateFlat(VoxelMatrix& cubes) {
 
 void
 TerrainGenerator::generateNoneFlat(VoxelMatrix& cubes, int x, int z) {
-  module::RidgedMulti mountainSource;
-  mountainSource.SetFrequency(0.05);
-  mountainSource.SetOctaveCount(3);
-
-  module::ScaleBias mountain;
-  mountain.SetSourceModule(0, mountainSource);
-  mountain.SetBias(40);
-  mountain.SetScale(30);
+  //  module::RidgedMulti mountainSource;
+  //  mountainSource.SetFrequency(0.05);
+  //  mountainSource.SetOctaveCount(3);
+  //
+  //  module::ScaleBias mountain;
+  //  mountain.SetSourceModule(0, mountainSource);
+  //  mountain.SetBias(40);
+  //  mountain.SetScale(30);
 
   module::Billow flatSource;
   flatSource.SetFrequency(0.1);
@@ -114,6 +114,7 @@ TerrainGenerator::generateNoneFlat(VoxelMatrix& cubes, int x, int z) {
   baseSource.SetOctaveCount(5);
   baseSource.SetFrequency(0.05);
   baseSource.SetPersistence(0.5);
+  baseSource.SetSeed(m_seed);
 
   module::ScaleBias base;
   base.SetSourceModule(0, baseSource);
@@ -180,9 +181,11 @@ TerrainGenerator::generateGrassLand(VoxelMatrix& cubes,
 
   module::Perlin tree;
   tree.SetFrequency(2);
+  tree.SetSeed(m_seed);
 
   module::Perlin treeArea;
   treeArea.SetFrequency(0.25);
+  treeArea.SetSeed(m_seed);
 
   for (int y{1}; y < height; ++y) {
     Voxel& v = cubes[x][y][z];
