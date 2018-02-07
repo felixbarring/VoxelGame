@@ -301,12 +301,11 @@ Chunk::loadChunk() {
 
 void
 Chunk::generateChunk(CreationOptions& options) {
-  static int seed{1337};
   terrainGen::TerrainGenerator generator{
     config::chunk_data::CHUNK_WIDTH_AND_DEPTH,
     config::chunk_data::CHUNK_HEIGHT,
     config::chunk_data::CHUNK_WIDTH_AND_DEPTH,
-    seed};
+    options.getSeed()};
   m_cubes = generator.generateTerrain(options, m_xLocation, m_zLocation);
 }
 

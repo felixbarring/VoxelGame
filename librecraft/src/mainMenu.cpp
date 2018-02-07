@@ -129,8 +129,9 @@ MainMenu::MainMenu(Game& game,
             if (!world_meta::worldNameExists(name)) {
               world_meta::addName(name);
 
+              int seed{1337}; // TODO Get this from user input or randomized.
               m_game.createWorld(CreationOptions{
-                name, button1->isToggled(), button3->isToggled()});
+                name, seed, button1->isToggled(), button3->isToggled()});
 
               m_soundPlayer.stopMusic();
 

@@ -27,6 +27,12 @@ CreationOptions::CreationOptions(std::string name)
 
   {
     {
+      tinyxml2::XMLElement* seed{root->FirstChildElement("seed")};
+      std::string value(seed->GetText());
+      m_seed = stoi(value);
+    }
+
+    {
       tinyxml2::XMLElement* flat{root->FirstChildElement("flat")};
       std::string value(flat->GetText());
       m_flat = value == "true";
@@ -41,8 +47,12 @@ CreationOptions::CreationOptions(std::string name)
   }
 }
 
-CreationOptions::CreationOptions(std::string name, bool flat, bool different)
+CreationOptions::CreationOptions(std::string name,
+                                 int seed,
+                                 bool flat,
+                                 bool different)
   : m_name{std::move(name)}
+  , m_seed{seed}
   , m_flat{flat}
   , m_differentCubeForEachChunk{different} {
 
@@ -55,6 +65,12 @@ CreationOptions::CreationOptions(std::string name, bool flat, bool different)
       tinyxml2::XMLElement* name{doc.NewElement("name")};
       name->SetText(m_name.c_str());
       root->InsertEndChild(name);
+    }
+
+    {
+      tinyxml2::XMLElement* seed{doc.NewElement("seed")};
+      seed->SetText(m_seed);
+      root->InsertEndChild(seed);
     }
 
     {
@@ -83,13 +99,18 @@ CreationOptions::getName() {
   return m_name;
 }
 
+int
+CreationOptions::getSeed() const {
+  return m_seed;
+}
+
 bool
 CreationOptions::getFlat() const {
   return m_flat;
 }
 
 bool
-CreationOptions::differentCubesForEachChunk() {
+CreationOptions::differentCubesForEachChunk() const {
   return m_differentCubeForEachChunk;
 }
 }
