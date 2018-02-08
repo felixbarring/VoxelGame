@@ -72,6 +72,7 @@ private:
   std::shared_ptr<widget::WidgetGroup> m_errorUsedName{};
 
   std::shared_ptr<widget::TextInput> m_textInput3{};
+  std::shared_ptr<widget::TextInput> m_textInput4{};
 
   std::shared_ptr<widget::ToggleButton> button1;
   std::shared_ptr<widget::ToggleButton> button2;

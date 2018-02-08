@@ -3,6 +3,7 @@
 #include <iostream>
 #include <random>
 #include <string>
+#include <limits>
 
 #include "config/data.h"
 #include "graphics/graphicsManager.h"
@@ -17,6 +18,43 @@ using util::SoundPlayer;
 using namespace std;
 using namespace widget;
 using namespace gui;
+
+int
+randomInt() {
+  static random_device randomDevice;
+  static mt19937 randomNumber(randomDevice());
+  static uniform_int_distribution<int> uni(0, std::numeric_limits<int>::max());
+
+  return uni(randomNumber);
+}
+
+string
+randomName() {
+
+  static vector<string> names{"Dank World",
+                              "Bloxel",
+                              "Sees",
+                              "Soos",
+                              "Satan",
+                              "Shrek",
+                              "Memus",
+                              "Adventure",
+                              "Swoosh",
+                              "Blool"};
+  static int last{-1};
+
+  static random_device randomDevice;
+  static mt19937 randomNumber(randomDevice());
+  static uniform_int_distribution<int> uni(0, names.size() - 1);
+
+  int value{};
+  do {
+    value = uni(randomNumber);
+  } while (value == last);
+  last = value;
+
+  return names[value];
+}
 
 MainMenu::MainMenu(Game& game,
                    SoundPlayer& soundPlayer,
@@ -129,9 +167,8 @@ MainMenu::MainMenu(Game& game,
             if (!world_meta::worldNameExists(name)) {
               world_meta::addName(name);
 
-              int seed{1337}; // TODO Get this from user input or randomized.
               m_game.createWorld(CreationOptions{
-                name, seed, button1->isToggled(), button3->isToggled()});
+                name, stoi(m_textInput4->getString()), button1->isToggled(), button3->isToggled()});
 
               m_soundPlayer.stopMusic();
 
@@ -209,6 +246,12 @@ MainMenu::MainMenu(Game& game,
         case 5:
           m_activeWidgetGroup = m_newWorldWidgetGroup;
           break;
+        case 6: {
+
+          m_textInput4->setString(to_string(randomInt()));
+          break;
+        }
+
       }
     };
 
@@ -264,11 +307,23 @@ MainMenu::MainMenu(Game& game,
     auto button6 = make_shared<Button>(
       5, 460, 135, 100, 30, m_graphicsManager, observer, "Back", 1);
 
+
+    auto seedLabel = make_shared<Label>(
+          230, 210, 50, 30, "Seed", m_graphicsManager);
+
+    m_textInput4 =
+      make_shared<TextInput>(666, 280, 210, 150, 30, m_graphicsManager, 1);
+
+    m_textInput4->setString(to_string(randomInt()));
+
+    auto seedButton = make_shared<Button>(
+      6, 440, 210, 100, 30, m_graphicsManager, observer, "Randomize", 1);
+
     m_newWorldWidgetGroupAdvanced =
       make_shared<WidgetGroup>(0, 200, 120, 400, 270, m_graphicsManager);
 
     m_newWorldWidgetGroupAdvanced->addWidget(
-      {label1, button1, button2, button3, button4, button5, button6});
+      {label1, button1, button2, button3, button4, button5, button6, seedLabel, m_textInput4, seedButton});
   }
 
   // ########################################################################
@@ -401,30 +456,3 @@ MainMenu::update(double timePassed) {
   m_graphicsManager.getSpriteBatcher().draw();
 }
 
-string
-randomName() {
-
-  static vector<string> names{"Dank World",
-                              "Bloxel",
-                              "Sees",
-                              "Soos",
-                              "Satan",
-                              "Shrek",
-                              "Memus",
-                              "Adventure",
-                              "Swoosh",
-                              "Blool"};
-  static int last{-1};
-
-  static random_device randomDevice;
-  static mt19937 randomNumber(randomDevice());
-  static uniform_int_distribution<int> uni(0, names.size() - 1);
-
-  int value{};
-  do {
-    value = uni(randomNumber);
-  } while (value == last);
-  last = value;
-
-  return names[value];
-}
