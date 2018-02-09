@@ -1,9 +1,9 @@
 #include "mainMenu.h"
 
 #include <iostream>
+#include <limits>
 #include <random>
 #include <string>
-#include <limits>
 
 #include "config/data.h"
 #include "graphics/graphicsManager.h"
@@ -40,7 +40,17 @@ randomName() {
                               "Memus",
                               "Adventure",
                               "Swoosh",
-                              "Blool"};
+                              "Blool",
+                              "Middle Earth",
+                              "FunCraft",
+                              "C++ is the best",
+                              "Spooky",
+                              "KeK",
+                              "I accidently Minecraft",
+                              "Bicycle",
+                              "Dirtbike",
+                              "My name is Jeff",
+                              "Don't cutt"};
   static int last{-1};
 
   static random_device randomDevice;
@@ -167,8 +177,11 @@ MainMenu::MainMenu(Game& game,
             if (!world_meta::worldNameExists(name)) {
               world_meta::addName(name);
 
-              m_game.createWorld(CreationOptions{
-                name, stoi(m_textInput4->getString()), button1->isToggled(), button3->isToggled()});
+              m_game.createWorld(
+                CreationOptions{name,
+                                stoi(m_textInput4->getString()),
+                                button1->isToggled(),
+                                button3->isToggled()});
 
               m_soundPlayer.stopMusic();
 
@@ -251,7 +264,6 @@ MainMenu::MainMenu(Game& game,
           m_textInput4->setString(to_string(randomInt()));
           break;
         }
-
       }
     };
 
@@ -307,9 +319,8 @@ MainMenu::MainMenu(Game& game,
     auto button6 = make_shared<Button>(
       5, 460, 135, 100, 30, m_graphicsManager, observer, "Back", 1);
 
-
-    auto seedLabel = make_shared<Label>(
-          230, 210, 50, 30, "Seed", m_graphicsManager);
+    auto seedLabel =
+      make_shared<Label>(230, 210, 50, 30, "Seed", m_graphicsManager);
 
     m_textInput4 =
       make_shared<TextInput>(666, 280, 210, 150, 30, m_graphicsManager, 1);
@@ -322,8 +333,16 @@ MainMenu::MainMenu(Game& game,
     m_newWorldWidgetGroupAdvanced =
       make_shared<WidgetGroup>(0, 200, 120, 400, 270, m_graphicsManager);
 
-    m_newWorldWidgetGroupAdvanced->addWidget(
-      {label1, button1, button2, button3, button4, button5, button6, seedLabel, m_textInput4, seedButton});
+    m_newWorldWidgetGroupAdvanced->addWidget({label1,
+                                              button1,
+                                              button2,
+                                              button3,
+                                              button4,
+                                              button5,
+                                              button6,
+                                              seedLabel,
+                                              m_textInput4,
+                                              seedButton});
   }
 
   // ########################################################################
@@ -455,4 +474,3 @@ MainMenu::update(double timePassed) {
   m_graphicsManager.clearScreen();
   m_graphicsManager.getSpriteBatcher().draw();
 }
-
