@@ -436,15 +436,17 @@ Chunk::doSunLightning(vector<vec3>& lightPropagate,
                       int y,
                       int z,
                       bool useVec) {
+
+  static int lightReduction{1};
   // Sun lightning, only air and water gets light.
-  // Each step in water reduces the light strength by one.
+  // Each step in water reduces the light strength lightReduction.
   int lightValue{m_directSunlight};
-  for (int i = y; i >= 0; --i) {
+  for (int i{y}; i >= 0; --i) {
     Voxel& cube = m_cubes[x][i][z];
 
     if (cube.getId() == AIR || cube.getId() == WATER) {
       if (cube.getId() == WATER && lightValue > 0)
-        lightValue -= 2;
+        lightValue -= lightReduction;
 
       cube.setSunLightValue(lightValue);
       if (useVec)
