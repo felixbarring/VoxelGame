@@ -28,7 +28,7 @@ extern const int GRAPHICAL_CHUNK_HEIGHT;
 extern const int CHUNK_WIDTH_AND_DEPTH;
 extern const int CHUNK_HEIGHT;
 
-extern const int NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER;
+extern int NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER;
 extern const int NUMBER_OF_CHUNKS_Y;
 }
 
