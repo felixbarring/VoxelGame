@@ -12,8 +12,6 @@ namespace util {
 
 using namespace std;
 
-double volumeScaler{100};
-
 // Just a function that clamps the values to 0 or 100.
 // Used to prevent OpenAl errors.
 float
@@ -98,24 +96,24 @@ SoundPlayer::getMasterVolume() {
 
 void
 SoundPlayer::setSoundVolume(double value) {
-  m_soundVolume = value * volumeScaler;
+  m_soundVolume = value * m_volumeScaler;
 }
 
 double
 SoundPlayer::getSoundVolume() {
-  return m_soundVolume / volumeScaler;
+  return m_soundVolume / m_volumeScaler;
 }
 
 void
 SoundPlayer::setMusicVolume(double value) {
-  m_musicVolume = value * volumeScaler;
+  m_musicVolume = value * m_volumeScaler;
   if (m_playingMusic)
     m_playingMusic->setVolume(validVolume(m_musicVolume * m_masterVolume));
 }
 
 double
 SoundPlayer::getMusicVolume() {
-  return m_musicVolume / volumeScaler;
+  return m_musicVolume / m_volumeScaler;
 }
 
 void

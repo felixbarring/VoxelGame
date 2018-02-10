@@ -27,10 +27,11 @@ SettingsPersistence::loadSettings() {
     XMLElement* chunkData{root->FirstChildElement("chunk_data")};
 
     if (chunkData) {
-      XMLElement* numberOfChunks{chunkData->FirstChildElement("number_of_chunks_from_middle_to_border")};
+      XMLElement* numberOfChunks{
+        chunkData->FirstChildElement("number_of_chunks_from_middle_to_border")};
       if (numberOfChunks)
-        chunk_data::NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER = std::stoi(numberOfChunks->GetText());
-
+        chunk_data::NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER =
+          std::stoi(numberOfChunks->GetText());
     }
   }
 
@@ -58,11 +59,13 @@ SettingsPersistence::loadSettings() {
     XMLElement* inputData{root->FirstChildElement("input_data")};
 
     if (inputData) {
-      XMLElement* mouseSenseX{inputData->FirstChildElement("mouseSensitivityX")};
+      XMLElement* mouseSenseX{
+        inputData->FirstChildElement("mouseSensitivityX")};
       if (mouseSenseX)
         input_data::mouseSensitivityX = std::stod(mouseSenseX->GetText());
 
-      XMLElement* mouseSenseY{inputData->FirstChildElement("mouseSensitivityY")};
+      XMLElement* mouseSenseY{
+        inputData->FirstChildElement("mouseSensitivityY")};
       if (mouseSenseY)
         input_data::mouseSensitivityY = std::stod(mouseSenseY->GetText());
     }
@@ -98,12 +101,13 @@ SettingsPersistence::storeSettings() {
     root->InsertEndChild(chunkData);
 
     {
-      XMLElement* numberOfChunks{doc.NewElement("number_of_chunks_from_middle_to_border")};
-      numberOfChunks->SetText(chunk_data::NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER);
+      XMLElement* numberOfChunks{
+        doc.NewElement("number_of_chunks_from_middle_to_border")};
+      numberOfChunks->SetText(
+        chunk_data::NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER);
       chunkData->InsertEndChild(numberOfChunks);
     }
   }
-
 
   {
     XMLElement* graphicsData{doc.NewElement("graphics_data")};

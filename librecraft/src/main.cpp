@@ -5,13 +5,18 @@
 #include <string>
 
 #include "game.h"
+#include "util/settingsPersistence.h"
 
 int
 main() {
   try {
+    SettingsPersistence settingsPersistence{};
+    settingsPersistence.loadSettings();
+
     Game game;
     game.run();
 
+    settingsPersistence.storeSettings();
   } catch (std::exception& e) {
     std::cout << "An error occurred \n" << e.what() << "\n";
   } catch (...) {

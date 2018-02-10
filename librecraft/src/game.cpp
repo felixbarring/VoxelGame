@@ -32,7 +32,6 @@
 #include "util/fpsManager.h"
 #include "util/globalResources.h"
 #include "util/input.h"
-#include "util/settingsPersistence.h"
 
 using graphics::ChunkBatcher;
 using graphics::CubeBatcher;
@@ -109,11 +108,6 @@ void
 Game::run() {
   check_system::checkStuff();
 
-  {
-    SettingsPersistence settingsPersistence{};
-    settingsPersistence.loadSettings();
-  }
-
   bool useFullscreen{config::graphics_data::fullScreen};
 
   if (useFullscreen) {
@@ -177,9 +171,6 @@ Game::run() {
     window->display();
     m_fpsManager.sync();
   }
-
-  SettingsPersistence settingsPersistence{};
-  settingsPersistence.storeSettings();
 }
 
 void

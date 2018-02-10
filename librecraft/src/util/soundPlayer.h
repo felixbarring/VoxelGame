@@ -16,7 +16,7 @@ namespace util {
  */
 class SoundPlayer {
 public:
-  SoundPlayer() = default;
+    SoundPlayer() = default;
 
   ~SoundPlayer() = default;
 
@@ -128,10 +128,12 @@ private:
   double m_targetVolume{};
   double m_startVolume{};
 
+  double m_volumeScaler{100};
+
   // TODO Load these from config files...
   double m_masterVolume{config::audio::maserVolume};
-  double m_soundVolume{config::audio::soundVolume};
-  double m_musicVolume{config::audio::musicVolume};
+  double m_soundVolume{config::audio::soundVolume * m_volumeScaler};
+  double m_musicVolume{config::audio::musicVolume * m_volumeScaler};
 };
 
 } /* namespace util */
