@@ -65,7 +65,11 @@ private:
 
   inline void placeTree(VoxelMatrix& cubes, int x, int y, int z);
 
-  inline bool hasTreeNeighboor(VoxelMatrix& cubes, int x, int y, int z, int height);
+  inline bool hasTreeNeighboor(VoxelMatrix& cubes,
+                               int x,
+                               int y,
+                               int z,
+                               int height);
 
   unsigned m_counterValue{};
 

@@ -93,18 +93,8 @@ ChunkBatcher::ChunkBatcher(Camera& camera)
 
 int
 ChunkBatcher::addBatch(int replaceId,
-                       float x,
-                       float y,
-                       float z,
-                       VoxelMatrix& data,
-                       VoxelMatrix* right,
-                       VoxelMatrix* left,
-                       VoxelMatrix* back,
-                       VoxelMatrix* front,
+                       std::shared_ptr<GraphicalChunk> batch,
                        bool hightPriority) {
-
-  shared_ptr<GraphicalChunk> batch =
-    make_shared<GraphicalChunk>(x, y, z, data, right, left, back, front);
 
   lock_guard<mutex> lock(m_mutex);
 
@@ -195,13 +185,17 @@ ChunkBatcher::addAndRemoveBatches() {
     m_batches.emplace(id, get<2>(*batchIt));
     m_batchesToAddHP.erase(batchIt);
 
-    if (replaceId != noRemove)
+    if (replaceId != m_noRemove)
       m_batchesToBeRemoved.push_back(replaceId);
   }
 
+  // TODO Having an if instead of while was the cuase of the bugg of chunks not
+  // getting removed. If this performance balancing is needed, more work is
+  // required to make sure it works correctly.
+
   // Add one of the batches with none high priority that has been requested to
   // be added.
-  if (!m_batchesToAdd.empty()) {
+  while (!m_batchesToAdd.empty()) {
     vector<tuple<int, int, shared_ptr<GraphicalChunk>>>::iterator batchIt =
       m_batchesToAdd.begin();
     int id{get<0>(*batchIt)};
@@ -211,13 +205,14 @@ ChunkBatcher::addAndRemoveBatches() {
     m_batches.emplace(id, get<2>(*batchIt));
     m_batchesToAdd.erase(batchIt);
 
-    if (replaceId != noRemove)
+    if (replaceId != m_noRemove)
       m_batchesToBeRemoved.push_back(replaceId);
   }
 
+  // TODO Fail, does not hande the high priority ones
   // Remove all of the batches that has been requested to be removed.
   while (!m_batchesToBeRemoved.empty()) {
-    vector<int, allocator<int>>::iterator batch = m_batchesToBeRemoved.begin();
+    vector<int>::iterator batch = m_batchesToBeRemoved.begin();
     std::map<int, shared_ptr<GraphicalChunk>>::iterator batchIt =
       m_batches.find(*batch);
 
@@ -227,8 +222,8 @@ ChunkBatcher::addAndRemoveBatches() {
     } else {
       // It might not have been added before it was requested to be removed.
       bool failed{true};
-      for (std::vector<tuple<int, int, shared_ptr<GraphicalChunk>>>::iterator
-             b = m_batchesToAdd.begin();
+      for (std::vector<tuple<int, int, shared_ptr<GraphicalChunk>>>::iterator b{
+             m_batchesToAdd.begin()};
            b != m_batchesToAdd.end();
            ++b) {
         if (get<0>(*b) == *batch) {
@@ -244,21 +239,6 @@ ChunkBatcher::addAndRemoveBatches() {
   }
 }
 }
-
-// Private
-
-// TODO Fix this so that no chunks get culled when they are actually vissible
-//      Frustum frustum{modelViewProjection};
-//      bool result = frustum.isCubeInFrustum(batch.second->getxLocation(), 0,
-//      batch.second->getzLocation(), 16, 128, 16);
-////        bool result =
-/// frustum.isSphereInFrustum(vec3(batch.second->getxLocation() + 8, 64,
-/// batch.second->getzLocation() + 8), 100);
-//
-//      if (!result) {
-//          ++skippedChunks;
-//          continue;
-//      }
 
 // string vertex =
 //    "#version 330 core \n"

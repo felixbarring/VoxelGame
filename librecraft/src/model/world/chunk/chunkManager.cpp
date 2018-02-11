@@ -464,7 +464,7 @@ ChunkManager::moveChunks(Direction direction) {
 
   // Off load the work on a thread pool so that the game is not blocked during
   // this lengthy task.
-  g_threadPool.enqueue([this, direction, chunksToDelete, newChunks] {
+  g_threadPool.enqueue([this, direction, newChunks] {
 
     // Run the creation and sunlightning work in parallel on the thread pool.
     vector<future<void>> chunkCreationFutures{};

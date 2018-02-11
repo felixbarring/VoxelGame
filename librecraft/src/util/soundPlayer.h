@@ -16,7 +16,7 @@ namespace util {
  */
 class SoundPlayer {
 public:
-    SoundPlayer() = default;
+  SoundPlayer() = default;
 
   ~SoundPlayer() = default;
 

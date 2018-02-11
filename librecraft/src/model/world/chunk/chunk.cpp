@@ -180,17 +180,19 @@ Chunk::updateGraphics(bool highPriority) {
     back = &(m_backNeighbor->m_cubes);
 
   for (int i : m_dirtyRegions) {
-    int derp =
-      m_graphicsManager.getChunkBatcher().addBatch(m_graphicalChunksIds[i],
-                                                   m_xLocation,
-                                                   i * GRAPHICAL_CHUNK_HEIGHT,
-                                                   m_zLocation,
-                                                   m_cubes,
-                                                   right,
-                                                   left,
-                                                   back,
-                                                   front,
-                                                   highPriority);
+
+    shared_ptr<GraphicalChunk> batch =
+      make_shared<GraphicalChunk>(m_xLocation,
+                                  i * GRAPHICAL_CHUNK_HEIGHT,
+                                  m_zLocation,
+                                  m_cubes,
+                                  right,
+                                  left,
+                                  back,
+                                  front);
+
+    int derp = m_graphicsManager.getChunkBatcher().addBatch(
+      m_graphicalChunksIds[i], batch, highPriority);
 
     m_graphicalChunksIds[i] = derp;
   }

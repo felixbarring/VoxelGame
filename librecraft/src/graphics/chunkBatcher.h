@@ -15,7 +15,7 @@
 namespace graphics {
 
 /**
- * \brief This class is used to manage an draw chunks efficiently.
+ * @brief This class is used to manage and draw chunks efficiently.
  *
  * Batches can be added and removed using addBatch and removeBatch. The draw
  * function will draw all the currently added batches. It will also use the
@@ -35,20 +35,16 @@ public:
   using VoxelMatrix = std::vector<std::vector<std::vector<Voxel>>>;
 
   /**
-   * \brief Creates a batch that will be used to render when calling draw.
+   * @brief Adds a batch that will be used to render when calling draw.
    *
    * The added batch will be rendered when calling the draw function. The
    * batch will be used for rendering as long as the user does not call remove
    * batch with the returned id, so a batch should only be added once.
    *
-   * It is important that the batch is created by the ChunkBatcher because
-   * only a thread with an opengl context can upload data to the graphics
-   * card. The batch's data will be uploaded when calling the draw function.
-   * By default the GraphicalChunk uploading will be spread out on several
-   * frames to make the workload on the main thread more stable. If it is
-   * important that the change is visible immediately @highPriority should be
-   * set to true. All batches with high priority will be uploaded the current
-   * frame.
+   * The 'uploadData' function of the GraphicalChunk should not have been called
+   * before adding it. It is this ChunkBatcher intance responsibility to call
+   * it with the main thread with the opengl context in order to avoid opengl
+   * errors. The batch's data will be uploaded when calling the draw function.
    *
    * If the batch replaces an existing batch, the old batch id should be
    * provided so that the old batch can be removed in the same frame as the
@@ -57,48 +53,29 @@ public:
    * -1 should be used to indicate that there is no previous batch to remove.
    *
    * This function is thread safe in that it can be called by several threads
-   * concurrently, but the voxeldata in the arguments should not be modified
-   * or read by another thread.
+   * concurrently.
    *
    * Returns an id that can be used as a handle to remove the batch with the
    * removeBatch function.
    *
-   * @param id The id of the batch that the new batch replaces. If there is no
-   *           such batch, -1 should be provided.
-   * @param x The x location of the batch.
-   * @param y The y location of the batch.
-   * @param z The z location of the batch.
-   * @param data The data for the chunk, will be used to crate the graphical
-   *             representation of the Chunk.
-   * @param right The data of the right neighbor chunk, can be nullptr if
-   *              there is no right neighbor.
-   * @param left The data of the left neighbor chunk, can be nullptr if there
-   *             is no left neighbor.
-   * @param back The data of the back neighbor chunk, can be nullptr if there
-   *             is no back neighbor.
-   * @param front The data of the front neighbor chunk, can be nullptr if
-   *              there is no front neighbor.
-   * @param hightPriority Indicates that this batch needs to be created in the
-   *                      current frame. If false the chunk will be put in a
-   *                      queue that adds a limited amount of batches each
-   *                      frame. This is to provided a smoother workload when
-   *                      adding many batches.
+   * @param replaceId id of the batch that the new batch replaces. If there is
+   *                  no such batch, -1 should be provided.
+   * @param batch The graphical chunk that will be rendered by the draw
+   *              function.
+   * @param highPriority Indicates that this batch needs to be created in the
+   *                     current frame. If false the chunk will be put in a
+   *                     queue that adds a limited amount of batches each
+   *                     frame. This is to provided a smoother workload when
+   *                     adding many batches.
    * @return An id that should be used with removeBatch when the batch should
    *         be removed.
    */
   int addBatch(int replaceId,
-               float x,
-               float y,
-               float z,
-               VoxelMatrix& data,
-               VoxelMatrix* right,
-               VoxelMatrix* left,
-               VoxelMatrix* back,
-               VoxelMatrix* front,
+               std::shared_ptr<GraphicalChunk> batch,
                bool highPriority = false);
 
   /**
-   * \brief Used to remove a batch that is no longer supposed to be drawn.
+   * @brief Used to remove a batch that is no longer supposed to be drawn.
    *
    * When calling this function, the batch will be added to a queue for
    * removal. It will not be done until the draw function is called. This is
@@ -113,14 +90,14 @@ public:
   void removeBatch(int id);
 
   /**
-   * \brief Draws all of the batched GraphicalChunks.
+   * @brief Draws all of the batched GraphicalChunks.
    *
    * This function should be called with a thread that has an opengl context.
    */
   void draw();
 
   /**
-   * \brief Sets the sun strength of the rendering.
+   * @brief Sets the sun strength of the rendering.
    *
    * This function will affect how bright the world is.
    *
@@ -141,7 +118,7 @@ private:
   double m_sunStrength{1};
   std::mutex m_mutex{};
 
-  static constexpr int noRemove{-1};
+  static constexpr int m_noRemove{-1};
 
   using batches =
     std::vector<std::tuple<int, int, std::shared_ptr<GraphicalChunk>>>;

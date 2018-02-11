@@ -216,7 +216,8 @@ TerrainGenerator::generateGrassLand(VoxelMatrix& cubes,
       bool shouldPlaceTree{value > -0.02 && value < 0.02};
       // Short circuit is important here.
       // Does not seem to work properly :s
-      bool hasNeighboor{isNotAtBorder && hasTreeNeighboor(cubes, x, y + 1, z, treeHeight)};
+      bool hasNeighboor{isNotAtBorder &&
+                        hasTreeNeighboor(cubes, x, y + 1, z, treeHeight)};
 
       if (isNotAtBorder && shouldPlaceTree && !hasNeighboor)
         placeTree(cubes, x, y + 1, z);
@@ -259,7 +260,11 @@ TerrainGenerator::placeTree(VoxelMatrix& cubes, int x, int y, int z) {
 }
 
 bool
-TerrainGenerator::hasTreeNeighboor(VoxelMatrix& cubes, int x, int y, int z, int height) {
+TerrainGenerator::hasTreeNeighboor(VoxelMatrix& cubes,
+                                   int x,
+                                   int y,
+                                   int z,
+                                   int height) {
   for (int i{y}; i < y + height; ++i) {
     bool hasNeighboor{
       cubes[x][i][z + 1].getId() == config::cube_data::LOG_BIRCH ||
