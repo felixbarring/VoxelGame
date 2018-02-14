@@ -62,17 +62,16 @@ public:
    *                  no such batch, -1 should be provided.
    * @param batch The graphical chunk that will be rendered by the draw
    *              function.
-   * @param highPriority Indicates that this batch needs to be created in the
-   *                     current frame. If false the chunk will be put in a
-   *                     queue that adds a limited amount of batches each
-   *                     frame. This is to provided a smoother workload when
-   *                     adding many batches.
+//   * @param highPriority Indicates that this batch needs to be created in the
+//   *                     current frame. If false the chunk will be put in a
+//   *                     queue that adds a limited amount of batches each
+//   *                     frame. This is to provided a smoother workload when
+//   *                     adding many batches.
    * @return An id that should be used with removeBatch when the batch should
    *         be removed.
    */
   int addBatch(int replaceId,
-               std::shared_ptr<GraphicalChunk> batch,
-               bool highPriority = false);
+               GraphicalChunk&& batch);
 
   /**
    * @brief Used to remove a batch that is no longer supposed to be drawn.
@@ -113,17 +112,15 @@ private:
   Camera& m_camera;
 
   int m_idCounter{0};
-  std::map<int, std::shared_ptr<GraphicalChunk>> m_batches{};
+  std::map<int, GraphicalChunk> m_batches{};
 
   double m_sunStrength{1};
   std::mutex m_mutex{};
 
   static constexpr int m_noRemove{-1};
 
-  using batches =
-    std::vector<std::tuple<int, int, std::shared_ptr<GraphicalChunk>>>;
+  using batches = std::vector<std::tuple<int, int, GraphicalChunk>>;
   batches m_batchesToAdd{};
-  batches m_batchesToAddHP{};
 
   std::vector<int> m_batchesToBeRemoved{};
 

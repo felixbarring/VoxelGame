@@ -181,18 +181,17 @@ Chunk::updateGraphics(bool highPriority) {
 
   for (int i : m_dirtyRegions) {
 
-    shared_ptr<GraphicalChunk> batch =
-      make_shared<GraphicalChunk>(m_xLocation,
-                                  i * GRAPHICAL_CHUNK_HEIGHT,
-                                  m_zLocation,
-                                  m_cubes,
-                                  right,
-                                  left,
-                                  back,
-                                  front);
+    GraphicalChunk batch(m_xLocation,
+                          i * GRAPHICAL_CHUNK_HEIGHT,
+                          m_zLocation,
+                          m_cubes,
+                          right,
+                          left,
+                          back,
+                          front);
 
     int derp = m_graphicsManager.getChunkBatcher().addBatch(
-      m_graphicalChunksIds[i], batch, highPriority);
+      m_graphicalChunksIds[i], move(batch));
 
     m_graphicalChunksIds[i] = derp;
   }
