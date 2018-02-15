@@ -13,15 +13,7 @@ using namespace glm;
 
 namespace graphics {
 
-ChunkBatcher::ChunkBatcher(Camera& camera)
-  : m_camera(camera)
-  , m_texture(Resources::getInstance().getTextureArray(
-      config::cube_data::textures,
-      config::cube_data::TEXTURE_WIDTH,
-      config::cube_data::TEXTURE_HEIGHT))
-
-{
-
+ShaderProgram createShader() {
   // TODO Refactor this the same way as the cubeBatcher...
   // That is, use constant strings for the variables.
 
@@ -84,7 +76,17 @@ ChunkBatcher::ChunkBatcher(Camera& camera)
                                  pair<string, int>("normalIn", 2),
                                  pair<string, int>("texCoordIn", 3)};
 
-  m_program = make_unique<ShaderProgram>(vertex, fragment, attributesMap);
+  return ShaderProgram(vertex, fragment, attributesMap);
+}
+
+ChunkBatcher::ChunkBatcher(Camera& camera)
+  : m_camera(camera)
+  , m_program{createShader()}
+  , m_texture(Resources::getInstance().getTextureArray(
+      config::cube_data::textures,
+      config::cube_data::TEXTURE_WIDTH,
+      config::cube_data::TEXTURE_HEIGHT))
+{
 }
 
 // ########################################################
@@ -111,20 +113,22 @@ void
 ChunkBatcher::draw() {
   // Done on the main thread because the thread doing opengl
   // calls needs an opengl context, which the main thread does.
-  lock_guard<mutex> lock(m_mutex);
-  addAndRemoveBatches();
+  {
+    lock_guard<mutex> lock(m_mutex);
+    addAndRemoveBatches();
+  }
 
-  m_program->bind();
+  m_program.bind();
 
   glEnable(GL_CULL_FACE);
   glEnable(GL_DEPTH_TEST);
 
   glActiveTexture(GL_TEXTURE0);
-  m_program->setUniformli("texture1", 0);
+  m_program.setUniformli("texture1", 0);
   m_texture.bind();
 
-  m_program->setUniform3f("lightDirection", x, 3.0, 0.3);
-  m_program->setUniform1f("sunStrenght", m_sunStrength);
+  m_program.setUniform3f("lightDirection", x, 3.0, 0.3);
+  m_program.setUniform1f("sunStrenght", m_sunStrength);
 
   //    m_program->setUniform3f("fogColor", skyColor.x, skyColor.y, skyColor.z);
 
@@ -133,8 +137,8 @@ ChunkBatcher::draw() {
       m_camera.getViewMatrix() * batch.second.getTransform().getMatrix();
     mat4 modelViewProjection = m_camera.getProjectionMatrix() * modelView;
 
-    m_program->setUniformMatrix4f("modelViewProjection", modelViewProjection);
-    m_program->setUniformMatrix4f("modelView", modelView);
+    m_program.setUniformMatrix4f("modelViewProjection", modelViewProjection);
+    m_program.setUniformMatrix4f("modelView", modelView);
 
     batch.second.drawNoneTransparent();
   }
@@ -150,12 +154,12 @@ ChunkBatcher::draw() {
     mat4 modelView =
       m_camera.getViewMatrix() * batch.second.getTransform().getMatrix();
     mat4 modelViewProjection = m_camera.getProjectionMatrix() * modelView;
-    m_program->setUniformMatrix4f("modelViewProjection", modelViewProjection);
-    m_program->setUniformMatrix4f("modelView", modelView);
+    m_program.setUniformMatrix4f("modelViewProjection", modelViewProjection);
+    m_program.setUniformMatrix4f("modelView", modelView);
     batch.second.drawTransparent();
   }
 
-  m_program->unbind();
+  m_program.unbind();
 }
 
 void

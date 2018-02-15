@@ -124,7 +124,7 @@ private:
 
   std::vector<int> m_batchesToBeRemoved{};
 
-  std::unique_ptr<ShaderProgram> m_program{};
+  ShaderProgram m_program;
   texture::TextureArray& m_texture;
 };
 }
