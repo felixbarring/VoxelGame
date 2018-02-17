@@ -255,7 +255,7 @@ void
 InGame::update(double timePassed) {
   shared_ptr<Input> input = Input::getInstance();
 
-  if (input->openTerminalPressed) {
+  if (input->openTerminalPressed && m_state != GameState::Terminal) {
     m_state = GameState::Terminal;
     m_terminal->skipNextUpdate();
   }
