@@ -12,6 +12,42 @@ using namespace widget;
 
 namespace gui {
 
+Terminal::History::History(unsigned maxLenght)
+ : m_history(maxLenght, "") {
+}
+
+void Terminal::History::addToHistory(std::string str) {
+ moveAllRight();
+ m_history[1] = std::move(str);
+ m_historyPointer = 0;
+ ++m_actualElements;
+}
+
+void Terminal::History::incrementPointer() {
+ unsigned ne = m_historyPointer + 1;
+ if (ne < m_history.size() && ne < m_actualElements)
+   ++m_historyPointer;
+}
+
+void Terminal::History::decrementPointer() {
+ if (m_historyPointer > 0)
+   --m_historyPointer;
+}
+
+const std::string& Terminal::History::getPointedElement() {
+ return m_history[m_historyPointer];
+}
+
+void Terminal::History::moveAllRight() {
+ for (long unsigned i{m_history.size() - 1}; i >= 1; --i)
+   m_history[i] = m_history[i - 1];
+}
+
+
+unsigned m_actualElements{1};
+unsigned m_historyPointer{0};
+std::vector<std::string> m_history{""};
+
 Terminal::Terminal(vector<string> commands,
                    graphics::GraphicsManager& graphicsManager,
                    function<void(vector<string>)> commandListener)
@@ -54,6 +90,7 @@ Terminal::Terminal(vector<string> commands,
       }
     }
   };
+
   m_widgets =
     make_shared<WidgetGroup>(0, 100, 100, 600, 400, m_graphicsManager, 5);
   m_textInput =
@@ -75,6 +112,11 @@ Terminal::Terminal(vector<string> commands,
 
 void
 Terminal::update(float timePassed) {
+  if (m_skipNextUpdate) {
+    m_skipNextUpdate = false;
+    return;
+  }
+
   m_widgets->update(timePassed);
 
   if (util::Input::getInstance()->tabPressed) {
@@ -104,6 +146,11 @@ Terminal::draw() {
 void
 Terminal::addLine(string str) {
   m_textArea->addLine(move(str));
+}
+
+void
+Terminal::skipNextUpdate() {
+  m_skipNextUpdate = true;
 }
 
 } /* namespace widget */

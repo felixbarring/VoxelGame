@@ -72,40 +72,33 @@ public:
    */
   void addLine(std::string str);
 
+  /**
+   * @brief The next call to update will not have any effect.
+   *
+   * This functionality was added to prevent the game from opening with
+   * a 't' in the textInput. This happens when calling update the same frame
+   * as the Terminal is opened. The keypress to open the Terminal is added to
+   * the TextInput. Prevented by using this function when activating the
+   * Terminal.
+   */
+  void skipNextUpdate();
+
 private:
+
   class History {
   public:
-    explicit History(unsigned maxLenght)
-      : m_history(maxLenght, "") {
-    }
+    explicit History(unsigned maxLenght);
 
-    void addToHistory(std::string str) {
-      moveAllRight();
-      m_history[1] = std::move(str);
-      m_historyPointer = 0;
-      ++m_actualElements;
-    }
+    void addToHistory(std::string str);
 
-    void incrementPointer() {
-      unsigned ne = m_historyPointer + 1;
-      if (ne < m_history.size() && ne < m_actualElements)
-        ++m_historyPointer;
-    }
+    void incrementPointer();
 
-    void decrementPointer() {
-      if (m_historyPointer > 0)
-        --m_historyPointer;
-    }
+    void decrementPointer();
 
-    const std::string& getPointedElement() const {
-      return m_history[m_historyPointer];
-    }
+    const std::string& getPointedElement();
 
   private:
-    void moveAllRight() {
-      for (long unsigned i{m_history.size() - 1}; i >= 1; --i)
-        m_history[i] = m_history[i - 1];
-    }
+    void moveAllRight();
 
     unsigned m_actualElements{1};
     unsigned m_historyPointer{0};
@@ -128,6 +121,8 @@ private:
 
   std::shared_ptr<widget::Button> m_enterButton;
   std::shared_ptr<widget::WidgetGroup> m_widgets{};
+
+  bool m_skipNextUpdate{};
 };
 
 } /* namespace widget */
