@@ -11,9 +11,7 @@
 using namespace std;
 using namespace glm;
 
-namespace graphics {
-
-ShaderProgram createShader() {
+graphics::ShaderProgram chunkBatcherCreateShader() {
   // TODO Refactor this the same way as the cubeBatcher...
   // That is, use constant strings for the variables.
 
@@ -76,22 +74,20 @@ ShaderProgram createShader() {
                                  pair<string, int>("normalIn", 2),
                                  pair<string, int>("texCoordIn", 3)};
 
-  return ShaderProgram(vertex, fragment, attributesMap);
+  return graphics::ShaderProgram(vertex, fragment, attributesMap);
 }
+
+namespace graphics {
 
 ChunkBatcher::ChunkBatcher(Camera& camera)
   : m_camera(camera)
-  , m_program{createShader()}
+  , m_program{chunkBatcherCreateShader()}
   , m_texture(Resources::getInstance().getTextureArray(
       config::cube_data::textures,
       config::cube_data::TEXTURE_WIDTH,
       config::cube_data::TEXTURE_HEIGHT))
 {
 }
-
-// ########################################################
-// Member Functions########################################
-// ########################################################
 
 int
 ChunkBatcher::addBatch(int replaceId, GraphicalChunk&& batch) {
@@ -111,12 +107,10 @@ int direction = 1;
 
 void
 ChunkBatcher::draw() {
-  // Done on the main thread because the thread doing opengl
-  // calls needs an opengl context, which the main thread does.
-  {
-    lock_guard<mutex> lock(m_mutex);
-    addAndRemoveBatches();
-  }
+  // Done on the main thread because the thread doing opengl calls needs an
+  // opengl context, which the main thread does.
+
+  addAndRemoveBatches();
 
   m_program.bind();
 
@@ -169,6 +163,8 @@ ChunkBatcher::setSunStrenght(double value) {
 
 void
 ChunkBatcher::addAndRemoveBatches() {
+  lock_guard<mutex> lock(m_mutex);
+
   // Add one of the batches with none high priority that has been requested to
   // be added.
   for (tuple<int, int, GraphicalChunk>& t : m_batchesToAdd) {

@@ -30,7 +30,7 @@ public:
 private:
   std::vector<Sprite*> m_batches;
   glm::mat4 m_projection;
-  std::unique_ptr<ShaderProgram> m_program;
+  ShaderProgram m_program;
 };
 
 } /* namespace graphics */

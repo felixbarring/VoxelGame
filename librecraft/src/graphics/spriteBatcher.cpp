@@ -9,12 +9,7 @@
 
 using namespace std;
 
-namespace graphics {
-
-SpriteBatcher::SpriteBatcher() {
-  // hard coded default value
-  m_projection = glm::ortho(0.0f, 800.0f, 0.0f, 600.0f, -1.0f, 1.0f);
-
+graphics::ShaderProgram spriteBatcherCreateShaderProgram() {
   // clang-format off
   std::string vertex =
       "#version 330 core \n"
@@ -47,8 +42,17 @@ SpriteBatcher::SpriteBatcher() {
   map<string, int> attributesMap{pair<string, int>("positionIn", 0),
                                  pair<string, int>("texCoordIn", 1)};
 
-  m_program = std::make_unique<ShaderProgram>(vertex, frag, attributesMap);
-  //  m_program.reset(new ShaderProgram{ vertex, frag, attributesMap });
+  return graphics::ShaderProgram(vertex, frag, attributesMap);
+
+}
+
+namespace graphics {
+
+SpriteBatcher::SpriteBatcher()
+  : m_program{spriteBatcherCreateShaderProgram()}
+{
+  // hard coded default value
+  m_projection = glm::ortho(0.0f, 800.0f, 0.0f, 600.0f, -1.0f, 1.0f);
 }
 
 void
@@ -58,8 +62,7 @@ SpriteBatcher::addBatch(Sprite& batch) {
 
 void
 SpriteBatcher::draw() {
-
-  m_program->bind();
+  m_program.bind();
 
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   glEnable(GL_BLEND);
@@ -69,7 +72,7 @@ SpriteBatcher::draw() {
     return a->getLayer() < b->getLayer();
   });
 
-  m_program->setUniformli("texture1", 0);
+  m_program.setUniformli("texture1", 0);
 
   texture::Texture* current{nullptr};
 
@@ -83,11 +86,11 @@ SpriteBatcher::draw() {
     glm::mat4 modelViewProjection{m_projection *
                                   batch->getTransform().getMatrix()};
 
-    m_program->setUniformMatrix4f("projection", modelViewProjection);
+    m_program.setUniformMatrix4f("projection", modelViewProjection);
     batch->draw();
   }
 
-  m_program->unbind();
+  m_program.unbind();
   m_batches.clear();
 }
 

@@ -10,8 +10,6 @@
 
 using namespace std;
 
-namespace graphics {
-
 // In
 const string positionIn = "positionIn";
 const string normalIn = "normalIn";
@@ -32,16 +30,7 @@ const string lightOut = "light";
 
 const string colorOut = "color";
 
-CubeBatcher::CubeBatcher(Camera& camera)
-  : m_camera(camera)
-  , m_texture(graphics::Resources::getInstance().getTextureArray(
-      config::cube_data::textures,
-      config::cube_data::TEXTURE_WIDTH,
-      config::cube_data::TEXTURE_HEIGHT)) {
-
-  for (int i = 0; i <= config::cube_data::LAST_CUBE + 1; i++)
-    m_cubes.push_back(TexturedCube{/*2, 0, -1.0f, */ i});
-
+graphics::ShaderProgram cubeBatcherCreateShader() {
   // clang-format off
 
   string vertex =
@@ -84,7 +73,21 @@ CubeBatcher::CubeBatcher(Camera& camera)
                                  pair<string, int>(normalIn, 1),
                                  pair<string, int>(texCoordIn, 2)};
 
-  m_program.reset(new ShaderProgram(vertex, fragment, attributesMap));
+  return graphics::ShaderProgram(vertex, fragment, attributesMap);
+}
+
+namespace graphics {
+
+CubeBatcher::CubeBatcher(Camera& camera)
+  : m_camera(camera)
+  , m_program{cubeBatcherCreateShader()}
+  , m_texture(graphics::Resources::getInstance().getTextureArray(
+      config::cube_data::textures,
+      config::cube_data::TEXTURE_WIDTH,
+      config::cube_data::TEXTURE_HEIGHT)) {
+
+  for (int i = 0; i <= config::cube_data::LAST_CUBE + 1; i++)
+    m_cubes.push_back(TexturedCube{/*2, 0, -1.0f, */ i});
 }
 
 void
@@ -98,28 +101,28 @@ CubeBatcher::addBatch(char type,
 void
 CubeBatcher::draw() {
 
-  m_program->bind();
+  m_program.bind();
 
   glEnable(GL_CULL_FACE);
   glEnable(GL_DEPTH_TEST);
 
   glActiveTexture(GL_TEXTURE0);
-  m_program->setUniformli(arrayTexture, 0);
+  m_program.setUniformli(arrayTexture, 0);
   m_texture.bind();
 
-  m_program->setUniform1f(sunStrength, m_sunStrength);
+  m_program.setUniform1f(sunStrength, m_sunStrength);
 
   for (Batch b : m_batches) {
-    m_program->setUniform1f(sunLight, b.m_sunLight);
-    m_program->setUniform1f(otherLight, b.m_otherLight);
+    m_program.setUniform1f(sunLight, b.m_sunLight);
+    m_program.setUniform1f(otherLight, b.m_otherLight);
 
     glm::mat4 modelView = m_camera.getViewMatrix() * b.m_transform.getMatrix();
     glm::mat4 modelViewProjection = m_camera.getProjectionMatrix() * modelView;
-    m_program->setUniformMatrix4f(mvp, modelViewProjection);
+    m_program.setUniformMatrix4f(mvp, modelViewProjection);
     b.m_cube.draw();
   }
 
-  m_program->unbind();
+  m_program.unbind();
   m_batches.clear();
 }
 
