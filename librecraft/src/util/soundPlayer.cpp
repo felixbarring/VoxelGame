@@ -131,7 +131,6 @@ SoundPlayer::graduallyChangeMusicVolume(ChangeMusicVolume value) {
     m_targetVolume = 0.0;
     m_startVolume = min(m_musicVolume, m_changeVolume);
   }
-  m_changeVolume = m_startVolume;
 }
 
 } /* namespace util */
