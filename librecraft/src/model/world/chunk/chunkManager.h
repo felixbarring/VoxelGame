@@ -98,8 +98,9 @@ private:
   util::SoundPlayer& m_soundPlayer;
   graphics::GraphicsManager& m_graphicsManager;
 
-  bool m_loadStoreWorldWhenPlyayerIsNotInTheCenterChunk{
-    true}; // Good name 10/10
+  // Good name 10/10
+  // TODO Rename...
+  bool m_loadStoreWorldWhenPlyayerIsNotInTheCenterChunk{true};
 
   glm::vec3 m_center{4, 0, 4};
   glm::vec3 m_intersectedCube{};
