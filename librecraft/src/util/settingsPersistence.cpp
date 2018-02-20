@@ -4,6 +4,7 @@
 
 #include <cstdlib>
 #include <string>
+#include <iostream>
 
 #include "../config/data.h"
 
@@ -18,8 +19,10 @@ SettingsPersistence::loadSettings() {
 
   // If there is an error, it is probably because the file dose not exist.
   // There will be a new one generated when closing the game.
-  if (errorCode != 0)
+  if (errorCode != 0) {
+    cout << "Could not open settings xml file. \n";
     return;
+  }
 
   XMLNode* root{doc.FirstChild()};
 
@@ -172,5 +175,9 @@ SettingsPersistence::storeSettings() {
     }
   }
 
-  doc.SaveFile(settingsFile.c_str());
+  XMLError errorCode{doc.SaveFile(settingsFile.c_str())};
+  if (errorCode != 0) {
+    cout << "Could not save settings xml file. \n";
+    return;
+  }
 }

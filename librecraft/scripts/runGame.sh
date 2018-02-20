@@ -1,5 +1,5 @@
 #!/bin/sh
 
-cd ..
-./build/VoxelGame
-cd scripts
+cd ../build
+./VoxelGame
+cd ../scripts

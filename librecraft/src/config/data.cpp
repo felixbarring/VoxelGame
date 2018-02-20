@@ -7,6 +7,8 @@ std::string dataFolder = "data/";
 std::string worldMetaFile = "data/meta";
 std::string settingsFile = "data/settings.xml";
 
+std::string pre = "resources/";
+
 namespace chunk_data {
 
 const int GRAPHICAL_CHUNK_WIDTH = 16;
@@ -15,7 +17,7 @@ const int GRAPHICAL_CHUNK_HEIGHT = 128;
 const int CHUNK_WIDTH_AND_DEPTH = 16;
 const int CHUNK_HEIGHT = 128;
 
-int NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER = 8;
+int NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER = 5;
 const int NUMBER_OF_CHUNKS_Y = 1;
 }
 
@@ -85,74 +87,72 @@ const char BLOCK_TEXTURES[21][3]{
 const unsigned TEXTURE_WIDTH = 32;
 const unsigned TEXTURE_HEIGHT = 32;
 
-std::string pre = "../resources/cubes/";
-
 const std::vector<std::string> textures{
-  pre + "grass_side.png",
-  pre + "grass_top.png",
+  pre + "cubes/grass_side.png",
+  pre + "cubes/grass_top.png",
 
-  pre + "dirt.png",
-  pre + "coarse_dirt.png",
+  pre + "cubes/dirt.png",
+  pre + "cubes/coarse_dirt.png",
 
-  pre + "stone.png",
-  pre + "stone_andesite.png",
+  pre + "cubes/stone.png",
+  pre + "cubes/stone_andesite.png",
 
-  pre + "brick.png",
-  pre + "brick_top.png",
+  pre + "cubes/brick.png",
+  pre + "cubes/brick_top.png",
 
-  pre + "sand.png",
+  pre + "cubes/sand.png",
 
-  pre + "cactus_side.png",
-  pre + "cactus_bottom.png",
-  pre + "cactus_top.png",
+  pre + "cubes/cactus_side.png",
+  pre + "cubes/cactus_bottom.png",
+  pre + "cubes/cactus_top.png",
 
-  pre + "coal_block.png",
-  pre + "coal_ore.png",
+  pre + "cubes/coal_block.png",
+  pre + "cubes/coal_ore.png",
 
-  pre + "cobblestone.png",
-  pre + "cobblestone_bottom.png",
-  pre + "cobblestone_top.png",
+  pre + "cubes/cobblestone.png",
+  pre + "cubes/cobblestone_bottom.png",
+  pre + "cubes/cobblestone_top.png",
 
-  pre + "end_bricks.png",
+  pre + "cubes/end_bricks.png",
 
-  pre + "end_stone.png",
+  pre + "cubes/end_stone.png",
 
-  pre + "gravel.png",
+  pre + "cubes/gravel.png",
 
-  pre + "planks_big_oak.png",
+  pre + "cubes/planks_big_oak.png",
 
-  pre + "stonebrick.png",
+  pre + "cubes/stonebrick.png",
 
-  pre + "log_birch.png",
-  pre + "log_birch_top.png",
-  pre + "leaves_birch.png",
+  pre + "cubes/log_birch.png",
+  pre + "cubes/log_birch_top.png",
+  pre + "cubes/leaves_birch.png",
 
-  pre + "light.png",
-  pre + "water.png",
-  pre + "bedrock.png",
+  pre + "cubes/light.png",
+  pre + "cubes/water.png",
+  pre + "cubes/bedrock.png",
 };
 
 // TODO Fix better thumbnails
 const std::vector<std::string> thumbnails{
-  "../resources/cubes/grass_side.png",
-  "../resources/cubes/dirt.png",
-  "../resources/cubes/coarse_dirt.png",
-  "../resources/cubes/stone.png",
-  "../resources/cubes/stone_andesite.png",
-  "../resources/cubes/brick.png",
-  "../resources/cubes/sand.png",
-  "../resources/cubes/cactus_side.png",
-  "../resources/cubes/coal_block.png",
-  "../resources/cubes/coal_ore.png",
-  "../resources/cubes/cobblestone.png",
-  "../resources/cubes/end_bricks.png",
-  "../resources/cubes/end_stone.png",
-  "../resources/cubes/gravel.png",
-  "../resources/cubes/planks_big_oak.png",
-  "../resources/cubes/stonebrick.png",
-  "../resources/cubes/log_birch.png",
-  "../resources/cubes/leaves_birch.png",
-  "../resources/cubes/light.png",
+  pre + "cubes/grass_side.png",
+  pre + "cubes/dirt.png",
+  pre + "cubes/coarse_dirt.png",
+  pre + "cubes/stone.png",
+  pre + "cubes/stone_andesite.png",
+  pre + "cubes/brick.png",
+  pre + "cubes/sand.png",
+  pre + "cubes/cactus_side.png",
+  pre + "cubes/coal_block.png",
+  pre + "cubes/coal_ore.png",
+  pre + "cubes/cobblestone.png",
+  pre + "cubes/end_bricks.png",
+  pre + "cubes/end_stone.png",
+  pre + "cubes/gravel.png",
+  pre + "cubes/planks_big_oak.png",
+  pre + "cubes/stonebrick.png",
+  pre + "cubes/log_birch.png",
+  pre + "cubes/leaves_birch.png",
+  pre + "cubes/light.png",
 };
 }
 
@@ -207,30 +207,28 @@ float mouseSensitivityY{0.001};
 }
 
 namespace gui_data {
-const std::string title = "../resources/gui/title.png";
+const std::string title = pre + "gui/title.png";
 
-const std::string solidBlack = "../resources/gui/solid_black.png";
-const std::string solidWhite = "../resources/gui/solid_white.png";
+const std::string solidBlack = pre + "gui/solid_black.png";
+const std::string solidWhite = pre + "gui/solid_white.png";
 
-const std::string transparentGuiBox =
-  "../resources/gui/transparent_gui_box.png";
-const std::string guiBox = "../resources/gui/gui_box.png";
-const std::string button = "../resources/gui/button.png";
-const std::string buttonToggled = "../resources/gui/button_toggled.png";
-const std::string highlight = "../resources/gui/highlight.png";
+const std::string transparentGuiBox = pre + "gui/transparent_gui_box.png";
+const std::string guiBox = pre + "gui/gui_box.png";
+const std::string button = pre + "gui/button.png";
+const std::string buttonToggled = pre + "gui/button_toggled.png";
+const std::string highlight = pre + "gui/highlight.png";
 
-const std::string checkBox = "../resources/gui/check_box.png";
-const std::string checkBoxChecked = "../resources/gui/check_box_checked.png";
+const std::string checkBox = pre + "gui/check_box.png";
+const std::string checkBoxChecked = pre + "gui/check_box_checked.png";
 
-const std::string radioButton = "../resources/gui/radio_button.png";
-const std::string radioButtonChecked =
-  "../resources/gui/radio_button_checked.png";
+const std::string radioButton = pre + "gui/radio_button.png";
+const std::string radioButtonChecked = pre + "gui/radio_button_checked.png";
 
-const std::string slider = "../resources/gui/slider_body.png";
-const std::string sliderKnob = "../resources/gui/slider_knob.png";
+const std::string slider = pre + "gui/slider_body.png";
+const std::string sliderKnob = pre + "gui/slider_knob.png";
 
-const std::string crossHair = "../resources/gui/crosshair.png";
-const std::string mouse = "../resources/gui/mouse.png";
+const std::string crossHair = pre + "gui/crosshair.png";
+const std::string mouse = pre + "gui/mouse.png";
 }
 
 namespace font_data {
@@ -238,40 +236,40 @@ const int charsInFont = 256;
 const int fontAtlasWidth = 1024;
 const int fontAtlasHeight = 1024;
 
-std::string font = "../resources/font/font1.png";
-std::string fontLayout = "../resources/font/font1.txt";
+std::string font = pre + "font/font1.png";
+std::string fontLayout = pre + "font/font1.txt";
 }
 
 namespace cube_map_data {
-std::vector<std::string> cubeMap1{"../resources/skybox/right.png",
-                                  "../resources/skybox/left.png",
-                                  "../resources/skybox/top.png",
-                                  "../resources/skybox/bottom.png",
-                                  "../resources/skybox/back.png",
-                                  "../resources/skybox/front.png"};
+std::vector<std::string> cubeMap1{pre + "skybox/right.png",
+                                  pre + "skybox/left.png",
+                                  pre + "skybox/top.png",
+                                  pre + "skybox/bottom.png",
+                                  pre + "skybox/back.png",
+                                  pre + "skybox/front.png"};
 
 const int cubeMap1Width = 2048;
 const int cubeMap1Height = 2048;
 }
 
 namespace audio {
-const std::string buttonPressed = "../resources/sound/button.wav";
-const std::string cubeAdded = "../resources/sound/cube_place.wav";
-const std::string cubeRemoved = "../resources/sound/cube_remove.wav";
+const std::string buttonPressed = pre + "sound/button.wav";
+const std::string cubeAdded = pre + "sound/cube_place.wav";
+const std::string cubeRemoved = pre + "sound/cube_remove.wav";
 
 const std::vector<std::string> footStepSounds{
-  "../resources/sound/steps/step1.ogg",
-  "../resources/sound/steps/step2.ogg",
-  "../resources/sound/steps/step3.ogg",
-  "../resources/sound/steps/step4.ogg",
-  "../resources/sound/steps/step5.ogg",
-  "../resources/sound/steps/step6.ogg",
-  "../resources/sound/steps/step7.ogg",
-  "../resources/sound/steps/step8.ogg",
-  "../resources/sound/steps/step9.ogg",
-  "../resources/sound/steps/step10.ogg"};
+  pre + "sound/steps/step1.ogg",
+  pre + "sound/steps/step2.ogg",
+  pre + "sound/steps/step3.ogg",
+  pre + "sound/steps/step4.ogg",
+  pre + "sound/steps/step5.ogg",
+  pre + "sound/steps/step6.ogg",
+  pre + "sound/steps/step7.ogg",
+  pre + "sound/steps/step8.ogg",
+  pre + "sound/steps/step9.ogg",
+  pre + "sound/steps/step10.ogg"};
 
-const std::string menuMusic = "../resources/music/Continue Life.ogg";
+const std::string menuMusic = pre + "music/Continue Life.ogg";
 
 double maserVolume = 1.0;
 double musicVolume = 100.0;

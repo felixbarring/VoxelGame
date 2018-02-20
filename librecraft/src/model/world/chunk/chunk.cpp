@@ -251,6 +251,11 @@ Chunk::storeChunk() {
     return;
 
   ofstream outStream(m_name);
+
+  if (!outStream.is_open()) {
+    cout << "Could not create a file for saving the chunk. \n";
+  }
+
   for (int x = 0; x < m_width; ++x) {
     for (int y = 0; y < m_height; ++y) {
       for (int z = 0; z < m_depth; ++z) {
