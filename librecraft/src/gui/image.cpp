@@ -13,13 +13,13 @@ Image::Image(double x,
              const std::string& image,
              graphics::GraphicsManager& graphicsManager)
   : m_graphicsManager{graphicsManager} {
-  m_sprite.reset(
-    new graphics::Sprite{x,
-                         y,
-                         0,
-                         width,
-                         height,
-                         graphics::Resources::getInstance().getTexture(image)});
+  m_sprite = std::make_shared<graphics::Sprite>(
+    x,
+    y,
+    0,
+    width,
+    height,
+    graphics::Resources::getInstance().getTexture(image));
 }
 
 void

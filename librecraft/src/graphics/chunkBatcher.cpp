@@ -11,7 +11,8 @@
 using namespace std;
 using namespace glm;
 
-graphics::ShaderProgram chunkBatcherCreateShader() {
+graphics::ShaderProgram
+chunkBatcherCreateShader() {
   // TODO Refactor this the same way as the cubeBatcher...
   // That is, use constant strings for the variables.
 
@@ -85,8 +86,7 @@ ChunkBatcher::ChunkBatcher(Camera& camera)
   , m_texture(Resources::getInstance().getTextureArray(
       config::cube_data::textures,
       config::cube_data::TEXTURE_WIDTH,
-      config::cube_data::TEXTURE_HEIGHT))
-{
+      config::cube_data::TEXTURE_HEIGHT)) {
 }
 
 int

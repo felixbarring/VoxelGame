@@ -35,31 +35,31 @@ ToggleButton::ToggleButton(int id,
 
   switch (skin) {
     case Skin::Regular: {
-      m_spriteToggled.reset(
-        new Sprite(x,
-                   y,
-                   layer,
-                   width,
-                   height,
-                   res.getTexture(config::gui_data::buttonToggled)));
+      m_spriteToggled =
+        make_shared<Sprite>(x,
+                            y,
+                            layer,
+                            width,
+                            height,
+                            res.getTexture(config::gui_data::buttonToggled));
       break;
     }
     case Skin::CheckBox: {
       m_sprite = make_shared<Sprite>(
         x, y, layer, width, height, res.getTexture(config::gui_data::checkBox));
-      m_spriteToggled.reset(
-        new Sprite(x,
-                   y,
-                   layer,
-                   width,
-                   height,
-                   res.getTexture(config::gui_data::checkBoxChecked)));
-      m_text.reset(
-        new Sprite(x + height,
-                   y + 5,
-                   layer + 1,
-                   fontMeshBuilder.buldMeshForString(name, height - 5),
-                   res.getTexture(config::font_data::font)));
+      m_spriteToggled =
+        make_shared<Sprite>(x,
+                            y,
+                            layer,
+                            width,
+                            height,
+                            res.getTexture(config::gui_data::checkBoxChecked));
+      m_text =
+        make_shared<Sprite>(x + height,
+                            y + 5,
+                            layer + 1,
+                            fontMeshBuilder.buldMeshForString(name, height - 5),
+                            res.getTexture(config::font_data::font));
       break;
     }
     case Skin::ReadioButton: {
@@ -70,19 +70,19 @@ ToggleButton::ToggleButton(int id,
                             width,
                             height,
                             res.getTexture(config::gui_data::radioButton));
-      m_spriteToggled.reset(
-        new Sprite(x,
-                   y,
-                   layer,
-                   width,
-                   height,
-                   res.getTexture(config::gui_data::radioButtonChecked)));
-      m_text.reset(
-        new Sprite(x + height,
-                   y + 5,
-                   layer + 1,
-                   fontMeshBuilder.buldMeshForString(name, height - 5),
-                   res.getTexture(config::font_data::font)));
+      m_spriteToggled = make_shared<Sprite>(
+        x,
+        y,
+        layer,
+        width,
+        height,
+        res.getTexture(config::gui_data::radioButtonChecked));
+      m_text =
+        make_shared<Sprite>(x + height,
+                            y + 5,
+                            layer + 1,
+                            fontMeshBuilder.buldMeshForString(name, height - 5),
+                            res.getTexture(config::font_data::font));
       break;
     }
   }

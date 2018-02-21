@@ -145,7 +145,7 @@ public:
    * Uses the graphics::ChunkBatcher to update all the graphical representations
    * of this Chunk that are dirty.
    */
-  void updateGraphics(bool highPriority = false);
+  void updateGraphics();
 
   /**
    * @return The x location of the Chunk

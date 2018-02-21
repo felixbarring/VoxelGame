@@ -3,8 +3,6 @@
 #include <iostream>
 #include <string>
 
-using std::__cxx11::to_string;
-
 Voxel::Voxel() {
 }
 

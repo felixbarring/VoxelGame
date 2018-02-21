@@ -30,20 +30,20 @@ Slider::Slider(int id,
   m_knobPosition = x;
   m_knobWidth = height;
 
-  m_slider.reset(
-    new Sprite(x,
-               y,
-               layer,
-               width,
-               height,
-               Resources::getInstance().getTexture(config::gui_data::slider)));
-  m_knob.reset(new Sprite(
+  m_slider = make_shared<Sprite>(
+    x,
+    y,
+    layer,
+    width,
+    height,
+    Resources::getInstance().getTexture(config::gui_data::slider));
+  m_knob = make_shared<Sprite>(
     x,
     y,
     layer + 1,
     height,
     height,
-    Resources::getInstance().getTexture(config::gui_data::sliderKnob)));
+    Resources::getInstance().getTexture(config::gui_data::sliderKnob));
 }
 
 void

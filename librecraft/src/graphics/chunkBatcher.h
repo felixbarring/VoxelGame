@@ -70,8 +70,7 @@ public:
    * @return An id that should be used with removeBatch when the batch should
    *         be removed.
    */
-  int addBatch(int replaceId,
-               GraphicalChunk&& batch);
+  int addBatch(int replaceId, GraphicalChunk&& batch);
 
   /**
    * @brief Used to remove a batch that is no longer supposed to be drawn.

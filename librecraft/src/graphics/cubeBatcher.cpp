@@ -30,7 +30,8 @@ const string lightOut = "light";
 
 const string colorOut = "color";
 
-graphics::ShaderProgram cubeBatcherCreateShader() {
+graphics::ShaderProgram
+cubeBatcherCreateShader() {
   // clang-format off
 
   string vertex =

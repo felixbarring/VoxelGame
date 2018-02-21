@@ -161,7 +161,7 @@ Chunk::forceUpdateGraphics() {
 }
 
 void
-Chunk::updateGraphics(bool highPriority) {
+Chunk::updateGraphics() {
   vector<vector<vector<Voxel>>>* right = nullptr;
   vector<vector<vector<Voxel>>>* left = nullptr;
   vector<vector<vector<Voxel>>>* front = nullptr;
@@ -182,13 +182,13 @@ Chunk::updateGraphics(bool highPriority) {
   for (int i : m_dirtyRegions) {
 
     GraphicalChunk batch(m_xLocation,
-                          i * GRAPHICAL_CHUNK_HEIGHT,
-                          m_zLocation,
-                          m_cubes,
-                          right,
-                          left,
-                          back,
-                          front);
+                         i * GRAPHICAL_CHUNK_HEIGHT,
+                         m_zLocation,
+                         m_cubes,
+                         right,
+                         left,
+                         back,
+                         front);
 
     int derp = m_graphicsManager.getChunkBatcher().addBatch(
       m_graphicalChunksIds[i], move(batch));
@@ -379,7 +379,7 @@ Chunk::updateLightningCubeRemoved(Voxel& voxel, int x, int y, int z) {
   voxel.setOtherLightValue(highestOLV);
   propagateOtherLight(x, y, z);
 
-  updateGraphics(true);
+  updateGraphics();
   updateNeighborGraphics();
 }
 
@@ -403,7 +403,7 @@ Chunk::updateLightningCubeAdded(int x, int y, int z) {
   }
 
   updateDirtyRegions(y);
-  updateGraphics(true);
+  updateGraphics();
   updateNeighborGraphics();
 }
 

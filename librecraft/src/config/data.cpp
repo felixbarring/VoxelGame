@@ -134,24 +134,15 @@ const std::vector<std::string> textures{
 
 // TODO Fix better thumbnails
 const std::vector<std::string> thumbnails{
-  pre + "cubes/grass_side.png",
-  pre + "cubes/dirt.png",
-  pre + "cubes/coarse_dirt.png",
-  pre + "cubes/stone.png",
-  pre + "cubes/stone_andesite.png",
-  pre + "cubes/brick.png",
-  pre + "cubes/sand.png",
-  pre + "cubes/cactus_side.png",
-  pre + "cubes/coal_block.png",
-  pre + "cubes/coal_ore.png",
-  pre + "cubes/cobblestone.png",
-  pre + "cubes/end_bricks.png",
-  pre + "cubes/end_stone.png",
-  pre + "cubes/gravel.png",
-  pre + "cubes/planks_big_oak.png",
-  pre + "cubes/stonebrick.png",
-  pre + "cubes/log_birch.png",
-  pre + "cubes/leaves_birch.png",
+  pre + "cubes/grass_side.png",     pre + "cubes/dirt.png",
+  pre + "cubes/coarse_dirt.png",    pre + "cubes/stone.png",
+  pre + "cubes/stone_andesite.png", pre + "cubes/brick.png",
+  pre + "cubes/sand.png",           pre + "cubes/cactus_side.png",
+  pre + "cubes/coal_block.png",     pre + "cubes/coal_ore.png",
+  pre + "cubes/cobblestone.png",    pre + "cubes/end_bricks.png",
+  pre + "cubes/end_stone.png",      pre + "cubes/gravel.png",
+  pre + "cubes/planks_big_oak.png", pre + "cubes/stonebrick.png",
+  pre + "cubes/log_birch.png",      pre + "cubes/leaves_birch.png",
   pre + "cubes/light.png",
 };
 }
@@ -257,17 +248,16 @@ const std::string buttonPressed = pre + "sound/button.wav";
 const std::string cubeAdded = pre + "sound/cube_place.wav";
 const std::string cubeRemoved = pre + "sound/cube_remove.wav";
 
-const std::vector<std::string> footStepSounds{
-  pre + "sound/steps/step1.ogg",
-  pre + "sound/steps/step2.ogg",
-  pre + "sound/steps/step3.ogg",
-  pre + "sound/steps/step4.ogg",
-  pre + "sound/steps/step5.ogg",
-  pre + "sound/steps/step6.ogg",
-  pre + "sound/steps/step7.ogg",
-  pre + "sound/steps/step8.ogg",
-  pre + "sound/steps/step9.ogg",
-  pre + "sound/steps/step10.ogg"};
+const std::vector<std::string> footStepSounds{pre + "sound/steps/step1.ogg",
+                                              pre + "sound/steps/step2.ogg",
+                                              pre + "sound/steps/step3.ogg",
+                                              pre + "sound/steps/step4.ogg",
+                                              pre + "sound/steps/step5.ogg",
+                                              pre + "sound/steps/step6.ogg",
+                                              pre + "sound/steps/step7.ogg",
+                                              pre + "sound/steps/step8.ogg",
+                                              pre + "sound/steps/step9.ogg",
+                                              pre + "sound/steps/step10.ogg"};
 
 const std::string menuMusic = pre + "music/Continue Life.ogg";
 

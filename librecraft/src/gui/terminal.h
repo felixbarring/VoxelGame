@@ -84,7 +84,6 @@ public:
   void skipNextUpdate();
 
 private:
-
   class History {
   public:
     explicit History(unsigned maxLenght);

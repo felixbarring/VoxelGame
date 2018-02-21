@@ -33,6 +33,8 @@
 #include "../graphics/graphicsManager.h"
 namespace demo {
 
+using namespace std;
+
 class SpriteDemo : public IDemo {
 public:
   void runDemo() override {
@@ -55,38 +57,38 @@ public:
 
     glewExperimental = true;
     if (glewInit() != GLEW_OK) {
-      std::cout << "Failed to initialize GLEW\n";
+      cout << "Failed to initialize GLEW\n";
     }
 
     glViewport(0, 0, WIDTH, HEIGHT);
     glClearColor(0.2f, 0.22f, 0.2f, 1.0f);
 
-    std::shared_ptr<graphics::Sprite> sprite(
-      new graphics::Sprite{200,
-                           200,
-                           0,
-                           200,
-                           200,
-                           graphics::Resources::getInstance().getTexture(
-                             config::cube_data::textures[0])});
+    shared_ptr<graphics::Sprite> sprite = make_shared<graphics::Sprite>(
+      200,
+      200,
+      0,
+      200,
+      200,
+      graphics::Resources::getInstance().getTexture(
+        config::cube_data::textures[0]));
 
-    std::shared_ptr<graphics::Sprite> sprite2(
-      new graphics::Sprite{300,
-                           300,
-                           0,
-                           200,
-                           200,
-                           graphics::Resources::getInstance().getTexture(
-                             config::cube_data::textures[1])});
+    shared_ptr<graphics::Sprite> sprite2 = make_shared<graphics::Sprite>(
+      300,
+      300,
+      0,
+      200,
+      200,
+      graphics::Resources::getInstance().getTexture(
+        config::cube_data::textures[1]));
 
-    std::shared_ptr<graphics::Sprite> sprite3(
-      new graphics::Sprite{600,
-                           200,
-                           0,
-                           200,
-                           200,
-                           graphics::Resources::getInstance().getTexture(
-                             config::cube_data::textures[2])});
+    shared_ptr<graphics::Sprite> sprite3 = make_shared<graphics::Sprite>(
+      600,
+      200,
+      0,
+      200,
+      200,
+      graphics::Resources::getInstance().getTexture(
+        config::cube_data::textures[2]));
 
     graphics::GraphicsManager graphicsmanager{};
 

@@ -115,18 +115,19 @@ public:
 
     // ########################################################################
 
-    shared_ptr<IWidget> button1(
-      new Button{0, 325, 350, 150, 30, graphicsmanager, observer, "Play"});
-    shared_ptr<IWidget> button2(
-      new Button{1, 325, 310, 150, 30, graphicsmanager, observer, "Settings"});
-    shared_ptr<IWidget> button3(
-      new Button{2, 325, 270, 150, 30, graphicsmanager, observer, "Quit"});
-    shared_ptr<IWidget> button8(
-      new Button{3, 325, 230, 150, 30, graphicsmanager, observer, "List"});
-    shared_ptr<IWidget> toggleButton(new ToggleButton{
-      666, 325, 190, 150, 30, graphicsmanager, observer, "Toggle"});
+    shared_ptr<IWidget> button1 = make_shared<Button>(
+      0, 325, 350, 150, 30, graphicsmanager, observer, "Play");
+    shared_ptr<IWidget> button2 = make_shared<Button>(
+      1, 325, 310, 150, 30, graphicsmanager, observer, "Settings");
+    shared_ptr<IWidget> button3 = make_shared<Button>(
+      2, 325, 270, 150, 30, graphicsmanager, observer, "Quit");
+    shared_ptr<IWidget> button8 = make_shared<Button>(
+      3, 325, 230, 150, 30, graphicsmanager, observer, "List");
+    shared_ptr<IWidget> toggleButton = make_shared<ToggleButton>(
+      666, 325, 190, 150, 30, graphicsmanager, observer, "Toggle");
 
-    mainWidgetGroup.reset(new WidgetGroup{0, 0, 0, 800, 600, graphicsmanager});
+    mainWidgetGroup =
+      make_shared<WidgetGroup>(0, 0, 0, 800, 600, graphicsmanager);
 
     mainWidgetGroup->addWidget(button1);
     mainWidgetGroup->addWidget(button2);
@@ -136,16 +137,17 @@ public:
 
     // ########################################################################
 
-    shared_ptr<IWidget> label1(
-      new Label{325, 390, 150, 30, " - Play - ", graphicsmanager});
-    shared_ptr<IWidget> button4(new Button{
-      666, 325, 350, 150, 30, graphicsmanager, observer, "New World"});
-    shared_ptr<IWidget> button5(new Button{
-      666, 325, 310, 150, 30, graphicsmanager, observer, "Load World"});
-    shared_ptr<IWidget> button6(
-      new Button{5, 325, 270, 150, 30, graphicsmanager, observer, "Back"});
+    shared_ptr<IWidget> label1 =
+      make_shared<Label>(325, 390, 150, 30, " - Play - ", graphicsmanager);
+    shared_ptr<IWidget> button4 = make_shared<Button>(
+      666, 325, 350, 150, 30, graphicsmanager, observer, "New World");
+    shared_ptr<IWidget> button5 = make_shared<Button>(
+      666, 325, 310, 150, 30, graphicsmanager, observer, "Load World");
+    shared_ptr<IWidget> button6 = make_shared<Button>(
+      5, 325, 270, 150, 30, graphicsmanager, observer, "Back");
 
-    playWidgetGroup.reset(new WidgetGroup{0, 0, 0, 800, 600, graphicsmanager});
+    playWidgetGroup =
+      make_shared<WidgetGroup>(0, 0, 0, 800, 600, graphicsmanager);
 
     playWidgetGroup->addWidget(label1);
     playWidgetGroup->addWidget(button4);
@@ -154,15 +156,16 @@ public:
 
     // ########################################################################
 
-    shared_ptr<IWidget> label2(
-      new Label{325, 390, 150, 30, " - Settings - ", graphicsmanager});
-    textInput.reset(new TextInput{666, 325, 350, 150, 30, graphicsmanager});
-    slider.reset(new Slider{666, 325, 310, 150, 30, graphicsmanager, observer});
-    shared_ptr<IWidget> button7(
-      new Button{6, 325, 270, 150, 30, graphicsmanager, observer, "Back"});
+    shared_ptr<IWidget> label2 =
+      make_shared<Label>(325, 390, 150, 30, " - Settings - ", graphicsmanager);
+    textInput = make_shared<TextInput>(666, 325, 350, 150, 30, graphicsmanager);
+    slider =
+      make_shared<Slider>(666, 325, 310, 150, 30, graphicsmanager, observer);
+    shared_ptr<IWidget> button7 = make_shared<Button>(
+      6, 325, 270, 150, 30, graphicsmanager, observer, "Back");
 
-    settingsWidgetGroup.reset(
-      new WidgetGroup{0, 0, 0, 800, 600, graphicsmanager});
+    settingsWidgetGroup =
+      make_shared<WidgetGroup>(0, 0, 0, 800, 600, graphicsmanager);
 
     settingsWidgetGroup->addWidget(label2);
     settingsWidgetGroup->addWidget(slider);
@@ -171,8 +174,8 @@ public:
 
     // ########################################################################
 
-    shared_ptr<Button> button1337(
-      new Button(666, 325, 270, 150, 30, graphicsmanager, observer, "DERP"));
+    shared_ptr<Button> button1337 = make_shared<Button>(
+      666, 325, 270, 150, 30, graphicsmanager, observer, "DERP");
 
     shared_ptr<SelectableList> derp(new SelectableList{
       666, 100, 100, 600, 400, graphicsmanager, observer, 2});
@@ -185,10 +188,11 @@ public:
     derp->addListItem("Satan");
     derp->addListItem("Tor");
 
-    shared_ptr<IWidget> button9(
-      new Button{6, 325, 0, 150, 30, graphicsmanager, observer, "Back"});
+    shared_ptr<IWidget> button9 = make_shared<Button>(
+      6, 325, 0, 150, 30, graphicsmanager, observer, "Back");
 
-    listWidgetGroup.reset(new WidgetGroup{0, 0, 0, 800, 600, graphicsmanager});
+    listWidgetGroup =
+      make_shared<WidgetGroup>(0, 0, 0, 800, 600, graphicsmanager);
     listWidgetGroup->addWidget(derp);
     listWidgetGroup->addWidget(button9);
 

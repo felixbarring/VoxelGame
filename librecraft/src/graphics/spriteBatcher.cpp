@@ -9,7 +9,8 @@
 
 using namespace std;
 
-graphics::ShaderProgram spriteBatcherCreateShaderProgram() {
+graphics::ShaderProgram
+spriteBatcherCreateShaderProgram() {
   // clang-format off
   std::string vertex =
       "#version 330 core \n"
@@ -43,14 +44,12 @@ graphics::ShaderProgram spriteBatcherCreateShaderProgram() {
                                  pair<string, int>("texCoordIn", 1)};
 
   return graphics::ShaderProgram(vertex, frag, attributesMap);
-
 }
 
 namespace graphics {
 
 SpriteBatcher::SpriteBatcher()
-  : m_program{spriteBatcherCreateShaderProgram()}
-{
+  : m_program{spriteBatcherCreateShaderProgram()} {
   // hard coded default value
   m_projection = glm::ortho(0.0f, 800.0f, 0.0f, 600.0f, -1.0f, 1.0f);
 }

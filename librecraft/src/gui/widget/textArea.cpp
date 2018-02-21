@@ -25,13 +25,13 @@ TextArea::TextArea(int id,
   this->m_observer = observer;
   auto& res = Resources::getInstance();
 
-  m_textArea.reset(
-    new Sprite(x,
-               y,
-               layer,
-               width,
-               height,
-               res.getTexture(config::gui_data::transparentGuiBox)));
+  m_textArea =
+    make_shared<Sprite>(x,
+                        y,
+                        layer,
+                        width,
+                        height,
+                        res.getTexture(config::gui_data::transparentGuiBox));
 }
 
 void

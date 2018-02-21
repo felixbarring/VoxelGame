@@ -47,7 +47,7 @@ private:
   // TODO It should be possible to not have this as a ptr.
   std::unique_ptr<graphics::GraphicsManager> m_graphicsmanager;
 
-  sf::Window* window{};
+  sf::Window* m_window{};
 
   std::shared_ptr<IGameState> m_mainMenu{};
   std::shared_ptr<IGameState> m_inGame{};

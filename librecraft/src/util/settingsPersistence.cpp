@@ -3,8 +3,8 @@
 #include "../dependencies/tinyXml2/tinyxml2.h"
 
 #include <cstdlib>
-#include <string>
 #include <iostream>
+#include <string>
 
 #include "../config/data.h"
 

@@ -76,7 +76,7 @@ ChunkManager::createWorld() {
   for (int x{0}; x < lam; ++x) {
     for (int z{0}; z < lam; ++z) {
       m_chunks[x][0][z]->propagateLights();
-      m_chunks[x][0][z]->updateGraphics(true);
+      m_chunks[x][0][z]->updateGraphics();
     }
   }
 }
@@ -129,11 +129,10 @@ ChunkManager::getVoxel(int x, int y, int z) {
   // This protects from out of bounds access.
   // This obviously comes with a performance penalty.
   // Maybe remove this if there is a way to guarantee no out of range input.
-  if (chunkX < 0 || chunkX >= static_cast<int>(m_chunks.size()) ||
-      chunkY < 0 || chunkY >= static_cast<int>(m_chunks[0].size()) ||
-      chunkZ < 0 || chunkZ >= static_cast<int>(m_chunks[0][0].size()) ||
-      localX < 0 || localX >= CHUNK_WIDTH_AND_DEPTH ||
-      localY < 0 || localY >= CHUNK_HEIGHT ||
+  if (chunkX < 0 || chunkX >= static_cast<int>(m_chunks.size()) || chunkY < 0 ||
+      chunkY >= static_cast<int>(m_chunks[0].size()) || chunkZ < 0 ||
+      chunkZ >= static_cast<int>(m_chunks[0][0].size()) || localX < 0 ||
+      localX >= CHUNK_WIDTH_AND_DEPTH || localY < 0 || localY >= CHUNK_HEIGHT ||
       localZ < 0 || localZ >= CHUNK_WIDTH_AND_DEPTH)
     return {};
 

@@ -48,7 +48,7 @@ using namespace util;
 class LoadingScreen {
 public:
   LoadingScreen(FPSManager& fpsManager,
-                sf::Window* window,
+                sf::Window& window,
                 graphics::GraphicsManager& graphicsManager)
     : m_fpsManager(fpsManager)
     , m_window(window)
@@ -89,13 +89,13 @@ public:
 
     m_fpsManager.sync();
     m_frameTime += m_fpsManager.frameTime();
-    m_window->display();
+    m_window.display();
   }
 
 private:
   vector<shared_ptr<Sprite>> m_sprites{};
   FPSManager& m_fpsManager;
-  sf::Window* m_window;
+  sf::Window& m_window;
 
   graphics::GraphicsManager& m_graphicsManager;
 
@@ -132,18 +132,18 @@ Game::run() {
   string windowTitle = "Voxel Game";
 
   if (useFullscreen) {
-    window = new sf::Window{sf::VideoMode::getDesktopMode(),
-                            windowTitle,
-                            sf::Style::Default,
-                            settings};
+    m_window = new sf::Window{sf::VideoMode::getDesktopMode(),
+                              windowTitle,
+                              sf::Style::Default,
+                              settings};
   } else {
-    window = new sf::Window{
+    m_window = new sf::Window{
       sf::VideoMode(width, height), windowTitle, sf::Style::Default, settings};
   }
 
-  window->setMouseCursorVisible(false);
+  m_window->setMouseCursorVisible(false);
 
-  Input::getInstance()->setWindow(window);
+  Input::getInstance()->setWindow(m_window);
 
   glewExperimental = true;
   if (glewInit() != GLEW_OK)
@@ -154,11 +154,11 @@ Game::run() {
 
   m_graphicsmanager = make_unique<graphics::GraphicsManager>();
 
-  m_mainMenu.reset(new MainMenu(*this, m_soundPlayer, *m_graphicsmanager));
+  m_mainMenu = make_shared<MainMenu>(*this, m_soundPlayer, *m_graphicsmanager);
   changeStateToMainMenu();
 
   // Run the main loop
-  while (!m_quit && window->isOpen()) {
+  while (!m_quit && m_window->isOpen()) {
     m_fpsManager.frameStart();
 
     shared_ptr<util::Input> input = util::Input::getInstance();
@@ -168,7 +168,7 @@ Game::run() {
     m_soundPlayer.update(frameTime);
 
     m_currentState->update(frameTime);
-    window->display();
+    m_window->display();
     m_fpsManager.sync();
   }
 }
@@ -180,7 +180,7 @@ Game::createWorld(chunk::CreationOptions options) {
   auto future = globalResources::g_threadPool.enqueue(
     [options, &chunkManager] { chunkManager.createWorld(); });
 
-  LoadingScreen loadingScreen(m_fpsManager, window, *m_graphicsmanager);
+  LoadingScreen loadingScreen(m_fpsManager, *m_window, *m_graphicsmanager);
 
   std::chrono::milliseconds span{0};
   while (future.wait_for(span) != future_status::ready) {

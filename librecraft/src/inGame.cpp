@@ -44,7 +44,7 @@ InGame::InGame(Game& game,
   , m_cubeBar{graphicsManager} {
 
   // TODO Should be possible to save and load the player location.
-  double playerYLocation{chunk_data::CHUNK_HEIGHT / 2};
+  double playerYLocation{chunk_data::CHUNK_HEIGHT / 2.0};
   m_player.setLocation(chunk_data::NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER *
                          chunk_data::CHUNK_WIDTH_AND_DEPTH,
                        playerYLocation,
@@ -75,12 +75,12 @@ InGame::InGame(Game& game,
     }
   };
 
-  shared_ptr<IWidget> button1(
-    new Button{0, 325, 350, 150, 30, m_graphicsManager, observer, "Main Menu"});
-  shared_ptr<IWidget> button2(
-    new Button{1, 325, 310, 150, 30, m_graphicsManager, observer, "Settings"});
-  shared_ptr<IWidget> button3(new Button{
-    2, 325, 270, 150, 30, m_graphicsManager, observer, "Back To Game"});
+  shared_ptr<IWidget> button1 = make_shared<Button>(
+    0, 325, 350, 150, 30, m_graphicsManager, observer, "Main Menu");
+  shared_ptr<IWidget> button2 = make_shared<Button>(
+    1, 325, 310, 150, 30, m_graphicsManager, observer, "Settings");
+  shared_ptr<IWidget> button3 = make_shared<Button>(
+    2, 325, 270, 150, 30, m_graphicsManager, observer, "Back To Game");
 
   m_mainWidgetGroup =
     make_shared<WidgetGroup>(0, 300, 260, 200, 130, m_graphicsManager);
@@ -291,24 +291,25 @@ InGame::update(double timePassed) {
       string derp = "View direction: " + to_string(dir.x) + ", " +
                     to_string(dir.y) + ", " + to_string(dir.z);
 
-      m_direction.reset(new Sprite(0,
-                                   20,
-                                   10,
-                                   fontMeshBuilder.buldMeshForString(derp, 20),
-                                   res.getTexture(config::font_data::font)));
+      m_direction =
+        make_shared<Sprite>(0,
+                            20,
+                            10,
+                            fontMeshBuilder.buldMeshForString(derp, 20),
+                            res.getTexture(config::font_data::font));
 
       // Updating the fps every frame makes it unreadable
       m_fpsDisplayCounter += timePassed;
       if (m_fpsDisplayCounter > m_fpsDisplayDelay) {
-        m_fps.reset(
-          new Sprite(0,
-                     45,
-                     10,
-                     fontMeshBuilder.buldMeshForString(
-                       "FPS: " + to_string(m_fpsManager.getFps()) +
-                         " Frame Time = " + to_string(m_fpsManager.frameTime()),
-                       20),
-                     res.getTexture(config::font_data::font)));
+        m_fps = make_shared<Sprite>(
+          0,
+          45,
+          10,
+          fontMeshBuilder.buldMeshForString(
+            "FPS: " + to_string(m_fpsManager.getFps()) +
+              " Frame Time = " + to_string(m_fpsManager.frameTime()),
+            20),
+          res.getTexture(config::font_data::font));
 
         m_fpsDisplayCounter = 0;
       }
@@ -316,12 +317,12 @@ InGame::update(double timePassed) {
       vec3 ses = m_player.getLastSelectedCube();
       string soos = "Last Selected: " + to_string(ses.x) + ", " +
                     to_string(ses.y) + ", " + to_string(ses.z);
-      m_lastSelecteCube.reset(
-        new Sprite(0,
-                   70,
-                   10,
-                   fontMeshBuilder.buldMeshForString(soos, 20),
-                   res.getTexture(config::font_data::font)));
+      m_lastSelecteCube =
+        make_shared<Sprite>(0,
+                            70,
+                            10,
+                            fontMeshBuilder.buldMeshForString(soos, 20),
+                            res.getTexture(config::font_data::font));
 
       // This seems to rely on that it was previously shared_ptr ...
       m_graphicsManager.getSpriteBatcher().addBatch(*m_direction);

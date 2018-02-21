@@ -110,8 +110,8 @@ Settings::Settings(std::shared_ptr<widget::WidgetGroup>& active,
     };
 
     // TODO Refactor?
-    shared_ptr<IWidget> label(
-      new Label{325, 390, 150, 30, " - Input - ", m_graphicsManager});
+    shared_ptr<IWidget> label =
+      make_shared<Label>(325, 390, 150, 30, " - Input - ", m_graphicsManager);
 
     m_mouseSensitivitySlider = make_shared<Slider>(
       1, 125 + 100, 310, 150, 30, m_graphicsManager, observer, 1);
