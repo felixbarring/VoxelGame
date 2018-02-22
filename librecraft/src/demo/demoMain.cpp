@@ -14,6 +14,8 @@
 #include "textureDemo.h"
 #include "xmlDemo.h"
 
+#ifdef DOCTEST_CONFIG_DISABLE
+
 int
 main(int, char* argv[]) {
   try {
@@ -57,3 +59,6 @@ main(int, char* argv[]) {
     std::cout << "An error that is not derived from std::exception occured \n";
   }
 }
+
+#endif
+

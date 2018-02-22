@@ -7,6 +7,8 @@
 #include "game.h"
 #include "util/settingsPersistence.h"
 
+#ifdef DOCTEST_CONFIG_DISABLE
+
 int
 main() {
   try {
@@ -23,3 +25,6 @@ main() {
     std::cout << "An error that is not derived from std::exception occured \n";
   }
 }
+
+#endif
+

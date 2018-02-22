@@ -97,7 +97,7 @@ extern float fov;
 extern float virtualWidth;
 extern float virtualHeight;
 
-extern int directSunlightValue;
+extern unsigned char directSunlightValue;
 
 extern glm::vec3 skyColor;
 }

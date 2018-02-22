@@ -5,6 +5,10 @@ project(VoxelGame)
 
 message("### Building with ${CMAKE_CXX_COMPILER_ID}")
 
+if (UNIT_TEST)
+  add_definitions(-DOCTEST_CONFIG_DISABLE)
+endif()
+
 if (WARNINGS)
   message("### Warnings on")
   set(CMAKE_CXX_FLAGS "-std=c++17 -Wall -Wextra")
@@ -45,6 +49,7 @@ set (INCLUDE_DIRS
   include/glm/gtc
   include/glm/gtx
   include/ThreadPool
+  include/docTest
 )
 
 include_directories(${INCLUDE_DIRS})
