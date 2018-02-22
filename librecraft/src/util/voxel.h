@@ -81,8 +81,6 @@ public:
 private:
   char m_id{};
   char m_lightValues{};
-  // TODO Should only need one light value of 8 bits using bitmasking
-  // and shifting.
   char m_otherLight{};
 };
 

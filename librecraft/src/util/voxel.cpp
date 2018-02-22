@@ -18,6 +18,7 @@ Voxel::Voxel(char id, char sun, char other)
   : m_id{id} {
   setSunLightValue(sun);
   setOtherLightValue(other);
+
 }
 
 void
@@ -32,7 +33,7 @@ Voxel::getId() {
 
 void
 Voxel::setSunLightValue(char value) {
-  m_lightValues = value;
+  m_lightValues = (value & 0x0F) | (m_lightValues & 0xF0);
 }
 
 char
@@ -42,12 +43,12 @@ Voxel::getSunLightValue() {
 
 void
 Voxel::setOtherLightValue(char value) {
-  m_otherLight = value;
+  m_lightValues = ((value << 4) & 0xF0) | (m_lightValues & 0x0F);
 }
 
 char
 Voxel::getOtherLightValue() {
-  return m_otherLight;
+  return (m_lightValues & 0xF0) >> 4;
 }
 
 
@@ -80,7 +81,7 @@ TEST_CASE("Testing id values") {
   Voxel voxel{0, 0, 0};
   for (int i{0}; i < 256; ++i) {
     voxel.setId(i);
-    CHECK(voxel.getId() == i);
+    CHECK(static_cast<unsigned char>(voxel.getId()) == i);
   }
 }
 
