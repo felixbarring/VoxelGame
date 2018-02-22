@@ -40,7 +40,10 @@ public:
 
   void setSpeed(double value);
 
+  void setLimit(AABB& limit);
+
 private:
+
   void updateSpeed(float timePassed);
 
   void handlePhysics();
@@ -83,6 +86,8 @@ private:
   graphics::ViewDirection m_viewDirection{};
   graphics::Transform m_targetedCubeTransform{0, 0, 0};
   int m_cubeUsedForBuilding{0};
+
+  AABB* m_limit{};
 };
 
 } /* namespace entity */

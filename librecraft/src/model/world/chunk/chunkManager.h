@@ -8,6 +8,7 @@
 #include "../../../config/data.h"
 #include "../../../util/soundPlayer.h"
 #include "../../../util/voxel.h"
+#include "../entity/aabb.h"
 #include "chunk.h"
 
 #include "creationOptions.h"
@@ -65,6 +66,8 @@ public:
 
   void loadWorldWhenDecentered(bool value = true);
 
+  entity::AABB createLimit();
+
 private:
   /*
    * Checks if there is water above or on the sides, not bellow.
@@ -98,9 +101,7 @@ private:
   util::SoundPlayer& m_soundPlayer;
   graphics::GraphicsManager& m_graphicsManager;
 
-  // Good name 10/10
-  // TODO Rename...
-  bool m_loadStoreWorldWhenPlyayerIsNotInTheCenterChunk{true};
+  bool m_loadChunks{true};
 
   glm::vec3 m_center{4, 0, 4};
   glm::vec3 m_intersectedCube{};

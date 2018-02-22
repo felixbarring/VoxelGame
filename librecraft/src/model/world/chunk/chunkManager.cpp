@@ -115,8 +115,8 @@ ChunkManager::getVoxel(int x, int y, int z) {
   static float yD = 1.0 / CHUNK_HEIGHT;
   static float zD = 1.0 / CHUNK_WIDTH_AND_DEPTH;
 
-  x += m_xOffset;
-  z += m_zOffset;
+  x -= m_xOffset;
+  z -= m_zOffset;
 
   int chunkX = x * xD;
   int chunkY = y * yD;
@@ -175,8 +175,8 @@ ChunkManager::setCube(int x, int y, int z, char id) {
   static float yD = 1.0 / CHUNK_HEIGHT;
   static float zD = 1.0 / CHUNK_WIDTH_AND_DEPTH;
 
-  x += m_xOffset;
-  z += m_zOffset;
+  x -= m_xOffset;
+  z -= m_zOffset;
 
   int chunkX = x * xD;
   int chunkY = y * yD;
@@ -192,21 +192,19 @@ ChunkManager::setCube(int x, int y, int z, char id) {
 
 void
 ChunkManager::setCenter(float x, float z) {
-  if (!m_loadStoreWorldWhenPlyayerIsNotInTheCenterChunk)
+  if (!m_loadChunks)
     return;
 
   if (!m_bussyMovingChunksMutex->try_lock())
     return;
 
-  // TODO Remove the hardcoded 16 values!!!
-
-  if (x < NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * 16 - m_xOffset)
+  if (x < NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * CHUNK_WIDTH_AND_DEPTH + m_xOffset)
     moveChunksRight();
-  else if (x > NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * 16 - m_xOffset + 16)
+  else if (x > NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * CHUNK_WIDTH_AND_DEPTH + m_xOffset + CHUNK_WIDTH_AND_DEPTH)
     moveChunksLeft();
-  else if (z < NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * 16 - m_zOffset)
+  else if (z < NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * CHUNK_WIDTH_AND_DEPTH + m_zOffset)
     moveChunksUp();
-  else if (z > NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * 16 - m_zOffset + 16)
+  else if (z > NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * CHUNK_WIDTH_AND_DEPTH + m_zOffset + CHUNK_WIDTH_AND_DEPTH)
     moveChunksDown();
   else
     m_bussyMovingChunksMutex->unlock();
@@ -306,7 +304,16 @@ ChunkManager::intersectWithSolidCube(vec3 origin,
 
 void
 ChunkManager::loadWorldWhenDecentered(bool value) {
-  m_loadStoreWorldWhenPlyayerIsNotInTheCenterChunk = value;
+  m_loadChunks = value;
+}
+
+entity::AABB
+ChunkManager::createLimit() {
+  int n{NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER};
+  return entity::AABB(
+      m_xOffset + CHUNK_WIDTH_AND_DEPTH, m_xOffset + 2 * (n * CHUNK_WIDTH_AND_DEPTH),
+      0, config::chunk_data::CHUNK_HEIGHT,
+      m_zOffset + CHUNK_WIDTH_AND_DEPTH, m_zOffset + 2 * (n * CHUNK_WIDTH_AND_DEPTH));
 }
 
 // Private Methods #############################################################
@@ -341,25 +348,25 @@ ChunkManager::connectChunks() {
 
 void
 ChunkManager::moveChunksRight() {
-  m_xOffset += CHUNK_WIDTH_AND_DEPTH;
+  m_xOffset -= CHUNK_WIDTH_AND_DEPTH;
   moveChunks(Direction::Right);
 }
 
 void
 ChunkManager::moveChunksLeft() {
-  m_xOffset -= CHUNK_WIDTH_AND_DEPTH;
+  m_xOffset += CHUNK_WIDTH_AND_DEPTH;
   moveChunks(Direction::Left);
 }
 
 void
 ChunkManager::moveChunksUp() {
-  m_zOffset += CHUNK_WIDTH_AND_DEPTH;
+  m_zOffset -= CHUNK_WIDTH_AND_DEPTH;
   moveChunks(Direction::Up);
 }
 
 void
 ChunkManager::moveChunksDown() {
-  m_zOffset -= CHUNK_WIDTH_AND_DEPTH;
+  m_zOffset += CHUNK_WIDTH_AND_DEPTH;
   moveChunks(Direction::Down);
 }
 

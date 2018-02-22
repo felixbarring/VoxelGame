@@ -270,6 +270,10 @@ InGame::update(double timePassed) {
   if (m_state == GameState::NoOverlay) {
     m_mouse.lock();
     m_mouse.update();
+
+    entity::AABB limit{m_chunkManager.createLimit()};
+    m_player.setLimit(limit);
+
     m_player.update(timePassed);
     m_timeCycle.update(timePassed);
 

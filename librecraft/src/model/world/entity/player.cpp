@@ -72,6 +72,11 @@ Player::setSpeed(double value) {
 }
 
 void
+Player::setLimit(AABB& limit) {
+  m_limit = &limit;
+}
+
+void
 Player::updateSpeed(float timePassed) {
   shared_ptr<Input> input = Input::getInstance();
   m_viewDirection.changeViewDirection(input->mouseXMovement,
@@ -194,7 +199,18 @@ Player::handlePhysics() {
     collisions.clear();
     intersected(m_frameSpeed, collisions);
   }
+
   m_location += m_frameSpeed;
+
+  if (m_limit) {
+    AABB start{createAABB()};
+    if (!start.intersects(*m_limit)) {
+      m_location -= m_frameSpeed;
+      m_speed = vec3(0, 0, 0);
+      m_frameSpeed = m_speed;
+    }
+  }
+
 }
 
 void
@@ -260,9 +276,8 @@ void
 Player::intersected(vec3 movement,
                     vector<tuple<float, int, vec3>>& collisions) {
 
-  AABB start = createAABB();
-
-  AABB box = AABB::getSweptBroadPhaseBox(start, movement);
+  AABB start{createAABB()};
+  AABB box{AABB::getSweptBroadPhaseBox(start, movement)};
 
   int xStart = floor(box.m_xMin);
   int yStart = floor(box.m_yMin);
@@ -278,7 +293,7 @@ Player::intersected(vec3 movement,
 
         AABB cube{i, i + 1.0, j, j + 1.0, k, k + 1};
         vec3 normal;
-        char cubeId = m_chunkManager.getCubeId(i, j, k);
+        char cubeId{m_chunkManager.getCubeId(i, j, k)};
         if (!(cubeId == cube_data::AIR || cubeId == cube_data::WATER)) {
           vec3 vec;
           float time = AABB::collisionTime(start, cube, vec, movement);
