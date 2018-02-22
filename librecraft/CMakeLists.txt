@@ -5,8 +5,11 @@ project(VoxelGame)
 
 message("### Building with ${CMAKE_CXX_COMPILER_ID}")
 
-if (UNIT_TEST)
-  add_definitions(-DOCTEST_CONFIG_DISABLE)
+if (NOT UNIT_TEST)
+  message("### Not building Unit Tests")
+  add_definitions(-DDOCTEST_CONFIG_DISABLE)
+else()
+  message("### Building Unit Tests")
 endif()
 
 if (WARNINGS)

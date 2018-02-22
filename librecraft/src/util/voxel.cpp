@@ -9,43 +9,43 @@
 Voxel::Voxel() {
 }
 
-Voxel::Voxel(unsigned char id, unsigned char sun)
+Voxel::Voxel(char id, char sun)
   : m_id{id} {
   setSunLightValue(sun);
 }
 
-Voxel::Voxel(unsigned char id, unsigned char sun, unsigned char other)
+Voxel::Voxel(char id, char sun, char other)
   : m_id{id} {
   setSunLightValue(sun);
   setOtherLightValue(other);
 }
 
 void
-Voxel::setId(unsigned char value) {
+Voxel::setId(char value) {
   m_id = value;
 }
 
-unsigned char
+char
 Voxel::getId() {
   return m_id;
 }
 
 void
-Voxel::setSunLightValue(unsigned char value) {
+Voxel::setSunLightValue(char value) {
   m_lightValues = value;
 }
 
-unsigned char
+char
 Voxel::getSunLightValue() {
   return m_lightValues & 0x0F;
 }
 
 void
-Voxel::setOtherLightValue(unsigned char value) {
+Voxel::setOtherLightValue(char value) {
   m_otherLight = value;
 }
 
-unsigned char
+char
 Voxel::getOtherLightValue() {
   return m_otherLight;
 }

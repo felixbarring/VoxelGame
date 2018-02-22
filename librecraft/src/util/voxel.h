@@ -26,7 +26,7 @@ public:
    * @param id The id value
    * @param sun The sunlight value
    */
-  Voxel(unsigned char id, unsigned char sun);
+  Voxel(char id, char sun);
 
   /**
    * @brief Creates a voxel with the specified id, sunlight, and otherlight.
@@ -35,20 +35,20 @@ public:
    * @param sun The sunlight value
    * @param other The otherlight value
    */
-  Voxel(unsigned char id, unsigned char sun, unsigned char other);
+  Voxel(char id, char sun, char other);
 
   /**
    * @brief Set the value of the id
    *
    * @param value The new value for the id
    */
-  void setId(unsigned char value);
+  void setId(char value);
 
   /**
    *
    * @return The id value
    */
-  unsigned char getId();
+  char getId();
 
   /**
    * @brief Set the sunlight value
@@ -56,13 +56,13 @@ public:
    * @param value The new value for the sunlight, must be in the range of 0 to
    *              15
    */
-  void setSunLightValue(unsigned char value);
+  void setSunLightValue(char value);
 
   /**
    *
    * @return The sunlight value
    */
-  unsigned char getSunLightValue();
+  char getSunLightValue();
 
   /**
    * @brief Set the other light value
@@ -70,20 +70,20 @@ public:
    * @param value The new value for the otherlight, must be in the range of 0
    *              to 15
    */
-  void setOtherLightValue(unsigned char value);
+  void setOtherLightValue(char value);
 
   /**
    *
    * @return The otherlight value
    */
-  unsigned char getOtherLightValue();
+  char getOtherLightValue();
 
 private:
-  unsigned char m_id{};
-  unsigned char m_lightValues{};
+  char m_id{};
+  char m_lightValues{};
   // TODO Should only need one light value of 8 bits using bitmasking
   // and shifting.
-  unsigned char m_otherLight{};
+  char m_otherLight{};
 };
 
 #endif /* SRC_UTIL_VOXEL_H_ */

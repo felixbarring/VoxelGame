@@ -160,7 +160,7 @@ float fov = 80; // degrees
 float virtualWidth{800};
 float virtualHeight{600};
 
-unsigned char directSunlightValue{15};
+char directSunlightValue{15};
 
 glm::vec3 skyColor(0.47f, 0.76f, 0.93f);
 }

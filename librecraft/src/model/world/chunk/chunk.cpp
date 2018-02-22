@@ -292,7 +292,7 @@ Chunk::loadChunk() {
       m_cubes[i].push_back(vector<Voxel>());
 
       for (int k = 0; k < m_depth; ++k) {
-        unsigned char voxelId = std::stoi(list[counter]);
+        char voxelId = std::stoi(list[counter]);
         ++counter;
         if (voxelId == LIGHT) {
           m_cubes[i][j].push_back(Voxel{voxelId, 0, m_directSunlight});
@@ -887,7 +887,7 @@ Chunk::dePropagateOtherlight(int x, int y, int z /*, int _lightValue*/) {
     vec3 current = depropagates.front();
     depropagates.pop();
     Voxel& voxel = m_cubes[current.x][current.y][current.z];
-    unsigned char lightValue{voxel.getOtherLightValue()};
+    char lightValue{voxel.getOtherLightValue()};
     voxel.setOtherLightValue(0);
 
     // Right
