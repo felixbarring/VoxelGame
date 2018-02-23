@@ -40,7 +40,7 @@ public:
 
   void setSpeed(double value);
 
-  void setLimit(AABB& limit);
+  void setLimit(const AABB& limit);
 
 private:
 
@@ -87,7 +87,7 @@ private:
   graphics::Transform m_targetedCubeTransform{0, 0, 0};
   int m_cubeUsedForBuilding{0};
 
-  AABB* m_limit{};
+  const AABB* m_limit{};
 };
 
 } /* namespace entity */

@@ -271,8 +271,7 @@ InGame::update(double timePassed) {
     m_mouse.lock();
     m_mouse.update();
 
-    entity::AABB limit{m_chunkManager.createLimit()};
-    m_player.setLimit(limit);
+    m_player.setLimit(m_chunkManager.getLimit());
 
     m_player.update(timePassed);
     m_timeCycle.update(timePassed);

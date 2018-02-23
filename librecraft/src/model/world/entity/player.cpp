@@ -72,7 +72,7 @@ Player::setSpeed(double value) {
 }
 
 void
-Player::setLimit(AABB& limit) {
+Player::setLimit(const AABB& limit) {
   m_limit = &limit;
 }
 
@@ -205,8 +205,8 @@ Player::handlePhysics() {
   if (m_limit) {
     AABB start{createAABB()};
     if (!start.intersects(*m_limit)) {
-      m_location -= m_frameSpeed;
-      m_speed = vec3(0, 0, 0);
+      m_location -= m_frameSpeed * vec3(1, 0, 1);
+      m_speed *= vec3(0, 1, 0);
       m_frameSpeed = m_speed;
     }
   }

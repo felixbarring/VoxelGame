@@ -66,9 +66,12 @@ public:
 
   void loadWorldWhenDecentered(bool value = true);
 
-  entity::AABB createLimit();
+  const entity::AABB& getLimit();
 
 private:
+
+  entity::AABB createLimit();
+
   /*
    * Checks if there is water above or on the sides, not bellow.
    */
@@ -106,6 +109,8 @@ private:
   glm::vec3 m_center{4, 0, 4};
   glm::vec3 m_intersectedCube{};
   glm::vec3 m_previousCube{};
+
+  entity::AABB m_limit;
 
   // Mutex is non movable, hence the uniqueptr
   std::unique_ptr<std::mutex> m_bussyMovingChunksMutex{};

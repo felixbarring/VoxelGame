@@ -81,7 +81,6 @@ public:
 private:
   char m_id{};
   char m_lightValues{};
-  char m_otherLight{};
 };
 
 #endif /* SRC_UTIL_VOXEL_H_ */

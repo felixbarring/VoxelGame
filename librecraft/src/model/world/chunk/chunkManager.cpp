@@ -27,7 +27,8 @@ ChunkManager::ChunkManager(CreationOptions options,
                            graphics::GraphicsManager& graphicsManager)
   : m_options{move(options)}
   , m_soundPlayer{soundPlayer}
-  , m_graphicsManager{graphicsManager} {
+  , m_graphicsManager{graphicsManager}
+  , m_limit{createLimit()} {
   m_worldName = m_options.getName();
   m_bussyMovingChunksMutex = make_unique<mutex>();
 
@@ -307,6 +308,13 @@ ChunkManager::loadWorldWhenDecentered(bool value) {
   m_loadChunks = value;
 }
 
+const entity::AABB&
+ChunkManager::getLimit() {
+  return m_limit;
+}
+
+// Private Methods #############################################################
+
 entity::AABB
 ChunkManager::createLimit() {
   int n{NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER};
@@ -315,8 +323,6 @@ ChunkManager::createLimit() {
       0, config::chunk_data::CHUNK_HEIGHT,
       m_zOffset + CHUNK_WIDTH_AND_DEPTH, m_zOffset + 2 * (n * CHUNK_WIDTH_AND_DEPTH));
 }
-
-// Private Methods #############################################################
 
 bool
 ChunkManager::hasWaterNeighbour(int x, int y, int z) {
@@ -475,6 +481,8 @@ ChunkManager::moveChunks(Direction direction) {
   // connected.
   connectChunks();
 
+  m_limit = createLimit();
+
   // ##########################################################################
   // ##########################################################################
 
@@ -549,3 +557,4 @@ ChunkManager::moveChunks(Direction direction) {
   });
 }
 }
+
