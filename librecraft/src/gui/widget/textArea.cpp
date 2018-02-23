@@ -12,6 +12,18 @@ using namespace graphics;
 
 namespace widget {
 
+graphics::Sprite
+createTextArea(int x, int y, unsigned layer, int width, int height) {
+  Resources& res{Resources::getInstance()};
+
+  return Sprite(x,
+                y,
+                layer,
+                width,
+                height,
+                res.getTexture(config::gui_data::transparentGuiBox));
+}
+
 TextArea::TextArea(int id,
                    int x,
                    int y,
@@ -21,26 +33,18 @@ TextArea::TextArea(int id,
                    std::function<void(int)> observer,
                    int layer)
   : AbstractWidget(id, x, y, width, height, graphicsManager)
-  , m_layer{layer} {
-  this->m_observer = observer;
-  auto& res = Resources::getInstance();
-
-  m_textArea =
-    make_shared<Sprite>(x,
-                        y,
-                        layer,
-                        width,
-                        height,
-                        res.getTexture(config::gui_data::transparentGuiBox));
+  , m_layer{layer}
+  , m_observer{observer}
+  , m_textArea{createTextArea(x, y, layer, width, height)} {
 }
 
 void
 TextArea::draw() {
   SpriteBatcher& spriteBatcher{m_graphicsManager.getSpriteBatcher()};
-  spriteBatcher.addBatch(*m_textArea);
+  spriteBatcher.addBatch(m_textArea);
 
   for (auto& s : m_rows)
-    spriteBatcher.addBatch(*s.second);
+    spriteBatcher.addBatch(s.second);
 }
 
 void
@@ -62,7 +66,7 @@ TextArea::addLine(string str) {
   if (str.empty())
     return;
 
-  auto& res = Resources::getInstance();
+  Resources& res = Resources::getInstance();
   FontMeshBuilder& fontMeshBuilder =
     res.getFontMeshBuilder(config::font_data::fontLayout,
                            config::font_data::fontAtlasWidth,
@@ -77,18 +81,18 @@ TextArea::addLine(string str) {
     str = str.substr(0, split);
   }
 
-  m_rows.push_back(std::pair<string, shared_ptr<Sprite>>(
+  m_rows.push_back(std::pair<string, Sprite>(
     str,
-    make_shared<Sprite>(m_xCoordinate,
-                        y,
-                        m_layer + 1,
-                        fontMeshBuilder.buldMeshForString(str, m_fontHeight),
-                        res.getTexture(config::font_data::font))));
+    Sprite{m_xCoordinate,
+           y,
+           m_layer + 1,
+           fontMeshBuilder.buldMeshForString(str, m_fontHeight),
+           res.getTexture(config::font_data::font)}));
 
   if (y < m_yCoordinate) {
     m_rows.pop_front();
     for (auto sprite : m_rows)
-      sprite.second->move(0, m_fontHeight);
+      sprite.second.move(0, m_fontHeight);
   }
 
   if (!cutOff.empty())

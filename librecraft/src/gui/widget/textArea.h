@@ -54,8 +54,8 @@ private:
 
   std::function<void(int)> m_observer;
 
-  std::shared_ptr<graphics::Sprite> m_textArea;
-  std::list<std::pair<std::string, std::shared_ptr<graphics::Sprite>>> m_rows;
+  graphics::Sprite m_textArea;
+  std::list<std::pair<std::string, graphics::Sprite>> m_rows;
 };
 }
 /* namespace widget */

@@ -16,24 +16,25 @@ using namespace util;
 
 namespace widget {
 
-Sprite createSliderSprite(int x, int y, unsigned layer, int width, int height) {
-  return Sprite(
-      x,
-      y,
-      layer,
-      width,
-      height,
-      Resources::getInstance().getTexture(config::gui_data::slider));
+Sprite
+createSliderSprite(int x, int y, unsigned layer, int width, int height) {
+  return Sprite(x,
+                y,
+                layer,
+                width,
+                height,
+                Resources::getInstance().getTexture(config::gui_data::slider));
 }
 
-Sprite createKnobSprite(int x, int y, unsigned layer, int height) {
+Sprite
+createKnobSprite(int x, int y, unsigned layer, int height) {
   return Sprite(
-      x,
-      y,
-      layer + 1,
-      height,
-      height,
-      Resources::getInstance().getTexture(config::gui_data::sliderKnob));
+    x,
+    y,
+    layer + 1,
+    height,
+    height,
+    Resources::getInstance().getTexture(config::gui_data::sliderKnob));
 }
 
 Slider::Slider(int id,
