@@ -32,60 +32,60 @@ ToggleButton::ToggleButton(int id,
     res.getFontMeshBuilder(config::font_data::fontLayout,
                            config::font_data::fontAtlasWidth,
                            config::font_data::fontAtlasHeight);
-
-  switch (skin) {
-    case Skin::Regular: {
-      m_spriteToggled =
-        make_shared<Sprite>(x,
-                            y,
-                            layer,
-                            width,
-                            height,
-                            res.getTexture(config::gui_data::buttonToggled));
-      break;
-    }
-    case Skin::CheckBox: {
-      m_sprite = make_shared<Sprite>(
-        x, y, layer, width, height, res.getTexture(config::gui_data::checkBox));
-      m_spriteToggled =
-        make_shared<Sprite>(x,
-                            y,
-                            layer,
-                            width,
-                            height,
-                            res.getTexture(config::gui_data::checkBoxChecked));
-      m_text =
-        make_shared<Sprite>(x + height,
-                            y + 5,
-                            layer + 1,
-                            fontMeshBuilder.buldMeshForString(name, height - 5),
-                            res.getTexture(config::font_data::font));
-      break;
-    }
-    case Skin::ReadioButton: {
-      m_sprite =
-        make_shared<Sprite>(x,
-                            y,
-                            layer,
-                            width,
-                            height,
-                            res.getTexture(config::gui_data::radioButton));
-      m_spriteToggled = make_shared<Sprite>(
-        x,
-        y,
-        layer,
-        width,
-        height,
-        res.getTexture(config::gui_data::radioButtonChecked));
-      m_text =
-        make_shared<Sprite>(x + height,
-                            y + 5,
-                            layer + 1,
-                            fontMeshBuilder.buldMeshForString(name, height - 5),
-                            res.getTexture(config::font_data::font));
-      break;
-    }
-  }
+//
+//  switch (skin) {
+//    case Skin::Regular: {
+//      m_spriteToggled =
+//        make_shared<Sprite>(x,
+//                            y,
+//                            layer,
+//                            width,
+//                            height,
+//                            res.getTexture(config::gui_data::buttonToggled));
+//      break;
+//    }
+//    case Skin::CheckBox: {
+//      m_sprite = make_shared<Sprite>(
+//        x, y, layer, width, height, res.getTexture(config::gui_data::checkBox));
+//      m_spriteToggled =
+//        make_shared<Sprite>(x,
+//                            y,
+//                            layer,
+//                            width,
+//                            height,
+//                            res.getTexture(config::gui_data::checkBoxChecked));
+//      m_text =
+//        make_shared<Sprite>(x + height,
+//                            y + 5,
+//                            layer + 1,
+//                            fontMeshBuilder.buldMeshForString(name, height - 5),
+//                            res.getTexture(config::font_data::font));
+//      break;
+//    }
+//    case Skin::ReadioButton: {
+//      m_sprite =
+//        make_shared<Sprite>(x,
+//                            y,
+//                            layer,
+//                            width,
+//                            height,
+//                            res.getTexture(config::gui_data::radioButton));
+//      m_spriteToggled = make_shared<Sprite>(
+//        x,
+//        y,
+//        layer,
+//        width,
+//        height,
+//        res.getTexture(config::gui_data::radioButtonChecked));
+//      m_text =
+//        make_shared<Sprite>(x + height,
+//                            y + 5,
+//                            layer + 1,
+//                            fontMeshBuilder.buldMeshForString(name, height - 5),
+//                            res.getTexture(config::font_data::font));
+//      break;
+//    }
+//  }
 }
 
 bool
@@ -110,12 +110,12 @@ ToggleButton::setToggled() {
 
 void
 ToggleButton::draw() {
-  m_graphicsManager.getSpriteBatcher().addBatch(m_toggled ? *m_spriteToggled
-                                                          : *m_sprite);
-  m_graphicsManager.getSpriteBatcher().addBatch(*m_text);
-
-  if (m_skin == Skin::Regular && m_pointerInsideBorders)
-    m_graphicsManager.getSpriteBatcher().addBatch(*m_highlight);
+//  m_graphicsManager.getSpriteBatcher().addBatch(m_toggled ? *m_spriteToggled
+//                                                          : *m_sprite);
+//  m_graphicsManager.getSpriteBatcher().addBatch(*m_text);
+//
+//  if (m_skin == Skin::Regular && m_pointerInsideBorders)
+//    m_graphicsManager.getSpriteBatcher().addBatch(*m_highlight);
 }
 
 void
