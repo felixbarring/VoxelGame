@@ -42,7 +42,7 @@ private:
   double m_height{};
 
   std::shared_ptr<mesh::MeshElement> m_mesh;
-  texture::Texture& m_texture;
+  texture::Texture* m_texture;
   unsigned m_layer;
 };
 

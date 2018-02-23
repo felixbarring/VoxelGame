@@ -69,7 +69,6 @@ public:
   const entity::AABB& getLimit();
 
 private:
-
   entity::AABB createLimit();
 
   /*

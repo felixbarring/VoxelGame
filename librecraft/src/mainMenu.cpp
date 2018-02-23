@@ -280,7 +280,7 @@ MainMenu::MainMenu(Game& game,
                                         observer,
                                         "Flat",
                                         2,
-                                        ToggleButton::Skin::ReadioButton);
+                                        ToggleButton::Skin::RadioButton);
     button2 = make_shared<ToggleButton>(1,
                                         220,
                                         310,
@@ -290,7 +290,7 @@ MainMenu::MainMenu(Game& game,
                                         observer,
                                         "Height Map",
                                         2,
-                                        ToggleButton::Skin::ReadioButton);
+                                        ToggleButton::Skin::RadioButton);
     button2->toggle();
 
     button3 = make_shared<ToggleButton>(2,
@@ -302,7 +302,7 @@ MainMenu::MainMenu(Game& game,
                                         observer,
                                         "Same",
                                         2,
-                                        ToggleButton::Skin::ReadioButton);
+                                        ToggleButton::Skin::RadioButton);
     button4 = make_shared<ToggleButton>(3,
                                         420,
                                         310,
@@ -312,7 +312,7 @@ MainMenu::MainMenu(Game& game,
                                         observer,
                                         "Different",
                                         2,
-                                        ToggleButton::Skin::ReadioButton);
+                                        ToggleButton::Skin::RadioButton);
     button4->toggle();
 
     auto button5 = make_shared<Button>(

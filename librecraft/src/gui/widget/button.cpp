@@ -18,14 +18,15 @@ using namespace util;
 
 namespace widget {
 
-graphics::FontMeshBuilder& crateFontMeshBuilder() {
+graphics::FontMeshBuilder&
+crateFontMeshBuilder() {
   FontMeshBuilder& fontMeshBuilder =
-      Resources::getInstance().getFontMeshBuilder(config::font_data::fontLayout,
-                           config::font_data::fontAtlasWidth,
-                           config::font_data::fontAtlasHeight);
+    Resources::getInstance().getFontMeshBuilder(
+      config::font_data::fontLayout,
+      config::font_data::fontAtlasWidth,
+      config::font_data::fontAtlasHeight);
   return fontMeshBuilder;
 }
-
 
 Button::Button(int id,
                int x,
@@ -39,9 +40,24 @@ Button::Button(int id,
   : AbstractWidget(id, x, y, width, height, graphicsManager)
   , m_name(name)
   , m_observer{observer}
-  , m_sprite{x, y, layer, width, height, Resources::getInstance().getTexture(config::gui_data::button)}
-  , m_highlight{x, y, layer + 1, width, height, Resources::getInstance().getTexture(config::gui_data::highlight)}
-  , m_text{x, y + 5, layer + 1, crateFontMeshBuilder().buldMeshForString(name, height - 5), Resources::getInstance().getTexture(config::font_data::font)}{
+  , m_sprite{x,
+             y,
+             layer,
+             width,
+             height,
+             Resources::getInstance().getTexture(config::gui_data::button)}
+  , m_highlight{x,
+                y,
+                layer + 1,
+                width,
+                height,
+                Resources::getInstance().getTexture(
+                  config::gui_data::highlight)}
+  , m_text{x,
+           y + 5,
+           layer + 1,
+           crateFontMeshBuilder().buldMeshForString(name, height - 5),
+           Resources::getInstance().getTexture(config::font_data::font)} {
 }
 
 std::string
