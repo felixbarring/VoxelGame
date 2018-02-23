@@ -18,6 +18,16 @@ using namespace graphics;
 
 namespace widget {
 
+Sprite
+createSprite(int x, int y, unsigned layer, int width, int height) {
+  return Sprite(static_cast<double>(x),
+                static_cast<double>(y),
+                layer,
+                static_cast<double>(width),
+                static_cast<double>(height),
+                Resources::getInstance().getTexture(config::gui_data::button));
+}
+
 SelectableList::SelectableList(int id,
                                int x,
                                int y,
@@ -32,30 +42,20 @@ SelectableList::SelectableList(int id,
                    width,
                    height,
                    graphicsManager)
-  , m_layer{layer + 1} {
-  this->m_observer = observer;
-
-  auto& res = Resources::getInstance();
-
-  m_sprite = make_shared<Sprite>(static_cast<double>(x),
-                                 static_cast<double>(y),
-                                 layer,
-                                 static_cast<double>(width),
-                                 static_cast<double>(height),
-                                 res.getTexture(config::gui_data::button));
+  , m_layer{layer + 1}
+  , m_observer{observer}
+  , m_sprite{createSprite(x, y, layer, width, height)} {
 }
 
 void
 SelectableList::addListItem(std::string item) {
-
   // TODO Do not add item that already exists.
-
-  auto x = m_xCoordinate + 5;
+  int x{m_xCoordinate + 5};
   auto y = m_yCoordinate + m_height - (5 + 30 * (1 + m_buttons.size()));
-  auto width = m_width - 10;
-  auto height = 30;
+  int width{m_width - 10};
+  int height{30};
   auto func = [&](int id) {
-    auto button = getButtonWithId(id);
+    ToggleButton* button = getButtonWithId(id);
     if (button->isToggled()) {
       // If there already is a button toggled, untoggle it.
       if (m_currentlyToggled)
@@ -64,11 +64,11 @@ SelectableList::addListItem(std::string item) {
       m_currentlyToggled = button;
     } else {
       // No button is toggled.
-      m_currentlyToggled.reset();
+      m_currentlyToggled = nullptr;
     }
   };
 
-  auto button = make_shared<ToggleButton>(
+  ToggleButton button = ToggleButton(
     ++idCounter, x, y, width, height, m_graphicsManager, func, item, m_layer);
   m_buttons.push_back(std::move(button));
 }
@@ -96,27 +96,27 @@ SelectableList::reset() {
   if (m_currentlyToggled && m_currentlyToggled->isToggled())
     m_currentlyToggled->toggle();
 
-  m_currentlyToggled.reset();
+  m_currentlyToggled = nullptr;
 }
 
 void
 SelectableList::draw() {
-  m_graphicsManager.getSpriteBatcher().addBatch(*m_sprite);
-  for (auto b : m_buttons)
-    b->draw();
+  m_graphicsManager.getSpriteBatcher().addBatch(m_sprite);
+  for (ToggleButton& b : m_buttons)
+    b.draw();
 }
 
 void
 SelectableList::update(float timePassed) {
-  for (auto b : m_buttons)
-    b->update(timePassed);
+  for (ToggleButton& b : m_buttons)
+    b.update(timePassed);
 }
 
-shared_ptr<ToggleButton>
+ToggleButton*
 SelectableList::getButtonWithId(int id) {
-  for (auto b : m_buttons) {
-    if (b->getId() == id)
-      return b;
+  for (ToggleButton& b : m_buttons) {
+    if (b.getId() == id)
+      return &b;
   }
   return nullptr; // Should never happen
 }
