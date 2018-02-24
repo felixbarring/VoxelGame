@@ -12,6 +12,9 @@
 
 namespace widget {
 
+/**
+ *
+ */
 class TextInput : public AbstractWidget {
 public:
   /**
@@ -66,12 +69,6 @@ public:
   void setFocus(bool value = true);
 
 private:
-  static constexpr float s_cursorWidth{1.0};
-  static constexpr int s_cursorSpacing{4};
-
-  // The difference between the widgets and text height
-  static constexpr int s_textHightDifference{5};
-
   int m_layer{};
   bool m_hasFocus{false};
   std::string m_input{""};
@@ -86,9 +83,9 @@ private:
 
   int m_textHeight{};
 
-  std::unique_ptr<graphics::Sprite> m_background;
-  std::unique_ptr<graphics::Sprite> m_cursor;
-  std::unique_ptr<graphics::Sprite> m_text;
+  graphics::Sprite m_background;
+  graphics::Sprite m_cursor;
+  graphics::Sprite m_text;
 };
 
 } /* namespace widget */
