@@ -15,6 +15,7 @@ namespace gui {
 
 class CubeBar {
 public:
+
   CubeBar(graphics::GraphicsManager& graphicsManager);
 
   void update(int selectedCube);

@@ -21,7 +21,7 @@ public:
 
 private:
   graphics::GraphicsManager& m_graphicsManager;
-  std::shared_ptr<graphics::Sprite> m_sprite;
+  graphics::Sprite m_sprite;
 };
 
 } /* namespace gui */
