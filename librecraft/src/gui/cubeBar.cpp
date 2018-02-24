@@ -1,4 +1,4 @@
-#include "CubeBar.h"
+#include "cubeBar.h"
 
 using namespace std;
 using namespace graphics;

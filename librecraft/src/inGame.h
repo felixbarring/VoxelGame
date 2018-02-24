@@ -17,7 +17,7 @@
 #include "graphics/cubeMap.h"
 #include "graphics/resources.h"
 #include "graphics/sprite.h"
-#include "gui/CubeBar.h"
+#include "gui/cubeBar.h"
 #include "gui/mouse.h"
 #include "gui/terminal.h"
 #include "model/world/timeAndWeather/timeCycle.h"

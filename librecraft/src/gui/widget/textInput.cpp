@@ -20,9 +20,7 @@ using namespace font_data;
 
 namespace widget {
 
-static constexpr float s_cursorWidth{1.0};
 static constexpr int s_cursorSpacing{4};
-
 static constexpr int s_textHightDifference{5};
 
 Sprite
@@ -136,7 +134,7 @@ TextInput::update(float timePassed) {
   if (input->keyWasTyped && m_hasFocus) {
     m_input.push_back(input->keyTyped);
 
-    auto strLength = fontMeshBuilder.lenghtOfString(m_input, m_textHeight);
+    float strLength = fontMeshBuilder.lenghtOfString(m_input, m_textHeight);
     if (strLength > m_maxInputLength) {
       m_input.pop_back();
       return;
@@ -174,7 +172,7 @@ TextInput::update(float timePassed) {
                       fontMesh,
                       res.getTexture(font));
 
-      auto strLenght = fontMeshBuilder.lenghtOfString(m_input, m_textHeight);
+      float strLenght = fontMeshBuilder.lenghtOfString(m_input, m_textHeight);
       m_cursor.setLocation(m_xCoordinate + strLenght,
                            m_yCoordinate + s_cursorSpacing);
     }
