@@ -2,6 +2,8 @@
 #ifndef SOURCE_DIRECTORY__SRC_GUI_CUBEBAR_H_
 #define SOURCE_DIRECTORY__SRC_GUI_CUBEBAR_H_
 
+#include <vector>
+
 #include "../config/data.h"
 #include "../graphics/graphicsManager.h"
 #include "../gui/mouse.h"
@@ -19,8 +21,8 @@ public:
 
 private:
   graphics::GraphicsManager& m_graphicsManager;
-  std::vector<std::shared_ptr<graphics::Sprite>> m_cubeThumbnails;
-  std::vector<std::shared_ptr<graphics::Sprite>> m_smallThumbnails;
+  std::vector<graphics::Sprite> m_cubeThumbnails;
+  std::vector<graphics::Sprite> m_smallThumbnails;
 };
 }
 
