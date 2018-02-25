@@ -21,6 +21,7 @@ namespace widget {
  */
 class WidgetGroup : public AbstractWidget {
 public:
+
   /**
    * @brief Constructs a WidgetGroup.
    */
@@ -43,7 +44,7 @@ public:
    *
    * @param widget The widget that will be added to this group
    */
-  void addWidget(std::shared_ptr<IWidget> widget);
+  void addWidget(IWidget& widget);
 
   /**
    * @brief Adds a vector of widgets to this group.
@@ -53,7 +54,7 @@ public:
    *
    * @param widgets The widgets that shall be added to this group
    */
-  void addWidget(std::vector<std::shared_ptr<IWidget>> widgets);
+  void addWidget(std::vector<IWidget*> widgets);
 
   void draw() override;
 
@@ -61,7 +62,8 @@ public:
 
 private:
   graphics::Sprite m_sprite;
-  std::vector<std::shared_ptr<IWidget>> m_widgets;
+  std::vector<IWidget*> m_widgets;
+  std::vector<IWidget> m_widgetsOwned;
 };
 
 } /* namespace widget */

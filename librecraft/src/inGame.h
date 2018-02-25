@@ -78,7 +78,9 @@ private:
 
   Settings m_settings;
 
-  std::shared_ptr<widget::WidgetGroup> m_activeWidgetGroup;
+  std::vector<std::shared_ptr<widget::IWidget>> m_widgets;
+
+  widget::WidgetGroup* m_activeWidgetGroup;
   std::shared_ptr<widget::WidgetGroup> m_mainWidgetGroup;
 
   std::shared_ptr<graphics::Sprite> m_crossHair;

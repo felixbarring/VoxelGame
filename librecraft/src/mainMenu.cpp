@@ -106,7 +106,7 @@ MainMenu::MainMenu(Game& game,
       m_soundPlayer.playSound(config::audio::buttonPressed);
       switch (id) {
         case 0:
-          m_activeWidgetGroup = m_playWidgetGroup;
+          m_activeWidgetGroup = m_playWidgetGroup.get();
           break;
         case 1:
           m_activeWidgetGroup = m_settings.getMainWidgetGroup();
@@ -126,9 +126,15 @@ MainMenu::MainMenu(Game& game,
     auto button3 = make_shared<Button>(
       2, 325, 270, 150, 30, m_graphicsManager, observer, "Quit");
 
+    m_widgets.push_back(label);
+    m_widgets.push_back(button1);
+    m_widgets.push_back(button2);
+    m_widgets.push_back(button3);
+
+
     m_mainWidgetGroup =
       make_shared<WidgetGroup>(-1, 300, 260, 200, 130, m_graphicsManager);
-    m_mainWidgetGroup->addWidget({label, button1, button2, button3});
+    m_mainWidgetGroup->addWidget({&*label, &*button1, &*button2, &*button3});
   }
 
   // ########################################################################
@@ -137,13 +143,13 @@ MainMenu::MainMenu(Game& game,
     auto observer = [this](int id) {
       switch (id) {
         case 0:
-          m_activeWidgetGroup = m_newWorldWidgetGroup;
+          m_activeWidgetGroup = m_newWorldWidgetGroup.get();
           break;
         case 1:
-          m_activeWidgetGroup = m_loadWorldWidgetGroup;
+          m_activeWidgetGroup = m_loadWorldWidgetGroup.get();
           break;
         case 2:
-          m_activeWidgetGroup = m_mainWidgetGroup;
+          m_activeWidgetGroup = m_mainWidgetGroup.get();
           break;
       }
     };
@@ -157,10 +163,15 @@ MainMenu::MainMenu(Game& game,
     auto button3 = make_shared<Button>(
       2, 325, 270, 150, 30, m_graphicsManager, observer, "Back");
 
+    m_widgets.push_back(label);
+    m_widgets.push_back(button1);
+    m_widgets.push_back(button2);
+    m_widgets.push_back(button3);
+
     m_playWidgetGroup =
       make_shared<WidgetGroup>(-1, 300, 260, 200, 130, m_graphicsManager);
 
-    m_playWidgetGroup->addWidget({label, button1, button2, button3});
+    m_playWidgetGroup->addWidget({&*label, &*button1, &*button2, &*button3});
   }
 
   // ########################################################################
@@ -169,7 +180,7 @@ MainMenu::MainMenu(Game& game,
     auto observer = [this](int id) {
       switch (id) {
         case 0: {
-          m_activeWidgetGroup = m_newWorldWidgetGroupAdvanced;
+          m_activeWidgetGroup = m_newWorldWidgetGroupAdvanced.get();
           break;
         }
         case 1: {
@@ -186,18 +197,18 @@ MainMenu::MainMenu(Game& game,
 
               m_soundPlayer.stopMusic();
 
-              m_activeWidgetGroup = m_mainWidgetGroup;
+              m_activeWidgetGroup = m_mainWidgetGroup.get();
               m_worldList->addListItem(name);
             } else {
-              m_activeWidgetGroup = m_errorUsedName;
+              m_activeWidgetGroup = m_errorUsedName.get();
             }
           } else {
-            m_activeWidgetGroup = m_errorEmptyName;
+            m_activeWidgetGroup = m_errorEmptyName.get();
           }
           break;
         }
         case 2:
-          m_activeWidgetGroup = m_playWidgetGroup;
+          m_activeWidgetGroup = m_playWidgetGroup.get();
           break;
         case 3: {
           m_textInput3->setString(randomName());
@@ -223,11 +234,16 @@ MainMenu::MainMenu(Game& game,
     auto button4 = make_shared<Button>(
       3, 250, 250, 300, 30, m_graphicsManager, observer, "Random Name", 1);
 
+    m_widgets.push_back(button1);
+    m_widgets.push_back(button2);
+    m_widgets.push_back(button3);
+    m_widgets.push_back(button4);
+
     m_newWorldWidgetGroup =
       make_shared<WidgetGroup>(0, 200, 120, 400, 270, m_graphicsManager);
 
     m_newWorldWidgetGroup->addWidget(
-      {label1, label2, m_textInput3, button1, button2, button3, button4});
+      {&*label1, &*label2, &*m_textInput3, &*button1, &*button2, &*button3, &*button4});
   }
 
   // ########################################################################
@@ -258,7 +274,7 @@ MainMenu::MainMenu(Game& game,
         case 4:
           break; // TODO
         case 5:
-          m_activeWidgetGroup = m_newWorldWidgetGroup;
+          m_activeWidgetGroup = m_newWorldWidgetGroup.get();
           break;
         case 6: {
 
@@ -334,16 +350,25 @@ MainMenu::MainMenu(Game& game,
     m_newWorldWidgetGroupAdvanced =
       make_shared<WidgetGroup>(0, 200, 120, 400, 270, m_graphicsManager);
 
-    m_newWorldWidgetGroupAdvanced->addWidget({label1,
-                                              button1,
-                                              button2,
-                                              button3,
-                                              button4,
-                                              button5,
-                                              button6,
-                                              seedLabel,
-                                              m_textInput4,
-                                              seedButton});
+
+
+    m_widgets.push_back(label1);
+    m_widgets.push_back(button5);
+    m_widgets.push_back(button6);
+    m_widgets.push_back(seedLabel);
+    m_widgets.push_back(seedButton);
+
+
+    m_newWorldWidgetGroupAdvanced->addWidget({&*label1,
+                                              &*button1,
+                                              &*button2,
+                                              &*button3,
+                                              &*button4,
+                                              &*button5,
+                                              &*button6,
+                                              &*seedLabel,
+                                              &*m_textInput4,
+                                              &*seedButton});
   }
 
   // ########################################################################
@@ -368,13 +393,13 @@ MainMenu::MainMenu(Game& game,
 
             m_game.createWorld(CreationOptions{name});
             m_soundPlayer.stopMusic();
-            m_activeWidgetGroup = m_mainWidgetGroup;
+            m_activeWidgetGroup = m_mainWidgetGroup.get();
             m_worldList->reset();
           }
           break;
         }
         case 3: {
-          m_activeWidgetGroup = m_playWidgetGroup;
+          m_activeWidgetGroup = m_playWidgetGroup.get();
           break;
         }
       }
@@ -400,8 +425,14 @@ MainMenu::MainMenu(Game& game,
     for (auto s : world_meta::getAllWorldNames())
       m_worldList->addListItem(s);
 
+    m_widgets.push_back(label);
+    m_widgets.push_back(button1);
+    m_widgets.push_back(button2);
+    m_widgets.push_back(button3);
+    m_widgets.push_back(button4);
+
     m_loadWorldWidgetGroup->addWidget(
-      {label, button1, button2, button3, button4, m_worldList});
+      {&*label, &*button1, &*button2, &*button3, &*button4, &*m_worldList});
   }
 
   // ########################################################################
@@ -410,10 +441,10 @@ MainMenu::MainMenu(Game& game,
     auto observer = [this](int id) {
       switch (id) {
         case 1:
-          m_activeWidgetGroup = m_newWorldWidgetGroup;
+          m_activeWidgetGroup = m_newWorldWidgetGroup.get();
           break;
         case 0:
-          m_activeWidgetGroup = m_playWidgetGroup;
+          m_activeWidgetGroup = m_playWidgetGroup.get();
           break;
       }
     };
@@ -426,7 +457,11 @@ MainMenu::MainMenu(Game& game,
     m_errorEmptyName =
       make_shared<WidgetGroup>(0, 200, 250, 400, 45, m_graphicsManager, 3);
 
-    m_errorEmptyName->addWidget({label, button});
+
+    m_widgets.push_back(label);
+    m_widgets.push_back(button);
+
+    m_errorEmptyName->addWidget({&*label, &*button});
   }
 
   // ########################################################################
@@ -435,10 +470,10 @@ MainMenu::MainMenu(Game& game,
     auto observer = [this](int id) {
       switch (id) {
         case 1:
-          m_activeWidgetGroup = m_newWorldWidgetGroup;
+          m_activeWidgetGroup = m_newWorldWidgetGroup.get();
           break;
         case 0:
-          m_activeWidgetGroup = m_playWidgetGroup;
+          m_activeWidgetGroup = m_playWidgetGroup.get();
           break;
       }
     };
@@ -451,12 +486,15 @@ MainMenu::MainMenu(Game& game,
     m_errorUsedName =
       make_shared<WidgetGroup>(0, 200, 250, 400, 45, m_graphicsManager, 3);
 
-    m_errorUsedName->addWidget({label, button});
+    m_widgets.push_back(label);
+    m_widgets.push_back(button);
+
+    m_errorUsedName->addWidget({&*label, &*button});
   }
 
   // ########################################################################
 
-  m_activeWidgetGroup = m_mainWidgetGroup;
+  m_activeWidgetGroup = m_mainWidgetGroup.get();
 }
 
 void

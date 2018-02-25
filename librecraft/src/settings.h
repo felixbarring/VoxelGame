@@ -29,7 +29,7 @@ public:
    * @param soundPlayer Needed to play sounds when GUI events occurs.
    * @param graphicsManager Needed for drawing 2d and 3d graphics.
    */
-  Settings(std::shared_ptr<widget::WidgetGroup>& active,
+  Settings(widget::WidgetGroup*& active,
            std::shared_ptr<widget::WidgetGroup>& parent,
            util::SoundPlayer& soundPlayer,
            graphics::GraphicsManager& graphicsManager);
@@ -37,39 +37,42 @@ public:
   /**
    * @return The main widget group / the entry point of the settings.
    */
-  std::shared_ptr<widget::WidgetGroup> getMainWidgetGroup() const;
+  widget::WidgetGroup* getMainWidgetGroup() const;
 
 private:
   util::SoundPlayer& m_soundPlayer;
   graphics::GraphicsManager& m_graphicsManager;
 
-  std::shared_ptr<widget::WidgetGroup>& m_activeWidgetGroup;
+  std::vector<std::shared_ptr<widget::IWidget>> m_widgets;
+
+  widget::WidgetGroup*& m_activeWidgetGroup;
+
   std::shared_ptr<widget::WidgetGroup>& m_parentWidgetGroup;
 
-  std::shared_ptr<widget::WidgetGroup> m_settingsWidgetGroup{};
+  std::unique_ptr<widget::WidgetGroup> m_settingsWidgetGroup{};
 
-  std::shared_ptr<widget::WidgetGroup> m_gameSettingsWidgetGroup{};
-  std::shared_ptr<widget::WidgetGroup> m_inputSettingsWidgetGroup{};
-  std::shared_ptr<widget::WidgetGroup> m_graphicsSettingsWidgetGroup{};
-  std::shared_ptr<widget::WidgetGroup> m_audioSettingsWidgetGroup{};
+  std::unique_ptr<widget::WidgetGroup> m_gameSettingsWidgetGroup{};
+  std::unique_ptr<widget::WidgetGroup> m_inputSettingsWidgetGroup{};
+  std::unique_ptr<widget::WidgetGroup> m_graphicsSettingsWidgetGroup{};
+  std::unique_ptr<widget::WidgetGroup> m_audioSettingsWidgetGroup{};
 
-  std::shared_ptr<widget::TextInput> m_mouseSensitivityInput{};
-  std::shared_ptr<widget::Slider> m_mouseSensitivitySlider{};
+  std::unique_ptr<widget::TextInput> m_mouseSensitivityInput{};
+  std::unique_ptr<widget::Slider> m_mouseSensitivitySlider{};
 
-  std::shared_ptr<widget::Slider> m_fovSlider{};
-  std::shared_ptr<widget::Slider> m_renderDistanceSlider{};
+  std::unique_ptr<widget::Slider> m_fovSlider{};
+  std::unique_ptr<widget::Slider> m_renderDistanceSlider{};
 
-  std::shared_ptr<widget::Slider> m_masterVolumeSlider{};
-  std::shared_ptr<widget::TextInput> m_masterVolumeInput{};
+  std::unique_ptr<widget::Slider> m_masterVolumeSlider{};
+  std::unique_ptr<widget::TextInput> m_masterVolumeInput{};
 
-  std::shared_ptr<widget::Slider> m_musicVolumeSlider{};
-  std::shared_ptr<widget::TextInput> m_musicVolumeInput{};
+  std::unique_ptr<widget::Slider> m_musicVolumeSlider{};
+  std::unique_ptr<widget::TextInput> m_musicVolumeInput{};
 
-  std::shared_ptr<widget::Slider> m_soundVolumeSlider{};
-  std::shared_ptr<widget::TextInput> m_soundVolumeInput{};
+  std::unique_ptr<widget::Slider> m_soundVolumeSlider{};
+  std::unique_ptr<widget::TextInput> m_soundVolumeInput{};
 
-  std::shared_ptr<widget::TextInput> m_fovTextInput{};
-  std::shared_ptr<widget::TextInput> m_renderDistanceInput{};
+  std::unique_ptr<widget::TextInput> m_fovTextInput{};
+  std::unique_ptr<widget::TextInput> m_renderDistanceInput{};
 };
 
 #endif /* SRC_SETTINGS_H_ */

@@ -85,11 +85,13 @@ InGame::InGame(Game& game,
   m_mainWidgetGroup =
     make_shared<WidgetGroup>(0, 300, 260, 200, 130, m_graphicsManager);
 
-  m_mainWidgetGroup->addWidget(button1);
-  m_mainWidgetGroup->addWidget(button2);
-  m_mainWidgetGroup->addWidget(button3);
+  m_widgets.push_back(button1);
+  m_widgets.push_back(button2);
+  m_widgets.push_back(button3);
 
-  m_activeWidgetGroup = m_mainWidgetGroup;
+  m_mainWidgetGroup->addWidget({&*button1, &*button2, &*button3});
+
+  m_activeWidgetGroup = m_mainWidgetGroup.get();
 
   m_crossHair = make_shared<Sprite>(
     390,

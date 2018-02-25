@@ -119,6 +119,7 @@ private:
   std::vector<std::string> m_commands{};
 
   std::shared_ptr<widget::Button> m_enterButton;
+  std::shared_ptr<widget::Button> m_closeButton;
   std::shared_ptr<widget::WidgetGroup> m_widgets{};
 
   bool m_skipNextUpdate{};

@@ -55,10 +55,12 @@ private:
 
   Settings m_settings;
 
+  std::vector<std::shared_ptr<widget::IWidget>> m_widgets;
+
   std::unique_ptr<gui::Image> m_title{};
   std::shared_ptr<widget::SelectableList> m_worldList{};
 
-  std::shared_ptr<widget::WidgetGroup> m_activeWidgetGroup{};
+  widget::WidgetGroup* m_activeWidgetGroup{};
 
   std::shared_ptr<widget::WidgetGroup> m_mainWidgetGroup{};
 
