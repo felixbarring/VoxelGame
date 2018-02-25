@@ -199,13 +199,17 @@ ChunkManager::setCenter(float x, float z) {
   if (!m_bussyMovingChunksMutex->try_lock())
     return;
 
-  if (x < NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * CHUNK_WIDTH_AND_DEPTH + m_xOffset)
+  if (x < NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * CHUNK_WIDTH_AND_DEPTH +
+            m_xOffset)
     moveChunksRight();
-  else if (x > NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * CHUNK_WIDTH_AND_DEPTH + m_xOffset + CHUNK_WIDTH_AND_DEPTH)
+  else if (x > NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * CHUNK_WIDTH_AND_DEPTH +
+                 m_xOffset + CHUNK_WIDTH_AND_DEPTH)
     moveChunksLeft();
-  else if (z < NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * CHUNK_WIDTH_AND_DEPTH + m_zOffset)
+  else if (z < NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * CHUNK_WIDTH_AND_DEPTH +
+                 m_zOffset)
     moveChunksUp();
-  else if (z > NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * CHUNK_WIDTH_AND_DEPTH + m_zOffset + CHUNK_WIDTH_AND_DEPTH)
+  else if (z > NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER * CHUNK_WIDTH_AND_DEPTH +
+                 m_zOffset + CHUNK_WIDTH_AND_DEPTH)
     moveChunksDown();
   else
     m_bussyMovingChunksMutex->unlock();
@@ -318,10 +322,12 @@ ChunkManager::getLimit() {
 entity::AABB
 ChunkManager::createLimit() {
   int n{NUMBER_OF_CHUNKS_FROM_MIDDLE_TO_BORDER};
-  return entity::AABB(
-      m_xOffset + CHUNK_WIDTH_AND_DEPTH, m_xOffset + 2 * (n * CHUNK_WIDTH_AND_DEPTH),
-      0, config::chunk_data::CHUNK_HEIGHT,
-      m_zOffset + CHUNK_WIDTH_AND_DEPTH, m_zOffset + 2 * (n * CHUNK_WIDTH_AND_DEPTH));
+  return entity::AABB(m_xOffset + CHUNK_WIDTH_AND_DEPTH,
+                      m_xOffset + 2 * (n * CHUNK_WIDTH_AND_DEPTH),
+                      0,
+                      config::chunk_data::CHUNK_HEIGHT,
+                      m_zOffset + CHUNK_WIDTH_AND_DEPTH,
+                      m_zOffset + 2 * (n * CHUNK_WIDTH_AND_DEPTH));
 }
 
 bool
@@ -557,4 +563,3 @@ ChunkManager::moveChunks(Direction direction) {
   });
 }
 }
-

@@ -43,7 +43,6 @@ public:
   void setLimit(const AABB& limit);
 
 private:
-
   void updateSpeed(float timePassed);
 
   void handlePhysics();

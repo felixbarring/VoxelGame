@@ -18,7 +18,6 @@ Voxel::Voxel(char id, char sun, char other)
   : m_id{id} {
   setSunLightValue(sun);
   setOtherLightValue(other);
-
 }
 
 void
@@ -50,10 +49,6 @@ char
 Voxel::getOtherLightValue() {
   return (m_lightValues & 0xF0) >> 4;
 }
-
-
-
-
 
 TEST_CASE("Testing default values") {
   Voxel voxel{};
@@ -98,4 +93,3 @@ TEST_CASE("Testing light values") {
     CHECK(voxel.getOtherLightValue() == i);
   }
 }
-

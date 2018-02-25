@@ -12,15 +12,8 @@ using namespace graphics;
 
 namespace widget {
 
-Label::Label(int x,
-             int y,
-             int width,
-             int height,
-             const string& name,
-             graphics::GraphicsManager& graphicsManager,
-             unsigned layer)
-  : AbstractWidget(1, x, y, width, height, graphicsManager) {
-
+graphics::Sprite
+createLabelText(int x, int y, int height, string name, unsigned layer) {
   auto& res = Resources::getInstance();
 
   FontMeshBuilder& fontMeshBuilder =
@@ -31,16 +24,27 @@ Label::Label(int x,
   shared_ptr<mesh::MeshElement> fontMesh =
     fontMeshBuilder.buldMeshForString(name, height - 5);
 
-  m_text.reset(new Sprite{static_cast<double>(x),
-                          y + 5.0,
-                          layer,
-                          fontMesh,
-                          res.getTexture(config::font_data::font)});
+  return Sprite{static_cast<double>(x),
+                y + 5.0,
+                layer,
+                fontMesh,
+                res.getTexture(config::font_data::font)};
+}
+
+Label::Label(int x,
+             int y,
+             int width,
+             int height,
+             const string& name,
+             graphics::GraphicsManager& graphicsManager,
+             unsigned layer)
+  : AbstractWidget(1, x, y, width, height, graphicsManager)
+  , m_text{createLabelText(x, y, height, name, layer)} {
 }
 
 void
 Label::draw() {
-  m_graphicsManager.getSpriteBatcher().addBatch(*m_text);
+  m_graphicsManager.getSpriteBatcher().addBatch(m_text);
 }
 
 } /* namespace demo */

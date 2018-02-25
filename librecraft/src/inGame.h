@@ -17,7 +17,7 @@
 #include "graphics/cubeMap.h"
 #include "graphics/resources.h"
 #include "graphics/sprite.h"
-#include "gui/CubeBar.h"
+#include "gui/cubeBar.h"
 #include "gui/mouse.h"
 #include "gui/terminal.h"
 #include "model/world/timeAndWeather/timeCycle.h"
@@ -77,6 +77,8 @@ private:
   double m_fpsDisplayDelay{1.0 / 5.0};
 
   Settings m_settings;
+
+  std::vector<std::shared_ptr<widget::IWidget>> m_widgets;
 
   std::shared_ptr<widget::WidgetGroup> m_activeWidgetGroup;
   std::shared_ptr<widget::WidgetGroup> m_mainWidgetGroup;

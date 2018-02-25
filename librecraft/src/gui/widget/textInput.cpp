@@ -20,6 +20,45 @@ using namespace font_data;
 
 namespace widget {
 
+static constexpr int s_cursorSpacing{4};
+static constexpr int s_textHightDifference{5};
+
+Sprite
+createBackground(int x, int y, unsigned layer, int width, int height) {
+  return Sprite(x,
+                y,
+                layer,
+                width,
+                height,
+                Resources::getInstance().getTexture(solidBlack));
+}
+
+Sprite
+createCursor(int x, int y, unsigned layer, int height) {
+  return Sprite(x,
+                y + s_cursorSpacing,
+                layer + 1,
+                1,
+                height - 2 * s_cursorSpacing,
+                Resources::getInstance().getTexture(solidWhite));
+}
+
+Sprite
+createTextTextInput(int x, int y, unsigned layer, int textHeight) {
+  FontMeshBuilder& fontMeshBuilder =
+    Resources::getInstance().getFontMeshBuilder(
+      fontLayout, fontAtlasWidth, fontAtlasHeight);
+
+  shared_ptr<mesh::MeshElement> fontMesh =
+    fontMeshBuilder.buldMeshForString("", textHeight);
+
+  return Sprite(x,
+                y + s_textHightDifference,
+                layer + 1,
+                move(fontMesh),
+                Resources::getInstance().getTexture(font));
+}
+
 TextInput::TextInput(int id,
                      int x,
                      int y,
@@ -30,28 +69,10 @@ TextInput::TextInput(int id,
   : AbstractWidget(id, x, y, width, height, graphicsManager)
   , m_layer{layer}
   , m_maxInputLength{width}
-  , m_textHeight{height - s_textHightDifference} {
-  Resources& res = Resources::getInstance();
-
-  m_background = make_unique<Sprite>(
-    x, y, m_layer, width, height, res.getTexture(solidBlack));
-  m_cursor = make_unique<Sprite>(x,
-                                 y + s_cursorSpacing,
-                                 m_layer + 1,
-                                 1,
-                                 height - 2 * s_cursorSpacing,
-                                 res.getTexture(solidWhite));
-
-  FontMeshBuilder& fontMeshBuilder =
-    res.getFontMeshBuilder(fontLayout, fontAtlasWidth, fontAtlasHeight);
-
-  shared_ptr<mesh::MeshElement> fontMesh =
-    fontMeshBuilder.buldMeshForString(m_input, m_textHeight);
-  m_text = make_unique<Sprite>(x,
-                               y + s_textHightDifference,
-                               layer + 1,
-                               move(fontMesh),
-                               res.getTexture(font));
+  , m_textHeight{height - s_textHightDifference}
+  , m_background{createBackground(x, y, layer, width, height)}
+  , m_cursor{createCursor(x, y, layer, height)}
+  , m_text{createTextTextInput(x, y, layer, m_textHeight)} {
 }
 
 void
@@ -64,15 +85,15 @@ TextInput::setString(string str) {
 
   shared_ptr<mesh::MeshElement> fontMesh =
     fontMeshBuilder.buldMeshForString(m_input, m_textHeight);
-  m_text = make_unique<Sprite>(m_xCoordinate,
-                               m_yCoordinate + s_textHightDifference,
-                               m_layer + 1,
-                               fontMesh,
-                               res.getTexture(font));
+  m_text = Sprite(m_xCoordinate,
+                  m_yCoordinate + s_textHightDifference,
+                  m_layer + 1,
+                  fontMesh,
+                  res.getTexture(font));
 
   auto strLength = fontMeshBuilder.lenghtOfString(m_input, m_textHeight);
-  m_cursor->setLocation(m_xCoordinate + strLength,
-                        m_yCoordinate + s_cursorSpacing);
+  m_cursor.setLocation(m_xCoordinate + strLength,
+                       m_yCoordinate + s_cursorSpacing);
 }
 
 string
@@ -82,12 +103,12 @@ TextInput::getString() {
 
 void
 TextInput::draw() {
-  m_graphicsManager.getSpriteBatcher().addBatch(*m_background);
+  m_graphicsManager.getSpriteBatcher().addBatch(m_background);
 
   if (m_cursorVissible && m_hasFocus)
-    m_graphicsManager.getSpriteBatcher().addBatch(*m_cursor);
+    m_graphicsManager.getSpriteBatcher().addBatch(m_cursor);
 
-  m_graphicsManager.getSpriteBatcher().addBatch(*m_text);
+  m_graphicsManager.getSpriteBatcher().addBatch(m_text);
 }
 
 void
@@ -113,7 +134,7 @@ TextInput::update(float timePassed) {
   if (input->keyWasTyped && m_hasFocus) {
     m_input.push_back(input->keyTyped);
 
-    auto strLength = fontMeshBuilder.lenghtOfString(m_input, m_textHeight);
+    float strLength = fontMeshBuilder.lenghtOfString(m_input, m_textHeight);
     if (strLength > m_maxInputLength) {
       m_input.pop_back();
       return;
@@ -121,14 +142,14 @@ TextInput::update(float timePassed) {
 
     auto fontMesh = fontMeshBuilder.buldMeshForString(
       m_input, m_height - s_textHightDifference);
-    m_text = make_unique<Sprite>(m_xCoordinate,
-                                 m_yCoordinate + s_textHightDifference,
-                                 m_layer + 1,
-                                 move(fontMesh),
-                                 res.getTexture(font));
+    m_text = Sprite(m_xCoordinate,
+                    m_yCoordinate + s_textHightDifference,
+                    m_layer + 1,
+                    move(fontMesh),
+                    res.getTexture(font));
 
-    m_cursor->setLocation(m_xCoordinate + strLength,
-                          m_yCoordinate + s_cursorSpacing);
+    m_cursor.setLocation(m_xCoordinate + strLength,
+                         m_yCoordinate + s_cursorSpacing);
 
   } else {
     if (m_hasFocus && Input::getInstance()->eraseTextActive &&
@@ -145,15 +166,15 @@ TextInput::update(float timePassed) {
 
       auto fontMesh = fontMeshBuilder.buldMeshForString(
         m_input, m_height - s_textHightDifference);
-      m_text = make_unique<Sprite>(m_xCoordinate,
-                                   m_yCoordinate + s_textHightDifference,
-                                   m_layer + 1,
-                                   fontMesh,
-                                   res.getTexture(font));
+      m_text = Sprite(m_xCoordinate,
+                      m_yCoordinate + s_textHightDifference,
+                      m_layer + 1,
+                      fontMesh,
+                      res.getTexture(font));
 
-      auto strLenght = fontMeshBuilder.lenghtOfString(m_input, m_textHeight);
-      m_cursor->setLocation(m_xCoordinate + strLenght,
-                            m_yCoordinate + s_cursorSpacing);
+      float strLenght = fontMeshBuilder.lenghtOfString(m_input, m_textHeight);
+      m_cursor.setLocation(m_xCoordinate + strLenght,
+                           m_yCoordinate + s_cursorSpacing);
     }
   }
 }

@@ -38,7 +38,7 @@ public:
   void draw() override;
 
 private:
-  std::shared_ptr<graphics::Sprite> m_text;
+  graphics::Sprite m_text;
 };
 
 } /* namespace widget */

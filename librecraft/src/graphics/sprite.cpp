@@ -41,7 +41,7 @@ Sprite::Sprite(double x,
   , m_width{width}
   , m_height{height}
   , m_mesh{createMesh(width, height)}
-  , m_texture(texture)
+  , m_texture(&texture)
   , m_layer{layer} {
 }
 
@@ -51,7 +51,7 @@ Sprite::Sprite(double x,
                shared_ptr<mesh::MeshElement> mesh,
                texture::Texture& texture)
   : m_transform{x, y, 0}
-  , m_texture(texture)
+  , m_texture(&texture)
   , m_layer{layer} {
   m_mesh = std::move(mesh);
 }
@@ -68,7 +68,7 @@ Sprite::getTransform() {
 
 texture::Texture&
 Sprite::getTexture() {
-  return m_texture;
+  return *m_texture;
 }
 
 void

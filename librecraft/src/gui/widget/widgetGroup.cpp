@@ -12,6 +12,21 @@ using namespace graphics;
 
 namespace widget {
 
+Sprite
+createWidgetGroupSprite(int x,
+                        int y,
+                        unsigned layer,
+                        int width,
+                        int height,
+                        const string kek) {
+  return Sprite{static_cast<double>(x),
+                static_cast<double>(y),
+                layer,
+                static_cast<double>(width),
+                static_cast<double>(height),
+                Resources::getInstance().getTexture(kek)};
+}
+
 WidgetGroup::WidgetGroup(int id,
                          int x,
                          int y,
@@ -20,42 +35,33 @@ WidgetGroup::WidgetGroup(int id,
                          graphics::GraphicsManager& graphicsManager,
                          unsigned layer,
                          bool transparentBackground)
-  : AbstractWidget(id, x, y, width, height, graphicsManager) {
-  if (transparentBackground) {
-    m_sprite.reset(new Sprite{static_cast<double>(x),
-                              static_cast<double>(y),
-                              layer,
-                              static_cast<double>(width),
-                              static_cast<double>(height),
-                              Resources::getInstance().getTexture(
-                                config::gui_data::transparentGuiBox)});
-  } else {
-    m_sprite.reset(new Sprite{
-      static_cast<double>(x),
-      static_cast<double>(y),
-      layer,
-      static_cast<double>(width),
-      static_cast<double>(height),
-      Resources::getInstance().getTexture(config::gui_data::guiBox)});
-  }
+  : AbstractWidget(id, x, y, width, height, graphicsManager)
+  , m_sprite{createWidgetGroupSprite(x,
+                                     y,
+                                     layer,
+                                     width,
+                                     height,
+                                     transparentBackground
+                                       ? config::gui_data::transparentGuiBox
+                                       : config::gui_data::guiBox)} {
 }
 
 void
-WidgetGroup::addWidget(shared_ptr<IWidget> widget) {
-  m_widgets.push_back(widget);
+WidgetGroup::addWidget(IWidget& widget) {
+  m_widgets.push_back(&widget);
 }
 
 void
-WidgetGroup::addWidget(std::vector<shared_ptr<IWidget>> widgets) {
-  for_each(widgets.begin(), widgets.end(), [this](shared_ptr<IWidget> w) {
+WidgetGroup::addWidget(vector<IWidget*> widgets) {
+  for_each(widgets.begin(), widgets.end(), [this](IWidget* w) {
     m_widgets.push_back(w);
   });
 }
 
 void
 WidgetGroup::draw() {
-  m_graphicsManager.getSpriteBatcher().addBatch(*m_sprite);
-  for (auto widget : m_widgets)
+  m_graphicsManager.getSpriteBatcher().addBatch(m_sprite);
+  for (auto& widget : m_widgets)
     widget->draw();
 }
 

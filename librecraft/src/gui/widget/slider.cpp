@@ -16,28 +16,19 @@ using namespace util;
 
 namespace widget {
 
-Slider::Slider(int id,
-               int x,
-               int y,
-               int width,
-               int height,
-               graphics::GraphicsManager& graphicsManager,
-               std::function<void(int)> observer,
-               int layer)
-  : AbstractWidget(id, x, y, width, height, graphicsManager) {
+Sprite
+createSliderSprite(int x, int y, unsigned layer, int width, int height) {
+  return Sprite(x,
+                y,
+                layer,
+                width,
+                height,
+                Resources::getInstance().getTexture(config::gui_data::slider));
+}
 
-  this->m_observer = observer;
-  m_knobPosition = x;
-  m_knobWidth = height;
-
-  m_slider = make_shared<Sprite>(
-    x,
-    y,
-    layer,
-    width,
-    height,
-    Resources::getInstance().getTexture(config::gui_data::slider));
-  m_knob = make_shared<Sprite>(
+Sprite
+createKnobSprite(int x, int y, unsigned layer, int height) {
+  return Sprite(
     x,
     y,
     layer + 1,
@@ -46,10 +37,26 @@ Slider::Slider(int id,
     Resources::getInstance().getTexture(config::gui_data::sliderKnob));
 }
 
+Slider::Slider(int id,
+               int x,
+               int y,
+               int width,
+               int height,
+               graphics::GraphicsManager& graphicsManager,
+               std::function<void(int)> observer,
+               int layer)
+  : AbstractWidget(id, x, y, width, height, graphicsManager)
+  , m_observer{observer}
+  , m_knobPosition{x}
+  , m_knobWidth{height}
+  , m_slider{createSliderSprite(x, y, layer, width, height)}
+  , m_knob{createKnobSprite(x, y, layer, height)} {
+}
+
 void
 Slider::setValue(double value) {
   m_knobPosition = value * (m_width - m_knobWidth) + this->m_xCoordinate;
-  m_knob->setLocation(m_knobPosition, this->m_yCoordinate);
+  m_knob.setLocation(m_knobPosition, this->m_yCoordinate);
 }
 
 double
@@ -59,8 +66,8 @@ Slider::getValue() {
 
 void
 Slider::draw() {
-  m_graphicsManager.getSpriteBatcher().addBatch(*m_slider);
-  m_graphicsManager.getSpriteBatcher().addBatch(*m_knob);
+  m_graphicsManager.getSpriteBatcher().addBatch(m_slider);
+  m_graphicsManager.getSpriteBatcher().addBatch(m_knob);
 }
 
 void
@@ -80,7 +87,7 @@ Slider::update(float) {
     if (m_knobPosition > this->m_xCoordinate + this->m_width - m_knobWidth)
       m_knobPosition = this->m_xCoordinate + this->m_width - m_knobWidth;
 
-    m_knob->setLocation(m_knobPosition, this->m_yCoordinate);
+    m_knob.setLocation(m_knobPosition, this->m_yCoordinate);
 
     m_observer(m_id);
   }

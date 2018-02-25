@@ -22,16 +22,16 @@ public:
     //!< CheckBox visuals representing a small box that can be checked and with
     //! text to the right
     CheckBox,
-    //!< ReadioButton visuals representing a circle that can be check and with
+    //!< RadioButton visuals representing a circle that can be check and with
     //! text to the right
-    ReadioButton
+    RadioButton
   };
 
-  ToggleButton(int id,
-               int x,
-               int y,
-               int width,
-               int height,
+  ToggleButton(double id,
+               double x,
+               double y,
+               double width,
+               double height,
                graphics::GraphicsManager& graphicsManager,
                std::function<void(int)> observer,
                const std::string& name,
@@ -56,7 +56,7 @@ private:
   bool m_toggled{false};
   Skin m_skin;
 
-  std::shared_ptr<graphics::Sprite> m_spriteToggled;
+  graphics::Sprite m_spriteToggled;
 };
 
 } /* namespace widget */

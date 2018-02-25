@@ -13,7 +13,7 @@
 namespace widget {
 
 /**
- * \brief Handles a group of widgets.
+ * @brief Handles a group of widgets.
  *
  * A simple layer that redirects all function calls to its widgets.
  * Useful for handling groups of widgets that work together.
@@ -21,8 +21,9 @@ namespace widget {
  */
 class WidgetGroup : public AbstractWidget {
 public:
+
   /**
-   * \brief Constructs a WidgetGroup.
+   * @brief Constructs a WidgetGroup.
    */
   WidgetGroup(int id,
               int x,
@@ -36,32 +37,33 @@ public:
   virtual ~WidgetGroup() = default;
 
   /**
-   * \brief Adds a widget to this group.
+   * @brief Adds a widget to this group.
    *
    * All other functions in this class will act on the Widgets
    * added by this function.
    *
-   * \param widget The widget that will be added to this group
+   * @param widget The widget that will be added to this group
    */
-  void addWidget(std::shared_ptr<IWidget> widget);
+  void addWidget(IWidget& widget);
 
   /**
-   * \brief Adds a vector of widgets to this group.
+   * @brief Adds a vector of widgets to this group.
    *
    * All other functions in this class will act on the Widgets
    * added by this function.
    *
    * @param widgets The widgets that shall be added to this group
    */
-  void addWidget(std::vector<std::shared_ptr<IWidget>> widgets);
+  void addWidget(std::vector<IWidget*> widgets);
 
   void draw() override;
 
   void update(float timePassed) override;
 
 private:
-  std::shared_ptr<graphics::Sprite> m_sprite;
-  std::vector<std::shared_ptr<IWidget>> m_widgets;
+  graphics::Sprite m_sprite;
+  std::vector<IWidget*> m_widgets;
+  std::vector<IWidget> m_widgetsOwned;
 };
 
 } /* namespace widget */

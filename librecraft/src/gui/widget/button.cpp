@@ -18,6 +18,16 @@ using namespace util;
 
 namespace widget {
 
+graphics::FontMeshBuilder&
+crateFontMeshBuilder() {
+  FontMeshBuilder& fontMeshBuilder =
+    Resources::getInstance().getFontMeshBuilder(
+      config::font_data::fontLayout,
+      config::font_data::fontAtlasWidth,
+      config::font_data::fontAtlasHeight);
+  return fontMeshBuilder;
+}
+
 Button::Button(int id,
                int x,
                int y,
@@ -29,28 +39,25 @@ Button::Button(int id,
                int layer)
   : AbstractWidget(id, x, y, width, height, graphicsManager)
   , m_name(name)
-  , m_observer{observer} {
-  auto& res = Resources::getInstance();
-
-  m_sprite.reset(new Sprite(
-    x, y, layer, width, height, res.getTexture(config::gui_data::button)));
-  m_highlight.reset(new Sprite(x,
-                               y,
-                               layer + 1,
-                               width,
-                               height,
-                               res.getTexture(config::gui_data::highlight)));
-
-  FontMeshBuilder& fontMeshBuilder =
-    res.getFontMeshBuilder(config::font_data::fontLayout,
-                           config::font_data::fontAtlasWidth,
-                           config::font_data::fontAtlasHeight);
-
-  m_text.reset(new Sprite(x,
-                          y + 5,
-                          layer + 1,
-                          fontMeshBuilder.buldMeshForString(name, height - 5),
-                          res.getTexture(config::font_data::font)));
+  , m_observer{observer}
+  , m_sprite{x,
+             y,
+             layer,
+             width,
+             height,
+             Resources::getInstance().getTexture(config::gui_data::button)}
+  , m_highlight{x,
+                y,
+                layer + 1,
+                width,
+                height,
+                Resources::getInstance().getTexture(
+                  config::gui_data::highlight)}
+  , m_text{x,
+           y + 5,
+           layer + 1,
+           crateFontMeshBuilder().buldMeshForString(name, height - 5),
+           Resources::getInstance().getTexture(config::font_data::font)} {
 }
 
 std::string
@@ -63,12 +70,12 @@ Button::draw() {
   SpriteBatcher& spriteBatcher{m_graphicsManager.getSpriteBatcher()};
 
   if (m_pointerInsideBorders) {
-    spriteBatcher.addBatch(*m_sprite);
-    spriteBatcher.addBatch(*m_text);
-    spriteBatcher.addBatch(*m_highlight);
+    spriteBatcher.addBatch(m_sprite);
+    spriteBatcher.addBatch(m_text);
+    spriteBatcher.addBatch(m_highlight);
   } else {
-    spriteBatcher.addBatch(*m_sprite);
-    spriteBatcher.addBatch(*m_text);
+    spriteBatcher.addBatch(m_sprite);
+    spriteBatcher.addBatch(m_text);
   }
 }
 

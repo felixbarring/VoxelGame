@@ -80,8 +80,10 @@ protected:
 
   bool m_active{true};
   const int m_id;
-  int m_xCoordinate, m_yCoordinate;
-  const int m_width, m_height;
+  int m_xCoordinate;
+  int m_yCoordinate;
+  const int m_width;
+  const int m_height;
 };
 
 } /* namespace widget */

@@ -210,7 +210,6 @@ Player::handlePhysics() {
       m_frameSpeed = m_speed;
     }
   }
-
 }
 
 void
