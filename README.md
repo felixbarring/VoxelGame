@@ -44,16 +44,16 @@ Instructions on how to get going.
 
 ```
 Installing dependencies on Ubuntu:
-	sudo apt-get install cmake make g++ clang-5.0 libsfml-dev libglew-dev 
+  sudo apt-get install cmake make g++ clang-5.0 libsfml-dev libglew-dev 
 
   Optional tools:
   cppcheck doxygen clang-format valgrind
 
-	Should be something similar on Fedora
+  Should be something similar on Fedora
 
 Buiding:
-	git clone --recursive https://github.com/felixbarring/VoxelGame
-	cd VoxelGame/scripts
+  git clone --recursive https://github.com/felixbarring/VoxelGame
+  cd VoxelGame/scripts
   bash setupBuildRelease.sh
   bash build.sh
   bash runGame.sh
