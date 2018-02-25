@@ -126,9 +126,15 @@ MainMenu::MainMenu(Game& game,
     auto button3 = make_shared<Button>(
       2, 325, 270, 150, 30, m_graphicsManager, observer, "Quit");
 
+    m_widgets.push_back(label);
+    m_widgets.push_back(button1);
+    m_widgets.push_back(button2);
+    m_widgets.push_back(button3);
+
+
     m_mainWidgetGroup =
       make_shared<WidgetGroup>(-1, 300, 260, 200, 130, m_graphicsManager);
-    m_mainWidgetGroup->addWidget({label, button1, button2, button3});
+    m_mainWidgetGroup->addWidget({&*label, &*button1, &*button2, &*button3});
   }
 
   // ########################################################################
@@ -157,10 +163,15 @@ MainMenu::MainMenu(Game& game,
     auto button3 = make_shared<Button>(
       2, 325, 270, 150, 30, m_graphicsManager, observer, "Back");
 
+    m_widgets.push_back(label);
+    m_widgets.push_back(button1);
+    m_widgets.push_back(button2);
+    m_widgets.push_back(button3);
+
     m_playWidgetGroup =
       make_shared<WidgetGroup>(-1, 300, 260, 200, 130, m_graphicsManager);
 
-    m_playWidgetGroup->addWidget({label, button1, button2, button3});
+    m_playWidgetGroup->addWidget({&*label, &*button1, &*button2, &*button3});
   }
 
   // ########################################################################
@@ -223,11 +234,16 @@ MainMenu::MainMenu(Game& game,
     auto button4 = make_shared<Button>(
       3, 250, 250, 300, 30, m_graphicsManager, observer, "Random Name", 1);
 
+    m_widgets.push_back(button1);
+    m_widgets.push_back(button2);
+    m_widgets.push_back(button3);
+    m_widgets.push_back(button4);
+
     m_newWorldWidgetGroup =
       make_shared<WidgetGroup>(0, 200, 120, 400, 270, m_graphicsManager);
 
     m_newWorldWidgetGroup->addWidget(
-      {label1, label2, m_textInput3, button1, button2, button3, button4});
+      {&*label1, &*label2, &*m_textInput3, &*button1, &*button2, &*button3, &*button4});
   }
 
   // ########################################################################
@@ -334,16 +350,25 @@ MainMenu::MainMenu(Game& game,
     m_newWorldWidgetGroupAdvanced =
       make_shared<WidgetGroup>(0, 200, 120, 400, 270, m_graphicsManager);
 
-    m_newWorldWidgetGroupAdvanced->addWidget({label1,
-                                              button1,
-                                              button2,
-                                              button3,
-                                              button4,
-                                              button5,
-                                              button6,
-                                              seedLabel,
-                                              m_textInput4,
-                                              seedButton});
+
+
+    m_widgets.push_back(label1);
+    m_widgets.push_back(button5);
+    m_widgets.push_back(button6);
+    m_widgets.push_back(seedLabel);
+    m_widgets.push_back(seedButton);
+
+
+    m_newWorldWidgetGroupAdvanced->addWidget({&*label1,
+                                              &*button1,
+                                              &*button2,
+                                              &*button3,
+                                              &*button4,
+                                              &*button5,
+                                              &*button6,
+                                              &*seedLabel,
+                                              &*m_textInput4,
+                                              &*seedButton});
   }
 
   // ########################################################################
@@ -400,8 +425,14 @@ MainMenu::MainMenu(Game& game,
     for (auto s : world_meta::getAllWorldNames())
       m_worldList->addListItem(s);
 
+    m_widgets.push_back(label);
+    m_widgets.push_back(button1);
+    m_widgets.push_back(button2);
+    m_widgets.push_back(button3);
+    m_widgets.push_back(button4);
+
     m_loadWorldWidgetGroup->addWidget(
-      {label, button1, button2, button3, button4, m_worldList});
+      {&*label, &*button1, &*button2, &*button3, &*button4, &*m_worldList});
   }
 
   // ########################################################################
@@ -426,7 +457,11 @@ MainMenu::MainMenu(Game& game,
     m_errorEmptyName =
       make_shared<WidgetGroup>(0, 200, 250, 400, 45, m_graphicsManager, 3);
 
-    m_errorEmptyName->addWidget({label, button});
+
+    m_widgets.push_back(label);
+    m_widgets.push_back(button);
+
+    m_errorEmptyName->addWidget({&*label, &*button});
   }
 
   // ########################################################################
@@ -451,7 +486,10 @@ MainMenu::MainMenu(Game& game,
     m_errorUsedName =
       make_shared<WidgetGroup>(0, 200, 250, 400, 45, m_graphicsManager, 3);
 
-    m_errorUsedName->addWidget({label, button});
+    m_widgets.push_back(label);
+    m_widgets.push_back(button);
+
+    m_errorUsedName->addWidget({&*label, &*button});
   }
 
   // ########################################################################

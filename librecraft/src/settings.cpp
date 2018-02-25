@@ -58,11 +58,19 @@ Settings::Settings(std::shared_ptr<widget::WidgetGroup>& active,
     shared_ptr<Button> button5 = make_shared<Button>(
       4, 325, 190, 150, 30, m_graphicsManager, observer, "Back");
 
+    m_widgets.push_back(label);
+    m_widgets.push_back(button1);
+    m_widgets.push_back(button2);
+    m_widgets.push_back(button3);
+    m_widgets.push_back(button4);
+    m_widgets.push_back(button5);
+
     m_settingsWidgetGroup =
       make_shared<WidgetGroup>(0, 300, 180, 200, 210, m_graphicsManager);
 
     m_settingsWidgetGroup->addWidget(
-      {label, button1, button2, button3, button4, button5});
+      {&*label, &*button1, &*button2, &*button3, &*button4, &*button5});
+
   }
 
   // ########################################################################
@@ -81,11 +89,14 @@ Settings::Settings(std::shared_ptr<widget::WidgetGroup>& active,
     shared_ptr<Button> button = make_shared<Button>(
       0, 325, 230, 150, 30, m_graphicsManager, observer, "Back");
 
+    m_widgets.push_back(label);
+    m_widgets.push_back(button);
+
     m_gameSettingsWidgetGroup =
       make_shared<WidgetGroup>(0, 300, 220, 200, 170, m_graphicsManager);
 
-    m_gameSettingsWidgetGroup->addWidget(label);
-    m_gameSettingsWidgetGroup->addWidget(button);
+    m_gameSettingsWidgetGroup->addWidget(*label);
+    m_gameSettingsWidgetGroup->addWidget(*button);
   }
 
   // ########################################################################
@@ -123,14 +134,19 @@ Settings::Settings(std::shared_ptr<widget::WidgetGroup>& active,
     shared_ptr<Button> button2 = make_shared<Button>(
       0, 400, 130, 150, 30, m_graphicsManager, observer, "Cancel", 1);
 
+    m_widgets.push_back(label);
+    m_widgets.push_back(button1);
+    m_widgets.push_back(button2);
+
+
     m_inputSettingsWidgetGroup =
       make_shared<WidgetGroup>(0, 100, 100, 600, 250, m_graphicsManager);
 
-    m_inputSettingsWidgetGroup->addWidget({label,
-                                           m_mouseSensitivityInput,
-                                           m_mouseSensitivitySlider,
-                                           button1,
-                                           button2});
+    m_inputSettingsWidgetGroup->addWidget({&*label,
+                                           &*m_mouseSensitivityInput,
+                                           &*m_mouseSensitivitySlider,
+                                           &*button1,
+                                           &*button2});
   }
 
   // ########################################################################
@@ -179,18 +195,25 @@ Settings::Settings(std::shared_ptr<widget::WidgetGroup>& active,
     shared_ptr<Button> button2 = make_shared<Button>(
       1, 400, 130, 150, 30, m_graphicsManager, observer, "Cancel", 1);
 
+
+    m_widgets.push_back(label1);
+    m_widgets.push_back(label2);
+    m_widgets.push_back(label3);
+    m_widgets.push_back(button1);
+    m_widgets.push_back(button2);
+
     m_graphicsSettingsWidgetGroup =
       make_shared<WidgetGroup>(0, 100, 100, 600, 250, m_graphicsManager);
 
-    m_graphicsSettingsWidgetGroup->addWidget({label1,
-                                              label2,
-                                              m_fovSlider,
-                                              m_fovTextInput,
-                                              label3,
-                                              m_renderDistanceSlider,
-                                              m_renderDistanceInput,
-                                              button1,
-                                              button2});
+    m_graphicsSettingsWidgetGroup->addWidget({&*label1,
+                                              &*label2,
+                                              &*m_fovSlider,
+                                              &*m_fovTextInput,
+                                              &*label3,
+                                              &*m_renderDistanceSlider,
+                                              &*m_renderDistanceInput,
+                                              &*button1,
+                                              &*button2});
   }
 
   // ########################################################################
@@ -250,20 +273,27 @@ Settings::Settings(std::shared_ptr<widget::WidgetGroup>& active,
     shared_ptr<Button> button2 = make_shared<Button>(
       1, 400, 130, 150, 30, m_graphicsManager, observer, "Cancel", 1);
 
+    m_widgets.push_back(label1);
+    m_widgets.push_back(button1);
+    m_widgets.push_back(button2);
+    m_widgets.push_back(label2);
+    m_widgets.push_back(label3);
+    m_widgets.push_back(label4);
+
     m_audioSettingsWidgetGroup =
       make_shared<WidgetGroup>(0, 200, 120, 400, 230, m_graphicsManager);
-    m_audioSettingsWidgetGroup->addWidget({label1,
-                                           button1,
-                                           button2,
-                                           m_masterVolumeSlider,
-                                           m_masterVolumeInput,
-                                           m_musicVolumeSlider,
-                                           m_musicVolumeInput,
-                                           m_soundVolumeSlider,
-                                           m_soundVolumeInput,
-                                           label2,
-                                           label3,
-                                           label4});
+    m_audioSettingsWidgetGroup->addWidget({&*label1,
+                                           &*button1,
+                                           &*button2,
+                                           &*m_masterVolumeSlider,
+                                           &*m_masterVolumeInput,
+                                           &*m_musicVolumeSlider,
+                                           &*m_musicVolumeInput,
+                                           &*m_soundVolumeSlider,
+                                           &*m_soundVolumeInput,
+                                           &*label2,
+                                           &*label3,
+                                           &*label4});
   }
 }
 

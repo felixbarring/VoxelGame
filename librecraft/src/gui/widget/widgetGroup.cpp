@@ -47,13 +47,13 @@ WidgetGroup::WidgetGroup(int id,
 }
 
 void
-WidgetGroup::addWidget(shared_ptr<IWidget> widget) {
-  m_widgets.push_back(widget);
+WidgetGroup::addWidget(IWidget& widget) {
+  m_widgets.push_back(&widget);
 }
 
 void
-WidgetGroup::addWidget(vector<shared_ptr<IWidget>> widgets) {
-  for_each(widgets.begin(), widgets.end(), [this](shared_ptr<IWidget> w) {
+WidgetGroup::addWidget(vector<IWidget*> widgets) {
+  for_each(widgets.begin(), widgets.end(), [this](IWidget* w) {
     m_widgets.push_back(w);
   });
 }

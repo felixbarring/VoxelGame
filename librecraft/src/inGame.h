@@ -78,6 +78,8 @@ private:
 
   Settings m_settings;
 
+  std::vector<std::shared_ptr<widget::IWidget>> m_widgets;
+
   std::shared_ptr<widget::WidgetGroup> m_activeWidgetGroup;
   std::shared_ptr<widget::WidgetGroup> m_mainWidgetGroup;
 

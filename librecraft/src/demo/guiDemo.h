@@ -129,11 +129,11 @@ public:
     mainWidgetGroup =
       make_shared<WidgetGroup>(0, 0, 0, 800, 600, graphicsmanager);
 
-    mainWidgetGroup->addWidget(button1);
-    mainWidgetGroup->addWidget(button2);
-    mainWidgetGroup->addWidget(button3);
-    mainWidgetGroup->addWidget(button8);
-    mainWidgetGroup->addWidget(toggleButton);
+    mainWidgetGroup->addWidget(*button1);
+    mainWidgetGroup->addWidget(*button2);
+    mainWidgetGroup->addWidget(*button3);
+    mainWidgetGroup->addWidget(*button8);
+    mainWidgetGroup->addWidget(*toggleButton);
 
     // ########################################################################
 
@@ -149,10 +149,10 @@ public:
     playWidgetGroup =
       make_shared<WidgetGroup>(0, 0, 0, 800, 600, graphicsmanager);
 
-    playWidgetGroup->addWidget(label1);
-    playWidgetGroup->addWidget(button4);
-    playWidgetGroup->addWidget(button5);
-    playWidgetGroup->addWidget(button6);
+    playWidgetGroup->addWidget(*label1);
+    playWidgetGroup->addWidget(*button4);
+    playWidgetGroup->addWidget(*button5);
+    playWidgetGroup->addWidget(*button6);
 
     // ########################################################################
 
@@ -167,10 +167,10 @@ public:
     settingsWidgetGroup =
       make_shared<WidgetGroup>(0, 0, 0, 800, 600, graphicsmanager);
 
-    settingsWidgetGroup->addWidget(label2);
-    settingsWidgetGroup->addWidget(slider);
-    settingsWidgetGroup->addWidget(textInput);
-    settingsWidgetGroup->addWidget(button7);
+    settingsWidgetGroup->addWidget(*label2);
+    settingsWidgetGroup->addWidget(*slider);
+    settingsWidgetGroup->addWidget(*textInput);
+    settingsWidgetGroup->addWidget(*button7);
 
     // ########################################################################
 
@@ -193,8 +193,8 @@ public:
 
     listWidgetGroup =
       make_shared<WidgetGroup>(0, 0, 0, 800, 600, graphicsmanager);
-    listWidgetGroup->addWidget(derp);
-    listWidgetGroup->addWidget(button9);
+    listWidgetGroup->addWidget(*derp);
+    listWidgetGroup->addWidget(*button9);
 
     // ########################################################################
 
