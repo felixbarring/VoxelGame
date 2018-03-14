@@ -19,6 +19,8 @@ using namespace std;
 using namespace widget;
 using namespace gui;
 
+namespace {
+
 int
 randomInt() {
   static random_device randomDevice;
@@ -65,6 +67,8 @@ randomName() {
   last = value;
 
   return names[value];
+}
+
 }
 
 MainMenu::MainMenu(Game& game,

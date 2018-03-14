@@ -46,6 +46,7 @@ public:
   void update(double timePassed) override;
 
 private:
+
   Game& m_game;
   glm::mat4 m_virtualProjection{};
 
@@ -81,8 +82,5 @@ private:
   std::shared_ptr<widget::ToggleButton> button3;
   std::shared_ptr<widget::ToggleButton> button4;
 };
-
-std::string
-randomName();
 
 #endif /* SRC_MAINMENU_H_ */
