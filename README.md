@@ -55,8 +55,8 @@ Buiding:
   git clone --recursive https://github.com/felixbarring/VoxelGame
   cd VoxelGame/scripts
   bash setupBuildRelease.sh
-  bash build.sh
-  bash runGame.sh
+  bash buildRelease.sh
+  bash runRelease.sh
 
 ```
 
