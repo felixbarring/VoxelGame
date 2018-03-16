@@ -38,7 +38,7 @@ InGame::InGame(Game& game,
   , m_fpsManager{fpsManager}
   , m_mouse{m_graphicsManager}
   , m_settings{m_activeWidgetGroup,
-               m_mainWidgetGroup,
+               m_mainWidgetGroupRaw,
                m_soundPlayer,
                graphicsManager}
   , m_cubeBar{graphicsManager} {
@@ -92,6 +92,7 @@ InGame::InGame(Game& game,
   m_mainWidgetGroup->addWidget({&*button1, &*button2, &*button3});
 
   m_activeWidgetGroup = m_mainWidgetGroup.get();
+  m_mainWidgetGroupRaw = m_mainWidgetGroup.get();
 
   m_crossHair = make_shared<Sprite>(
     390,

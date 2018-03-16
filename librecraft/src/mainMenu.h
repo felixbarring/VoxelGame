@@ -63,6 +63,7 @@ private:
 
   widget::WidgetGroup* m_activeWidgetGroup{};
 
+  widget::WidgetGroup* m_mainWidgetGroupRaw{nullptr};
   std::shared_ptr<widget::WidgetGroup> m_mainWidgetGroup{};
 
   std::shared_ptr<widget::WidgetGroup> m_playWidgetGroup{};

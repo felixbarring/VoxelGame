@@ -79,7 +79,7 @@ MainMenu::MainMenu(Game& game,
   , m_graphicsManager{graphicsManager}
   , m_mouse{m_graphicsManager}
   , m_settings{m_activeWidgetGroup,
-               m_mainWidgetGroup,
+               m_mainWidgetGroupRaw,
                m_soundPlayer,
                m_graphicsManager} {
 
@@ -389,12 +389,6 @@ MainMenu::MainMenu(Game& game,
         case 2: {
           if (m_worldList->getSelectedListItem().size()) {
             string name{m_worldList->getSelectedListItem()};
-
-            // TODO Load options.
-            // TODO The options need to be the same as when the map was created.
-            // TODO Implement so its possible to save and load options for a
-            // map.
-
             m_game.createWorld(CreationOptions{name});
             m_soundPlayer.stopMusic();
             m_activeWidgetGroup = m_mainWidgetGroup.get();
@@ -499,6 +493,7 @@ MainMenu::MainMenu(Game& game,
   // ########################################################################
 
   m_activeWidgetGroup = m_mainWidgetGroup.get();
+  m_mainWidgetGroupRaw = m_mainWidgetGroup.get();
 }
 
 void

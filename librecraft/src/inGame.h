@@ -81,6 +81,8 @@ private:
   std::vector<std::shared_ptr<widget::IWidget>> m_widgets;
 
   widget::WidgetGroup* m_activeWidgetGroup;
+
+  widget::WidgetGroup* m_mainWidgetGroupRaw{nullptr};
   std::shared_ptr<widget::WidgetGroup> m_mainWidgetGroup;
 
   std::shared_ptr<graphics::Sprite> m_crossHair;

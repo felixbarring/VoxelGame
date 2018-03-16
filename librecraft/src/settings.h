@@ -30,7 +30,7 @@ public:
    * @param graphicsManager Needed for drawing 2d and 3d graphics.
    */
   Settings(widget::WidgetGroup*& active,
-           std::shared_ptr<widget::WidgetGroup>& parent,
+           widget::WidgetGroup*& parent,
            util::SoundPlayer& soundPlayer,
            graphics::GraphicsManager& graphicsManager);
 
@@ -43,11 +43,11 @@ private:
   util::SoundPlayer& m_soundPlayer;
   graphics::GraphicsManager& m_graphicsManager;
 
-  std::vector<std::shared_ptr<widget::IWidget>> m_widgets;
+  std::vector<std::unique_ptr<widget::IWidget>> m_widgets;
 
   widget::WidgetGroup*& m_activeWidgetGroup;
 
-  std::shared_ptr<widget::WidgetGroup>& m_parentWidgetGroup;
+  widget::WidgetGroup*& m_parentWidgetGroup;
 
   std::unique_ptr<widget::WidgetGroup> m_settingsWidgetGroup{};
 
