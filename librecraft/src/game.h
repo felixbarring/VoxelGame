@@ -49,9 +49,9 @@ private:
 
   sf::Window* m_window{};
 
-  std::shared_ptr<IGameState> m_mainMenu{};
-  std::shared_ptr<IGameState> m_inGame{};
-  std::shared_ptr<IGameState> m_currentState{};
+  std::unique_ptr<IGameState> m_mainMenu{};
+  std::unique_ptr<IGameState> m_inGame{};
+  IGameState* m_currentState{};
 
   bool m_quit{false};
 };

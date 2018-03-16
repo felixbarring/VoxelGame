@@ -53,7 +53,7 @@ public:
     : m_fpsManager(fpsManager)
     , m_window(window)
     , m_graphicsManager{graphicsManager} {
-    auto& res = Resources::getInstance();
+    Resources& res = Resources::getInstance();
     FontMeshBuilder& fontMeshBuilder =
       res.getFontMeshBuilder(config::font_data::fontLayout,
                              config::font_data::fontAtlasWidth,
@@ -62,12 +62,12 @@ public:
     const unsigned numberOfDots{3};
     string dots{""};
     for (unsigned i{0}; i <= numberOfDots; ++i) {
-      m_sprites.push_back(make_shared<Sprite>(
-        300,
-        300,
-        10,
-        fontMeshBuilder.buldMeshForString("Loading" + dots, 80),
-        res.getTexture(config::font_data::font)));
+      m_sprites.push_back(
+        Sprite(300,
+               300,
+               10,
+               fontMeshBuilder.buldMeshForString("Loading" + dots, 80),
+               res.getTexture(config::font_data::font)));
       dots += ".";
     }
   }
@@ -84,7 +84,7 @@ public:
         m_spriteCounter = 0;
     }
 
-    m_graphicsManager.getSpriteBatcher().addBatch(*m_sprites[m_spriteCounter]);
+    m_graphicsManager.getSpriteBatcher().addBatch(m_sprites[m_spriteCounter]);
     m_graphicsManager.getSpriteBatcher().draw();
 
     m_fpsManager.sync();
@@ -93,7 +93,7 @@ public:
   }
 
 private:
-  vector<shared_ptr<Sprite>> m_sprites{};
+  vector<Sprite> m_sprites{};
   FPSManager& m_fpsManager;
   sf::Window& m_window;
 
@@ -154,7 +154,7 @@ Game::run() {
 
   m_graphicsmanager = make_unique<graphics::GraphicsManager>();
 
-  m_mainMenu = make_shared<MainMenu>(*this, m_soundPlayer, *m_graphicsmanager);
+  m_mainMenu = make_unique<MainMenu>(*this, m_soundPlayer, *m_graphicsmanager);
   changeStateToMainMenu();
 
   // Run the main loop
@@ -192,16 +192,16 @@ Game::createWorld(chunk::CreationOptions options) {
     input->updateValues();
   }
 
-  m_inGame = make_shared<InGame>(
+  m_inGame = make_unique<InGame>(
     *this, move(chunkManager), m_soundPlayer, *m_graphicsmanager, m_fpsManager);
 
-  m_currentState = m_inGame;
+  m_currentState = m_inGame.get();
   m_soundPlayer.stopMusic();
 }
 
 void
 Game::changeStateToMainMenu() {
-  m_currentState = m_mainMenu;
+  m_currentState = m_mainMenu.get();
   m_soundPlayer.playMusic(config::audio::menuMusic);
 }
 
