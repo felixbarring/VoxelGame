@@ -21,7 +21,6 @@ namespace widget {
  */
 class WidgetGroup : public AbstractWidget {
 public:
-
   /**
    * @brief Constructs a WidgetGroup.
    */

@@ -5,14 +5,14 @@
 #include "../graphics/spriteBatcher.h"
 
 namespace {
-graphics::Sprite createSprite(int x, int y, int width, int height, const std::string& image) {
-  return graphics::Sprite(
-      x,
-      y,
-      0,
-      width,
-      height,
-      graphics::Resources::getInstance().getTexture(image));
+graphics::Sprite
+createSprite(int x, int y, int width, int height, const std::string& image) {
+  return graphics::Sprite(x,
+                          y,
+                          0,
+                          width,
+                          height,
+                          graphics::Resources::getInstance().getTexture(image));
 }
 }
 

@@ -13,9 +13,7 @@ const int selectedXLocation{static_cast<int>(
   config::graphics_data::virtualWidth / 2 - thumbnailWidth / 2)};
 const int numberOfThunbnails{5};
 
-
 namespace gui {
-
 
 CubeBar::CubeBar(GraphicsManager& graphicsManager)
   : m_graphicsManager{graphicsManager} {
@@ -66,7 +64,7 @@ CubeBar::update(int selectedCube) {
 
     Sprite& sprite{m_smallThumbnails[current]};
     int xLocation{i * smallThumbnailWidhtWithSpacing +
-                    (selectedXLocation + thumbnailWidth + spacing)};
+                  (selectedXLocation + thumbnailWidth + spacing)};
 
     sprite.setLocation(xLocation, yPlacement);
     m_graphicsManager.getSpriteBatcher().addBatch(sprite);
