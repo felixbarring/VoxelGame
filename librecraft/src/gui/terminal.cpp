@@ -106,7 +106,7 @@ Terminal::Terminal(vector<string> commands,
     2, 545, 110, 70, 30, m_graphicsManager, observer, "Enter", 6);
 
   m_closeButton = make_shared<Button>(
-      3, 545 + 75, 110, 70, 30, m_graphicsManager, observer, "Close", 6);
+    3, 545 + 75, 110, 70, 30, m_graphicsManager, observer, "Close", 6);
 
   m_widgets->addWidget(*m_enterButton);
   m_widgets->addWidget(*m_closeButton);

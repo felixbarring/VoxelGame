@@ -46,7 +46,6 @@ public:
   void update(double timePassed) override;
 
 private:
-
   Game& m_game;
   glm::mat4 m_virtualProjection{};
 
@@ -56,32 +55,32 @@ private:
 
   Settings m_settings;
 
-  std::vector<std::shared_ptr<widget::IWidget>> m_widgets;
+  std::vector<std::unique_ptr<widget::IWidget>> m_widgets;
 
   std::unique_ptr<gui::Image> m_title{};
-  std::shared_ptr<widget::SelectableList> m_worldList{};
+  std::unique_ptr<widget::SelectableList> m_worldList{};
 
   widget::WidgetGroup* m_activeWidgetGroup{};
 
   widget::WidgetGroup* m_mainWidgetGroupRaw{nullptr};
-  std::shared_ptr<widget::WidgetGroup> m_mainWidgetGroup{};
+  std::unique_ptr<widget::WidgetGroup> m_mainWidgetGroup{};
 
-  std::shared_ptr<widget::WidgetGroup> m_playWidgetGroup{};
-  std::shared_ptr<widget::WidgetGroup> m_newWorldWidgetGroup{};
-  std::shared_ptr<widget::WidgetGroup> m_newWorldWidgetGroupAdvanced{};
+  std::unique_ptr<widget::WidgetGroup> m_playWidgetGroup{};
+  std::unique_ptr<widget::WidgetGroup> m_newWorldWidgetGroup{};
+  std::unique_ptr<widget::WidgetGroup> m_newWorldWidgetGroupAdvanced{};
 
-  std::shared_ptr<widget::WidgetGroup> m_loadWorldWidgetGroup{};
+  std::unique_ptr<widget::WidgetGroup> m_loadWorldWidgetGroup{};
 
-  std::shared_ptr<widget::WidgetGroup> m_errorEmptyName{};
-  std::shared_ptr<widget::WidgetGroup> m_errorUsedName{};
+  std::unique_ptr<widget::WidgetGroup> m_errorEmptyName{};
+  std::unique_ptr<widget::WidgetGroup> m_errorUsedName{};
 
-  std::shared_ptr<widget::TextInput> m_textInput3{};
-  std::shared_ptr<widget::TextInput> m_textInput4{};
+  std::unique_ptr<widget::TextInput> m_textInput3{};
+  std::unique_ptr<widget::TextInput> m_textInput4{};
 
-  std::shared_ptr<widget::ToggleButton> button1;
-  std::shared_ptr<widget::ToggleButton> button2;
-  std::shared_ptr<widget::ToggleButton> button3;
-  std::shared_ptr<widget::ToggleButton> button4;
+  std::unique_ptr<widget::ToggleButton> button1;
+  std::unique_ptr<widget::ToggleButton> button2;
+  std::unique_ptr<widget::ToggleButton> button3;
+  std::unique_ptr<widget::ToggleButton> button4;
 };
 
 #endif /* SRC_MAINMENU_H_ */

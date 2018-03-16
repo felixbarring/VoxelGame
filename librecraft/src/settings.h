@@ -46,7 +46,6 @@ private:
   std::vector<std::unique_ptr<widget::IWidget>> m_widgets;
 
   widget::WidgetGroup*& m_activeWidgetGroup;
-
   widget::WidgetGroup*& m_parentWidgetGroup;
 
   std::unique_ptr<widget::WidgetGroup> m_settingsWidgetGroup{};

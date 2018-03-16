@@ -62,8 +62,12 @@ Settings::Settings(widget::WidgetGroup*& active,
     m_settingsWidgetGroup =
       make_unique<WidgetGroup>(0, 300, 180, 200, 210, m_graphicsManager);
 
-    m_settingsWidgetGroup->addWidget(
-      {&*label, &*button1, &*button2, &*button3, &*button4, &*button5});
+    m_settingsWidgetGroup->addWidget({label.get(),
+                                      button1.get(),
+                                      button2.get(),
+                                      button3.get(),
+                                      button4.get(),
+                                      button5.get()});
 
     m_widgets.push_back(move(label));
     m_widgets.push_back(move(button1));
@@ -71,7 +75,6 @@ Settings::Settings(widget::WidgetGroup*& active,
     m_widgets.push_back(move(button3));
     m_widgets.push_back(move(button4));
     m_widgets.push_back(move(button5));
-
   }
 
   // ########################################################################
@@ -98,7 +101,6 @@ Settings::Settings(widget::WidgetGroup*& active,
 
     m_widgets.push_back(move(label));
     m_widgets.push_back(move(button));
-
   }
 
   // ########################################################################
@@ -139,11 +141,11 @@ Settings::Settings(widget::WidgetGroup*& active,
     m_inputSettingsWidgetGroup =
       make_unique<WidgetGroup>(0, 100, 100, 600, 250, m_graphicsManager);
 
-    m_inputSettingsWidgetGroup->addWidget({&*label,
-                                           &*m_mouseSensitivityInput,
-                                           &*m_mouseSensitivitySlider,
-                                           &*button1,
-                                           &*button2});
+    m_inputSettingsWidgetGroup->addWidget({label.get(),
+                                           m_mouseSensitivityInput.get(),
+                                           m_mouseSensitivitySlider.get(),
+                                           button1.get(),
+                                           button2.get()});
 
     m_widgets.push_back(move(label));
     m_widgets.push_back(move(button1));
@@ -176,7 +178,7 @@ Settings::Settings(widget::WidgetGroup*& active,
     unique_ptr<Label> label1 = make_unique<Label>(
       325, 390, 150, 30, " - Graphics - ", m_graphicsManager);
     unique_ptr<Label> label2 =
-        make_unique<Label>(30 + 100, 310, 80, 20, "FOV:", m_graphicsManager, 1);
+      make_unique<Label>(30 + 100, 310, 80, 20, "FOV:", m_graphicsManager, 1);
 
     m_fovSlider = make_unique<Slider>(
       2, 125 + 100, 310, 150, 30, m_graphicsManager, observer, 1);
@@ -199,15 +201,15 @@ Settings::Settings(widget::WidgetGroup*& active,
     m_graphicsSettingsWidgetGroup =
       make_unique<WidgetGroup>(0, 100, 100, 600, 250, m_graphicsManager);
 
-    m_graphicsSettingsWidgetGroup->addWidget({&*label1,
-                                              &*label2,
-                                              &*m_fovSlider,
-                                              &*m_fovTextInput,
-                                              &*label3,
-                                              &*m_renderDistanceSlider,
-                                              &*m_renderDistanceInput,
-                                              &*button1,
-                                              &*button2});
+    m_graphicsSettingsWidgetGroup->addWidget({label1.get(),
+                                              label2.get(),
+                                              m_fovSlider.get(),
+                                              m_fovTextInput.get(),
+                                              label3.get(),
+                                              m_renderDistanceSlider.get(),
+                                              m_renderDistanceInput.get(),
+                                              button1.get(),
+                                              button2.get()});
 
     m_widgets.push_back(move(label1));
     m_widgets.push_back(move(label2));
@@ -275,18 +277,18 @@ Settings::Settings(widget::WidgetGroup*& active,
 
     m_audioSettingsWidgetGroup =
       make_unique<WidgetGroup>(0, 200, 120, 400, 230, m_graphicsManager);
-    m_audioSettingsWidgetGroup->addWidget({&*label1,
-                                           &*button1,
-                                           &*button2,
-                                           &*m_masterVolumeSlider,
-                                           &*m_masterVolumeInput,
-                                           &*m_musicVolumeSlider,
-                                           &*m_musicVolumeInput,
-                                           &*m_soundVolumeSlider,
-                                           &*m_soundVolumeInput,
-                                           &*label2,
-                                           &*label3,
-                                           &*label4});
+    m_audioSettingsWidgetGroup->addWidget({label1.get(),
+                                           button1.get(),
+                                           button2.get(),
+                                           m_masterVolumeSlider.get(),
+                                           m_masterVolumeInput.get(),
+                                           m_musicVolumeSlider.get(),
+                                           m_musicVolumeInput.get(),
+                                           m_soundVolumeSlider.get(),
+                                           m_soundVolumeInput.get(),
+                                           label2.get(),
+                                           label3.get(),
+                                           label4.get()});
     m_widgets.push_back(move(label1));
     m_widgets.push_back(move(button1));
     m_widgets.push_back(move(button2));

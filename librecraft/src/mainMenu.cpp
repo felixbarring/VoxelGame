@@ -68,7 +68,6 @@ randomName() {
 
   return names[value];
 }
-
 }
 
 MainMenu::MainMenu(Game& game,
@@ -122,23 +121,23 @@ MainMenu::MainMenu(Game& game,
     };
 
     auto label =
-      make_shared<Label>(325, 390, 150, 30, " - Main - ", m_graphicsManager);
-    auto button1 = make_shared<Button>(
+      make_unique<Label>(325, 390, 150, 30, " - Main - ", m_graphicsManager);
+    auto button1 = make_unique<Button>(
       0, 325, 350, 150, 30, m_graphicsManager, observer, "Play");
-    auto button2 = make_shared<Button>(
+    auto button2 = make_unique<Button>(
       1, 325, 310, 150, 30, m_graphicsManager, observer, "Settings");
-    auto button3 = make_shared<Button>(
+    auto button3 = make_unique<Button>(
       2, 325, 270, 150, 30, m_graphicsManager, observer, "Quit");
 
-    m_widgets.push_back(label);
-    m_widgets.push_back(button1);
-    m_widgets.push_back(button2);
-    m_widgets.push_back(button3);
-
-
     m_mainWidgetGroup =
-      make_shared<WidgetGroup>(-1, 300, 260, 200, 130, m_graphicsManager);
-    m_mainWidgetGroup->addWidget({&*label, &*button1, &*button2, &*button3});
+      make_unique<WidgetGroup>(-1, 300, 260, 200, 130, m_graphicsManager);
+    m_mainWidgetGroup->addWidget(
+      {label.get(), button1.get(), button2.get(), button3.get()});
+
+    m_widgets.push_back(move(label));
+    m_widgets.push_back(move(button1));
+    m_widgets.push_back(move(button2));
+    m_widgets.push_back(move(button3));
   }
 
   // ########################################################################
@@ -159,23 +158,24 @@ MainMenu::MainMenu(Game& game,
     };
 
     auto label =
-      make_shared<Label>(325, 390, 150, 30, " - Play - ", m_graphicsManager);
-    auto button1 = make_shared<Button>(
+      make_unique<Label>(325, 390, 150, 30, " - Play - ", m_graphicsManager);
+    auto button1 = make_unique<Button>(
       0, 325, 350, 150, 30, m_graphicsManager, observer, "New World");
-    auto button2 = make_shared<Button>(
+    auto button2 = make_unique<Button>(
       1, 325, 310, 150, 30, m_graphicsManager, observer, "Load World");
-    auto button3 = make_shared<Button>(
+    auto button3 = make_unique<Button>(
       2, 325, 270, 150, 30, m_graphicsManager, observer, "Back");
 
-    m_widgets.push_back(label);
-    m_widgets.push_back(button1);
-    m_widgets.push_back(button2);
-    m_widgets.push_back(button3);
-
     m_playWidgetGroup =
-      make_shared<WidgetGroup>(-1, 300, 260, 200, 130, m_graphicsManager);
+      make_unique<WidgetGroup>(-1, 300, 260, 200, 130, m_graphicsManager);
 
-    m_playWidgetGroup->addWidget({&*label, &*button1, &*button2, &*button3});
+    m_playWidgetGroup->addWidget(
+      {label.get(), button1.get(), button2.get(), button3.get()});
+
+    m_widgets.push_back(move(label));
+    m_widgets.push_back(move(button1));
+    m_widgets.push_back(move(button2));
+    m_widgets.push_back(move(button3));
   }
 
   // ########################################################################
@@ -221,33 +221,40 @@ MainMenu::MainMenu(Game& game,
       }
     };
 
-    auto label1 = make_shared<Label>(
+    auto label1 = make_unique<Label>(
       230, 390, 150, 50, " - Create New World - ", m_graphicsManager);
-    auto label2 = make_shared<Label>(
+    auto label2 = make_unique<Label>(
       250, 330, 150, 30, "Enter a Name:", m_graphicsManager, 1);
 
     m_textInput3 =
-      make_shared<TextInput>(666, 250, 290, 300, 30, m_graphicsManager, 1);
+      make_unique<TextInput>(666, 250, 290, 300, 30, m_graphicsManager, 1);
 
-    auto button1 = make_shared<Button>(
+    auto button1 = make_unique<Button>(
       0, 240, 135, 100, 30, m_graphicsManager, observer, "Advanced", 1);
-    auto button2 = make_shared<Button>(
+    auto button2 = make_unique<Button>(
       1, 350, 135, 100, 30, m_graphicsManager, observer, "Create", 1);
-    auto button3 = make_shared<Button>(
+    auto button3 = make_unique<Button>(
       2, 460, 135, 100, 30, m_graphicsManager, observer, "Cancel", 1);
-    auto button4 = make_shared<Button>(
+    auto button4 = make_unique<Button>(
       3, 250, 250, 300, 30, m_graphicsManager, observer, "Random Name", 1);
 
-    m_widgets.push_back(button1);
-    m_widgets.push_back(button2);
-    m_widgets.push_back(button3);
-    m_widgets.push_back(button4);
-
     m_newWorldWidgetGroup =
-      make_shared<WidgetGroup>(0, 200, 120, 400, 270, m_graphicsManager);
+      make_unique<WidgetGroup>(0, 200, 120, 400, 270, m_graphicsManager);
 
-    m_newWorldWidgetGroup->addWidget(
-      {&*label1, &*label2, &*m_textInput3, &*button1, &*button2, &*button3, &*button4});
+    m_newWorldWidgetGroup->addWidget({label1.get(),
+                                      label2.get(),
+                                      m_textInput3.get(),
+                                      button1.get(),
+                                      button2.get(),
+                                      button3.get(),
+                                      button4.get()});
+
+    m_widgets.push_back(move(label1));
+    m_widgets.push_back(move(label2));
+    m_widgets.push_back(move(button1));
+    m_widgets.push_back(move(button2));
+    m_widgets.push_back(move(button3));
+    m_widgets.push_back(move(button4));
   }
 
   // ########################################################################
@@ -288,10 +295,10 @@ MainMenu::MainMenu(Game& game,
       }
     };
 
-    auto label1 = make_shared<Label>(
+    auto label1 = make_unique<Label>(
       230, 390, 150, 50, " - Advanced - ", m_graphicsManager);
 
-    button1 = make_shared<ToggleButton>(0,
+    button1 = make_unique<ToggleButton>(0,
                                         220,
                                         350,
                                         30,
@@ -301,7 +308,7 @@ MainMenu::MainMenu(Game& game,
                                         "Flat",
                                         2,
                                         ToggleButton::Skin::RadioButton);
-    button2 = make_shared<ToggleButton>(1,
+    button2 = make_unique<ToggleButton>(1,
                                         220,
                                         310,
                                         30,
@@ -313,7 +320,7 @@ MainMenu::MainMenu(Game& game,
                                         ToggleButton::Skin::RadioButton);
     button2->toggle();
 
-    button3 = make_shared<ToggleButton>(2,
+    button3 = make_unique<ToggleButton>(2,
                                         420,
                                         350,
                                         30,
@@ -323,7 +330,7 @@ MainMenu::MainMenu(Game& game,
                                         "Same",
                                         2,
                                         ToggleButton::Skin::RadioButton);
-    button4 = make_shared<ToggleButton>(3,
+    button4 = make_unique<ToggleButton>(3,
                                         420,
                                         310,
                                         30,
@@ -335,44 +342,41 @@ MainMenu::MainMenu(Game& game,
                                         ToggleButton::Skin::RadioButton);
     button4->toggle();
 
-    auto button5 = make_shared<Button>(
+    auto button5 = make_unique<Button>(
       4, 350, 135, 100, 30, m_graphicsManager, observer, "Reset", 1);
-    auto button6 = make_shared<Button>(
+    auto button6 = make_unique<Button>(
       5, 460, 135, 100, 30, m_graphicsManager, observer, "Back", 1);
 
     auto seedLabel =
-      make_shared<Label>(230, 210, 50, 30, "Seed", m_graphicsManager);
+      make_unique<Label>(230, 210, 50, 30, "Seed", m_graphicsManager);
 
     m_textInput4 =
-      make_shared<TextInput>(666, 280, 210, 150, 30, m_graphicsManager, 1);
+      make_unique<TextInput>(666, 280, 210, 150, 30, m_graphicsManager, 1);
 
     m_textInput4->setString(to_string(randomInt()));
 
-    auto seedButton = make_shared<Button>(
+    auto seedButton = make_unique<Button>(
       6, 440, 210, 100, 30, m_graphicsManager, observer, "Randomize", 1);
 
     m_newWorldWidgetGroupAdvanced =
-      make_shared<WidgetGroup>(0, 200, 120, 400, 270, m_graphicsManager);
+      make_unique<WidgetGroup>(0, 200, 120, 400, 270, m_graphicsManager);
 
+    m_newWorldWidgetGroupAdvanced->addWidget({label1.get(),
+                                              button1.get(),
+                                              button2.get(),
+                                              button3.get(),
+                                              button4.get(),
+                                              button5.get(),
+                                              button6.get(),
+                                              seedLabel.get(),
+                                              m_textInput4.get(),
+                                              seedButton.get()});
 
-
-    m_widgets.push_back(label1);
-    m_widgets.push_back(button5);
-    m_widgets.push_back(button6);
-    m_widgets.push_back(seedLabel);
-    m_widgets.push_back(seedButton);
-
-
-    m_newWorldWidgetGroupAdvanced->addWidget({&*label1,
-                                              &*button1,
-                                              &*button2,
-                                              &*button3,
-                                              &*button4,
-                                              &*button5,
-                                              &*button6,
-                                              &*seedLabel,
-                                              &*m_textInput4,
-                                              &*seedButton});
+    m_widgets.push_back(move(label1));
+    m_widgets.push_back(move(button5));
+    m_widgets.push_back(move(button6));
+    m_widgets.push_back(move(seedLabel));
+    m_widgets.push_back(move(seedButton));
   }
 
   // ########################################################################
@@ -403,34 +407,38 @@ MainMenu::MainMenu(Game& game,
       }
     };
 
-    auto label = make_shared<Label>(
+    auto label = make_unique<Label>(
       270, 390, 150, 50, " - Load World - ", m_graphicsManager);
-    auto button1 = make_shared<Button>(
+    auto button1 = make_unique<Button>(
       0, 225, 60, 80, 30, m_graphicsManager, observer, "Rename", 1);
-    auto button2 = make_shared<Button>(
+    auto button2 = make_unique<Button>(
       1, 315, 60, 80, 30, m_graphicsManager, observer, "Delete", 1);
-    auto button3 = make_shared<Button>(
+    auto button3 = make_unique<Button>(
       2, 405, 60, 80, 30, m_graphicsManager, observer, "Load", 1);
-    auto button4 = make_shared<Button>(
+    auto button4 = make_unique<Button>(
       3, 495, 60, 80, 30, m_graphicsManager, observer, "Cancel", 1);
 
     m_loadWorldWidgetGroup =
-      make_shared<WidgetGroup>(0, 200, 50, 400, 400, m_graphicsManager);
+      make_unique<WidgetGroup>(0, 200, 50, 400, 400, m_graphicsManager);
 
-    m_worldList = make_shared<SelectableList>(
+    m_worldList = make_unique<SelectableList>(
       666, 220, 100, 360, 300, m_graphicsManager, observer, 2);
 
     for (auto s : world_meta::getAllWorldNames())
       m_worldList->addListItem(s);
 
-    m_widgets.push_back(label);
-    m_widgets.push_back(button1);
-    m_widgets.push_back(button2);
-    m_widgets.push_back(button3);
-    m_widgets.push_back(button4);
+    m_loadWorldWidgetGroup->addWidget({label.get(),
+                                       button1.get(),
+                                       button2.get(),
+                                       button3.get(),
+                                       button4.get(),
+                                       m_worldList.get()});
 
-    m_loadWorldWidgetGroup->addWidget(
-      {&*label, &*button1, &*button2, &*button3, &*button4, &*m_worldList});
+    m_widgets.push_back(move(label));
+    m_widgets.push_back(move(button1));
+    m_widgets.push_back(move(button2));
+    m_widgets.push_back(move(button3));
+    m_widgets.push_back(move(button4));
   }
 
   // ########################################################################
@@ -447,19 +455,18 @@ MainMenu::MainMenu(Game& game,
       }
     };
 
-    auto label = make_shared<Label>(
+    auto label = make_unique<Label>(
       210, 260, 150, 25, "Error: Name can not be empty", m_graphicsManager, 4);
-    auto button = make_shared<Button>(
+    auto button = make_unique<Button>(
       1, 510, 260, 80, 30, m_graphicsManager, observer, "OK", 4);
 
     m_errorEmptyName =
-      make_shared<WidgetGroup>(0, 200, 250, 400, 45, m_graphicsManager, 3);
+      make_unique<WidgetGroup>(0, 200, 250, 400, 45, m_graphicsManager, 3);
 
+    m_errorEmptyName->addWidget({label.get(), button.get()});
 
-    m_widgets.push_back(label);
-    m_widgets.push_back(button);
-
-    m_errorEmptyName->addWidget({&*label, &*button});
+    m_widgets.push_back(move(label));
+    m_widgets.push_back(move(button));
   }
 
   // ########################################################################
@@ -476,18 +483,18 @@ MainMenu::MainMenu(Game& game,
       }
     };
 
-    auto label = make_shared<Label>(
+    auto label = make_unique<Label>(
       210, 260, 150, 25, "Error: Name is already used", m_graphicsManager, 4);
-    auto button = make_shared<Button>(
+    auto button = make_unique<Button>(
       1, 510, 260, 80, 30, m_graphicsManager, observer, "OK", 4);
 
     m_errorUsedName =
-      make_shared<WidgetGroup>(0, 200, 250, 400, 45, m_graphicsManager, 3);
+      make_unique<WidgetGroup>(0, 200, 250, 400, 45, m_graphicsManager, 3);
 
-    m_widgets.push_back(label);
-    m_widgets.push_back(button);
+    m_errorUsedName->addWidget({label.get(), button.get()});
 
-    m_errorUsedName->addWidget({&*label, &*button});
+    m_widgets.push_back(move(label));
+    m_widgets.push_back(move(button));
   }
 
   // ########################################################################
