@@ -42,8 +42,8 @@ TextureArray::TextureArray(std::vector<std::string> paths,
 
   Image image;
 
-  int i = 0;
-  for (auto path : paths) {
+  int i{0};
+  for (std::string& path : paths) {
     if (!image.loadFromFile(path)) {
       std::cout << "Coulnd not load image" << path << "\n";
       return;

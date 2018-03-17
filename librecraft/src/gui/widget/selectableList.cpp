@@ -51,7 +51,7 @@ void
 SelectableList::addListItem(std::string item) {
   // TODO Do not add item that already exists.
   int x{m_xCoordinate + 5};
-  auto y = m_yCoordinate + m_height - (5 + 30 * (1 + m_buttons.size()));
+  int y = m_yCoordinate + m_height - (5 + 30 * (1 + m_buttons.size()));
   int width{m_width - 10};
   int height{30};
   auto func = [&](int id) {

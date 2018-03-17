@@ -139,7 +139,7 @@ InGame::InGame(Game& game,
     if (arguments.empty())
       return;
 
-    auto command = arguments[0];
+    string command{arguments[0]};
 
     if (command == close) {
       Input::getInstance()->centerMouse();
@@ -240,7 +240,7 @@ InGame::InGame(Game& game,
   m_terminal =
     make_unique<gui::Terminal>(move(commands), m_graphicsManager, func);
 
-  auto& res = Resources::getInstance();
+  Resources& res = Resources::getInstance();
   FontMeshBuilder& fontMeshBuilder =
     res.getFontMeshBuilder(font_data::fontLayout,
                            font_data::fontAtlasWidth,
@@ -283,7 +283,7 @@ InGame::update(double timePassed) {
 
     m_graphicsManager.getSpriteBatcher().addBatch(*m_crossHair);
 
-    auto& res = Resources::getInstance();
+    Resources& res = Resources::getInstance();
     FontMeshBuilder& fontMeshBuilder =
       res.getFontMeshBuilder(font_data::fontLayout,
                              font_data::fontAtlasWidth,

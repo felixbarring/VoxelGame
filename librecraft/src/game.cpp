@@ -164,7 +164,7 @@ Game::run() {
     shared_ptr<util::Input> input = util::Input::getInstance();
     input->updateValues();
 
-    auto frameTime = m_fpsManager.frameTime();
+    double frameTime{m_fpsManager.frameTime()};
     m_soundPlayer.update(frameTime);
 
     m_currentState->update(frameTime);
@@ -177,7 +177,7 @@ void
 Game::createWorld(chunk::CreationOptions options) {
   chunk::ChunkManager chunkManager{options, m_soundPlayer, *m_graphicsmanager};
 
-  auto future = globalResources::g_threadPool.enqueue(
+  future<void> future = globalResources::g_threadPool.enqueue(
     [options, &chunkManager] { chunkManager.createWorld(); });
 
   LoadingScreen loadingScreen(m_fpsManager, *m_window, *m_graphicsmanager);
