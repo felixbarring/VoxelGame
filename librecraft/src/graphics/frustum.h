@@ -41,7 +41,7 @@ public:
       m_planes[i].z = mvp[2][3] + mvp[2][r] * sign;
       m_planes[i].w = mvp[3][3] + mvp[3][r] * sign;
 
-      auto l =
+      float l =
         glm::length(glm::vec3(m_planes[i].x, m_planes[i].y, m_planes[i].z));
       m_planes[i] /= l;
       m_planes[i].w /= l;
@@ -52,7 +52,7 @@ public:
 
   bool isSphereInFrustum(glm::vec3 center, float radius) {
     for (size_t i = 0; i < 6; ++i) {
-      auto poot = m_planes[i];
+      glm::vec4 poot = m_planes[i];
       auto d =
         glm::dot(glm::vec3(poot.x, poot.y, poot.z), center) + m_planes[i].w;
       if (d < -radius)

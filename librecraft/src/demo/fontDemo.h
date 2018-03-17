@@ -61,8 +61,8 @@ public:
 
     std::shared_ptr<mesh::MeshElement> mesh =
       fontBuilder.buldMeshForString("Hello World", 50);
-    std::shared_ptr<graphics::Sprite> sprite =
-      std::make_shared<graphics::Sprite>(0, 0, 0, mesh, fontAtlas);
+    std::unique_ptr<graphics::Sprite> sprite =
+      std::make_unique<graphics::Sprite>(0, 0, 0, mesh, fontAtlas);
 
     graphics::GraphicsManager graphicsManager{};
 

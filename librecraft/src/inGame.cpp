@@ -38,7 +38,7 @@ InGame::InGame(Game& game,
   , m_fpsManager{fpsManager}
   , m_mouse{m_graphicsManager}
   , m_settings{m_activeWidgetGroup,
-               m_mainWidgetGroup,
+               m_mainWidgetGroupRaw,
                m_soundPlayer,
                graphicsManager}
   , m_cubeBar{graphicsManager} {
@@ -75,25 +75,26 @@ InGame::InGame(Game& game,
     }
   };
 
-  shared_ptr<IWidget> button1 = make_shared<Button>(
+  unique_ptr<IWidget> button1 = make_unique<Button>(
     0, 325, 350, 150, 30, m_graphicsManager, observer, "Main Menu");
-  shared_ptr<IWidget> button2 = make_shared<Button>(
+  unique_ptr<IWidget> button2 = make_unique<Button>(
     1, 325, 310, 150, 30, m_graphicsManager, observer, "Settings");
-  shared_ptr<IWidget> button3 = make_shared<Button>(
+  unique_ptr<IWidget> button3 = make_unique<Button>(
     2, 325, 270, 150, 30, m_graphicsManager, observer, "Back To Game");
 
   m_mainWidgetGroup =
-    make_shared<WidgetGroup>(0, 300, 260, 200, 130, m_graphicsManager);
+    make_unique<WidgetGroup>(0, 300, 260, 200, 130, m_graphicsManager);
 
-  m_widgets.push_back(button1);
-  m_widgets.push_back(button2);
-  m_widgets.push_back(button3);
+  m_mainWidgetGroup->addWidget({button1.get(), button2.get(), button3.get()});
 
-  m_mainWidgetGroup->addWidget({&*button1, &*button2, &*button3});
+  m_widgets.push_back(move(button1));
+  m_widgets.push_back(move(button2));
+  m_widgets.push_back(move(button3));
 
-  m_activeWidgetGroup = m_mainWidgetGroup;
+  m_activeWidgetGroup = m_mainWidgetGroup.get();
+  m_mainWidgetGroupRaw = m_mainWidgetGroup.get();
 
-  m_crossHair = make_shared<Sprite>(
+  m_crossHair = make_unique<Sprite>(
     390,
     290,
     0,
@@ -138,7 +139,7 @@ InGame::InGame(Game& game,
     if (arguments.empty())
       return;
 
-    auto command = arguments[0];
+    string command{arguments[0]};
 
     if (command == close) {
       Input::getInstance()->centerMouse();
@@ -237,16 +238,16 @@ InGame::InGame(Game& game,
   };
 
   m_terminal =
-    make_shared<gui::Terminal>(move(commands), m_graphicsManager, func);
+    make_unique<gui::Terminal>(move(commands), m_graphicsManager, func);
 
-  auto& res = Resources::getInstance();
+  Resources& res = Resources::getInstance();
   FontMeshBuilder& fontMeshBuilder =
     res.getFontMeshBuilder(font_data::fontLayout,
                            font_data::fontAtlasWidth,
                            font_data::fontAtlasHeight);
 
   m_fps =
-    make_shared<Sprite>(0,
+    make_unique<Sprite>(0,
                         45,
                         10,
                         fontMeshBuilder.buldMeshForString("FPS: " + 0, 20),
@@ -282,7 +283,7 @@ InGame::update(double timePassed) {
 
     m_graphicsManager.getSpriteBatcher().addBatch(*m_crossHair);
 
-    auto& res = Resources::getInstance();
+    Resources& res = Resources::getInstance();
     FontMeshBuilder& fontMeshBuilder =
       res.getFontMeshBuilder(font_data::fontLayout,
                              font_data::fontAtlasWidth,
@@ -297,7 +298,7 @@ InGame::update(double timePassed) {
                     to_string(dir.y) + ", " + to_string(dir.z);
 
       m_direction =
-        make_shared<Sprite>(0,
+        make_unique<Sprite>(0,
                             20,
                             10,
                             fontMeshBuilder.buldMeshForString(derp, 20),
@@ -306,7 +307,7 @@ InGame::update(double timePassed) {
       // Updating the fps every frame makes it unreadable
       m_fpsDisplayCounter += timePassed;
       if (m_fpsDisplayCounter > m_fpsDisplayDelay) {
-        m_fps = make_shared<Sprite>(
+        m_fps = make_unique<Sprite>(
           0,
           45,
           10,
@@ -323,7 +324,7 @@ InGame::update(double timePassed) {
       string soos = "Last Selected: " + to_string(ses.x) + ", " +
                     to_string(ses.y) + ", " + to_string(ses.z);
       m_lastSelecteCube =
-        make_shared<Sprite>(0,
+        make_unique<Sprite>(0,
                             70,
                             10,
                             fontMeshBuilder.buldMeshForString(soos, 20),

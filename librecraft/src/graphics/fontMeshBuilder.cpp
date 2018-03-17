@@ -14,8 +14,8 @@ namespace graphics {
 FontMeshBuilder::FontMeshBuilder(string& pathToLayout,
                                  int atlasWidth,
                                  int atlasHeight)
-  : ATLAS_WIDTH(atlasWidth)
-  , ATLAS_HEIGHT(atlasHeight) {
+  : m_atlasWidth(atlasWidth)
+  , m_atlasHeight(atlasHeight) {
 
   vector<string> list;
   ifstream in_stream;
@@ -65,7 +65,7 @@ FontMeshBuilder::FontMeshBuilder(string& pathToLayout,
   }
 }
 
-shared_ptr<mesh::MeshElement>
+unique_ptr<mesh::MeshElement>
 FontMeshBuilder::buldMeshForString(const string& str, float height) {
 
   vector<float> vertices;
@@ -100,23 +100,23 @@ FontMeshBuilder::buldMeshForString(const string& str, float height) {
     vertices.push_back(yOrigin + height);
     vertices.push_back(0);
 
-    uvCoordinates.push_back(cd.xPosition / static_cast<float>(ATLAS_WIDTH));
-    uvCoordinates.push_back(((ATLAS_HEIGHT - cd.yPosition) - cd.height) /
-                            static_cast<float>(ATLAS_HEIGHT));
+    uvCoordinates.push_back(cd.xPosition / static_cast<float>(m_atlasWidth));
+    uvCoordinates.push_back(((m_atlasHeight - cd.yPosition) - cd.height) /
+                            static_cast<float>(m_atlasHeight));
 
     uvCoordinates.push_back((cd.xPosition + cd.width) /
-                            static_cast<float>(ATLAS_WIDTH));
-    uvCoordinates.push_back(((ATLAS_HEIGHT - cd.yPosition) - cd.height) /
-                            static_cast<float>(ATLAS_HEIGHT));
+                            static_cast<float>(m_atlasWidth));
+    uvCoordinates.push_back(((m_atlasHeight - cd.yPosition) - cd.height) /
+                            static_cast<float>(m_atlasHeight));
 
     uvCoordinates.push_back((cd.xPosition + cd.width) /
-                            static_cast<float>(ATLAS_WIDTH));
-    uvCoordinates.push_back((ATLAS_HEIGHT - cd.yPosition) /
-                            static_cast<float>(ATLAS_HEIGHT));
+                            static_cast<float>(m_atlasWidth));
+    uvCoordinates.push_back((m_atlasHeight - cd.yPosition) /
+                            static_cast<float>(m_atlasHeight));
 
-    uvCoordinates.push_back(cd.xPosition / static_cast<float>(ATLAS_WIDTH));
-    uvCoordinates.push_back((ATLAS_HEIGHT - cd.yPosition) /
-                            static_cast<float>(ATLAS_HEIGHT));
+    uvCoordinates.push_back(cd.xPosition / static_cast<float>(m_atlasWidth));
+    uvCoordinates.push_back((m_atlasHeight - cd.yPosition) /
+                            static_cast<float>(m_atlasHeight));
 
     elements.push_back((short)(0 + loopCounter * 4));
     elements.push_back((short)(1 + loopCounter * 4));
