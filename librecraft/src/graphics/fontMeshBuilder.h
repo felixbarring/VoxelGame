@@ -24,7 +24,7 @@ public:
   /**
    *
    */
-  std::shared_ptr<mesh::MeshElement> buldMeshForString(const std::string& str,
+  std::unique_ptr<mesh::MeshElement> buldMeshForString(const std::string& str,
                                                        float height);
 
   /**

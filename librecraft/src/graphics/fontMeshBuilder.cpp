@@ -65,7 +65,7 @@ FontMeshBuilder::FontMeshBuilder(string& pathToLayout,
   }
 }
 
-shared_ptr<mesh::MeshElement>
+unique_ptr<mesh::MeshElement>
 FontMeshBuilder::buldMeshForString(const string& str, float height) {
 
   vector<float> vertices;
