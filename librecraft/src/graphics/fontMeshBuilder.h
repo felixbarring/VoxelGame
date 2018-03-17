@@ -1,10 +1,3 @@
-/**
- *  \file [fontMeshBuilder.h]
- *  \brief used to build meshed that can be used to render text
- *  \author Felix Bärring
- *
- *  Copyright (c) 2015, Felix Bärring. All rights reserved.
- */
 
 #ifndef SRC_GRAPHICS_FONTMESHBUILDER_H_
 #define SRC_GRAPHICS_FONTMESHBUILDER_H_
@@ -21,7 +14,8 @@
 namespace graphics {
 
 /**
- * \class FontMeshBuilder
+ * @brief FontMeshBuilder used to build meshes that can be used for rendering
+ *        text.
  */
 class FontMeshBuilder {
 public:
@@ -45,7 +39,7 @@ public:
   float lenghtOfStringAtChar(const std::string& str, float height, int num);
 
   /**
-   * \brief
+   * @brief
    *
    * @param str The string that will be checked onW
    * @param height The height of the string's char's. Used to compute the
@@ -70,8 +64,8 @@ private:
 
   std::vector<CharData> charData =
     std::vector<CharData>(config::font_data::charsInFont);
-  const int ATLAS_WIDTH;
-  const int ATLAS_HEIGHT;
+  const int m_atlasWidth;
+  const int m_atlasHeight;
 };
 
 } /* namespace graphics */
