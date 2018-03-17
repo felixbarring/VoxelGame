@@ -108,8 +108,8 @@ private:
 
   std::function<void(std::vector<std::string>)> m_commandListener;
 
-  std::shared_ptr<widget::TextArea> m_textArea{};
-  std::shared_ptr<widget::TextInput> m_textInput{};
+  std::unique_ptr<widget::TextArea> m_textArea{};
+  std::unique_ptr<widget::TextInput> m_textInput{};
 
   util::Trie m_trie{};
 
@@ -118,9 +118,9 @@ private:
 
   std::vector<std::string> m_commands{};
 
-  std::shared_ptr<widget::Button> m_enterButton;
-  std::shared_ptr<widget::Button> m_closeButton;
-  std::shared_ptr<widget::WidgetGroup> m_widgets{};
+  std::unique_ptr<widget::Button> m_enterButton;
+  std::unique_ptr<widget::Button> m_closeButton;
+  std::unique_ptr<widget::WidgetGroup> m_widgets{};
 
   bool m_skipNextUpdate{};
 };
