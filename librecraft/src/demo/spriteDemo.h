@@ -2,8 +2,6 @@
 #ifndef SRC_DEMO_SPRITEDEMO_H_
 #define SRC_DEMO_SPRITEDEMO_H_
 
-#include "iDemo.h"
-
 #include <iostream>
 #include <memory>
 #include <string>
@@ -35,9 +33,9 @@ namespace demo {
 
 using namespace std;
 
-class SpriteDemo : public IDemo {
+class SpriteDemo {
 public:
-  void runDemo() override {
+  void runDemo() {
 
     util::FPSManager fpsManager(60);
     const GLuint WIDTH = 800, HEIGHT = 600;

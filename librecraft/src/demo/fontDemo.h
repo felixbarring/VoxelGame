@@ -2,8 +2,6 @@
 #ifndef SRC_DEMO_FONTDEMO_H_
 #define SRC_DEMO_FONTDEMO_H_
 
-#include "iDemo.h"
-
 #include <iostream>
 #include <map>
 #include <memory>
@@ -28,9 +26,9 @@ using namespace sf;
 
 namespace demo {
 
-class FontDemo : public IDemo {
+class FontDemo {
 public:
-  void runDemo() override {
+  void runDemo() {
     util::FPSManager fpsManager(60);
     const GLuint WIDTH = 800, HEIGHT = 600;
 

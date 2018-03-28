@@ -26,6 +26,7 @@ using glm::sqrt;
  */
 class Frustum {
 public:
+
   explicit Frustum(glm::mat4 mvp) {
     // See
     // http://web.archive.org/web/20120531231005/http://crazyjoke.free.fr/doc/3D/plane%20extraction.pdf
@@ -47,8 +48,6 @@ public:
       m_planes[i].w /= l;
     }
   }
-
-  virtual ~Frustum() = default;
 
   bool isSphereInFrustum(glm::vec3 center, float radius) {
     for (size_t i = 0; i < 6; ++i) {

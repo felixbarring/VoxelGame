@@ -13,6 +13,7 @@
 #include "spriteDemo.h"
 #include "textureDemo.h"
 #include "xmlDemo.h"
+#include "frustumDemo.h"
 
 #ifdef DOCTEST_CONFIG_DISABLE
 
@@ -51,6 +52,9 @@ main(int, char* argv[]) {
     } else if (str == "xmlDemo") {
       demo::XmlDemo xmlDemo;
       xmlDemo.runDemo();
+    } else if (str == "frustumDemo") {
+      demo::FrustumDemo frustumDemo;
+      frustumDemo.runDemo();
     }
 
   } catch (std::exception& e) {

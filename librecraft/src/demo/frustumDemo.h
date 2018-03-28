@@ -1,9 +1,11 @@
 
-#ifndef SRC_DEMO_CUBEMAPDEMO_H_
-#define SRC_DEMO_CUBEMAPDEMO_H_
+#ifndef SOURCE_DIRECTORY__SRC_DEMO_FRUSTUMDEMO_H_
+#define SOURCE_DIRECTORY__SRC_DEMO_FRUSTUMDEMO_H_
 
 #include <iostream>
-#include <string>
+
+#include "../../include/glm/detail/type_mat.hpp"
+#include "../graphics/frustum.h"
 
 #include <GL/glew.h>
 #include <glm/glm.hpp>
@@ -19,21 +21,22 @@
 
 #include <SFML/Window.hpp>
 
-using graphics::Camera;
-
 using namespace util;
 using namespace sf;
 
 namespace demo {
 
-class CubeMapDemo {
+class FrustumDemo {
 public:
-  void runDemo() {
-    FPSManager fpsManager(100);
-    const GLuint WIDTH = 800, HEIGHT = 600;
 
-    config::graphics_data::windowWidth = WIDTH;
-    config::graphics_data::windowHeight = HEIGHT;
+  void runDemo() {
+
+    FPSManager fpsManager(100);
+    const GLuint width{800};
+    const GLuint height{600};
+
+    config::graphics_data::windowWidth = width;
+    config::graphics_data::windowHeight = height;
 
     // create the window
     ContextSettings settings;
@@ -43,32 +46,31 @@ public:
     settings.majorVersion = 3;
     settings.minorVersion = 1;
 
-    Window window(VideoMode(800, 600), "Voxel Game", Style::Default, settings);
+    Window window(VideoMode(800, 600), "Frustum Demo", Style::Default, settings);
 
-    Input::createInstance(WIDTH / 2.0, HEIGHT / 2.0);
+    Input::createInstance(width / 2.0, height / 2.0);
     Input::getInstance()->setWindow(&window);
 
     glewExperimental = true;
     if (glewInit() != GLEW_OK)
       std::cout << "Failed to initialize GLEW\n";
 
-    glViewport(0, 0, WIDTH, HEIGHT);
+    glViewport(0, 0, width, height);
     glClearColor(0.2f, 0.22f, 0.2f, 1.0f);
 
-    Camera camera{0, 0, 0};
-
-    texture::TextureCubeMap& texture =
-      graphics::Resources::getInstance().getTextureCubeMap(
-        config::cube_map_data::cubeMap1[0],
-        config::cube_map_data::cubeMap1[1],
-        config::cube_map_data::cubeMap1[2],
-        config::cube_map_data::cubeMap1[3],
-        config::cube_map_data::cubeMap1[4],
-        config::cube_map_data::cubeMap1[5]);
-
-    graphics::CubeMap skybox{texture, camera};
-
+    graphics::Camera camera{0, 0, 0};
     graphics::ViewDirection viewDirection;
+
+
+    // Create A few meshes of different sizes
+
+    // Render them
+
+    // Make a bounding volume for them
+
+    // Use frustum to check if they should be rendered or not.
+
+    Frustum frustum{glm::mat4()}; // TODO Use the mvp matrix here...
 
     while (window.isOpen()) {
       fpsManager.frameStart();
@@ -88,13 +90,14 @@ public:
                         viewDirection.getViewDirection(),
                         viewDirection.getUpDirection());
 
-      skybox.draw(1.0);
-
       fpsManager.sync();
       window.display();
     }
+
   }
+
 };
+
 }
 
-#endif /* SRC_DEMO_CUBEMAPDEMO_H_ */
+#endif /* SOURCE_DIRECTORY__SRC_DEMO_FRUSTUMDEMO_H_ */

@@ -2,8 +2,6 @@
 #ifndef SRC_DEMO_ARRAYTEXTUREDEMO_H_
 #define SRC_DEMO_ARRAYTEXTUREDEMO_H_
 
-#include "iDemo.h"
-
 #include <GL/glew.h>
 
 #include <iostream>
@@ -26,9 +24,9 @@
 
 namespace demo {
 
-class ArrayTextureDemo : public IDemo {
+class ArrayTextureDemo {
 public:
-  void runDemo() override {
+  void runDemo() {
     util::FPSManager fpsManager(60);
 
     int WIDTH = 800;

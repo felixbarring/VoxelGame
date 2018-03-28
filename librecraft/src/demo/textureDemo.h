@@ -2,8 +2,6 @@
 #ifndef SRC_DEMO_TEXTUREDEMO_H_
 #define SRC_DEMO_TEXTUREDEMO_H_
 
-#include "iDemo.h"
-
 #include <GL/glew.h>
 
 #include <map>
@@ -24,9 +22,9 @@
 
 namespace demo {
 
-class TextureDemo : public IDemo {
+class TextureDemo {
 public:
-  void runDemo() override {
+  void runDemo() {
 
     using namespace sf;
 
