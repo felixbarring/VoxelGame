@@ -1,11 +1,14 @@
 #!/bin/sh
 
-rm -r ../build
-mkdir ../build
-mkdir ../build/data
-touch ../build/data/meta
-cp -r ../../resources ../build
+if [ -d "../build/release" ]; then
+  rm -r ../build/release
+fi
 
-cd ../build
-cmake -DCMAKE_BUILD_TYPE=Release -DAPPLICATION=TRUE -DDEMO=FALSE -DWARNINGS=TRUE -DUNIT_TEST=FALSE ..
-cd ../scripts
+mkdir ../build/release
+mkdir ../build/release/data
+touch ../build/release/data/meta
+cp -al ../../resources ../build/release
+
+cd ../build/release
+cmake -DCMAKE_BUILD_TYPE=Release -DAPPLICATION=TRUE -DDEMO=FALSE -DWARNINGS=TRUE -DUNIT_TEST=FALSE ../..
+cd ../../scripts

@@ -96,22 +96,22 @@ Terminal::Terminal(vector<string> commands,
   };
 
   m_widgets =
-    make_shared<WidgetGroup>(0, 100, 100, 600, 400, m_graphicsManager, 5);
+    make_unique<WidgetGroup>(0, 100, 100, 600, 400, m_graphicsManager, 5);
   m_textInput =
-    make_shared<TextInput>(1, 110, 110, 430, 30, m_graphicsManager, 6);
+    make_unique<TextInput>(1, 110, 110, 430, 30, m_graphicsManager, 6);
   m_textInput->setFocus();
   m_widgets->addWidget(*m_textInput);
 
-  m_enterButton = make_shared<Button>(
+  m_enterButton = make_unique<Button>(
     2, 545, 110, 70, 30, m_graphicsManager, observer, "Enter", 6);
 
-  m_closeButton = make_shared<Button>(
-      3, 545 + 75, 110, 70, 30, m_graphicsManager, observer, "Close", 6);
+  m_closeButton = make_unique<Button>(
+    3, 545 + 75, 110, 70, 30, m_graphicsManager, observer, "Close", 6);
 
   m_widgets->addWidget(*m_enterButton);
   m_widgets->addWidget(*m_closeButton);
 
-  m_textArea = make_shared<TextArea>(
+  m_textArea = make_unique<TextArea>(
     0, 110, 150, 580, 340, m_graphicsManager, observer, 7);
   m_widgets->addWidget(*m_textArea);
 }

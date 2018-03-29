@@ -15,14 +15,13 @@ using namespace widget;
 using namespace std;
 
 Settings::Settings(widget::WidgetGroup*& active,
-                   shared_ptr<widget::WidgetGroup>& parent,
+                   widget::WidgetGroup*& parent,
                    SoundPlayer& soundPlayer,
                    graphics::GraphicsManager& graphicsManager)
   : m_soundPlayer(soundPlayer)
   , m_graphicsManager(graphicsManager)
   , m_activeWidgetGroup{active}
   , m_parentWidgetGroup{parent} {
-
   // ########################################################################
 
   {
@@ -41,37 +40,40 @@ Settings::Settings(widget::WidgetGroup*& active,
           m_activeWidgetGroup = m_audioSettingsWidgetGroup.get();
           break;
         case 4:
-          m_activeWidgetGroup = m_parentWidgetGroup.get();
+          m_activeWidgetGroup = m_parentWidgetGroup;
           break;
       }
     };
 
-    shared_ptr<Label> label = make_shared<Label>(
+    unique_ptr<Label> label = make_unique<Label>(
       325, 390, 150, 30, " - Settings - ", m_graphicsManager);
-    shared_ptr<Button> button1 = make_shared<Button>(
+    unique_ptr<Button> button1 = make_unique<Button>(
       0, 325, 350, 150, 30, m_graphicsManager, observer, "Game");
-    shared_ptr<Button> button2 = make_shared<Button>(
+    unique_ptr<Button> button2 = make_unique<Button>(
       1, 325, 310, 150, 30, m_graphicsManager, observer, "Input");
-    shared_ptr<Button> button3 = make_shared<Button>(
+    unique_ptr<Button> button3 = make_unique<Button>(
       2, 325, 270, 150, 30, m_graphicsManager, observer, "Graphics");
-    shared_ptr<Button> button4 = make_shared<Button>(
+    unique_ptr<Button> button4 = make_unique<Button>(
       3, 325, 230, 150, 30, m_graphicsManager, observer, "Audio");
-    shared_ptr<Button> button5 = make_shared<Button>(
+    unique_ptr<Button> button5 = make_unique<Button>(
       4, 325, 190, 150, 30, m_graphicsManager, observer, "Back");
-
-    m_widgets.push_back(label);
-    m_widgets.push_back(button1);
-    m_widgets.push_back(button2);
-    m_widgets.push_back(button3);
-    m_widgets.push_back(button4);
-    m_widgets.push_back(button5);
 
     m_settingsWidgetGroup =
       make_unique<WidgetGroup>(0, 300, 180, 200, 210, m_graphicsManager);
 
-    m_settingsWidgetGroup->addWidget(
-      {&*label, &*button1, &*button2, &*button3, &*button4, &*button5});
+    m_settingsWidgetGroup->addWidget({label.get(),
+                                      button1.get(),
+                                      button2.get(),
+                                      button3.get(),
+                                      button4.get(),
+                                      button5.get()});
 
+    m_widgets.push_back(move(label));
+    m_widgets.push_back(move(button1));
+    m_widgets.push_back(move(button2));
+    m_widgets.push_back(move(button3));
+    m_widgets.push_back(move(button4));
+    m_widgets.push_back(move(button5));
   }
 
   // ########################################################################
@@ -85,19 +87,19 @@ Settings::Settings(widget::WidgetGroup*& active,
       }
     };
 
-    shared_ptr<Label> label =
-      make_shared<Label>(325, 390, 150, 30, " - Game - ", m_graphicsManager);
-    shared_ptr<Button> button = make_shared<Button>(
+    unique_ptr<Label> label =
+      make_unique<Label>(325, 390, 150, 30, " - Game - ", m_graphicsManager);
+    unique_ptr<Button> button = make_unique<Button>(
       0, 325, 230, 150, 30, m_graphicsManager, observer, "Back");
-
-    m_widgets.push_back(label);
-    m_widgets.push_back(button);
 
     m_gameSettingsWidgetGroup =
       make_unique<WidgetGroup>(0, 300, 220, 200, 170, m_graphicsManager);
 
     m_gameSettingsWidgetGroup->addWidget(*label);
     m_gameSettingsWidgetGroup->addWidget(*button);
+
+    m_widgets.push_back(move(label));
+    m_widgets.push_back(move(button));
   }
 
   // ########################################################################
@@ -122,32 +124,31 @@ Settings::Settings(widget::WidgetGroup*& active,
     };
 
     // TODO Refactor?
-    shared_ptr<IWidget> label =
-      make_shared<Label>(325, 390, 150, 30, " - Input - ", m_graphicsManager);
+    unique_ptr<IWidget> label =
+      make_unique<Label>(325, 390, 150, 30, " - Input - ", m_graphicsManager);
 
     m_mouseSensitivitySlider = make_unique<Slider>(
       1, 125 + 100, 310, 150, 30, m_graphicsManager, observer, 1);
     m_mouseSensitivityInput = make_unique<TextInput>(
       666, 125 + 100, 270, 150, 30, m_graphicsManager, 1);
 
-    shared_ptr<Button> button1 = make_shared<Button>(
+    unique_ptr<Button> button1 = make_unique<Button>(
       0, 245, 130, 150, 30, m_graphicsManager, observer, "Save", 1);
-    shared_ptr<Button> button2 = make_shared<Button>(
+    unique_ptr<Button> button2 = make_unique<Button>(
       0, 400, 130, 150, 30, m_graphicsManager, observer, "Cancel", 1);
-
-    m_widgets.push_back(label);
-    m_widgets.push_back(button1);
-    m_widgets.push_back(button2);
-
 
     m_inputSettingsWidgetGroup =
       make_unique<WidgetGroup>(0, 100, 100, 600, 250, m_graphicsManager);
 
-    m_inputSettingsWidgetGroup->addWidget({&*label,
-                                           &*m_mouseSensitivityInput,
-                                           &*m_mouseSensitivitySlider,
-                                           &*button1,
-                                           &*button2});
+    m_inputSettingsWidgetGroup->addWidget({label.get(),
+                                           m_mouseSensitivityInput.get(),
+                                           m_mouseSensitivitySlider.get(),
+                                           button1.get(),
+                                           button2.get()});
+
+    m_widgets.push_back(move(label));
+    m_widgets.push_back(move(button1));
+    m_widgets.push_back(move(button2));
   }
 
   // ########################################################################
@@ -173,17 +174,17 @@ Settings::Settings(widget::WidgetGroup*& active,
       }
     };
 
-    shared_ptr<Label> label1 = make_shared<Label>(
+    unique_ptr<Label> label1 = make_unique<Label>(
       325, 390, 150, 30, " - Graphics - ", m_graphicsManager);
-    shared_ptr<Label> label2 =
-      make_shared<Label>(30 + 100, 310, 80, 20, "FOV:", m_graphicsManager, 1);
+    unique_ptr<Label> label2 =
+      make_unique<Label>(30 + 100, 310, 80, 20, "FOV:", m_graphicsManager, 1);
 
     m_fovSlider = make_unique<Slider>(
       2, 125 + 100, 310, 150, 30, m_graphicsManager, observer, 1);
     m_fovTextInput = make_unique<TextInput>(
       666, 285 + 100, 310, 100, 30, m_graphicsManager, 1);
 
-    shared_ptr<Label> label3 = make_shared<Label>(
+    unique_ptr<Label> label3 = make_unique<Label>(
       30 + 100, 270, 80, 20, "Render Distance:", m_graphicsManager, 1);
 
     m_renderDistanceSlider = make_unique<Slider>(
@@ -191,30 +192,29 @@ Settings::Settings(widget::WidgetGroup*& active,
     m_renderDistanceInput =
       make_unique<TextInput>(-1, 285 + 100, 270, 100, 30, m_graphicsManager, 1);
 
-    shared_ptr<Button> button1 = make_shared<Button>(
+    unique_ptr<Button> button1 = make_unique<Button>(
       0, 245, 130, 150, 30, m_graphicsManager, observer, "Save", 1);
-    shared_ptr<Button> button2 = make_shared<Button>(
+    unique_ptr<Button> button2 = make_unique<Button>(
       1, 400, 130, 150, 30, m_graphicsManager, observer, "Cancel", 1);
-
-
-    m_widgets.push_back(label1);
-    m_widgets.push_back(label2);
-    m_widgets.push_back(label3);
-    m_widgets.push_back(button1);
-    m_widgets.push_back(button2);
 
     m_graphicsSettingsWidgetGroup =
       make_unique<WidgetGroup>(0, 100, 100, 600, 250, m_graphicsManager);
 
-    m_graphicsSettingsWidgetGroup->addWidget({&*label1,
-                                              &*label2,
-                                              &*m_fovSlider,
-                                              &*m_fovTextInput,
-                                              &*label3,
-                                              &*m_renderDistanceSlider,
-                                              &*m_renderDistanceInput,
-                                              &*button1,
-                                              &*button2});
+    m_graphicsSettingsWidgetGroup->addWidget({label1.get(),
+                                              label2.get(),
+                                              m_fovSlider.get(),
+                                              m_fovTextInput.get(),
+                                              label3.get(),
+                                              m_renderDistanceSlider.get(),
+                                              m_renderDistanceInput.get(),
+                                              button1.get(),
+                                              button2.get()});
+
+    m_widgets.push_back(move(label1));
+    m_widgets.push_back(move(label2));
+    m_widgets.push_back(move(label3));
+    m_widgets.push_back(move(button1));
+    m_widgets.push_back(move(button2));
   }
 
   // ########################################################################
@@ -242,10 +242,10 @@ Settings::Settings(widget::WidgetGroup*& active,
       }
     };
 
-    shared_ptr<Label> label1 =
-      make_shared<Label>(325, 390, 150, 30, " - Audio - ", m_graphicsManager);
+    unique_ptr<Label> label1 =
+      make_unique<Label>(325, 390, 150, 30, " - Audio - ", m_graphicsManager);
 
-    shared_ptr<Label> label2 = make_shared<Label>(
+    unique_ptr<Label> label2 = make_unique<Label>(
       230, 310, 80, 20, "Master Volume:", m_graphicsManager, 1);
     m_masterVolumeSlider =
       make_unique<Slider>(2, 325, 310, 150, 30, m_graphicsManager, observer, 1);
@@ -253,7 +253,7 @@ Settings::Settings(widget::WidgetGroup*& active,
     m_masterVolumeInput =
       make_unique<TextInput>(666, 485, 310, 50, 30, m_graphicsManager, 1);
 
-    shared_ptr<Label> label3 = make_shared<Label>(
+    unique_ptr<Label> label3 = make_unique<Label>(
       230, 270, 80, 20, "Music Volume:", m_graphicsManager, 1);
     m_musicVolumeSlider =
       make_unique<Slider>(2, 325, 270, 150, 30, m_graphicsManager, observer, 1);
@@ -261,7 +261,7 @@ Settings::Settings(widget::WidgetGroup*& active,
     m_musicVolumeInput =
       make_unique<TextInput>(666, 485, 270, 50, 30, m_graphicsManager, 1);
 
-    shared_ptr<Label> label4 = make_shared<Label>(
+    unique_ptr<Label> label4 = make_unique<Label>(
       230, 230, 80, 20, "Sound Volume:", m_graphicsManager, 1);
     m_soundVolumeSlider =
       make_unique<Slider>(2, 325, 230, 150, 30, m_graphicsManager, observer, 1);
@@ -269,32 +269,31 @@ Settings::Settings(widget::WidgetGroup*& active,
     m_soundVolumeInput =
       make_unique<TextInput>(666, 485, 230, 50, 30, m_graphicsManager, 1);
 
-    shared_ptr<Button> button1 = make_shared<Button>(
+    unique_ptr<Button> button1 = make_unique<Button>(
       0, 245, 130, 150, 30, m_graphicsManager, observer, "Save", 1);
-    shared_ptr<Button> button2 = make_shared<Button>(
+    unique_ptr<Button> button2 = make_unique<Button>(
       1, 400, 130, 150, 30, m_graphicsManager, observer, "Cancel", 1);
-
-    m_widgets.push_back(label1);
-    m_widgets.push_back(button1);
-    m_widgets.push_back(button2);
-    m_widgets.push_back(label2);
-    m_widgets.push_back(label3);
-    m_widgets.push_back(label4);
 
     m_audioSettingsWidgetGroup =
       make_unique<WidgetGroup>(0, 200, 120, 400, 230, m_graphicsManager);
-    m_audioSettingsWidgetGroup->addWidget({&*label1,
-                                           &*button1,
-                                           &*button2,
-                                           &*m_masterVolumeSlider,
-                                           &*m_masterVolumeInput,
-                                           &*m_musicVolumeSlider,
-                                           &*m_musicVolumeInput,
-                                           &*m_soundVolumeSlider,
-                                           &*m_soundVolumeInput,
-                                           &*label2,
-                                           &*label3,
-                                           &*label4});
+    m_audioSettingsWidgetGroup->addWidget({label1.get(),
+                                           button1.get(),
+                                           button2.get(),
+                                           m_masterVolumeSlider.get(),
+                                           m_masterVolumeInput.get(),
+                                           m_musicVolumeSlider.get(),
+                                           m_musicVolumeInput.get(),
+                                           m_soundVolumeSlider.get(),
+                                           m_soundVolumeInput.get(),
+                                           label2.get(),
+                                           label3.get(),
+                                           label4.get()});
+    m_widgets.push_back(move(label1));
+    m_widgets.push_back(move(button1));
+    m_widgets.push_back(move(button2));
+    m_widgets.push_back(move(label2));
+    m_widgets.push_back(move(label3));
+    m_widgets.push_back(move(label4));
   }
 }
 

@@ -11,9 +11,9 @@ The Kanban board with features and progress can be found here:
 
 ## Background
 
-The purpose of this project is to create voxel based game, similar to
-games such as Infiniminer. The most characteristic feature is the ability
-to modify the world by removing and adding cubes. The player can move
+The purpose of this project is to create a voxel based game, similar to
+games such as Minecraft and Infiniminer. The most characteristic feature is the 
+ability to modify the world by removing and adding cubes. The player can move
 around in a seemingly infinite world, exploring and creating content. To
 make this possible, components such as rendering, collision detection, and
 procedural terrain generation must be implemented. Other components
@@ -44,17 +44,19 @@ Instructions on how to get going.
 
 ```
 Installing dependencies on Ubuntu:
-	sudo apt-get install cmake make g++ clang-5.0 libsfml-dev libglew-dev 
+  sudo apt-get install cmake make g++ clang-5.0 libsfml-dev libglew-dev 
 
   Optional tools:
-  sudo apt cppcheck doxygen clang-format valgrind
+  cppcheck doxygen clang-format valgrind
 
-	Should be something similar on Fedora
+  Should be something similar on Fedora
 
 Buiding:
-	git clone --recursive https://github.com/felixbarring/VoxelGame
-	cd VoxelGame/scripts
-	bash setupBuildRelease.sh
-  bash runGame.sh
+  git clone --recursive https://github.com/felixbarring/VoxelGame
+  cd VoxelGame/scripts
+  bash setupBuildRelease.sh
+  bash buildRelease.sh
+  bash runRelease.sh
+
 ```
 

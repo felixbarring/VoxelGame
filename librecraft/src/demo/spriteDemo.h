@@ -38,7 +38,8 @@ public:
   void runDemo() {
 
     util::FPSManager fpsManager(60);
-    const GLuint WIDTH = 800, HEIGHT = 600;
+    const GLuint WIDTH{800};
+    const GLuint HEIGHT{600};
 
     config::graphics_data::windowWidth = WIDTH;
     config::graphics_data::windowHeight = HEIGHT;
@@ -61,7 +62,7 @@ public:
     glViewport(0, 0, WIDTH, HEIGHT);
     glClearColor(0.2f, 0.22f, 0.2f, 1.0f);
 
-    shared_ptr<graphics::Sprite> sprite = make_shared<graphics::Sprite>(
+    unique_ptr<graphics::Sprite> sprite = make_unique<graphics::Sprite>(
       200,
       200,
       0,
@@ -70,7 +71,7 @@ public:
       graphics::Resources::getInstance().getTexture(
         config::cube_data::textures[0]));
 
-    shared_ptr<graphics::Sprite> sprite2 = make_shared<graphics::Sprite>(
+    unique_ptr<graphics::Sprite> sprite2 = make_unique<graphics::Sprite>(
       300,
       300,
       0,
@@ -79,7 +80,7 @@ public:
       graphics::Resources::getInstance().getTexture(
         config::cube_data::textures[1]));
 
-    shared_ptr<graphics::Sprite> sprite3 = make_shared<graphics::Sprite>(
+    unique_ptr<graphics::Sprite> sprite3 = make_unique<graphics::Sprite>(
       600,
       200,
       0,

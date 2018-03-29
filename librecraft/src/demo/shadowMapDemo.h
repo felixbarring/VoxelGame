@@ -241,13 +241,13 @@ public:
         sceneCameraLocation += viewDirection.getViewDirection();
 
       if (Input::getInstance()->moveBackwardActive)
-        sceneCameraLocation -= viewDirection.getViewDirection();
+        sceneCameraLocation += -viewDirection.getViewDirection();
 
       if (Input::getInstance()->moveLeftActive)
-        sceneCameraLocation -= -viewDirection.getRightDirection();
+        sceneCameraLocation += -viewDirection.getRightDirection();
 
       if (Input::getInstance()->moveRightActive)
-        sceneCameraLocation -= viewDirection.getRightDirection();
+        sceneCameraLocation += viewDirection.getRightDirection();
 
       glm::mat4 modelView;
       glm::mat4 modelViewProjection;

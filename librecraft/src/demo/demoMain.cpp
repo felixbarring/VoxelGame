@@ -19,6 +19,17 @@
 
 int
 main(int, char* argv[]) {
+
+  std::vector<std::string> alternatives{"textureDemo",
+                                        "cubeDemo",
+                                        "textureArrayDemo",
+                                        "cubeMapDemo",
+                                        "spriteDemo",
+                                        "guiDemo",
+                                        "fontDemo",
+                                        "shadowMapDemo",
+                                        "libNoiseDemo",
+                                        "xmlDemo"};
   try {
     std::string str = argv[1];
 
@@ -55,9 +66,15 @@ main(int, char* argv[]) {
     } else if (str == "frustumDemo") {
       demo::FrustumDemo frustumDemo;
       frustumDemo.runDemo();
+    } else {
+      std::cout << "Enter which demo you want to run. \n";
+      for (string& s : alternatives) {
+        std::cout << s << "\n";
+      }
     }
 
   } catch (std::exception& e) {
+    std::cout << "Enter which demo you want to run. \n";
     std::cout << "An error occured \n" << e.what() << "\n";
   } catch (...) {
     std::cout << "An error that is not derived from std::exception occured \n";
@@ -65,3 +82,4 @@ main(int, char* argv[]) {
 }
 
 #endif
+

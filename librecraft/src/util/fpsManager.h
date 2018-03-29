@@ -19,7 +19,7 @@ public:
    *
    * @param maxFPS The fps limit.
    */
-  explicit FPSManager(int maxFPS);
+  explicit FPSManager(double maxFPS);
 
   /**
    * @brief Call this function at the start of each frame.

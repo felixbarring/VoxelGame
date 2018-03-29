@@ -5,14 +5,19 @@
 
 using namespace sf;
 
+
+namespace {
+GLuint targets[] = {GL_TEXTURE_CUBE_MAP_POSITIVE_X,
+                   GL_TEXTURE_CUBE_MAP_NEGATIVE_X,
+                   GL_TEXTURE_CUBE_MAP_POSITIVE_Y,
+                   GL_TEXTURE_CUBE_MAP_NEGATIVE_Y,
+                   GL_TEXTURE_CUBE_MAP_POSITIVE_Z,
+                   GL_TEXTURE_CUBE_MAP_NEGATIVE_Z};
+}
+
 namespace texture {
 
-static GLuint targets[] = {GL_TEXTURE_CUBE_MAP_POSITIVE_X,
-                           GL_TEXTURE_CUBE_MAP_NEGATIVE_X,
-                           GL_TEXTURE_CUBE_MAP_POSITIVE_Y,
-                           GL_TEXTURE_CUBE_MAP_NEGATIVE_Y,
-                           GL_TEXTURE_CUBE_MAP_POSITIVE_Z,
-                           GL_TEXTURE_CUBE_MAP_NEGATIVE_Z};
+// TODO Maybe change to C++ strings instead of c raw pointers
 
 TextureCubeMap::TextureCubeMap(const char* right,
                                const char* left,
@@ -36,8 +41,8 @@ TextureCubeMap::TextureCubeMap(const char* right,
 
   Image image;
 
-  int i = 0;
-  for (auto path : paths) {
+  int i{0};
+  for (const char * path : paths) {
 
     if (!image.loadFromFile(path)) {
       std::cout << "Coulnd not load image" << path << "\n";

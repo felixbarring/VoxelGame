@@ -195,10 +195,10 @@ GraphicalChunk::createMeshData(bool transparent) {
           if (top && top->getId() == AIR) {
 
             vector<GLfloat> vertex{
-              -0.5f + i + dx, 0.5f + j + dy, 0.5f + k + dz,  //
-              0.5f + i + dx,  0.5f + j + dy, 0.5f + k + dz,  //
-              0.5f + i + dx,  0.5f + j + dy, -0.5f + k + dz, //
-              -0.5f + i + dx, 0.5f + j + dy, -0.5f + k + dz, //
+              -0.5f + i + dx, 0.4f + j + dy, 0.5f + k + dz,  //
+              0.5f + i + dx,  0.4f + j + dy, 0.5f + k + dz,  //
+              0.5f + i + dx,  0.4f + j + dy, -0.5f + k + dz, //
+              -0.5f + i + dx, 0.4f + j + dy, -0.5f + k + dz, //
             };
 
             float sun = top->getSunLightValue();

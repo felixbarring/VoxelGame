@@ -49,9 +49,10 @@ SelectableList::SelectableList(int id,
 
 void
 SelectableList::addListItem(std::string item) {
+
   // TODO Do not add item that already exists.
   int x{m_xCoordinate + 5};
-  auto y = m_yCoordinate + m_height - (5 + 30 * (1 + m_buttons.size()));
+  int y = m_yCoordinate + m_height - (5 + 30 * (1 + m_buttons.size()));
   int width{m_width - 10};
   int height{30};
   auto func = [&](int id) {
@@ -96,27 +97,27 @@ SelectableList::reset() {
   if (m_currentlyToggled && m_currentlyToggled->isToggled())
     m_currentlyToggled->toggle();
 
-  m_currentlyToggled = nullptr;
+  m_currentlyToggled.reset();
 }
 
 void
 SelectableList::draw() {
-  m_graphicsManager.getSpriteBatcher().addBatch(m_sprite);
-  for (ToggleButton& b : m_buttons)
-    b.draw();
+  m_graphicsManager.getSpriteBatcher().addBatch(*m_sprite);
+  for (auto b : m_buttons)
+    b->draw();
 }
 
 void
 SelectableList::update(float timePassed) {
-  for (ToggleButton& b : m_buttons)
-    b.update(timePassed);
+  for (auto b : m_buttons)
+    b->update(timePassed);
 }
 
-ToggleButton*
+shared_ptr<ToggleButton>
 SelectableList::getButtonWithId(int id) {
-  for (ToggleButton& b : m_buttons) {
-    if (b.getId() == id)
-      return &b;
+  for (auto b : m_buttons) {
+    if (b->getId() == id)
+      return b;
   }
   return nullptr; // Should never happen
 }

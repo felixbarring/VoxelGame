@@ -91,7 +91,7 @@ TextInput::setString(string str) {
                   fontMesh,
                   res.getTexture(font));
 
-  auto strLength = fontMeshBuilder.lenghtOfString(m_input, m_textHeight);
+  double strLength = fontMeshBuilder.lenghtOfString(m_input, m_textHeight);
   m_cursor.setLocation(m_xCoordinate + strLength,
                        m_yCoordinate + s_cursorSpacing);
 }
@@ -140,12 +140,11 @@ TextInput::update(float timePassed) {
       return;
     }
 
-    auto fontMesh = fontMeshBuilder.buldMeshForString(
-      m_input, m_height - s_textHightDifference);
     m_text = Sprite(m_xCoordinate,
                     m_yCoordinate + s_textHightDifference,
                     m_layer + 1,
-                    move(fontMesh),
+                    fontMeshBuilder.buldMeshForString(
+                          m_input, m_height - s_textHightDifference),
                     res.getTexture(font));
 
     m_cursor.setLocation(m_xCoordinate + strLength,
@@ -164,12 +163,11 @@ TextInput::update(float timePassed) {
       m_accumulatedEraseTime = 0.0;
       m_input.pop_back();
 
-      auto fontMesh = fontMeshBuilder.buldMeshForString(
-        m_input, m_height - s_textHightDifference);
       m_text = Sprite(m_xCoordinate,
                       m_yCoordinate + s_textHightDifference,
                       m_layer + 1,
-                      fontMesh,
+                      fontMeshBuilder.buldMeshForString(
+                        m_input, m_height - s_textHightDifference),
                       res.getTexture(font));
 
       float strLenght = fontMeshBuilder.lenghtOfString(m_input, m_textHeight);

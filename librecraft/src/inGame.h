@@ -78,15 +78,17 @@ private:
 
   Settings m_settings;
 
-  std::vector<std::shared_ptr<widget::IWidget>> m_widgets;
+  std::vector<std::unique_ptr<widget::IWidget>> m_widgets;
 
   widget::WidgetGroup* m_activeWidgetGroup;
-  std::shared_ptr<widget::WidgetGroup> m_mainWidgetGroup;
+  widget::WidgetGroup* m_mainWidgetGroupRaw{nullptr};
 
-  std::shared_ptr<graphics::Sprite> m_crossHair;
-  std::shared_ptr<graphics::Sprite> m_direction;
-  std::shared_ptr<graphics::Sprite> m_fps;
-  std::shared_ptr<graphics::Sprite> m_lastSelecteCube;
+  std::unique_ptr<widget::WidgetGroup> m_mainWidgetGroup;
+
+  std::unique_ptr<graphics::Sprite> m_crossHair;
+  std::unique_ptr<graphics::Sprite> m_direction;
+  std::unique_ptr<graphics::Sprite> m_fps;
+  std::unique_ptr<graphics::Sprite> m_lastSelecteCube;
 
   gui::CubeBar m_cubeBar;
 };

@@ -5,7 +5,7 @@
 
 namespace util {
 
-FPSManager::FPSManager(int maxFPS)
+FPSManager::FPSManager(double maxFPS)
   : m_timePerFrame{1.0 / maxFPS} {
 }
 

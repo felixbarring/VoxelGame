@@ -42,10 +42,11 @@ class GuiDemo {
 public:
   void runDemo() {
     util::FPSManager fpsManager(60);
-    const GLuint WIDTH = 1200, HEIGHT = 600;
+    const GLuint width{1200};
+    const GLuint height{600};
 
-    config::graphics_data::windowWidth = WIDTH;
-    config::graphics_data::windowHeight = HEIGHT;
+    config::graphics_data::windowWidth = width;
+    config::graphics_data::windowHeight = height;
 
     // create the window
     ContextSettings settings;
@@ -56,33 +57,33 @@ public:
     settings.minorVersion = 1;
 
     Window window(
-      VideoMode(WIDTH, HEIGHT), "Voxel Game", Style::Default, settings);
+      VideoMode(width, height), "Voxel Game", Style::Default, settings);
 
     glewExperimental = true;
     if (glewInit() != GLEW_OK)
       cout << "Failed to initialize GLEW\n";
 
-    glViewport(0, 0, WIDTH, HEIGHT);
+    glViewport(0, 0, width, height);
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
-    shared_ptr<TextInput> textInput;
-    shared_ptr<Slider> slider;
+    unique_ptr<TextInput> textInput;
+    unique_ptr<Slider> slider;
 
-    shared_ptr<WidgetGroup> currentWidgetGroup;
-    shared_ptr<WidgetGroup> mainWidgetGroup;
-    shared_ptr<WidgetGroup> playWidgetGroup;
-    shared_ptr<WidgetGroup> settingsWidgetGroup;
-    shared_ptr<WidgetGroup> listWidgetGroup;
+    WidgetGroup* currentWidgetGroup;
+    unique_ptr<WidgetGroup> mainWidgetGroup;
+    unique_ptr<WidgetGroup> playWidgetGroup;
+    unique_ptr<WidgetGroup> settingsWidgetGroup;
+    unique_ptr<WidgetGroup> listWidgetGroup;
 
     bool quit = false;
     function<void(int)> observer = [&](int id) {
       switch (id) {
         case 0: {
-          currentWidgetGroup = playWidgetGroup;
+          currentWidgetGroup = playWidgetGroup.get();
           break;
         }
         case 1: {
-          currentWidgetGroup = settingsWidgetGroup;
+          currentWidgetGroup = settingsWidgetGroup.get();
           break;
         }
         case 2: {
@@ -90,15 +91,15 @@ public:
           break;
         }
         case 3: {
-          currentWidgetGroup = listWidgetGroup;
+          currentWidgetGroup = listWidgetGroup.get();
           break;
         }
         case 5: {
-          currentWidgetGroup = mainWidgetGroup;
+          currentWidgetGroup = mainWidgetGroup.get();
           break;
         }
         case 6: {
-          currentWidgetGroup = mainWidgetGroup;
+          currentWidgetGroup = mainWidgetGroup.get();
           break;
         }
         case 666: {
@@ -113,19 +114,19 @@ public:
 
     // ########################################################################
 
-    shared_ptr<IWidget> button1 = make_shared<Button>(
+    shared_ptr<IWidget> button1 = make_unique<Button>(
       0, 325, 350, 150, 30, graphicsmanager, observer, "Play");
-    shared_ptr<IWidget> button2 = make_shared<Button>(
+    shared_ptr<IWidget> button2 = make_unique<Button>(
       1, 325, 310, 150, 30, graphicsmanager, observer, "Settings");
-    shared_ptr<IWidget> button3 = make_shared<Button>(
+    shared_ptr<IWidget> button3 = make_unique<Button>(
       2, 325, 270, 150, 30, graphicsmanager, observer, "Quit");
-    shared_ptr<IWidget> button8 = make_shared<Button>(
+    shared_ptr<IWidget> button8 = make_unique<Button>(
       3, 325, 230, 150, 30, graphicsmanager, observer, "List");
-    shared_ptr<IWidget> toggleButton = make_shared<ToggleButton>(
+    shared_ptr<IWidget> toggleButton = make_unique<ToggleButton>(
       666, 325, 190, 150, 30, graphicsmanager, observer, "Toggle");
 
     mainWidgetGroup =
-      make_shared<WidgetGroup>(0, 0, 0, 800, 600, graphicsmanager);
+      make_unique<WidgetGroup>(0, 0, 0, 800, 600, graphicsmanager);
 
     mainWidgetGroup->addWidget(*button1);
     mainWidgetGroup->addWidget(*button2);
@@ -135,17 +136,17 @@ public:
 
     // ########################################################################
 
-    shared_ptr<IWidget> label1 =
-      make_shared<Label>(325, 390, 150, 30, " - Play - ", graphicsmanager);
-    shared_ptr<IWidget> button4 = make_shared<Button>(
+    unique_ptr<IWidget> label1 =
+      make_unique<Label>(325, 390, 150, 30, " - Play - ", graphicsmanager);
+    unique_ptr<IWidget> button4 = make_unique<Button>(
       666, 325, 350, 150, 30, graphicsmanager, observer, "New World");
-    shared_ptr<IWidget> button5 = make_shared<Button>(
+    unique_ptr<IWidget> button5 = make_unique<Button>(
       666, 325, 310, 150, 30, graphicsmanager, observer, "Load World");
-    shared_ptr<IWidget> button6 = make_shared<Button>(
+    unique_ptr<IWidget> button6 = make_unique<Button>(
       5, 325, 270, 150, 30, graphicsmanager, observer, "Back");
 
     playWidgetGroup =
-      make_shared<WidgetGroup>(0, 0, 0, 800, 600, graphicsmanager);
+      make_unique<WidgetGroup>(0, 0, 0, 800, 600, graphicsmanager);
 
     playWidgetGroup->addWidget(*label1);
     playWidgetGroup->addWidget(*button4);
@@ -154,16 +155,16 @@ public:
 
     // ########################################################################
 
-    shared_ptr<IWidget> label2 =
-      make_shared<Label>(325, 390, 150, 30, " - Settings - ", graphicsmanager);
-    textInput = make_shared<TextInput>(666, 325, 350, 150, 30, graphicsmanager);
+    unique_ptr<IWidget> label2 =
+      make_unique<Label>(325, 390, 150, 30, " - Settings - ", graphicsmanager);
+    textInput = make_unique<TextInput>(666, 325, 350, 150, 30, graphicsmanager);
     slider =
-      make_shared<Slider>(666, 325, 310, 150, 30, graphicsmanager, observer);
-    shared_ptr<IWidget> button7 = make_shared<Button>(
+      make_unique<Slider>(666, 325, 310, 150, 30, graphicsmanager, observer);
+    unique_ptr<IWidget> button7 = make_unique<Button>(
       6, 325, 270, 150, 30, graphicsmanager, observer, "Back");
 
     settingsWidgetGroup =
-      make_shared<WidgetGroup>(0, 0, 0, 800, 600, graphicsmanager);
+      make_unique<WidgetGroup>(0, 0, 0, 800, 600, graphicsmanager);
 
     settingsWidgetGroup->addWidget(*label2);
     settingsWidgetGroup->addWidget(*slider);
@@ -172,11 +173,11 @@ public:
 
     // ########################################################################
 
-    shared_ptr<Button> button1337 = make_shared<Button>(
+    unique_ptr<Button> button1337 = make_unique<Button>(
       666, 325, 270, 150, 30, graphicsmanager, observer, "DERP");
 
-    shared_ptr<SelectableList> derp(new SelectableList{
-      666, 100, 100, 600, 400, graphicsmanager, observer, 2});
+    unique_ptr<SelectableList> derp = make_unique<SelectableList>(
+      666, 100, 100, 600, 400, graphicsmanager, observer, 2);
     derp->addListItem("BLOOL");
     derp->addListItem("Jesus");
     derp->addListItem("Satan");
@@ -186,19 +187,19 @@ public:
     derp->addListItem("Satan");
     derp->addListItem("Tor");
 
-    shared_ptr<IWidget> button9 = make_shared<Button>(
+    unique_ptr<IWidget> button9 = make_unique<Button>(
       6, 325, 0, 150, 30, graphicsmanager, observer, "Back");
 
     listWidgetGroup =
-      make_shared<WidgetGroup>(0, 0, 0, 800, 600, graphicsmanager);
+      make_unique<WidgetGroup>(0, 0, 0, 800, 600, graphicsmanager);
     listWidgetGroup->addWidget(*derp);
     listWidgetGroup->addWidget(*button9);
 
     // ########################################################################
 
-    currentWidgetGroup = mainWidgetGroup;
+    currentWidgetGroup = mainWidgetGroup.get();
 
-    util::Input::createInstance(WIDTH / 2.0, HEIGHT / 2.0);
+    util::Input::createInstance(width / 2.0, height / 2.0);
     util::Input::getInstance()->setWindow(&window);
 
     shared_ptr<util::Input> input = util::Input::getInstance();

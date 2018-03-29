@@ -14,20 +14,17 @@ namespace widget {
 
 graphics::Sprite
 createLabelText(int x, int y, int height, string name, unsigned layer) {
-  auto& res = Resources::getInstance();
+  Resources& res = Resources::getInstance();
 
   FontMeshBuilder& fontMeshBuilder =
     res.getFontMeshBuilder(config::font_data::fontLayout,
                            config::font_data::fontAtlasWidth,
                            config::font_data::fontAtlasHeight);
 
-  shared_ptr<mesh::MeshElement> fontMesh =
-    fontMeshBuilder.buldMeshForString(name, height - 5);
-
   return Sprite{static_cast<double>(x),
                 y + 5.0,
                 layer,
-                fontMesh,
+                fontMeshBuilder.buldMeshForString(name, height - 5),
                 res.getTexture(config::font_data::font)};
 }
 
