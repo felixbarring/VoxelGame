@@ -3,6 +3,7 @@
 #define SOURCE_DIRECTORY__SRC_DEMO_FRUSTUMDEMO_H_
 
 #include <iostream>
+#include <vector>
 
 #include "../../include/glm/detail/type_mat.hpp"
 #include "../graphics/frustum.h"
@@ -16,13 +17,19 @@
 #include "../graphics/resources.h"
 #include "../graphics/texture/textureCubeMap.h"
 #include "../graphics/viewDirection.h"
+#include "../graphics/mesh/meshElement.h"
 #include "../util/fpsManager.h"
 #include "../util/input.h"
 
 #include <SFML/Window.hpp>
+#include <utility>
+
+#include "../graphics/shaderProgram.h"
+
 
 using namespace util;
 using namespace sf;
+using namespace std;
 
 namespace demo {
 
@@ -62,16 +69,96 @@ public:
     graphics::ViewDirection viewDirection;
 
 
+    //
+
+    float size{1.0};
+
+    vector<GLfloat> vertexData{
+        // Front
+        0, 0, size, // 0
+        size, 0, size, // 1
+        size, size, size, // 2
+        0, size, size, // 3
+
+        // Back
+        size, 0, 0, // 0
+        0, 0, 0, // 1
+        0, size, 0, // 2
+        size, size, 0, // 3
+
+        // Right
+        size, 0, size, // 0
+        size, 0, 0, // 1
+        size, size, 0, // 2
+        size, size, size, // 3
+
+        // Left
+        0, 0, 0, // 0
+        0, 0, size, // 1
+        0, size, size, // 2
+        0, size, 0, // 3
+
+        // Top
+        0, size, size, // 0
+        size, size, size, // 1
+        size, size, 0, // 2
+        0, size, 0, // 3
+
+        // Bottom
+        0, 0, 0, // 0
+        size, 0, 0, // 1
+        size, 0, size, // 2
+        0, 0, size, // 3
+
+      };
+
+    vector<short> elementData{
+      0,      1,      2,      0,      2,      3,
+      0 + 4,  1 + 4,  2 + 4,
+      0 + 4,  2 + 4,  3 + 4,
+      0 + 8,  1 + 8,  2 + 8,  0 + 8,  2 + 8,  3 + 8,
+      0 + 12, 1 + 12, 2 + 12, 0 + 12, 2 + 12, 3 + 12,
+      0 + 16, 1 + 16, 2 + 16, 0 + 16, 2 + 16, 3 + 16,
+      0 + 20, 1 + 20, 2 + 20, 0 + 20, 2 + 20, 3 + 20,
+    };
+
+    // clang-format on
+
+    vector<pair<vector<float>, int>> vobs{{vertexData, 3}};
+    unique_ptr<mesh::MeshElement> mesh{make_unique<mesh::MeshElement>(move(vobs), elementData)};
+
+    //
+
+    // clang-format off
+    string vertex =
+        "#version 330 core \n"
+        "in vec3 positionIn; \n"
+        "uniform mat4 mvp; \n"
+        "void main() { \n"
+        "  gl_Position = mvp * vec4(positionIn, 1.0); \n"
+        "} \n";
+
+    string fragment =
+        "#version 330 core \n"
+        "out vec4 color; \n"
+        "void main() { \n"
+        "  color = vec4(1.0, 0.0, 0.0, 1.0); \n"
+        "} \n";
+
+    // clang-format on
+
+    map<string, int> attributesMap{{"positionIn", 0}};
+    graphics::ShaderProgram program{vertex, fragment, move(attributesMap)};
+
+    graphics::Transform transform{3.0, 0.0, 3.0};
+
+
     // Create A few meshes of different sizes
-
     // Render them
-
     // Make a bounding volume for them
-
     // Use frustum to check if they should be rendered or not.
 
-    Frustum frustum{glm::mat4()}; // TODO Use the mvp matrix here...
-
+    int counter{0};
     while (window.isOpen()) {
       fpsManager.frameStart();
 
@@ -89,6 +176,19 @@ public:
       camera.updateView(glm::vec3(0, 0, 0),
                         viewDirection.getViewDirection(),
                         viewDirection.getUpDirection());
+
+      glm::mat4 modelView = camera.getViewMatrix() * transform.getMatrix();
+      glm::mat4 modelViewProjection = camera.getProjectionMatrix() * modelView;
+      program.setUniformMatrix4f("mvp", modelViewProjection);
+
+      Frustum frustum{modelViewProjection};
+
+      if (!frustum.isCubeInFrustum(3.0, 0.0, 3.0, size, size, size)) {
+        ++counter;
+        cout << "Cube is not in the frustum! " << counter << "\n";
+      }
+
+      mesh->draw();
 
       fpsManager.sync();
       window.display();
