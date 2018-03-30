@@ -16,7 +16,7 @@
 using namespace std;
 using namespace graphics;
 
-namespace widget {
+namespace {
 
 Sprite
 createSprite(int x, int y, unsigned layer, int width, int height) {
@@ -27,6 +27,11 @@ createSprite(int x, int y, unsigned layer, int width, int height) {
                 static_cast<double>(height),
                 Resources::getInstance().getTexture(config::gui_data::button));
 }
+
+}
+
+
+namespace widget {
 
 SelectableList::SelectableList(int id,
                                int x,
@@ -97,27 +102,26 @@ SelectableList::reset() {
   if (m_currentlyToggled && m_currentlyToggled->isToggled())
     m_currentlyToggled->toggle();
 
-  m_currentlyToggled.reset();
 }
 
 void
 SelectableList::draw() {
-  m_graphicsManager.getSpriteBatcher().addBatch(*m_sprite);
-  for (auto b : m_buttons)
-    b->draw();
+  m_graphicsManager.getSpriteBatcher().addBatch(m_sprite);
+  for (auto& b : m_buttons)
+    b.draw();
 }
 
 void
 SelectableList::update(float timePassed) {
-  for (auto b : m_buttons)
-    b->update(timePassed);
+  for (auto& b : m_buttons)
+    b.update(timePassed);
 }
 
-shared_ptr<ToggleButton>
+ToggleButton*
 SelectableList::getButtonWithId(int id) {
-  for (auto b : m_buttons) {
-    if (b->getId() == id)
-      return b;
+  for (auto& b : m_buttons) {
+    if (b.getId() == id)
+      return &b;
   }
   return nullptr; // Should never happen
 }

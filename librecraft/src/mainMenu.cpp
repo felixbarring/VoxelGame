@@ -126,7 +126,7 @@ MainMenu::MainMenu(Game& game,
       0, 325, 350, 150, 30, m_graphicsManager, observer, "Play");
     auto button2 = make_unique<Button>(
       1, 325, 310, 150, 30, m_graphicsManager, observer, "Settings");
-    auto button3 = make_shared<Button>(
+    auto button3 = make_unique<Button>(
       2, 325, 270, 150, 30, m_graphicsManager, observer, "Quit");
 
     m_mainWidgetGroup =
