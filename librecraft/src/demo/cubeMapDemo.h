@@ -2,8 +2,6 @@
 #ifndef SRC_DEMO_CUBEMAPDEMO_H_
 #define SRC_DEMO_CUBEMAPDEMO_H_
 
-#include "iDemo.h"
-
 #include <iostream>
 #include <string>
 
@@ -28,9 +26,9 @@ using namespace sf;
 
 namespace demo {
 
-class CubeMapDemo : public IDemo {
+class CubeMapDemo {
 public:
-  void runDemo() override {
+  void runDemo() {
     FPSManager fpsManager(100);
     const GLuint WIDTH = 800, HEIGHT = 600;
 

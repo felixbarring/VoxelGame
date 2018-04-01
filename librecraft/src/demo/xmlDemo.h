@@ -6,15 +6,14 @@
 #include <string>
 
 #include "../dependencies/tinyXml2/tinyxml2.h"
-#include "iDemo.h"
 
 using std::string;
 
 namespace demo {
 
-class XmlDemo : public IDemo {
+class XmlDemo {
 public:
-  void runDemo() override {
+  void runDemo() {
     using namespace std;
     using namespace tinyxml2;
 

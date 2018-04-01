@@ -2,8 +2,6 @@
 #ifndef SRC_DEMO_CUBEDEMO_H_
 #define SRC_DEMO_CUBEDEMO_H_
 
-#include "iDemo.h"
-
 #include <GL/glew.h>
 
 #include <iostream>
@@ -31,9 +29,9 @@ using graphics::Camera;
 
 namespace demo {
 
-class CubeDemo : public IDemo {
+class CubeDemo {
 public:
-  void runDemo() override {
+  void runDemo() {
 
     util::FPSManager fpsManager(100);
     int WIDTH = 800;

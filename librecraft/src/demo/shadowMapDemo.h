@@ -1,25 +1,30 @@
 #ifndef SRC_DEMO_SHADOWMAPDEMO_H_
 #define SRC_DEMO_SHADOWMAPDEMO_H_
 
-#include "iDemo.h"
+#include <iostream>
+#include <string>
+#include <vector>
 
 #include <GL/glew.h>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-#include <vector>
 
 #include "../graphics/camera.h"
 #include "../graphics/resources.h"
+#include "../util/fpsManager.h"
+#include "../util/input.h"
 
 using graphics::Camera;
+using std::__cxx11::string;
+using util::Input;
 using namespace graphics;
 
 namespace demo {
 
-class ShadowMapDemo : public IDemo {
+class ShadowMapDemo {
 public:
-  void runDemo() override {
+  void runDemo() {
 
     util::FPSManager fpsManager(100);
     const int width{800};
@@ -192,6 +197,7 @@ public:
 
     // clang-format on
 
+    // TODO Remove the shared_ptr ...
     std::shared_ptr<mesh::MeshElement> mesh;
 
     std::vector<std::pair<std::vector<float>, int>> vbos{

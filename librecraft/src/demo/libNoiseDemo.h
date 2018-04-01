@@ -2,17 +2,15 @@
 #ifndef SRC_DEMO_LIBNOISEDEMO_H_
 #define SRC_DEMO_LIBNOISEDEMO_H_
 
-#include "iDemo.h"
-
 #include <iostream>
 
 #include "../dependencies/libnoise/module/perlin.h"
 
 namespace demo {
 
-class LibNoiseDemo : public IDemo {
+class LibNoiseDemo {
 public:
-  void runDemo() override {
+  void runDemo() {
 
     using namespace noise;
     using namespace std;

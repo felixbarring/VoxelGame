@@ -16,7 +16,7 @@
 using namespace std;
 using namespace graphics;
 
-namespace widget {
+namespace {
 
 Sprite
 createSprite(int x, int y, unsigned layer, int width, int height) {
@@ -27,6 +27,9 @@ createSprite(int x, int y, unsigned layer, int width, int height) {
                 static_cast<double>(height),
                 Resources::getInstance().getTexture(config::gui_data::button));
 }
+}
+
+namespace widget {
 
 SelectableList::SelectableList(int id,
                                int x,
@@ -49,6 +52,7 @@ SelectableList::SelectableList(int id,
 
 void
 SelectableList::addListItem(std::string item) {
+
   // TODO Do not add item that already exists.
   int x{m_xCoordinate + 5};
   int y = m_yCoordinate + m_height - (5 + 30 * (1 + m_buttons.size()));
@@ -95,26 +99,24 @@ void
 SelectableList::reset() {
   if (m_currentlyToggled && m_currentlyToggled->isToggled())
     m_currentlyToggled->toggle();
-
-  m_currentlyToggled = nullptr;
 }
 
 void
 SelectableList::draw() {
   m_graphicsManager.getSpriteBatcher().addBatch(m_sprite);
-  for (ToggleButton& b : m_buttons)
+  for (auto& b : m_buttons)
     b.draw();
 }
 
 void
 SelectableList::update(float timePassed) {
-  for (ToggleButton& b : m_buttons)
+  for (auto& b : m_buttons)
     b.update(timePassed);
 }
 
 ToggleButton*
 SelectableList::getButtonWithId(int id) {
-  for (ToggleButton& b : m_buttons) {
+  for (auto& b : m_buttons) {
     if (b.getId() == id)
       return &b;
   }

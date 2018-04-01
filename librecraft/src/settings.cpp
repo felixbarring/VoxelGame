@@ -22,7 +22,6 @@ Settings::Settings(widget::WidgetGroup*& active,
   , m_graphicsManager(graphicsManager)
   , m_activeWidgetGroup{active}
   , m_parentWidgetGroup{parent} {
-
   // ########################################################################
 
   {

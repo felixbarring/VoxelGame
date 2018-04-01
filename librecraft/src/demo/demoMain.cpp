@@ -7,6 +7,7 @@
 #include "cubeDemo.h"
 #include "cubeMapDemo.h"
 #include "fontDemo.h"
+#include "frustumDemo.h"
 #include "guiDemo.h"
 #include "libNoiseDemo.h"
 #include "shadowMapDemo.h"
@@ -28,10 +29,23 @@ main(int, char* argv[]) {
                                         "fontDemo",
                                         "shadowMapDemo",
                                         "libNoiseDemo",
-                                        "xmlDemo"};
-  try {
-    std::string str = argv[1];
+                                        "xmlDemo",
+                                        "frustumDemo"};
 
+  std::string str{};
+  try {
+    std::string tmp = argv[1];
+    str = tmp;
+  } catch (std::exception& e) {
+    std::cout
+      << "Enter which demo you want to run. These are the alternatives \n";
+    for (string& s : alternatives) {
+      std::cout << s << "\n";
+    }
+    return EXIT_SUCCESS;
+  }
+
+  try {
     if (str == "textureDemo") {
       demo::TextureDemo textureDemo;
       textureDemo.runDemo();
@@ -62,15 +76,19 @@ main(int, char* argv[]) {
     } else if (str == "xmlDemo") {
       demo::XmlDemo xmlDemo;
       xmlDemo.runDemo();
+    } else if (str == "frustumDemo") {
+      demo::FrustumDemo frustumDemo;
+      frustumDemo.runDemo();
     } else {
-      std::cout << "Enter which demo you want to run. \n";
+      std::cout << "Unknown demo: " << str << "\n";
+      std::cout
+        << "Enter which demo you want to run. These are the alternatives \n";
       for (string& s : alternatives) {
         std::cout << s << "\n";
       }
     }
 
   } catch (std::exception& e) {
-    std::cout << "Enter which demo you want to run. \n";
     std::cout << "An error occured \n" << e.what() << "\n";
   } catch (...) {
     std::cout << "An error that is not derived from std::exception occured \n";
