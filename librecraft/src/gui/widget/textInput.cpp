@@ -144,7 +144,7 @@ TextInput::update(float timePassed) {
                     m_yCoordinate + s_textHightDifference,
                     m_layer + 1,
                     fontMeshBuilder.buldMeshForString(
-                          m_input, m_height - s_textHightDifference),
+                      m_input, m_height - s_textHightDifference),
                     res.getTexture(font));
 
     m_cursor.setLocation(m_xCoordinate + strLength,

@@ -7,13 +7,13 @@
 #include "cubeDemo.h"
 #include "cubeMapDemo.h"
 #include "fontDemo.h"
+#include "frustumDemo.h"
 #include "guiDemo.h"
 #include "libNoiseDemo.h"
 #include "shadowMapDemo.h"
 #include "spriteDemo.h"
 #include "textureDemo.h"
 #include "xmlDemo.h"
-#include "frustumDemo.h"
 
 #ifdef DOCTEST_CONFIG_DISABLE
 
@@ -37,7 +37,8 @@ main(int, char* argv[]) {
     std::string tmp = argv[1];
     str = tmp;
   } catch (std::exception& e) {
-    std::cout << "Enter which demo you want to run. These are the alternatives \n";
+    std::cout
+      << "Enter which demo you want to run. These are the alternatives \n";
     for (string& s : alternatives) {
       std::cout << s << "\n";
     }
@@ -80,7 +81,8 @@ main(int, char* argv[]) {
       frustumDemo.runDemo();
     } else {
       std::cout << "Unknown demo: " << str << "\n";
-      std::cout << "Enter which demo you want to run. These are the alternatives \n";
+      std::cout
+        << "Enter which demo you want to run. These are the alternatives \n";
       for (string& s : alternatives) {
         std::cout << s << "\n";
       }
@@ -94,4 +96,3 @@ main(int, char* argv[]) {
 }
 
 #endif
-

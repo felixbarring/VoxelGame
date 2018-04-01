@@ -27,9 +27,7 @@ createSprite(int x, int y, unsigned layer, int width, int height) {
                 static_cast<double>(height),
                 Resources::getInstance().getTexture(config::gui_data::button));
 }
-
 }
-
 
 namespace widget {
 
@@ -101,7 +99,6 @@ void
 SelectableList::reset() {
   if (m_currentlyToggled && m_currentlyToggled->isToggled())
     m_currentlyToggled->toggle();
-
 }
 
 void

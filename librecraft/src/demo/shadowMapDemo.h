@@ -1,9 +1,9 @@
 #ifndef SRC_DEMO_SHADOWMAPDEMO_H_
 #define SRC_DEMO_SHADOWMAPDEMO_H_
 
+#include <iostream>
 #include <string>
 #include <vector>
-#include <iostream>
 
 #include <GL/glew.h>
 
