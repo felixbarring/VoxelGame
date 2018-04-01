@@ -61,94 +61,46 @@ public:
     graphics::Camera camera{0, 0, 0};
     graphics::ViewDirection viewDirection;
 
-    //
-
     float size{1.0};
+
+    // clang-format off
 
     vector<GLfloat> vertexData{
       // Front
-      0,
-      0,
-      size, // 0
-      size,
-      0,
-      size, // 1
-      size,
-      size,
-      size, // 2
-      0,
-      size,
-      size, // 3
+      0, 0, size, // 0
+      size, 0, size, // 1
+      size, size, size, // 2
+      0, size, size, // 3
 
       // Back
-      size,
-      0,
-      0, // 0
-      0,
-      0,
-      0, // 1
-      0,
-      size,
-      0, // 2
-      size,
-      size,
-      0, // 3
+      size, 0, 0, // 0
+      0, 0, 0, // 1
+      0, size, 0, // 2
+      size, size, 0, // 3
 
       // Right
-      size,
-      0,
-      size, // 0
-      size,
-      0,
-      0, // 1
-      size,
-      size,
-      0, // 2
-      size,
-      size,
-      size, // 3
+      size, 0, size, // 0
+      size, 0, 0, // 1
+      size, size, 0, // 2
+      size, size, size, // 3
 
       // Left
-      0,
-      0,
-      0, // 0
-      0,
-      0,
-      size, // 1
-      0,
-      size,
-      size, // 2
-      0,
-      size,
-      0, // 3
+      0, 0, 0, // 0
+      0, 0, size, // 1
+      0, size, size, // 2
+      0, size, 0, // 3
 
       // Top
-      0,
-      size,
-      size, // 0
-      size,
-      size,
-      size, // 1
-      size,
-      size,
-      0, // 2
-      0,
-      size,
-      0, // 3
+      0, size, size, // 0
+      size, size, size, // 1
+      size, size, 0, // 2
+      0, size, 0, // 3
 
       // Bottom
-      0,
-      0,
-      0, // 0
-      size,
-      0,
-      0, // 1
-      size,
-      0,
-      size, // 2
-      0,
-      0,
-      size, // 3
+      0, 0, 0, // 0
+      size, 0, 0, // 1
+      size, 0, size, // 2
+      0, 0, size, // 3
 
     };
 
@@ -159,15 +111,10 @@ public:
       0 + 16, 2 + 16, 3 + 16, 0 + 20, 1 + 20, 2 + 20, 0 + 20, 2 + 20, 3 + 20,
     };
 
-    // clang-format on
-
     vector<pair<vector<float>, int>> vobs{{vertexData, 3}};
     unique_ptr<mesh::MeshElement> mesh{
       make_unique<mesh::MeshElement>(move(vobs), elementData)};
 
-    //
-
-    // clang-format off
     string vertex =
         "#version 330 core \n"
         "in vec3 positionIn; \n"
