@@ -23,7 +23,8 @@ public:
    *                   sound file.
    */
   FootStepSoundPlayer(util::SoundPlayer& player,
-                      std::vector<std::string> stepSounds);
+                      std::vector<std::string> stepSounds,
+                      double footStepDelay);
 
   /**
    * @brief Plays stepping sounds at a regular interval.
@@ -61,7 +62,7 @@ private:
   util::SoundPlayer& m_soundPlayer;
 
   double m_accumulatedTime{};
-  double m_footStepDelay{0.35};
+  double m_footStepDelay{};
 };
 
 #endif /* SRC_MODEL_WORLD_ENTITY_FOOTSTEPSOUNDPLAYER_H_ */

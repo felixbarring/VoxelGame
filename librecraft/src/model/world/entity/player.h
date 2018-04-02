@@ -58,12 +58,6 @@ private:
 
   entity::AABB createAABB();
 
-  glm::vec3 m_location{0, 0, 0}; // The location of the camera
-
-  chunk::ChunkManager& m_chunkManager;
-  FootStepSoundPlayer m_stepPlayer;
-  graphics::GraphicsManager& m_graphicsManager;
-
   const float m_width{0.8};
   const float m_height{1.7};
   const float m_depth{0.8};
@@ -78,6 +72,12 @@ private:
   bool m_isOnGround{false};
 
   float m_flySpeed{8};
+
+  glm::vec3 m_location{0, 0, 0}; // The location of the camera
+
+  chunk::ChunkManager& m_chunkManager;
+  FootStepSoundPlayer m_stepPlayer;
+  graphics::GraphicsManager& m_graphicsManager;
 
   glm::vec3 m_speed{0, 0, 0};
   glm::vec3 m_frameSpeed{};

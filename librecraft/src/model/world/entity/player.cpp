@@ -23,13 +23,23 @@ using namespace chunk;
 using namespace config;
 using namespace cube_data;
 
+namespace {
+double
+computeFootStepDelay(double value) {
+  static const double constValue{3.0};
+  return constValue / value;
+}
+}
+
 namespace entity {
 
 Player::Player(chunk::ChunkManager& chunkManager,
                util::SoundPlayer& soundPlayer,
                graphics::GraphicsManager& graphicsManager)
   : m_chunkManager{chunkManager}
-  , m_stepPlayer{soundPlayer, config::audio::footStepSounds}
+  , m_stepPlayer{soundPlayer,
+                 config::audio::footStepSounds,
+                 computeFootStepDelay(m_movementSpeed)}
   , m_graphicsManager{graphicsManager} {
 }
 
@@ -69,6 +79,7 @@ Player::getLastSelectedCube() {
 void
 Player::setSpeed(double value) {
   m_movementSpeed = value;
+  m_stepPlayer.setWalkingIntervall(computeFootStepDelay(m_movementSpeed));
 }
 
 void

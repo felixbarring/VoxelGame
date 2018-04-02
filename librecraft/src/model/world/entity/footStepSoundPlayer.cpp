@@ -10,9 +10,11 @@ using std::random_device;
 using std::uniform_int_distribution;
 
 FootStepSoundPlayer::FootStepSoundPlayer(util::SoundPlayer& player,
-                                         std::vector<std::string> stepSounds)
+                                         std::vector<std::string> stepSounds,
+                                         double footStepDelay)
   : m_stepSounds{move(stepSounds)}
-  , m_soundPlayer{player} {
+  , m_soundPlayer{player}
+  , m_footStepDelay{footStepDelay} {
 }
 
 void
