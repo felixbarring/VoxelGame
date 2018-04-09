@@ -11,6 +11,7 @@
 #include "../../../util/soundPlayer.h"
 #include "../../../util/voxel.h"
 #include "../chunk/chunkManager.h"
+#include "../explosionEvent.h"
 #include "../explosions.h"
 
 #include "aabb.h"
@@ -50,6 +51,11 @@ Player::update(float timePassed) {
   updateSpeed(timePassed);
   handlePhysics();
   updateCameraAndTargetCube(); // Updates the camera as well
+
+  for (kabom::ExplosionEvent& explosionEvent : m_explosionEvent) {
+    if (!explosionEvent.isDone())
+      explosionEvent.update(timePassed);
+  }
 
   if (length(m_speed) && m_isOnGround)
     m_stepPlayer.walkingActive(timePassed);
@@ -247,12 +253,12 @@ Player::updateCameraAndTargetCube() {
     if (input->action1Pressed) {
 
       if (m_chunkManager.getCubeId(selectedCube) == TNT) {
-        kabom::Explosions explosion(5, m_chunkManager);
-        explosion.explode(selectedCube);
+        m_explosionEvent.push_back(
+          kabom::ExplosionEvent{selectedCube,
+                                kabom::Explosions{5, m_chunkManager},
+                                m_graphicsManager});
       }
-
       m_chunkManager.removeCube(selectedCube);
-
       return;
     } else if (input->action2Pressed) {
       AABB playerAAABB = createAABB();

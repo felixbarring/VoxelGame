@@ -33,9 +33,6 @@ public:
    */
   void update();
 
-  // TODO Maybe use glm::vec3 instead of x, y, z.
-  // Yes, dot that :-)
-
   Voxel getVoxel(int x, int y, int z) const;
 
   Voxel getVoxel(glm::vec3 location) const;

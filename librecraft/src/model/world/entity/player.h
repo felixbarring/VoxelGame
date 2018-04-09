@@ -14,6 +14,7 @@
 #include "../../../config/data.h"
 #include "../../../graphics/graphicsManager.h"
 #include "../chunk/chunkManager.h"
+#include "../explosionEvent.h"
 #include "footStepSoundPlayer.h"
 
 namespace entity {
@@ -87,6 +88,8 @@ private:
   int m_cubeUsedForBuilding{0};
 
   const AABB* m_limit{};
+
+  std::vector<kabom::ExplosionEvent> m_explosionEvent{};
 };
 
 } /* namespace entity */
