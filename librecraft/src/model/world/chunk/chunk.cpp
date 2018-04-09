@@ -153,6 +153,15 @@ Chunk::propagateLights() {
 }
 
 void
+Chunk::update() {
+  if (m_graphicsDirty) {
+    updateGraphics();
+    updateNeighborGraphics();
+  }
+  m_graphicsDirty = false;
+}
+
+void
 Chunk::forceUpdateGraphics() {
   for (int i{0}; i < CHUNK_HEIGHT / GRAPHICAL_CHUNK_HEIGHT; ++i)
     m_dirtyRegions.emplace(i);
@@ -209,8 +218,8 @@ Chunk::setCube(int x, int y, int z, char id) {
   if (m_cubes[x][y][z].getId() == BED_ROCK)
     return;
 
-  Voxel& voxel = m_cubes[x][y][z];
-  int replacedId = voxel.getId();
+  Voxel& voxel{m_cubes[x][y][z]};
+  int replacedId{voxel.getId()};
   voxel.setId(id);
 
   // If we removed a cube
@@ -348,8 +357,6 @@ Chunk::getVoxel2(int x, int y, int z) {
 
 void
 Chunk::updateLightningCubeRemoved(Voxel& voxel, int x, int y, int z) {
-  updateDirtyRegions(y);
-
   // If the cube is adjacent to a neighbor, the neighbor needs to be update.
   if (x == m_width - 1 && m_rightNeighbor)
     m_rightNeighbor->updateDirtyRegions(y);
@@ -370,17 +377,19 @@ Chunk::updateLightningCubeRemoved(Voxel& voxel, int x, int y, int z) {
       propagateSunLight(v.x, v.y, v.z);
 
   } else {
-    int highestSLV = std::max(highestSunLVFromNeighbors(x, y, z) - 1, 0);
+    int highestSLV{std::max(highestSunLVFromNeighbors(x, y, z) - 1, 0)};
     voxel.setSunLightValue(highestSLV);
     propagateSunLight(x, y, z);
   }
 
-  int highestOLV = std::max(highestOtherLVFromNeighbors(x, y, z) - 1, 0);
+  int highestOLV{std::max(highestOtherLVFromNeighbors(x, y, z) - 1, 0)};
   voxel.setOtherLightValue(highestOLV);
   propagateOtherLight(x, y, z);
 
-  updateGraphics();
-  updateNeighborGraphics();
+  // TODO This should not be done here...
+  updateDirtyRegions(y);
+
+  m_graphicsDirty = true;
 }
 
 void
@@ -403,8 +412,8 @@ Chunk::updateLightningCubeAdded(int x, int y, int z) {
   }
 
   updateDirtyRegions(y);
-  updateGraphics();
-  updateNeighborGraphics();
+
+  m_graphicsDirty = true;
 }
 
 void
@@ -875,7 +884,7 @@ Chunk::dePropagateSunlight(int x, int y, int z, int _lightValue) {
 }
 
 void
-Chunk::dePropagateOtherlight(int x, int y, int z /*, int _lightValue*/) {
+Chunk::dePropagateOtherlight(int x, int y, int z) {
   updateDirtyRegions(y);
 
   queue<vec3> depropagates;

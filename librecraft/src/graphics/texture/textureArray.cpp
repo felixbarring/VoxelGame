@@ -45,7 +45,7 @@ TextureArray::TextureArray(std::vector<std::string> paths,
   int i{0};
   for (std::string& path : paths) {
     if (!image.loadFromFile(path)) {
-      std::cout << "Coulnd not load image" << path << "\n";
+      std::cout << "Could not load image" << path << "\n";
       return;
     }
     if (image.getSize().x != width || image.getSize().y != height) {

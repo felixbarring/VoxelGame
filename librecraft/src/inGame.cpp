@@ -61,6 +61,7 @@ InGame::InGame(Game& game,
         m_state = GameState::NoOverlay;
         m_chunkManager.saveWorld();
         m_chunkManager.clearWorld();
+        m_updateChunkManager = false;
         break;
       }
       case 1: {
@@ -352,7 +353,11 @@ InGame::update(double timePassed) {
     m_activeWidgetGroup->draw();
   }
 
-  m_chunkManager.update();
+  // This is all a hack to avoid a crash, should fix the design.
+  if (m_updateChunkManager) {
+    m_chunkManager.update();
+  }
+  m_updateChunkManager = true;
 
   m_graphicsManager.clearScreenSunDependent();
 

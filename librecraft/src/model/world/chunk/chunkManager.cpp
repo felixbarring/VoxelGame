@@ -82,11 +82,13 @@ ChunkManager::createWorld() {
   }
 }
 
+// TODO These functions does not handle if there is more than one chunk in y.
+
 void
-ChunkManager::saveWorld() {
+ChunkManager::saveWorld() const {
   const int lam = m_lenghtAcrossMatrix;
-  for (int x = 0; x < lam; ++x) {
-    for (int z = 0; z < lam; z++) {
+  for (int x{0}; x < lam; ++x) {
+    for (int z{0}; z < lam; ++z) {
       m_chunks[x][0][z]->storeChunk();
     }
   }
@@ -95,22 +97,30 @@ ChunkManager::saveWorld() {
 void
 ChunkManager::clearWorld() {
   const int lam = m_lenghtAcrossMatrix;
-  for (int x = 0; x < lam; x++) {
-    for (int z = 0; z < lam; z++) {
+  for (int x{0}; x < lam; ++x) {
+    for (int z{0}; z < lam; ++z) {
       m_chunks[x][0][z]->removeAllNeighbors();
       m_chunks[x][0][z].reset();
     }
   }
 }
 
+// TODO Should probably have an tick as argument
+
 void
 ChunkManager::update() {
   // When/if AI is added like npc, this could be a good
   // place to update them
+  const int lam = m_lenghtAcrossMatrix;
+  for (int x{0}; x < lam; ++x) {
+    for (int z{0}; z < lam; ++z) {
+      m_chunks[x][0][z]->update();
+    }
+  }
 }
 
 Voxel
-ChunkManager::getVoxel(int x, int y, int z) {
+ChunkManager::getVoxel(int x, int y, int z) const {
   // Used to avoid Division every time the function is called.
   static float xD = 1.0 / CHUNK_WIDTH_AND_DEPTH;
   static float yD = 1.0 / CHUNK_HEIGHT;
@@ -140,20 +150,42 @@ ChunkManager::getVoxel(int x, int y, int z) {
   return m_chunks[chunkX][chunkY][chunkZ]->getVoxel(localX, localY, localZ);
 }
 
+Voxel
+ChunkManager::getVoxel(glm::vec3 location) const {
+  return getVoxel(location.x, location.y, location.z);
+}
+
 char
-ChunkManager::getCubeId(int x, int y, int z) {
+ChunkManager::getCubeId(int x, int y, int z) const {
   return getVoxel(x, y, z).getId();
 }
 
+char
+ChunkManager::getCubeId(glm::vec3 location) const {
+  return getVoxel(location.x, location.y, location.z).getId();
+}
+
 bool
-ChunkManager::isSolid(int x, int y, int z) {
+ChunkManager::isSolid(int x, int y, int z) const {
   // Will not be correct if more cubes that are not solid are added.
   return !isAirOrWater(x, y, z);
 }
 
 bool
-ChunkManager::isAirOrWater(int x, int y, int z) {
+ChunkManager::isSolid(glm::vec3 location) const {
+  // Will not be correct if more cubes that are not solid are added.
+  return !isAirOrWater(location.x, location.y, location.z);
+}
+
+bool
+ChunkManager::isAirOrWater(int x, int y, int z) const {
   char cubeId = getCubeId(x, y, z);
+  return cubeId == AIR || cubeId == WATER;
+}
+
+bool
+ChunkManager::isAirOrWater(glm::vec3 location) const {
+  char cubeId = getCubeId(location.x, location.y, location.z);
   return cubeId == AIR || cubeId == WATER;
 }
 
@@ -165,6 +197,17 @@ ChunkManager::removeCube(int x, int y, int z) {
       setCube(x, y, z, WATER);
     else
       setCube(x, y, z, AIR);
+  }
+}
+
+void
+ChunkManager::removeCube(glm::vec3 location) {
+  char voxel = getCubeId(location.x, location.y, location.z);
+  if (voxel != BED_ROCK && voxel != WATER) {
+    if (hasWaterNeighbour(location.x, location.y, location.z))
+      setCube(location.x, location.y, location.z, WATER);
+    else
+      setCube(location.x, location.y, location.z, AIR);
   }
 }
 
@@ -196,10 +239,15 @@ ChunkManager::setCube(int x, int y, int z, char id) {
     return;
 
   m_chunks[chunkX][chunkY][chunkZ]->setCube(localX, localY, localZ, id);
-  if (id == AIR || id == WATER)
-    m_soundPlayer.playSound(config::audio::cubeRemoved);
-  else
-    m_soundPlayer.playSound(config::audio::cubeAdded);
+  //  if (id == AIR || id == WATER)
+  //    m_soundPlayer.playSound(config::audio::cubeRemoved);
+  //  else
+  //    m_soundPlayer.playSound(config::audio::cubeAdded);
+}
+
+void
+ChunkManager::setCube(glm::vec3 location, char id) {
+  setCube(location.x, location.y, location.z, id);
 }
 
 void
@@ -231,7 +279,7 @@ ChunkManager::intersectWithSolidCube(vec3 origin,
                                      vec3 direction,
                                      vec3& intersected,
                                      vec3& previous,
-                                     float searchLength) {
+                                     float searchLength) const {
   static const double smallNumber = 0.0001;
 
   // When the player is exactly located at an integer position the selection
@@ -324,7 +372,7 @@ ChunkManager::loadWorldWhenDecentered(bool value) {
 }
 
 const entity::AABB&
-ChunkManager::getLimit() {
+ChunkManager::getLimit() const {
   return m_limit;
 }
 

@@ -44,95 +44,199 @@ const char STONE_BRICK = 15;
 const char LOG_BIRCH = 16;
 const char LEAVES_BIRCH = 17;
 const char LIGHT = 18;
+const char TNT = 19;
 
 const char LAST_CUBE_USED_FOR_GENERATION = LOG_BIRCH;
-const char LAST_CUBE_USED_FOR_BUILDING = LIGHT; // Better name needed
+const char LAST_CUBE_USED_FOR_BUILDING = TNT;
 
-const char WATER = 19;
-const char BED_ROCK = 20;
+const char WATER = 20;
+const char BED_ROCK = 21;
 
-// Used for looping over all types, except for air. water, bedrock
 const char LAST_CUBE = BED_ROCK;
+
+const std::vector<std::string> textures{
+  pre + "cubes/grass_side.png",
+  pre + "cubes/grass_top.png",
+  pre + "cubes/dirt.png",
+  pre + "cubes/coarse_dirt.png",
+  pre + "cubes/stone.png",
+  pre + "cubes/stone_andesite.png",
+  pre + "cubes/brick.png",
+  pre + "cubes/brick_top.png",
+  pre + "cubes/sand.png",
+  pre + "cubes/cactus_side.png",
+  pre + "cubes/cactus_bottom.png",
+  pre + "cubes/cactus_top.png",
+  pre + "cubes/coal_block.png",
+  pre + "cubes/coal_ore.png",
+  pre + "cubes/cobblestone.png",
+  pre + "cubes/cobblestone_bottom.png",
+  pre + "cubes/cobblestone_top.png",
+  pre + "cubes/end_bricks.png",
+  pre + "cubes/end_stone.png",
+  pre + "cubes/gravel.png",
+  pre + "cubes/planks_big_oak.png",
+  pre + "cubes/stonebrick.png",
+  pre + "cubes/log_birch.png",
+  pre + "cubes/log_birch_top.png",
+  pre + "cubes/leaves_birch.png",
+  pre + "cubes/light.png",
+  pre + "cubes/water.png",
+  pre + "cubes/bedrock.png",
+  pre + "cubes/tnt.png",
+};
+
+int
+findTexture(std::string texture) {
+  for (int i{0}; i < textures.size(); ++i) {
+    if (textures[i] == texture)
+      return i;
+  }
+  return 0;
+}
 
 const int SIDE_TEXTURE = 0;
 const int TOP_TEXTURE = 1;
 const int BOTTOM_TEXTURE = 2;
 
-// 0 = Side, 1 = Top, 2 = Bottom
-const char BLOCK_TEXTURES[21][3]{
-  {0, 1, 2},    // GRASS
-  {2, 2, 2},    // DIRT
-  {3, 3, 3},    // COARSE_DIRT
-  {4, 4, 4},    // STONE
-  {5, 5, 5},    // STONE_ANDESITE
-  {6, 7, 7},    // BRICK_WALL
-  {8, 8, 8},    // SAND
-  {9, 11, 10},  // CACTUS
-  {12, 12, 12}, // COAL
-  {13, 13, 13}, // COAL_ORE
-  {14, 16, 15}, // COBBLESTONE
-  {17, 17, 17}, // END_BRICKS
-  {18, 18, 18}, // END_STONE
-  {19, 19, 19}, // GRAVEL
-  {20, 20, 20}, // PLANKS
-  {21, 21, 21}, // STONE_BRICK
-  {22, 23, 23}, // LOG_BIRCH
-  {1, 1, 1},    // LEAVES_BIRCH
-  {25, 25, 25}, // LIGHT
-  {26, 26, 26}, // WATER
-  {27, 27, 27}, // BEDROCK
+std::unordered_map<int, std::vector<int>> BLOCK_TEXTURES{
+  {GRASS,
+   {// std::make_tuple(
+    findTexture(pre + "cubes/grass_side.png"),
+    findTexture(pre + "cubes/grass_top.png"),
+    findTexture(pre + "cubes/dirt.png")}},
 
+  {DIRT,
+   {// std::make_tuple(
+    findTexture(pre + "cubes/dirt.png"),
+    findTexture(pre + "cubes/dirt.png"),
+    findTexture(pre + "cubes/dirt.png")}},
+
+  {COARSE_DIRT,
+   {// std::make_tuple(
+    findTexture(pre + "cubes/coarse_dirt.png"),
+    findTexture(pre + "cubes/coarse_dirt.png"),
+    findTexture(pre + "cubes/coarse_dirt.png")}},
+
+  {STONE,
+   {// std::make_tuple(
+    findTexture(pre + "cubes/stone_andesite.png"),
+    findTexture(pre + "cubes/stone_andesite.png"),
+    findTexture(pre + "cubes/stone_andesite.png")}},
+
+  {STONE_ANDESITE,
+   {// std::make_tuple(
+    findTexture(pre + "cubes/stone_andesite.png"),
+    findTexture(pre + "cubes/stone_andesite.png"),
+    findTexture(pre + "cubes/stone_andesite.png")}},
+
+  {BRICK_WALL,
+   {// std::make_tuple(
+    findTexture(pre + "cubes/brick.png"),
+    findTexture(pre + "cubes/brick_top.png"),
+    findTexture(pre + "cubes/brick.png")}},
+
+  {SAND,
+   {// std::make_tuple(
+    findTexture(pre + "cubes/sand.png"),
+    findTexture(pre + "cubes/sand.png"),
+    findTexture(pre + "cubes/sand.png")}},
+
+  {CACTUS,
+   {// std::make_tuple(
+    findTexture(pre + "cubes/cactus_side.png"),
+    findTexture(pre + "cubes/cactus_bottom.png"),
+    findTexture(pre + "cubes/cactus_top.png")}},
+
+  {COAL,
+   {// std::make_tuple(
+    findTexture(pre + "cubes/coal_block.png"),
+    findTexture(pre + "cubes/coal_block.png"),
+    findTexture(pre + "cubes/coal_block.png")}},
+
+  {COAL_ORE,
+   {// std::make_tuple(
+    findTexture(pre + "cubes/coal_ore.png"),
+    findTexture(pre + "cubes/coal_ore.png"),
+    findTexture(pre + "cubes/coal_ore.png")}},
+
+  {COBBLESTONE,
+   {// std::make_tuple(
+    findTexture(pre + "cubes/cobblestone.png"),
+    findTexture(pre + "cubes/cobblestone_bottom.png"),
+    findTexture(pre + "cubes/cobblestone_top.png")}},
+
+  {END_BRICKS,
+   {// std::make_tuple(
+    findTexture(pre + "cubes/end_bricks.png"),
+    findTexture(pre + "cubes/end_bricks.png"),
+    findTexture(pre + "cubes/end_bricks.png")}},
+
+  {END_STONE,
+   {// std::make_tuple(
+    findTexture(pre + "cubes/end_stone.png"),
+    findTexture(pre + "cubes/end_stone.png"),
+    findTexture(pre + "cubes/end_stone.png")}},
+
+  {GRAVEL,
+   {// std::make_tuple(
+    findTexture(pre + "cubes/gravel.png"),
+    findTexture(pre + "cubes/gravel.png"),
+    findTexture(pre + "cubes/gravel.png")}},
+
+  {PLANKS,
+   {// std::make_tuple(
+    findTexture(pre + "cubes/planks_big_oak.png"),
+    findTexture(pre + "cubes/planks_big_oak.png"),
+    findTexture(pre + "cubes/planks_big_oak.png")}},
+
+  {STONE_BRICK,
+   {// std::make_tuple(
+    findTexture(pre + "cubes/stonebrick.png"),
+    findTexture(pre + "cubes/stonebrick.png"),
+    findTexture(pre + "cubes/stonebrick.png")}},
+
+  {LOG_BIRCH,
+   {// std::make_tuple(
+    findTexture(pre + "cubes/log_birch.png"),
+    findTexture(pre + "cubes/log_birch_top.png"),
+    findTexture(pre + "cubes/log_birch_top.png")}},
+
+  // TODO Fix better leaves :-)
+  {LEAVES_BIRCH,
+   {// std::make_tuple(
+    findTexture(pre + "cubes/grass_top.png"),
+    findTexture(pre + "cubes/grass_top.png"),
+    findTexture(pre + "cubes/grass_top.png")}},
+
+  {LIGHT,
+   {// std::make_tuple(
+    findTexture(pre + "cubes/light.png"),
+    findTexture(pre + "cubes/light.png"),
+    findTexture(pre + "cubes/light.png")}},
+
+  {WATER,
+   {// std::make_tuple(
+    findTexture(pre + "cubes/water.png"),
+    findTexture(pre + "cubes/water.png"),
+    findTexture(pre + "cubes/water.png")}},
+
+  {BED_ROCK,
+   {// std::make_tuple(
+    findTexture(pre + "cubes/bedrock.png"),
+    findTexture(pre + "cubes/bedrock.png"),
+    findTexture(pre + "cubes/bedrock.png")}},
+
+  {TNT,
+   {// std::make_tuple(
+    findTexture(pre + "cubes/tnt.png"),
+    findTexture(pre + "cubes/tnt.png"),
+    findTexture(pre + "cubes/tnt.png")}},
 };
 
 const unsigned TEXTURE_WIDTH = 32;
 const unsigned TEXTURE_HEIGHT = 32;
 
-const std::vector<std::string> textures{
-  pre + "cubes/grass_side.png",
-  pre + "cubes/grass_top.png",
-
-  pre + "cubes/dirt.png",
-  pre + "cubes/coarse_dirt.png",
-
-  pre + "cubes/stone.png",
-  pre + "cubes/stone_andesite.png",
-
-  pre + "cubes/brick.png",
-  pre + "cubes/brick_top.png",
-
-  pre + "cubes/sand.png",
-
-  pre + "cubes/cactus_side.png",
-  pre + "cubes/cactus_bottom.png",
-  pre + "cubes/cactus_top.png",
-
-  pre + "cubes/coal_block.png",
-  pre + "cubes/coal_ore.png",
-
-  pre + "cubes/cobblestone.png",
-  pre + "cubes/cobblestone_bottom.png",
-  pre + "cubes/cobblestone_top.png",
-
-  pre + "cubes/end_bricks.png",
-
-  pre + "cubes/end_stone.png",
-
-  pre + "cubes/gravel.png",
-
-  pre + "cubes/planks_big_oak.png",
-
-  pre + "cubes/stonebrick.png",
-
-  pre + "cubes/log_birch.png",
-  pre + "cubes/log_birch_top.png",
-  pre + "cubes/leaves_birch.png",
-
-  pre + "cubes/light.png",
-  pre + "cubes/water.png",
-  pre + "cubes/bedrock.png",
-};
-
-// TODO Fix better thumbnails
 const std::vector<std::string> thumbnails{
   pre + "cubes/grass_side.png",     pre + "cubes/dirt.png",
   pre + "cubes/coarse_dirt.png",    pre + "cubes/stone.png",
@@ -143,8 +247,7 @@ const std::vector<std::string> thumbnails{
   pre + "cubes/end_stone.png",      pre + "cubes/gravel.png",
   pre + "cubes/planks_big_oak.png", pre + "cubes/stonebrick.png",
   pre + "cubes/log_birch.png",      pre + "cubes/leaves_birch.png",
-  pre + "cubes/light.png",
-};
+  pre + "cubes/light.png",          pre + "cubes/tnt.png"};
 }
 
 namespace graphics_data {

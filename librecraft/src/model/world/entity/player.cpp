@@ -11,6 +11,7 @@
 #include "../../../util/soundPlayer.h"
 #include "../../../util/voxel.h"
 #include "../chunk/chunkManager.h"
+#include "../explosions.h"
 
 #include "aabb.h"
 
@@ -244,7 +245,14 @@ Player::updateCameraAndTargetCube() {
     m_lastSelecteCube = selectedCube;
 
     if (input->action1Pressed) {
-      m_chunkManager.removeCube(selectedCube.x, selectedCube.y, selectedCube.z);
+
+      if (m_chunkManager.getCubeId(selectedCube) == TNT) {
+        kabom::Explosions explosion(5, m_chunkManager);
+        explosion.explode(selectedCube);
+      }
+
+      m_chunkManager.removeCube(selectedCube);
+
       return;
     } else if (input->action2Pressed) {
       AABB playerAAABB = createAABB();

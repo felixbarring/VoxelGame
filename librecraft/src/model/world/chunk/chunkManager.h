@@ -2,6 +2,7 @@
 #define SRC_MODEL_WORLD_CHUNK_CHUNKMANAGER_H_
 
 #include "ThreadPool.h"
+#include <glm/detail/type_vec.hpp>
 #include <memory>
 #include <vector>
 
@@ -23,7 +24,7 @@ public:
 
   void createWorld();
 
-  void saveWorld();
+  void saveWorld() const;
 
   void clearWorld();
 
@@ -32,17 +33,32 @@ public:
    */
   void update();
 
-  Voxel getVoxel(int x, int y, int z);
+  // TODO Maybe use glm::vec3 instead of x, y, z.
+  // Yes, dot that :-)
 
-  char getCubeId(int x, int y, int z);
+  Voxel getVoxel(int x, int y, int z) const;
 
-  bool isSolid(int x, int y, int z);
+  Voxel getVoxel(glm::vec3 location) const;
 
-  bool isAirOrWater(int x, int y, int z);
+  char getCubeId(int x, int y, int z) const;
+
+  char getCubeId(glm::vec3 location) const;
+
+  bool isSolid(int x, int y, int z) const;
+
+  bool isSolid(glm::vec3 location) const;
+
+  bool isAirOrWater(int x, int y, int z) const;
+
+  bool isAirOrWater(glm::vec3 location) const;
 
   void removeCube(int x, int y, int z);
 
+  void removeCube(glm::vec3 location);
+
   void setCube(int x, int y, int z, char id);
+
+  void setCube(glm::vec3, char id);
 
   /**
    * Sets the center chunk
@@ -62,11 +78,11 @@ public:
                               glm::vec3 direction,
                               glm::vec3& intersected,
                               glm::vec3& previous,
-                              float searchLength);
+                              float searchLength) const;
 
   void loadWorldWhenDecentered(bool value = true);
 
-  const entity::AABB& getLimit();
+  const entity::AABB& getLimit() const;
 
 private:
   entity::AABB createLimit();
@@ -111,10 +127,10 @@ private:
 
   entity::AABB m_limit;
 
-  // Mutex is non movable, hence the uniqueptr
+  // Mutex is non movable, hence the unique_ptr
   std::unique_ptr<std::mutex> m_bussyMovingChunksMutex{};
 };
-}
-/* namespace chunk */
+
+} /* namespace chunk */
 
 #endif /* SRC_MODEL_WORLD_CHUNK_CHUNKMANAGER_H_ */
