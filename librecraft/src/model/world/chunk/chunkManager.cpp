@@ -239,6 +239,11 @@ ChunkManager::setCube(int x, int y, int z, char id) {
     return;
 
   m_chunks[chunkX][chunkY][chunkZ]->setCube(localX, localY, localZ, id);
+
+  // TODO Play the sound somwhere, but not when an explosion removes a lot of
+  // them. Probably best that the clisnt(player) is responsible for playing the
+  // sound.
+
   //  if (id == AIR || id == WATER)
   //    m_soundPlayer.playSound(config::audio::cubeRemoved);
   //  else

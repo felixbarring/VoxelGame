@@ -14,7 +14,7 @@ namespace graphics {
 class Transform {
 public:
   /**
-   * 2brief Creates a transform matrix at the the specified location with no
+   * @brief Creates a transform matrix at the the specified location with no
    * rotation.
    *
    * @param x The x location for the transform.

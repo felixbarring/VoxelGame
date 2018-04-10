@@ -2,26 +2,53 @@
 #define SRC_MODEL_WORLD_EXPLOSIONEVENT_H_
 
 #include <iostream>
+#include <vector>
 
 #include <glm/detail/type_vec.hpp>
 
 #include "../../graphics/graphicsManager.h"
 #include "../../graphics/transform.h"
-#include "explosions.h"
+#include "chunk/chunkManager.h"
 
 namespace kabom {
 
+
+// Comment about suporting copy...
+/**
+ *
+ *
+ * @brief
+ */
 class ExplosionEvent {
 public:
+
+  /**
+   * @brief
+   *
+   * @param location
+   * @param radius
+   * @param graphicsManager
+   * @param chunkManager
+   */
   ExplosionEvent(glm::vec3 location,
-                 kabom::Explosions&& explosion,
-                 graphics::GraphicsManager& graphicsManager)
+                 int radius,
+                 graphics::GraphicsManager& graphicsManager,
+                 chunk::ChunkManager& chunkManager)
     : m_location{location}
-    , m_explosion{explosion}
-    , m_graphicsManager{graphicsManager} {
+    , m_radius{radius}
+    , m_graphicsManager{&graphicsManager}
+    , m_chunkManager{&chunkManager} {
   }
 
+  /**
+   *
+   * @param tick
+   */
   void update(double tick) {
+
+    if (m_done)
+      return;
+
     m_timePassedExplosion += tick;
     m_timePassedAnimation += tick;
 
@@ -32,7 +59,7 @@ public:
     if (m_drawCube) {
       m_transform = graphics::Transform{
         m_location.x + 0.5, m_location.y + 0.5, m_location.z + 0.5};
-      m_graphicsManager.getCubeBatcher().addBatch(
+      m_graphicsManager->getCubeBatcher().addBatch(
         config::cube_data::TNT,
         m_transform,
         config::graphics_data::directSunlightValue,
@@ -42,33 +69,62 @@ public:
 
       m_transform = graphics::Transform{
         m_location.x + 0.5, m_location.y + 0.5, m_location.z + 0.5};
-      m_graphicsManager.getCubeBatcher().addBatch(
+      m_graphicsManager->getCubeBatcher().addBatch(
         config::cube_data::TNT, m_transform, lowLightValue, lowLightValue);
     }
 
     if (m_timePassedExplosion >= m_explosionTime) {
-      m_explosion.explode(m_location);
+      explode();
       m_done = true;
     }
   }
 
+  /**
+   *
+   * @return
+   */
   bool isDone() {
     return m_done;
   }
 
 private:
+
+  void explode() {
+    // Remove all cubes in a sphere.
+    int x{static_cast<int>(m_location.x)};
+    int y{static_cast<int>(m_location.y)};
+    int z{static_cast<int>(m_location.z)};
+
+    std::vector<glm::vec3> candidates;
+    for (int i{x - m_radius}; i < x + m_radius; ++i) {
+      for (int j{y - m_radius}; j < y + m_radius; ++j) {
+        for (int k{z - m_radius}; k < z + m_radius; ++k) {
+          candidates.push_back({i, j, k});
+        }
+      }
+    }
+
+    for (glm::vec3& candidate : candidates) {
+      if (glm::length(candidate - m_location) < m_radius) {
+        m_chunkManager->removeCube(candidate.x, candidate.y, candidate.z);
+      }
+    }
+
+    // TODO Start graphics explosion here.
+  }
+
   double m_timePassedExplosion{0.0};
   double m_timePassedAnimation{0.0};
-  const double m_animationTime{0.1};
-  const double m_explosionTime{5.0};
+  static constexpr double m_animationTime{0.1};
+  static constexpr double m_explosionTime{5.0};
 
   bool m_drawCube{true};
   bool m_done{false};
 
-  glm::vec3 m_location{};
-  kabom::Explosions m_explosion;
-  graphics::GraphicsManager& m_graphicsManager;
-
+  glm::vec3 m_location;
+  int m_radius;
+  graphics::GraphicsManager* m_graphicsManager;
+  chunk::ChunkManager* m_chunkManager;
   graphics::Transform m_transform{0, 0, 0};
 };
 }

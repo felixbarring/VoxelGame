@@ -12,7 +12,6 @@
 #include "../../../util/voxel.h"
 #include "../chunk/chunkManager.h"
 #include "../explosionEvent.h"
-#include "../explosions.h"
 
 #include "aabb.h"
 
@@ -52,9 +51,18 @@ Player::update(float timePassed) {
   handlePhysics();
   updateCameraAndTargetCube(); // Updates the camera as well
 
-  for (kabom::ExplosionEvent& explosionEvent : m_explosionEvent) {
-    if (!explosionEvent.isDone())
-      explosionEvent.update(timePassed);
+//  for (kabom::ExplosionEvent& event : m_explosionEvent) {
+//    if (!event.isDone())
+//      event.update(timePassed);
+//  }
+
+  for (auto it = m_explosionEvent.begin(); it != m_explosionEvent.end();) {
+    if (it->isDone()) {
+      it = m_explosionEvent.erase(it);
+    } else {
+      it->update(timePassed);
+      ++it;
+    }
   }
 
   if (length(m_speed) && m_isOnGround)
@@ -255,10 +263,10 @@ Player::updateCameraAndTargetCube() {
       if (m_chunkManager.getCubeId(selectedCube) == TNT) {
         m_explosionEvent.push_back(
           kabom::ExplosionEvent{selectedCube,
-                                kabom::Explosions{5, m_chunkManager},
-                                m_graphicsManager});
+                                5, m_graphicsManager, m_chunkManager});
+      } else {
+        m_chunkManager.removeCube(selectedCube);
       }
-      m_chunkManager.removeCube(selectedCube);
       return;
     } else if (input->action2Pressed) {
       AABB playerAAABB = createAABB();
