@@ -41,7 +41,8 @@ Player::Player(chunk::ChunkManager& chunkManager,
   , m_stepPlayer{soundPlayer,
                  config::audio::footStepSounds,
                  computeFootStepDelay(m_movementSpeed)}
-  , m_graphicsManager{graphicsManager} {
+  , m_graphicsManager{graphicsManager}
+  , m_soundPlayer{soundPlayer}{
 }
 
 void
@@ -258,7 +259,7 @@ Player::updateCameraAndTargetCube() {
       if (m_chunkManager.getCubeId(selectedCube) == TNT) {
         m_explosionEvent.push_back(
           kabom::ExplosionEvent{selectedCube,
-                                5, m_graphicsManager, m_chunkManager});
+                                5, m_graphicsManager, m_chunkManager, m_soundPlayer});
       } else {
         m_chunkManager.removeCube(selectedCube);
       }

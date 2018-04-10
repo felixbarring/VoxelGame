@@ -174,8 +174,11 @@ namespace audio {
 extern const std::string buttonPressed;
 extern const std::string cubeAdded;
 extern const std::string cubeRemoved;
+extern const std::string explosion;
 
 extern const std::vector<std::string> footStepSounds;
+
+
 
 extern const std::string menuMusic;
 

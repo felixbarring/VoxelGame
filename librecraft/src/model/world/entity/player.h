@@ -79,6 +79,7 @@ private:
   chunk::ChunkManager& m_chunkManager;
   FootStepSoundPlayer m_stepPlayer;
   graphics::GraphicsManager& m_graphicsManager;
+  util::SoundPlayer& m_soundPlayer;
 
   glm::vec3 m_speed{0, 0, 0};
   glm::vec3 m_frameSpeed{};

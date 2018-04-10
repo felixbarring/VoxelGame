@@ -5,9 +5,11 @@
 #include <vector>
 
 #include <glm/detail/type_vec.hpp>
+#include <string>
 
 #include "../../graphics/graphicsManager.h"
 #include "../../graphics/transform.h"
+#include "../../config/data.h"
 #include "chunk/chunkManager.h"
 
 namespace kabom {
@@ -33,11 +35,13 @@ public:
   ExplosionEvent(glm::vec3 location,
                  int radius,
                  graphics::GraphicsManager& graphicsManager,
-                 chunk::ChunkManager& chunkManager)
+                 chunk::ChunkManager& chunkManager,
+                 util::SoundPlayer& soundPlayer)
     : m_location{location}
     , m_radius{radius}
     , m_graphicsManager{&graphicsManager}
-    , m_chunkManager{&chunkManager} {
+    , m_chunkManager{&chunkManager}
+    , m_soundPlayer{&soundPlayer} {
   }
 
   /**
@@ -75,6 +79,7 @@ public:
 
     if (m_timePassedExplosion >= m_explosionTime) {
       explode();
+      m_soundPlayer->playSound(config::audio::explosion);
       m_done = true;
     }
   }
@@ -129,6 +134,7 @@ private:
   int m_radius;
   graphics::GraphicsManager* m_graphicsManager;
   chunk::ChunkManager* m_chunkManager;
+  util::SoundPlayer* m_soundPlayer;
   graphics::Transform m_transform{0, 0, 0};
 };
 }

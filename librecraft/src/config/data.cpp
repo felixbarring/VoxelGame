@@ -351,6 +351,8 @@ const std::string buttonPressed = pre + "sound/button.wav";
 const std::string cubeAdded = pre + "sound/cube_place.wav";
 const std::string cubeRemoved = pre + "sound/cube_remove.wav";
 
+const std::string explosion = pre + "sound/explosion.wav";
+
 const std::vector<std::string> footStepSounds{pre + "sound/steps/step1.ogg",
                                               pre + "sound/steps/step2.ogg",
                                               pre + "sound/steps/step3.ogg",
