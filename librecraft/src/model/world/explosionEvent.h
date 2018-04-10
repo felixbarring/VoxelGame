@@ -13,7 +13,7 @@
 namespace kabom {
 
 
-// Comment about suporting copy...
+// Comment about supporting copy...
 /**
  *
  *
@@ -85,6 +85,10 @@ public:
    */
   bool isDone() {
     return m_done;
+  }
+
+  glm::vec3 getLocation() {
+    return m_location;
   }
 
 private:

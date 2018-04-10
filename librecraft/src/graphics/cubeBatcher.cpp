@@ -91,6 +91,8 @@ CubeBatcher::CubeBatcher(Camera& camera)
     m_cubes.push_back(TexturedCube{/*2, 0, -1.0f, */ i});
 }
 
+// TODO Should this really use reference for the transform?
+
 void
 CubeBatcher::addBatch(char type,
                       Transform& transform,
