@@ -49,13 +49,13 @@ public:
 
   bool isAirOrWater(glm::vec3 location) const;
 
-  void removeCube(int x, int y, int z);
+  bool removeCube(int x, int y, int z);
 
-  void removeCube(glm::vec3 location);
+  bool removeCube(glm::vec3 location);
 
-  void setCube(int x, int y, int z, char id);
+  bool setCube(int x, int y, int z, char id);
 
-  void setCube(glm::vec3, char id);
+  bool setCube(glm::vec3, char id);
 
   /**
    * Sets the center chunk

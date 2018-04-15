@@ -119,6 +119,9 @@ ChunkManager::update() {
   }
 }
 
+// TODO Maybe it is better to only have one options
+// Have it glm::vec3, no x, y, <
+
 Voxel
 ChunkManager::getVoxel(int x, int y, int z) const {
   // Used to avoid Division every time the function is called.
@@ -189,29 +192,29 @@ ChunkManager::isAirOrWater(glm::vec3 location) const {
   return cubeId == AIR || cubeId == WATER;
 }
 
-void
+bool
 ChunkManager::removeCube(int x, int y, int z) {
   char voxel = getCubeId(x, y, z);
   if (voxel != BED_ROCK && voxel != WATER) {
     if (hasWaterNeighbour(x, y, z))
-      setCube(x, y, z, WATER);
+      return setCube(x, y, z, WATER);
     else
-      setCube(x, y, z, AIR);
+      return setCube(x, y, z, AIR);
   }
 }
 
-void
+bool
 ChunkManager::removeCube(glm::vec3 location) {
   char voxel = getCubeId(location.x, location.y, location.z);
   if (voxel != BED_ROCK && voxel != WATER) {
     if (hasWaterNeighbour(location.x, location.y, location.z))
-      setCube(location.x, location.y, location.z, WATER);
+      return setCube(location.x, location.y, location.z, WATER);
     else
-      setCube(location.x, location.y, location.z, AIR);
+      return setCube(location.x, location.y, location.z, AIR);
   }
 }
 
-void
+bool
 ChunkManager::setCube(int x, int y, int z, char id) {
   static float xD = 1.0 / CHUNK_WIDTH_AND_DEPTH;
   static float yD = 1.0 / CHUNK_HEIGHT;
@@ -236,23 +239,19 @@ ChunkManager::setCube(int x, int y, int z, char id) {
       chunkZ >= static_cast<int>(m_chunks[0][0].size()) || localX < 0 ||
       localX >= CHUNK_WIDTH_AND_DEPTH || localY < 0 || localY >= CHUNK_HEIGHT ||
       localZ < 0 || localZ >= CHUNK_WIDTH_AND_DEPTH)
-    return;
+    return false;
 
   m_chunks[chunkX][chunkY][chunkZ]->setCube(localX, localY, localZ, id);
 
+  return true;
   // TODO Play the sound somwhere, but not when an explosion removes a lot of
   // them. Probably best that the clisnt(player) is responsible for playing the
   // sound.
-
-  //  if (id == AIR || id == WATER)
-  //    m_soundPlayer.playSound(config::audio::cubeRemoved);
-  //  else
-  //    m_soundPlayer.playSound(config::audio::cubeAdded);
 }
 
-void
+bool
 ChunkManager::setCube(glm::vec3 location, char id) {
-  setCube(location.x, location.y, location.z, id);
+  return setCube(location.x, location.y, location.z, id);
 }
 
 void

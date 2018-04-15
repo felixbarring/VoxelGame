@@ -42,6 +42,7 @@ public:
     , m_graphicsManager{&graphicsManager}
     , m_chunkManager{&chunkManager}
     , m_soundPlayer{&soundPlayer} {
+      m_soundPlayer->playSound(config::audio::fuse);
   }
 
   /**

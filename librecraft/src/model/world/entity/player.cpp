@@ -259,9 +259,11 @@ Player::updateCameraAndTargetCube() {
       if (m_chunkManager.getCubeId(selectedCube) == TNT) {
         m_explosionEvent.push_back(
           kabom::ExplosionEvent{selectedCube,
-                                5, m_graphicsManager, m_chunkManager, m_soundPlayer});
+                                10, m_graphicsManager, m_chunkManager, m_soundPlayer});
       } else {
-        m_chunkManager.removeCube(selectedCube);
+        if (m_chunkManager.removeCube(selectedCube)) {
+          m_soundPlayer.playSound(config::audio::cubeRemoved);
+        }
       }
       return;
     } else if (input->action2Pressed) {
@@ -272,9 +274,11 @@ Player::updateCameraAndTargetCube() {
                     previous.y + 1,
                     previous.z,
                     previous.z + 1};
-      if (!playerAAABB.intersects(cubeAABB))
-        m_chunkManager.setCube(
-          previous.x, previous.y, previous.z, m_cubeUsedForBuilding);
+      if (!playerAAABB.intersects(cubeAABB) && m_chunkManager.setCube(
+          previous.x, previous.y, previous.z, m_cubeUsedForBuilding)) {
+        m_soundPlayer.playSound(config::audio::cubeAdded);
+      }
+
       return;
     }
 
