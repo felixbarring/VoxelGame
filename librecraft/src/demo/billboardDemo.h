@@ -104,7 +104,7 @@ public:
 
     graphics::Transform transform{0, 1, -5};
 
-    // TODO Render a simple plane with a color.
+    // TODO Render a simpleq plane with a color.
     while (window.isOpen()) {
       fpsManager.frameStart();
 
