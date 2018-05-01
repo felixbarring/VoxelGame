@@ -3,7 +3,7 @@
 
 #include <cassert>
 
-#include "../config/data.h"
+#include "config/data.h"
 
 /**
  * @brief Storage class with all data needed to represent a cube.

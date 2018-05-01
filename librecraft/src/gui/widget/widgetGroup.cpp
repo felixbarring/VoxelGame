@@ -3,9 +3,9 @@
 #include <algorithm>
 #include <iostream>
 
-#include "../../config/data.h"
-#include "../../graphics/graphicsManager.h"
-#include "../../graphics/resources.h"
+#include "config/data.h"
+#include "graphics/graphicsManager.h"
+#include "graphics/resources.h"
 
 using namespace std;
 using namespace graphics;

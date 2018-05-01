@@ -5,16 +5,17 @@
 
 #include <vector>
 
-#include "../../../graphics/transform.h"
-#include "../../../graphics/viewDirection.h"
-#include "../../../util/input.h"
-#include "aabb.h"
+#include "graphics/transform.h"
+#include "graphics/viewDirection.h"
+#include "util/input.h"
 #include "ientity.h"
 
-#include "../../../config/data.h"
-#include "../../../graphics/graphicsManager.h"
-#include "../chunk/chunkManager.h"
-#include "../explosionEvent.h"
+#include "config/data.h"
+#include "graphics/graphicsManager.h"
+
+#include "model/world/chunk/chunkManager.h"
+#include "model/world/explosionEvent.h"
+
 #include "footStepSoundPlayer.h"
 
 namespace entity {

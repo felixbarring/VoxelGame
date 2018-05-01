@@ -4,12 +4,12 @@
 
 #include <vector>
 
-#include "../config/data.h"
-#include "../graphics/graphicsManager.h"
-#include "../gui/mouse.h"
-#include "../gui/terminal.h"
-#include "../util/fpsManager.h"
-#include "../util/soundPlayer.h"
+#include "config/data.h"
+#include "graphics/graphicsManager.h"
+#include "gui/mouse.h"
+#include "gui/terminal.h"
+#include "util/fpsManager.h"
+#include "util/soundPlayer.h"
 
 namespace gui {
 

@@ -4,8 +4,8 @@
 
 #include <vector>
 
-#include "../../../util/voxel.h"
-#include "../chunk/creationOptions.h"
+#include "util/voxel.h"
+#include "model/world/chunk/creationOptions.h"
 
 namespace terrainGen {
 

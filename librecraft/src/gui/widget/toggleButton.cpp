@@ -3,11 +3,11 @@
 #include <iostream>
 #include <memory>
 
-#include "../../graphics/graphicsManager.h"
-#include "../../graphics/resources.h"
-#include "../../graphics/sprite.h"
-#include "../../graphics/spriteBatcher.h"
-#include "../../util/input.h"
+#include "graphics/graphicsManager.h"
+#include "graphics/resources.h"
+#include "graphics/sprite.h"
+#include "graphics/spriteBatcher.h"
+#include "util/input.h"
 
 using namespace std;
 using namespace graphics;

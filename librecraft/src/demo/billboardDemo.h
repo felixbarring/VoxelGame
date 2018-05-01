@@ -9,19 +9,18 @@
 #include <utility>
 #include <vector>
 
-#include "../graphics/camera.h"
-#include "../graphics/viewDirection.h"
-#include "../util/fpsManager.h"
-#include "../util/input.h"
-
-#include "../graphics/camera.h"
-#include "../graphics/frustum.h"
-#include "../graphics/mesh/meshElement.h"
-#include "../graphics/shaderProgram.h"
-#include "../graphics/transform.h"
-#include "../graphics/viewDirection.h"
-#include "../util/fpsManager.h"
-#include "../util/input.h"
+#include "graphics/camera.h"
+#include "graphics/viewDirection.h"
+#include "graphics/camera.h"
+#include "graphics/frustum.h"
+#include "graphics/mesh/meshElement.h"
+#include "graphics/shaderProgram.h"
+#include "graphics/transform.h"
+#include "graphics/viewDirection.h"
+#include "util/fpsManager.h"
+#include "util/input.h"
+#include "util/fpsManager.h"
+#include "util/input.h"
 
 using namespace sf;
 using util::FPSManager;

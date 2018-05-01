@@ -3,11 +3,11 @@
 
 #include <memory>
 
-#include "../graphics/graphicsManager.h"
-#include "../graphics/resources.h"
-#include "../graphics/sprite.h"
-#include "../gui/guiUtil.h"
-#include "../util/input.h"
+#include "graphics/graphicsManager.h"
+#include "graphics/resources.h"
+#include "graphics/sprite.h"
+#include "gui/guiUtil.h"
+#include "util/input.h"
 
 using graphics::Resources;
 

@@ -5,7 +5,7 @@
 #include "texturedCube.h"
 #include "transform.h"
 
-#include "../config/data.h"
+#include "config/data.h"
 
 using namespace std;
 using namespace config::cube_data;

@@ -6,11 +6,10 @@
 #include <string>
 #include <vector>
 
-#include "../../graphics/graphicsManager.h"
+#include "graphics/graphicsManager.h"
+#include "graphics/sprite.h"
 #include "abstractWidget.h"
 #include "toggleButton.h"
-
-#include "../../graphics/sprite.h"
 
 namespace widget {
 

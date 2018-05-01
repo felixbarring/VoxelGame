@@ -4,9 +4,10 @@
 #include <iostream>
 #include <queue>
 
-#include "../../../graphics/chunkBatcher.h"
-#include "../../../graphics/graphicsManager.h"
-#include "../terrainGen/terrainGenerator.h"
+#include "graphics/chunkBatcher.h"
+#include "graphics/graphicsManager.h"
+
+#include "model/world/terrainGen/terrainGenerator.h"
 
 using namespace std;
 using namespace glm;

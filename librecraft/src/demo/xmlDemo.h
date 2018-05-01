@@ -5,7 +5,7 @@
 #include <iostream>
 #include <string>
 
-#include "../dependencies/tinyXml2/tinyxml2.h"
+#include "dependencies/tinyXml2/tinyxml2.h"
 
 using std::string;
 

@@ -3,10 +3,9 @@
 
 #include <string>
 
-#include "../../graphics/graphicsManager.h"
+#include "graphics/graphicsManager.h"
+#include "graphics/sprite.h"
 #include "abstractWidget.h"
-
-#include "../../graphics/sprite.h"
 
 namespace widget {
 

@@ -6,19 +6,20 @@
 #include <iostream>
 #include <vector>
 
+#include <SFML/Window.hpp>
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "../graphics/camera.h"
-#include "../graphics/frustum.h"
-#include "../graphics/mesh/meshElement.h"
-#include "../graphics/shaderProgram.h"
-#include "../graphics/viewDirection.h"
-#include "../util/fpsManager.h"
-#include "../util/input.h"
+#include "graphics/camera.h"
+#include "graphics/frustum.h"
+#include "graphics/mesh/meshElement.h"
+#include "graphics/shaderProgram.h"
+#include "graphics/viewDirection.h"
+#include "util/fpsManager.h"
+#include "util/input.h"
 
-#include <SFML/Window.hpp>
+
 
 using namespace util;
 using namespace sf;

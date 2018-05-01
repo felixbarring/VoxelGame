@@ -3,8 +3,8 @@
 
 #include <string>
 
-#include "../graphics/graphicsManager.h"
-#include "../graphics/sprite.h"
+#include "graphics/graphicsManager.h"
+#include "graphics/sprite.h"
 
 namespace gui {
 

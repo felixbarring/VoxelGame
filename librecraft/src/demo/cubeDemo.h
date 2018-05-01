@@ -10,16 +10,16 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "../config/data.h"
-#include "../graphics/camera.h"
-#include "../graphics/cubeBatcher.h"
-#include "../graphics/shaderProgram.h"
-#include "../graphics/texture/textureArray.h"
-#include "../graphics/texturedCube.h"
-#include "../graphics/transform.h"
-#include "../graphics/viewDirection.h"
-#include "../util/fpsManager.h"
-#include "../util/input.h"
+#include "config/data.h"
+#include "graphics/camera.h"
+#include "graphics/cubeBatcher.h"
+#include "graphics/shaderProgram.h"
+#include "graphics/texture/textureArray.h"
+#include "graphics/texturedCube.h"
+#include "graphics/transform.h"
+#include "graphics/viewDirection.h"
+#include "util/fpsManager.h"
+#include "util/input.h"
 
 #include <SFML/Graphics.hpp>
 #include <SFML/OpenGL.hpp>

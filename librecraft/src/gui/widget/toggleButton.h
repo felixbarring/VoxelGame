@@ -5,7 +5,7 @@
 #include <functional>
 #include <vector>
 
-#include "../../graphics/graphicsManager.h"
+#include "graphics/graphicsManager.h"
 #include "button.h"
 
 namespace widget {

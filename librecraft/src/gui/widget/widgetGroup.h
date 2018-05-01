@@ -4,11 +4,11 @@
 #include <memory>
 #include <vector>
 
-#include "../../graphics/graphicsManager.h"
+#include "graphics/graphicsManager.h"
+#include "graphics/sprite.h"
+
 #include "abstractWidget.h"
 #include "iWidget.h"
-
-#include "../../graphics/sprite.h"
 
 namespace widget {
 

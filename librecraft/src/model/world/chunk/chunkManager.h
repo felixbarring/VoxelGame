@@ -1,15 +1,17 @@
 #ifndef SRC_MODEL_WORLD_CHUNK_CHUNKMANAGER_H_
 #define SRC_MODEL_WORLD_CHUNK_CHUNKMANAGER_H_
 
-#include "ThreadPool.h"
+#include <ThreadPool.h>
 #include <glm/detail/type_vec.hpp>
 #include <memory>
 #include <vector>
 
-#include "../../../config/data.h"
-#include "../../../util/soundPlayer.h"
-#include "../../../util/voxel.h"
-#include "../entity/aabb.h"
+#include "config/data.h"
+#include "util/soundPlayer.h"
+#include "util/voxel.h"
+
+#include "model/world/entity/aabb.h"
+
 #include "chunk.h"
 
 #include "creationOptions.h"

@@ -1,9 +1,10 @@
 
 #include "creationOptions.h"
 
-#include "../../../config/data.h"
-#include "../../../dependencies/tinyXml2/tinyxml2.h"
 #include <iostream>
+
+#include "config/data.h"
+#include "dependencies/tinyXml2/tinyxml2.h"
 
 namespace chunk {
 

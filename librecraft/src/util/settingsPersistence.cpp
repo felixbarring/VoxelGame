@@ -1,12 +1,12 @@
 
 #include "settingsPersistence.h"
-#include "../dependencies/tinyXml2/tinyxml2.h"
 
 #include <cstdlib>
 #include <iostream>
 #include <string>
 
-#include "../config/data.h"
+#include "dependencies/tinyXml2/tinyxml2.h"
+#include "config/data.h"
 
 using namespace tinyxml2;
 using namespace config;

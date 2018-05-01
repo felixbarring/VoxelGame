@@ -3,7 +3,7 @@
 #include <SFML/Window.hpp>
 #include <iostream>
 
-#include "../config/data.h"
+#include "config/data.h"
 
 using namespace config::input_data;
 using namespace sf;

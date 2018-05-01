@@ -3,7 +3,7 @@
 
 #include <random>
 
-#include "../../../util/soundPlayer.h"
+#include "util/soundPlayer.h"
 
 using std::mt19937;
 using std::random_device;

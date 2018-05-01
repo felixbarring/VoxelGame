@@ -5,13 +5,14 @@
 #include <math.h>
 #include <memory>
 
-#include "../../../graphics/camera.h"
-#include "../../../graphics/cubeBatcher.h"
-#include "../../../graphics/graphicsManager.h"
-#include "../../../util/soundPlayer.h"
-#include "../../../util/voxel.h"
-#include "../chunk/chunkManager.h"
-#include "../explosionEvent.h"
+#include "graphics/camera.h"
+#include "graphics/cubeBatcher.h"
+#include "graphics/graphicsManager.h"
+#include "util/soundPlayer.h"
+#include "util/voxel.h"
+
+#include "model/world/chunk/chunkManager.h"
+#include "model/world//explosionEvent.h"
 
 #include "aabb.h"
 

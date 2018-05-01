@@ -6,7 +6,7 @@
 #include <iostream>
 #include <memory>
 
-#include "../../graphics/graphicsManager.h"
+#include "graphics/graphicsManager.h"
 
 namespace widget {
 

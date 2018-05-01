@@ -7,8 +7,8 @@
 #include <math.h>
 #include <thread>
 
-#include "../../../util/globalResources.h"
-#include "../../../util/soundPlayer.h"
+#include "util/globalResources.h"
+#include "util/soundPlayer.h"
 
 using util::SoundPlayer;
 

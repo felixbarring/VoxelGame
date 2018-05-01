@@ -1,17 +1,16 @@
 #include "selectableList.h"
 
-#include "../../config/data.h"
-#include "../../graphics/fontMeshBuilder.h"
-#include "../../graphics/mesh/meshElement.h"
-#include "../../graphics/resources.h"
-#include "../../graphics/spriteBatcher.h"
+#include "config/data.h"
+#include "graphics/fontMeshBuilder.h"
+#include "graphics/mesh/meshElement.h"
+#include "graphics/resources.h"
+#include "graphics/spriteBatcher.h"
+#include "graphics/graphicsManager.h"
 
-#include "../../util/input.h"
+#include "util/input.h"
 
 #include <functional>
 #include <iostream>
-
-#include "../../graphics/graphicsManager.h"
 
 using namespace std;
 using namespace graphics;

@@ -4,7 +4,7 @@
 #include <functional>
 #include <memory>
 
-#include "../../graphics/sprite.h"
+#include "graphics/sprite.h"
 #include "abstractWidget.h"
 
 namespace widget {

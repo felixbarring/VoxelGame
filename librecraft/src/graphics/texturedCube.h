@@ -3,7 +3,7 @@
 
 #include <memory>
 
-#include "mesh/meshElement.h"
+#include "graphics/mesh/meshElement.h"
 #include "transform.h"
 
 namespace graphics {

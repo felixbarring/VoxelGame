@@ -10,13 +10,13 @@
 #include <string>
 #include <vector>
 
-#include "../config/data.h"
-#include "../graphics/mesh/meshElement.h"
-#include "../graphics/shaderProgram.h"
-#include "../graphics/texture/textureArray.h"
+#include "config/data.h"
+#include "graphics/mesh/meshElement.h"
+#include "graphics/shaderProgram.h"
+#include "graphics/texture/textureArray.h"
 
-#include "../util/fpsManager.h"
-#include "../util/input.h"
+#include "util/fpsManager.h"
+#include "util/input.h"
 
 #include <SFML/Graphics.hpp>
 #include <SFML/OpenGL.hpp>

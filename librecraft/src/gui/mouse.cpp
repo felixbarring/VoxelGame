@@ -3,11 +3,11 @@
 #include <glm.hpp>
 #include <iostream>
 
-#include "../config/data.h"
-#include "../graphics/graphicsManager.h"
-#include "../graphics/resources.h"
-#include "../graphics/spriteBatcher.h"
-#include "../util/input.h"
+#include "config/data.h"
+#include "graphics/graphicsManager.h"
+#include "graphics/resources.h"
+#include "graphics/spriteBatcher.h"
+#include "util/input.h"
 
 using namespace std;
 using namespace graphics;

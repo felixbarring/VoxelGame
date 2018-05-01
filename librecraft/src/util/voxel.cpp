@@ -3,7 +3,7 @@
 #include <iostream>
 #include <string>
 
-#include "../docTestDefine.h"
+#include "docTestDefine.h"
 #include "docTest/doctest.h"
 
 Voxel::Voxel() {

@@ -4,7 +4,7 @@
 
 #include <iostream>
 
-#include "../dependencies/libnoise/module/perlin.h"
+#include "dependencies/libnoise/module/perlin.h"
 
 namespace demo {
 

@@ -1,9 +1,10 @@
 cmake_minimum_required(VERSION 2.8)
 project(VoxelGame)
 
-# set(SFML_ROOT "${CMAKE_SOURCE_DIR}/SFML-2.4.2")
-
 message("### Building with ${CMAKE_CXX_COMPILER_ID}")
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I${CMAKE_SOURCE_DIR}/src")
 
 if (NOT UNIT_TEST)
   message("### Not building Unit Tests")
@@ -14,7 +15,7 @@ endif()
 
 if (WARNINGS)
   message("### Warnings on")
-  set(CMAKE_CXX_FLAGS "-std=c++17 -Wall -Wextra")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
 else()
   message("### Warnings off")
 endif()
@@ -32,7 +33,7 @@ endif()
 if (APPLICATION)
   message("### Building application")
 else()
-    message("### Not building application")
+  message("### Not building application")
 endif()
 
 if (DEMO)
@@ -47,7 +48,6 @@ add_subdirectory(dependencies)
 # Get Include Directories
 set (INCLUDE_DIRS 
   include
-#  include/GL
   include/glm
   include/glm/gtc
   include/glm/gtx
@@ -120,4 +120,7 @@ if(SFML_FOUND)
   endif()
 endif()
 
+
+
+# set(SFML_ROOT "${CMAKE_SOURCE_DIR}/SFML-2.4.2")
 

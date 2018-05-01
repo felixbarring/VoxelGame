@@ -4,7 +4,7 @@
 #include <map>
 #include <string>
 
-#include "../config/data.h"
+#include "config/data.h"
 #include "resources.h"
 #include "shaderProgram.h"
 

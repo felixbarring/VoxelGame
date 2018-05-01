@@ -2,9 +2,11 @@
 #ifndef SRC_DEMO_TEXTUREDEMO_H_
 #define SRC_DEMO_TEXTUREDEMO_H_
 
-#include <GL/glew.h>
-
+#include <string>
 #include <map>
+
+#include <SFML/Window.hpp>
+#include <GL/glew.h>
 
 #include <chrono>
 #include <iostream>
@@ -12,13 +14,12 @@
 #include <mutex>
 #include <thread>
 
-#include "../config/data.h"
-#include "../graphics/mesh/meshElement.h"
-#include "../graphics/shaderProgram.h"
-#include "../graphics/texture/texture.h"
-#include "../util/fpsManager.h"
-#include <SFML/Window.hpp>
-#include <string>
+#include "config/data.h"
+#include "graphics/mesh/meshElement.h"
+#include "graphics/shaderProgram.h"
+#include "graphics/texture/texture.h"
+#include "util/fpsManager.h"
+
 
 namespace demo {
 

@@ -6,27 +6,25 @@
 #include <memory>
 #include <string>
 
+#include <SFML/Window.hpp>
 #include <GL/glew.h>
-
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "../graphics/camera.h"
-#include "../graphics/shaderProgram.h"
-#include "../graphics/sprite.h"
-#include "../graphics/viewDirection.h"
+#include "graphics/camera.h"
+#include "graphics/shaderProgram.h"
+#include "graphics/sprite.h"
+#include "graphics/viewDirection.h"
+#include "graphics/spriteBatcher.h"
+#include "graphics/texture/texture.h"
+#include "graphics/cubeMap.h"
+#include "graphics/mesh/meshElement.h"
+#include "graphics/resources.h"
 
-#include "../graphics/spriteBatcher.h"
-#include "../graphics/texture/texture.h"
+#include "util/fpsManager.h"
 
-#include "../graphics/cubeMap.h"
-#include "../graphics/mesh/meshElement.h"
-#include "../util/fpsManager.h"
+#include "config/data.h"
 
-#include "../config/data.h"
-#include "../graphics/resources.h"
-
-#include <SFML/Window.hpp>
 
 #include "../graphics/graphicsManager.h"
 namespace demo {

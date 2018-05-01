@@ -7,9 +7,10 @@
 #include <glm/detail/type_vec.hpp>
 #include <string>
 
-#include "../../graphics/graphicsManager.h"
-#include "../../graphics/transform.h"
-#include "../../config/data.h"
+#include "graphics/graphicsManager.h"
+#include "graphics/transform.h"
+#include "config/data.h"
+
 #include "chunk/chunkManager.h"
 
 namespace kabom {

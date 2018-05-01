@@ -9,13 +9,13 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "../graphics/camera.h"
-#include "../graphics/cubeMap.h"
-#include "../graphics/resources.h"
-#include "../graphics/texture/textureCubeMap.h"
-#include "../graphics/viewDirection.h"
-#include "../util/fpsManager.h"
-#include "../util/input.h"
+#include "graphics/camera.h"
+#include "graphics/cubeMap.h"
+#include "graphics/resources.h"
+#include "graphics/texture/textureCubeMap.h"
+#include "graphics/viewDirection.h"
+#include "util/fpsManager.h"
+#include "util/input.h"
 
 #include <SFML/Window.hpp>
 

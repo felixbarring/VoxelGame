@@ -10,14 +10,14 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "../config/data.h"
-#include "../graphics/fontMeshBuilder.h"
-#include "../graphics/mesh/meshElement.h"
-#include "../graphics/shaderProgram.h"
-#include "../graphics/sprite.h"
-#include "../graphics/spriteBatcher.h"
-#include "../graphics/texture/texture.h"
-#include "../util/fpsManager.h"
+#include "config/data.h"
+#include "graphics/fontMeshBuilder.h"
+#include "graphics/mesh/meshElement.h"
+#include "graphics/shaderProgram.h"
+#include "graphics/sprite.h"
+#include "graphics/spriteBatcher.h"
+#include "graphics/texture/texture.h"
+#include "util/fpsManager.h"
 
 #include <SFML/Window.hpp>
 

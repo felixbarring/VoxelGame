@@ -6,10 +6,10 @@
 #include <string>
 #include <vector>
 
-#include "../gui/widget/button.h"
-#include "../gui/widget/textInput.h"
-#include "../gui/widget/widgetGroup.h"
-#include "../util/trie.h"
+#include "gui/widget/button.h"
+#include "gui/widget/textInput.h"
+#include "gui/widget/widgetGroup.h"
+#include "util/trie.h"
 #include "widget/textArea.h"
 
 namespace gui {

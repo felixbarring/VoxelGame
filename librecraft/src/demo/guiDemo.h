@@ -4,33 +4,30 @@
 
 #include <iostream>
 #include <memory>
-
 #include <GL/glew.h>
-
 #include <glm/glm.hpp>
 
-#include "../graphics/fontMeshBuilder.h"
-#include "../graphics/spriteBatcher.h"
+#include "graphics/fontMeshBuilder.h"
+#include "graphics/spriteBatcher.h"
+#include "graphics/graphicsManager.h"
 
-#include "../util/fpsManager.h"
-#include "../util/input.h"
+#include "util/fpsManager.h"
+#include "util/input.h"
 
-#include "../gui/guiUtil.h"
-#include "../gui/mouse.h"
-#include "../gui/widget/button.h"
-#include "../gui/widget/iWidget.h"
-#include "../gui/widget/label.h"
-#include "../gui/widget/selectableList.h"
-#include "../gui/widget/slider.h"
-#include "../gui/widget/textInput.h"
-#include "../gui/widget/toggleButton.h"
-#include "../gui/widget/widgetGroup.h"
+#include "gui/guiUtil.h"
+#include "gui/mouse.h"
+#include "gui/widget/button.h"
+#include "gui/widget/iWidget.h"
+#include "gui/widget/label.h"
+#include "gui/widget/selectableList.h"
+#include "gui/widget/slider.h"
+#include "gui/widget/textInput.h"
+#include "gui/widget/toggleButton.h"
+#include "gui/widget/widgetGroup.h"
 
-#include "../config/data.h"
+#include "config/data.h"
 
 #include <SFML/Window.hpp>
-
-#include "../graphics/graphicsManager.h"
 
 using namespace std;
 using namespace widget;

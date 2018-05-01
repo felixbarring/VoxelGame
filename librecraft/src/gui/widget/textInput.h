@@ -6,9 +6,9 @@
 #include <memory>
 #include <string>
 
-#include "../../graphics/fontMeshBuilder.h"
-#include "../../graphics/graphicsManager.h"
-#include "../../graphics/sprite.h"
+#include "graphics/fontMeshBuilder.h"
+#include "graphics/graphicsManager.h"
+#include "graphics/sprite.h"
 
 namespace widget {
 

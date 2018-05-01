@@ -8,10 +8,10 @@
 #include <set>
 #include <vector>
 
-#include "../../../config/data.h"
-#include "../../../graphics/graphicalChunk.h"
-#include "../../../graphics/graphicsManager.h"
-#include "../../../util/voxel.h"
+#include "config/data.h"
+#include "graphics/graphicalChunk.h"
+#include "graphics/graphicsManager.h"
+#include "util/voxel.h"
 #include "creationOptions.h"
 
 using std::vector;

@@ -19,7 +19,6 @@
 #include "gui/guiUtil.h"
 #include "inGame.h"
 #include "mainMenu.h"
-#include "util/soundPlayer.h"
 
 #include "graphics/chunkBatcher.h"
 #include "graphics/cubeBatcher.h"
@@ -32,6 +31,7 @@
 #include "util/fpsManager.h"
 #include "util/globalResources.h"
 #include "util/input.h"
+#include "util/soundPlayer.h"
 
 using graphics::ChunkBatcher;
 using graphics::CubeBatcher;

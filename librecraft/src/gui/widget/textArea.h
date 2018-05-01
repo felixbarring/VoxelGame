@@ -6,7 +6,7 @@
 #include <memory>
 #include <string>
 
-#include "../../graphics/sprite.h"
+#include "graphics/sprite.h"
 #include "abstractWidget.h"
 
 namespace widget {

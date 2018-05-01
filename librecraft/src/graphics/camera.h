@@ -5,7 +5,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "../config/data.h"
+#include "config/data.h"
 
 namespace graphics {
 

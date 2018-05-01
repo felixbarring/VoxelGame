@@ -4,8 +4,8 @@
 #include <memory>
 #include <regex>
 
-#include "../gui/widget/textInput.h"
-#include "../util/input.h"
+#include "gui/widget/textInput.h"
+#include "util/input.h"
 
 using namespace std;
 using namespace widget;

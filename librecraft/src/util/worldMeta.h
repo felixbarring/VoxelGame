@@ -8,7 +8,7 @@
 #include <string>
 #include <vector>
 
-#include "../config/data.h"
+#include "config/data.h"
 
 // Maybe rename to file util
 

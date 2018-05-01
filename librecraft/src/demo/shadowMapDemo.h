@@ -10,10 +10,10 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "../graphics/camera.h"
-#include "../graphics/resources.h"
-#include "../util/fpsManager.h"
-#include "../util/input.h"
+#include "graphics/camera.h"
+#include "graphics/resources.h"
+#include "util/fpsManager.h"
+#include "util/input.h"
 
 using graphics::Camera;
 using std::__cxx11::string;

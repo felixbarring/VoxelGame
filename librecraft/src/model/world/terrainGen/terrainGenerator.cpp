@@ -5,12 +5,12 @@
 #include <mutex>
 #include <thread>
 
-#include "../../../config/data.h"
-#include "../../../dependencies/libnoise/module/billow.h"
-#include "../../../dependencies/libnoise/module/perlin.h"
-#include "../../../dependencies/libnoise/module/ridgedmulti.h"
-#include "../../../dependencies/libnoise/module/scalebias.h"
-#include "../../../dependencies/libnoise/module/select.h"
+#include "config/data.h"
+#include "dependencies/libnoise/module/billow.h"
+#include "dependencies/libnoise/module/perlin.h"
+#include "dependencies/libnoise/module/ridgedmulti.h"
+#include "dependencies/libnoise/module/scalebias.h"
+#include "dependencies/libnoise/module/select.h"
 
 using namespace std;
 using namespace noise;

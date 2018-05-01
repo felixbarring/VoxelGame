@@ -1,8 +1,8 @@
 #include "image.h"
 
-#include "../graphics/graphicsManager.h"
-#include "../graphics/resources.h"
-#include "../graphics/spriteBatcher.h"
+#include "graphics/graphicsManager.h"
+#include "graphics/resources.h"
+#include "graphics/spriteBatcher.h"
 
 namespace {
 graphics::Sprite

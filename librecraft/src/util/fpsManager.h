@@ -3,7 +3,6 @@
 
 #include <chrono>
 #include <ctime>
-
 #include <thread>
 
 namespace util {
