@@ -134,6 +134,8 @@ public:
 
   ///@}
 
+  void update();
+
   // TODO Maybe should be called make dirty?
   /**
    * Forces all the graphical sections to update even if they are not dirty.
@@ -320,6 +322,7 @@ private:
   graphics::GraphicsManager& m_graphicsManager;
 
   bool m_isDirty{false};
+  bool m_graphicsDirty{false};
 
   std::string m_name{};
 

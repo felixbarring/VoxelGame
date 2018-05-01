@@ -4,6 +4,7 @@
 #include <string>
 
 #include "arrayTextureDemo.h"
+#include "billboardDemo.h"
 #include "cubeDemo.h"
 #include "cubeMapDemo.h"
 #include "fontDemo.h"
@@ -30,7 +31,8 @@ main(int, char* argv[]) {
                                         "shadowMapDemo",
                                         "libNoiseDemo",
                                         "xmlDemo",
-                                        "frustumDemo"};
+                                        "frustumDemo",
+                                        "billboardDemo"};
 
   std::string str{};
   try {
@@ -79,19 +81,22 @@ main(int, char* argv[]) {
     } else if (str == "frustumDemo") {
       demo::FrustumDemo frustumDemo;
       frustumDemo.runDemo();
+    } else if (str == "billboardDemo") {
+      demo::BillboardDemo billboardDemo;
+      billboardDemo.runDemo();
     } else {
       std::cout << "Unknown demo: " << str << "\n";
       std::cout
         << "Enter which demo you want to run. These are the alternatives \n";
-      for (string& s : alternatives) {
+      for (std::string& s : alternatives) {
         std::cout << s << "\n";
       }
     }
 
   } catch (std::exception& e) {
-    std::cout << "An error occured \n" << e.what() << "\n";
+    std::cout << "An error occurred \n" << e.what() << "\n";
   } catch (...) {
-    std::cout << "An error that is not derived from std::exception occured \n";
+    std::cout << "An error that is not derived from std::exception occurred \n";
   }
 }
 

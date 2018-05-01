@@ -14,6 +14,7 @@
 #include "../../../config/data.h"
 #include "../../../graphics/graphicsManager.h"
 #include "../chunk/chunkManager.h"
+#include "../explosionEvent.h"
 #include "footStepSoundPlayer.h"
 
 namespace entity {
@@ -78,6 +79,7 @@ private:
   chunk::ChunkManager& m_chunkManager;
   FootStepSoundPlayer m_stepPlayer;
   graphics::GraphicsManager& m_graphicsManager;
+  util::SoundPlayer& m_soundPlayer;
 
   glm::vec3 m_speed{0, 0, 0};
   glm::vec3 m_frameSpeed{};
@@ -87,6 +89,8 @@ private:
   int m_cubeUsedForBuilding{0};
 
   const AABB* m_limit{};
+
+  std::vector<kabom::ExplosionEvent> m_explosionEvent{};
 };
 
 } /* namespace entity */

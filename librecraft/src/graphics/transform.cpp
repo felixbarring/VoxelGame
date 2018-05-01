@@ -69,6 +69,10 @@ Transform::rotateZ(double value) {
 
 glm::mat4
 Transform::getMatrix() {
+
+  // TODO Cache this, that is only compute it if any of the matrixes has
+  // changed. Matrix multiplications are not free.
+
   return translation * xRotation * yRotation * zRotation;
 }
 }

@@ -5,15 +5,11 @@
 #include <glm/glm.hpp>
 
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Window/Mouse.hpp>
-
-// TODO Remove the extern crap.
-// TODO The settings should be read from one file and not be global vars.
-// TODO Instead a game class should be responsible to set the values in places
-// that need them.
 
 namespace config {
 
@@ -54,6 +50,7 @@ extern const char STONE_BRICK;
 extern const char LOG_BIRCH;
 extern const char LEAVES_BIRCH;
 extern const char LIGHT;
+extern const char TNT;
 
 extern const char LAST_CUBE_USED_FOR_GENERATION;
 extern const char LAST_CUBE_USED_FOR_BUILDING;
@@ -73,14 +70,12 @@ extern const int TOP_TEXTURE;
 extern const int BOTTOM_TEXTURE;
 
 // 0 = Side, 1 = Top, 2 = Bottom
-extern const char BLOCK_TEXTURES[21][3];
+extern std::unordered_map<int, std::vector<int>> BLOCK_TEXTURES;
 
 extern const unsigned TEXTURE_WIDTH;
 extern const unsigned TEXTURE_HEIGHT;
 
 extern const std::vector<std::string> textures;
-
-// TODO Fix better thumbnails
 extern const std::vector<std::string> thumbnails;
 }
 
@@ -179,8 +174,12 @@ namespace audio {
 extern const std::string buttonPressed;
 extern const std::string cubeAdded;
 extern const std::string cubeRemoved;
+extern const std::string explosion;
+extern const std::string fuse;
 
 extern const std::vector<std::string> footStepSounds;
+
+
 
 extern const std::string menuMusic;
 

@@ -5,6 +5,8 @@
 
 namespace graphics {
 
+// TODO Add glm::vec3 input.
+
 /**
  * @brief A convenience class that handles the transform matrix for a graphical
  * object the position and rotation around x, y, and z axles.
@@ -12,7 +14,7 @@ namespace graphics {
 class Transform {
 public:
   /**
-   * 2brief Creates a transform matrix at the the specified location with no
+   * @brief Creates a transform matrix at the the specified location with no
    * rotation.
    *
    * @param x The x location for the transform.

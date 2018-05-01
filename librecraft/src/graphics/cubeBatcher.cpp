@@ -87,9 +87,11 @@ CubeBatcher::CubeBatcher(Camera& camera)
       config::cube_data::TEXTURE_WIDTH,
       config::cube_data::TEXTURE_HEIGHT)) {
 
-  for (int i = 0; i <= config::cube_data::LAST_CUBE + 1; i++)
+  for (int i{0}; i <= config::cube_data::LAST_CUBE; ++i)
     m_cubes.push_back(TexturedCube{/*2, 0, -1.0f, */ i});
 }
+
+// TODO Should this really use reference for the transform?
 
 void
 CubeBatcher::addBatch(char type,
@@ -113,7 +115,7 @@ CubeBatcher::draw() {
 
   m_program.setUniform1f(sunStrength, m_sunStrength);
 
-  for (Batch b : m_batches) {
+  for (Batch& b : m_batches) {
     m_program.setUniform1f(sunLight, b.m_sunLight);
     m_program.setUniform1f(otherLight, b.m_otherLight);
 

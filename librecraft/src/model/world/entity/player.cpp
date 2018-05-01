@@ -11,6 +11,7 @@
 #include "../../../util/soundPlayer.h"
 #include "../../../util/voxel.h"
 #include "../chunk/chunkManager.h"
+#include "../explosionEvent.h"
 
 #include "aabb.h"
 
@@ -40,7 +41,8 @@ Player::Player(chunk::ChunkManager& chunkManager,
   , m_stepPlayer{soundPlayer,
                  config::audio::footStepSounds,
                  computeFootStepDelay(m_movementSpeed)}
-  , m_graphicsManager{graphicsManager} {
+  , m_graphicsManager{graphicsManager}
+  , m_soundPlayer{soundPlayer}{
 }
 
 void
@@ -49,6 +51,15 @@ Player::update(float timePassed) {
   updateSpeed(timePassed);
   handlePhysics();
   updateCameraAndTargetCube(); // Updates the camera as well
+
+  for (auto it = m_explosionEvent.begin(); it != m_explosionEvent.end();) {
+    if (it->isDone()) {
+      it = m_explosionEvent.erase(it);
+    } else {
+      it->update(timePassed);
+      ++it;
+    }
+  }
 
   if (length(m_speed) && m_isOnGround)
     m_stepPlayer.walkingActive(timePassed);
@@ -244,7 +255,16 @@ Player::updateCameraAndTargetCube() {
     m_lastSelecteCube = selectedCube;
 
     if (input->action1Pressed) {
-      m_chunkManager.removeCube(selectedCube.x, selectedCube.y, selectedCube.z);
+
+      if (m_chunkManager.getCubeId(selectedCube) == TNT) {
+        m_explosionEvent.push_back(
+          kabom::ExplosionEvent{selectedCube,
+                                10, m_graphicsManager, m_chunkManager, m_soundPlayer});
+      } else {
+        if (m_chunkManager.removeCube(selectedCube)) {
+          m_soundPlayer.playSound(config::audio::cubeRemoved);
+        }
+      }
       return;
     } else if (input->action2Pressed) {
       AABB playerAAABB = createAABB();
@@ -254,9 +274,11 @@ Player::updateCameraAndTargetCube() {
                     previous.y + 1,
                     previous.z,
                     previous.z + 1};
-      if (!playerAAABB.intersects(cubeAABB))
-        m_chunkManager.setCube(
-          previous.x, previous.y, previous.z, m_cubeUsedForBuilding);
+      if (!playerAAABB.intersects(cubeAABB) && m_chunkManager.setCube(
+          previous.x, previous.y, previous.z, m_cubeUsedForBuilding)) {
+        m_soundPlayer.playSound(config::audio::cubeAdded);
+      }
+
       return;
     }
 
@@ -267,6 +289,19 @@ Player::updateCameraAndTargetCube() {
 
     char voxelID =
       m_chunkManager.getCubeId(selectedCube.x, selectedCube.y, selectedCube.z);
+
+    // If we are looking at a TNT cube that is about to explode, we should
+    // let the explosion event handle the rendering.
+    if (voxelID == TNT) {
+      for (kabom::ExplosionEvent& event : m_explosionEvent) {
+        glm::vec3 location{event.getLocation()};
+        if (static_cast<int>(location.x) == static_cast<int>(selectedCube.x) &&
+            static_cast<int>(location.y) == static_cast<int>(selectedCube.y) &&
+            static_cast<int>(location.z) == static_cast<int>(selectedCube.z))
+          return;
+      }
+    }
+
     Voxel voxel{m_chunkManager.getVoxel(previous.x, previous.y, previous.z)};
     m_graphicsManager.getCubeBatcher().addBatch(voxelID,
                                                 m_targetedCubeTransform,
@@ -297,9 +332,9 @@ Player::intersected(vec3 movement,
   int yEnd = floor(box.m_yMax);
   int zEnd = floor(box.m_zMax);
 
-  for (double i = xStart; i <= xEnd; ++i) {
-    for (double j = yStart; j <= yEnd; ++j) {
-      for (double k = zStart; k <= zEnd; ++k) {
+  for (double i{xStart}; i <= xEnd; ++i) {
+    for (double j{yStart}; j <= yEnd; ++j) {
+      for (double k{zStart}; k <= zEnd; ++k) {
 
         AABB cube{i, i + 1.0, j, j + 1.0, k, k + 1};
         vec3 normal;
@@ -318,13 +353,15 @@ Player::intersected(vec3 movement,
 
 bool
 Player::isInWater() {
-  //   Fix hardcoded shit...
-  AABB box{m_location.x - 0.4,
-           m_location.x + 0.4,
-           m_location.y - 1.5,
-           m_location.y + 0.1,
-           m_location.z - 0.4,
-           m_location.z + 0.4};
+  // Fix hardcoded shit...
+//  AABB box{m_location.x - 0.4,
+//           m_location.x + 0.4,
+//           m_location.y - 1.5,
+//           m_location.y + 0.1,
+//           m_location.z - 0.4,
+//           m_location.z + 0.4};
+
+  AABB box{createAABB()}; // TODO Test that this works as expected.
 
   int xStart = floor(box.m_xMin);
   int yStart = floor(box.m_yMin);
@@ -334,10 +371,10 @@ Player::isInWater() {
   int yEnd = floor(box.m_yMax);
   int zEnd = floor(box.m_zMax);
 
-  for (int i = xStart; i <= xEnd; i++) {
-    for (int j = yStart; j <= yEnd; j++) {
-      for (int k = zStart; k <= zEnd; k++) {
-        char cubeId = m_chunkManager.getCubeId(i, j, k);
+  for (int i{xStart}; i <= xEnd; ++i) {
+    for (int j{yStart}; j <= yEnd; ++j) {
+      for (int k{zStart}; k <= zEnd; ++k) {
+        char cubeId{m_chunkManager.getCubeId(i, j, k)};
         if (cubeId != WATER)
           return false;
       }

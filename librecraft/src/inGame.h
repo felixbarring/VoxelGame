@@ -58,6 +58,8 @@ private:
   std::shared_ptr<gui::Terminal> m_terminal;
   glm::mat4 m_virtualProjection;
 
+  bool m_updateChunkManager{true};
+
   Game& m_game;
   chunk::ChunkManager m_chunkManager;
   entity::Player m_player;
