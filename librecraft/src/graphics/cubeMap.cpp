@@ -6,10 +6,10 @@
 #include <iostream>
 #include <utility>
 
-#include "../graphics/camera.h"
-#include "../graphics/mesh/meshElement.h"
-#include "../graphics/shaderProgram.h"
-#include "../graphics/texture/textureCubeMap.h"
+#include "graphics/camera.h"
+#include "graphics/mesh/meshElement.h"
+#include "graphics/shaderProgram.h"
+#include "graphics/texture/textureCubeMap.h"
 #include "camera.h"
 
 using namespace std;

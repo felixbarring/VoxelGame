@@ -1,5 +1,11 @@
 #include "cubeBar.h"
 
+#include "config/data.h"
+#include "gui/mouse.h"
+#include "gui/terminal.h"
+#include "util/fpsManager.h"
+#include "util/soundPlayer.h"
+
 using namespace std;
 using namespace graphics;
 

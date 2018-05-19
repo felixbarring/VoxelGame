@@ -7,9 +7,9 @@
 #include <string>
 #include <vector>
 
-#include "mesh/meshElement.h"
+#include "graphics/mesh/meshElement.h"
 
-#include "../config/data.h"
+#include "config/data.h"
 
 namespace graphics {
 

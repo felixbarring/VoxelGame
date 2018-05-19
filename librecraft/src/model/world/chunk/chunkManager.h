@@ -13,7 +13,6 @@
 #include "model/world/entity/aabb.h"
 
 #include "chunk.h"
-
 #include "creationOptions.h"
 
 namespace chunk {

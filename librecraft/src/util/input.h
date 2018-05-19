@@ -1,10 +1,9 @@
 #ifndef SRC_UTIL_INPUT_H_
 #define SRC_UTIL_INPUT_H_
 
-#include <GL/glew.h>
-
 #include <memory>
 
+#include <GL/glew.h>
 #include <SFML/Window.hpp>
 
 namespace util {

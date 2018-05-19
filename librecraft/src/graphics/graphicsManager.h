@@ -2,8 +2,8 @@
 #ifndef SRC_GRAPHICS_GRAPHICSMANAGER_H_
 #define SRC_GRAPHICS_GRAPHICSMANAGER_H_
 
-#include "../graphics/cubeMap.h"
-#include "../graphics/spriteBatcher.h"
+#include "graphics/cubeMap.h"
+#include "graphics/spriteBatcher.h"
 #include "camera.h"
 #include "chunkBatcher.h"
 #include "cubeBatcher.h"

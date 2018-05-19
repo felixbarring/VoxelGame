@@ -1,7 +1,7 @@
 
 #include "graphicsManager.h"
 
-#include "../graphics/resources.h"
+#include "graphics/resources.h"
 #include "chunkBatcher.h"
 #include "cubeBatcher.h"
 

@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-#include "../config/data.h"
+#include "config/data.h"
 
 #include "texture/texture.h"
 #include "texture/textureArray.h"

@@ -20,13 +20,14 @@
 #include "graphics/cubeMap.h"
 #include "graphics/mesh/meshElement.h"
 #include "graphics/resources.h"
+#include "graphics/graphicsManager.h"
 
 #include "util/fpsManager.h"
-
 #include "config/data.h"
 
 
-#include "../graphics/graphicsManager.h"
+
+
 namespace demo {
 
 using namespace std;

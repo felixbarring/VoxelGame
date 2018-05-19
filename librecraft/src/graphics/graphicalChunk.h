@@ -7,8 +7,8 @@
 #include "mesh/meshElement.h"
 #include "transform.h"
 
-#include "../config/data.h"
-#include "../util/voxel.h"
+#include "config/data.h"
+#include "util/voxel.h"
 
 namespace graphics {
 
